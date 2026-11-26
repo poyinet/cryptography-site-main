@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for bulletproofs.",
+  "entries": [
+    {
+      "id": "bulletproofs-details",
+      "inventoryIds": [
+        "bulletproofs"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R103 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R103 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Bulletproofs 简洁证明系统",
+        "en": "Bulletproofs"
+      },
+      "claimIds": [
+        "bulletproofs-r139-principle",
+        "bulletproofs-r139-why",
+        "bulletproofs-r139-used",
+        "bulletproofs-r139-broken",
+        "bulletproofs-r139-history",
+        "bulletproofs-r139-refs"
+      ],
+      "sourceIds": [
+        "bulletproofs-wikipedia",
+        "bulletproofs-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sigma-protocol"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "bulletproofs-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Bulletproofs 简洁证明系统：为什么需要 → 核心机制 → 边界。",
+            "en": "Bulletproofs: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Bulletproofs 简洁证明系统 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Bulletproofs, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/bulletproofs-details-flow.zh.svg",
+            "en": "assets/bulletproofs-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a8c2144cdd288774d0d39d7bf05f318cf694aba71bf2f4df903517595e5af8dd",
+            "en": "c67cf4b360ed322bbeb241fe948ee017ab2a2a303cd1173e49437e77f37621a9"
+          }
+        },
+        {
+          "id": "bulletproofs-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Bulletproofs 简洁证明系统 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Bulletproofs: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Bulletproofs 简洁证明系统 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Bulletproofs, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bulletproofs-details-r138-model.zh.svg",
+            "en": "assets/bulletproofs-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e9609de5acec4f1707c1cecacbd405b6b76ce91c7e661ae90eb78991e8488704",
+            "en": "e0c9cebf187893b8b115040c2021eb1fb7e48203ee807ff8fb363d4e34da9c78"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Bulletproofs 简洁证明系统（Bulletproofs）。### 内积论证与范围证明\n\nBulletproofs 的核心是一个对数大小的内积论证：证明者证明两个 Pedersen 承诺向量 `a、b` 满足 `c=⟨a,b⟩`，通信量为 `2log₂(n)` 个群元素。范围证明把“承诺值在区间内”编码成内积关系，再交给这个论证。范围证明大小为 `2log₂(n)+9` 个群/域元素，证明和验证时间与 `n` 线性相关。它不需要可信设置，只依赖离散对数假设，并用 Fiat–Shamir 变成非交互。",
+          "why": "Bulletproofs 解决了“没有可信设置、又要短证明”的中间地带。Groth16 证明更短但需要 ceremony；Bulletproofs 不需要任何有毒废料，证明随 witness 对数增长，适合链上范围证明。它让保密交易从每笔超过 10KB 的证明降到不足 1KB，并支持把多笔范围证明聚合成一个证明。",
+          "used": "Bulletproofs 用于 Monero 的 RingCT 范围证明、Mimblewimble/Grin 的保密交易，以及比特币社区提出的 confidential transaction 方案。它也用于可验证 shuffles、偿付能力证明和一般算术电路。它不是通用 SNARK 的替代品：验证时间线性，适合中小规模 statement，不适合需要常数验证的超大电路。",
+          "broken": "Bulletproofs 的验证时间与 witness 规模线性，不是完全简洁的 verifier；对于百万门电路，验证仍然昂贵。它依赖离散对数，不是后量子安全。范围证明只证明区间，不证明其他业务约束；上层协议仍需处理承诺绑定、盲因子、聚合证明的 MPC 和 Fiat–Shamir 域分离。### 形式模型",
+          "history": "Bünz、Bootle、Boneh、Poelstra、Wuille 与 Maxwell 在 2017 年发布 ePrint 2017/1066，2018 年发表于 IEEE S&P。论文把 Bootle 等人的内积论证改进三倍，并给出范围证明与聚合方法。Bulletproofs 后来成为“透明设置 + 对数证明”的代表，被 Monero 等系统采用；它与 Groth16/PLONK 形成不同的效率取舍。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Bulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Bulletproofs 简洁证明系统 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 Bulletproofs 简洁证明系统 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for Bulletproofs 简洁证明系统. https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nBulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Bulletproofs (Bulletproofs 简洁证明系统). ### Inner-product argument and range proofs\n\nAt the core of Bulletproofs is a logarithmic-size inner-product argument: the prover shows that two Pedersen commitment vectors `a, b` satisfy `c=⟨a,b⟩` with `2log₂(n)` group elements of communication. A range proof encodes “the committed value lies in an interval” as an inner-product relation and feeds it to this argument. A range proof uses `2log₂(n)+9` group/field elements; proving and verification are linear in `n`. It needs no trusted setup, relies only on the discrete-logarithm assumption, and becomes non-interactive via Fiat–Shamir.",
+          "why": "Bulletproofs occupy the middle ground between “no trusted setup” and “short proof”. Groth16 proofs are shorter but need a ceremony; Bulletproofs need no toxic waste and grow logarithmically with the witness, making them suitable for on-chain range proofs.\n\nThey reduced confidential-transaction proofs from over 10KB to under 1KB and support aggregating many range proofs into one.",
+          "used": "Bulletproofs are used for Monero’s RingCT range proofs, Mimblewimble/Grin confidential transactions, and proposed Bitcoin confidential transactions. They also serve verifiable shuffles, proofs of solvency and general arithmetic circuits.\n\nThey are not a drop-in replacement for general SNARKs: verification is linear, so they suit small-to-medium statements rather than huge circuits with constant-time verification.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Bulletproof verification is linear in witness size, not fully succinct; for million-gate circuits verification remains expensive. Security relies on discrete logarithms and is not post-quantum.\n\nA range proof establishes only an interval, not arbitrary business constraints. Upper-layer protocols must still handle commitment binding, blinding factors, aggregation MPC and Fiat–Shamir domain separation.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Bünz, Bootle, Boneh, Poelstra, Wuille and Maxwell released ePrint 2017/1066 in 2017 and published at IEEE S&P 2018. The paper improves the Bootle et al. inner-product argument by a factor of three and gives range proofs plus aggregation.\n\nBulletproofs became the representative of “transparent setup + logarithmic proofs” and were adopted by Monero and others, occupying a different trade-off from Groth16/PLONK.",
+          "refs": "- Wikipedia search entry for Bulletproofs 简洁证明系统. https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nBulletproofs: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "bulletproofs-r139-formal",
+          "entryId": "bulletproofs-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Bulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Bulletproofs 简洁证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "bulletproofs-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bulletproofs-r139-formal"
+      ],
+      "sources": [
+        "bulletproofs-wikipedia",
+        "bulletproofs-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bulletproofs-r139-formal",
+      "entryId": "bulletproofs-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Bulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Bulletproofs 简洁证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "bulletproofs-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

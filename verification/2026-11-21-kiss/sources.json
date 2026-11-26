@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "kiss-details",
+  "sources": [
+    {
+      "id": "kiss-wikipedia",
+      "title": "Wikipedia search entry for KISS 伪随机数生成器",
+      "url": "https://zh.wikipedia.org/w/index.php?search=KISS%20%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: KISS 伪随机数生成器",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "kiss-r139-principle",
+          "entryId": "kiss-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：KISS 伪随机数生成器（KISS Pseudorandom Number Generator）。KISS 把四个 32 位子生成器组合成一个 32 位输出，状态共 128 位。MWC 用两个 16 位半字更新：\\(z'=36969\\,(z\\bmod 2^{16})+\\lfloor z/2^{16}\\rfloor\\)，\\(w'=18000\\,(w\\bmod 2^{16})+\\lfloor w/2^{16}\\rfloor\\)，再把 \\(z'\\) 左移 16 位与 \\(w'\\) 相加。SHR3 做三次移位异或：先左移 17，再右移 13，再左移 5；CONG 是 \\(x'=69069x+1234567\\bmod 2^{32}\\)。最后输出 \\((MWC\\oplus x')+SHR3\\bmod 2^{32}\\)。四个子生成器的周期互相制约，不能把单个 LCG 的 \\(2^{32}\\) 当成整体周期。",
+            "en": "**Algorithm**: KISS Pseudorandom Number Generator (KISS 伪随机数生成器).KISS combines four 32-bit sub-generators into one 32-bit output over a 128-bit state."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        },
+        {
+          "id": "kiss-r139-why",
+          "entryId": "kiss-details",
+          "section": "why",
+          "statement": {
+            "zh": "KISS 是“Keep It Simple, Stupid”的缩写，目标是给模拟和统计测试提供极快、极短的 PRNG，不是分组密码。它没有密钥、没有认证、没有抗侧信道目标；把 KISS 当流密码或 CSPRNG 使用，会把“统计上像随机”误当成“不可预测”。该条目同时修正旧目录把 KISS 标成“轻量级分组密码”的错误：KISS 的状态更新是 PRNG，输出不是 \\(E_K(x)\\)。",
+            "en": "KISS means “Keep It Simple, Stupid” and targets a very fast, very short PRNG for simulation and statistical tests, not a block cipher.It has no key, authentication or side-channel goal; using KISS as a stream cipher or CSPRNG mistakes “statistically random” for “unpredictable”."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        },
+        {
+          "id": "kiss-r139-used",
+          "entryId": "kiss-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现时要固定四个 32 位状态的初值，并保证不全为零；每次调用按同一顺序更新 MWC、SHR3、CONG，再组合输出。验证实现时，先对已知种子复现前几个 32 位输出，再检查 \\(x'\\) 的模 \\(2^{32}\\) 回绕、MWC 的两个半字是否按 16 位切开，以及 SHR3 的移位方向。它适合蒙特卡洛、游戏草稿和测试数据；不适合密钥、nonce、会话令牌或任何需要抗预测的场景。",
+            "en": "An implementation fixes four 32-bit initial states, never all zero, then updates MWC, SHR3 and CONG in the same order and combines the outputs.To verify, reproduce the first few 32-bit outputs from a known seed, then check the \\(x'\\) wrap at \\(2^{32}\\), the 16-bit split in MWC and the SHR3 shift directions."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        },
+        {
+          "id": "kiss-r139-broken",
+          "entryId": "kiss-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Rose 的分析给出两个关键边界：32 位 KISS 的最大周期约为 \\(2^{119.5}\\)，不是早期宣称的 \\(2^{123}\\)；从约 70 个输出字可以恢复状态，复杂度约 \\(2^{29.1}\\)。这说明“周期长”不等于“密码安全”。另外，64 位/256 位变体（常称 KISS64/KISS11）状态更大、周期约 \\(2^{247}\\)，但仍是统计 PRNG；不能把不同变体的参数混到 32 位 KISS 的公式里。",
+            "en": "Rose gives two key boundaries: the 32-bit KISS maximum period is about \\(2^{119.5}\\), not the earlier \\(2^{123}\\); about 70 output words recover the state with complexity near \\(2^{29.1}\\).A long period is therefore not cryptographic security."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        },
+        {
+          "id": "kiss-r139-history",
+          "entryId": "kiss-details",
+          "section": "history",
+          "statement": {
+            "zh": "Marsaglia 与 Zaman 在 1993 年提出 KISS 类组合思路，1998 年的 C 版本把 LCG、SHR3 和两个 MWC 拼成四字状态；Rose 在 2018 年给出系统分析，指出周期上界与状态恢复攻击。2009 年出现的 64 位 KISS 把状态扩到 256 位，周期约 \\(2^{247}\\)。本站 R128 同时把条目标题从“轻量级分组密码”改为“伪随机数生成器”，因为原分类与算法事实不符。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：KISS 伪随机数生成器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Marsaglia and Zaman proposed the KISS-style combination in 1993; the 1998 C version combined LCG, SHR3 and two MWC components into a four-word state; Rose’s 2018 analysis established the period bound and state-recovery attack.The 2009 64-bit KISS expanded the state to 256 bits and a period near \\(2^{247}\\)."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        },
+        {
+          "id": "kiss-r139-refs",
+          "entryId": "kiss-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for KISS 伪随机数生成器.https://zh.wikipedia.org/w/index.php?search=KISS%20%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for KISS 伪随机数生成器.https://zh.wikipedia.org/w/index.php?search=KISS%20%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "kiss-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "kiss-wikipedia"
+      ]
+    },
+    {
+      "id": "kiss-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "kiss-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "kiss-r139-principle",
+      "entryId": "kiss-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：KISS 伪随机数生成器（KISS Pseudorandom Number Generator）。KISS 把四个 32 位子生成器组合成一个 32 位输出，状态共 128 位。MWC 用两个 16 位半字更新：\\(z'=36969\\,(z\\bmod 2^{16})+\\lfloor z/2^{16}\\rfloor\\)，\\(w'=18000\\,(w\\bmod 2^{16})+\\lfloor w/2^{16}\\rfloor\\)，再把 \\(z'\\) 左移 16 位与 \\(w'\\) 相加。SHR3 做三次移位异或：先左移 17，再右移 13，再左移 5；CONG 是 \\(x'=69069x+1234567\\bmod 2^{32}\\)。最后输出 \\((MWC\\oplus x')+SHR3\\bmod 2^{32}\\)。四个子生成器的周期互相制约，不能把单个 LCG 的 \\(2^{32}\\) 当成整体周期。",
+        "en": "**Algorithm**: KISS Pseudorandom Number Generator (KISS 伪随机数生成器).KISS combines four 32-bit sub-generators into one 32-bit output over a 128-bit state."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    },
+    {
+      "id": "kiss-r139-why",
+      "entryId": "kiss-details",
+      "section": "why",
+      "statement": {
+        "zh": "KISS 是“Keep It Simple, Stupid”的缩写，目标是给模拟和统计测试提供极快、极短的 PRNG，不是分组密码。它没有密钥、没有认证、没有抗侧信道目标；把 KISS 当流密码或 CSPRNG 使用，会把“统计上像随机”误当成“不可预测”。该条目同时修正旧目录把 KISS 标成“轻量级分组密码”的错误：KISS 的状态更新是 PRNG，输出不是 \\(E_K(x)\\)。",
+        "en": "KISS means “Keep It Simple, Stupid” and targets a very fast, very short PRNG for simulation and statistical tests, not a block cipher.It has no key, authentication or side-channel goal; using KISS as a stream cipher or CSPRNG mistakes “statistically random” for “unpredictable”."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    },
+    {
+      "id": "kiss-r139-used",
+      "entryId": "kiss-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现时要固定四个 32 位状态的初值，并保证不全为零；每次调用按同一顺序更新 MWC、SHR3、CONG，再组合输出。验证实现时，先对已知种子复现前几个 32 位输出，再检查 \\(x'\\) 的模 \\(2^{32}\\) 回绕、MWC 的两个半字是否按 16 位切开，以及 SHR3 的移位方向。它适合蒙特卡洛、游戏草稿和测试数据；不适合密钥、nonce、会话令牌或任何需要抗预测的场景。",
+        "en": "An implementation fixes four 32-bit initial states, never all zero, then updates MWC, SHR3 and CONG in the same order and combines the outputs.To verify, reproduce the first few 32-bit outputs from a known seed, then check the \\(x'\\) wrap at \\(2^{32}\\), the 16-bit split in MWC and the SHR3 shift directions."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    },
+    {
+      "id": "kiss-r139-broken",
+      "entryId": "kiss-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Rose 的分析给出两个关键边界：32 位 KISS 的最大周期约为 \\(2^{119.5}\\)，不是早期宣称的 \\(2^{123}\\)；从约 70 个输出字可以恢复状态，复杂度约 \\(2^{29.1}\\)。这说明“周期长”不等于“密码安全”。另外，64 位/256 位变体（常称 KISS64/KISS11）状态更大、周期约 \\(2^{247}\\)，但仍是统计 PRNG；不能把不同变体的参数混到 32 位 KISS 的公式里。",
+        "en": "Rose gives two key boundaries: the 32-bit KISS maximum period is about \\(2^{119.5}\\), not the earlier \\(2^{123}\\); about 70 output words recover the state with complexity near \\(2^{29.1}\\).A long period is therefore not cryptographic security."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    },
+    {
+      "id": "kiss-r139-history",
+      "entryId": "kiss-details",
+      "section": "history",
+      "statement": {
+        "zh": "Marsaglia 与 Zaman 在 1993 年提出 KISS 类组合思路，1998 年的 C 版本把 LCG、SHR3 和两个 MWC 拼成四字状态；Rose 在 2018 年给出系统分析，指出周期上界与状态恢复攻击。2009 年出现的 64 位 KISS 把状态扩到 256 位，周期约 \\(2^{247}\\)。本站 R128 同时把条目标题从“轻量级分组密码”改为“伪随机数生成器”，因为原分类与算法事实不符。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：KISS 伪随机数生成器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Marsaglia and Zaman proposed the KISS-style combination in 1993; the 1998 C version combined LCG, SHR3 and two MWC components into a four-word state; Rose’s 2018 analysis established the period bound and state-recovery attack.The 2009 64-bit KISS expanded the state to 256 bits and a period near \\(2^{247}\\)."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    },
+    {
+      "id": "kiss-r139-refs",
+      "entryId": "kiss-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for KISS 伪随机数生成器.https://zh.wikipedia.org/w/index.php?search=KISS%20%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for KISS 伪随机数生成器.https://zh.wikipedia.org/w/index.php?search=KISS%20%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "kiss-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

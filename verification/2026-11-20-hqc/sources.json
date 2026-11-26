@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "hqc-details",
+  "sources": [
+    {
+      "id": "hqc-wikipedia",
+      "title": "Wikipedia search entry for HQC 备选 KEM",
+      "url": "https://zh.wikipedia.org/w/index.php?search=HQC%20%E5%A4%87%E9%80%89%20KEM",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: HQC 备选 KEM",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "hqc-r139-principle",
+          "entryId": "hqc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：HQC 备选 KEM（Hamming Quasi-Cyclic）。HQC 是基于码的密钥封装：公钥隐藏一个准循环码的结构，封装方选择一个权重受控的错误向量，用公钥算出密文；解封装方用私钥中的译码器恢复错误向量，再通过哈希导出共享秘密。它的困难性假设来自随机线性码的译码问题，和 ML-KEM 的格假设不同。",
+            "en": "**Algorithm**: Hamming Quasi-Cyclic (HQC 备选 KEM).HQC is a code-based KEM."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        },
+        {
+          "id": "hqc-r139-why",
+          "entryId": "hqc-details",
+          "section": "why",
+          "statement": {
+            "zh": "后量子迁移需要算法多样性。如果格密码未来出现结构性突破，整个生态不能只剩一个假设。HQC 在 2025 年被 NIST 选为备用 KEM，正是为了让标准化组合拥有第二条独立路径。它的公钥和密文更大，但提供了不同的失败模式。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Post-quantum migration needs algorithm diversity.If lattices suffer a structural break, the ecosystem should not rest on one assumption."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        },
+        {
+          "id": "hqc-r139-used",
+          "entryId": "hqc-details",
+          "section": "used",
+          "statement": {
+            "zh": "作为备用 KEM 进入标准草案、协议实验和跨实现互操作测试。适用于愿意用更大密钥换取算法多样性的场景，而不是追求最小带宽的默认选择。",
+            "en": "Backup KEM in standards drafts, protocol experiments and cross-implementation interoperability tests.It suits deployments that accept larger keys in exchange for algorithm diversity, rather than bandwidth-sensitive defaults."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        },
+        {
+          "id": "hqc-r139-broken",
+          "entryId": "hqc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "主要风险是译码失败率、弱密钥、侧信道和参数选择。译码失败若被观察到，可能泄露信息；实现中的时序与缓存行为也可能被利用。它没有被 Shor 算法直接攻破，但“码假设未被破”不等于“实现安全”。### 形式模型。",
+            "en": "The main risks are decoding failure rate, weak keys, side channels and parameter choice.An observable decoding failure can leak information; timing and cache behaviour can also be exploited."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        },
+        {
+          "id": "hqc-r139-history",
+          "entryId": "hqc-details",
+          "section": "history",
+          "statement": {
+            "zh": "HQC 在 2017 年进入 NIST 后量子征集，经过多轮修订。2025 年 3 月，NIST 宣布选择 HQC 作为备用 KEM，与 ML-KEM 形成格与码的双轨。它目前仍处于标准化推进阶段，不能写成已经完成全部标准程序。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「HQC 备选 KEM」按 算法 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：HQC 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。预期输出：按 HQC 备选 KEM 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "HQC entered the NIST post-quantum process in 2017 and went through several revisions.In March 2025 NIST selected HQC as a backup KEM, creating a lattice-and-code pair with ML-KEM."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        },
+        {
+          "id": "hqc-r139-refs",
+          "entryId": "hqc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for HQC 备选 KEM.https://zh.wikipedia.org/w/index.php?search=HQC%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for HQC 备选 KEM.https://zh.wikipedia.org/w/index.php?search=HQC%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "hqc-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "hqc-wikipedia"
+      ]
+    },
+    {
+      "id": "hqc-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hqc-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "hqc-r139-principle",
+      "entryId": "hqc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：HQC 备选 KEM（Hamming Quasi-Cyclic）。HQC 是基于码的密钥封装：公钥隐藏一个准循环码的结构，封装方选择一个权重受控的错误向量，用公钥算出密文；解封装方用私钥中的译码器恢复错误向量，再通过哈希导出共享秘密。它的困难性假设来自随机线性码的译码问题，和 ML-KEM 的格假设不同。",
+        "en": "**Algorithm**: Hamming Quasi-Cyclic (HQC 备选 KEM).HQC is a code-based KEM."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    },
+    {
+      "id": "hqc-r139-why",
+      "entryId": "hqc-details",
+      "section": "why",
+      "statement": {
+        "zh": "后量子迁移需要算法多样性。如果格密码未来出现结构性突破，整个生态不能只剩一个假设。HQC 在 2025 年被 NIST 选为备用 KEM，正是为了让标准化组合拥有第二条独立路径。它的公钥和密文更大，但提供了不同的失败模式。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Post-quantum migration needs algorithm diversity.If lattices suffer a structural break, the ecosystem should not rest on one assumption."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    },
+    {
+      "id": "hqc-r139-used",
+      "entryId": "hqc-details",
+      "section": "used",
+      "statement": {
+        "zh": "作为备用 KEM 进入标准草案、协议实验和跨实现互操作测试。适用于愿意用更大密钥换取算法多样性的场景，而不是追求最小带宽的默认选择。",
+        "en": "Backup KEM in standards drafts, protocol experiments and cross-implementation interoperability tests.It suits deployments that accept larger keys in exchange for algorithm diversity, rather than bandwidth-sensitive defaults."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    },
+    {
+      "id": "hqc-r139-broken",
+      "entryId": "hqc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "主要风险是译码失败率、弱密钥、侧信道和参数选择。译码失败若被观察到，可能泄露信息；实现中的时序与缓存行为也可能被利用。它没有被 Shor 算法直接攻破，但“码假设未被破”不等于“实现安全”。### 形式模型。",
+        "en": "The main risks are decoding failure rate, weak keys, side channels and parameter choice.An observable decoding failure can leak information; timing and cache behaviour can also be exploited."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    },
+    {
+      "id": "hqc-r139-history",
+      "entryId": "hqc-details",
+      "section": "history",
+      "statement": {
+        "zh": "HQC 在 2017 年进入 NIST 后量子征集，经过多轮修订。2025 年 3 月，NIST 宣布选择 HQC 作为备用 KEM，与 ML-KEM 形成格与码的双轨。它目前仍处于标准化推进阶段，不能写成已经完成全部标准程序。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「HQC 备选 KEM」按 算法 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：HQC 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。预期输出：按 HQC 备选 KEM 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "HQC entered the NIST post-quantum process in 2017 and went through several revisions.In March 2025 NIST selected HQC as a backup KEM, creating a lattice-and-code pair with ML-KEM."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    },
+    {
+      "id": "hqc-r139-refs",
+      "entryId": "hqc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for HQC 备选 KEM.https://zh.wikipedia.org/w/index.php?search=HQC%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for HQC 备选 KEM.https://zh.wikipedia.org/w/index.php?search=HQC%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "hqc-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

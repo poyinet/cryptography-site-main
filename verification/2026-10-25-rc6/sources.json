@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "rc6-details",
+  "sources": [
+    {
+      "id": "algorithm--rc6-wikipedia",
+      "title": "Wikipedia search entry for RC6 分组密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: RC6 分组密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--rc6-r139-principle",
+          "entryId": "rc6-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：RC6 分组密码（RC6）。RC6 是参数化分组密码 RC6-w/r/b：块长 4w 位，密钥 8b 位，执行 r 轮。AES 提交版本使用 w=32、r=20、b=16/24/32，即 128 位块、128/192/256 位密钥和 20 轮。128 位块分成四个 32 位寄存器 A、B、C、D。加密先做两次预白化，再执行 20 轮，最后做两次后白化：\n\n```text\nB = B + S[0]\nD = D + S[1]\nfor i = 1..20:\n  t = (B * (2B + 1)) <<< 5\n  u = (D * (2D + 1)) <<< 5\n  A = ((A XOR t) <<< u) + S[2i]\n  C = ((C XOR u) <<< t) + S[2i+1]\n  (A, B, C, D) = (B, C, D, A)\nA = A + S[42]\nC = C + S[43]\n```\n\n这里的乘法和加法都是模 2^32，`<<<` 是 32 位循环左移，旋转量取低 5 位。每轮先由 B、D 算出 t、u，再用它们旋转 A、C 并加上轮密钥，最后把四个寄存器整体左移一位。```text\nC = C - S[43]\nA = A - S[42]\nfor i = 20..",
+            "en": "**Algorithm**: RC6 (RC6 分组密码).RC6 is the parameterized block cipher RC6-w/r/b: the block is 4w bits, the key is 8b bits, and it runs r rounds."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc6-r139-why",
+          "entryId": "rc6-details",
+          "section": "why",
+          "statement": {
+            "zh": "RC6 的设计目标是简单、快速、紧凑和安全。它只使用加法、减法、乘法、异或和循环移位这些现代处理器擅长的运算，因此适合软件实现；AES 提交版本使用 128 位块和 20 轮，密钥长度 128/192/256 位。RC6 提交文档第 6 节总结说：目前最好的攻击似乎是穷举密钥；差分和线性分析所需的数据量超过可获得的明文量；没有已知的弱密钥。这些是 1998 年设计者的评估，不是对全部攻击模型的形式化证明。RC6 在 1998 年作为 AES 候选算法提交，AES 版本使用 128 位块和 20 轮。2018 年的 IETF 草案说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。",
+            "en": "RC6's design goals are simplicity, speed, compactness and security.It uses only addition, subtraction, multiplication, XOR and rotation, operations that modern processors handle well, so it suits software implementations; the AES submission uses a 128-bit block, 20 rounds and 128/192/256-bit keys."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc6-r139-used",
+          "entryId": "rc6-details",
+          "section": "used",
+          "statement": {
+            "zh": "RC6 提交文档附录给出六组向量，覆盖 128/192/256 位密钥和零/非零明文：\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8F5FBD0510D15FA893FA3FDA6E857EC2\n\nK = 0123456789ABCDEF011。",
+            "en": "The RC6 submission's appendix gives six vectors covering 128/192/256-bit keys and zero/non-zero plaintexts:\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 000000000000000000000000000000。."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc6-r139-broken",
+          "entryId": "rc6-details",
+          "section": "broken",
+          "statement": {
+            "zh": "RC6 的最好攻击是穷举密钥、差分/线性所需数据超过可得数据、没有弱密钥这三项都是 1998 年提交文档中的设计者评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它们扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 RC6 已被攻破。提交文档第 6 节说 RC6 可以安排成加密/解密时间与数据无关，从而抵抗某些时序攻击。这是对实现方式的建议，不保证所有处理器、编译器和实现都自动获得常量时间行为；本文的教学实现也不是常量时间实现。RC6 的部署位置需要区分：它是 1998 年提交给 AES 的候选算法，2018 年 IETF 草案说明相关专利已过期、名称仍是商标；AES 的最终标准是 NIST 于 2001 年 11 月 26 日发布的 FIPS 197，RC6 没有成为 AES。把 AES 候选者当成 AES 标准是不准确的。实现层面，本文的教学实现按 32 位字做乘法和循环移位，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。RC6 只定义分组密码，协议层必须自己处理这些事项。",
+            "en": "RC6's claims that the best attack is exhaustive search, that differential/linear data exceeds available data and that no weak keys are known are designer assessments in the 1998 submission, not formal proofs against every attack model, and they do not guarantee that no better analysis will appear.This article does not expand them into an absolute security claim, and it does not cite unverified attack papers to claim that RC6 has been broken."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc6-r139-history",
+          "entryId": "rc6-details",
+          "section": "history",
+          "statement": {
+            "zh": "RC6 提交文档的版本是 v1.1（1998 年 8 月 20 日），由 R.L.Rivest、M.J.B.Robshaw、R.Sidney 和 Y.L.Yin 署名，作为 AES 候选算法提交。AES 版本使用 128 位块、128/192/256 位密钥和 20 轮。2018 年 4 月的 IETF 草案 draft-krovetz-rc6-rc5-vectors-00 说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。该草案提供 RC6/RC5 的多参数测试向量，本文用它给出的 RC6-32/20/16 向量做独立交叉校验。本文的 RC6 实体只指这一种 128 位块、20 轮的 AES 候选分组密码；RC5 是另一种参数化分组密码，AES 是最终标准 FIPS 197（NIST 于 2001 年 11 月 26 日发布），二者都不是 RC6 的别名或被本文完成的实体。",
+            "en": "The RC6 submission is version 1.1 (20 August 1998), attributed to R.L.Rivest, M.J.B."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc6-r139-refs",
+          "entryId": "rc6-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for RC6 分组密码.https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for RC6 分组密码.https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--rc6-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--rc6-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--rc6-r139-principle",
+      "entryId": "rc6-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：RC6 分组密码（RC6）。RC6 是参数化分组密码 RC6-w/r/b：块长 4w 位，密钥 8b 位，执行 r 轮。AES 提交版本使用 w=32、r=20、b=16/24/32，即 128 位块、128/192/256 位密钥和 20 轮。128 位块分成四个 32 位寄存器 A、B、C、D。加密先做两次预白化，再执行 20 轮，最后做两次后白化：\n\n```text\nB = B + S[0]\nD = D + S[1]\nfor i = 1..20:\n  t = (B * (2B + 1)) <<< 5\n  u = (D * (2D + 1)) <<< 5\n  A = ((A XOR t) <<< u) + S[2i]\n  C = ((C XOR u) <<< t) + S[2i+1]\n  (A, B, C, D) = (B, C, D, A)\nA = A + S[42]\nC = C + S[43]\n```\n\n这里的乘法和加法都是模 2^32，`<<<` 是 32 位循环左移，旋转量取低 5 位。每轮先由 B、D 算出 t、u，再用它们旋转 A、C 并加上轮密钥，最后把四个寄存器整体左移一位。```text\nC = C - S[43]\nA = A - S[42]\nfor i = 20..",
+        "en": "**Algorithm**: RC6 (RC6 分组密码).RC6 is the parameterized block cipher RC6-w/r/b: the block is 4w bits, the key is 8b bits, and it runs r rounds."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-r139-why",
+      "entryId": "rc6-details",
+      "section": "why",
+      "statement": {
+        "zh": "RC6 的设计目标是简单、快速、紧凑和安全。它只使用加法、减法、乘法、异或和循环移位这些现代处理器擅长的运算，因此适合软件实现；AES 提交版本使用 128 位块和 20 轮，密钥长度 128/192/256 位。RC6 提交文档第 6 节总结说：目前最好的攻击似乎是穷举密钥；差分和线性分析所需的数据量超过可获得的明文量；没有已知的弱密钥。这些是 1998 年设计者的评估，不是对全部攻击模型的形式化证明。RC6 在 1998 年作为 AES 候选算法提交，AES 版本使用 128 位块和 20 轮。2018 年的 IETF 草案说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。",
+        "en": "RC6's design goals are simplicity, speed, compactness and security.It uses only addition, subtraction, multiplication, XOR and rotation, operations that modern processors handle well, so it suits software implementations; the AES submission uses a 128-bit block, 20 rounds and 128/192/256-bit keys."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-r139-used",
+      "entryId": "rc6-details",
+      "section": "used",
+      "statement": {
+        "zh": "RC6 提交文档附录给出六组向量，覆盖 128/192/256 位密钥和零/非零明文：\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8F5FBD0510D15FA893FA3FDA6E857EC2\n\nK = 0123456789ABCDEF011。",
+        "en": "The RC6 submission's appendix gives six vectors covering 128/192/256-bit keys and zero/non-zero plaintexts:\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 000000000000000000000000000000。."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-r139-broken",
+      "entryId": "rc6-details",
+      "section": "broken",
+      "statement": {
+        "zh": "RC6 的最好攻击是穷举密钥、差分/线性所需数据超过可得数据、没有弱密钥这三项都是 1998 年提交文档中的设计者评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它们扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 RC6 已被攻破。提交文档第 6 节说 RC6 可以安排成加密/解密时间与数据无关，从而抵抗某些时序攻击。这是对实现方式的建议，不保证所有处理器、编译器和实现都自动获得常量时间行为；本文的教学实现也不是常量时间实现。RC6 的部署位置需要区分：它是 1998 年提交给 AES 的候选算法，2018 年 IETF 草案说明相关专利已过期、名称仍是商标；AES 的最终标准是 NIST 于 2001 年 11 月 26 日发布的 FIPS 197，RC6 没有成为 AES。把 AES 候选者当成 AES 标准是不准确的。实现层面，本文的教学实现按 32 位字做乘法和循环移位，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。RC6 只定义分组密码，协议层必须自己处理这些事项。",
+        "en": "RC6's claims that the best attack is exhaustive search, that differential/linear data exceeds available data and that no weak keys are known are designer assessments in the 1998 submission, not formal proofs against every attack model, and they do not guarantee that no better analysis will appear.This article does not expand them into an absolute security claim, and it does not cite unverified attack papers to claim that RC6 has been broken."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-r139-history",
+      "entryId": "rc6-details",
+      "section": "history",
+      "statement": {
+        "zh": "RC6 提交文档的版本是 v1.1（1998 年 8 月 20 日），由 R.L.Rivest、M.J.B.Robshaw、R.Sidney 和 Y.L.Yin 署名，作为 AES 候选算法提交。AES 版本使用 128 位块、128/192/256 位密钥和 20 轮。2018 年 4 月的 IETF 草案 draft-krovetz-rc6-rc5-vectors-00 说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。该草案提供 RC6/RC5 的多参数测试向量，本文用它给出的 RC6-32/20/16 向量做独立交叉校验。本文的 RC6 实体只指这一种 128 位块、20 轮的 AES 候选分组密码；RC5 是另一种参数化分组密码，AES 是最终标准 FIPS 197（NIST 于 2001 年 11 月 26 日发布），二者都不是 RC6 的别名或被本文完成的实体。",
+        "en": "The RC6 submission is version 1.1 (20 August 1998), attributed to R.L.Rivest, M.J.B."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc6-r139-refs",
+      "entryId": "rc6-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for RC6 分组密码.https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for RC6 分组密码.https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--rc6-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

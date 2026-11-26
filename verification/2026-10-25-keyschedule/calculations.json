@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ks-calc-aes128",
+    "entryId": "ks-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "FIPS 197 Appendix A.1 AES-128 example key 2b7e151628aed2a6abf7158809cf4f3c",
+    "expected": "44 words and 11 round keys; round key 0 equals the master key, round key 10 is d014f9a8c9ee2589e13f0cc8b6630ca6 and the last word is b6630ca6",
+    "sourceIds": ["fips197"],
+    "dependencies": ["ks-teaching.mjs"],
+    "limitations": "One official example key; it does not establish behavior for every 128-bit key."
+  },
+  {
+    "id": "ks-calc-aes192-256",
+    "entryId": "ks-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "FIPS 197 Appendix A.2 key 8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b and Appendix A.3 key 603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4",
+    "expected": "AES-192 produces 52 words and 13 round keys ending in e98ba06f448c773c8ecc720401002202; AES-256 produces 60 words and 15 round keys ending in fe4890d1e6188d0b046df344706c631e",
+    "sourceIds": ["fips197"],
+    "dependencies": ["ks-teaching.mjs"],
+    "limitations": "Two official example keys; the shared routine is exercised at all three AES key lengths only through these fixed examples."
+  },
+  {
+    "id": "ks-calc-sensitivity",
+    "entryId": "ks-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The AES-128 example key with its last byte changed from 3c to 3d",
+    "expected": "139 of the 176 bytes across the eleven round keys differ from the original schedule",
+    "sourceIds": ["fips197"],
+    "dependencies": ["ks-teaching.mjs"],
+    "limitations": "One fixed key and a one-byte change; this is a diffusion observation, not a security proof or a differential probability."
+  },
+  {
+    "id": "ks-calc-des-counts",
+    "entryId": "ks-details",
+    "kind": "arithmetic-from-standard-check",
+    "inputs": "FIPS 46-3 key schedule: a 64-bit key, PC-1, sixteen rounds and PC-2",
+    "expected": "PC-1 removes eight parity bits and leaves 56 effective key bits; sixteen 48-bit subkeys total 768 bits",
+    "sourceIds": ["fips46-3"],
+    "dependencies": [],
+    "limitations": "Arithmetic from the standard only; no DES implementation, weak-key enumeration or subkey-value check is performed in this batch."
+  }
+]

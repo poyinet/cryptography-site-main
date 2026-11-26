@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for groth16.",
+  "entries": [
+    {
+      "id": "groth16-details",
+      "inventoryIds": [
+        "groth16"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R103 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R103 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Groth16 证明系统",
+        "en": "Groth16 zk-SNARK"
+      },
+      "claimIds": [
+        "groth16-r139-principle",
+        "groth16-r139-why",
+        "groth16-r139-used",
+        "groth16-r139-broken",
+        "groth16-r139-history",
+        "groth16-r139-refs"
+      ],
+      "sourceIds": [
+        "groth16-wikipedia",
+        "groth16-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sigma-protocol"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "groth16-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Groth16 证明系统：为什么需要 → 核心机制 → 边界。",
+            "en": "Groth16 zk-SNARK: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Groth16 证明系统 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Groth16 zk-SNARK, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/groth16-details-flow.zh.svg",
+            "en": "assets/groth16-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "215b0873302d11197f4baa9a8965e35fb19ecb7d24e7d7470f30f6725f4cdfff",
+            "en": "775cc8fa33770c39e735a0e89d5bd16f3503b7256df7f5edb6f816f112d4fe97"
+          }
+        },
+        {
+          "id": "groth16-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Groth16 证明系统 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Groth16 zk-SNARK: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Groth16 证明系统 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Groth16 zk-SNARK, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/groth16-details-r138-model.zh.svg",
+            "en": "assets/groth16-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8da84c58834c091329bf24d1d1a73c01468616d33fbca00f353406f8ba292db3",
+            "en": "ba9f7d1b2eabf021cfcc51cd2b8c2babb5370445bcbac9d5a854a658549ed27d"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Groth16 证明系统（Groth16 zk-SNARK）。### 从 R1CS 到三个群元素\n\nGroth16 是面向算术电路的可预处理 zk-SNARK。电路先被写成 R1CS（每行一个乘法约束），再通过二次算术程序（QAP）变成多项式方程。证明者用公共参考串（CRS）承诺 witness 对应的多项式，输出三个双线性群元素 `A、B、C`。验证者只检查一个 pairing product 方程，外加对公开输入的线性组合。证明不泄露 witness，验证时间与电路规模基本无关，这是它在 2016 年最突出的效率优势。",
+          "why": "Groth16 把“证明一个计算正确”压缩到数百字节和几次 pairing。与早期 Pinocchio 等方案相比，它的证明从多个群元素降到三个，验证也从多次 pairing 降到一次方程，特别适合递归证明和链上验证。代价是每个电路都要一套独立的 CRS。电路一改，参数就要重做；因此它适合固定电路，而不适合频繁变化的通用虚拟机。",
+          "used": "Groth16 是隐私交易和 zk-Rollup 早期最常用的证明后端之一；Zcash Sapling 使用基于 Groth16 的证明系统。它也常被用作递归证明的内层证明，因为验证成本低、证明小。在工程中，Groth16 通常与 Circom、snarkjs、bellman 等工具链一起出现；证明生成仍然是重计算，验证则很轻。",
+          "broken": "Groth16 的主要风险是电路相关的可信设置。CRS 中的“有毒废料”若未被销毁，持有者可以伪造任意证明；每次改电路都要重新做 ceremony。它还需要 R1CS 编码、双线性配对曲线和随机预言机/通用群模型等假设；不是后量子安全的。证明者计算量随电路规模增长，超大电路需要并行化。### 形式模型",
+          "history": "Jens Groth 在 EUROCRYPT 2016 发表 “On the Size of Pairing-based Non-interactive Arguments”，给出三元素证明与单方程验证，并证明在通用非对称双线性群中一个群元素的 SNARG 不可能。论文没有证明三元素是绝对最小；它明确留下“能否排除两元素”的开放问题。Groth16 后来成为 zk-SNARK 工程化的基准。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Groth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Groth16 证明系统 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 Groth16 证明系统 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for Groth16 证明系统. https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nGroth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Groth16 zk-SNARK (Groth16 证明系统). ### From R1CS to three group elements\n\nGroth16 is a preprocessing zk-SNARK for arithmetic circuits. The circuit is encoded as R1CS (one multiplication constraint per row), then converted through a Quadratic Arithmetic Program (QAP) into polynomial equations. Using a common reference string (CRS), the prover commits to the witness polynomials and outputs three bilinear-group elements `A, B, C`. The verifier checks one pairing-product equation plus a linear combination of public inputs. The proof reveals nothing about the witness, and verification is essentially independent of circuit size — the efficiency breakthrough of 2016.",
+          "why": "Groth16 compresses “this computation is correct” into a few hundred bytes and a handful of pairings. Compared with earlier Pinocchio-style systems, it reduced the proof to three group elements and verification to a single equation, making it attractive for recursive proofs and on-chain verification.\n\nThe price is a circuit-specific CRS. Change the circuit and the parameters must be regenerated, so Groth16 suits fixed circuits rather than frequently changing universal virtual machines.",
+          "used": "Groth16 became one of the most common backends for privacy transactions and early zk-Rollups; Zcash Sapling uses a Groth16-based proving system. It is also used as an inner proof in recursive constructions because proofs are small and verification is cheap.\n\nIn practice it appears with Circom, snarkjs, bellman and similar toolchains. Proving remains expensive; verification is light.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The main risk is the circuit-specific trusted setup. If the “toxic waste” in the CRS is not destroyed, its holder can forge proofs; every circuit change needs a new ceremony.\n\nIt also relies on R1CS encoding, pairing-friendly curves and random-oracle/generic-group assumptions; it is not post-quantum. Prover work grows with circuit size and needs parallelism for very large circuits.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Jens Groth published “On the Size of Pairing-based Non-interactive Arguments” at EUROCRYPT 2016, giving a three-element proof, a single verification equation, and a lower bound ruling out one-element SNARGs in the generic asymmetric bilinear-group model.\n\nThe paper does not prove that three elements are the absolute minimum; it explicitly leaves open whether two-element proofs can be ruled out. Groth16 later became the benchmark for engineering zk-SNARKs.",
+          "refs": "- Wikipedia search entry for Groth16 证明系统. https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nGroth16 zk-SNARK: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "groth16-r139-formal",
+          "entryId": "groth16-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Groth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Groth16 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "groth16-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "groth16-r139-formal"
+      ],
+      "sources": [
+        "groth16-wikipedia",
+        "groth16-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "groth16-r139-formal",
+      "entryId": "groth16-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Groth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Groth16 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "groth16-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

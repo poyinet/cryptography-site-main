@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for trng: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "trng-details",
+      "inventoryIds": [
+        "trng"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释真随机数发生器（熵源）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of True Random Number Generator (Entropy Source): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "真随机数发生器（熵源）",
+        "en": "True Random Number Generator (Entropy Source)"
+      },
+      "claimIds": [
+        "trng-r139-principle",
+        "trng-r139-why",
+        "trng-r139-used",
+        "trng-r139-broken",
+        "trng-r139-history",
+        "trng-r139-refs"
+      ],
+      "sourceIds": [
+        "trng-wikipedia",
+        "trng-reference-ref"
+      ],
+      "related": [
+        "standard-sp800-90b",
+        "algorithm--csprng",
+        "term--entropy"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：真随机数发生器（True Random Number Generator）。§2.1 说明模型与其组成：「This section describes the entropy source model in detail.Figure 1 illustrates the model that this Recommendation uses to describe an entropy source and its components, which consist of a noise source, an optional conditioning component and a health testi」，即真随机性的来源是被采样的噪声过程。§2.2 给出数字化的位置：「If the non-deterministic activity being sampled produces something other than binary data, the sampling process includes a digitization process that converts the output samples to bits.The output of the digitized noise source is called the raw data.」",
+          "why": "必要性由根这一说法给出：「The noise source is the root of security for the entropy source and for the RBG as a whole.This is the component that contains the non-deterministic, entropy-providing process that is ultimately responsible for the uncertainty associated with the bitstrin」。也就是说，整个随机数体系的不确定性最终只能落到这个非确定性过程上，这正是需要真随机源的论据；纯算法展开的部件不具备这种性质。",
+          "used": "部署侧的动作由本文件规定。§1.1 指明对象读者：「This Recommendation is intended for use by entropy source developers (the entity that designs and builds the entropy source or a portion thereof), submitters1 (the entity that submits the entropy」。§2.2.3 把守护手段分层：「The health tests can be separated into three categories: start-up tests, continuous tests (primarily on the noise source), and on-demand tests」，即真随机源靠启动检测、连续检测与按需检测三类健康测试来守住，其输出再交给注册机制取用；这份文件通篇把这类装置称作熵源与 NRBG，也即硬件真随机数发生器。",
+          "broken": "限度与失败模式印在同一节：「If the noise source fails to generate random outputs, no other component in the RBG can compensate for the lack of entropy; hence, no security guarantees can be made for the application relying on the RBG.」即健康检测与调节都不能替代噪声本身；这也解释了为什么该文件把样本采集与数字化写成假设条件，其一同句为「This Recommendation assumes that the sample values (i.e., the symbols) obtained from a noise source consist of fixed-length bitstrings」。",
+          "history": "版本事实：关键词行印为「Conditioning functions; entropy source; health testing; min-entropy; noise source; predictors; random number generators」，§1 说明对象读者：「This Recommendation is intended for use by entropy source developers (the entity that designs and builds the entropy source or a portion thereof), submitters1 (the entity that submits the entropy」。本留存件为 SP 800-90B（2018 年 12 月）；该条目所属目录行原写（该行的出处标题写作 NIST SP 800-90B，并把年份标成 2007），与留存件日期不符，该年份问题已另列目录更正待办。",
+          "refs": "- Wikipedia search entry for 真随机数发生器. https://zh.wikipedia.org/w/index.php?search=%E7%9C%9F%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n真随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: True Random Number Generator (真随机数发生器). Section 2.1 describes the model and its parts: \"This section describes the entropy source model in detail. Figure 1 illustrates the model that this Recommendation uses to describe an entropy source and its components, which consist of a noise source, an optional conditioning component and a health testi\" — true randomness is traced to a sampled noise process. §2.2 places digitisation: \"If the non-deterministic activity being sampled produces something other than binary data, the sampling process includes a digitization process that converts the output samples to bits. The output of the digitized noise source is called the raw data.\"",
+          "why": "The necessity is stated through the root-of-security claim: \"The noise source is the root of security for the entropy source and for the RBG as a whole. This is the component that contains the non-deterministic, entropy-providing process that is ultimately responsible for the uncertainty associated with the bitstrin\". Every uncertainty in the random-bit system ultimately rests on that non-deterministic process, which is the argument for needing a true source; a purely algorithmic expander has no such property.",
+          "used": "What a deployment does is prescribed by this document. §1.1 names the audience: \"This Recommendation is intended for use by entropy source developers (the entity that designs and builds the entropy source or a portion thereof), submitters1 (the entity that submits the entropy\". §2 layers the safeguards: \"The health tests can be separated into three categories: start-up tests, continuous tests (primarily on the noise source), and on-demand tests\" - a true source is guarded by start-up, continuous and on-demand health tests before a registered mechanism draws from it; throughout, the document calls such a device an entropy source or an NRBG, that is, a hardware random number generator.",
+          "broken": "The limit and the failure mode are printed in the same section: \"If the noise source fails to generate random outputs, no other component in the RBG can compensate for the lack of entropy; hence, no security guarantees can be made for the application relying on the RBG.\" Neither health tests nor conditioning can substitute for the noise itself. Hence the document states its assumption directly: \"This Recommendation assumes that the sample values (i.e., the symbols) obtained from a noise source consist of fixed-length bitstrings\".",
+          "history": "Version facts: the keyword line reads \"Conditioning functions; entropy source; health testing; min-entropy; noise source; predictors; random number generators\", and §1 names the audience: \"This Recommendation is intended for use by entropy source developers (the entity that designs and builds the entropy source or a portion thereof), submitters1 (the entity that submits the entropy\". The retained copy is SP 800-90B (December 2018). The catalog row for this entity cites the 90B document while dating it 2007, which contradicts the retained document; that date defect is carried as a separate catalog correction.",
+          "refs": "- Wikipedia search entry for 真随机数发生器. https://zh.wikipedia.org/w/index.php?search=%E7%9C%9F%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nTrue Random Number Generator: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "熵源：由噪声源、可选调节组件与健康测试共同构成的组件。",
+          "噪声源：熵源乃至整个随机比特发生器的安全之根。",
+          "raw data：数字化后的噪声源输出。",
+          "min-entropy：本建议采用的最坏情形不确定性度量。",
+          "health tests：分为启动检测、连续检测与按需检测三类。",
+          "conditioning component：可选的熵调节部件，其最窄内部宽度记为 nw。"
+        ],
+        "en": [
+          "Entropy source: the component made of a noise source, an optional conditioning component and health tests.",
+          "Noise source: the root of security for the entropy source and for the whole random bit generator.",
+          "Raw data: the output of the digitised noise source.",
+          "Min-entropy: the worst-case unpredictability measure this Recommendation uses.",
+          "Health tests: start-up tests, continuous tests and on-demand tests.",
+          "Conditioning component: the optional entropy-conditioning part, whose narrowest internal width is denoted nw."
+        ]
+      },
+      "figures": [
+        {
+          "id": "trng-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "真随机数发生器（熵源）：为什么需要 → 核心机制 → 边界。",
+            "en": "True Random Number Generator (Entropy Source): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "真随机数发生器（熵源） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for True Random Number Generator (Entropy Source), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/trng-details-flow.zh.svg",
+            "en": "assets/trng-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cdde8adbac189191690b69ed59429a6d57c64b770e2c7f85041681f05eb3fef5",
+            "en": "88b529033ac10dafc99c8c2b668aa6efb3c4e1de603dbc9fe9245335d62e8da3"
+          }
+        },
+        {
+          "id": "trng-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "真随机数发生器（熵源） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for True Random Number Generator (Entropy Source): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "真随机数发生器（熵源） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for True Random Number Generator (Entropy Source), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/trng-details-r138-model.zh.svg",
+            "en": "assets/trng-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cd66dc324bbff9551db11ff138a40e90cd0588fd47fa6121394d0b4151f8d778",
+            "en": "93077a2f2f02824fa1902addcc33f2fe1f2453619e1de85f220a708611493934"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "trng-r139-formal",
+          "entryId": "trng-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：真随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 真随机数发生器 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "trng-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "trng-r139-formal"
+      ],
+      "sources": [
+        "trng-wikipedia",
+        "trng-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "trng-r139-formal",
+      "entryId": "trng-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：真随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 真随机数发生器 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "trng-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

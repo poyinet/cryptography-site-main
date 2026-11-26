@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "miller-bleichenbacher-details",
+  "sources": [
+    {
+      "id": "miller-bleichenbacher-wikipedia",
+      "title": "Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Miller–Bleichenbacher 低指数 RSA 签名伪造",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "miller-bleichenbacher-r139-principle",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Miller–Bleichenbacher 低指数 RSA 签名伪造（Miller–Bleichenbacher Low-Exponent RSA Signature Forgery）。### 期望编码\n\nRSASSA-PKCS1-v1_5 的签名编码为\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)，\n\n其中 H(M) 必须右对齐。验证计算 s^e mod n，解析出 ASN.1 与 H(M)，再与消息的重算摘要比较。### 过宽解析\n\n若验证器只找到 padding 结束与 ASN.1，取固定长度 H(M)，却不检查 H(M) 之后是否还有字节，则尾部 garbage G 被忽略：\n\nEM′=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)‖G。e=3 时，攻击者在目标前缀的立方根附近搜索 s，使 s^3=EM′ 且 EM′<n；把 s 作为签名提交，验证器解析出正确 H(M) 即接受。### 为什么可行\n\n小 e 使整数三次根搜索可行；模数越长，可在前缀与 H(M) 之后容纳的 G 越多。e 较大时求 e 次根困难，攻击条件不成立。",
+            "en": "**Theorem**: Miller–Bleichenbacher Low-Exponent RSA Signature Forgery (Miller–Bleichenbacher 低指数 RSA 签名伪造).### Expected encoding\n\nRSASSA-PKCS1-v1_5 encodes a signature as\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M),\n\nwhere H(M) must be right-justified."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        },
+        {
+          "id": "miller-bleichenbacher-r139-why",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "why",
+          "statement": {
+            "zh": "这不是 RSA 算法被攻破，而是签名验证的解析边界被攻破：同一串 s^e mod n 在严格验证器下应整串匹配 EM，在过宽验证器下只匹配前缀和摘要。把“编码—解析—比较”三层分开，才能看清漏洞在实现而不是数学。",
+            "en": "### Why it is separate\n\nThis is not a break of RSA itself but of the parsing boundary in signature verification: the same s^e mod n must match the whole EM under a strict verifier, while a lenient verifier matches only a prefix and digest.Separating encoding, parsing and comparison shows that the flaw is in the implementation, not the mathematics."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        },
+        {
+          "id": "miller-bleichenbacher-r139-used",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.严格验证：从消息重新构造完整 EM，与 s^e mod n 的整串逐字节比较；不要只解析摘要。2.拒绝尾部：H(M) 之后出现任何字节都拒绝；ASN.1 必须完整消费，OID 与参数必须精确匹配。3.选指数：签名场景不要用 e=3；优先 RSA-PSS 或标准规定的安全方案。4.负测试：加入带尾部 garbage、错误 ASN.1、错误 OID 的负向量，确认验证器全部拒绝。### 不能怎么用\n\n不能只检查前导 00 01 与摘要；不能忽略 ASN.1 长度；不能把“库默认拒绝”当成无需测试；不能把该条目当作利用工具。",
+            "en": "### Correct use\n\n1.Strict verification: rebuild the full EM from the message and compare it byte-for-byte with s^e mod n; do not extract only a digest."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        },
+        {
+          "id": "miller-bleichenbacher-r139-broken",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.攻击前提：验证器过宽、e 小、攻击者能让目标验证伪造签名；三者缺一不可。2.变体：除尾部 garbage 外，算法参数、OID 前缀、padding 字节值或 ASN.1 长度检查不严也可形成同族问题。3.严格实现：完整重建 EM、拒绝尾部、精确 DER/OID 与足够大的 e 可消除该路线；RSA-PSS 不依赖该编码解析。4.边界：该条目只讨论签名伪造的验证缺陷，不涉及私钥恢复、侧信道或 RSA 因子分解；不提供利用步骤或代码。",
+            "en": "### Failure conditions\n\n1.Attack premises: a lenient verifier, small e and the ability to make a target verify the forged signature are all required."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        },
+        {
+          "id": "miller-bleichenbacher-r139-history",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "history",
+          "statement": {
+            "zh": "Daniel Bleichenbacher 在 CRYPTO 2006 rump session 演示了该攻击；NIST 随即发布说明，给出 PKCS#1 v1.5 与 ANS X9.31 的过宽解析问题及修复建议。2019 年 Black Hat 的白皮书重新审计多种实现，发现尾部字节、算法参数、OID 前缀与 padding 检查仍有变体。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Miller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "### Historical position\n\nDaniel Bleichenbacher demonstrated the attack at the CRYPTO 2006 rump session; NIST then published a note describing the lenient parsing of PKCS#1 v1.5 and ANS X9.31 and giving fixes.A 2019 Black Hat white paper re-audited implementations and found variants involving trailing bytes, algorithm parameters, OID prefixes and padding checks."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        },
+        {
+          "id": "miller-bleichenbacher-r139-refs",
+          "entryId": "miller-bleichenbacher-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造.https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造.https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "miller-bleichenbacher-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "miller-bleichenbacher-wikipedia"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "miller-bleichenbacher-r139-principle",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Miller–Bleichenbacher 低指数 RSA 签名伪造（Miller–Bleichenbacher Low-Exponent RSA Signature Forgery）。### 期望编码\n\nRSASSA-PKCS1-v1_5 的签名编码为\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)，\n\n其中 H(M) 必须右对齐。验证计算 s^e mod n，解析出 ASN.1 与 H(M)，再与消息的重算摘要比较。### 过宽解析\n\n若验证器只找到 padding 结束与 ASN.1，取固定长度 H(M)，却不检查 H(M) 之后是否还有字节，则尾部 garbage G 被忽略：\n\nEM′=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)‖G。e=3 时，攻击者在目标前缀的立方根附近搜索 s，使 s^3=EM′ 且 EM′<n；把 s 作为签名提交，验证器解析出正确 H(M) 即接受。### 为什么可行\n\n小 e 使整数三次根搜索可行；模数越长，可在前缀与 H(M) 之后容纳的 G 越多。e 较大时求 e 次根困难，攻击条件不成立。",
+        "en": "**Theorem**: Miller–Bleichenbacher Low-Exponent RSA Signature Forgery (Miller–Bleichenbacher 低指数 RSA 签名伪造).### Expected encoding\n\nRSASSA-PKCS1-v1_5 encodes a signature as\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M),\n\nwhere H(M) must be right-justified."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-r139-why",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "why",
+      "statement": {
+        "zh": "这不是 RSA 算法被攻破，而是签名验证的解析边界被攻破：同一串 s^e mod n 在严格验证器下应整串匹配 EM，在过宽验证器下只匹配前缀和摘要。把“编码—解析—比较”三层分开，才能看清漏洞在实现而不是数学。",
+        "en": "### Why it is separate\n\nThis is not a break of RSA itself but of the parsing boundary in signature verification: the same s^e mod n must match the whole EM under a strict verifier, while a lenient verifier matches only a prefix and digest.Separating encoding, parsing and comparison shows that the flaw is in the implementation, not the mathematics."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-r139-used",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.严格验证：从消息重新构造完整 EM，与 s^e mod n 的整串逐字节比较；不要只解析摘要。2.拒绝尾部：H(M) 之后出现任何字节都拒绝；ASN.1 必须完整消费，OID 与参数必须精确匹配。3.选指数：签名场景不要用 e=3；优先 RSA-PSS 或标准规定的安全方案。4.负测试：加入带尾部 garbage、错误 ASN.1、错误 OID 的负向量，确认验证器全部拒绝。### 不能怎么用\n\n不能只检查前导 00 01 与摘要；不能忽略 ASN.1 长度；不能把“库默认拒绝”当成无需测试；不能把该条目当作利用工具。",
+        "en": "### Correct use\n\n1.Strict verification: rebuild the full EM from the message and compare it byte-for-byte with s^e mod n; do not extract only a digest."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-r139-broken",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.攻击前提：验证器过宽、e 小、攻击者能让目标验证伪造签名；三者缺一不可。2.变体：除尾部 garbage 外，算法参数、OID 前缀、padding 字节值或 ASN.1 长度检查不严也可形成同族问题。3.严格实现：完整重建 EM、拒绝尾部、精确 DER/OID 与足够大的 e 可消除该路线；RSA-PSS 不依赖该编码解析。4.边界：该条目只讨论签名伪造的验证缺陷，不涉及私钥恢复、侧信道或 RSA 因子分解；不提供利用步骤或代码。",
+        "en": "### Failure conditions\n\n1.Attack premises: a lenient verifier, small e and the ability to make a target verify the forged signature are all required."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-r139-history",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "history",
+      "statement": {
+        "zh": "Daniel Bleichenbacher 在 CRYPTO 2006 rump session 演示了该攻击；NIST 随即发布说明，给出 PKCS#1 v1.5 与 ANS X9.31 的过宽解析问题及修复建议。2019 年 Black Hat 的白皮书重新审计多种实现，发现尾部字节、算法参数、OID 前缀与 padding 检查仍有变体。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Miller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "### Historical position\n\nDaniel Bleichenbacher demonstrated the attack at the CRYPTO 2006 rump session; NIST then published a note describing the lenient parsing of PKCS#1 v1.5 and ANS X9.31 and giving fixes.A 2019 Black Hat white paper re-audited implementations and found variants involving trailing bytes, algorithm parameters, OID prefixes and padding checks."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    },
+    {
+      "id": "miller-bleichenbacher-r139-refs",
+      "entryId": "miller-bleichenbacher-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造.https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造.https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "miller-bleichenbacher-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

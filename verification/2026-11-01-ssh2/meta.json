@@ -1,0 +1,131 @@
+{
+  "checkedOn": "2026-11-25",
+  "scope": "R133 formula-level deepening for ssh2-details.",
+  "entry": {
+    "id": "ssh2-details",
+    "inventoryIds": [
+      "ssh2"
+    ],
+    "coverage": "catalog-entry",
+    "sectionKeys": [
+      "principle",
+      "why",
+      "used",
+      "broken",
+      "history",
+      "refs"
+    ],
+    "coverageRationale": {
+      "zh": "把 SSH 2.0 从“安全远程登录协议”推进到公式级包层：DH 共享秘密、H 的拼接顺序、session_id、A–F 六向密钥扩展、包格式与 MAC 覆盖范围、序列号回绕与 rekey 规则。",
+      "en": "Moves SSH 2.0 from a secure remote-login overview to a formula-level packet layer: DH shared secret, H concatenation order, session_id, six-key A–F expansion, packet layout and MAC coverage, sequence wrap and rekey rules."
+    },
+    "title": {
+      "zh": "SSH 2.0 协议族",
+      "en": "SSH Protocol Version 2"
+    },
+    "claimIds": [
+      "ssh2-principle",
+      "ssh2-why",
+      "ssh2-used",
+      "ssh2-broken",
+      "ssh2-history",
+      "ssh2-details-r138-1",
+      "ssh2-details-r138-2",
+      "ssh2-details-r138-3"
+    ],
+    "calculationNotApplicable": {
+      "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按标准原文或来源重算。",
+      "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the standard text or sources."
+    },
+    "sourceIds": [
+      "ssh2-rfc4253",
+      "ssh2-rfc4251",
+      "ssh2-rfc4252",
+      "ssh2-rfc6668"
+    ],
+    "related": [
+      "ssh1",
+      "tls13",
+      "hmac",
+      "aead"
+    ],
+    "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+    "verificationStatus": "independently-reviewed-detailed-article",
+    "sections": {
+      "zh": {
+        "principle": "SSH 2.0 的传输层先交换版本串与 KEXINIT，再做 DH 得到共享秘密 K。交换哈希 H 把版本串、双方 KEXINIT 原始 payload、主机密钥、DH 的 e/f 与 K 按固定顺序拼接后哈希；首次 KEX 的 H 就是 session_id。\n\n随后用 K1=HASH(K||H||X||session_id) 起步，X 取 A–F 分别派生 c→s IV、s→c IV、c→s 加密键、s→c 加密键、c→s 完整性键、s→c 完整性键；长度不够时继续链式哈希扩展。",
+        "why": "H 同时绑定算法协商、主机身份和 DH 值，防止中间人替换其中任何一项；session_id 在 rekey 后保持不变，把整条连接的历史绑定在一起。\n\n六向密钥把方向与用途分开，避免用同一密钥同时做加密和 MAC；序列号隐式进入 MAC，让重放、重排和丢包都能被接收端发现。",
+        "used": "实现按 RFC 4253 §7.2 的顺序扩展密钥：先算 K1，再算 K2、K3，直到六个密钥都够长；AES-128-CTR 取 16 字节加密键，HMAC-SHA256 取 32 字节完整性键。\n\n包层先组明文包，再算 MAC=MAC(K_mac, seq||packet_without_mac)，最后加密；AEAD 模式把 MAC 与加密合并，但仍要维护序列号。",
+        "broken": "独立 MAC 与加密的顺序决定安全边界：先加密再 MAC 更稳，先 MAC 再加密会给填充 oracle 留空间；CBC 模式与 SHA-1 已不应在新部署中使用。\n\n序列号回绕后不能重用旧 nonce；rekey 只换密钥，不重置序列号。主机密钥信任不在传输层内完成，known_hosts 或证书校验仍需单独做。",
+        "history": "SSH-1 在 1995 年前后出现，因 CRC 补偿攻击与协议缺陷被 SSH-2 取代；RFC 4250–4254 在 2006 年 1 月把 SSH-2 定型为传输层、认证、连接与架构四份文档。\n\nRFC 6668 在 2012 年增补 hmac-sha2-256 与 hmac-sha2-512；OpenSSH 等实现后续加入 AEAD、strict KEX 与后量子 KEX 扩展，但包层公式仍沿用 RFC 4253。",
+        "refs": "- [RFC 4253: The Secure Shell (SSH) Transport Layer Protocol](https://www.rfc-editor.org/rfc/rfc4253.html) — §5 版本交换；§7 密钥交换与 H；§7.2 六向密钥派生；§6 包格式与 MAC；§9 重新生成密钥\n\n- [RFC 4251: The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251.html) — SSH 2.0 架构、传输层/用户认证/连接层分工与安全边界\n\n- [RFC 4252: The Secure Shell (SSH) Authentication Protocol](https://www.rfc-editor.org/rfc/rfc4252.html) — publickey 与 password 认证；签名绑定 session identifier\n\n- [RFC 6668: SHA-2 Data Integrity Verification for SSH](https://www.rfc-editor.org/rfc/rfc6668.html) — hmac-sha2-256 与 hmac-sha2-512 的 SSH 算法名和密钥长度"
+      },
+      "en": {
+        "principle": "The SSH 2.0 transport first exchanges version strings and KEXINIT, then runs DH to obtain the shared secret K. The exchange hash H concatenates the version strings, both raw KEXINIT payloads, the host key, DH e/f and K in a fixed order, then hashes them; the first KEX H is session_id.\n\nKey expansion starts with K1=HASH(K||H||X||session_id), where X from A to F derives the c→s IV, s→c IV, c→s encryption key, s→c encryption key, c→s integrity key and s→c integrity key; if a key is too short, the hash chain continues.",
+        "why": "H binds algorithm negotiation, host identity and DH values, so a man-in-the-middle cannot replace any one of them; session_id stays unchanged across rekeys and ties the connection history together.\n\nThe six keys separate direction and purpose, avoiding one key for both encryption and MAC; the sequence number enters the MAC implicitly, so replay, reordering and loss are visible to the receiver.",
+        "used": "Implement the RFC 4253 §7.2 expansion order: compute K1, then K2 and K3, until all six keys are long enough; AES-128-CTR takes a 16-byte encryption key and HMAC-SHA256 a 32-byte integrity key.\n\nThe packet layer assembles the plaintext packet, computes MAC=MAC(K_mac, seq||packet_without_mac), then encrypts; AEAD modes merge MAC and encryption but still maintain the sequence number.",
+        "broken": "The order of MAC and encryption defines the boundary: encrypt-then-MAC is safer, while MAC-then-encrypt leaves room for padding oracles; CBC modes and SHA-1 should not be used in new deployments.\n\nAfter sequence wrap, old nonces must not be reused; rekey changes keys but not the sequence number. Host-key trust is outside the transport layer and still needs known_hosts or certificate validation.",
+        "history": "SSH-1 appeared around 1995 and was replaced by SSH-2 because of the CRC compensation attack and protocol flaws; RFC 4250–4254 in January 2006 fixed SSH-2 as transport, authentication, connection and architecture documents.\n\nRFC 6668 added hmac-sha2-256 and hmac-sha2-512 in 2012; OpenSSH and other implementations later added AEAD, strict KEX and post-quantum KEX extensions, while the packet formulas still follow RFC 4253.",
+        "refs": "- [RFC 4253: The Secure Shell (SSH) Transport Layer Protocol](https://www.rfc-editor.org/rfc/rfc4253.html) — §5 版本交换；§7 密钥交换与 H；§7.2 六向密钥派生；§6 包格式与 MAC；§9 重新生成密钥\n\n- [RFC 4251: The Secure Shell (SSH) Protocol Architecture](https://www.rfc-editor.org/rfc/rfc4251.html) — SSH 2.0 架构、传输层/用户认证/连接层分工与安全边界\n\n- [RFC 4252: The Secure Shell (SSH) Authentication Protocol](https://www.rfc-editor.org/rfc/rfc4252.html) — publickey 与 password 认证；签名绑定 session identifier\n\n- [RFC 6668: SHA-2 Data Integrity Verification for SSH](https://www.rfc-editor.org/rfc/rfc6668.html) — hmac-sha2-256 与 hmac-sha2-512 的 SSH 算法名和密钥长度"
+      }
+    },
+    "glossary": {
+      "zh": [
+        "KEXINIT：双方交换的算法协商 payload。",
+        "H：首次 KEX 的交换哈希，同时作为 session_id。",
+        "六向密钥：IV、加密键、完整性键各分客户端与服务端方向。",
+        "序列号：隐式参与 MAC，每包递增且 rekey 不重置。"
+      ],
+      "en": [
+        "KEXINIT: the algorithm-negotiation payload exchanged by both sides.",
+        "H: the first-KEX exchange hash, also used as session_id.",
+        "Six keys: IV, encryption and integrity keys, each split by client/server direction.",
+        "Sequence number: implicit MAC input, incremented per packet and not reset on rekey."
+      ]
+    },
+    "figures": [
+      {
+        "id": "ssh2-mechanism",
+        "section": "principle",
+        "kind": "diagram",
+        "caption": {
+          "zh": "SSH 2.0 传输层：版本与算法协商后做 DH，H 绑定版本串、KEXINIT、主机密钥与 DH 值，再扩展出六个方向密钥，包 MAC 覆盖明文与隐式序列号。",
+          "en": "SSH 2.0 transport: after version and algorithm negotiation, DH runs; H binds version strings, KEXINIT, host key and DH values, then expands six directional keys; the packet MAC covers plaintext and the implicit sequence number."
+        },
+        "alt": {
+          "zh": "SSH 2.0 传输层：版本与算法协商后做 DH，H 绑定版本串、KEXINIT、主机密钥与 DH 值，再扩展出六个方向密钥，包 MAC 覆盖明文与隐式序列号。",
+          "en": "SSH 2.0 transport: after version and algorithm negotiation, DH runs; H binds version strings, KEXINIT, host key and DH values, then expands six directional keys; the packet MAC covers plaintext and the implicit sequence number."
+        },
+        "files": {
+          "zh": "assets/ssh2-mechanism.zh.svg",
+          "en": "assets/ssh2-mechanism.en.svg"
+        },
+        "credit": {
+          "zh": "来源：RFC 4253 传输层、RFC 4251 架构、RFC 4252 用户认证、RFC 6668 HMAC-SHA2。",
+          "en": "Sources: RFC 4253 transport, RFC 4251 architecture, RFC 4252 user authentication and RFC 6668 HMAC-SHA2."
+        },
+        "license": {
+          "name": "CC BY 4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "source": {
+          "type": "original",
+          "author": "poyi knowledge",
+          "createdOn": "2026-11-24"
+        },
+        "evidence": [
+          "content.json sections",
+          "sources.json"
+        ],
+        "sha256": {
+          "zh": "bb9b69cea547300a4b70274f06630c712c4544fa955c2e45044e7eeead6e675c",
+          "en": "105d13292d4285cd2afd4a770e1165e0c0a87ff27b2805fdb5e57894eac25a1b"
+        }
+      }
+    ],
+    "calculationIds": [],
+    "subtopicIds": [
+      "transport-layer-security"
+    ]
+  }
+}

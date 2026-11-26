@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--xsl-attack-details",
+  "sources": [
+    {
+      "id": "attack--xsl-attack-wikipedia",
+      "title": "Wikipedia search entry for XSL 攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=XSL%20%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: XSL 攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--xsl-attack-r139-principle",
+          "entryId": "attack--xsl-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：XSL 攻击（XSL Attack）。XSL 是一种代数攻击：把 S 盒写成过定义的多项式方程组，再通过线性化扩展（XL）并利用 S 盒结构消元，求解密钥变量。",
+            "en": "**Attack**: XSL Attack (XSL 攻击).XSL is an algebraic attack: it writes S-boxes as an overdefined system of polynomial equations, then uses linearization (XL) extended with S-box structure to eliminate variables and solve for key variables."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--xsl-attack-r139-why",
+          "entryId": "attack--xsl-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "AES 和 Serpent 由小 S 盒与线性层组成，S 盒关系以概率 1 成立；若能用过定义方程组利用这种确定性结构，安全性可能不再随轮数指数增长。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "AES and Serpent are built from small S-boxes and linear layers, and the S-box relations hold with probability 1; if an overdefined system can exploit this deterministic structure, security may no longer grow exponentially with rounds.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--xsl-attack-r139-used",
+          "entryId": "attack--xsl-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文把 XSL 用于 Rijndael/AES 和 Serpent；它认为 XL 本身效率不足。GF(2) 上的 XSL 对 128 位 Rijndael（256 位密钥）给出约 2^298，尚不能攻破；对 256 位 Serpent 给出约 2^210，并认为可能勉强攻破（未证明）；结合 GF(256) 方程的第二种变体才对 AES-128 给出约 2^87 的条件性预测。",
+            "en": "The paper applies XSL to Rijndael/AES and Serpent and argues that XL alone is inefficient.XSL over GF(2) gives complexity around 2^298 for 128-bit Rijndael with a 256-bit key and does not yet break it; for 256-bit Serpent it gives around 2^210 and seems to marginally break it (unproven); only the second variant using GF(256) equations yields the conditional estimate around 2^87 for AES-128."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--xsl-attack-r139-broken",
+          "entryId": "attack--xsl-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "XSL 的复杂度估计依赖方程数量、线性化和消元假设；论文使用条件语气，且未在完整规模上验证（只报告小规模启发式模拟），因此不能把预测当作已实现的攻破。",
+            "en": "XSL complexity estimates depend on assumptions about equation counts, linearization and elimination; the paper uses conditional language and does not validate at full scale (only small heuristic simulations are reported), so the predictions should not be treated as an achieved break.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--xsl-attack-r139-history",
+          "entryId": "attack--xsl-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Courtois 和 Pieprzyk 在 2002 年 ASIACRYPT 论文中提出 XSL，并分析了 AES/Serpent 的代数结构。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「XSL 攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：XSL 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 XSL 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Courtois and Pieprzyk introduced XSL in their 2002 ASIACRYPT paper and analyzed the algebraic structure of AES and Serpent.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--xsl-attack-r139-refs",
+          "entryId": "attack--xsl-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for XSL 攻击.https://zh.wikipedia.org/w/index.php?search=XSL%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for XSL 攻击.https://zh.wikipedia.org/w/index.php?search=XSL%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--xsl-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--xsl-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--xsl-attack-r139-principle",
+      "entryId": "attack--xsl-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：XSL 攻击（XSL Attack）。XSL 是一种代数攻击：把 S 盒写成过定义的多项式方程组，再通过线性化扩展（XL）并利用 S 盒结构消元，求解密钥变量。",
+        "en": "**Attack**: XSL Attack (XSL 攻击).XSL is an algebraic attack: it writes S-boxes as an overdefined system of polynomial equations, then uses linearization (XL) extended with S-box structure to eliminate variables and solve for key variables."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-r139-why",
+      "entryId": "attack--xsl-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "AES 和 Serpent 由小 S 盒与线性层组成，S 盒关系以概率 1 成立；若能用过定义方程组利用这种确定性结构，安全性可能不再随轮数指数增长。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "AES and Serpent are built from small S-boxes and linear layers, and the S-box relations hold with probability 1; if an overdefined system can exploit this deterministic structure, security may no longer grow exponentially with rounds.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-r139-used",
+      "entryId": "attack--xsl-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文把 XSL 用于 Rijndael/AES 和 Serpent；它认为 XL 本身效率不足。GF(2) 上的 XSL 对 128 位 Rijndael（256 位密钥）给出约 2^298，尚不能攻破；对 256 位 Serpent 给出约 2^210，并认为可能勉强攻破（未证明）；结合 GF(256) 方程的第二种变体才对 AES-128 给出约 2^87 的条件性预测。",
+        "en": "The paper applies XSL to Rijndael/AES and Serpent and argues that XL alone is inefficient.XSL over GF(2) gives complexity around 2^298 for 128-bit Rijndael with a 256-bit key and does not yet break it; for 256-bit Serpent it gives around 2^210 and seems to marginally break it (unproven); only the second variant using GF(256) equations yields the conditional estimate around 2^87 for AES-128."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-r139-broken",
+      "entryId": "attack--xsl-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "XSL 的复杂度估计依赖方程数量、线性化和消元假设；论文使用条件语气，且未在完整规模上验证（只报告小规模启发式模拟），因此不能把预测当作已实现的攻破。",
+        "en": "XSL complexity estimates depend on assumptions about equation counts, linearization and elimination; the paper uses conditional language and does not validate at full scale (only small heuristic simulations are reported), so the predictions should not be treated as an achieved break.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-r139-history",
+      "entryId": "attack--xsl-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Courtois 和 Pieprzyk 在 2002 年 ASIACRYPT 论文中提出 XSL，并分析了 AES/Serpent 的代数结构。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「XSL 攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：XSL 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 XSL 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Courtois and Pieprzyk introduced XSL in their 2002 ASIACRYPT paper and analyzed the algebraic structure of AES and Serpent.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--xsl-attack-r139-refs",
+      "entryId": "attack--xsl-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for XSL 攻击.https://zh.wikipedia.org/w/index.php?search=XSL%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for XSL 攻击.https://zh.wikipedia.org/w/index.php?search=XSL%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--xsl-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

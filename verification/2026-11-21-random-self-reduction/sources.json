@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "random-self-reduction-details",
+  "sources": [
+    {
+      "id": "random-self-reduction-wikipedia",
+      "title": "Wikipedia search entry for 随机自归约",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 随机自归约",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "random-self-reduction-r139-principle",
+          "entryId": "random-self-reduction-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：随机自归约（Random Self-Reducibility）。### 把最坏实例随机化\n\n设 f 是单向函数。若存在多项式时间算法 R，对任意 x 采样 r，输出 y=R(x;r)，使 y 的分布与 x 无关（通常接近均匀），并且给定 f(y) 与 r 可在多项式时间恢复 f(x)，则称 f 随机自归约。于是：只要 f 在平均随机实例上难，f 在每个实例上都难。### 离散对数\n\n在阶为 q 的循环群 G 中，g 是生成元，y=g^x。取 r←Z_q，计算\ny' = y·g^r = g^{x+r}。若 oracle A 能求 y' 的离散对数 x'，则 x = x'−r mod q。y' 在 G 中均匀分布，与 y 无关；一次随机实例的答案就还原了原实例。### RSA 盲化\n\n对 RSA 公钥 (N,e)，密文 c=m^e mod N。取 r←Z_N^*，计算\nc' = c·r^e = (m·r)^e mod N。若 oracle 能解密 c' 得到 m'，则 m = m'·r^{-1} mod N。r 可逆，盲化因子在模 N 上消去；这正是 RSA blinding 的代数基础。",
+            "en": "**Theorem**: Random Self-Reducibility (随机自归约).### Randomize a worst-case instance\n\nLet f be a one-way function."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        },
+        {
+          "id": "random-self-reduction-r139-why",
+          "entryId": "random-self-reduction-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 最坏情况与平均情况之间的桥\n\n密码学假设通常说“没有多项式算法能在最坏实例上求逆”；实际攻击者只需要在随机实例上成功。随机自归约把这两个世界连起来：平均实例上的成功可以搬到任意实例，反之最坏实例的困难会扩散到随机实例。### 为什么 RSA 实现需要盲化\n\n盲化不仅隐藏消息，也让解密时间与密文无关：每次解密先乘随机 r^e，再在最后除掉 r。侧信道攻击者看到的中间值与真实 m 无关；这是随机自归约在工程中的直接用法。",
+            "en": "### A bridge between worst and average case\n\nA cryptographic assumption usually says “no polynomial algorithm inverts on worst-case instances”; a real attacker only needs success on random instances.Random self-reduction connects the two worlds: success on average instances moves to any instance, and worst-case hardness spreads to random instances."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        },
+        {
+          "id": "random-self-reduction-r139-used",
+          "entryId": "random-self-reduction-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 三类用法\n\n- 从平均到最坏：DL、RSA、CDH 等代数问题常用随机自归约，把 worst-case 假设转成 average-case 假设。- 盲化：RSA 解密、签名前盲化，防止计时与选择密文侧信道。- 硬度放大：重复独立随机实例，把成功率 δ 放大到 1−(1−δ)^k；再配合纠错选择参数。",
+            "en": "### Three uses\n\n- Average-to-worst case: DL, RSA and CDH often use random self-reduction to turn worst-case assumptions into average-case ones.- Blinding: RSA decryption and signing blind before use to resist timing and chosen-ciphertext side channels."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        },
+        {
+          "id": "random-self-reduction-r139-broken",
+          "entryId": "random-self-reduction-details",
+          "section": "broken",
+          "statement": {
+            "zh": "1.需要代数结构。随机化必须保持问题实例的同态关系；任意单向函数、散列函数没有这种结构。2.需要可逆盲化因子。RSA 的 r 必须在 Z_N^* 中；若 r 与 N 不互素，逆不存在，盲化失败。3.oracle 的成功率是平均的。若 oracle 只在某些随机实例上成功，重复采样可以把成功概率放大，但需要独立性或足够好的分布。4.不自动给出具体安全界。盲化隐藏了中间值，但不证明 RSA 本身安全；它把攻击面从“任意实例”移到“随机实例”。5.群阶与表示要对。离散对数在复合阶群、椭圆曲线群中的随机化形式不同；公式要按群运算重写。### 不是“随机化就能安全”\n\n随机自归约是归约工具，不是防御本身。若底层问题在随机实例上也可解，盲化只增加常数开销，不改变可破性。",
+            "en": "### Boundaries\n\n1.It needs algebraic structure."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        },
+        {
+          "id": "random-self-reduction-r139-history",
+          "entryId": "random-self-reduction-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1984 年 Blum–Micali\n\nBlum 与 Micali 在 1984 年用离散对数的随机自归约构造伪随机位生成器：若能从随机实例预测下一位，就能解任意实例的离散对数。Goldwasser 与 Micali 把随机自归约视为 worst-case 到 average-case 归约的“王道”。### 从理论到实现\n\nRSA 盲化在 1980 年代进入实现，用于防止计时攻击；后来选择密文安全与侧信道防护把它作为标准组件。随机自归约仍是 DL/RSA 类假设证明的标准第一步。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "### Blum–Micali 1984\n\nBlum and Micali used the random self-reduction of discrete log in 1984 to build a pseudorandom bit generator: predicting the next bit on random instances would solve discrete log on any instance.Goldwasser and Micali described random self-reduction as the royal road from worst-case to average-case reductions."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        },
+        {
+          "id": "random-self-reduction-r139-refs",
+          "entryId": "random-self-reduction-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 随机自归约.https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 随机自归约.https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "random-self-reduction-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "random-self-reduction-wikipedia"
+      ]
+    },
+    {
+      "id": "random-self-reduction-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "random-self-reduction-r139-principle",
+      "entryId": "random-self-reduction-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：随机自归约（Random Self-Reducibility）。### 把最坏实例随机化\n\n设 f 是单向函数。若存在多项式时间算法 R，对任意 x 采样 r，输出 y=R(x;r)，使 y 的分布与 x 无关（通常接近均匀），并且给定 f(y) 与 r 可在多项式时间恢复 f(x)，则称 f 随机自归约。于是：只要 f 在平均随机实例上难，f 在每个实例上都难。### 离散对数\n\n在阶为 q 的循环群 G 中，g 是生成元，y=g^x。取 r←Z_q，计算\ny' = y·g^r = g^{x+r}。若 oracle A 能求 y' 的离散对数 x'，则 x = x'−r mod q。y' 在 G 中均匀分布，与 y 无关；一次随机实例的答案就还原了原实例。### RSA 盲化\n\n对 RSA 公钥 (N,e)，密文 c=m^e mod N。取 r←Z_N^*，计算\nc' = c·r^e = (m·r)^e mod N。若 oracle 能解密 c' 得到 m'，则 m = m'·r^{-1} mod N。r 可逆，盲化因子在模 N 上消去；这正是 RSA blinding 的代数基础。",
+        "en": "**Theorem**: Random Self-Reducibility (随机自归约).### Randomize a worst-case instance\n\nLet f be a one-way function."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    },
+    {
+      "id": "random-self-reduction-r139-why",
+      "entryId": "random-self-reduction-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 最坏情况与平均情况之间的桥\n\n密码学假设通常说“没有多项式算法能在最坏实例上求逆”；实际攻击者只需要在随机实例上成功。随机自归约把这两个世界连起来：平均实例上的成功可以搬到任意实例，反之最坏实例的困难会扩散到随机实例。### 为什么 RSA 实现需要盲化\n\n盲化不仅隐藏消息，也让解密时间与密文无关：每次解密先乘随机 r^e，再在最后除掉 r。侧信道攻击者看到的中间值与真实 m 无关；这是随机自归约在工程中的直接用法。",
+        "en": "### A bridge between worst and average case\n\nA cryptographic assumption usually says “no polynomial algorithm inverts on worst-case instances”; a real attacker only needs success on random instances.Random self-reduction connects the two worlds: success on average instances moves to any instance, and worst-case hardness spreads to random instances."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    },
+    {
+      "id": "random-self-reduction-r139-used",
+      "entryId": "random-self-reduction-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 三类用法\n\n- 从平均到最坏：DL、RSA、CDH 等代数问题常用随机自归约，把 worst-case 假设转成 average-case 假设。- 盲化：RSA 解密、签名前盲化，防止计时与选择密文侧信道。- 硬度放大：重复独立随机实例，把成功率 δ 放大到 1−(1−δ)^k；再配合纠错选择参数。",
+        "en": "### Three uses\n\n- Average-to-worst case: DL, RSA and CDH often use random self-reduction to turn worst-case assumptions into average-case ones.- Blinding: RSA decryption and signing blind before use to resist timing and chosen-ciphertext side channels."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    },
+    {
+      "id": "random-self-reduction-r139-broken",
+      "entryId": "random-self-reduction-details",
+      "section": "broken",
+      "statement": {
+        "zh": "1.需要代数结构。随机化必须保持问题实例的同态关系；任意单向函数、散列函数没有这种结构。2.需要可逆盲化因子。RSA 的 r 必须在 Z_N^* 中；若 r 与 N 不互素，逆不存在，盲化失败。3.oracle 的成功率是平均的。若 oracle 只在某些随机实例上成功，重复采样可以把成功概率放大，但需要独立性或足够好的分布。4.不自动给出具体安全界。盲化隐藏了中间值，但不证明 RSA 本身安全；它把攻击面从“任意实例”移到“随机实例”。5.群阶与表示要对。离散对数在复合阶群、椭圆曲线群中的随机化形式不同；公式要按群运算重写。### 不是“随机化就能安全”\n\n随机自归约是归约工具，不是防御本身。若底层问题在随机实例上也可解，盲化只增加常数开销，不改变可破性。",
+        "en": "### Boundaries\n\n1.It needs algebraic structure."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    },
+    {
+      "id": "random-self-reduction-r139-history",
+      "entryId": "random-self-reduction-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1984 年 Blum–Micali\n\nBlum 与 Micali 在 1984 年用离散对数的随机自归约构造伪随机位生成器：若能从随机实例预测下一位，就能解任意实例的离散对数。Goldwasser 与 Micali 把随机自归约视为 worst-case 到 average-case 归约的“王道”。### 从理论到实现\n\nRSA 盲化在 1980 年代进入实现，用于防止计时攻击；后来选择密文安全与侧信道防护把它作为标准组件。随机自归约仍是 DL/RSA 类假设证明的标准第一步。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "### Blum–Micali 1984\n\nBlum and Micali used the random self-reduction of discrete log in 1984 to build a pseudorandom bit generator: predicting the next bit on random instances would solve discrete log on any instance.Goldwasser and Micali described random self-reduction as the royal road from worst-case to average-case reductions."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    },
+    {
+      "id": "random-self-reduction-r139-refs",
+      "entryId": "random-self-reduction-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 随机自归约.https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 随机自归约.https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "random-self-reduction-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

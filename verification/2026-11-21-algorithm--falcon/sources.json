@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--falcon-details",
+  "sources": [
+    {
+      "id": "algorithm--falcon-wikipedia",
+      "title": "Wikipedia search entry for Falcon 格签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Falcon 格签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--falcon-r139-principle",
+          "entryId": "algorithm--falcon-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Falcon 格签名（Falcon）。### GPV 哈希—签名\n\nFalcon 是 GPV 框架的 NTRU 格签名：把消息哈希到目标点，用陷门短基采样一个靠近目标的短格向量，输出该向量；验证检查它确实短且落在正确陪集。### NTRU 格与快速傅里叶采样\n\n私钥是 NTRU 方程 fG−gF=q 的解 (f,g,F,G)，构成 NTRU 格的短基；签名在 FFT 域递归分裂，用离散高斯 SamplerZ 在叶节点采样，成本 O(n log n)。安全性归约到 NTRU 格上的 SIS。### 参数\n\nFalcon-512 的公钥 897 B、签名约 666 B；Falcon-1024 的公钥 1793 B、签名约 1280 B。签名是变长编码，验证必须按参数集的上限检查长度。",
+            "en": "**Algorithm**: Falcon (Falcon 格签名).### GPV hash-and-sign\n\nFalcon is a GPV-style NTRU lattice signature: it hashes the message to a target point, uses a trapdoor short basis to sample a short lattice vector near that target, and outputs the vector; verification checks that it is short and lies in the correct coset."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--falcon-r139-why",
+          "entryId": "algorithm--falcon-details",
+          "section": "why",
+          "statement": {
+            "zh": "Falcon 的定位是“最小的公钥加签名足迹”：在 NIST 三类格签名中，它的联合尺寸最小、验证最快，适合带宽和存储受限的 TLS 证书、JOSE/COSE 令牌和嵌入式固件签名。它不需要 AES 或大矩阵，验签只做多项式乘法和哈希；签名端的快速傅里叶采样让它在通用 CPU 上达到数千次每秒，验签再快五到十倍。",
+            "en": "Falcon targets the smallest public-key-plus-signature footprint: among the NIST lattice signatures it has the smallest combined size and the fastest verification, which suits bandwidth- and storage-constrained TLS certificates, JOSE/COSE tokens and embedded firmware signatures.It needs no AES or large matrices; verification is polynomial multiplication plus hashing."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--falcon-r139-used",
+          "entryId": "algorithm--falcon-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于 TLS 1.3 的 FN-DSA 草案、JOSE/COSE 的 FN-DSA-512/1024、代码签名和固件签名；NIST 正把它标准化为 FIPS 206。工程要点：签名需要新鲜随机 salt；Gaussian sampler 必须常量时间；浮点 FFT 在不同平台要防 NaN、异常值和侧信道；不要把内部随机数跨签名复用。",
+            "en": "It is used in TLS 1.3 FN-DSA drafts, JOSE/COSE FN-DSA-512/1024, code signing and firmware signing; NIST is standardizing it as FIPS 206.Requirements: fresh random salt per signature; constant-time Gaussian sampling; guard floating-point FFT against NaN, exceptional values and side channels across platforms; never reuse internal randomness across signatures."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--falcon-r139-broken",
+          "entryId": "algorithm--falcon-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Falcon 的安全性归约到 NTRU-SIS，但实现风险突出：签名端使用双精度浮点和离散高斯采样，缓存、时序和故障攻击可恢复私钥；随机数缺失会导致差分故障攻击。",
+            "en": "Falcon reduces to NTRU-SIS, but implementation risk dominates: signing uses double-precision floating point and discrete Gaussian sampling, so cache, timing and fault attacks can recover the private key; missing randomness enables differential fault attacks.Boundaries: signatures are variable-length, so protocols must budget the upper bound; Falcon is unsuitable when deterministic signatures are required; only 512/1024 parameter sets exist and cannot be rescaled; verification must check encoding length, ranges and subgroups."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--falcon-r139-history",
+          "entryId": "algorithm--falcon-details",
+          "section": "history",
+          "statement": {
+            "zh": "Falcon 由 Fouque、Hoffstein、Kirchner、Lyubashevsky、Pornin、Prest、Ricosset、Seiler、Whyte、Zhang 设计，2017-11-30 提交 NIST PQC；2022 年被 NIST 选为标准化签名之一，标准化名 FN-DSA，标准号为 FIPS 206（预计 2026 末到 2027 初发布）。它的前身是 NTRUSign，Fast Fourier sampling 来自 Ducas–Prest 2016 的陷门采样工作。**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：Falcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+            "en": "Falcon was designed by Fouque, Hoffstein, Kirchner, Lyubashevsky, Pornin, Prest, Ricosset, Seiler, Whyte and Zhang and submitted to NIST PQC on 30 November 2017.NIST selected it in 2022; the standardized name is FN-DSA and the standard is FIPS 206, expected in late 2026 or early 2027."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--falcon-r139-refs",
+          "entryId": "algorithm--falcon-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Falcon 格签名.https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Falcon 格签名.https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--falcon-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--falcon-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--falcon-r139-principle",
+      "entryId": "algorithm--falcon-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Falcon 格签名（Falcon）。### GPV 哈希—签名\n\nFalcon 是 GPV 框架的 NTRU 格签名：把消息哈希到目标点，用陷门短基采样一个靠近目标的短格向量，输出该向量；验证检查它确实短且落在正确陪集。### NTRU 格与快速傅里叶采样\n\n私钥是 NTRU 方程 fG−gF=q 的解 (f,g,F,G)，构成 NTRU 格的短基；签名在 FFT 域递归分裂，用离散高斯 SamplerZ 在叶节点采样，成本 O(n log n)。安全性归约到 NTRU 格上的 SIS。### 参数\n\nFalcon-512 的公钥 897 B、签名约 666 B；Falcon-1024 的公钥 1793 B、签名约 1280 B。签名是变长编码，验证必须按参数集的上限检查长度。",
+        "en": "**Algorithm**: Falcon (Falcon 格签名).### GPV hash-and-sign\n\nFalcon is a GPV-style NTRU lattice signature: it hashes the message to a target point, uses a trapdoor short basis to sample a short lattice vector near that target, and outputs the vector; verification checks that it is short and lies in the correct coset."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-r139-why",
+      "entryId": "algorithm--falcon-details",
+      "section": "why",
+      "statement": {
+        "zh": "Falcon 的定位是“最小的公钥加签名足迹”：在 NIST 三类格签名中，它的联合尺寸最小、验证最快，适合带宽和存储受限的 TLS 证书、JOSE/COSE 令牌和嵌入式固件签名。它不需要 AES 或大矩阵，验签只做多项式乘法和哈希；签名端的快速傅里叶采样让它在通用 CPU 上达到数千次每秒，验签再快五到十倍。",
+        "en": "Falcon targets the smallest public-key-plus-signature footprint: among the NIST lattice signatures it has the smallest combined size and the fastest verification, which suits bandwidth- and storage-constrained TLS certificates, JOSE/COSE tokens and embedded firmware signatures.It needs no AES or large matrices; verification is polynomial multiplication plus hashing."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-r139-used",
+      "entryId": "algorithm--falcon-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于 TLS 1.3 的 FN-DSA 草案、JOSE/COSE 的 FN-DSA-512/1024、代码签名和固件签名；NIST 正把它标准化为 FIPS 206。工程要点：签名需要新鲜随机 salt；Gaussian sampler 必须常量时间；浮点 FFT 在不同平台要防 NaN、异常值和侧信道；不要把内部随机数跨签名复用。",
+        "en": "It is used in TLS 1.3 FN-DSA drafts, JOSE/COSE FN-DSA-512/1024, code signing and firmware signing; NIST is standardizing it as FIPS 206.Requirements: fresh random salt per signature; constant-time Gaussian sampling; guard floating-point FFT against NaN, exceptional values and side channels across platforms; never reuse internal randomness across signatures."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-r139-broken",
+      "entryId": "algorithm--falcon-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Falcon 的安全性归约到 NTRU-SIS，但实现风险突出：签名端使用双精度浮点和离散高斯采样，缓存、时序和故障攻击可恢复私钥；随机数缺失会导致差分故障攻击。",
+        "en": "Falcon reduces to NTRU-SIS, but implementation risk dominates: signing uses double-precision floating point and discrete Gaussian sampling, so cache, timing and fault attacks can recover the private key; missing randomness enables differential fault attacks.Boundaries: signatures are variable-length, so protocols must budget the upper bound; Falcon is unsuitable when deterministic signatures are required; only 512/1024 parameter sets exist and cannot be rescaled; verification must check encoding length, ranges and subgroups."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-r139-history",
+      "entryId": "algorithm--falcon-details",
+      "section": "history",
+      "statement": {
+        "zh": "Falcon 由 Fouque、Hoffstein、Kirchner、Lyubashevsky、Pornin、Prest、Ricosset、Seiler、Whyte、Zhang 设计，2017-11-30 提交 NIST PQC；2022 年被 NIST 选为标准化签名之一，标准化名 FN-DSA，标准号为 FIPS 206（预计 2026 末到 2027 初发布）。它的前身是 NTRUSign，Fast Fourier sampling 来自 Ducas–Prest 2016 的陷门采样工作。**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：Falcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+        "en": "Falcon was designed by Fouque, Hoffstein, Kirchner, Lyubashevsky, Pornin, Prest, Ricosset, Seiler, Whyte and Zhang and submitted to NIST PQC on 30 November 2017.NIST selected it in 2022; the standardized name is FN-DSA and the standard is FIPS 206, expected in late 2026 or early 2027."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--falcon-r139-refs",
+      "entryId": "algorithm--falcon-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Falcon 格签名.https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Falcon 格签名.https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--falcon-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

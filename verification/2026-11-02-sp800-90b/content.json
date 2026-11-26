@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for sp800-90b: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-90b-details",
+      "inventoryIds": [
+        "sp800-90b"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释随机数生成用熵源建议（SP 800-90B）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "随机数生成用熵源建议（SP 800-90B）",
+        "en": "Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B)"
+      },
+      "claimIds": [
+        "sp800-90b-r139-principle",
+        "sp800-90b-r139-why",
+        "sp800-90b-r139-used",
+        "sp800-90b-r139-broken",
+        "sp800-90b-r139-history",
+        "sp800-90b-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-90b-wikipedia",
+        "sp800-90b-reference-ref"
+      ],
+      "related": [
+        "trng",
+        "entropy",
+        "rng-failure"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：随机数生成用熵源建议（SP 800-90B）（Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B)）。摘要写明规定两件事：「This Recommendation specifies the design principles and requirements for the entropy sources used by Random Bit Generators, and the tests for the validation of entropy sources.」并交代它与其他两册的分工：「These entropy sources are intended to be combined with Deterministic Random Bit Generator mechanisms that are specified in SP 800-90A to construct Random Bit Generators, as specified in SP 800-90C.」它管熵源，不管生成器算法本身。两句合起来定出对象与位置：它规定熵源的设计原则、要求与验证测试，随机比特生成器的最终构造交给 90A 与 90C，本文件不定义生成算法本身。",
+          "why": "§1.1 从实操困难说起：「However, the generation of random bits is problematic in many practical applications of cryptography.」并把最难的一环交出：「The development of entropy sources that construct unpredictable outputs is difficult, and providing guidance for their design and validation testing is even more so.」同节说明测试思路的前提是开发者理解自己的随机源。§2.2.1 把噪声源抬到根本位置：「The noise source is the root of security for the entropy source and for the RBG as a whole.」三段合起来是理由链条：随机比特在实践里难以产出，难产出的根源是熵源，熵源之难又落在设计与可验证性上；把噪声源称作安全之根，正是把整套随机数体系的地基放在这一层。",
+          "used": "义务由实现方与提交方承担，措辞是 shall。§4.3 规定检测组成：「The health tests shall include both continuous and start-up tests.」并规定失败时的动作：「When the health tests fail, the entropy source shall notify the consuming application」，由消费该源的随机数生成器处置。§4.4 把阈值选择交给开发者：「The developer of the entropy source shall determine a reasonable probability of type I error」。度量口径见 §2.1：「this Recommendation uses a very conservative measure known as min-entropy, which measures the effectiveness of the strategy of guessing the most likely output of the entropy source.」引文同时交代口径与责任：min-entropy 是保守度量，检测构成与失败上报是 shall 级，误报概率与阈值则交由开发者按自身噪声源的情形决定。",
+          "broken": "限度一是检测时机：§4.2 对按需检测只要求具备能力——「This Recommendation does not require performing testing during operation.」同一节的脚注还表明启动条件由 FIPS 140 定，「This document imposes no additional requirements for the use of start-up health testing.」限度二是可验证性：符合性测试一节承认部分要求「may be out-of-scope for CAVP or CMVP validation testing」。限度三是它自身不单独成事：§1.1 写「SP 800-90A addresses the construction of approved DRBG mechanisms, while SP 800-90C addresses the construction of RBGs from the mechanisms in SP 800-90A and the entropy sources in SP 800-90B.」随机位的最终构造在另两册。",
+          "history": "扉页首行「NIST Special Publication 800-90B」，标题行「Recommendation for the Entropy Sources Used for Random Bit Generation」，作者行含「Kerry A.McKay Mary L.Baish Mike Boyle」（扉页把第一作者姓名印作 Sönmez Turan，变音符号在留存件里存在；为使每段引文都能逐字核验，姓名写在引号外）；日期行为 2018 年 1 月，引用行「Natl.Inst.Stand.Technol.Spec.Publ.800-90B, 84 pages (January 2018) CODEN: NSPUE2」，免费获取行后接 DOI 10.6028/NIST.SP.800-90B。致谢页点名协助者：「The authors of this Recommendation gratefully acknowledge and appreciate contributions by their colleagues at NIST, Apostol Vassilev and Timothy A.Hall」。§1.1 另记与美国家标准的关系：「This Recommendation was developed in concert with American National Standard (ANS) X9.82, a multi-part standard on random number generation.」",
+          "refs": "- Wikipedia search entry for 随机数生成用熵源建议（SP 800-90B）. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%94%A8%E7%86%B5%E6%BA%90%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-90B%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n随机数生成用熵源建议（SP 800-90B）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B) (随机数生成用熵源建议（SP 800-90B）). The abstract names the two subjects: \"This Recommendation specifies the design principles and requirements for the entropy sources used by Random Bit Generators, and the tests for the validation of entropy sources.\" and the division of labour with its siblings: \"These entropy sources are intended to be combined with Deterministic Random Bit Generator mechanisms that are specified in SP 800-90A to construct Random Bit Generators, as specified in SP 800-90C.\" Its object is the entropy source, not the generator algorithm.The two sentences fix the object and the place: design principles, requirements and validation testing for entropy sources are specified here, while the finished generator is left to SP 800-90A and SP 800-90C, so no generator algorithm is defined in this file.",
+          "why": "Section 1.1 starts from the practical difficulty: \"However, the generation of random bits is problematic in many practical applications of cryptography.\" and hands over the hardest part: \"The development of entropy sources that construct unpredictable outputs is difficult, and providing guidance for their design and validation testing is even more so.\" The same subsection makes the testing approach conditional on the developer understanding the source, while §2.2.1 raises the noise source to the root of everything: \"The noise source is the root of security for the entropy source and for the RBG as a whole.\"The three form one chain: random bits are hard to produce in practice, the hard part is the entropy source, and the difficulty there is design plus verifiable testing; calling the noise source the root of security puts the foundation of the whole random-bit apparatus on that layer.",
+          "used": "The duties fall on the implementer and submitter, written with shall. Section 4.3 fixes the test composition: \"The health tests shall include both continuous and start-up tests.\" and the reaction on failure: \"When the health tests fail, the entropy source shall notify the consuming application\", leaving the consuming generator to act on it. Section 4.4 hands the threshold to the developer: \"The developer of the entropy source shall determine a reasonable probability of type I error\". The measure itself is set out in §2.1: \"this Recommendation uses a very conservative measure known as min-entropy, which measures the effectiveness of the strategy of guessing the most likely output of the entropy source.\"The quotations give the measure and the duty at once: min-entropy is the conservative yardstick, the test composition and the failure notification are shall-level, while the error probability and cutoff values are left to the developer judging the noise source.",
+          "broken": "The first limit is when testing happens: §4.2 requires only the capability for on-demand tests — \"This Recommendation does not require performing testing during operation.\" — and the note in the same subsection says the start-up conditions belong to FIPS 140, since \"This document imposes no additional requirements for the use of start-up health testing.\" The second is testability: the conformance paragraph concedes that some requirements \"may be out-of-scope for CAVP or CMVP validation testing\". The third is that the document stands alone nowhere: \"SP 800-90A addresses the construction of approved DRBG mechanisms, while SP 800-90C addresses the construction of RBGs from the mechanisms in SP 800-90A and the entropy sources in SP 800-90B.\" The finished random bit generator lives in the other two.",
+          "history": "The title block opens \"NIST Special Publication 800-90B\" with the title line \"Recommendation for the Entropy Sources Used for Random Bit Generation\" and author lines carrying \"Kerry A. McKay Mary L. Baish Mike Boyle\" (the first author’s name carries a diacritic in the retained title block, so the name sits outside the quotation to keep every quoted span verbatim-checkable); the date line is January 2018, the citation reads \"Natl. Inst. Stand. Technol. Spec. Publ. 800-90B, 84 pages (January 2018) CODEN: NSPUE2\" and the free-access line is followed by the DOI 10.6028/NIST.SP.800-90B. The acknowledgements name the helpers: \"The authors of this Recommendation gratefully acknowledge and appreciate contributions by their colleagues at NIST, Apostol Vassilev and Timothy A. Hall\". Section 1.1 records the parallel standard: \"This Recommendation was developed in concert with American National Standard (ANS) X9.82, a multi-part standard on random number generation.\"",
+          "refs": "- Wikipedia search entry for 随机数生成用熵源建议（SP 800-90B）. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E6%95%B0%E7%94%9F%E6%88%90%E7%94%A8%E7%86%B5%E6%BA%90%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-90B%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nRecommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B): the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "entropy source：向随机比特生成器供熵的部件，本文件的对象。",
+          "noise source：熵源中提供非确定性过程的部件。",
+          "min-entropy：按猜测最可能输出的策略度量的保守熵。",
+          "health test：对噪声样本做的启动、持续与按需检测。",
+          "Repetition Count Test：捕捉噪声源卡在单一输出的持续检测。",
+          "IID：样本独立同分布；该声明决定走哪条熵估计路径。"
+        ],
+        "en": [
+          "Entropy source: the component that supplies entropy to a random bit generator, the object of this file.",
+          "Noise source: the non-deterministic part inside an entropy source.",
+          "Min-entropy: the conservative measure based on guessing the most likely output.",
+          "Health test: start-up, continuous and on-demand testing of noise-source samples.",
+          "Repetition Count Test: the continuous test for a noise source stuck on one value.",
+          "IID: independent and identically distributed; the claim picks the estimation track."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-90b-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机数生成用熵源建议（SP 800-90B）：为什么需要 → 核心机制 → 边界。",
+            "en": "Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "随机数生成用熵源建议（SP 800-90B） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-90b-details-flow.zh.svg",
+            "en": "assets/sp800-90b-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ce0282acf8b4518a4e239fd4bbd69ca9a5cdfcab1008c3b9a4b0d36fc262924d",
+            "en": "8ce97dc9f670728fd74a665653bbf0743b6f5061e58d6d8928822a7f3ccc551c"
+          }
+        },
+        {
+          "id": "sp800-90b-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机数生成用熵源建议（SP 800-90B） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "随机数生成用熵源建议（SP 800-90B） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Recommendation for the Entropy Sources Used for Random Bit Generation (SP 800-90B), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-90b-details-r138-model.zh.svg",
+            "en": "assets/sp800-90b-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "898b693f15092fe71550d186f6aae342685eabeebc7b5ba80b0710755c642695",
+            "en": "3ed21e08d211f91a611a5a7fa765eb52a76c132c07babcab19075522bae99677"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-90b-r139-formal",
+          "entryId": "sp800-90b-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：随机数生成用熵源建议（SP 800-90B）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 随机数生成用熵源建议（SP 800-90B） 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-90b-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-90b-r139-formal"
+      ],
+      "sources": [
+        "sp800-90b-wikipedia",
+        "sp800-90b-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-90b-r139-formal",
+      "entryId": "sp800-90b-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：随机数生成用熵源建议（SP 800-90B）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 随机数生成用熵源建议（SP 800-90B） 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-90b-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

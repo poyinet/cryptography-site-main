@@ -1,0 +1,425 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "Full TDEA/3DES algorithm article only; no completion claim for DES, Feistel networks, modes of operation, AES or related events/standards.",
+  "entries": [
+    {
+      "id": "3des-details",
+      "inventoryIds": [
+        "algorithm--3des"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 algorithm--3des 这一 TDEA 算法的 EDE 结构、密钥选项、安全强度、64 位分组边界与撤销状态；不把 DES、Feistel 网络、工作模式、AES 或相关事件/标准并入本实体。",
+        "en": "Covers the TDEA algorithm recorded as algorithm--3des: EDE structure, keying options, security strength, 64-bit block limits and withdrawal status. It does not absorb DES, Feistel networks, modes of operation, AES, or related events and standards."
+      },
+      "title": {
+        "zh": "3DES/TDEA：用三次 DES 延长旧算法的寿命",
+        "en": "3DES/TDEA: extending an old cipher with three DES passes"
+      },
+      "claimIds": [
+        "algorithm--3des-r139-principle",
+        "algorithm--3des-r139-why",
+        "algorithm--3des-r139-used",
+        "algorithm--3des-r139-broken",
+        "algorithm--3des-r139-history",
+        "algorithm--3des-r139-refs"
+      ],
+      "calculationIds": [
+        "tdea-official-vectors",
+        "tdea-keying-options",
+        "tdea-security-strength",
+        "tdea-data-limit",
+        "tdea-sweet32-bound",
+        "tdea-weak-keys",
+        "tdea-block-rounds",
+        "algorithm--3des-r139-formal"
+      ],
+      "sourceIds": [
+        "algorithm--3des-wikipedia",
+        "algorithm--3des-reference-ref"
+      ],
+      "related": [
+        "algorithm--des",
+        "feistel-network",
+        "fips46-3",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：3DES 三重数据加密（Triple DES）。TDEA 不是新的分组密码，而是把 DES 作为「cryptographic engine」（密码引擎）使用三次。它保留 DES 的 64 位分组，用一个由三个 DES 密钥组成的密钥束（key bundle）做加密—解密—加密：\n\n`C = E_K3(D_K2(E_K1(P)))`\n\n加密时先用 K1 加密，再用 K2 解密，最后用 K3 加密。解密按相反顺序使用同一组密钥：\n\n`P = D_K1(E_K2(D_K3(C)))`\n\n中间的解密步骤不是笔误：EDE 结构让三密钥选项在 K1=K2=K3 时退化为单 DES，便于兼容旧系统。TDEA 的分组仍是 64 位，内部共执行 3×16=48 个 DES 轮；它扩大了密钥材料，没有扩大分组。TDEA 的历史密钥选项有三种：1-key（K1=K2=K3）、2-key（K1=K3）和 3-key（三个独立密钥）。这里的命名按键束中独立密钥的数量描述；FIPS 46-3 的 Keying Option 编号顺序不同（Option 1 为三个独立密钥，Option 3 为三个相同密钥）。按含校验位的名义长度，三者分别是 64、128、192 位；按实际参与算法的有效位数，分别是 56、112、168 位。当前 SP 800-67 Revision 2 只允许 3-key 用于加密，2-key 不得用于加密保护，1-key 只是等价于单 DES 的历史选项。名义位数不等于安全强度：NIST 把 2-key TDEA 的安全强度定为约 80 位，把 3-key TDEA 定为约 112 位。",
+          "why": "TDEA 是 DES 到 AES 之间的过渡方案。它复用已经部署的 DES 硬件和代码，在不更换分组引擎的情况下增加密钥材料，因此能在 1990 年代后期快速延长旧系统的寿命。FIPS 46-3 在 1999 年把 TDEA 列为联邦认可算法，同时把单 DES 降为仅限遗留系统。它也是一个关于名义密钥长度的警示。3-key TDEA 的名义密钥材料是 192 位、有效位数 168 位，但公开安全评估只给它约 112 位强度；2-key TDEA 名义 128 位、有效 112 位，实际约 80 位。把 192 或 168 直接当作安全位数，会高估系统余量。TDEA 的 64 位分组还带来生日碰撞问题，使它在高数据量协议中比密钥长度看起来更脆弱。TDEA 的历史作用不是永远安全，而是在迁移窗口内够用。当 AES 可用、迁移成本可接受时，继续使用 TDEA 就变成兼容性选择，而不是安全选择。",
+          "used": "TDEA 的典型部署是联邦机构和较早的网络协议中的遗留系统。它常出现在需要兼容 DES 硬件的场景：政府终端、旧式设备和早期 TLS/VPN 配置。FIPS 46-3 明确把单 DES 限制为遗留系统，并把 TDEA 作为当时的联邦对称加密选择；这反映了 1999 年的迁移策略，而不是今天的批准状态。TDEA 通常与工作模式一起使用。ECB 对每个 64 位块独立加密；CBC 需要初始向量并隐藏重复模式；CFB/OFB 把分组密码变成流式生成器。模式不改变 64 位分组和 48 轮引擎，也不能修复密钥选项或数据量限制。具体模式属于工作模式实体，本文不展开。在现代协议中，TDEA 主要作为兼容选项存在。只要协议还允许它，长连接和高数据量就会暴露 64 位分组的生日边界；因此，还能解密旧数据与还应加密新数据是两个不同问题。",
+          "broken": "两密钥 TDEA 的加密在 2015 年后被 NIST 禁止；三密钥 TDEA 的加密在 2023 年 12 月 31 日后被禁止。NIST 在 2023 年宣布撤销 SP 800-67 Revision 2，并于 2024 年 1 月 1 日正式撤销；撤销后 TDEA 只允许用于已有保护数据的解密、密钥解包和 MAC 验证，不再用于新的加密保护。这些日期是政策状态，不是算法突然失效的物理时刻。它们表示：新系统不应再选择 TDEA；旧系统需要按风险安排迁移，并保留解密遗留数据的能力。### 安全强度低于名义密钥长度\n\nNIST SP 800-57 把 2-key TDEA 的安全强度定为约 80 位，把 3-key TDEA 定为约 112 位。3-key 的名义密钥材料是 192 位、有效位数 168 位，但安全强度只有 112 位；这是评估结果，不是实现缺陷。80 位和 112 位都低于现代 128 位目标，不能支撑长期新数据。### 64 位分组、2²⁰ 上限与 Sweet32\n\nTDEA 的分组仍是 64 位。SP 800-67 Revision 2 把单个 3-key 密钥束的加密数据量限制为 2²⁰ 个 64 位块（8 MiB），并明确 2-key TDEA 不得用于加密保护。这个标准上限比生日界严格得多。生日界本身在约 2³² 个块（约 32 GiB）后使碰撞概率不可忽略；Sweet32 类攻击利用长连接中的重复密文块恢复部分明文。TDEA 的有效 168 位密钥和 112 位安全强度不能弥补 64 位分组：生日边界由分组长度决定，不由密钥长度决定。### 弱密钥与密钥束退化\n\nTDEA 的安全性依赖三个 DES 密钥的质量。SP 800-67 要求避免 DES 弱密钥和半弱密钥，并明确禁止三个密钥相同。如果三个密钥都取同一个 DES 弱密钥，TDEA 就退化为该弱密钥下的单 DES：同一弱密钥连续两次加密会回到明文（E_K(E_K(P))=P）；把三个相同密钥当作 3DES 只是单 DES 的昂贵包装。### 1-key 选项不是更强的 DES\n\n1-key 选项（K1=K2=K3）在数学上就是单 DES。它作为历史密钥选项出现在 FIPS 46-3/ANSI X9.52 的语境中，但 SP 800-67 §3.1 禁止三个密钥相同，因此它也不是有效的 TDEA 密钥束。任何把 1-key TDEA 当作三密钥 TDEA 的部署，都只得到单 DES 的有效密钥（56 位）。TDEA 的教学实现只验证 EDE 结构和已知答案，不处理填充、模式、密钥管理、侧信道或协议集成。真实系统还要处理密钥束生成、弱密钥检查、初始向量、数据量上限和迁移策略；这些失败模式不在算法公式内。",
+          "history": "TDEA 的标准化与 ANSI X9.52 有关。FIPS 46-3 在 1999 年把 TDEA 列为联邦认可算法，并说明单 DES 仅限遗留系统。NIST SP 800-67 随后给出 TDEA 的详细建议，最终版本 Revision 2 于 2017 年发布，并在 2024 年 1 月 1 日撤销。迁移时间表逐步收紧：两密钥 TDEA 加密在 2015 年后被禁止；三密钥 TDEA 加密在 2023 年底后被禁止；2023 年 NIST 宣布撤销 SP 800-67 Revision 2，2024 年正式撤销。AES 成为替代方案，但大量遗留系统使 TDEA 的退出持续了二十年。这段历史说明，算法标准化不是一次性事件：认可、弃用、禁止新用途、撤销和遗留解密支持是不同阶段。把曾经是联邦标准读成现在仍被批准，会得到相反结论。",
+          "refs": "- Wikipedia search entry for 3DES 三重数据加密. https://zh.wikipedia.org/w/index.php?search=3DES%20%E4%B8%89%E9%87%8D%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Triple DES (3DES 三重数据加密). TDEA is not a new block cipher; it uses DES three times as a \"cryptographic engine\". It keeps the 64-bit DES block and applies encrypt-decrypt-encrypt with a key bundle of three DES keys:\n\n`C = E_K3(D_K2(E_K1(P)))`\n\nEncryption first encrypts with K1, decrypts with K2, and encrypts with K3. Decryption uses the same keys in reverse order:\n\n`P = D_K1(E_K2(D_K3(C)))`\n\nThe middle decryption step is not a mistake: the EDE structure makes the three-key option collapse to single DES when K1=K2=K3, which helps compatibility with legacy systems. TDEA keeps a 64-bit block and performs 3×16=48 DES rounds internally; it expands key material, not the block. TDEA has three historical keying options: 1-key (K1=K2=K3), 2-key (K1=K3) and 3-key (three independent keys). These names describe the number of independent keys in the bundle; FIPS 46-3 numbers its Keying Options differently (Option 1 is three independent keys, Option 3 is three identical keys). Counting parity bits, their nominal lengths are 64, 128 and 192 bits; the effective bits used by the algorithm are 56, 112 and 168. Current SP 800-67 Revision 2 permits only 3-key for encryption, prohibits 2-key for cryptographic protection, and treats 1-key as a historical option equivalent to single DES. Nominal bits are not security strength: NIST assigns about 80 bits of security to 2-key TDEA and about 112 bits to 3-key TDEA.",
+          "why": "TDEA was the transition from DES to AES. It reused deployed DES hardware and code and increased key material without replacing the block engine, so 1990s systems could extend their service life quickly. FIPS 46-3 recognized TDEA as a federal algorithm in 1999 while demoting single DES to legacy systems only.\n\nIt is also a warning about nominal key length. A 3-key TDEA bundle has 192 nominal key bits and 168 effective bits, but public security assessment gives it about 112 bits; 2-key TDEA is nominally 128 bits with 112 effective bits but about 80 bits in strength. Treating 192 or 168 as the security level overstates the margin. TDEA's 64-bit block also creates birthday collisions, making high-volume protocols weaker than the key length suggests.\n\nTDEA's historical role was not long-term adequacy but adequacy during a migration window. Once AES was available and migration was affordable, staying on TDEA became a compatibility choice rather than a security choice.",
+          "used": "Typical TDEA deployments were legacy systems in federal agencies and older network protocols. It appeared where DES hardware had to be reused: government terminals, old devices and early TLS/VPN configurations. FIPS 46-3 explicitly restricted single DES to legacy systems and treated TDEA as the federal symmetric encryption choice of that time; that reflects the 1999 transition policy, not today's approval status.\n\nTDEA is normally used with a mode of operation. ECB encrypts each 64-bit block independently; CBC needs an initialization vector and hides repetition; CFB/OFB turn the block cipher into a stream-like generator. A mode does not change the 64-bit block or the 48-round engine, and cannot repair key options or data-volume limits. Concrete modes belong to the modes entity and are not detailed here.\n\nIn modern protocols TDEA mainly survives as a compatibility option. As long as a protocol still allows it, long connections and high data volumes expose the 64-bit birthday bound; the ability to still decrypt old data and the duty to encrypt new data are different questions.",
+          "broken": "Two-key TDEA encryption was disallowed after 2015; three-key TDEA encryption was disallowed after December 31, 2023. NIST announced the withdrawal of SP 800-67 Revision 2 in 2023 and formally withdrew it on January 1, 2024. After withdrawal, TDEA is allowed only for decryption, key unwrapping and MAC verification of already-protected data, not for new encryption protection.\n\nThese dates are policy status, not a physical moment when the algorithm suddenly stopped working. They mean new systems should not choose TDEA, while old systems need risk-based migration and continued ability to decrypt legacy data.\n\nNIST SP 800-57 assigns about 80 bits of security strength to 2-key TDEA and about 112 bits to 3-key TDEA. A 3-key bundle has 192 nominal key bits and 168 effective bits but only 112 bits of assessed strength; this is an assessment result, not an implementation defect. Both 80 and 112 bits are below a modern 128-bit target and cannot protect long-term new data.\n\nTDEA still has a 64-bit block. SP 800-67 Revision 2 limits encryption under a single 3-key bundle to 2²⁰ 64-bit blocks (8 MiB) and explicitly prohibits using 2-key TDEA for cryptographic protection. That standard limit is much stricter than the birthday bound. The birthday bound itself makes collisions non-negligible after about 2³² blocks (about 32 GiB); Sweet32-style attacks use repeated ciphertext blocks in long connections to recover parts of plaintext. TDEA's 168 effective key bits and 112-bit security strength cannot compensate for a 64-bit block: the birthday bound is set by block size, not key size.\n\nTDEA security depends on the quality of all three DES keys. SP 800-67 requires avoiding DES weak and semi-weak keys and explicitly prohibits three identical keys. If all three keys are the same DES weak key, TDEA degenerates to single DES under that weak key: encrypting twice with the same weak key returns the plaintext (E_K(E_K(P))=P); using three identical keys and calling it 3DES is only an expensive wrapper around single DES.\n\nThe 1-key option (K1=K2=K3) is mathematically single DES. It appears as a historical keying option in the FIPS 46-3/ANSI X9.52 context, but SP 800-67 §3.1 prohibits three identical keys, so it is not a valid TDEA key bundle either. Any deployment that treats 1-key TDEA as three-key TDEA gets only the single-DES effective key bits (56).\n\nThe teaching implementation verifies only the EDE structure and known answers; it does not handle padding, modes, key management, side channels or protocol integration. Real systems also need key-bundle generation, weak-key checks, initialization vectors, data-volume limits and migration policy; these failure modes are outside the algorithm formula.",
+          "history": "TDEA standardization is connected to ANSI X9.52. FIPS 46-3 recognized TDEA as a federal algorithm in 1999 and stated that single DES was permitted only for legacy systems. NIST SP 800-67 then gave detailed TDEA recommendations; the final Revision 2 was published in 2017 and withdrawn on January 1, 2024.\n\nThe transition schedule tightened step by step: two-key TDEA encryption was disallowed after 2015; three-key TDEA encryption after the end of 2023; NIST announced the withdrawal of SP 800-67 Revision 2 in 2023 and formally withdrew it in 2024. AES became the replacement, but the large installed base kept TDEA alive for two decades.\n\nThis history shows that algorithm standardization is not a single event: recognition, deprecation, prohibition of new uses, withdrawal and legacy decryption support are different stages. Reading a past federal standard as present approval for new use gives the opposite conclusion.",
+          "refs": "- Wikipedia search entry for 3DES 三重数据加密. https://zh.wikipedia.org/w/index.php?search=3DES%20%E4%B8%89%E9%87%8D%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "TDEA/3DES：用三个 DES 密钥执行三次 DES 的三重数据加密算法。",
+          "EDE：加密—解密—加密结构，使三密钥选项可在相同密钥下退化为单 DES。",
+          "密钥束：TDEA 使用的三个 DES 密钥（K1、K2、K3）的集合。",
+          "1-key/2-key/3-key：TDEA 的三种密钥选项；分别令 K1=K2=K3、K1=K3、三密钥独立。",
+          "有效密钥位：实际参与算法的密钥位数，不含 DES 的奇偶校验位。",
+          "安全强度：按已知攻击评估的有效安全级别，不等于名义密钥长度。",
+          "生日碰撞：块空间有限时，随机块重复概率随块数平方增长的现象。",
+          "Sweet32：利用 64 位块密码生日碰撞的长连接攻击。",
+          "撤销：标准不再被批准的状态；不等同于算法无法解密旧数据。",
+          "遗留解密：撤销后仍允许对已有保护数据执行解密、解包或 MAC 验证。"
+        ],
+        "en": [
+          "TDEA/3DES: the Triple Data Encryption Algorithm that applies DES three times with three DES keys.",
+          "EDE: the encrypt-decrypt-encrypt structure that lets the three-key option collapse to single DES when the keys are equal.",
+          "Key bundle: the set of three DES keys (K1, K2, K3) used by TDEA.",
+          "1-key/2-key/3-key: the three TDEA keying options, setting K1=K2=K3, K1=K3, or three independent keys.",
+          "Effective key bits: the key bits actually used by the algorithm, excluding DES parity bits.",
+          "Security strength: the effective security level under known attacks, not the nominal key length.",
+          "Birthday collision: the rapid growth of repeat probability when random blocks are drawn from a finite block space.",
+          "Sweet32: an attack on long connections that exploits birthday collisions in 64-bit block ciphers.",
+          "Withdrawal: the status in which a standard is no longer approved; it does not mean old data cannot be decrypted.",
+          "Legacy decryption: decryption, unwrapping or MAC verification still allowed for already-protected data after withdrawal."
+        ]
+      },
+      "subtopicIds": [
+        "3des"
+      ],
+      "figures": [
+        {
+          "id": "3des-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "3DES/TDEA：用三次 DES 延长旧算法的寿命：为什么需要 → 核心机制 → 边界。",
+            "en": "3DES/TDEA: extending an old cipher with three DES passes: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "3DES/TDEA：用三次 DES 延长旧算法的寿命 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for 3DES/TDEA: extending an old cipher with three DES passes, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/3des-details-flow.zh.svg",
+            "en": "assets/3des-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c6de85b4aeba2c1765338df2125d15a84a590d27257634b9876a2f9f5e9b942b",
+            "en": "3a658483e9a2ea88303f08357e61aebaba6e280cc9acefe82a9dc22ba627f661"
+          }
+        },
+        {
+          "id": "3des-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "3DES/TDEA：用三次 DES 延长旧算法的寿命 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for 3DES/TDEA: extending an old cipher with three DES passes: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "3DES/TDEA：用三次 DES 延长旧算法的寿命 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for 3DES/TDEA: extending an old cipher with three DES passes, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/3des-details-r138-model.zh.svg",
+            "en": "assets/3des-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e44e5d754a6f93833bb99c2070509a117d6db3c98c58dfe51572c2f0e00d93bc",
+            "en": "14e172a6f9f2f339f8719d6bdf5e9f6a118027077e6313151cd744075de8da4f"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--3des-wikipedia",
+        "algorithm--3des-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "tdea-official-vectors",
+          "entryId": "3des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "NIST TDES_ECB three-key and two-key examples; four 64-bit plaintext blocks, encryption and decryption in the teaching implementation and OpenSSL des-ede3-ecb",
+          "expected": "Both official ciphertexts match; decryption restores the plaintext; the two implementations agree",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs",
+            "des-core.mjs"
+          ],
+          "limitations": "Two fixed ECB examples; they check algorithm correctness, not modes, key management or side-channel behavior."
+        },
+        {
+          "id": "tdea-keying-options",
+          "entryId": "3des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "1-key, 2-key and 3-key bundles applied to fixed blocks; 1-key compared with single DES",
+          "expected": "1-key TDEA equals single DES; 2-key uses K1=K3; 3-key differs; nominal/effective bit counts are 64/128/192 and 56/112/168",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs",
+            "des-core.mjs"
+          ],
+          "limitations": "Structural equivalence only; it does not estimate the security of any option."
+        },
+        {
+          "id": "tdea-security-strength",
+          "entryId": "3des-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "2-key and 3-key effective key spaces and NIST-assigned strengths of 80 and 112 bits",
+          "expected": "Effective key spaces are 2^112 and 2^168; nominal bits are 128 and 192; NIST security strengths are 80 and 112 bits; nominal bits do not equal assessed strength",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs"
+          ],
+          "limitations": "Records NIST's assessed strengths; it does not reproduce the underlying cryptanalytic attacks."
+        },
+        {
+          "id": "tdea-data-limit",
+          "entryId": "3des-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "SP 800-67 Revision 2 limit of 2^20 64-bit blocks per 3-key bundle; 8 bytes per block",
+          "expected": "2^20 blocks = 1,048,576 blocks = 8 MiB; 2-key TDEA must not be used for cryptographic protection",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs"
+          ],
+          "limitations": "Policy-limit arithmetic only; it does not model protocol framing or per-message overhead."
+        },
+        {
+          "id": "tdea-sweet32-bound",
+          "entryId": "3des-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "64-bit block space, n = 2^32 blocks, 8 bytes per block",
+          "expected": "n blocks are about 32 GiB; birthday collision probability at n = 2^32 is about 0.39, and grows to about 0.63 at 2^32.5",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs"
+          ],
+          "limitations": "Birthday arithmetic only; it does not model a specific protocol, plaintext distribution or attack success beyond collisions."
+        },
+        {
+          "id": "tdea-weak-keys",
+          "entryId": "3des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The four DES weak keys used as K1=K2=K3, and 4,096 fixed blocks per key (16,384 cases)",
+          "expected": "TDEA with three identical weak keys equals single DES and satisfies E(E(P))=P for every tested block",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs",
+            "des-core.mjs"
+          ],
+          "limitations": "A finite structured sample; the degeneration follows from the EDE structure and identical keys."
+        },
+        {
+          "id": "tdea-block-rounds",
+          "entryId": "3des-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "TDEA composition of three DES calls; 64-bit block; 16 rounds per DES call",
+          "expected": "Block remains 64 bits; 3 x 16 = 48 DES rounds; key bundle has three 64-bit keys",
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "dependencies": [
+            "tdea-teaching.mjs",
+            "des-core.mjs"
+          ],
+          "limitations": "Counting only; round count is not a security proof."
+        },
+        {
+          "id": "algorithm--3des-r139-formal",
+          "entryId": "3des-details",
+          "kind": "formal-model",
+          "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64",
+          "inputs": "3DES 三重数据加密 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--3des-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tdea-official-vectors",
+      "entryId": "3des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "NIST TDES_ECB three-key and two-key examples; four 64-bit plaintext blocks, encryption and decryption in the teaching implementation and OpenSSL des-ede3-ecb",
+      "expected": "Both official ciphertexts match; decryption restores the plaintext; the two implementations agree",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs",
+        "des-core.mjs"
+      ],
+      "limitations": "Two fixed ECB examples; they check algorithm correctness, not modes, key management or side-channel behavior."
+    },
+    {
+      "id": "tdea-keying-options",
+      "entryId": "3des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "1-key, 2-key and 3-key bundles applied to fixed blocks; 1-key compared with single DES",
+      "expected": "1-key TDEA equals single DES; 2-key uses K1=K3; 3-key differs; nominal/effective bit counts are 64/128/192 and 56/112/168",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs",
+        "des-core.mjs"
+      ],
+      "limitations": "Structural equivalence only; it does not estimate the security of any option."
+    },
+    {
+      "id": "tdea-security-strength",
+      "entryId": "3des-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "2-key and 3-key effective key spaces and NIST-assigned strengths of 80 and 112 bits",
+      "expected": "Effective key spaces are 2^112 and 2^168; nominal bits are 128 and 192; NIST security strengths are 80 and 112 bits; nominal bits do not equal assessed strength",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs"
+      ],
+      "limitations": "Records NIST's assessed strengths; it does not reproduce the underlying cryptanalytic attacks."
+    },
+    {
+      "id": "tdea-data-limit",
+      "entryId": "3des-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "SP 800-67 Revision 2 limit of 2^20 64-bit blocks per 3-key bundle; 8 bytes per block",
+      "expected": "2^20 blocks = 1,048,576 blocks = 8 MiB; 2-key TDEA must not be used for cryptographic protection",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs"
+      ],
+      "limitations": "Policy-limit arithmetic only; it does not model protocol framing or per-message overhead."
+    },
+    {
+      "id": "tdea-sweet32-bound",
+      "entryId": "3des-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "64-bit block space, n = 2^32 blocks, 8 bytes per block",
+      "expected": "n blocks are about 32 GiB; birthday collision probability at n = 2^32 is about 0.39, and grows to about 0.63 at 2^32.5",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs"
+      ],
+      "limitations": "Birthday arithmetic only; it does not model a specific protocol, plaintext distribution or attack success beyond collisions."
+    },
+    {
+      "id": "tdea-weak-keys",
+      "entryId": "3des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The four DES weak keys used as K1=K2=K3, and 4,096 fixed blocks per key (16,384 cases)",
+      "expected": "TDEA with three identical weak keys equals single DES and satisfies E(E(P))=P for every tested block",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs",
+        "des-core.mjs"
+      ],
+      "limitations": "A finite structured sample; the degeneration follows from the EDE structure and identical keys."
+    },
+    {
+      "id": "tdea-block-rounds",
+      "entryId": "3des-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "TDEA composition of three DES calls; 64-bit block; 16 rounds per DES call",
+      "expected": "Block remains 64 bits; 3 x 16 = 48 DES rounds; key bundle has three 64-bit keys",
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "dependencies": [
+        "tdea-teaching.mjs",
+        "des-core.mjs"
+      ],
+      "limitations": "Counting only; round count is not a security proof."
+    },
+    {
+      "id": "algorithm--3des-r139-formal",
+      "entryId": "3des-details",
+      "kind": "formal-model",
+      "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64",
+      "inputs": "3DES 三重数据加密 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--3des-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--slide-attack-details",
+  "sources": [
+    {
+      "id": "attack--slide-attack-wikipedia",
+      "title": "Wikipedia search entry for 滑动攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%BB%91%E5%8A%A8%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 滑动攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--slide-attack-r139-principle",
+          "entryId": "attack--slide-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：滑动攻击（Slide Attack）。滑动攻击寻找`滑动对` (P,C) 和 (P′,C′)，使一轮加密把 P 映射到 P′、把 C 映射到 C′；利用这种一轮关系可以恢复轮子密钥。",
+            "en": "**Attack**: Slide Attack (滑动攻击).A slide attack looks for a slid pair (P,C) and (P′,C′) such that one round maps P to P′ and C to C′; this one-round relation can be used to recover round subkeys."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--slide-attack-r139-why",
+          "entryId": "attack--slide-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "当密码的轮函数和密钥调度具有自相似性时，攻击可以独立于轮数；它通常使用已知明文，有时也可使用选择明文，某些 Feistel 结构可把复杂度降到约 2^{n/4}。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "When the round function and key schedule are self-similar, the attack can be independent of the number of rounds; it usually uses known plaintext and sometimes chosen plaintext, and some Feistel structures allow complexity to drop to about 2^{n/4}.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--slide-attack-r139-used",
+          "entryId": "attack--slide-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文给出对 TREYFER、2K-DES 和 Blowfish 变体的实际攻击；例如 TREYFER 用 2^32 个已知明文、2^44 工作量，2K-DES 用 2^32 个已知明文、2^50 工作量。WAKE-ROFB 只在限制性 IV/重同步假设下分析，论文明确说它未被攻破。",
+            "en": "The paper gives practical attacks on TREYFER, 2K-DES and a Blowfish variant; for example, TREYFER uses 2^32 known plaintexts and 2^44 work, while 2K-DES uses 2^32 known plaintexts and 2^50 work.WAKE-ROFB is analyzed only under restrictive IV/resynchronization assumptions, and the paper explicitly says it is not broken."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--slide-attack-r139-broken",
+          "entryId": "attack--slide-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "滑动攻击的复杂度通常接近 2^{n/2} 个已知明文；加入迭代计数器、固定随机常数或破坏密钥调度的周期性可以消除最简单的自相似性，但更复杂的变体仍难防御。",
+            "en": "Slide attacks usually need close to 2^{n/2} known plaintexts; iteration counters, fixed random constants or breaking the key schedule’s periodicity remove the simplest self-similarity, but more sophisticated variants remain hard to defend against.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--slide-attack-r139-history",
+          "entryId": "attack--slide-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Biryukov 和 Wagner 在 1999 年 FSE 论文中提出滑动攻击，说明增加轮数并不总能抵抗利用自相似性的攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「滑动攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：滑动攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 滑动攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Biryukov and Wagner introduced slide attacks in their 1999 FSE paper, showing that adding rounds does not always resist attacks that exploit self-similarity.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--slide-attack-r139-refs",
+          "entryId": "attack--slide-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 滑动攻击.https://zh.wikipedia.org/w/index.php?search=%E6%BB%91%E5%8A%A8%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 滑动攻击.https://zh.wikipedia.org/w/index.php?search=%E6%BB%91%E5%8A%A8%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--slide-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--slide-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--slide-attack-r139-principle",
+      "entryId": "attack--slide-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：滑动攻击（Slide Attack）。滑动攻击寻找`滑动对` (P,C) 和 (P′,C′)，使一轮加密把 P 映射到 P′、把 C 映射到 C′；利用这种一轮关系可以恢复轮子密钥。",
+        "en": "**Attack**: Slide Attack (滑动攻击).A slide attack looks for a slid pair (P,C) and (P′,C′) such that one round maps P to P′ and C to C′; this one-round relation can be used to recover round subkeys."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-r139-why",
+      "entryId": "attack--slide-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "当密码的轮函数和密钥调度具有自相似性时，攻击可以独立于轮数；它通常使用已知明文，有时也可使用选择明文，某些 Feistel 结构可把复杂度降到约 2^{n/4}。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "When the round function and key schedule are self-similar, the attack can be independent of the number of rounds; it usually uses known plaintext and sometimes chosen plaintext, and some Feistel structures allow complexity to drop to about 2^{n/4}.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-r139-used",
+      "entryId": "attack--slide-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文给出对 TREYFER、2K-DES 和 Blowfish 变体的实际攻击；例如 TREYFER 用 2^32 个已知明文、2^44 工作量，2K-DES 用 2^32 个已知明文、2^50 工作量。WAKE-ROFB 只在限制性 IV/重同步假设下分析，论文明确说它未被攻破。",
+        "en": "The paper gives practical attacks on TREYFER, 2K-DES and a Blowfish variant; for example, TREYFER uses 2^32 known plaintexts and 2^44 work, while 2K-DES uses 2^32 known plaintexts and 2^50 work.WAKE-ROFB is analyzed only under restrictive IV/resynchronization assumptions, and the paper explicitly says it is not broken."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-r139-broken",
+      "entryId": "attack--slide-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "滑动攻击的复杂度通常接近 2^{n/2} 个已知明文；加入迭代计数器、固定随机常数或破坏密钥调度的周期性可以消除最简单的自相似性，但更复杂的变体仍难防御。",
+        "en": "Slide attacks usually need close to 2^{n/2} known plaintexts; iteration counters, fixed random constants or breaking the key schedule’s periodicity remove the simplest self-similarity, but more sophisticated variants remain hard to defend against.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-r139-history",
+      "entryId": "attack--slide-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Biryukov 和 Wagner 在 1999 年 FSE 论文中提出滑动攻击，说明增加轮数并不总能抵抗利用自相似性的攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「滑动攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：滑动攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 滑动攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Biryukov and Wagner introduced slide attacks in their 1999 FSE paper, showing that adding rounds does not always resist attacks that exploit self-similarity.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--slide-attack-r139-refs",
+      "entryId": "attack--slide-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 滑动攻击.https://zh.wikipedia.org/w/index.php?search=%E6%BB%91%E5%8A%A8%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 滑动攻击.https://zh.wikipedia.org/w/index.php?search=%E6%BB%91%E5%8A%A8%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--slide-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening batch for siv-details.",
+  "entries": [
+    {
+      "id": "siv-details",
+      "inventoryIds": [
+        "siv"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R105 AEAD、流密码、标识密码与盲签名深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "SIV 确定性认证加密",
+        "en": "SIV Deterministic Authenticated Encryption"
+      },
+      "claimIds": [
+        "siv-r139-principle",
+        "siv-r139-why",
+        "siv-r139-used",
+        "siv-r139-broken",
+        "siv-r139-history",
+        "siv-r139-refs"
+      ],
+      "sourceIds": [
+        "siv-wikipedia",
+        "siv-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "gcm"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "siv-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SIV 确定性认证加密：为什么需要 → 核心机制 → 边界。",
+            "en": "SIV Deterministic Authenticated Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SIV 确定性认证加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SIV Deterministic Authenticated Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/siv-details-flow.zh.svg",
+            "en": "assets/siv-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fe5006164397f8ee89dd86f577f3bcee68e5bf2aef305f17fe86e3c9d6e4d035",
+            "en": "d01f058a9af7ffe921dc5a8e54b3843f70d5147cba6bd79bfce19276749a436b"
+          }
+        },
+        {
+          "id": "siv-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SIV 确定性认证加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SIV Deterministic Authenticated Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SIV 确定性认证加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SIV Deterministic Authenticated Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/siv-details-r138-model.zh.svg",
+            "en": "assets/siv-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8333af7e220499f78a85f918969fac2988d951be173982b2c0e559a55b9d11ad",
+            "en": "4d78a704bb125350ad79a390dd52358cc4f436266471c77626463cd409c6c199"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SIV 确定性认证加密（Synthetic IV）。### 合成 IV 与两条密钥\n\nSIV 把密钥 K 分成 K1/K2：K1 做 S2V/CMAC，K2 做 CTR。V=S2V(K1,AD...,P)，C=CTR(K2,V,P)，输出 V||C；V 既是计数器起点，也是认证标签。### S2V 不是普通 CMAC\n\nS2V 把多个变长输入压成一个块：对前 n−1 个输入迭代 dbl 和 XOR；最后一个输入如果不少于 128 位就 xorend，否则 dbl 后 pad XOR；最后再做一次 CMAC。这样不加长度编码也能处理多段 AD。### 确定性 vs 非确定性\n\n不给 nonce 时，SIV 是确定性的：同一 key、明文、AD 得到同一密文，适合密钥封装；把随机 nonce 放进 AD，就得到 nonce-based、nonce 重用下仍保留 DAE 安全的 misuse-resistant AEAD。",
+          "why": "SIV 解决的是没有可靠 nonce 时怎么安全加密的问题。密钥封装、磁盘块和数据库字段往往没有唯一 nonce；普通 GCM/CBC 一旦 nonce 重复就灾难性失败。SIV 用明文和 AD 派生 IV，nonce 重复最多泄露“相同明文/AD 产生相同密文”，不会泄露 CTR 密钥流。它也是 DAE（deterministic authenticated encryption）的标准构造：同一输入同一输出，解密先验标签再释放明文，天然适合 key wrapping。",
+          "used": "SIV 用于密钥封装（AES-SIV 常见 256/384/512 位密钥）、DNS 记录、JOSE 的 A128SIV 等；给 nonce 时可作为 misuse-resistant AEAD。工程要点：K1/K2 必须独立派生；S2V 输入顺序和 AD 域分离要固定；确定性模式不能加密可猜测的低熵明文而不加随机化；SIV 本身输出 128 位合成 IV，标签长度固定。",
+          "broken": "SIV 的安全性依赖 CMAC 是 PRF、CTR 是 IV-based encryption、密钥分离正确。nonce 复用不会像 GCM 那样直接泄露密钥流，但确定性模式会暴露“两次输入完全相同”；低熵明文可被枚举验证。实现边界：S2V 的 doubling 和 pad 要正确；解密必须先验证 V 再解密或释放明文；不要把 SIV 的 V 当普通公开 IV 而省略验证；密钥封装要防降级和密钥分离错误。",
+          "history": "SIV 由 Rogaway 和 Shrimpton 在 2006 年 EUROCRYPT 论文中提出，作为 key-wrap 问题的可证明安全解法；2008 年 Harkins 把它写成 RFC 5297（AES-SIV）。它不是 AES-GCM-SIV：后者是 RFC 8452 的非确定性/nonce-based 变体，构造不同。SIV 后来进入 JOSE 的 A128SIV/A256SIV 等算法，但并非 TLS 主流套件。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：SIV 确定性认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 SIV 确定性认证加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for SIV 确定性认证加密. https://zh.wikipedia.org/w/index.php?search=SIV%20%E7%A1%AE%E5%AE%9A%E6%80%A7%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nSIV 确定性认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Synthetic IV (SIV 确定性认证加密). ### Synthetic IV and two keys\n\nSIV splits the key K into two halves: K1 drives a PRF/CMAC and K2 drives CTR. It first computes S2V over associated data AD1…ADn and plaintext P to obtain a synthetic IV V, then encrypts P with CTR using V as the initial counter. The output is V || C; V is both the counter start and the authentication tag. ### S2V is not plain CMAC\n\nS2V compresses multiple variable-length inputs into one block: it iterates dbl and XOR over the first n−1 inputs; the last input is xorend if at least 128 bits, otherwise doubled, padded and XORed; a final CMAC produces V. This handles multiple AD components without a separate length encoding. ### Deterministic vs nonce-based\n\nWithout a nonce, SIV is deterministic: the same key, plaintext and AD produce the same ciphertext, which suits key wrapping. Putting a random nonce into AD yields a nonce-based, misuse-resistant AEAD that retains DAE security under nonce reuse.",
+          "why": "SIV solves the problem of encrypting safely when no reliable nonce exists. Key wrapping, disk blocks and database fields often lack a unique nonce; ordinary GCM/CBC fails catastrophically on nonce reuse. SIV derives the IV from plaintext and AD, so nonce reuse at most reveals that identical plaintext/AD produced identical ciphertext; it does not leak the CTR keystream.\n\nIt is also the standard construction for deterministic authenticated encryption (DAE): same input, same output; decryption verifies the tag before releasing plaintext, which makes it natural for key wrapping.",
+          "used": "SIV is used for key wrapping (AES-SIV commonly uses 256/384/512-bit keys), DNS records and JOSE A128SIV; with a nonce it serves as a misuse-resistant AEAD.\n\nRequirements: derive K1 and K2 independently; fix S2V input order and AD domain separation; do not encrypt low-entropy guessable plaintext deterministically without randomization; SIV itself outputs a 128-bit synthetic IV and a fixed tag length.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "SIV security rests on CMAC being a PRF, CTR being IV-based encryption and correct key separation. Nonce reuse does not leak the keystream as in GCM, but deterministic mode reveals that two inputs are identical; low-entropy plaintext can be enumerated and verified.\n\nImplementation boundaries: implement doubling and padding correctly; verify V before decrypting or releasing plaintext; do not treat V as an ordinary public IV and skip verification; key wrapping must resist downgrade and key-separation errors.",
+          "history": "SIV was proposed by Rogaway and Shrimpton at EUROCRYPT 2006 as a provably secure treatment of key wrapping; Harkins specified AES-SIV in RFC 5297 in 2008. It is not AES-GCM-SIV: RFC 8452 defines a different nonce-based construction.\n\nSIV later appeared in JOSE A128SIV/A256SIV algorithms, but never became a mainstream TLS suite.",
+          "refs": "- Wikipedia search entry for SIV 确定性认证加密. https://zh.wikipedia.org/w/index.php?search=SIV%20%E7%A1%AE%E5%AE%9A%E6%80%A7%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nSynthetic IV: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "siv-r139-formal",
+          "entryId": "siv-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：SIV 确定性认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 SIV 确定性认证加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "siv-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "siv-r139-formal"
+      ],
+      "sources": [
+        "siv-wikipedia",
+        "siv-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "siv-r139-formal",
+      "entryId": "siv-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：SIV 确定性认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 SIV 确定性认证加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "siv-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

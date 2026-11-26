@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt32907-details",
+  "sources": [
+    {
+      "id": "gbt32907-wikipedia",
+      "title": "Wikipedia search entry for SM4 分组密码算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SM4 分组密码算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt32907-r139-principle",
+          "entryId": "gbt32907-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：SM4 分组密码算法（SM4 Block Cipher Algorithm）。### 分组与轮函数\n\nSM4 使用 128 位分组和 128 位密钥，32 轮迭代。记第 i 轮状态为 X_i…X_{i+3}，则\n\nX_{i+4}=X_i⊕T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rk_i)，\n\n其中 T(B)=L(τ(B))：τ 对 4 个字节并行应用 S 盒，L(B)=B⊕(B≪2)⊕(B≪10)⊕(B≪18)⊕(B≪24)。### 密钥扩展\n\n初始 K0…K3 由 FK 常量与密钥异或得到；轮密钥按\n\nrk_i=K_{i+4}=K_i⊕T′(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)\n\n生成，T′ 使用 L′(B)=B⊕(B≪13)⊕(B≪23)。解密与加密结构相同，只把 rk0…rk31 逆序使用。### 模式与认证\n\nSM4 本身只提供分组置换；ECB 不隐藏模式，CBC 需要独立 MAC，CTR 必须保证计数器/IV 不重用。TLS 1.3 的 AEAD_SM4_GCM 与 AEAD_SM4_CCM 把 SM4 作为底层分组密码，按 GCM/CCM 规则构造认证加密。",
+            "en": "**Standard**: SM4 Block Cipher Algorithm (SM4 分组密码算法).### Block and round function\n\nSM4 uses a 128-bit block and 128-bit key over 32 rounds."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32907-r139-why",
+          "entryId": "gbt32907-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么是国密基线\n\nSM4 以 32 轮非线性迭代获得扩散与混淆，128 位分组适合与 SM3、SM2 组成 TLS、IPSec 与密码模块套件。它的公开标准与测试向量使其成为可互操作的基线算法。SM4 是分组密码；SM3 是杂凑，SM2 是椭圆曲线公钥算法。三者常在同一协议中组合，但安全目标不同，不能互相替代。",
+            "en": "### Why it is the national baseline\n\nSM4 obtains diffusion and confusion through 32 nonlinear rounds; its 128-bit block fits TLS, IPsec and cryptographic-module suites together with SM3 and SM2.Public standards and test vectors make it an interoperable baseline."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32907-r139-used",
+          "entryId": "gbt32907-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.选模式：需要机密性且无认证时用 CBC+MAC 或 CTR+MAC；需要认证加密时用 GCM/CCM。2.管 IV：GCM 的 IV 必须唯一；CBC 的 IV 可公开但需不可预测；CTR 计数器不得回绕。3.管密钥：轮密钥由主密钥扩展，主密钥进入密码模块的保护边界。4.验向量：实现必须跑标准测试向量，并检查解密逆序轮密钥。### 不能怎么用\n\n不能把 ECB 用于多块消息；不能把 SM4 直接当 MAC；不能用固定 IV 复用 GCM 密钥。",
+            "en": "### Correct use\n\n1.Choose a mode: use CBC+MAC or CTR+MAC for confidentiality without built-in authentication; use GCM/CCM for authenticated encryption."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32907-r139-broken",
+          "entryId": "gbt32907-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.模式误用：ECB 泄露块结构，CBC 无 MAC 可被填充/重放攻击，CTR/GCM 复用 IV 会破坏机密性或认证。2.实现泄漏：查表 S 盒与缓存访问可被侧信道；故障注入可跳过轮或破坏最后一轮。3.密钥管理：主密钥明文驻留、轮密钥未隔离、调试接口未关闭，都会绕过算法强度。4.过度声明：SM4 没有已知实用的全轮经典攻击，但这不等于所有实现都安全；该条目不给实现认证。",
+            "en": "### Failure conditions\n\n1.Mode misuse: ECB leaks block structure, CBC without a MAC permits padding/replay attacks, and CTR/GCM IV reuse breaks confidentiality or authentication."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32907-r139-history",
+          "entryId": "gbt32907-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 标准沿革\n\nSM4 最初以 SMS4 名称进入国内标准，2012 年进入 GM/T 序列，2016 年发布 GB/T 32907—2016；随后进入 ISO/IEC 18033-3，并在 RFC 8998（2021）中作为 TLS 1.3 的 SM4 套件底层分组密码。不同标准版本的测试向量、模式和接口要求可能不同；实现应以所声明版本为准，不能把该条目公式当作条款号替代。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "### Standard history\n\nSM4 entered the domestic standard sequence as SMS4, moved into GM/T in 2012 and was published as GB/T 32907—2016 in 2016; it later entered ISO/IEC 18033-3 and became the block cipher behind the TLS 1.3 SM4 suites in RFC 8998 (2021).### Version boundary\n\nTest vectors, modes and interface requirements can differ between editions; implementations follow the edition they claim, and this entry is not a clause-number substitute."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32907-r139-refs",
+          "entryId": "gbt32907-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SM4 分组密码算法.https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SM4 分组密码算法.https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt32907-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt32907-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt32907-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt32907-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt32907-r139-principle",
+      "entryId": "gbt32907-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：SM4 分组密码算法（SM4 Block Cipher Algorithm）。### 分组与轮函数\n\nSM4 使用 128 位分组和 128 位密钥，32 轮迭代。记第 i 轮状态为 X_i…X_{i+3}，则\n\nX_{i+4}=X_i⊕T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rk_i)，\n\n其中 T(B)=L(τ(B))：τ 对 4 个字节并行应用 S 盒，L(B)=B⊕(B≪2)⊕(B≪10)⊕(B≪18)⊕(B≪24)。### 密钥扩展\n\n初始 K0…K3 由 FK 常量与密钥异或得到；轮密钥按\n\nrk_i=K_{i+4}=K_i⊕T′(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)\n\n生成，T′ 使用 L′(B)=B⊕(B≪13)⊕(B≪23)。解密与加密结构相同，只把 rk0…rk31 逆序使用。### 模式与认证\n\nSM4 本身只提供分组置换；ECB 不隐藏模式，CBC 需要独立 MAC，CTR 必须保证计数器/IV 不重用。TLS 1.3 的 AEAD_SM4_GCM 与 AEAD_SM4_CCM 把 SM4 作为底层分组密码，按 GCM/CCM 规则构造认证加密。",
+        "en": "**Standard**: SM4 Block Cipher Algorithm (SM4 分组密码算法).### Block and round function\n\nSM4 uses a 128-bit block and 128-bit key over 32 rounds."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32907-r139-why",
+      "entryId": "gbt32907-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么是国密基线\n\nSM4 以 32 轮非线性迭代获得扩散与混淆，128 位分组适合与 SM3、SM2 组成 TLS、IPSec 与密码模块套件。它的公开标准与测试向量使其成为可互操作的基线算法。SM4 是分组密码；SM3 是杂凑，SM2 是椭圆曲线公钥算法。三者常在同一协议中组合，但安全目标不同，不能互相替代。",
+        "en": "### Why it is the national baseline\n\nSM4 obtains diffusion and confusion through 32 nonlinear rounds; its 128-bit block fits TLS, IPsec and cryptographic-module suites together with SM3 and SM2.Public standards and test vectors make it an interoperable baseline."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32907-r139-used",
+      "entryId": "gbt32907-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.选模式：需要机密性且无认证时用 CBC+MAC 或 CTR+MAC；需要认证加密时用 GCM/CCM。2.管 IV：GCM 的 IV 必须唯一；CBC 的 IV 可公开但需不可预测；CTR 计数器不得回绕。3.管密钥：轮密钥由主密钥扩展，主密钥进入密码模块的保护边界。4.验向量：实现必须跑标准测试向量，并检查解密逆序轮密钥。### 不能怎么用\n\n不能把 ECB 用于多块消息；不能把 SM4 直接当 MAC；不能用固定 IV 复用 GCM 密钥。",
+        "en": "### Correct use\n\n1.Choose a mode: use CBC+MAC or CTR+MAC for confidentiality without built-in authentication; use GCM/CCM for authenticated encryption."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32907-r139-broken",
+      "entryId": "gbt32907-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.模式误用：ECB 泄露块结构，CBC 无 MAC 可被填充/重放攻击，CTR/GCM 复用 IV 会破坏机密性或认证。2.实现泄漏：查表 S 盒与缓存访问可被侧信道；故障注入可跳过轮或破坏最后一轮。3.密钥管理：主密钥明文驻留、轮密钥未隔离、调试接口未关闭，都会绕过算法强度。4.过度声明：SM4 没有已知实用的全轮经典攻击，但这不等于所有实现都安全；该条目不给实现认证。",
+        "en": "### Failure conditions\n\n1.Mode misuse: ECB leaks block structure, CBC without a MAC permits padding/replay attacks, and CTR/GCM IV reuse breaks confidentiality or authentication."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32907-r139-history",
+      "entryId": "gbt32907-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 标准沿革\n\nSM4 最初以 SMS4 名称进入国内标准，2012 年进入 GM/T 序列，2016 年发布 GB/T 32907—2016；随后进入 ISO/IEC 18033-3，并在 RFC 8998（2021）中作为 TLS 1.3 的 SM4 套件底层分组密码。不同标准版本的测试向量、模式和接口要求可能不同；实现应以所声明版本为准，不能把该条目公式当作条款号替代。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "### Standard history\n\nSM4 entered the domestic standard sequence as SMS4, moved into GM/T in 2012 and was published as GB/T 32907—2016 in 2016; it later entered ISO/IEC 18033-3 and became the block cipher behind the TLS 1.3 SM4 suites in RFC 8998 (2021).### Version boundary\n\nTest vectors, modes and interface requirements can differ between editions; implementations follow the edition they claim, and this entry is not a clause-number substitute."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32907-r139-refs",
+      "entryId": "gbt32907-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SM4 分组密码算法.https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SM4 分组密码算法.https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt32907-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

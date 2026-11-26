@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-04",
+  "scope": "Compact reference entry for hsm: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "hsm-details",
+      "inventoryIds": [
+        "hsm"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释硬件安全模块的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Hardware Security Module: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "硬件安全模块",
+        "en": "Hardware Security Module"
+      },
+      "claimIds": [
+        "hsm-r139-principle",
+        "hsm-r139-why",
+        "hsm-r139-used",
+        "hsm-r139-broken",
+        "hsm-r139-history",
+        "hsm-r139-refs"
+      ],
+      "sourceIds": [
+        "hsm-wikipedia",
+        "hsm-reference-ref"
+      ],
+      "related": [
+        "fips140-3",
+        "fips-140",
+        "iso19790",
+        "key-derivation-function"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：硬件安全模块（Hardware Security Module）。定义句来自受控非密信息保护建议的讨论段：「Hardware security module (HSM) devices safeguard and manage cryptographic keys and provide cryptographic processing.」这一句把职责分成两半——既要管密钥，也要做运算；同一份文件的缩写表第 1866 行把 HSM 展开为 Hardware Security Module，别名因此有据。紧接着那句的前半段说明托管的是什么：「Cryptographic operations (e.g., encryption, decryption, and signature generation and verification) are typically hosted on the HSM device」。这两处引文所在的位置限制了它们的含义，所以位置也写在这里：控制点 03.08.09 是一条备份控制，其要求项 b.印着「Implement cryptographic mechanisms to prevent the unauthorized disclosure of CUI at backup storage locations」，讨论段的第一句则把机制的选择挂在备份信息的保密需求上——这份文件是在一条备份保护控制之下提到 HSM 的，而不是在给它下通用定义。就这些句子本身而言，文件只说这类装置做什么：保管并管理密钥、托管运算、许多实现还做硬件加速；它没有写装置内部怎么造，没有命令接口，没有实测数字，也没点任何产品或厂商的名字。",
+          "why": "为什么要这么一台装置，密钥管理建议给的是第 5.5.2 节对策清单里的第三条：它要求把明文形态的秘密密钥与私钥限制在受物理保护的容器之内。紧跟的一句原样引出，因为它点名了装置类别：「This includes key generators, key-transport devices, key loaders, cryptographic modules, hardware security modules (HSMs), and key-storage devices」。按字面读，HSM 在这份清单里是被列为容器之一，与密码模块并列而不是其上。清单在它前面还排着两条：第 1701 行要把 secret key 或非对称私钥处于明文形态的时间限制住，第 1702 行要防止人看到明文形态的秘密对称密钥与非对称私钥；第 1701 行所说的 secret key，同一份文件在第 850 行把它定义为用于对称算法的那一把密钥，该条目因此按对称密钥来理解。把这三条放在一起看，这台装置买的是把密钥的可见性收进硬件边界之内——这是该条目对清单的读法，原文没有这样写。不直引第三条首句的原因也交代在这里：那句的最后一个词在原文里自带一对引号，本库英文引文用 ASCII 引号成对标出，内层同种记号会提前截断引文，所以这句标明为转述而不是照抄。",
+          "used": "用途与位置由后量子过渡报告写明：「Cryptographic hardware modules, such as hardware security modules (HSMs) and Trusted Platform Modules (TPMs), provide secure environments for performing cryptographic operations and storing sensitive keys.」同一节接着说它们「used in various applications, from securing server infrastructure to protecting cryptographic keys on personal devices」——从服务器基础设施一路到个人设备上的密钥保护。",
+          "broken": "限度要说清楚，而且只说这份报告说过的。报告没有把硬件模块写成一种免疫装置：它对硬件给的是要求而不是保证——定义句与用途句（第 444-447 行）之后空一行，第 449-450 行紧接着说硬件模块「must be upgraded or redesigned to support PQC algorithms, which often have larger key sizes and different computational requirements」，下一句（从第 450 行尾起，到第 455 行止）还要更新固件或硬件、让模块能高效执行抗量子运算。报告也没写这类装置会被怎样攻破，该条目因此不写攻破方式。还有两处容易误引的地方必须在这里交代：这份报告一共两次谈到侧信道，两处都不在说硬件模块。第一次在第 438-440 行，位于「2.2.2.Software Cryptographic Libraries」这一标题（第 425 行）之下，说的是软件库的过渡「This transition involves adding new algorithms, optimizing their implementations for performance, and ensuring that those implementations are secure against side-channel attacks」；第二次在第 617-619 行，位于「3.2.PQC-Classical Hybrid Protocols」这一标题（第 602 行）之下，原句是「Early implementations of new cryptographic algorithms may introduce additional security risks, such as those arising from implementation errors or side-channel vulnerabilities」，讲新密码算法的早期实现，句中没有 HSM。本行的 side-channel 标签因此记的是这份报告对密码学实现普遍提出的要求，不是它对 HSM 下的一句判断。",
+          "history": "断代只能说到文献，说不到发明。过渡报告自己的日期印在题头里：第 36 行单独排 October 2026，第 43-44 行与第 93-94 行的页脚印记把同一个日期与报告标识 NIST IR 8547 排在一起；标题在这份抽取里分两行排——第 4 行「Transition to Post-Quantum」、第 5 行「Cryptography Standards」——所以该条目按行号指它，不把它当成一段连续引文。这份文件没有给硬件安全模块这一装置类别定年，也没写第一台出现在哪一年，该条目因此不写。行的时代从 e14-standardization 改到 e17-post-quantum：两份 era.md 各自第 10 行印着 1977–2001 与 2016–今，而在所有印作年份区间的窗口里，2026 年只落在后一个之内，而就主题说，这份来源本身就是后量子过渡文献。本行另外两份来源的出版日期由各自的来源记录登记，本节不替那两份文件复述题头。",
+          "refs": "- Wikipedia search entry for 硬件安全模块. https://zh.wikipedia.org/w/index.php?search=%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n硬件安全模块的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Hardware Security Module (硬件安全模块). The definition comes from the discussion paragraph of a control in the CUI protection recommendation: \"Hardware security module (HSM) devices safeguard and manage cryptographic keys and provide cryptographic processing.\" The sentence splits the job in two - the device holds and manages keys, and it also does the math - and the same file's acronym table at line 1866 expands HSM to Hardware Security Module, which is what supports the alias. The opening clause of the very next sentence says what is hosted there: \"Cryptographic operations (e.g., encryption, decryption, and signature generation and verification) are typically hosted on the HSM device\". Where those two spans sit limits what they mean, so the position is given with them: control 03.08.09 is a backup control, its requirement item b. prints \"Implement cryptographic mechanisms to prevent the unauthorized disclosure of CUI at backup storage locations\", and the discussion opens by making the choice of mechanism depend on keeping backup information confidential. This document mentions the HSM underneath a backup-protection control, not as a general definition of the device class. As far as these spans go, the file says only what such devices do - hold and manage keys, host operations, and in many implementations accelerate them - and says nothing about how a device is built: no command interface, no measured figure, no product name, no vendor name.",
+          "why": "Why the device exists at all is answered by the third protective measure in Sec. 5.5.2 of the key-management recommendation, which confines plaintext keys to what the file calls physically protected containers. The sentence that follows is quoted, because it is the one naming the device class: \"This includes key generators, key-transport devices, key loaders, cryptographic modules, hardware security modules (HSMs), and key-storage devices\". Read as written, the HSM sits in that list as one container type beside cryptographic modules, not above them. Two procedures precede it: line 1701 limits the time a secret key or an asymmetric private key spends in plaintext form, and line 1702 keeps people from seeing such keys while they are still in plaintext. The same file defines the first of those at line 850, as the key that goes with a symmetric algorithm, which is why this entry reads item 1 as being about symmetric keys. Taking the three together, what the device buys is confinement of key visibility inside a hardware boundary - that is how this entry reads the list, not a statement the recommendation makes. Why the first sentence of item 3 is reported instead of quoted: it ends in a word the file itself puts inside quotation marks, and a mark of the same kind as the delimiter would cut the span short, which would misquote the sentence rather than protect it.",
+          "used": "The place and the range come from the post-quantum transition report: \"Cryptographic hardware modules, such as hardware security modules (HSMs) and Trusted Platform Modules (TPMs), provide secure environments for performing cryptographic operations and storing sensitive keys.\" The same section adds that they are \"used in various applications, from securing server infrastructure to protecting cryptographic keys on personal devices\" - server infrastructure through personal devices.",
+          "broken": "The limit has to be stated, and stated only as far as this report goes. It presents hardware modules as needing work rather than as immune to anything: the text is a requirement, not a guarantee - after the definition and use sentences at lines 444-447 and a blank line, lines 449-450 say such modules \"must be upgraded or redesigned to support PQC algorithms, which often have larger key sizes and different computational requirements\", and the sentence that follows, which begins on line 450 and ends on line 455, asks for firmware or hardware updates and for modules able to run quantum-resistant operations efficiently. The report describes no way in which such a module is defeated, so this entry offers no defeat methods. Two other sentences are easy to mis-attribute, so they are pinned here, headings quoted as the file prints them: the report mentions side-channel attacks twice and neither mention is about hardware modules. The first, at lines 438-440, sits under \"2.2.2. Software Cryptographic Libraries\" (heading line 425) and is about updating libraries - \"This transition involves adding new algorithms, optimizing their implementations for performance, and ensuring that those implementations are secure against side-channel attacks\". The second, at lines 617-619, sits under \"3.2. PQC-Classical Hybrid Protocols\" (heading line 602) and reads \"Early implementations of new cryptographic algorithms may introduce additional security risks, such as those arising from implementation errors or side-channel vulnerabilities\" - a sentence about early implementations of new algorithms, with no HSM in it. The side-channel label on this row therefore records what the report requires of cryptographic implementations in general, not a claim it makes about HSMs.",
+          "history": "Dating can reach the documents but not the invention. The transition report prints its own date: line 36 sets October 2026 on its own, and the running imprints at lines 43-44 and 93-94 pair that date with the report's identifier NIST IR 8547. Its title is set across two lines in this extraction - line 4 reads \"Transition to Post-Quantum\" and line 5 reads \"Cryptography Standards\" - so this entry cites those line numbers rather than treating the title as one continuous span. The report gives no year for the hardware security module as a device class and no first appearance, so none is claimed here. The row's era moves from e14-standardization to e17-post-quantum: the two era.md files print their windows on line 10, 1977-2001 and 2016 onward, and among the windows printed as year ranges 2026 falls inside only the second; on theme as well, this source is post-quantum transition literature. The publication dates of the row's other two sources are registered in their own source records, and this section does not speak for those files' front matter.",
+          "refs": "- Wikipedia search entry for 硬件安全模块. https://zh.wikipedia.org/w/index.php?search=%E7%A1%AC%E4%BB%B6%E5%AE%89%E5%85%A8%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nHardware Security Module: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "硬件安全模块 HSM：保护并管理密钥、同时承担密码运算的硬件装置。",
+          "可信平台模块 TPM：过渡报告在同一句里与 HSM 并举的装置，两者被该报告称作密码硬件模块。",
+          "密码运算托管：受控非密信息保护建议说加密、解密、签名生成与验证通常放在装置上执行；它没有说这些运算不在别处执行。",
+          "物理保护容器：密钥管理建议第 5.5.2 节清单里的第 3 条对策，把明文密钥限制在这类容器内。",
+          "密钥装载器 key loader：同一条款里与 HSM 并列列出的一类装置。",
+          "硬件加速：该建议补说一句许多实现为密码运算提供硬件加速机制；这是它对所述装置的描述，不是它给出的选购理由。"
+        ],
+        "en": [
+          "hardware security module (HSM): a device class that safeguards and manages cryptographic keys while providing cryptographic processing.",
+          "trusted platform module (TPM): the device the transition report names in the same sentence as the HSM, both being what that report calls cryptographic hardware modules.",
+          "hosted cryptographic operations: the CUI recommendation puts cipher and signature work on the device as what typically happens, and says nothing about where else it may happen.",
+          "physically protected container: the third measure in the key-management recommendation's list, which confines plaintext keys to devices of this kind.",
+          "key loader: one of the device types named in that same list beside HSMs.",
+          "hardware acceleration: the CUI recommendation adds that many implementations accelerate the operations they host, as a description of such devices rather than a stated reason to deploy one."
+        ]
+      },
+      "figures": [
+        {
+          "id": "hsm-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "硬件安全模块：为什么需要 → 核心机制 → 边界。",
+            "en": "Hardware Security Module: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "硬件安全模块 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Hardware Security Module, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/hsm-details-flow.zh.svg",
+            "en": "assets/hsm-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e5ccf1fe86c77bd734fbfa3a7f4924f3d257e54a1313f70167b529acb25eecef",
+            "en": "c46c8fb3b31d12dfe3c868e912500f18f30d62a40140f722e3c91e1ffbf54fe3"
+          }
+        },
+        {
+          "id": "hsm-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "硬件安全模块 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Hardware Security Module: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "硬件安全模块 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Hardware Security Module, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/hsm-details-r138-model.zh.svg",
+            "en": "assets/hsm-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e08dd46b0d02bbd3391df3340c0630104138c682b2f457492e1aa0e073b96d84",
+            "en": "db9266cb8abc3c643aff393c2d1d21dfa67f4f6e38efec26c2e11b1f294dc3f9"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "hsm-r139-formal",
+          "entryId": "hsm-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：硬件安全模块的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 硬件安全模块 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "hsm-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "hsm-r139-formal"
+      ],
+      "sources": [
+        "hsm-wikipedia",
+        "hsm-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "hsm-r139-formal",
+      "entryId": "hsm-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：硬件安全模块的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 硬件安全模块 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "hsm-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

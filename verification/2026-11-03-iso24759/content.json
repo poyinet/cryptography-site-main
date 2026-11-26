@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for iso24759: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "iso24759-details",
+      "inventoryIds": [
+        "iso24759"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释ISO/IEC 24759 密码模块测试要求的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of ISO/IEC 24759 Testing Requirements for Cryptographic Modules: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "ISO/IEC 24759 密码模块测试要求",
+        "en": "ISO/IEC 24759 Testing Requirements for Cryptographic Modules"
+      },
+      "claimIds": [
+        "iso24759-r139-principle",
+        "iso24759-r139-why",
+        "iso24759-r139-used",
+        "iso24759-r139-broken",
+        "iso24759-r139-history",
+        "iso24759-r139-refs"
+      ],
+      "sourceIds": [
+        "iso24759-wikipedia",
+        "iso24759-reference-ref"
+      ],
+      "related": [
+        "iso19790",
+        "fips140-3",
+        "standard-fips140-3"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：密码模块测试要求（Test requirements for cryptographic modules）。",
+          "why": "为什么需要独立的测试文件：FIPS 140-3 的关键词行把两套文件并列印出「Federal Information Processing Standard (FIPS); ISO/IEC 19790; ISO/IEC 24759.」，而正文（§3）对测试执行者的规定是分离的：「accredited laboratories perform cryptographic module compliance/conformance testing.」（留存件里该短语紧跟在 NVLAP 括注之后）要求文件与被认可的检测程序分开，才能让同一套模块要求在实验室体系里被一致执行。",
+          "used": "用法体现在验证链条上（§1 与 §12 的目录项）：模块按本国要求验证时，测试路径由这一份文件给出，而 FIPS 140-3 明确允许验证机构在其附录上作本国化的修改；同节还解释修改何以有限度——它先是声明与 ISO/IEC 19790:2012(E) 对齐并附以「includes modifications of the Annexes」，再在目录里列出「Documents Modifying ISO/IEC 24759:2017(E)」一节，说明修正案是逐份登记、可核对的。",
+          "broken": "模型只在登记的输入域与参数假设内成立；越界输入、密钥复用、实现偏离规范与版本差异都会使结论失效。",
+          "history": "沿革事实由留存件的日期与并列关系给出：FIPS 140-3 的日期行印作「Federal Information Processing Standards Publication 140-3 March 22, 2019」，其对齐的国际版是 19790:2012(E)、测试配套点名 24759:2017(E)——即国际标准先行、本国第三版对齐并在附录上留本国修改余地。获取链接与 DOI 行按项目口径留在引号之外，不进入正文。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：密码模块测试要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 密码模块测试要求 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 密码模块测试要求 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 密码模块测试要求. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97%E6%B5%8B%E8%AF%95%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n密码模块测试要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Test requirements for cryptographic modules (密码模块测试要求). The attestable first-hand fact is the relationship printed in FIPS 140-3: \"The testing for these requirements will be in accordance with ISO/IEC 24759:2017(E)\" - the same sentence then allows a validation authority to modify, add to or delete vendor evidence and testing. So where the 19790 line carries security requirements, 24759 carries the testing: it does not restate algorithm requirements, it specifies how conformance is tested.",
+          "why": "Why a separate testing document: the keyword line of FIPS 140-3 prints the two ISO companions side by side, \"Federal Information Processing Standard (FIPS); ISO/IEC 19790; ISO/IEC 24759.\" and the body separates the requirement text from who performs testing: \"accredited laboratories perform cryptographic module compliance/conformance testing.\" (in the retained file this phrase follows the NVLAP parenthetical) Splitting requirements from accredited test procedure is what lets one set of module requirements be applied consistently across laboratories.",
+          "used": "Use sits in the validation chain, stated in §1 and listed in §12: modules are assessed against the national requirements while the testing path comes from this document, and FIPS 140-3 expressly permits annex modifications by the validation authority - it says it \"includes modifications of the Annexes\" and its contents list carries a section titled \"Documents Modifying ISO/IEC 24759:2017(E)\". The point is that amendments are registered one by one and are therefore checkable rather than implicit.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The first limit is evidentiary: the ISO/IEC 24759 text is not retained in this workspace, so this entry rests on FIPS 140-3's account alone and asserts nothing about clause numbers, test items or verdict rules. The second is a version discrepancy: the retained text names \"ISO/IEC 24759:2017(E)\" while the catalog row's citation title reads ISO/IEC 24759:2025. Against the retained document that year needs separate attestation; it is therefore logged as an outstanding item rather than silently amended, since a title change has to go through the overlay layer and moves the row's entryHash.",
+          "history": "The lineage comes from the retained dates and pairings: FIPS 140-3 prints \"Federal Information Processing Standards Publication 140-3 March 22, 2019\", aligns with ISO/IEC 19790:2012(E) and names ISO/IEC 24759:2017(E) for testing - the international editions came first, and the national third edition aligned to them while reserving annex modifications. Retrieval and DOI lines stay outside the quotes per house rule and never enter the article text.",
+          "refs": "- Wikipedia search entry for 密码模块测试要求. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97%E6%B5%8B%E8%AF%95%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nTest requirements for cryptographic modules: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "ISO/IEC 24759:2017(E)：与 FIPS 140-3 配套的测试（testing）文件。",
+          "测试文件：规定怎么验证模块是否满足安全要求的那一份。",
+          "允许修改：验证机构可对证据与测试作的增删改。",
+          "NVLAP：负责给实验室授权的认可计划。",
+          "符合性/一致性测试：认可实验室对模块执行的检测。",
+          "CMVP：承担验证职责的机构角色。"
+        ],
+        "en": [
+          "ISO/IEC 24759:2017(E): the testing companion to the module security requirements.",
+          "Testing document: the file that states how conformance is tested.",
+          "Permitted modifications: additions, deletions or changes allowed to a validation authority.",
+          "NVLAP: the accreditation programme authorising the laboratories.",
+          "Compliance/conformance testing: what accredited laboratories perform on modules.",
+          "CMVP: the role acting as validation authority."
+        ]
+      },
+      "figures": [
+        {
+          "id": "iso24759-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ISO/IEC 24759 密码模块测试要求：为什么需要 → 核心机制 → 边界。",
+            "en": "ISO/IEC 24759 Testing Requirements for Cryptographic Modules: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ISO/IEC 24759 密码模块测试要求 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ISO/IEC 24759 Testing Requirements for Cryptographic Modules, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/iso24759-details-flow.zh.svg",
+            "en": "assets/iso24759-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6f5072911851f0bd378bf4d32e81f40d8670e57de3b9b7dd88f1c428541a669e",
+            "en": "19c679cfacdca92efaf8ce78430113182fb5c7f690b5f51ced91a7b33935b26b"
+          }
+        },
+        {
+          "id": "iso24759-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ISO/IEC 24759 密码模块测试要求 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ISO/IEC 24759 Testing Requirements for Cryptographic Modules: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ISO/IEC 24759 密码模块测试要求 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ISO/IEC 24759 Testing Requirements for Cryptographic Modules, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/iso24759-details-r138-model.zh.svg",
+            "en": "assets/iso24759-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8fa3fce9da558d8db85ee0eca3faac54e6ab8558d37991fee25224fe1832c14b",
+            "en": "a589f6258b6ca518bdf54273f1a9128c8f38862102c6a329e8bd58e902e03743"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "iso24759-r139-formal",
+          "entryId": "iso24759-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：密码模块测试要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 密码模块测试要求 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "iso24759-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "iso24759-r139-formal"
+      ],
+      "sources": [
+        "iso24759-wikipedia",
+        "iso24759-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "iso24759-r139-formal",
+      "entryId": "iso24759-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：密码模块测试要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 密码模块测试要求 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "iso24759-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

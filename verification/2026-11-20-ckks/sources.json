@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ckks-details",
+  "sources": [
+    {
+      "id": "ckks-wikipedia",
+      "title": "Wikipedia search entry for CKKS 近似同态加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CKKS%20%E8%BF%91%E4%BC%BC%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CKKS 近似同态加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ckks-r139-principle",
+          "entryId": "ckks-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：CKKS 近似同态加密（Cheon-Kim-Kim-Song FHE）。CKKS 把实数或复数向量编码进多项式，用环上 LWE 密文承载。加法保持近似精度，乘法后执行重缩放（rescaling）来降低模数并控制噪声；每个槽位可以并行计算，因此一条密文能承载成百上千个浮点数。解密结果不是精确值，而是带误差的近似值，误差来自编码、噪声和重缩放。",
+            "en": "**Algorithm**: Cheon-Kim-Kim-Song FHE (CKKS 近似同态加密).CKKS encodes real or complex vectors into polynomials carried by ring-LWE ciphertexts."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        },
+        {
+          "id": "ckks-r139-why",
+          "entryId": "ckks-details",
+          "section": "why",
+          "statement": {
+            "zh": "大量实际任务本来就使用浮点数：神经网络推理、统计回归、信号处理、科学计算。BFV 的精确整数语义在这些场景里要么需要定点化，要么深度不够；CKKS 用可控近似换来了更自然的向量运算。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Many real workloads already use floating point: neural-network inference, statistical regression, signal processing and scientific computing.BFV's exact-integer semantics require fixed-point conversion or lose depth in these settings; CKKS trades controlled approximation for natural vector arithmetic."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        },
+        {
+          "id": "ckks-r139-used",
+          "entryId": "ckks-details",
+          "section": "used",
+          "statement": {
+            "zh": "隐私保护机器学习推理、加密统计、基因组关联分析、信号处理、联邦分析。工程上要设计乘法深度、缩放因子和模数链；不是所有算子都能同态化，比较、除法和非线性函数通常需要多项式近似。",
+            "en": "Privacy-preserving machine-learning inference, encrypted statistics, genomic association studies, signal processing and federated analytics.Implementations design multiplication depth, scaling factors and modulus chains; not every operator is homomorphic, and comparison, division and nonlinear functions usually need polynomial approximation."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        },
+        {
+          "id": "ckks-r139-broken",
+          "entryId": "ckks-details",
+          "section": "broken",
+          "statement": {
+            "zh": "CKKS 的结果有误差，不能拿来当精确整数或精确计费。乘法太多会导致噪声淹没明文；重缩放因子选错会破坏精度；参数太小会被格攻击。它不隐藏访问模式，也不自动提供分支和比较。侧信道、密钥管理和解密接口同样可能泄露信息。### 形式模型。",
+            "en": "CKKS output is approximate and must not be treated as exact integers or exact billing.Too many multiplications drown the plaintext in noise; a wrong rescaling factor destroys precision; small parameters invite lattice attacks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        },
+        {
+          "id": "ckks-r139-history",
+          "entryId": "ckks-details",
+          "section": "history",
+          "statement": {
+            "zh": "Cheon、Kim、Kim 与 Song 在 2016 年公开 CKKS 草稿，2017 年在 ASIACRYPT 正式发表。它把“近似数运算”变成同态加密的一等公民，随后出现 bootstrapping、稀疏化、向量化和硬件加速等工程改进。它不是 BFV 的替代品，而是面向不同语义的分支。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CKKS 近似同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Cheon, Kim, Kim and Song circulated CKKS in 2016 and published it at ASIACRYPT 2017.It made approximate-number arithmetic a first-class homomorphic workload, followed by work on bootstrapping, sparsity, vectorisation and hardware acceleration."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        },
+        {
+          "id": "ckks-r139-refs",
+          "entryId": "ckks-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CKKS 近似同态加密.https://zh.wikipedia.org/w/index.php?search=CKKS%20%E8%BF%91%E4%BC%BC%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for CKKS 近似同态加密.https://zh.wikipedia.org/w/index.php?search=CKKS%20%E8%BF%91%E4%BC%BC%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ckks-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ckks-wikipedia"
+      ]
+    },
+    {
+      "id": "ckks-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ckks-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ckks-r139-principle",
+      "entryId": "ckks-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：CKKS 近似同态加密（Cheon-Kim-Kim-Song FHE）。CKKS 把实数或复数向量编码进多项式，用环上 LWE 密文承载。加法保持近似精度，乘法后执行重缩放（rescaling）来降低模数并控制噪声；每个槽位可以并行计算，因此一条密文能承载成百上千个浮点数。解密结果不是精确值，而是带误差的近似值，误差来自编码、噪声和重缩放。",
+        "en": "**Algorithm**: Cheon-Kim-Kim-Song FHE (CKKS 近似同态加密).CKKS encodes real or complex vectors into polynomials carried by ring-LWE ciphertexts."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    },
+    {
+      "id": "ckks-r139-why",
+      "entryId": "ckks-details",
+      "section": "why",
+      "statement": {
+        "zh": "大量实际任务本来就使用浮点数：神经网络推理、统计回归、信号处理、科学计算。BFV 的精确整数语义在这些场景里要么需要定点化，要么深度不够；CKKS 用可控近似换来了更自然的向量运算。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Many real workloads already use floating point: neural-network inference, statistical regression, signal processing and scientific computing.BFV's exact-integer semantics require fixed-point conversion or lose depth in these settings; CKKS trades controlled approximation for natural vector arithmetic."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    },
+    {
+      "id": "ckks-r139-used",
+      "entryId": "ckks-details",
+      "section": "used",
+      "statement": {
+        "zh": "隐私保护机器学习推理、加密统计、基因组关联分析、信号处理、联邦分析。工程上要设计乘法深度、缩放因子和模数链；不是所有算子都能同态化，比较、除法和非线性函数通常需要多项式近似。",
+        "en": "Privacy-preserving machine-learning inference, encrypted statistics, genomic association studies, signal processing and federated analytics.Implementations design multiplication depth, scaling factors and modulus chains; not every operator is homomorphic, and comparison, division and nonlinear functions usually need polynomial approximation."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    },
+    {
+      "id": "ckks-r139-broken",
+      "entryId": "ckks-details",
+      "section": "broken",
+      "statement": {
+        "zh": "CKKS 的结果有误差，不能拿来当精确整数或精确计费。乘法太多会导致噪声淹没明文；重缩放因子选错会破坏精度；参数太小会被格攻击。它不隐藏访问模式，也不自动提供分支和比较。侧信道、密钥管理和解密接口同样可能泄露信息。### 形式模型。",
+        "en": "CKKS output is approximate and must not be treated as exact integers or exact billing.Too many multiplications drown the plaintext in noise; a wrong rescaling factor destroys precision; small parameters invite lattice attacks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    },
+    {
+      "id": "ckks-r139-history",
+      "entryId": "ckks-details",
+      "section": "history",
+      "statement": {
+        "zh": "Cheon、Kim、Kim 与 Song 在 2016 年公开 CKKS 草稿，2017 年在 ASIACRYPT 正式发表。它把“近似数运算”变成同态加密的一等公民，随后出现 bootstrapping、稀疏化、向量化和硬件加速等工程改进。它不是 BFV 的替代品，而是面向不同语义的分支。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CKKS 近似同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Cheon, Kim, Kim and Song circulated CKKS in 2016 and published it at ASIACRYPT 2017.It made approximate-number arithmetic a first-class homomorphic workload, followed by work on bootstrapping, sparsity, vectorisation and hardware acceleration."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    },
+    {
+      "id": "ckks-r139-refs",
+      "entryId": "ckks-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CKKS 近似同态加密.https://zh.wikipedia.org/w/index.php?search=CKKS%20%E8%BF%91%E4%BC%BC%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for CKKS 近似同态加密.https://zh.wikipedia.org/w/index.php?search=CKKS%20%E8%BF%91%E4%BC%BC%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ckks-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

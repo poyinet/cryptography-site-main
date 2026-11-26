@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "shamir-secret-sharing-details",
+  "sources": [
+    {
+      "id": "shamir-secret-sharing-wikipedia",
+      "title": "Wikipedia search entry for Shamir 门限秘密共享",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Shamir%20%E9%97%A8%E9%99%90%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Shamir 门限秘密共享",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "shamir-secret-sharing-r139-principle",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Shamir 门限秘密共享（Shamir Secret Sharing）。Shamir 门限秘密共享（SSS）回答一个很朴素的问题：**一把密钥，怎么拆成 n 份，让其中任意 t 份能拼回来、少一份什么都看不出来？**\n\n设秘密是 `s`（可以当成一个大整数，或者按字节拆开分别处理）：\n\n1.**选一个大素数 `p`**，所有运算在 `GF(p)` 上做。2.**随机造一个 t−1 次多项式** `f(x) = s + a₁x + a₂x² + … + a_{t−1}x^{t−1}`。**常数项是秘密本身**，其余系数 `a₁ … a_{t−1}` 必须是**均匀随机**的。3.**发给 n 个人**：第 i 个人拿到 `x_i = i` 处的值 `f(i)`，也就是一对 `(x_i, y_i)`。4.**恢复秘密**：拿到任意 t 份，用**拉格朗日插值**算出 `f(0)`：\n\n```\ns = f(0) = Σ_{i∈S} y_i · Π_{j∈S, j≠i} (0 − x_j)/(x_i − x_j)   (mod p)\n```\n\n数学基础很简单：**t 个点唯一确定一个 t−1 次多项式**。**为什么「少一份什么都看不出来」是真的？** 这是 Shamir 最漂亮的地方，也是它区别于一切其他密钥方案的地方。假设窃贼拿到了 t−1 份。他知道 `f` 的形状（t−1 次），但不知道剩余的一个自由度。**对任何一个他猜的秘密值 `s'`，都恰好存在唯一一个多项式同时满足这 t−1 个已知点和常数项 `s'`。",
+            "en": "**Algorithm**: Shamir Secret Sharing (Shamir 门限秘密共享).Shamir's Secret Sharing (SSS) answers a very plain question: **how do you split one key into n pieces so that any t of them put it back together, and one short leaves you none the wiser?**\n\nThe mechanism is **polynomial interpolation**."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        },
+        {
+          "id": "shamir-secret-sharing-r139-why",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "why",
+          "statement": {
+            "zh": "**Shamir 共享解决的是密钥管理里最反直觉的那个问题：有时候最好的保管钥匙的办法，是把它拆开。**\n\n一份密钥放在保险柜里，保险柜就是一个单点故障：被撬开就全完，丢了就全完。拆成 3 份分给 3 个人之后：\n\n- **两个人的合谋也不够**（3-of-5 门限）。- **一个人离职、失踪、去世，体系不瘫痪**。- **审计有了抓手**。每一份的持有都是可追责的事件，而不是「某人有一把万能钥匙」。Shamir 在 1979 年那篇论文的结尾把政治学讲得很直白：「**我们可以让足够大的多数派获得采取行动的权威，同时让足够大的少数派握有否决权。**」这不是密码学论文里的比喻，这是字面意义上的分权制衡。**更根本的一点：这是密码学里极少数「不依赖任何困难问题」的构造。** RSA 靠大数分解，ECC 靠离散对数，AES 靠计算不可逆——这些的安全性都是**信念**。Shamir 共享的安全性是**定理**。在一个越来越依赖「假设某个数学问题很难」的世界里，**这种基于信息论的方案有独立于计算能力的价值**。",
+            "en": "**Shamir sharing solves the most counterintuitive problem in key management: sometimes the safest way to keep a key is to break it up.**\n\nA key sitting in a safe is a single point of failure: crack the safe and it's gone, lose the safe and it's gone.Split it into three and give one to each of three people, and:\n\n- **Two colluding insiders still cannot get in** (a 3-of-5 threshold)."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        },
+        {
+          "id": "shamir-secret-sharing-r139-used",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "used",
+          "statement": {
+            "zh": "- **多方计算（MPC）**：这是 SSS 的原生用途。1985 年的 BGW 协议把若干参与方的秘密输入切成 SSS 分片，让各方在分片上做运算，**任何一方都看不到别人的输入**。今天 MPC 在拍卖、投标、机器学习隐私计算、跨交易所的余额证明里落地。- **门限签名**：私钥被拆成 t 份，**t 个签名人各自签一部分，合起来是一份完整签名**，而任何一个人都拿不到完整私钥。**FROST（RFC 9591，2024 年 6 月）**标准化的两轮 Schnorr 门限签名就是用 Shamir 分片做的；Shamir 自己在 1979 年就提出了「门限 RSA」；BLS 门限签名、GG18/GG20 与 CGGMP21 阈值 ECDSA 同理。- **分布式密钥生成（DKG）**：Pedersen 在 1991 年提出，**不需要任何「生成密钥的权威节点」**——n 个参与方共同跑一个协议，把随机私钥拆成分片，中间没有任何人见过完整私钥。**门限钱包、DAO 托管、多签金库现在大多用 DKG。**\n- **硬件钱包的助记词分片**：**SLIP-39**（SatoshiLabs，2020）把 BIP-39 的 24 个单词换成**多份各自 20 词的 Shamir 助记词**，Trezor 从 2019 年固件 2.4.0 起支持，Electrum、Sparrow、Rabby、BlueWallet 也都支持。**这是 SSS 第一次进入亿级用户的日常操作。",
+            "en": "- **Multi-party computation (MPC)** — the native home of SSS.The BGW protocol of 1985 cuts each participant's secret input into shares, lets everyone compute on the shares, and **no party ever sees another party's input**."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        },
+        {
+          "id": "shamir-secret-sharing-r139-broken",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**Shamir 共享的数学没有弱点。但它在工程上失败的方式，多到值得列一张清单。**\n\n- **「分片」不等于「分散」**。最常见的失败：3-of-5 的五份分片，存在同一个云盘账号、同一个邮箱、同一台笔记本的同一个文件夹里。**这等于没拆**——攻击者拿一份就够了。Shamir 保护的是「集合的数学性质」，它不会替你把文件分散到五个国家。- **分片自己会泄密**。每份分片是一对 `(x_i, y_i)`。**把五份分片放在同一个文档里，等于把私钥交出去**——任何一个人都能拼。备份流程里，「先写到 U 盘再分发给五个人」这一步，往往在分发之前就已经泄漏了。- **出题人（dealer）必须诚实**。原始 Shamir 方案假设出题人不会给不同的人不同的多项式。**一个恶意的出题人可以发一份「有偏」的分享**——共享本身数学上完美，但拼出来的秘密是错的，而且只有到恢复时才会发现。这正是**可验证秘密共享（VSS）**存在的理由。- **恢复时的「毒丸」**：一个持有者提交了伪造的分片，插值结果就被污染，**而且往往无法从结果看出是谁干的**。VSS 的承诺机制（提交分片前先公开承诺）就是用来抓这种事的。- **随机数不随机 = 全部白搭**。完美性证明的前提是**系数 `a₁…a_{t−1}` 均匀随机**。如果生成器的随机性有偏（哪怕只是低熵），「信息论安全」就变成了「信息论上大致安全」——**这是所有密码学里最容易犯、也最难自查的错误**。随机数必须来自真熵源或经过验证的 CSPRNG。",
+            "en": "**Shamir's mathematics has no weaknesses.The number of ways it fails in practice is long enough to be worth a list.**\n\n- **\"Split\" is not the same as \"spread\".** The most common failure: a 3-of-5 split whose five shares all sit in the same cloud account, the same mailbox, the same folder on the same laptop."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        },
+        {
+          "id": "shamir-secret-sharing-r139-history",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1979 年 11 月**：**Adi Shamir 发表《How to Share a Secret》**（*Communications of the ACM*，Vol.22, No.11, pp.612–613）——**只有两页，却成了整个门限密码学的起点**。同期 George Blakley 独立发表了《Safeguarding Cryptographic Keys》，两人不同的洞见凑到了一起。- **1979 年**：Shamir 在同一篇论文里还提出了**门限 RSA** 的雏形，并给出那句「多数派行动、少数派否决」的框架。- **1982–1985 年**：**GMW（1982）与 BGW（1985）** 把 SSS 用进多方计算，**「不信任任何人」的密码学计算**成为可能。- **1987 年**：**Paul Feldman 发表《A Practical Scheme for Non-interactive Verifiable Secret Sharing》**（FOCS 1987）——用离散对数承诺让分片**自带证明**，dealer 作弊当场被抓。**VSS 从此有了可用的非交互版本。",
+            "en": "- **November 1979**: **Adi Shamir publishes \"How to Share a Secret\"** (*Communications of the ACM*, Vol.22, No."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        },
+        {
+          "id": "shamir-secret-sharing-r139-refs",
+          "entryId": "shamir-secret-sharing-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Shamir 门限秘密共享.https://zh.wikipedia.org/w/index.php?search=Shamir%20%E9%97%A8%E9%99%90%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Shamir 门限秘密共享.https://zh.wikipedia.org/w/index.php?search=Shamir%20%E9%97%A8%E9%99%90%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "shamir-secret-sharing-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "shamir-secret-sharing-wikipedia"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "shamir-secret-sharing-r139-principle",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Shamir 门限秘密共享（Shamir Secret Sharing）。Shamir 门限秘密共享（SSS）回答一个很朴素的问题：**一把密钥，怎么拆成 n 份，让其中任意 t 份能拼回来、少一份什么都看不出来？**\n\n设秘密是 `s`（可以当成一个大整数，或者按字节拆开分别处理）：\n\n1.**选一个大素数 `p`**，所有运算在 `GF(p)` 上做。2.**随机造一个 t−1 次多项式** `f(x) = s + a₁x + a₂x² + … + a_{t−1}x^{t−1}`。**常数项是秘密本身**，其余系数 `a₁ … a_{t−1}` 必须是**均匀随机**的。3.**发给 n 个人**：第 i 个人拿到 `x_i = i` 处的值 `f(i)`，也就是一对 `(x_i, y_i)`。4.**恢复秘密**：拿到任意 t 份，用**拉格朗日插值**算出 `f(0)`：\n\n```\ns = f(0) = Σ_{i∈S} y_i · Π_{j∈S, j≠i} (0 − x_j)/(x_i − x_j)   (mod p)\n```\n\n数学基础很简单：**t 个点唯一确定一个 t−1 次多项式**。**为什么「少一份什么都看不出来」是真的？** 这是 Shamir 最漂亮的地方，也是它区别于一切其他密钥方案的地方。假设窃贼拿到了 t−1 份。他知道 `f` 的形状（t−1 次），但不知道剩余的一个自由度。**对任何一个他猜的秘密值 `s'`，都恰好存在唯一一个多项式同时满足这 t−1 个已知点和常数项 `s'`。",
+        "en": "**Algorithm**: Shamir Secret Sharing (Shamir 门限秘密共享).Shamir's Secret Sharing (SSS) answers a very plain question: **how do you split one key into n pieces so that any t of them put it back together, and one short leaves you none the wiser?**\n\nThe mechanism is **polynomial interpolation**."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-r139-why",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "why",
+      "statement": {
+        "zh": "**Shamir 共享解决的是密钥管理里最反直觉的那个问题：有时候最好的保管钥匙的办法，是把它拆开。**\n\n一份密钥放在保险柜里，保险柜就是一个单点故障：被撬开就全完，丢了就全完。拆成 3 份分给 3 个人之后：\n\n- **两个人的合谋也不够**（3-of-5 门限）。- **一个人离职、失踪、去世，体系不瘫痪**。- **审计有了抓手**。每一份的持有都是可追责的事件，而不是「某人有一把万能钥匙」。Shamir 在 1979 年那篇论文的结尾把政治学讲得很直白：「**我们可以让足够大的多数派获得采取行动的权威，同时让足够大的少数派握有否决权。**」这不是密码学论文里的比喻，这是字面意义上的分权制衡。**更根本的一点：这是密码学里极少数「不依赖任何困难问题」的构造。** RSA 靠大数分解，ECC 靠离散对数，AES 靠计算不可逆——这些的安全性都是**信念**。Shamir 共享的安全性是**定理**。在一个越来越依赖「假设某个数学问题很难」的世界里，**这种基于信息论的方案有独立于计算能力的价值**。",
+        "en": "**Shamir sharing solves the most counterintuitive problem in key management: sometimes the safest way to keep a key is to break it up.**\n\nA key sitting in a safe is a single point of failure: crack the safe and it's gone, lose the safe and it's gone.Split it into three and give one to each of three people, and:\n\n- **Two colluding insiders still cannot get in** (a 3-of-5 threshold)."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-r139-used",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "used",
+      "statement": {
+        "zh": "- **多方计算（MPC）**：这是 SSS 的原生用途。1985 年的 BGW 协议把若干参与方的秘密输入切成 SSS 分片，让各方在分片上做运算，**任何一方都看不到别人的输入**。今天 MPC 在拍卖、投标、机器学习隐私计算、跨交易所的余额证明里落地。- **门限签名**：私钥被拆成 t 份，**t 个签名人各自签一部分，合起来是一份完整签名**，而任何一个人都拿不到完整私钥。**FROST（RFC 9591，2024 年 6 月）**标准化的两轮 Schnorr 门限签名就是用 Shamir 分片做的；Shamir 自己在 1979 年就提出了「门限 RSA」；BLS 门限签名、GG18/GG20 与 CGGMP21 阈值 ECDSA 同理。- **分布式密钥生成（DKG）**：Pedersen 在 1991 年提出，**不需要任何「生成密钥的权威节点」**——n 个参与方共同跑一个协议，把随机私钥拆成分片，中间没有任何人见过完整私钥。**门限钱包、DAO 托管、多签金库现在大多用 DKG。**\n- **硬件钱包的助记词分片**：**SLIP-39**（SatoshiLabs，2020）把 BIP-39 的 24 个单词换成**多份各自 20 词的 Shamir 助记词**，Trezor 从 2019 年固件 2.4.0 起支持，Electrum、Sparrow、Rabby、BlueWallet 也都支持。**这是 SSS 第一次进入亿级用户的日常操作。",
+        "en": "- **Multi-party computation (MPC)** — the native home of SSS.The BGW protocol of 1985 cuts each participant's secret input into shares, lets everyone compute on the shares, and **no party ever sees another party's input**."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-r139-broken",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**Shamir 共享的数学没有弱点。但它在工程上失败的方式，多到值得列一张清单。**\n\n- **「分片」不等于「分散」**。最常见的失败：3-of-5 的五份分片，存在同一个云盘账号、同一个邮箱、同一台笔记本的同一个文件夹里。**这等于没拆**——攻击者拿一份就够了。Shamir 保护的是「集合的数学性质」，它不会替你把文件分散到五个国家。- **分片自己会泄密**。每份分片是一对 `(x_i, y_i)`。**把五份分片放在同一个文档里，等于把私钥交出去**——任何一个人都能拼。备份流程里，「先写到 U 盘再分发给五个人」这一步，往往在分发之前就已经泄漏了。- **出题人（dealer）必须诚实**。原始 Shamir 方案假设出题人不会给不同的人不同的多项式。**一个恶意的出题人可以发一份「有偏」的分享**——共享本身数学上完美，但拼出来的秘密是错的，而且只有到恢复时才会发现。这正是**可验证秘密共享（VSS）**存在的理由。- **恢复时的「毒丸」**：一个持有者提交了伪造的分片，插值结果就被污染，**而且往往无法从结果看出是谁干的**。VSS 的承诺机制（提交分片前先公开承诺）就是用来抓这种事的。- **随机数不随机 = 全部白搭**。完美性证明的前提是**系数 `a₁…a_{t−1}` 均匀随机**。如果生成器的随机性有偏（哪怕只是低熵），「信息论安全」就变成了「信息论上大致安全」——**这是所有密码学里最容易犯、也最难自查的错误**。随机数必须来自真熵源或经过验证的 CSPRNG。",
+        "en": "**Shamir's mathematics has no weaknesses.The number of ways it fails in practice is long enough to be worth a list.**\n\n- **\"Split\" is not the same as \"spread\".** The most common failure: a 3-of-5 split whose five shares all sit in the same cloud account, the same mailbox, the same folder on the same laptop."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-r139-history",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1979 年 11 月**：**Adi Shamir 发表《How to Share a Secret》**（*Communications of the ACM*，Vol.22, No.11, pp.612–613）——**只有两页，却成了整个门限密码学的起点**。同期 George Blakley 独立发表了《Safeguarding Cryptographic Keys》，两人不同的洞见凑到了一起。- **1979 年**：Shamir 在同一篇论文里还提出了**门限 RSA** 的雏形，并给出那句「多数派行动、少数派否决」的框架。- **1982–1985 年**：**GMW（1982）与 BGW（1985）** 把 SSS 用进多方计算，**「不信任任何人」的密码学计算**成为可能。- **1987 年**：**Paul Feldman 发表《A Practical Scheme for Non-interactive Verifiable Secret Sharing》**（FOCS 1987）——用离散对数承诺让分片**自带证明**，dealer 作弊当场被抓。**VSS 从此有了可用的非交互版本。",
+        "en": "- **November 1979**: **Adi Shamir publishes \"How to Share a Secret\"** (*Communications of the ACM*, Vol.22, No."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    },
+    {
+      "id": "shamir-secret-sharing-r139-refs",
+      "entryId": "shamir-secret-sharing-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Shamir 门限秘密共享.https://zh.wikipedia.org/w/index.php?search=Shamir%20%E9%97%A8%E9%99%90%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Shamir 门限秘密共享.https://zh.wikipedia.org/w/index.php?search=Shamir%20%E9%97%A8%E9%99%90%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "shamir-secret-sharing-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for eap-tls: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "eap-tls-details",
+      "inventoryIds": [
+        "eap-tls"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「EAP-TLS」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of EAP-TLS: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "EAP-TLS",
+        "en": "EAP-TLS"
+      },
+      "claimIds": [
+        "eap-tls-r139-principle",
+        "eap-tls-r139-why",
+        "eap-tls-r139-used",
+        "eap-tls-r139-broken",
+        "eap-tls-r139-history",
+        "eap-tls-r139-refs"
+      ],
+      "sourceIds": [
+        "eap-tls-wikipedia",
+        "eap-tls-reference-ref"
+      ],
+      "related": [
+        "eap",
+        "tls12",
+        "certificate-authority"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：EAP-TLS（EAP-TLS）。摘要与 §1 给出同一界定：「This document defines EAP-TLS, which includes support for certificate-based mutual authentication and key derivation.」即它是 EAP 框架下的一个具体方法，把 TLS 用作认证与密钥派生的内核。",
+          "why": "双向认证依靠证书：§2.2 Identity Verification 写明「As part of the TLS negotiation, the server presents a certificate to the peer, and if mutual authentication is requested, the peer presents a certificate to the server.」",
+          "used": "部署侧的硬要求是吊销检查：§5.4 规定「EAP-TLS peer and server implementations MUST support the use of Certificate Revocation Lists (CRLs)」，并指向 RFC 3280 的相关小节。§2.1.4 的强制只针对支持隐私的场景：此类服务端「MUST request a client certificate」，并非无条件要求客户端证书。",
+          "broken": "保护范围有边界：§5.5 指出「The integrity protection of EAP-TLS packets does not extend to the EAP header fields (Code, Identifier, Length) or the Type or Flags fields.」§5.1 的安全声明表还把信道绑定记为「Channel binding:」后的 No。本文以 TLS 1.0 及以后为基线，并在 §5.1 的脚注里写明「EAP-TLS inherits the secure ciphersuite negotiation features of TLS, including key derivation function negotiation when utilized with TLS v1.2 [RFC4346bis]」。",
+          "history": "RFC 5216（2008 年 3 月，Standards Track，作者 Simon、Aboba、Hurst）头部标注「Obsoletes: 2716」，§1 说明「While this document obsoletes RFC 2716 [RFC2716], it remains backward compatible with it.」；§2.3 记录密钥来源：「In EAP-TLS, the MSK, EMSK, and Initialization Vector (IV) are derived from the TLS master secret via a one-way function.」文中没有 Updates 行，也未更新 RFC 3748。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：EAP-TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 EAP-TLS 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for EAP-TLS. https://zh.wikipedia.org/w/index.php?search=EAP-TLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: EAP-TLS (EAP-TLS). The abstract and §1 give the same definition: \"This document defines EAP-TLS, which includes support for certificate-based mutual authentication and key derivation.\" It is one concrete method inside the EAP framework, with TLS as its core.",
+          "why": "Mutual authentication rests on certificates: §2.2 says \"As part of the TLS negotiation, the server presents a certificate to the peer, and if mutual authentication is requested, the peer presents a certificate to the server.\"",
+          "used": "The hard deployment requirement is revocation checking: §5.4 states that implementations \"MUST support the use of Certificate Revocation Lists (CRLs)\" The §2.1.4 mandate is scoped to privacy support, where servers \"MUST request a client certificate\" — client certificates are not required unconditionally.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The protection has edges: §5.5 notes \"The integrity protection of EAP-TLS packets does not extend to the EAP header fields (Code, Identifier, Length) or the Type or Flags fields.\" and the §5.1 claims table records channel binding as No. The baseline is TLS version 1.0 or later, and a footnote in §5.1 adds that \"EAP-TLS inherits the secure ciphersuite negotiation features of TLS, including key derivation function negotiation when utilized with TLS v1.2 [RFC4346bis]\"; TLS 1.3 is not addressed.",
+          "history": "RFC 5216 (March 2008, Standards Track, Simon, Aboba and Hurst) carries “Obsoletes: 2716” and says in §1 that \"While this document obsoletes RFC 2716 [RFC2716], it remains backward compatible with it.\" Section 2.3 records the key origin: \"In EAP-TLS, the MSK, EMSK, and Initialization Vector (IV) are derived from the TLS master secret via a one-way function.\" There is no Updates line and no update to RFC 3748.",
+          "refs": "- Wikipedia search entry for EAP-TLS. https://zh.wikipedia.org/w/index.php?search=EAP-TLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-TLS: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "EAP-TLS：以 TLS 为内核的 EAP 方法。",
+          "MSK/EMSK：从 TLS 主密钥导出的主会话密钥。",
+          "CRL 支持：实现必须支持的吊销检查手段。",
+          "隐私模式：要求服务端请求客户端证书的场景。",
+          "EAP 头部字段：不受方法完整性保护的字段。",
+          "RFC 2716：被本文取代但保持兼容的旧规范。"
+        ],
+        "en": [
+          "EAP-TLS: the EAP method built on TLS.",
+          "MSK/EMSK: session keys derived from the TLS master secret.",
+          "CRL support: the revocation mechanism implementations must support.",
+          "Privacy mode: the case where servers must request a client certificate.",
+          "EAP header fields: fields outside the method integrity protection.",
+          "RFC 2716: the obsoleted but still compatible specification."
+        ]
+      },
+      "figures": [
+        {
+          "id": "eap-tls-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-TLS：为什么需要 → 核心机制 → 边界。",
+            "en": "EAP-TLS: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EAP-TLS 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for EAP-TLS, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eap-tls-details-flow.zh.svg",
+            "en": "assets/eap-tls-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5848fa5cfce9ca375cb560a41ce2be1d66bd5f128fb1c1f0162cfa173bc2f59e",
+            "en": "2ffcbf78ae3a6b57e14afbdfd624150c260c17929aa4ce51f912465d88e35d55"
+          }
+        },
+        {
+          "id": "eap-tls-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-TLS 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for EAP-TLS: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EAP-TLS 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for EAP-TLS, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eap-tls-details-r138-model.zh.svg",
+            "en": "assets/eap-tls-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ac1525b511e100a11013d8840a59301d73fab9fe67c0cbc3db4cc6ae656bded0",
+            "en": "d04c039a213313e70eed0119006f1dfa73ddfc4271366ad437b17334703bb6b9"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "eap-tls-r139-formal",
+          "entryId": "eap-tls-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：EAP-TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 EAP-TLS 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "eap-tls-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eap-tls-r139-formal"
+      ],
+      "sources": [
+        "eap-tls-wikipedia",
+        "eap-tls-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eap-tls-r139-formal",
+      "entryId": "eap-tls-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：EAP-TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 EAP-TLS 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "eap-tls-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

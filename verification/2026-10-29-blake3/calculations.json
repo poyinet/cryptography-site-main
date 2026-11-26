@@ -1,0 +1,87 @@
+[
+  {
+    "id": "blake3-calc-official-vectors",
+    "entryId": "blake3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 35 official BLAKE3 test cases (input lengths 0, 1-8, 63, 64, 65, 127, 128, 129, 1023, 1024, 1025, 2048, 2049, 3072, 3073, 4096, 4097, 5120, 5121, 6144, 6145, 7168, 7169, 8192, 8193, 16384, 31744 and 102400), each with 131-byte hash, keyed_hash and derive_key outputs, plus the official key and context string; the official file used is 31922 bytes with SHA-256 dcb91ea8accc77e6d6e632af7cdc1a99a9f3ae78cf648da595c7d064db32f624",
+    "expected": "The teaching implementation reproduces all 105 outputs exactly and the stored case set matches the exact 35 official input lengths, including the empty-input hash af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262, the 65-byte hash de1e5fa0be70df6d2be8fffd0e99ceaa8eb6e8c93a63f2d8d1c30ecb6b263dee and the 1025-byte hash d00278ae47eb27b34faecf67b4fe263f82d5412916c1ffd97c8cb7fb814b8444",
+    "sourceIds": [
+      "blake3-spec",
+      "blake3-vectors"
+    ],
+    "dependencies": [
+      "blake3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Official conformance vectors only; they check the implementation, not any security property. The 131-byte outputs are checked through the official JSON; an independent reviewer also reimplemented BLAKE3 from the specification and reproduced all 105 outputs."
+  },
+  {
+    "id": "blake3-calc-tree-trace",
+    "entryId": "blake3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Tree traces for the empty input, 65 bytes and 1025 bytes: chunk count, root type, root flags, root block length, chunk chaining values and digest",
+    "expected": "Empty: one chunk, root flags 11, block length 0, digest af1349b9...; 65 bytes: one chunk, root flags 10, block length 1, root pre-last CV ff29379d..., digest de1e5fa0...; 1025 bytes: two chunks, parent root flags 12, block length 64, chunk CVs 5c9e6544... and 2f008e8a..., digest d00278ae...",
+    "sourceIds": [
+      "blake3-spec",
+      "blake3-vectors"
+    ],
+    "dependencies": [
+      "blake3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Three tree traces only; the intermediate trace values come from the teaching implementation, which is itself checked against the official vectors. The independent reviewer reproduced the same traces with a separate implementation; only the final digests are officially anchored."
+  },
+  {
+    "id": "blake3-calc-xof",
+    "entryId": "blake3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The empty-input hash outputs for lengths 1 through 131, the official 131-byte empty-input vector, the official keyed_hash and derive_key empty-input outputs, and a wrong-flag control",
+    "expected": "Every shorter output is a prefix of every longer output and the 131-byte output equals the official empty-input vector; keyed_hash and derive_key differ from the plain hash and from each other; the wrong-flag output differs from the official empty digest",
+    "sourceIds": [
+      "blake3-spec",
+      "blake3-vectors"
+    ],
+    "dependencies": [
+      "blake3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Prefix and domain-separation checks on the empty input only; they do not test every message or every output length. The official 131-byte output anchors the XOF construction, but the prefix relation itself is checked internally."
+  },
+  {
+    "id": "blake3-calc-structure",
+    "entryId": "blake3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The specification IV and permutation constants; the 64-byte block and 1024-byte chunk sizes; the 7 rounds; the seven domain flags; the exact 35 official input lengths and official file hash; the article code block; the bilingual hex vectors; and negative controls for a wrong round count, wrong permutation and wrong IV against the official 64-byte digest",
+    "expected": "The IV, sizes, rounds, permutation and flag values match the specification constants; the official length set is exactly the 35 cases; the article's js code block is a substring of blake3-teaching.mjs; the Chinese and English articles expose the same hex-token set; the correct 64-byte control digest is 4eed7141ea4a5cd4b788606bd23f46e212af9cacebacdc7d1f4c6dc7f2511b98 and the wrong-round, wrong-permutation and wrong-IV variants all fail to reproduce it",
+    "sourceIds": [
+      "blake3-spec",
+      "blake3-vectors",
+      "rfc7693"
+    ],
+    "dependencies": [
+      "blake3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the constants and shape are load-bearing, but prove nothing about security."
+  }
+]

@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for radius-tls: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "radius-tls-details",
+      "inventoryIds": [
+        "radius-tls"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「RADIUS over TLS」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of RADIUS over TLS: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "RADIUS over TLS",
+        "en": "RADIUS over TLS"
+      },
+      "claimIds": [
+        "radius-tls-r139-principle",
+        "radius-tls-r139-why",
+        "radius-tls-r139-used",
+        "radius-tls-r139-broken",
+        "radius-tls-r139-history",
+        "radius-tls-r139-refs"
+      ],
+      "sourceIds": [
+        "radius-tls-wikipedia",
+        "radius-tls-reference-ref"
+      ],
+      "related": [
+        "radius",
+        "transport-layer-security",
+        "certificate-authority",
+        "tls11"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：RADIUS over TLS（RADIUS over TLS）。摘要给出机制与效果：「This document specifies a transport profile for RADIUS using Transport Layer Security (TLS) over TCP as the transport protocol.This enables dynamic trust relationships between RADIUS servers.」即把 RADIUS 从 UDP 加共享秘密的模型搬进 TLS/TCP。",
+          "why": "动机在 §1 里写得直白：「However, RADIUS is experiencing several shortcomings, such as its dependency on the unreliable transport protocol UDP and the lack of security for large parts of its packet payload.RADIUS security is based on the MD5 algorithm, which has been proven to be insecure.」对策是整体封装——「RADIUS over TLS wraps the entire RADIUS packet payload into a TLS stream and thus mitigates the risk of attacks on MD5.」",
+          "used": "端口与协商义务写在 §2：「The default destination port number for RADIUS over TLS is TCP/2083.There are no separate ports for authentication, accounting, and dynamic authorization changes.」§2.3 要求「Support for certificate-based mutual authentication is REQUIRED.」与「Negotiation of mutual authentication is REQUIRED.」",
+          "broken": "边界由几条硬条款划出：版本下限「implementations MUST NOT negotiate TLS versions prior to 1.1」；§6 指出只提供完整性不含加密的套件被本规范禁止，而这在共享秘密固定时尤其致命；§4 明确没有互操作——「RADIUS/TLS does not specify any inherent backward compatibility to RADIUS/UDP or cross compatibility to the other transports」。",
+          "history": "RFC 6614 头部为 S.Winter（RESTENA）、M.McCauley（OSC）、S.Venaas 与 K.Wierenga（Cisco），日期 2012 年 5 月，类别是 Experimental（不是 Standards Track），没有 Obsoletes 或 Updates 行；§7 记录 IANA 把早先为 RadSec 分配的 TCP 2083 更新为 RADIUS/TLS 用途。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：RADIUS over TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 RADIUS over TLS 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for RADIUS over TLS. https://zh.wikipedia.org/w/index.php?search=RADIUS%20over%20TLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nRADIUS over TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: RADIUS over TLS (RADIUS over TLS). The abstract gives mechanism and effect: \"This document specifies a transport profile for RADIUS using Transport Layer Security (TLS) over TCP as the transport protocol. This enables dynamic trust relationships between RADIUS servers.\" RADIUS moves from UDP plus a provisioned shared secret into TLS over TCP.",
+          "why": "Section 1 is explicit: \"However, RADIUS is experiencing several shortcomings, such as its dependency on the unreliable transport protocol UDP and the lack of security for large parts of its packet payload. RADIUS security is based on the MD5 algorithm, which has been proven to be insecure.\" The remedy is encapsulation — \"RADIUS over TLS wraps the entire RADIUS packet payload into a TLS stream and thus mitigates the risk of attacks on MD5.\"",
+          "used": "Section 2 gives the port and the duties: \"The default destination port number for RADIUS over TLS is TCP/2083. There are no separate ports for authentication, accounting, and dynamic authorization changes.\" and §2.3 requires \"Support for certificate-based mutual authentication is REQUIRED.\" plus \"Negotiation of mutual authentication is REQUIRED.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Hard clauses set the limits: the version floor \"implementations MUST NOT negotiate TLS versions prior to 1.1\"; §6 forbids integrity-only ciphersuites, which is decisive once the shared secret is a fixed well-known value; and §4 states \"RADIUS/TLS does not specify any inherent backward compatibility to RADIUS/UDP or cross compatibility to the other transports\".",
+          "history": "The RFC 6614 header lists S. Winter (RESTENA), M. McCauley (OSC), S. Venaas and K. Wierenga (Cisco), May 2012, Category: Experimental — not Standards Track — with no Obsoletes or Updates line; §7 records IANA updating the already-assigned TCP port 2083, previously used by the early RadSec implementation, for RADIUS/TLS.",
+          "refs": "- Wikipedia search entry for RADIUS over TLS. https://zh.wikipedia.org/w/index.php?search=RADIUS%20over%20TLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nRADIUS over TLS: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "传输剖面：规定 RADIUS 报文如何在 TLS 上成帧。",
+          "TCP/2083：RADIUS over TLS 的默认端口。",
+          "动态信任：以证书与 PKI 取代两侧预配秘密。",
+          "认证加密套件：只提供完整性者被禁止。",
+          "版本下限：不得协商 TLS 1.1 以前版本。",
+          "无跨传输兼容：与 RADIUS/UDP 不互通。"
+        ],
+        "en": [
+          "Transport profile: how RADIUS packets are framed over TLS.",
+          "TCP/2083: the default RADIUS/TLS port.",
+          "Dynamic trust: certificates and a PKI instead of a secret provisioned on both ends.",
+          "Authenticated-encryption suites only: integrity-only suites are forbidden.",
+          "Version floor: nothing before TLS 1.1 may be negotiated.",
+          "No cross-transport compatibility: it does not interoperate with RADIUS/UDP."
+        ]
+      },
+      "figures": [
+        {
+          "id": "radius-tls-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RADIUS over TLS：为什么需要 → 核心机制 → 边界。",
+            "en": "RADIUS over TLS: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RADIUS over TLS 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RADIUS over TLS, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/radius-tls-details-flow.zh.svg",
+            "en": "assets/radius-tls-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9102477ff32ea3429ac2976941f137a36ac73ff48d917ff988a581bd426f0bcc",
+            "en": "372806573606bf2dd10e3b0c960f18ab9e50e0de63ac8aaeb2f6ba8e7f6d14e2"
+          }
+        },
+        {
+          "id": "radius-tls-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RADIUS over TLS 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RADIUS over TLS: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RADIUS over TLS 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RADIUS over TLS, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/radius-tls-details-r138-model.zh.svg",
+            "en": "assets/radius-tls-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c35a1341507fe8b3e3e2eeecf636be1454028f6008642004e5f6b49982b354dc",
+            "en": "93b2b5666c6e085a15d15a90ca40440c3382fc99e09d230d3b874a5d94fc6820"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "radius-tls-r139-formal",
+          "entryId": "radius-tls-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：RADIUS over TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 RADIUS over TLS 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "radius-tls-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "radius-tls-r139-formal"
+      ],
+      "sources": [
+        "radius-tls-wikipedia",
+        "radius-tls-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "radius-tls-r139-formal",
+      "entryId": "radius-tls-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：RADIUS over TLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 RADIUS over TLS 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "radius-tls-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

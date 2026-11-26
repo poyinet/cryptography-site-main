@@ -1,0 +1,62 @@
+[
+  {
+    "id": "cbc-official-vector",
+    "entryId": "cbc-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "SP 800-38A Appendix F.2 AES-128-CBC four-block vector",
+    "expected": "All four ciphertext blocks match the NIST values; decryption with the same IV recovers all four plaintext blocks",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "One official four-block case; it checks the CBC formula and vector, not protocol behavior."
+  },
+  {
+    "id": "cbc-iv-effect",
+    "entryId": "cbc-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Fixed AES-128 key and first plaintext block under different IVs, including a one-bit IV change",
+    "expected": "Different IVs change the first ciphertext block; the same IV reproduces it; flipping an IV bit flips the same bit in P1 only",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "Structural demonstration of IV influence; it does not implement a chosen-plaintext attack."
+  },
+  {
+    "id": "cbc-bitflip",
+    "entryId": "cbc-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Four-block AES-128-CBC ciphertext with one bit flipped in C2",
+    "expected": "P2 is corrupted, the same bit of P3 flips, and P1 and P4 are unchanged",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "Malleability demonstration on fixed data; not a complete oracle attack."
+  },
+  {
+    "id": "cbc-propagation",
+    "entryId": "cbc-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Four-block plaintext encrypted twice under the same key and IV, changing only P2",
+    "expected": "C1 is unchanged; C2, C3 and C4 all change because encryption chaining propagates the change",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "Shows encryption chaining, not decryption error propagation."
+  },
+  {
+    "id": "cbc-padding",
+    "entryId": "cbc-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "20-byte and 16-byte plaintexts padded with the CMS/PKCS#7 rule for a 16-byte block",
+    "expected": "20 bytes become 32 with twelve 0x0c bytes; 16 bytes become 32 with sixteen 0x10 bytes; unpadding restores both",
+    "sourceIds": ["rfc5652"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "Padding mechanics only; it does not test oracle behavior or every malformed padding case."
+  },
+  {
+    "id": "cbc-birthday",
+    "entryId": "cbc-details",
+    "kind": "arithmetic-check",
+    "inputs": "Birthday collision probability for 64-bit ciphertext blocks at 2^32 and 2^32.5 blocks",
+    "expected": "Probability is about 39.3% at 2^32 blocks and about 63.2% at 2^32.5 blocks",
+    "sourceIds": ["sweet32"],
+    "dependencies": ["cbc-teaching.mjs"],
+    "limitations": "Birthday arithmetic only; 2^32 blocks equal 32 GiB at 8 bytes per block."
+  }
+]

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "fiat-shamir-details",
+  "sources": [
+    {
+      "id": "fiat-shamir-wikipedia",
+      "title": "Wikipedia search entry for Fiat-Shamir 启发式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Fiat-Shamir 启发式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "fiat-shamir-r139-principle",
+          "entryId": "fiat-shamir-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Fiat-Shamir 启发式（Fiat-Shamir Heuristic）。Fiat–Shamir 是密码学里最常用、也最常被误用的一个**转换技巧**：它把一个**交互式**的协议，变成一个**非交互式**的证明或签名。**典型的 σ-协议（交互式）**长这样：\n\n1.证明者（知道证人 w）发送一个**承诺** a；\n2.验证者（只知道陈述 x）随机挑一个**挑战** c；\n3.证明者回应 z；\n4.验证者检查某个方程是否成立（例如 `g^z = a · x^c`）。这里的关键是：**挑战 c 由验证者随机产生**，所以证明者无法提前挑选一个对自己有利的 c。安全性还依赖两个性质：**特殊可靠性**（同一个承诺在两个不同挑战下都有回应，就能解出证人 w）和**零知识性**（z 不泄露 w）。**Fiat–Shamir 转换**：把第 2 步的随机数换成哈希。```\nc = H(会话上下文 || 消息 || 承诺 a ...)\n```\n\n证明者自己算出 c，再回应 z；验证者事后重算 c 并检查方程。**双方不再需要通信。** 协议从「证明者与验证者轮流说话」变成「证明者一个人说完，验证者事后检查」。**它怎么变成签名？Schnorr 签名就是这套机制的原型：交互式识别协议（承诺 R = kG → 挑战 e → 回应 s = k + e·x）加上「e = H(m || R)」这一步，就是一个签名。**DSA、ECDSA、Ed25519、BIP 340 全部是它的变体**，ML-DSA 则是「Fiat–Shamir + 拒绝采样中止」的格版本。",
+            "en": "**Algorithm**: Fiat-Shamir Heuristic (Fiat-Shamir 启发式).The Fiat–Shamir heuristic is the most used — and most misused — **transformation** in cryptography: it turns an **interactive** protocol into a **non-interactive** proof or signature."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-r139-why",
+          "entryId": "fiat-shamir-details",
+          "section": "why",
+          "statement": {
+            "zh": "**没有 Fiat–Shamir，就没有今天的数字签名。**\n\n数字签名的定义要求「签名者对着消息签名，验证者事后单独验证」。**但密码学能构造出来的、最好用的那批身份识别协议，全都是交互式的**——Schnorr 的识别方案就是交互式的，ElGamal 也是。如果只能靠交互来完成认证，公钥密码在最需要它的地方（软件更新、证书、交易、区块）就全都用不上。Fiat–Shamir 的贡献是**一次去掉交互**，而且代价极小：多一次哈希调用。**它是密码学里复用率最高的想法**：\n\n- **签名**：Schnorr 签名 → DSA、ECDSA、Ed25519、BIP 340、ML-DSA。- **非交互式零知识证明**：Schnorr 的离散对数知识证明是 NIZK 的教科书例子；Bulletproofs 一类方案也建立在它上面；区块链上验证「我知道某个秘密」的脚本，多半就是它。- **格密码**：ML-DSA 的「FS with Aborts」把 Schnorr 的线性结构搬到模格上，再加拒绝采样来消除信息泄露。- **多方与阈值协议**：MuSig2、FROST 都在 Schnorr 体系里，但需要额外小心（见下文）。- **可验证计算**：STARK 一类系统在对 transcript 做承诺时，也大量依赖同样的「用哈希把 transcript 绑进挑战」的思路。**但它的名字里带着「启发式」（heuristic）」三个字，这是历史留下的警告**：Fiat 和 Shamir 1986 年那篇论文里，**安全论证是错的**。",
+            "en": "**Without Fiat–Shamir there are no digital signatures as we know them.**\n\nA signature is defined as \"the signer signs a message; a verifier checks it afterwards, alone\".But the best identification protocols cryptographers can build are **interactive** — Schnorr's identification scheme is interactive, ElGamal's is too."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-r139-used",
+          "entryId": "fiat-shamir-details",
+          "section": "used",
+          "statement": {
+            "zh": "- **几乎所有主流数字签名**：DSA、ECDSA、Ed25519、Ed448、BIP 340 的 Schnorr 签名、ML-DSA 的格签名，**本质都是 Fiat–Shamir 转换**。2016 年 Fiat 与 Shamir 那篇《Security Proofs for Schnorr Signatures and the DDH Assumption》就是给这一族做统一证明的。- **非交互式零知识证明**：Schnorr 的离散对数 NIZK、Bulletproofs 一类范围证明、环签名与匿名凭证协议里的挑战计算。- **格基签名**：ML-DSA 用的是「FS with Aborts」——把承诺哈希成挑战之后，用拒绝采样检查响应是否泄露秘密，泄露就中止重来。- **多方签名与门限签名**：比特币的 **MuSig2（BIP 327）**、**FROST（RFC 9591）**都在 Schnorr 体系内，但都必须额外处理「挑战碰撞」的问题。- **区块链上的可验证声明**：「我知道私钥」「这是一笔授权交易」这类断言，通常就是 Schnorr NIZK 的直接实例。- **学术与教学**：它是密码学课程里讲「如何把交互协议变成非交互协议」的标准例子，也是讨论「哈希函数为什么变成了安全关键基础设施」的最好案例。",
+            "en": "- **Practically every mainstream digital signature**: DSA, ECDSA, Ed25519, Ed448, BIP 340's Schnorr signature and ML-DSA's lattice signature are **all Fiat–Shamir transforms**.Fiat and Shamir's 1996 paper *Security Proofs for Schnorr Signatures and the DDH Assumption* exists to give this family a unified proof."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-r139-broken",
+          "entryId": "fiat-shamir-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**Fiat–Shamir 没有被「破」，但它是密码学里被误用最多、后果最隐蔽的机制之一。以下每一条都对应过真实的安全事故或已发表的改进。**\n\n- **「弱 FS」= 可延展**。如果挑战只哈希承诺而不哈希陈述（`c = H(a)` 而不是 `c = H(x || a)`），整个变换就是可延展的：攻击者可以把一个签名改造成另一个合法签名。**把公钥漏在挑战之外，正是 Schnorr 家族关联密钥攻击的根源**，也是 BIP 340 坚持 key prefixing 的原因。**规则很简单：公钥、会话标识、消息、所有承诺，一个都不能少。**\n- **原始 Fiat–Shamir 论文的证明是错的**。1986 年那篇 STOC 论文的 Lemma 6 隐式依赖了 9 年后才出现的 forking lemma；Bellare 与 Rogaway 1993 在证明 FS 作为证明系统时，也只是断言了可靠性而没有证明。**第一个完整的 FS 签名安全证明是 Pointcheval 与 Stern（EUROCRYPT 1996）**，它引入了 forking lemma 这个至今仍在使用的核心工具。- **多方场景下的「省略攻击」（ROS 问题）**。在多签和门限协议里，攻击者可以发起大量并行的签名会话，用多项式数量的哈希查询寻找「挑战碰撞」。Drijvers 等人（EUROCRYPT 2019）系统化了这一类攻击：**朴素的 FS 多签构造会被攻破**。这就是 MuSig2 不得不增加一轮 nonce 交换、FROST 不得不引入绑定因子的原因。",
+            "en": "**Fiat–Shamir has not been \"broken\", but it is among the most misapplied mechanisms in cryptography, and the most insidious.Every item below maps to a real incident or a published fix.**\n\n- **\"Weak FS\" means malleable.** If the challenge hashes only the commitment and not the statement (`c = H(a)` rather than `c = H(x || a)`), the whole transform is malleable: an attacker can turn one signature into another valid signature."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-r139-history",
+          "entryId": "fiat-shamir-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1986 年**：**Fiat 与 Shamir** 在 STOC 上发表《A Signature Scheme Based on the Difficulty of Factoring》。**这个技巧第一次出现**——他们用「平方」识别方案（基于分解困难性）构造了一个签名，办法就是让签名者自己用哈希算出验证者的挑战。**这篇论文里的安全证明后来被发现有误。**\n- **1989 / 1990 年**：同一作者组合发表《How to Prove Yourself: Practical Solutions to Identification and Signature Problems》（CRYPTO '89 论文集，1990 年出版），把识别方案与签名方案讲得更完整。**所谓「完整版」从未发表**，流传的是这篇摘要。其 Lemma 6 的证明隐式依赖了后来的 forking lemma。- **1989 / 1990 年**：Claus Schnorr 用同一个技巧构造了 Schnorr 签名（《Efficient Signature Generation for Discrete Logarithm Problems》，EUROCRYPT '90）。**从这一刻起，FS 与 Schnorr 绑定在一起，成了后来的 DSA、ECDSA、Ed25519、BIP 340 的共同祖先。**\n- **1993 年**：Bellare 与 Rogaway 在随机预言机模型下分析 FS 变换（作为非交互证明系统），可靠性部分只做了断言。",
+            "en": "- **1986**: **Fiat and Shamir** publish *A Signature Scheme Based on the Difficulty of Factoring* at STOC.**The technique appears for the first time**: they use a \"squaring\" identification scheme (based on factoring hardness) to build a signature by letting the signer compute the verifier's challenge with a hash."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-r139-refs",
+          "entryId": "fiat-shamir-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "fiat-shamir-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "fiat-shamir-wikipedia"
+      ]
+    },
+    {
+      "id": "fiat-shamir-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "fiat-shamir-r139-principle",
+      "entryId": "fiat-shamir-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Fiat-Shamir 启发式（Fiat-Shamir Heuristic）。Fiat–Shamir 是密码学里最常用、也最常被误用的一个**转换技巧**：它把一个**交互式**的协议，变成一个**非交互式**的证明或签名。**典型的 σ-协议（交互式）**长这样：\n\n1.证明者（知道证人 w）发送一个**承诺** a；\n2.验证者（只知道陈述 x）随机挑一个**挑战** c；\n3.证明者回应 z；\n4.验证者检查某个方程是否成立（例如 `g^z = a · x^c`）。这里的关键是：**挑战 c 由验证者随机产生**，所以证明者无法提前挑选一个对自己有利的 c。安全性还依赖两个性质：**特殊可靠性**（同一个承诺在两个不同挑战下都有回应，就能解出证人 w）和**零知识性**（z 不泄露 w）。**Fiat–Shamir 转换**：把第 2 步的随机数换成哈希。```\nc = H(会话上下文 || 消息 || 承诺 a ...)\n```\n\n证明者自己算出 c，再回应 z；验证者事后重算 c 并检查方程。**双方不再需要通信。** 协议从「证明者与验证者轮流说话」变成「证明者一个人说完，验证者事后检查」。**它怎么变成签名？Schnorr 签名就是这套机制的原型：交互式识别协议（承诺 R = kG → 挑战 e → 回应 s = k + e·x）加上「e = H(m || R)」这一步，就是一个签名。**DSA、ECDSA、Ed25519、BIP 340 全部是它的变体**，ML-DSA 则是「Fiat–Shamir + 拒绝采样中止」的格版本。",
+        "en": "**Algorithm**: Fiat-Shamir Heuristic (Fiat-Shamir 启发式).The Fiat–Shamir heuristic is the most used — and most misused — **transformation** in cryptography: it turns an **interactive** protocol into a **non-interactive** proof or signature."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-r139-why",
+      "entryId": "fiat-shamir-details",
+      "section": "why",
+      "statement": {
+        "zh": "**没有 Fiat–Shamir，就没有今天的数字签名。**\n\n数字签名的定义要求「签名者对着消息签名，验证者事后单独验证」。**但密码学能构造出来的、最好用的那批身份识别协议，全都是交互式的**——Schnorr 的识别方案就是交互式的，ElGamal 也是。如果只能靠交互来完成认证，公钥密码在最需要它的地方（软件更新、证书、交易、区块）就全都用不上。Fiat–Shamir 的贡献是**一次去掉交互**，而且代价极小：多一次哈希调用。**它是密码学里复用率最高的想法**：\n\n- **签名**：Schnorr 签名 → DSA、ECDSA、Ed25519、BIP 340、ML-DSA。- **非交互式零知识证明**：Schnorr 的离散对数知识证明是 NIZK 的教科书例子；Bulletproofs 一类方案也建立在它上面；区块链上验证「我知道某个秘密」的脚本，多半就是它。- **格密码**：ML-DSA 的「FS with Aborts」把 Schnorr 的线性结构搬到模格上，再加拒绝采样来消除信息泄露。- **多方与阈值协议**：MuSig2、FROST 都在 Schnorr 体系里，但需要额外小心（见下文）。- **可验证计算**：STARK 一类系统在对 transcript 做承诺时，也大量依赖同样的「用哈希把 transcript 绑进挑战」的思路。**但它的名字里带着「启发式」（heuristic）」三个字，这是历史留下的警告**：Fiat 和 Shamir 1986 年那篇论文里，**安全论证是错的**。",
+        "en": "**Without Fiat–Shamir there are no digital signatures as we know them.**\n\nA signature is defined as \"the signer signs a message; a verifier checks it afterwards, alone\".But the best identification protocols cryptographers can build are **interactive** — Schnorr's identification scheme is interactive, ElGamal's is too."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-r139-used",
+      "entryId": "fiat-shamir-details",
+      "section": "used",
+      "statement": {
+        "zh": "- **几乎所有主流数字签名**：DSA、ECDSA、Ed25519、Ed448、BIP 340 的 Schnorr 签名、ML-DSA 的格签名，**本质都是 Fiat–Shamir 转换**。2016 年 Fiat 与 Shamir 那篇《Security Proofs for Schnorr Signatures and the DDH Assumption》就是给这一族做统一证明的。- **非交互式零知识证明**：Schnorr 的离散对数 NIZK、Bulletproofs 一类范围证明、环签名与匿名凭证协议里的挑战计算。- **格基签名**：ML-DSA 用的是「FS with Aborts」——把承诺哈希成挑战之后，用拒绝采样检查响应是否泄露秘密，泄露就中止重来。- **多方签名与门限签名**：比特币的 **MuSig2（BIP 327）**、**FROST（RFC 9591）**都在 Schnorr 体系内，但都必须额外处理「挑战碰撞」的问题。- **区块链上的可验证声明**：「我知道私钥」「这是一笔授权交易」这类断言，通常就是 Schnorr NIZK 的直接实例。- **学术与教学**：它是密码学课程里讲「如何把交互协议变成非交互协议」的标准例子，也是讨论「哈希函数为什么变成了安全关键基础设施」的最好案例。",
+        "en": "- **Practically every mainstream digital signature**: DSA, ECDSA, Ed25519, Ed448, BIP 340's Schnorr signature and ML-DSA's lattice signature are **all Fiat–Shamir transforms**.Fiat and Shamir's 1996 paper *Security Proofs for Schnorr Signatures and the DDH Assumption* exists to give this family a unified proof."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-r139-broken",
+      "entryId": "fiat-shamir-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**Fiat–Shamir 没有被「破」，但它是密码学里被误用最多、后果最隐蔽的机制之一。以下每一条都对应过真实的安全事故或已发表的改进。**\n\n- **「弱 FS」= 可延展**。如果挑战只哈希承诺而不哈希陈述（`c = H(a)` 而不是 `c = H(x || a)`），整个变换就是可延展的：攻击者可以把一个签名改造成另一个合法签名。**把公钥漏在挑战之外，正是 Schnorr 家族关联密钥攻击的根源**，也是 BIP 340 坚持 key prefixing 的原因。**规则很简单：公钥、会话标识、消息、所有承诺，一个都不能少。**\n- **原始 Fiat–Shamir 论文的证明是错的**。1986 年那篇 STOC 论文的 Lemma 6 隐式依赖了 9 年后才出现的 forking lemma；Bellare 与 Rogaway 1993 在证明 FS 作为证明系统时，也只是断言了可靠性而没有证明。**第一个完整的 FS 签名安全证明是 Pointcheval 与 Stern（EUROCRYPT 1996）**，它引入了 forking lemma 这个至今仍在使用的核心工具。- **多方场景下的「省略攻击」（ROS 问题）**。在多签和门限协议里，攻击者可以发起大量并行的签名会话，用多项式数量的哈希查询寻找「挑战碰撞」。Drijvers 等人（EUROCRYPT 2019）系统化了这一类攻击：**朴素的 FS 多签构造会被攻破**。这就是 MuSig2 不得不增加一轮 nonce 交换、FROST 不得不引入绑定因子的原因。",
+        "en": "**Fiat–Shamir has not been \"broken\", but it is among the most misapplied mechanisms in cryptography, and the most insidious.Every item below maps to a real incident or a published fix.**\n\n- **\"Weak FS\" means malleable.** If the challenge hashes only the commitment and not the statement (`c = H(a)` rather than `c = H(x || a)`), the whole transform is malleable: an attacker can turn one signature into another valid signature."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-r139-history",
+      "entryId": "fiat-shamir-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1986 年**：**Fiat 与 Shamir** 在 STOC 上发表《A Signature Scheme Based on the Difficulty of Factoring》。**这个技巧第一次出现**——他们用「平方」识别方案（基于分解困难性）构造了一个签名，办法就是让签名者自己用哈希算出验证者的挑战。**这篇论文里的安全证明后来被发现有误。**\n- **1989 / 1990 年**：同一作者组合发表《How to Prove Yourself: Practical Solutions to Identification and Signature Problems》（CRYPTO '89 论文集，1990 年出版），把识别方案与签名方案讲得更完整。**所谓「完整版」从未发表**，流传的是这篇摘要。其 Lemma 6 的证明隐式依赖了后来的 forking lemma。- **1989 / 1990 年**：Claus Schnorr 用同一个技巧构造了 Schnorr 签名（《Efficient Signature Generation for Discrete Logarithm Problems》，EUROCRYPT '90）。**从这一刻起，FS 与 Schnorr 绑定在一起，成了后来的 DSA、ECDSA、Ed25519、BIP 340 的共同祖先。**\n- **1993 年**：Bellare 与 Rogaway 在随机预言机模型下分析 FS 变换（作为非交互证明系统），可靠性部分只做了断言。",
+        "en": "- **1986**: **Fiat and Shamir** publish *A Signature Scheme Based on the Difficulty of Factoring* at STOC.**The technique appears for the first time**: they use a \"squaring\" identification scheme (based on factoring hardness) to build a signature by letting the signer compute the verifier's challenge with a hash."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-r139-refs",
+      "entryId": "fiat-shamir-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "fiat-shamir-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

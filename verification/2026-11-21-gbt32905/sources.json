@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt32905-details",
+  "sources": [
+    {
+      "id": "gbt32905-wikipedia",
+      "title": "Wikipedia search entry for SM3 杂凑算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SM3%20%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SM3 杂凑算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt32905-r139-principle",
+          "entryId": "gbt32905-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：SM3 杂凑算法（SM3 Cryptographic Hash Algorithm）。### 512 位分组与 256 位摘要\n\nSM3 采用 512 位分组、132 字消息扩展和 64 轮压缩，把消息压成 256 位摘要。它接受长度小于 2^64 比特的消息；填充规则是：先补一个 1，再补最少的 0 使长度模 512 余 448，最后补 64 位消息长度。### 消息扩展与 64 轮压缩\n\n每个 512 位块先拆成 16 个 32 位字 W0…W15，再扩展出 W16…W67 和 W’0…W’63，共 132 个字。压缩函数维护 A…H 八个寄存器，做 64 轮：每轮用布尔函数 FF/GG、置换 P0/P1、模 2^32 加法和循环移位混合消息与状态；最后把结果与输入链值 XOR。### 设计取舍\n\nSM3 与 SHA-256 同为 Merkle–Damgård 结构、256 位输出、64 轮，但布尔函数、常量、消息扩展和寄存器更新不同。它不是 SHA-256 的截断，也不能直接复用 SHA-256 的测试向量或硬件指令。",
+            "en": "**Standard**: SM3 Cryptographic Hash Algorithm (SM3 杂凑算法).### 512-bit blocks, 256-bit digest\n\nSM3 uses 512-bit blocks, a 132-word message expansion and 64 compression rounds to map a message to a 256-bit digest."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32905-r139-why",
+          "entryId": "gbt32905-details",
+          "section": "why",
+          "statement": {
+            "zh": "SM3 是中国商用密码体系的杂凑底座。SM2 签名先把用户身份和曲线参数压成 ZA，再计算 e = SM3(ZA||M)；证书指纹、TLCP 的 PRF/HMAC、代码完整性和审计记录也都依赖 SM3。它把任意长度输入压成 256 位摘要，给签名、认证和完整性校验提供统一入口。没有 SM3，SM2 的签名和 TLCP 的密钥派生就无法形成闭环。",
+            "en": "SM3 is the hash base of China’s commercial cryptography system.SM2 signatures first compress the user identity and curve parameters into ZA, then compute e = SM3(ZA || M); certificate fingerprints, TLCP PRF/HMAC, code integrity and audit records also depend on SM3."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32905-r139-used",
+          "entryId": "gbt32905-details",
+          "section": "used",
+          "statement": {
+            "zh": "SM3 用于数字签名、消息认证码、KDF、随机数生成和完整性校验。典型组合是 SM2+SM3 签名、HMAC-SM3、TLCP 的 SM3 PRF，以及区块链和电子发票中的摘要/地址派生。使用要点：不要把 SM3(secret||message) 当 MAC，应使用 HMAC-SM3 或标准 KDF；需要抗长度扩展时用 HMAC；跨系统要明确输入编码、字节序和域分离标签。",
+            "en": "SM3 is used for digital signatures, message authentication codes, KDFs, random-number generation and integrity checks.Typical combinations are SM2+SM3 signatures, HMAC-SM3, the TLCP SM3 PRF, and digest/address derivation in blockchains and electronic invoices."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32905-r139-broken",
+          "entryId": "gbt32905-details",
+          "section": "broken",
+          "statement": {
+            "zh": "SM3 的设计目标是 256 位杂凑，通用生日界约 2^128；公开的缩轮分析不等于全轮破译。现实风险更多来自构造错误：长度扩展、MAC 拼接、截断输出、侧信道，以及把 SM3 与 SHA-256 混用导致协议不一致。",
+            "en": "SM3 targets a 256-bit hash, with a generic birthday bound near 2^128; reduced-round analysis is not a full-round break.Real risks come from construction errors: length extension, MAC concatenation, truncated output, side channels, and mixing SM3 with SHA-256 in one protocol."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32905-r139-history",
+          "entryId": "gbt32905-details",
+          "section": "history",
+          "statement": {
+            "zh": "SM3 由国家密码管理局于 2010 年 12 月公开发布，2016 年 8 月发布国家标准 GB/T 32905-2016，2017 年 3 月实施；2018 年 10 月，ISO/IEC 10118-3:2018 纳入 SM3。标准起草单位包括清华大学、国家密码管理局商用密码研究中心、解放军信息工程大学等，王小云是主要起草人之一。它填补了中国商用密码体系在 256 位杂凑上的空白，并与 SM2、SM4 一起构成 SM 系列；在国际标准层面，SM3 也成为 ISO/IEC 认可的专用杂凑函数。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM3 杂凑算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "OSCCA published SM3 in December 2010.GB/T 32905-2016 was published in August 2016 and took effect in March 2017; ISO/IEC 10118-3:2018 added SM3 in October 2018."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32905-r139-refs",
+          "entryId": "gbt32905-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SM3 杂凑算法.https://zh.wikipedia.org/w/index.php?search=SM3%20%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SM3 杂凑算法.https://zh.wikipedia.org/w/index.php?search=SM3%20%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt32905-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt32905-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt32905-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt32905-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt32905-r139-principle",
+      "entryId": "gbt32905-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：SM3 杂凑算法（SM3 Cryptographic Hash Algorithm）。### 512 位分组与 256 位摘要\n\nSM3 采用 512 位分组、132 字消息扩展和 64 轮压缩，把消息压成 256 位摘要。它接受长度小于 2^64 比特的消息；填充规则是：先补一个 1，再补最少的 0 使长度模 512 余 448，最后补 64 位消息长度。### 消息扩展与 64 轮压缩\n\n每个 512 位块先拆成 16 个 32 位字 W0…W15，再扩展出 W16…W67 和 W’0…W’63，共 132 个字。压缩函数维护 A…H 八个寄存器，做 64 轮：每轮用布尔函数 FF/GG、置换 P0/P1、模 2^32 加法和循环移位混合消息与状态；最后把结果与输入链值 XOR。### 设计取舍\n\nSM3 与 SHA-256 同为 Merkle–Damgård 结构、256 位输出、64 轮，但布尔函数、常量、消息扩展和寄存器更新不同。它不是 SHA-256 的截断，也不能直接复用 SHA-256 的测试向量或硬件指令。",
+        "en": "**Standard**: SM3 Cryptographic Hash Algorithm (SM3 杂凑算法).### 512-bit blocks, 256-bit digest\n\nSM3 uses 512-bit blocks, a 132-word message expansion and 64 compression rounds to map a message to a 256-bit digest."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32905-r139-why",
+      "entryId": "gbt32905-details",
+      "section": "why",
+      "statement": {
+        "zh": "SM3 是中国商用密码体系的杂凑底座。SM2 签名先把用户身份和曲线参数压成 ZA，再计算 e = SM3(ZA||M)；证书指纹、TLCP 的 PRF/HMAC、代码完整性和审计记录也都依赖 SM3。它把任意长度输入压成 256 位摘要，给签名、认证和完整性校验提供统一入口。没有 SM3，SM2 的签名和 TLCP 的密钥派生就无法形成闭环。",
+        "en": "SM3 is the hash base of China’s commercial cryptography system.SM2 signatures first compress the user identity and curve parameters into ZA, then compute e = SM3(ZA || M); certificate fingerprints, TLCP PRF/HMAC, code integrity and audit records also depend on SM3."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32905-r139-used",
+      "entryId": "gbt32905-details",
+      "section": "used",
+      "statement": {
+        "zh": "SM3 用于数字签名、消息认证码、KDF、随机数生成和完整性校验。典型组合是 SM2+SM3 签名、HMAC-SM3、TLCP 的 SM3 PRF，以及区块链和电子发票中的摘要/地址派生。使用要点：不要把 SM3(secret||message) 当 MAC，应使用 HMAC-SM3 或标准 KDF；需要抗长度扩展时用 HMAC；跨系统要明确输入编码、字节序和域分离标签。",
+        "en": "SM3 is used for digital signatures, message authentication codes, KDFs, random-number generation and integrity checks.Typical combinations are SM2+SM3 signatures, HMAC-SM3, the TLCP SM3 PRF, and digest/address derivation in blockchains and electronic invoices."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32905-r139-broken",
+      "entryId": "gbt32905-details",
+      "section": "broken",
+      "statement": {
+        "zh": "SM3 的设计目标是 256 位杂凑，通用生日界约 2^128；公开的缩轮分析不等于全轮破译。现实风险更多来自构造错误：长度扩展、MAC 拼接、截断输出、侧信道，以及把 SM3 与 SHA-256 混用导致协议不一致。",
+        "en": "SM3 targets a 256-bit hash, with a generic birthday bound near 2^128; reduced-round analysis is not a full-round break.Real risks come from construction errors: length extension, MAC concatenation, truncated output, side channels, and mixing SM3 with SHA-256 in one protocol."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32905-r139-history",
+      "entryId": "gbt32905-details",
+      "section": "history",
+      "statement": {
+        "zh": "SM3 由国家密码管理局于 2010 年 12 月公开发布，2016 年 8 月发布国家标准 GB/T 32905-2016，2017 年 3 月实施；2018 年 10 月，ISO/IEC 10118-3:2018 纳入 SM3。标准起草单位包括清华大学、国家密码管理局商用密码研究中心、解放军信息工程大学等，王小云是主要起草人之一。它填补了中国商用密码体系在 256 位杂凑上的空白，并与 SM2、SM4 一起构成 SM 系列；在国际标准层面，SM3 也成为 ISO/IEC 认可的专用杂凑函数。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM3 杂凑算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "OSCCA published SM3 in December 2010.GB/T 32905-2016 was published in August 2016 and took effect in March 2017; ISO/IEC 10118-3:2018 added SM3 in October 2018."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32905-r139-refs",
+      "entryId": "gbt32905-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SM3 杂凑算法.https://zh.wikipedia.org/w/index.php?search=SM3%20%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SM3 杂凑算法.https://zh.wikipedia.org/w/index.php?search=SM3%20%E6%9D%82%E5%87%91%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt32905-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

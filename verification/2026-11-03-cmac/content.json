@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for cmac: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "cmac-details",
+      "inventoryIds": [
+        "cmac"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释CMAC  cipher-based 消息认证码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Cipher-based Message Authentication Code (CMAC): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "CMAC  cipher-based 消息认证码",
+        "en": "Cipher-based Message Authentication Code (CMAC)"
+      },
+      "claimIds": [
+        "cmac-r139-principle",
+        "cmac-r139-why",
+        "cmac-r139-used",
+        "cmac-r139-broken",
+        "cmac-r139-history",
+        "cmac-r139-refs"
+      ],
+      "sourceIds": [
+        "cmac-wikipedia",
+        "cmac-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "term--mac",
+        "standard-sp800-38b"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：CMAC 分组密码 MAC（CMAC）。留存文本 §5.2 把结构关系写明：「The CMAC algorithm depends on the choice of an underlying symmetric key block cipher.The CMAC algorithm is thus a mode of operation (a mode, for short) of the block cipher.The CMAC key is the block cipher key (the key, for short).」即 CMAC 不自带分组密码，它选定一个分组密码并把该密码的密钥直接当作 MAC 密钥。§4.1 的 MAC 定义给出产出物的性质：「A bit string of fixed length, computed by a MAC generation algorithm, that is used to establish the authenticity and, hence, the integrity of a message.」",
+          "why": "动机写在 §3 的第一句里，即被替代者的缺陷：「The basic Cipher Block Chaining MAC algorithm (CBC-MAC) has security deficiencies [9].」文本紧接着说明 CMAC 的核心是 Black 与 Rogaway 提出并分析过的 XCBC 变体。换言之，CMAC 的存在理由不是再加一种 MAC，而是在保留分组密码实现的前提下修补 CBC-MAC 的已知缺陷。",
+          "used": "用法上的硬约束写在 §5.5：「The length of T, denoted Tlen, is a parameter that shall be fixed for all invocations of CMAC with the given key.」也即截断长度是同一密钥下的固定参数，不能逐条消息临时改变；§5.5 同时把取值要求交给附录规定。因此协议里以`同一密钥 + 固定截断长度`的方式部署 CMAC，而不是在同一密钥下混用多种标签长度。",
+          "broken": "限度有三处可核。其一是被替代关系本身：§3 说 CBC-MAC「has security deficiencies [9]」，说明直接把链式加密的输出当 MAC 用是不安全的，CMAC 正是为此而生的修正。其二是依赖面：§5.2「The CMAC algorithm depends on the choice of an underlying symmetric key block cipher」，底层分组密码一旦被攻破，CMAC 的安全性随之失效。其三由 §5.5 的反面给出：Tlen 在同一密钥下必须固定，混用长度即偏离文本规定。",
+          "history": "版本事实由文本自己给出：§1 写明「This publication is the second Part in a series of Recommendations regarding modes of operation of symmetric key block ciphers.」题头行则是「Recommendation for Block Cipher Modes of Operation: The CMAC Mode for Authentication」，即 SP 800-38B 是分组密码模式系列的第二份，专讲认证；本留存件的扉页日期为 2005 年 5 月。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\)。输入：输入：CMAC 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。 预期输出：按 CMAC 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for CMAC 分组密码 MAC. https://zh.wikipedia.org/w/index.php?search=CMAC%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\]\n\nCMAC 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。1.密钥派生或分组处理。2.按构造压缩消息与密钥。3.输出固定长度标签并验证。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: CMAC (CMAC 分组密码 MAC). Section 5.2 of the retained text states the structural relation: \"The CMAC algorithm depends on the choice of an underlying symmetric key block cipher. The CMAC algorithm is thus a mode of operation (a mode, for short) of the block cipher. The CMAC key is the block cipher key (the key, for short).\" So CMAC carries no cipher of its own: it selects a block cipher and reuses that cipher's key as the MAC key. The §4.1 definition of a MAC gives the property of the output: \"A bit string of fixed length, computed by a MAC generation algorithm, that is used to establish the authenticity and, hence, the integrity of a message.\"",
+          "why": "The motive sits in the first sentence of §3, naming the deficiency of what it replaces: \"The basic Cipher Block Chaining MAC algorithm (CBC-MAC) has security deficiencies [9].\" The text then identifies the core of CMAC as the XCBC variant proposed and analysed by Black and Rogaway. In other words, CMAC exists not to add another MAC but to patch a known weakness of CBC-MAC while still running on a block cipher.",
+          "used": "The operational constraint is printed in §5.5: \"The length of T, denoted Tlen, is a parameter that shall be fixed for all invocations of CMAC with the given key.\" The truncation length is therefore fixed per key and cannot be chosen message by message, with §5.4 handing the selection requirements to an appendix. Deployments use one key with one fixed tag length rather than mixing tag lengths under the same key.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Three limits are checkable. First, the replacement relation itself: §3 says CBC-MAC \"has security deficiencies [9]\", so chaining encryptions and using the result as a MAC is unsafe, and CMAC is the correction. Second, the dependency printed in §5.2: \"The CMAC algorithm depends on the choice of an underlying symmetric key block cipher\" — a broken block cipher takes CMAC's security with it. Third, the converse of §5.4: Tlen must stay fixed for all invocations under a given key, so mixing tag lengths departs from the text.",
+          "history": "The version facts come from the text itself. §1 states \"This publication is the second Part in a series of Recommendations regarding modes of operation of symmetric key block ciphers.\" The cover line reads \"Recommendation for Block Cipher Modes of Operation: The CMAC Mode for Authentication\", so SP 800-38B is the second part of the block cipher modes series and is devoted to authentication; the retained copy is dated May 2005.",
+          "refs": "- Wikipedia search entry for CMAC 分组密码 MAC. https://zh.wikipedia.org/w/index.php?search=CMAC%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\]\n\nCMAC: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CMAC：以分组密码为内核、由 CBC-MAC 修正而来的消息认证码模式。",
+          "Tlen：同一密钥下必须固定的标签长度参数。",
+          "subkey：由密钥 K 与常量 Rb 导出的 K1/K2，用于区分末块处理。",
+          "Rb：仅由分组位数决定的比特串常量，如 R128 与 R64。",
+          "CBC-MAC：把链式加密末块直接当 MAC 的原始构造，本建议指其有安全缺陷。",
+          "MAC：定长比特串，用来确立消息的真实性从而确立完整性。"
+        ],
+        "en": [
+          "CMAC: the block-cipher-based MAC mode derived as a correction of CBC-MAC.",
+          "Tlen: the tag length that must stay fixed for all invocations under one key.",
+          "Subkey: K1/K2 derived from the key K and the constant Rb to separate last-block handling.",
+          "Rb: a bit string determined solely by the block size, e.g. R128 and R64.",
+          "CBC-MAC: the original construction that uses the final chained block as a MAC, cited here as having security deficiencies.",
+          "MAC: a fixed-length bit string used to establish the authenticity, hence the integrity, of a message."
+        ]
+      },
+      "figures": [
+        {
+          "id": "cmac-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CMAC  cipher-based 消息认证码：为什么需要 → 核心机制 → 边界。",
+            "en": "Cipher-based Message Authentication Code (CMAC): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CMAC  cipher-based 消息认证码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Cipher-based Message Authentication Code (CMAC), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cmac-details-flow.zh.svg",
+            "en": "assets/cmac-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6826c86aadbe7991ac46d12772ab67d5c0fc23e156f47a672061a5b752be036f",
+            "en": "fae2f75b5c55e07d9a19335d59e268691588ee45e43a07c83fe4b7cd93d054cb"
+          }
+        },
+        {
+          "id": "cmac-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CMAC  cipher-based 消息认证码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Cipher-based Message Authentication Code (CMAC): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CMAC  cipher-based 消息认证码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Cipher-based Message Authentication Code (CMAC), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cmac-details-r138-model.zh.svg",
+            "en": "assets/cmac-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "81d4da2d17ad61b1920d795794984af1a27194556ce93832bcdb01f010ae9ba7",
+            "en": "652790303758512b42a1ef240709d3d10aabcfbb43ee3411c99002af08f5b543"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "cmac-r139-formal",
+          "entryId": "cmac-details",
+          "kind": "formal-model",
+          "formula": "T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)",
+          "inputs": "输入：CMAC 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+          "expected": "按 CMAC 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "密钥派生或分组处理",
+            "按构造压缩消息与密钥",
+            "输出固定长度标签并验证"
+          ],
+          "sourceIds": [
+            "cmac-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "cmac-r139-formal"
+      ],
+      "sources": [
+        "cmac-wikipedia",
+        "cmac-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cmac-r139-formal",
+      "entryId": "cmac-details",
+      "kind": "formal-model",
+      "formula": "T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)",
+      "inputs": "输入：CMAC 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+      "expected": "按 CMAC 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "密钥派生或分组处理",
+        "按构造压缩消息与密钥",
+        "输出固定长度标签并验证"
+      ],
+      "sourceIds": [
+        "cmac-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

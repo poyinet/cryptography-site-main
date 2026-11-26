@@ -1,0 +1,206 @@
+{
+  "results": [
+    {
+      "id": "hmac-calc-rfc4231-vectors",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "all 7 registered RFC 4231 test cases x HMAC-SHA-224/256/384/512 = 28 printed digests; keys and data taken byte-for-byte from hmac-vectors.json, which records the line number each value was read from",
+      "expected": "derivation: the RFC 2104 §2 steps (1)-(7); expectation printed at RFC 4231 §4.2 lines 181-182, 183-184, 185-186-187, 188-189-190-191; RFC 4231 §4.3 lines 201-202, 203-204, 205-206-207, 208-209-210-211; RFC 4231 §4.4 lines 243-244, 245-246, 247-248-249, 250-251-252-253; RFC 4231 §4.5 lines 267-268, 269-270, 271-272-273, 274-275-276-277; RFC 4231 §4.6 lines 296, 297, 298, 299; RFC 4231 §4.7 lines 320-321, 322-323, 324-325-326, 327-328-329-330; RFC 4231 §4.8 lines 368-369, 370-371, 372-373-374, 375-376-377-378. A construction coded from those steps - using only the underlying hash as H and never crypto.createHmac - reproduces every printed digest. Test Case 5 is compared at its printed 16-byte truncated length and the full digest is additionally checked to extend that prefix.",
+      "observed": {
+        "id": "hmac-calc-rfc4231-vectors",
+        "passed": true,
+        "digestsCompared": 28,
+        "cases": 7,
+        "variants": 4,
+        "reanchoredToPrintedLines": 28,
+        "mismatches": 0
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:14:08.497Z"
+    },
+    {
+      "id": "hmac-calc-construction-steps",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "Test Case 2: key Jefe (4 bytes, hex 4a656665, line 197), data \"what do ya want for nothing?\" (28 bytes, lines 198/199), H = SHA-256, B = 64",
+      "expected": "step (1) zero-pads the key to 64 bytes (4a656665 then 60 zero bytes); step (2) XOR with ipad must yield a block beginning 7c535053 and continuing 36 to the end; step (5) XOR with opad must yield a block beginning 16393a39 and continuing 5c; step (4) yields a 32-byte inner digest; step (7) output must equal the value printed at RFC 4231 §4.3 lines 203-204 (5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843). Only that final value is printed by the sources; the intermediates are derived by applying the numbered steps.",
+      "observed": {
+        "id": "hmac-calc-construction-steps",
+        "passed": true,
+        "testCase": 2,
+        "paddedKeyHex": "4a656665000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+        "ipadBlockHex": "7c535053363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636363636",
+        "opadBlockHex": "16393a395c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c5c",
+        "innerHex": "a2e485863d27f9d864ac8d802432a1ed477d8c4c6f349d16d4e7e917c629cad7",
+        "finalHex": "5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843",
+        "printedAt": "RFC 4231 §4.3 lines 203-204",
+        "intermediatesPrintedBySource": false
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:14:08.497Z"
+    },
+    {
+      "id": "hmac-calc-longkey-rule",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "Test Cases 6 and 7, both with 131-byte keys (longer than B=64 for SHA-224/256 and longer than B=128 for SHA-384/512)",
+      "expected": "derivation: the RFC 2104 §2 long-key sentence quoted segment by segment in the principle section. The implementation must take the H(key) branch; HMAC under the 131-byte key must equal HMAC under the key H(K) for the same data; and both must still produce the digests printed at RFC 4231 §4.7 and §4.8 (8 values).",
+      "observed": {
+        "id": "hmac-calc-longkey-rule",
+        "passed": true,
+        "cases": [
+          6,
+          7
+        ],
+        "keyBytes": 131,
+        "blockSizes": {
+          "sha224": 64,
+          "sha256": 64,
+          "sha384": 128,
+          "sha512": 128
+        },
+        "printedDigestsChecked": 8,
+        "perAlgo": {
+          "sha224": 2,
+          "sha256": 2,
+          "sha384": 2,
+          "sha512": 2
+        },
+        "equivalence": "HMAC(K,data) equals HMAC(H(K),data) when K is longer than B"
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:14:08.497Z"
+    },
+    {
+      "id": "hmac-calc-truncation-rule",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "Test Case 5 (RFC 4231 §4.6, heading line 287), whose four printed digests are 16 bytes because that case truncates output to 128 bits",
+      "expected": "derivation: the §4.6 note line, the §3.2 statement that the output-length element carries the truncated length, and the RFC 2104 §5 truncation recommendation quoted in the used section. The full-length digest of the same key and data must begin with each printed 16-byte value, for all four hashes.",
+      "observed": {
+        "id": "hmac-calc-truncation-rule",
+        "passed": true,
+        "truncatedLengthBits": 128,
+        "variants": [
+          "sha224",
+          "sha256",
+          "sha384",
+          "sha512"
+        ],
+        "printedAt": "RFC 4231 §4.6 lines 296, 297, 298, 299"
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:14:08.497Z"
+    },
+    {
+      "id": "hmac-calc-oracle-agreement",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "the 7 official cases plus every combination of key lengths 0,1,20,63,64,65,128,129,131,200 with data lengths 0,1,55,56,63,64,65,119,120,128,129,223,224,225 (140 cases) across the four hashes",
+      "expected": "the teaching construction and Node.js crypto.createHmac - an independent implementation, deliberately not used as an expected-value source - agree on every one of those cases. Agreement alone is not treated as proof: the printed RFC 4231 digests remain the expected values.",
+      "observed": {
+        "id": "hmac-calc-oracle-agreement",
+        "passed": true,
+        "casesCompared": 588,
+        "algorithms": [
+          "sha224",
+          "sha256",
+          "sha384",
+          "sha512"
+        ],
+        "officialCases": 7,
+        "lengthCases": 140,
+        "independentImplementation": "node crypto.createHmac (corroboration only; the printed RFC 4231 values are the expected ones)"
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:14:08.497Z"
+    },
+    {
+      "id": "algorithm--hmac-r139-formal",
+      "entryId": "algorithm--hmac-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "a1445df81358418b8c3e3d7ee28f6af3ce30de92983b3b7e9e9bbe49a8383b1d",
+      "dependencyHashes": {
+        "hmac-teaching.mjs": "4b9772b88ce0f1c83690e8b98f3fe28f4a73921ba91a9c89fb8cfec84f817970",
+        "hmac-vectors.json": "704cbc26741a6b7dbe2f52dfd81a764ef3038729d404473516f846b500f40ca6",
+        "article.zh.md": "9988bbff3ce0cef4f55c41315c8f4c114f0b4b827085ee72278b1f4fd2b66385",
+        "article.en.md": "69bfb18d1fdce8ece68eb6f4580a722b135e416f55eca85ea5e8095d559484d7",
+        "meta.json": "d363a3a47e9fd270ce5cbb0c967746a5b6a06721b40a55505b785b786eb3aaf8",
+        "glossary.json": "d007cf58a63271ead53647041b578f3b1c4d7e7799c961501ed41c758cee6e5e",
+        "calculations.json": "dd8919ea2a8127504fd951a86656dc2e9ca3e0906f71b5a56aa1a4123b4404ce"
+      },
+      "inputs": "HMAC 密钥化哈希认证码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "algorithm--hmac-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "T=\\mathrm{MAC}_K(M)"
+      },
+      "contentSha256": "e7c5fe28795721971b3e7203befdb3407f58e7e72fab1d4959868ccb61ec2aa0",
+      "sourcesSha256": "680138b0487d221b58d5019f3e508ee5b07e1db9da261e00d83c57901ce650b0",
+      "executedOn": "2026-11-25T07:30:40.978Z"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ecdsa-details",
+  "sources": [
+    {
+      "id": "ecdsa-wikipedia",
+      "title": "Wikipedia search entry for ECDSA 椭圆曲线签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ECDSA%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ECDSA 椭圆曲线签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ecdsa-r139-principle",
+          "entryId": "ecdsa-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ECDSA 椭圆曲线签名（Elliptic Curve Digital Signature Algorithm）。标准的范围句先立框架：「This standard defines methods for digital signature generation that can be used for the protection of binary data (commonly called a message) and for the verification and validation of those digital signatures.」ECDSA 在其中的位置由 §4 印明：「The Elliptic Curve Digital Signature Algorithm (ECDSA) is specified in this standard.」也即它不是一份独立规范，而是数字签名标准里的一支算法。",
+            "en": "**Algorithm**: Elliptic Curve Digital Signature Algorithm (ECDSA 椭圆曲线签名).The scope sentence sets the frame: \"This standard defines methods for digital signature generation that can be used for the protection of binary data (commonly called a message) and for the verification and validation of those digital signatures.\" §4 then fixes ECDSA's place in it: \"The Elliptic Curve Digital Signature Algorithm (ECDSA) is specified in this standard.\" So ECDSA is not a standalone specification but one algorithm inside the Digital Signature Standard."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdsa-r139-why",
+          "entryId": "ecdsa-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么标准要收编它，§1 交代了来历与缺口：ECDSA「ECDSA was originally specified in American National Standards (ANS) X9.62 [3] (withdrawn).」——原始出处是一份已撤回的 ANSI 标准。标准因此需要自己规定签名方法；同段还记下列于其后的确定化签名变体（§1），说明纳入的不只是原算法，还有对它随机数依赖的修补。",
+            "en": "Why the standard takes it up is told in §1 as provenance plus a gap: \"ECDSA was originally specified in American National Standards (ANS) X9.62 [3] (withdrawn).\" - the original home is a withdrawn ANSI standard.The standard therefore has to specify the method itself, and the same passage records a deterministic variant, showing that what is folded in is not only the algorithm but also the repair of its dependence on a per-signature random value."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdsa-r139-used",
+          "entryId": "ecdsa-details",
+          "section": "used",
+          "statement": {
+            "zh": "用法由两句规范性句子界定。密钥分工（§5.2）是「The private key shall be used only for signature generation, as specified in this standard, and shall be kept secret.」验证侧的耦合条件（§6.1.2）是「A digital signature shall be verified as specified in Section 6.4.2 using the same domain parameters and hash function that were used during signature generation.」也即换曲线参数或换哈希都会让验证不成立，部署必须把参数组与哈希一起固定下来。",
+            "en": "Usage is bounded by two normative sentences.Key division: \"The private key shall be used only for signature generation, as specified in this standard, and shall be kept secret.\" Verification coupling: \"A digital signature shall be verified as specified in Section 6.4.2 using the same domain parameters and hash function that were used during signature generation.\" Changing curve parameters or the hash breaks verification, so deployments must pin the parameter set and hash together."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdsa-r139-broken",
+          "entryId": "ecdsa-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度有三处。其一来自 §3 的密钥义务——私钥只能用于签名生成且须保密，泄露即等同可伪造。其三来自同一节的撤回事实：ECDSA 的最初规范 X9.62 已撤回，凡只引 X9.62 而不引本标准的实现说明，其出处面本身不成立。",
+            "en": "Three limits.First, the §3 key duty: the private key is only for signature generation and must stay secret, so disclosure is equivalent to forgery."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdsa-r139-history",
+          "entryId": "ecdsa-details",
+          "section": "history",
+          "statement": {
+            "zh": "沿革按留存件印出的两句：ECDSA 先在 ANSI X9.62 里被规定、该标准已撤回，随后由数字签名标准收编；标准在 §1 里记明「A variant of ECDSA with a deterministic signature generation」，说明确定化改法也在本标准里获得位置。文件自身的身份按项目口径复述于引号外：FIPS 186-5，2023 年 6 月发布，取代 FIPS 186-4。也就是说，ECDSA 的标准化叙事分两段：ANS 时期与本标准时期。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：ECDSA 椭圆曲线签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "The lineage follows two printed sentences: ECDSA was first specified in the now-withdrawn ANSI X9.62 and was then folded into the Digital Signature Standard, while \"A variant of ECDSA with a deterministic signature generation\" is listed in the same passage, giving the deterministic reform a place in this standard too.The document's own identity - FIPS 186-5, published June 2023, superseding FIPS 186-4 - is restated outside quotes per house rule."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdsa-r139-refs",
+          "entryId": "ecdsa-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ECDSA 椭圆曲线签名.https://zh.wikipedia.org/w/index.php?search=ECDSA%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ECDSA 椭圆曲线签名.https://zh.wikipedia.org/w/index.php?search=ECDSA%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ecdsa-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ecdsa-wikipedia"
+      ]
+    },
+    {
+      "id": "ecdsa-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ecdsa-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ecdsa-r139-principle",
+      "entryId": "ecdsa-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ECDSA 椭圆曲线签名（Elliptic Curve Digital Signature Algorithm）。标准的范围句先立框架：「This standard defines methods for digital signature generation that can be used for the protection of binary data (commonly called a message) and for the verification and validation of those digital signatures.」ECDSA 在其中的位置由 §4 印明：「The Elliptic Curve Digital Signature Algorithm (ECDSA) is specified in this standard.」也即它不是一份独立规范，而是数字签名标准里的一支算法。",
+        "en": "**Algorithm**: Elliptic Curve Digital Signature Algorithm (ECDSA 椭圆曲线签名).The scope sentence sets the frame: \"This standard defines methods for digital signature generation that can be used for the protection of binary data (commonly called a message) and for the verification and validation of those digital signatures.\" §4 then fixes ECDSA's place in it: \"The Elliptic Curve Digital Signature Algorithm (ECDSA) is specified in this standard.\" So ECDSA is not a standalone specification but one algorithm inside the Digital Signature Standard."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdsa-r139-why",
+      "entryId": "ecdsa-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么标准要收编它，§1 交代了来历与缺口：ECDSA「ECDSA was originally specified in American National Standards (ANS) X9.62 [3] (withdrawn).」——原始出处是一份已撤回的 ANSI 标准。标准因此需要自己规定签名方法；同段还记下列于其后的确定化签名变体（§1），说明纳入的不只是原算法，还有对它随机数依赖的修补。",
+        "en": "Why the standard takes it up is told in §1 as provenance plus a gap: \"ECDSA was originally specified in American National Standards (ANS) X9.62 [3] (withdrawn).\" - the original home is a withdrawn ANSI standard.The standard therefore has to specify the method itself, and the same passage records a deterministic variant, showing that what is folded in is not only the algorithm but also the repair of its dependence on a per-signature random value."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdsa-r139-used",
+      "entryId": "ecdsa-details",
+      "section": "used",
+      "statement": {
+        "zh": "用法由两句规范性句子界定。密钥分工（§5.2）是「The private key shall be used only for signature generation, as specified in this standard, and shall be kept secret.」验证侧的耦合条件（§6.1.2）是「A digital signature shall be verified as specified in Section 6.4.2 using the same domain parameters and hash function that were used during signature generation.」也即换曲线参数或换哈希都会让验证不成立，部署必须把参数组与哈希一起固定下来。",
+        "en": "Usage is bounded by two normative sentences.Key division: \"The private key shall be used only for signature generation, as specified in this standard, and shall be kept secret.\" Verification coupling: \"A digital signature shall be verified as specified in Section 6.4.2 using the same domain parameters and hash function that were used during signature generation.\" Changing curve parameters or the hash breaks verification, so deployments must pin the parameter set and hash together."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdsa-r139-broken",
+      "entryId": "ecdsa-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度有三处。其一来自 §3 的密钥义务——私钥只能用于签名生成且须保密，泄露即等同可伪造。其三来自同一节的撤回事实：ECDSA 的最初规范 X9.62 已撤回，凡只引 X9.62 而不引本标准的实现说明，其出处面本身不成立。",
+        "en": "Three limits.First, the §3 key duty: the private key is only for signature generation and must stay secret, so disclosure is equivalent to forgery."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdsa-r139-history",
+      "entryId": "ecdsa-details",
+      "section": "history",
+      "statement": {
+        "zh": "沿革按留存件印出的两句：ECDSA 先在 ANSI X9.62 里被规定、该标准已撤回，随后由数字签名标准收编；标准在 §1 里记明「A variant of ECDSA with a deterministic signature generation」，说明确定化改法也在本标准里获得位置。文件自身的身份按项目口径复述于引号外：FIPS 186-5，2023 年 6 月发布，取代 FIPS 186-4。也就是说，ECDSA 的标准化叙事分两段：ANS 时期与本标准时期。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：ECDSA 椭圆曲线签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "The lineage follows two printed sentences: ECDSA was first specified in the now-withdrawn ANSI X9.62 and was then folded into the Digital Signature Standard, while \"A variant of ECDSA with a deterministic signature generation\" is listed in the same passage, giving the deterministic reform a place in this standard too.The document's own identity - FIPS 186-5, published June 2023, superseding FIPS 186-4 - is restated outside quotes per house rule."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdsa-r139-refs",
+      "entryId": "ecdsa-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ECDSA 椭圆曲线签名.https://zh.wikipedia.org/w/index.php?search=ECDSA%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ECDSA 椭圆曲线签名.https://zh.wikipedia.org/w/index.php?search=ECDSA%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ecdsa-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

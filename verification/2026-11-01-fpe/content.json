@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for fpe: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "fpe-details",
+      "inventoryIds": [
+        "fpe"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释FPE 格式保留加密的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Format-Preserving Encryption: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "FPE 格式保留加密",
+        "en": "Format-Preserving Encryption"
+      },
+      "claimIds": [
+        "fpe-r139-principle",
+        "fpe-r139-why",
+        "fpe-r139-used",
+        "fpe-r139-broken",
+        "fpe-r139-history",
+        "fpe-r139-refs"
+      ],
+      "sourceIds": [
+        "fpe-wikipedia",
+        "fpe-reference-ref"
+      ],
+      "related": [
+        "block-cipher",
+        "cipher-block-chaining",
+        "galois-counter-mode"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：FPE 格式保留加密（Format-Preserving Encryption）。2016 年版的 SP 800-38G 说明格式保留加密「is designed for data that is not necessarily binary」：给定任意有限符号集（例如十进制数字），把由这些符号组成的数据加密后，密文「has the same format, including the length, as the original data」。文档把符号集称为 alphabet，其字符数为 radix（radix ≥ 2），小于基数的非负整数是 numeral，其有限有序序列是 numeral string。",
+          "why": "动机是普通加密会改变数据长度或字符集：文档以九位十进制的社会保险号为例，若密文变长就会超出格式。因此「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」，应用包括金融信息安全、数据净化以及遗留数据库字段的透明加密。",
+          "used": "该建议（2016 年 3 月，含 2016 年 8 月 4 日更新）给出 FF1 与 FF3 两种模式，即算法 7 到 10 的加密与解密。§4.3 要求底层分组密码被批准且块长为 128 位：「Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile」；§4.5 说明 FF1 使用十轮、FF3 使用八轮；§4.4 与附录 C 强烈建议可变 tweak。",
+          "broken": "附录 A 指出输入空间足够小时「encrypted data may be vulnerable to guessing attacks」，并建议 radix 的 minlen 次方一般至少达到一百万以限制猜测，同时要求该值不小于 100「in order to preclude a generic meet-in-the-middle attack on the Feistel structure」。§6 规定 PRF 等组件函数「not approved for use independent of these four functions」；§2 的脚注提醒数据净化「does not necessarily provide strong assurance that individuals cannot be re-identified」。",
+          "history": "SP 800-38G 由 Morris Dworkin 撰写，2016 年 3 月发布（含 2016 年 8 月 4 日的页面更新）。§2 记录草案中的 FF2 模式被移除：NIST 收到国家安全局的一般性告知，认为草案中的 FF2「did not provide the expected 128 bits of security strength」，随后宣布删除。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：FPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 FPE 格式保留加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for FPE 格式保留加密. https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nFPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Format-Preserving Encryption (FPE 格式保留加密). The 2016 edition of SP 800-38G says format-preserving encryption \"is designed for data that is not necessarily binary\": for any finite set of symbols such as decimal numerals, the encrypted form \"has the same format, including the length, as the original data\". The document calls the symbol set an alphabet, its size the radix (at least 2), a non-negative integer below the base a numeral, and a finite ordered sequence of them a numeral string.",
+          "why": "Ordinary encryption changes length or character set. The document uses the nine-decimal-digit Social Security number as its example: a longer ciphertext would no longer fit the format. So \"FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications\", with applications including financial-information security, data sanitization and transparent encryption of fields in legacy databases.",
+          "used": "The Recommendation (March 2016, with updates of 4 August 2016) provides the FF1 and FF3 modes, Algorithms 7 to 10 for encryption and decryption. Section 4.3 requires an approved block cipher with a 128-bit block: \"Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile\". Section 4.5 states that ten rounds are specified for FF1 and eight for FF3, and §4.4 with Appendix C strongly recommend variable tweaks.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Appendix A notes that \"encrypted data may be vulnerable to guessing attacks\" when the input space is small, suggesting that radix raised to minlen should generally reach at least one million to limit guessing, and requiring that value to be at least 100 \"in order to preclude a generic meet-in-the-middle attack on the Feistel structure\". Section 6 states that component functions such as the PRF are \"not approved for use independent of these four functions\", and a footnote in §2 warns that sanitization \"does not necessarily provide strong assurance that individuals cannot be re-identified\".",
+          "history": "SP 800-38G, by Morris Dworkin, was published in March 2016 with updates as of 4 August 2016. Section 2 records the removal of the FF2 mode from the draft: NIST was advised by the National Security Agency in general terms that FF2 in the draft \"did not provide the expected 128 bits of security strength\", and announced its removal.",
+          "refs": "- Wikipedia search entry for FPE 格式保留加密. https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nFormat-Preserving Encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "格式保留加密：密文与明文格式和长度相同的加密。",
+          "字母表（alphabet）：有限的符号集合。",
+          "基数（radix）：字母表中的字符数量。",
+          "数字串（numeral string）：给定基数下数字的有限有序序列。",
+          "tweak：随每次加密变化、用于打散结果的附加输入。",
+          "数据净化：把数据替换为不可直接识别形式的处理。"
+        ],
+        "en": [
+          "Format-preserving encryption: ciphertext with the same format and length as the plaintext.",
+          "Alphabet: a finite set of symbols.",
+          "Radix: the number of characters in an alphabet.",
+          "Numeral string: a finite ordered sequence of numerals for a base.",
+          "Tweak: an additional input that varies per encryption to decorrelate results.",
+          "Data sanitization: replacing data with a form that is not directly identifying."
+        ]
+      },
+      "figures": [
+        {
+          "id": "fpe-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "FPE 格式保留加密：为什么需要 → 核心机制 → 边界。",
+            "en": "Format-Preserving Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "FPE 格式保留加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Format-Preserving Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/fpe-details-flow.zh.svg",
+            "en": "assets/fpe-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f66410fb70f918daa1eb99cc98d04d77e183126ef716c0cb9368e47500dca0b0",
+            "en": "75b95203911d1b4978df66f76065bf7bfde0658380b8cbcca2debd64d719bf5f"
+          }
+        },
+        {
+          "id": "fpe-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "FPE 格式保留加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Format-Preserving Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "FPE 格式保留加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Format-Preserving Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/fpe-details-r138-model.zh.svg",
+            "en": "assets/fpe-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3b08aab7d35d0c168b6dea636eda214eea8d3e2c345969752a4c66b7030f7cc1",
+            "en": "df8aa5d2e5b0c8f04a548bb7e8dc3698148b0c4f97b5808db1f69343139c2d4e"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "fpe-r139-formal",
+          "entryId": "fpe-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：FPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 FPE 格式保留加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "fpe-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "fpe-r139-formal"
+      ],
+      "sources": [
+        "fpe-wikipedia",
+        "fpe-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "fpe-r139-formal",
+      "entryId": "fpe-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：FPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 FPE 格式保留加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "fpe-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

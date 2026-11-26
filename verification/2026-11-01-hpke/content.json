@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for hpke: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "hpke-details",
+      "inventoryIds": [
+        "hpke"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释HPKE 混合公钥加密的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Hybrid Public Key Encryption: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "HPKE 混合公钥加密",
+        "en": "Hybrid Public Key Encryption"
+      },
+      "claimIds": [
+        "hpke-r139-principle",
+        "hpke-r139-why",
+        "hpke-r139-used",
+        "hpke-r139-broken",
+        "hpke-r139-history",
+        "hpke-r139-refs"
+      ],
+      "sourceIds": [
+        "hpke-wikipedia",
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ],
+      "related": [
+        "cose",
+        "hkdf",
+        "diffie-hellman-key-exchange"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：HPKE 混合公钥加密（Hybrid Public Key Encryption）。RFC 9180 §5 说明各模式的共同接口：「All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.」混合即公钥封装 + 对称 AEAD的组合。",
+          "why": "动机是既有方案不统一：§1 指出「Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)」，并说明「All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.」§5.3 另外提供从加密上下文中导出密钥的接口。",
+          "used": "最常见用法是单条消息加密：§6.1 说明「In many cases, applications encrypt only a single message to a recipient's public key.」并给出无状态模板；套件标识由三部分拼接，§4 规定在 KEM 内部使用时「suite_id MUST start with」KEM 前缀，在 HPKE 其余部分「MUST start with」HPKE 前缀以标识整套密码套件。",
+          "broken": "边界写在安全分析里：§9.1 直说「HPKE does not provide forward secrecy with respect to recipient compromise.」§9.7.4 强调「HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.」文档另列非目标（不含降级与重放防护、不隐藏明文长度），且未登记任何后量子 KEM 套件。",
+          "history": "RFC 9180 于 2022 年 2 月发布，头部标注为 IRTF 与 Informational，并说明「This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.」；算法标识表在 §7（标题为 Algorithm Identifiers），本文没有 Obsoletes 行。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：HPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 HPKE 混合公钥加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for HPKE 混合公钥加密. https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9180: Hybrid Public Key Encryption. https://www.rfc-editor.org/rfc/rfc9180\n- Published standard/RFC for HPKE 混合公钥加密. https://www.rfc-editor.org/rfc/rfc9180",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nHPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Hybrid Public Key Encryption (HPKE 混合公钥加密). Section 5 gives the common shape: \"All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.\" Hybrid here means a public-key encapsulation combined with a symmetric AEAD.",
+          "why": "The motive is fragmentation: §1 says \"Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)\" and that \"All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.\" Section 5.3 adds an interface for exporting secrets from the encryption context.",
+          "used": "The common case is one message: §6.1 states \"In many cases, applications encrypt only a single message to a recipient's public key.\" and supplies the stateless single-shot templates. Section 4 pins the identifiers, requiring that inside a KEM \"suite_id MUST start with\" the KEM prefix while in the rest of HPKE it \"MUST start with\" the HPKE prefix identifying the whole ciphersuite.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The limits are stated with the analysis: §9.1 says \"HPKE does not provide forward secrecy with respect to recipient compromise.\" and §9.7.4 that \"HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.\" The document also lists non-goals (no downgrade or replay prevention, no hiding of the plaintext length) and registers no post-quantum KEM suite.",
+          "history": "RFC 9180 dates from February 2022, is labelled IRTF and Informational, and states \"This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.\" The algorithm identifiers table is §7, titled Algorithm Identifiers, and the document carries no Obsoletes line.",
+          "refs": "- Wikipedia search entry for HPKE 混合公钥加密. https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9180: Hybrid Public Key Encryption. https://www.rfc-editor.org/rfc/rfc9180\n- Published standard/RFC for HPKE 混合公钥加密. https://www.rfc-editor.org/rfc/rfc9180",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nHybrid Public Key Encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "KEM：密钥封装机制，HPKE 的前半段。",
+          "enc：与密文一同发出的封装密钥。",
+          "suite_id：由 KEM、KDF、AEAD 标识拼成的上下文串。",
+          "single-shot API：单次加密/解密的无状态接口。",
+          "export：从加密上下文导出密钥的接口。",
+          "接收方泄露：HPKE 不提供该方向的完美前向保密。"
+        ],
+        "en": [
+          "KEM: the key-encapsulation mechanism forming HPKE's first stage.",
+          "enc: the encapsulated key shipped alongside the ciphertext.",
+          "suite_id: a context string built from the KEM, KDF and AEAD identifiers.",
+          "Single-shot API: the stateless one-message encrypt/decrypt interface.",
+          "Export: the interface for deriving secrets from the encryption context.",
+          "Recipient compromise: the direction where HPKE lacks forward secrecy."
+        ]
+      },
+      "figures": [
+        {
+          "id": "hpke-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HPKE 混合公钥加密：为什么需要 → 核心机制 → 边界。",
+            "en": "Hybrid Public Key Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "HPKE 混合公钥加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Hybrid Public Key Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/hpke-details-flow.zh.svg",
+            "en": "assets/hpke-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "349895e782a06500b7658b7a147c6bc8880f12c3771873e34b95cfbdbbb3e006",
+            "en": "910ec4b3f099e52582626b8d4122152f712233c9713b80aa47676a0b9c6beba1"
+          }
+        },
+        {
+          "id": "hpke-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HPKE 混合公钥加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Hybrid Public Key Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "HPKE 混合公钥加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Hybrid Public Key Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/hpke-details-r138-model.zh.svg",
+            "en": "assets/hpke-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f5f193e0ac67634343c7cf0b09bb8c3ebc70bbb6203e5753af0b789180a80445",
+            "en": "c76a33cbfbadde2965da76733b2a5c4182e176b98d6c0dbefc12ae8ed897e84c"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "hpke-r139-formal",
+          "entryId": "hpke-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：HPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 HPKE 混合公钥加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "hpke-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "hpke-r139-formal"
+      ],
+      "sources": [
+        "hpke-wikipedia",
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "hpke-r139-formal",
+      "entryId": "hpke-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：HPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 HPKE 混合公钥加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "hpke-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 820" width="1240" height="820" role="img" aria-labelledby="fig-title fig-desc">
+<title id="fig-title">Halo2: matrix circuits, lookups and IPA</title>
+<desc id="fig-desc">Core path: matrix gates → copy/lookup → commitments → IPA verification — mechanism schematic with parameters, use and limits.</desc>
+<defs>
+      <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4B3F9E"/></marker>
+      <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1F7A6A"/></marker>
+      <marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8A6100"/></marker>
+      <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9B2C2C"/></marker>
+      <marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#6B655C"/></marker>
+      <clipPath id="mainClip"><rect x="50" y="185" width="760" height="450" rx="16"/></clipPath>
+    </defs>
+<rect x="0" y="0" width="1240" height="820" fill="#F7F5EF"/>
+<text x="60" y="52" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="700" fill="#6B655C" text-anchor="left">Proof system · PLONKish zk-SNARK</text>
+<text x="60" y="104" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="32" font-weight="800" fill="#1F1D1A" text-anchor="left">Halo2: matrix circuits, lookups and IPA</text>
+<text x="60" y="143" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="17" font-weight="500" fill="#6B655C" text-anchor="left">Advice/fixed/instance columns form a matrix; permutation enforces copies, lookup checks tables, and IPA opens commitments over Pallas/Vesta.</text>
+<rect x="50" y="185" width="760" height="450" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<text x="78" y="224" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="800" fill="#1F1D1A" text-anchor="left">Core path: matrix gates → copy/lookup → commitments → IPA verification</text>
+<g clip-path="url(#mainClip)">
+<text x="70" y="260" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="14" font-weight="800" fill="#4B3F9E" text-anchor="left">Circuit matrix</text>
+<rect x="70" y="272" width="120" height="34" rx="4" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="130" y="294" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="700" fill="#4B3F9E" text-anchor="middle">advice</text>
+<rect x="196" y="272" width="80" height="34" rx="4" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="236" y="294" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="700" fill="#4B3F9E" text-anchor="middle">fixed</text>
+<rect x="282" y="272" width="90" height="34" rx="4" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="327" y="294" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="700" fill="#4B3F9E" text-anchor="middle">instance</text>
+<rect x="70" y="310" width="120" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="130" y="328" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">a0</text>
+<rect x="196" y="310" width="80" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="236" y="328" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">q0</text>
+<rect x="282" y="310" width="90" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="327" y="328" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">i0</text>
+<rect x="70" y="340" width="120" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="130" y="358" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">a1</text>
+<rect x="196" y="340" width="80" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="236" y="358" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">q1</text>
+<rect x="282" y="340" width="90" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="327" y="358" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">i1</text>
+<rect x="70" y="370" width="120" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="130" y="388" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">a2</text>
+<rect x="196" y="370" width="80" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="236" y="388" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">q2</text>
+<rect x="282" y="370" width="90" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="327" y="388" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">i2</text>
+<rect x="70" y="400" width="120" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="130" y="418" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">a3</text>
+<rect x="196" y="400" width="80" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="236" y="418" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">q3</text>
+<rect x="282" y="400" width="90" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="327" y="418" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">i3</text>
+<rect x="70" y="430" width="120" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="130" y="448" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">a4</text>
+<rect x="196" y="430" width="80" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="236" y="448" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">q4</text>
+<rect x="282" y="430" width="90" height="26" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.9"/>
+<text x="327" y="448" font-family="'Consolas','SFMono-Regular',monospace" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="middle">i4</text>
+<text x="70" y="480" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="500" fill="#6B655C" text-anchor="left">One gate per row; q_L a + q_R b + q_M ab + q_C = 0</text>
+<circle cx="130" cy="325" r="5" fill="#1F7A6A"/>
+<circle cx="260" cy="415" r="5" fill="#1F7A6A"/>
+<line x1="138" y1="328" x2="252" y2="405" stroke="#1F7A6A" stroke-width="2" stroke-dasharray="6 5" marker-end="url(#arrowGreen)"/>
+<text x="70" y="500" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="700" fill="#1F7A6A" text-anchor="left">Green dashed line = copy constraint</text>
+<text x="405" y="278" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="700" fill="#8A6100" text-anchor="left">lookup table</text>
+<rect x="405" y="288" width="120" height="120" rx="8" fill="#FFF3CD" stroke="#8A6100" stroke-width="1.2"/>
+<rect x="418" y="305" width="94" height="18" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.8"/>
+<text x="465" y="318" font-family="'Consolas','SFMono-Regular',monospace" font-size="11" font-weight="600" fill="#6B655C" text-anchor="middle">0x00</text>
+<rect x="418" y="329" width="94" height="18" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.8"/>
+<text x="465" y="342" font-family="'Consolas','SFMono-Regular',monospace" font-size="11" font-weight="600" fill="#6B655C" text-anchor="middle">0x01</text>
+<rect x="418" y="353" width="94" height="18" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.8"/>
+<text x="465" y="366" font-family="'Consolas','SFMono-Regular',monospace" font-size="11" font-weight="600" fill="#6B655C" text-anchor="middle">0x2f</text>
+<rect x="418" y="377" width="94" height="18" rx="3" fill="#FFFFFF" stroke="#DED9CE" stroke-width="0.8"/>
+<text x="465" y="390" font-family="'Consolas','SFMono-Regular',monospace" font-size="11" font-weight="600" fill="#6B655C" text-anchor="middle">0xff</text>
+<line x1="342" y1="385" x2="405" y2="340" stroke="#8A6100" stroke-width="2"  marker-end="url(#arrowAmber)"/>
+<text x="375" y="375" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="700" fill="#8A6100" text-anchor="middle">lookup</text>
+<rect x="555" y="285" width="190" height="48" rx="10" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.6"/>
+<text x="650" y="314" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#4B3F9E" text-anchor="middle">Pedersen commitments Cⱼ</text>
+<rect x="555" y="355" width="190" height="48" rx="10" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.6"/>
+<text x="650" y="384" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#4B3F9E" text-anchor="middle">IPA opening</text>
+<rect x="555" y="425" width="190" height="48" rx="10" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.6"/>
+<text x="650" y="454" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#1F7A6A" text-anchor="middle">Verifier checks</text>
+<line x1="552" y1="309" x2="555" y2="309" stroke="#4B3F9E" stroke-width="2"  marker-end="url(#arrowPurple)"/>
+<line x1="650" y1="333" x2="650" y2="355" stroke="#4B3F9E" stroke-width="2"  marker-end="url(#arrowPurple)"/>
+<line x1="650" y1="403" x2="650" y2="425" stroke="#1F7A6A" stroke-width="2"  marker-end="url(#arrowGreen)"/>
+<rect x="555" y="495" width="190" height="40" rx="10" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.6"/>
+<text x="650" y="515" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#1F7A6A" text-anchor="middle">No trusted setup</text>
+<text x="650" y="531" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">Pallas / Vesta</text>
+<line x1="650" y1="473" x2="650" y2="495" stroke="#1F7A6A" stroke-width="2"  marker-end="url(#arrowGreen)"/>
+<text x="320" y="545" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="500" fill="#6B655C" text-anchor="middle">Constraints vanish on H; verifier checks openings</text>
+</g>
+<rect x="830" y="185" width="360" height="450" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<rect x="835" y="205" width="350" height="132" rx="12" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.2"/>
+<text x="851" y="229" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#4B3F9E" text-anchor="left">Parameters</text>
+<circle cx="854" cy="252" r="2.5" fill="#4B3F9E"/>
+<text x="864" y="256" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">advice / fixed / instance columns</text>
+<circle cx="854" cy="280" r="2.5" fill="#4B3F9E"/>
+<text x="864" y="284" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">2^k rows; roots-of-unity domain</text>
+<circle cx="854" cy="308" r="2.5" fill="#4B3F9E"/>
+<text x="864" y="312" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">Pallas/Vesta + IPA</text>
+<rect x="835" y="345" width="350" height="132" rx="12" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.2"/>
+<text x="851" y="369" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#1F7A6A" text-anchor="left">Use</text>
+<circle cx="854" cy="392" r="2.5" fill="#1F7A6A"/>
+<text x="864" y="396" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">Zcash Orchard</text>
+<circle cx="854" cy="420" r="2.5" fill="#1F7A6A"/>
+<text x="864" y="424" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">zkEVM / rollup proving</text>
+<circle cx="854" cy="448" r="2.5" fill="#1F7A6A"/>
+<text x="864" y="452" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">Recursive proof composition</text>
+<rect x="835" y="485" width="350" height="132" rx="12" fill="#FFF3CD" stroke="#8A6100" stroke-width="1.2"/>
+<text x="851" y="509" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#8A6100" text-anchor="left">Boundary</text>
+<circle cx="854" cy="532" r="2.5" fill="#8A6100"/>
+<text x="864" y="536" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">The circuit is the trust root</text>
+<circle cx="854" cy="560" r="2.5" fill="#8A6100"/>
+<text x="864" y="564" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">IPA verification is not constant-size</text>
+<circle cx="854" cy="588" r="2.5" fill="#8A6100"/>
+<text x="864" y="592" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">Public inputs stay public</text>
+<rect x="78" y="600" width="200" height="32" rx="16" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="178" y="621" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="600" fill="#4B3F9E" text-anchor="middle">No trusted setup</text>
+<rect x="296" y="600" width="200" height="32" rx="16" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="396" y="621" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="600" fill="#4B3F9E" text-anchor="middle">PLONKish</text>
+<rect x="514" y="600" width="200" height="32" rx="16" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1"/>
+<text x="614" y="621" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="600" fill="#4B3F9E" text-anchor="middle">IPA</text>
+<rect x="50" y="660" width="1140" height="105" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<text x="74" y="690" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="14" font-weight="800" fill="#4B3F9E" text-anchor="left">How to read this figure</text>
+<text x="74" y="716" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="500" fill="#1F1D1A" text-anchor="left">Start with the three-column matrix and one gate per row, then the green copy constraint binding a variable</text>
+<text x="74" y="739" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="500" fill="#1F1D1A" text-anchor="left">across columns, then lookup sending range checks to a table, and finally commitments opened by IPA and checked</text>
+<text x="74" y="762" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="500" fill="#1F1D1A" text-anchor="left">by the verifier. The right column lists parameters, deployment and trust boundaries.</text>
+<line x1="60" y1="782" x2="1180" y2="782" stroke="#DED9CE" stroke-width="1.2"/>
+<text x="60" y="804" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="500" fill="#6B655C" text-anchor="left">Original mechanism diagram · CC BY 4.0 · poyi knowledge · 2026-11-21 · structure and parameters drawn from the cited specifications</text>
+</svg>

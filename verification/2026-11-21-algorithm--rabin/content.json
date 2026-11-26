@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening batch for algorithm--rabin-details.",
+  "entries": [
+    {
+      "id": "algorithm--rabin-details",
+      "inventoryIds": [
+        "algorithm--rabin"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R107 陷门签名、格加密、认证密钥协商、群签名与可搜索加密深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Rabin 陷门公钥密码",
+        "en": "Rabin Trapdoor Signature"
+      },
+      "claimIds": [
+        "algorithm--rabin-r139-principle",
+        "algorithm--rabin-r139-why",
+        "algorithm--rabin-r139-used",
+        "algorithm--rabin-r139-broken",
+        "algorithm--rabin-r139-history",
+        "algorithm--rabin-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--rabin-wikipedia",
+        "algorithm--rabin-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "algorithm--rabin-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Rabin 陷门公钥密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Rabin Trapdoor Signature: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Rabin 陷门公钥密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Rabin Trapdoor Signature, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--rabin-details-flow.zh.svg",
+            "en": "assets/algorithm--rabin-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9c1a3b38a9f6879ca0c645ecc57a8e98bb3653484ba9de1c11f9aa35dcbaec3f",
+            "en": "81d113d2fd570c979d7fc5cc4335f46e5d43b22f603118366d75039b65801c31"
+          }
+        },
+        {
+          "id": "algorithm--rabin-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Rabin 陷门公钥密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Rabin Trapdoor Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Rabin 陷门公钥密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Rabin Trapdoor Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--rabin-details-r138-model.zh.svg",
+            "en": "assets/algorithm--rabin-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fe9faf64b6965075789c393e6d2404f5603209c5d8b824a821bf1b16aba16fb7",
+            "en": "f190460ca5e623f1246ae7facfc2b8cf15eb5138cdf4b6ec123ac1c4b46b8d31"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Rabin 陷门公钥密码（Rabin Cryptosystem）。### 二次剩余陷门\n\nRabin 签名把消息哈希映射到模 n 的二次剩余，签名是方程 x²+bx≡H(m,u) 的一个根。公钥是 n=pq 与常数 b；私钥 p,q 用于在 Z_p、Z_q 上开方，再用 CRT 合并。### 四根与编码\n\n平方映射的每个值有四个根；签名者只公开一个，两个不同根会泄露 gcd 从而分解 n。标准化变体用 Rabin-Williams 编码和冗余，并把随机串 u 纳入哈希，避免根选择歧义和选择消息攻击。### 安全归约\n\n在随机预言机模型下，伪造签名可归约为求模 n 平方根，而求平方根与分解 n 等价。验证只需一次模平方和编码检查，比 RSA 的模幂快数百倍。",
+          "why": "Rabin 是第一个可证明“伪造难度等价于分解大整数”的实用签名族。RSA 只做到“破签不比分解更难”，Rabin 给出反向归约：能从伪造推出因子。验签一次平方，签名端一次开方加 CRT，计算量都低于同规模 RSA；这让它适合智能卡、传感器和低功耗验证方。代价是签名端要处理四根与编码，工程上比 RSA 难用，标准化版本转向 Rabin-Williams。",
+          "used": "Rabin-Williams 变体进入 ISO/IEC 14888-2（带附录签名）与 ISO/IEC 9796-2（消息恢复签名），IEEE P1363 也收录 Rabin；主要用于标准教材、嵌入式验签和需要可证明因子分解安全的场景。实际部署远少于 RSA：签名是概率性的，根选择、编码和专利/生态都增加成本；现代 TLS、代码签名和证书几乎只用 RSA、ECDSA 或 Ed25519。",
+          "broken": "裸平方根签名对选择消息攻击脆弱：攻击者取随机 x，请求签 x² mod n；若返回的根不是 ±x，gcd(x−s,n) 直接给出 p 或 q。必须用带冗余的编码和随机化哈希阻断。ISO 9796-2 的 Rabin-Williams 实例曾被 Coron–Naccache–Stern 类攻击和后续改进攻击；哈希太短或编码不当会允许伪造。参数、编码和根的选择都必须按标准执行。",
+          "history": "Rabin 1979 年在 MIT/LCS/TR-212 提出该方案；Williams 1980 给出 Rabin-Williams 变体，使签名更接近 RSA 形式；Bellare–Rogaway 1996 给出精确安全界；随后进入 ISO/IEC 14888-2 与 9796-2。它影响了可证明安全签名和基于分解的密码学，但因工程复杂性未成为主流。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Rabin 陷门公钥密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for Rabin 陷门公钥密码. https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nRabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Rabin Cryptosystem (Rabin 陷门公钥密码). ### Quadratic-residue trapdoor\n\nA Rabin signature hashes the message to a quadratic residue modulo n and returns a root of x²+bx≡H(m,u). The public key is n=pq and a constant b; the private factors p,q let the signer take square roots modulo each prime and combine them with CRT. ### Four roots and encoding\n\nSquaring has four roots for every value. The signer publishes only one; two distinct roots leak gcd and factor n. Standardized Rabin-Williams variants add redundancy, encode the message, and bind a random string u into the hash to prevent root ambiguity and chosen-message attacks. ### Security reduction\n\nIn the random oracle model, forging reduces to computing a square root modulo n, which is equivalent to factoring n. Verification is one modular squaring plus an encoding check, hundreds of times faster than an RSA modular exponentiation.",
+          "why": "Rabin was the first practical signature family proven “forging is as hard as factoring”. RSA only gives “breaking signatures is no harder than factoring”; Rabin gives the converse reduction from forgery to factors.\n\nVerification is one squaring, and signing is one square-root extraction plus CRT, both cheaper than RSA at the same modulus size. That suits smart cards, sensors and low-power verifiers. The price is four-root handling and encoding, which made it harder to engineer than RSA; standardized variants moved to Rabin-Williams.",
+          "used": "Rabin-Williams variants appear in ISO/IEC 14888-2 (signatures with appendix) and ISO/IEC 9796-2 (message-recovery signatures), and IEEE P1363 includes Rabin. Uses are mainly standards education, embedded verification and settings that want a factoring-equivalence proof.\n\nReal deployment is far below RSA: signatures are probabilistic, root selection and encoding add cost, and patent/ecosystem effects favor RSA, ECDSA or Ed25519 in modern TLS, code signing and certificates.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "A raw square-root signature is vulnerable to a chosen-message attack: the attacker picks random x and asks for a signature on x² mod n. If the returned root is not ±x, gcd(x−s,n) directly reveals p or q. Redundant encoding and randomized hashing are required.\n\nThe Rabin-Williams instance in ISO 9796-2 was hit by Coron–Naccache–Stern-style attacks and later improvements; short hashes or careless encoding enable forgery. Parameters, encoding and root selection must follow the standard.",
+          "history": "Rabin proposed the scheme in MIT/LCS/TR-212 in 1979; Williams gave the Rabin-Williams variant in 1980, making signatures closer to RSA form; Bellare and Rogaway gave exact security bounds in 1996; it later entered ISO/IEC 14888-2 and 9796-2.\n\nIt influenced provably secure signatures and factorization-based cryptography, but engineering complexity kept it out of the mainstream.",
+          "refs": "- Wikipedia search entry for Rabin 陷门公钥密码. https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nRabin Cryptosystem: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "algorithm--rabin-r139-formal",
+          "entryId": "algorithm--rabin-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Rabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Rabin 陷门公钥密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "algorithm--rabin-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--rabin-r139-formal"
+      ],
+      "sources": [
+        "algorithm--rabin-wikipedia",
+        "algorithm--rabin-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--rabin-r139-formal",
+      "entryId": "algorithm--rabin-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Rabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Rabin 陷门公钥密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "algorithm--rabin-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

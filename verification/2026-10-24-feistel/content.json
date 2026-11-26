@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "Full Feistel-network concept article only; no completion claim for DES, 3DES/TDEA, AES or other concrete Feistel ciphers.",
+  "entries": [
+    {
+      "id": "feistel-details",
+      "inventoryIds": [
+        "feistel-network"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 feistel-network 这一构造：左右分半、轮函数、可逆性、Luby–Rackoff 边界和与 SPN 的区别；不把 DES、3DES/TDEA、AES 或其他具体密码并入本实体。",
+        "en": "Covers the feistel-network construction: halves, round function, invertibility, Luby–Rackoff limits and the contrast with SPNs. It does not absorb DES, 3DES/TDEA, AES or other concrete ciphers."
+      },
+      "title": {
+        "zh": "费斯妥网络：用不可逆轮函数构造可逆分组密码",
+        "en": "Feistel networks: invertible block ciphers from non-invertible round functions"
+      },
+      "claimIds": [
+        "feistel-network-r139-principle",
+        "feistel-network-r139-why",
+        "feistel-network-r139-used",
+        "feistel-network-r139-broken",
+        "feistel-network-r139-history",
+        "feistel-network-r139-refs"
+      ],
+      "calculationIds": [
+        "feistel-roundtrip",
+        "feistel-noninjective-f",
+        "feistel-three-four-rounds",
+        "feistel-des-tdea-counts"
+      ],
+      "sourceIds": [
+        "feistel-network-wikipedia",
+        "feistel-network-standard-ref"
+      ],
+      "related": [
+        "algorithm--des",
+        "algorithm--3des",
+        "substitution-permutation-network",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：费斯妥网络（Feistel Network）。Feistel 网络把分组分成左右两半，重复应用同一个轮函数。设第 i−1 轮的状态为 (L_{i−1}, R_{i−1})，第 i 轮计算：\n\n`R_i = L_{i−1} ⊕ F(R_{i−1}, K_i)`\n\n其中 F 是轮函数，K_i 是该轮子密钥。做完 n 轮后，把左右两半交换，输出 (R_n, L_n)。交换不是装饰：它让解密可以使用同一套轮函数和相反顺序的子密钥。解密从 (R_n, L_n) 开始，反向执行：\n\n`L_{i−1} = R_i ⊕ F(L_i, K_i)`\n\n因此无论 F 是否可逆、是否一一映射，整个 Feistel 网络都可逆。这是它最重要的工程性质：设计者可以用一个非线性的、不可逆的 F，仍然得到一个可逆的分组密码。Feistel 网络可以是平衡的（两半等长，例如 DES 的 32+32 位）或不平衡的（两半长度不同）。轮数、F 的结构、子密钥调度和分组长度共同决定具体密码的安全性和性能；Feistel 只规定状态如何更新，不规定 F 必须是什么。与代换—置换网络（SPN）相比，Feistel 不需要为解密单独实现逆 S 盒和逆线性层。SPN 的每一步通常必须可逆，Feistel 只要求 F 确定；代价是每轮只更新一半状态，达到同等扩散通常需要更多轮。",
+          "why": "Feistel 网络是一个把任意函数变成可逆置换的设计模式。它降低了分组密码的实现门槛：只要 F 能快速计算，加解密可以共享同一段代码，减少重复实现。DES 和 3DES/TDEA 都采用这一结构。它也是可证明安全理论的早期对象。该定理归给 Luby 与 Rackoff（1988 年）：在轮函数为伪随机函数的模型下，3 轮 Feistel 网络是伪随机置换，4 轮是强伪随机置换（可抵抗选择密文攻击）。本档只有 3 轮那一半可核——登记的 1988 条目没有留存正文，而 HAC 以“under suitable assumptions”转述该结论。这个结果说明轮数不是随便选的，但它依赖理想化模型，不能直接证明某个具体密码安全。理解 Feistel 也有助于区分结构性质和算法安全性。Feistel 保证可逆，不保证安全；安全取决于 F、子密钥、轮数、分组长度和攻击模型。",
+          "used": "DES 是最著名的平衡 Feistel 实例：64 位分组，左右各 32 位，16 轮，轮函数由扩展置换、与子密钥异或、S 盒和 P 置换组成。3DES/TDEA 按 E-D-E 顺序执行三次 DEA 运算，因而内部共有 48 个 DES 轮；它仍是 64 位分组。具体的轮函数和密钥调度属于 DES/TDEA 实体，本文不重复。Feistel 结构也出现在其他分组密码中，但它们的具体 F、轮数和分组长度不同；不能因为都是 Feistel 就认为它们有相同的安全边界。具体算法需要各自的证据和攻击分析。在教学中，Feistel 适合演示可逆性不要求轮函数可逆、状态机、扩散与轮数、以及结构与实例的区分。它不是一个可直接部署的密码，而是一个构造模板。",
+          "broken": "Feistel 只保证存在逆变换。若 F 是线性的、轮数太少、子密钥可预测或分组太短，网络仍可能被区分、恢复或穷举。可逆性是必要条件，不是安全证明。本档留存文本能证到的只有 3 轮那一半：HAC 记述当轮由伪随机函数构成时，某个变体在「under suitable assumptions」（合适假设下）可证明安全。4 轮的强伪随机/选择密文加强，以及把轮函数限定为独立的说法，本档没有任何留存来源这样表述（HAC 确实用「independent」这个词，但说的是别处）；而本档登记的 Luby–Rackoff 条目根本没有留存正文。真实密码的 F 是固定的、由密钥参数化的公开函数，轮子密钥也不是独立随机函数。把 Luby–Rackoff 直接套到 DES 上，会忽略具体 S 盒、密钥调度和已知攻击。### 轮数与扩散\n\n平衡 Feistel 每轮只改变一半状态；一轮后，输入左半的变化只影响下一轮的右半。达到充分扩散需要足够轮数和合适的 F。轮数不足会留下结构性区分器；轮数增加会提高成本，但不自动修复 F 的缺陷。### 分组长度与实例限制\n\nFeistel 不规定分组长度。DES/TDEA 的 64 位分组会带来生日碰撞和 Sweet32 类风险，但这是具体实例的限制，不是 Feistel 结构的普遍属性。一个使用 128 位分组的 Feistel 密码不会继承 64 位分组问题。### 实现与侧信道\n\n教学实现只验证可逆性和结构，不处理侧信道、故障注入、密钥清零或协议集成。真实实现还要保证 F 的常数时间、子密钥安全存储和错误处理；这些不在结构定义内。",
+          "history": "Horst Feistel 在 IBM 研究密码结构，以他命名的 Feistel 网络后来成为公开分组密码的核心设计之一；他于 1973 年发表了《Cryptography and Computer Privacy》。DES 在 1970 年代标准化时采用了 16 轮平衡 Feistel。1988 年，Michael Luby 和 Charles Rackoff 发表了 Feistel 网络的可证明安全结果，把 3 轮和 4 轮的伪随机性条件形式化。DES 采用了这一结构；差分、线性和其他分析也提醒人们，结构本身不提供安全保证。这段历史说明，Feistel 的贡献不是某一个算法，而是一种可复用、可分析、可实现的设计语言。它的价值在于把任意轮函数与可逆置换连接起来。",
+          "refs": "- Wikipedia search entry for 费斯妥网络. https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "本文的教学实现使用 16 位分组（左右各 8 位）和 4 轮。轮函数故意选为 `F(x,k)=(x+k) mod 4`：对固定子密钥，它把 256 个可能的 8 位输入映射到 4 个输出，每个输出有 64 个原像，因此绝不是一一映射。对全部 65,536 个 16 位块，加密后再用相反子密钥解密，全部恢复原值。这个例子说明：F 不可逆不会破坏整体可逆性。Feistel 的左右交换和 XOR 把 F 的信息藏在状态里，解密时可以用同一 F 重新计算并抵消。### 3 轮与 4 轮\n\n对同一个玩具网络，3 轮和 4 轮都可以在全部 65,536 个块上往返。可逆性不区分 3 轮和 4 轮；Luby–Rackoff 的区别在于安全模型：3 轮给出伪随机置换（选择明文），4 轮给出强伪随机置换（选择密文）。这是理论结果，不是玩具网络可执行的攻击测试。### DES 与 TDEA 的轮数\n\nDES 是 16 轮平衡 Feistel，左右各 32 位；3DES/TDEA 执行三次 DES，共 48 轮。验证程序检查这些计数，并明确它们属于具体算法，不是 Feistel 结构的固定参数。"
+        },
+        "en": {
+          "principle": "**Term**: Feistel Network. It is registered under symmetric block ciphers. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 费斯妥网络. https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Feistel 网络：把分组分成两半、每轮用轮函数更新一半的分组密码结构。",
+          "左右半块：分组被分成的两个等长或不等长子块 L 与 R。",
+          "轮函数：由右半块和子密钥计算、再与左半块异或的函数 F。",
+          "子密钥：每一轮使用的密钥材料，由主密钥或密钥调度产生。",
+          "平衡 Feistel：两半等长的 Feistel 网络，如 DES 的 32+32 位。",
+          "SPN：代换—置换网络，通常要求每个构件可逆，与 Feistel 相对。",
+          "伪随机置换：在选择明文攻击下与随机置换不可区分。",
+          "强伪随机置换：在选择密文攻击下与随机置换不可区分。",
+          "Luby–Rackoff：证明 3 轮/4 轮 Feistel 在理想化模型下具有伪随机性的结果。",
+          "扩散：明文或密钥的局部变化影响更多输出位的性质。"
+        ],
+        "en": [
+          "Feistel network: a block-cipher structure that splits the block into halves and updates one half per round with a round function.",
+          "Left/right halves: the two equal or unequal subblocks L and R of the block.",
+          "Round function: the function F computed from the right half and a subkey, then XORed with the left half.",
+          "Subkey: the per-round key material derived from the master key or key schedule.",
+          "Balanced Feistel: a Feistel network with equal halves, such as DES's 32+32 bits.",
+          "SPN: substitution-permutation network, usually requiring invertible components, contrasted with Feistel.",
+          "Pseudorandom permutation: indistinguishable from a random permutation under chosen-plaintext attack.",
+          "Strong pseudorandom permutation: indistinguishable from a random permutation under chosen-ciphertext attack.",
+          "Luby–Rackoff: the result proving pseudorandomness of 3-round/4-round Feistel networks in an idealized model.",
+          "Diffusion: the property that a local change in plaintext or key affects more output bits."
+        ]
+      },
+      "subtopicIds": [
+        "feistel-network"
+      ],
+      "figures": [
+        {
+          "id": "feistel-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "费斯妥网络：用不可逆轮函数构造可逆分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Feistel networks: invertible block ciphers from non-invertible round functions: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "费斯妥网络：用不可逆轮函数构造可逆分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Feistel networks: invertible block ciphers from non-invertible round functions, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/feistel-details-flow.zh.svg",
+            "en": "assets/feistel-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "bebdcf280a599f078012a6de9d71140bd50e733ae054913e3d60dd8a5bbbdb28",
+            "en": "346c2a29744a200a8371b93acff338cbea4200ded6627c8b33c98c40f6dcb87c"
+          }
+        }
+      ],
+      "sources": [
+        "feistel-network-wikipedia",
+        "feistel-network-standard-ref"
+      ],
+      "calculations": [
+        {
+          "id": "feistel-roundtrip",
+          "entryId": "feistel-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "All 65,536 blocks of a 16-bit toy Feistel network, 4 rounds, non-injective F(x,k)=(x+k) mod 4",
+          "expected": "Every block decrypts back to its original value with reversed keys",
+          "sourceIds": [
+            "feistel-network-wikipedia"
+          ],
+          "dependencies": [
+            "feistel-teaching.mjs"
+          ],
+          "limitations": "A finite toy network; it demonstrates structural invertibility, not the security of any real cipher."
+        },
+        {
+          "id": "feistel-noninjective-f",
+          "entryId": "feistel-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 8-bit function F(x,k)=(x+k) mod 4 over all 256 inputs for a fixed key",
+          "expected": "Each of the four outputs has 64 preimages; the network still round-trips on all 65,536 blocks",
+          "sourceIds": [
+            "feistel-network-wikipedia"
+          ],
+          "dependencies": [
+            "feistel-teaching.mjs"
+          ],
+          "limitations": "Shows a deliberately non-invertible round function; it does not model a real cipher's F or key schedule."
+        },
+        {
+          "id": "feistel-three-four-rounds",
+          "entryId": "feistel-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The same 16-bit toy network with 3 and 4 rounds, all 65,536 blocks",
+          "expected": "Both round counts round-trip on every block; invertibility does not distinguish 3 from 4 rounds",
+          "sourceIds": [
+            "feistel-network-wikipedia"
+          ],
+          "dependencies": [
+            "feistel-teaching.mjs"
+          ],
+          "limitations": "Round-trip correctness only; the Luby–Rackoff security distinction is a theoretical model result, not an executable attack test."
+        },
+        {
+          "id": "feistel-des-tdea-counts",
+          "entryId": "feistel-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "DES round/block parameters and the TDEA composition of three DES calls",
+          "expected": "DES: 64-bit block, 32+32 halves, 16 rounds; TDEA: 3 x 16 = 48 rounds, block still 64 bits",
+          "sourceIds": [
+            "feistel-network-wikipedia"
+          ],
+          "dependencies": [
+            "feistel-teaching.mjs"
+          ],
+          "limitations": "Counting only; these are concrete algorithm parameters, not fixed properties of Feistel."
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "feistel-roundtrip",
+      "entryId": "feistel-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "All 65,536 blocks of a 16-bit toy Feistel network, 4 rounds, non-injective F(x,k)=(x+k) mod 4",
+      "expected": "Every block decrypts back to its original value with reversed keys",
+      "sourceIds": [
+        "feistel-network-wikipedia"
+      ],
+      "dependencies": [
+        "feistel-teaching.mjs"
+      ],
+      "limitations": "A finite toy network; it demonstrates structural invertibility, not the security of any real cipher."
+    },
+    {
+      "id": "feistel-noninjective-f",
+      "entryId": "feistel-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 8-bit function F(x,k)=(x+k) mod 4 over all 256 inputs for a fixed key",
+      "expected": "Each of the four outputs has 64 preimages; the network still round-trips on all 65,536 blocks",
+      "sourceIds": [
+        "feistel-network-wikipedia"
+      ],
+      "dependencies": [
+        "feistel-teaching.mjs"
+      ],
+      "limitations": "Shows a deliberately non-invertible round function; it does not model a real cipher's F or key schedule."
+    },
+    {
+      "id": "feistel-three-four-rounds",
+      "entryId": "feistel-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The same 16-bit toy network with 3 and 4 rounds, all 65,536 blocks",
+      "expected": "Both round counts round-trip on every block; invertibility does not distinguish 3 from 4 rounds",
+      "sourceIds": [
+        "feistel-network-wikipedia"
+      ],
+      "dependencies": [
+        "feistel-teaching.mjs"
+      ],
+      "limitations": "Round-trip correctness only; the Luby–Rackoff security distinction is a theoretical model result, not an executable attack test."
+    },
+    {
+      "id": "feistel-des-tdea-counts",
+      "entryId": "feistel-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "DES round/block parameters and the TDEA composition of three DES calls",
+      "expected": "DES: 64-bit block, 32+32 halves, 16 rounds; TDEA: 3 x 16 = 48 rounds, block still 64 bits",
+      "sourceIds": [
+        "feistel-network-wikipedia"
+      ],
+      "dependencies": [
+        "feistel-teaching.mjs"
+      ],
+      "limitations": "Counting only; these are concrete algorithm parameters, not fixed properties of Feistel."
+    }
+  ]
+}

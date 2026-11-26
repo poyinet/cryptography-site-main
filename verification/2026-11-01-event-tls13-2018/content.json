@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for event-tls13-2018: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "event-tls13-2018-details",
+      "inventoryIds": [
+        "event-tls13-2018"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释TLS 1.3 发布的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of TLS 1.3 Published: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "TLS 1.3 发布",
+        "en": "TLS 1.3 Published"
+      },
+      "claimIds": [
+        "event-tls13-2018-r139-principle",
+        "event-tls13-2018-r139-why",
+        "event-tls13-2018-r139-used",
+        "event-tls13-2018-r139-broken",
+        "event-tls13-2018-r139-history",
+        "event-tls13-2018-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "event-tls13-2018-wikipedia",
+        "event-tls13-2018-reference-ref"
+      ],
+      "related": [
+        "tls13",
+        "tls12",
+        "tlcp-cn",
+        "quic"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**事件**：TLS 1.3 发布（TLS 1.3 Published）。事件本体是 RFC 8446 的发布：头部标注 Standards Track、2018 年 8 月、署名 E.Rescorla（Mozilla），并写「Obsoletes: 5077, 5246, 6961」与「Updates: 5705, 6066」。§1.2 列出与 TLS 1.2 的主要功能差异，其中两条定义了新版本的骨架：对称套件被裁剪为全部 AEAD——「Those that remain are all Authenticated Encryption with Associated Data (AEAD) algorithms.」以及「All handshake messages after the ServerHello are now encrypted.」",
+          "why": "发布理由写在改动清单里。§1.2：「Static RSA and Diffie-Hellman cipher suites have been removed; all public-key based key exchange mechanisms now provide forward secrecy.」把前向保密从可选变成默认。同节说明密钥派生重设计的动机是便于分析——「The new design allows easier analysis by cryptographers due to their improved key separation properties.」并以 HKDF 为底层原语。还有为中间盒兼容而保留的少量冗余：ChangeCipherSpec 的存留被说明为「except when needed for middlebox compatibility」。",
+          "used": "发布同时改变了协议的可扩展方式与算法集合。§1.2 记「The TLS 1.2 version negotiation mechanism has been deprecated in favor of a version list in an extension.」即版本协商改走 supported_versions 扩展；同节记「Elliptic curve algorithms are now in the base spec, and new signature algorithms, such as EdDSA, are included.」并说明取消了点格式协商；RSA 填充改为 RSASSA-PSS，压缩、DSA 与自定义 DHE 群组被移除。这些是后续部署与兼容性讨论的实际内容。",
+          "broken": "新版本也带来新的取舍。§1.2 承认快速模式换来的是安全性质受损：「A zero round-trip time (0-RTT) mode was added, saving a round trip at connection setup for some application data, at the cost of certain security properties.」§8.2 展开这类防重放实现的一条可被利用之处：若存储键取自未校验的部分，攻击者可以在多身份 PSK 情形下改动不被校验的 binder 制造不重复——因此「The server MUST derive the storage key only from validated sections of the ClientHello.」",
+          "history": "§1.2 的清单开头即写明该文档的自我定位：「The following is a list of the major functional differences between TLS 1.2 and TLS 1.3.It is not intended to be exhaustive, and there are many minor differences.」那两行头部只支撑废弃关系这一层：Obsoletes 列出 RFC 5077（会话票）、RFC 5246（TLS 1.2）、RFC 6961（多重证书状态请求），Updates 列出 RFC 5705（密钥导出）与 RFC 6066（扩展），而这段废弃清单在机制一节另有引文；套件设计的改写属于 §1.2 正文，头部没有提到记录层设计，§1.2 自己也声明该清单并不穷尽，因此清单里没有的改动不记在本文档名下。",
+          "refs": "- Wikipedia search entry for TLS 1.3 发布. https://zh.wikipedia.org/w/index.php?search=TLS%201.3%20%E5%8F%91%E5%B8%83\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Event**: TLS 1.3 Published. It is registered under protocols and PKI, dated 2018. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Web & Protocol Era. The registered date is 2018; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for TLS 1.3 发布. https://zh.wikipedia.org/w/index.php?search=TLS%201.3%20%E5%8F%91%E5%B8%83\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "AEAD-only：TLS 1.3 只保留带认证的加密模式。",
+          "0-RTT：会话恢复时首flight 携带应用数据。",
+          "supported_versions：取代版本字段的扩展。",
+          "RSASSA-PSS：替代 PKCS#1 v1.5 的签名填充。",
+          "key separation：派生密钥彼此独立的性质。",
+          "middlebox compatibility：为中间盒保留的伪装消息。"
+        ],
+        "en": [
+          "AEAD-only: TLS 1.3 keeps only authenticated encryption modes.",
+          "0-RTT: application data in the first flight on resumption.",
+          "supported_versions: the extension replacing the version field.",
+          "RSASSA-PSS: the signature padding replacing PKCS#1 v1.5.",
+          "Key separation: derived keys kept independent.",
+          "Middlebox compatibility: the disguise messages retained for appliances."
+        ]
+      },
+      "figures": [
+        {
+          "id": "event-tls13-2018-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 1.3 发布：为什么需要 → 核心机制 → 边界。",
+            "en": "TLS 1.3 Published: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TLS 1.3 发布 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for TLS 1.3 Published, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/event-tls13-2018-details-flow.zh.svg",
+            "en": "assets/event-tls13-2018-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "912f58416f0edfd709626096244c924ea8bbc518243b1a7001dc31e10a709a5b",
+            "en": "88e013185fc2bc0cee07f3f56f2098fb27c1e62818b46f30c8970c083db256ad"
+          }
+        },
+        {
+          "id": "event-tls13-2018-details-photo",
+          "section": "history",
+          "kind": "photo",
+          "caption": {
+            "zh": "TLS 1.3 Handshake.png 的相关公开图像（CC BY-SA 4.0，Wikimedia Commons）。该图用于提供时代/技术背景，不冒充事件现场的直接照片。",
+            "en": "Public 相关公开图像 of TLS 1.3 Handshake.png (CC BY-SA 4.0, Wikimedia Commons). Used as period/technical context; it is not presented as a direct photograph of the event."
+          },
+          "alt": {
+            "zh": "TLS 1.3 Handshake.png 的相关公开图像",
+            "en": "Public 相关公开图像 of TLS 1.3 Handshake.png"
+          },
+          "files": {
+            "zh": "assets/event-tls13-2018-details-photo.png",
+            "en": "assets/event-tls13-2018-details-photo.png"
+          },
+          "credit": {
+            "zh": "Skisope999",
+            "en": "Skisope999"
+          },
+          "license": {
+            "name": "CC BY-SA 4.0",
+            "url": "https://creativecommons.org/licenses/by-sa/4.0"
+          },
+          "sha256": {
+            "zh": "15cdf397c9390e471955014654080975b6d14f5b1d33576186a3a448d3eedafe",
+            "en": "15cdf397c9390e471955014654080975b6d14f5b1d33576186a3a448d3eedafe"
+          },
+          "source": {
+            "type": "web",
+            "url": "https://commons.wikimedia.org/wiki/File:TLS 1.3 Handshake.png",
+            "author": "Skisope999",
+            "retrievedOn": "2026-11-25",
+            "modified": false
+          },
+          "evidence": [
+            "https://commons.wikimedia.org/wiki/File:TLS 1.3 Handshake.png"
+          ]
+        }
+      ],
+      "sources": [
+        "event-tls13-2018-wikipedia",
+        "event-tls13-2018-reference-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "shor-algorithm-theorem-details",
+  "sources": [
+    {
+      "id": "shor-algorithm-theorem-wikipedia",
+      "title": "Wikipedia search entry for 肖尔算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E8%82%96%E5%B0%94%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 肖尔算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "shor-algorithm-theorem-r139-principle",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：肖尔算法（Shor's Algorithm）。**定理（肖尔 1994）：整数分解和离散对数问题都可以在量子计算机上用多项式时间解决。**\n\n先把量词写清楚，因为这才是定理的骨架：\n\n> 存在一个量子算法 A 和一个多项式 p，使得对任意合数 N（n = ⌈log₂N⌉ 位），A 在一台能执行任意幺正门、且能相干运行 O(p(n)) 步的量子计算机上，以 O(p(n)) 时间和 O(p(n)) 个量子比特输出 N 的素因子分解。对有限域和椭圆曲线群的离散对数问题同理。肖尔 1994 年的原始结果给出的复杂度是 **O(n³) 时间、O(n) 空间**，1997 年的正式版讲得更细。**注意这条定理说的是\"多项式时间\"，不是\"很快\"。** n³ 在 n = 2048 时是 8.6×10⁹——单看这个数字不算离谱，但后面还要乘上纠错开销（见 `broken`）。**归约：整件事被压成\"找周期\"这一个动作。** 给定合数 N 和随机底数 a，考虑 `f(x) = aˣ mod N`。它必然有周期 r（`aʳ ≡ 1 mod N`）。一旦拿到 r：若 r 是偶数且 `a^(r/2) ≠ -1 (mod N)`，那么 `gcd(a^(r/2) - 1, N)` 与 `gcd(a^(r/2) + 1, N)` 里至少有一个是 N 的真因子。**所以\"分解大整数\"被化归成了\"量子周期查找\"。**\n\n量子部分靠两件武器：**叠加**（一次模幂运算同时得到所有 f(x) 的值）和**量子傅里叶变换**（把周期 r 的结构显影到振幅上，连分数一展开，r 就浮出来）。",
+            "en": "**Theorem**: Shor's Algorithm (肖尔算法).**Theorem (Shor, 1994): integer factoring and the discrete logarithm problem can both be solved in polynomial time on a quantum computer.**\n\nStart with the quantifiers, because that is the skeleton of the theorem:\n\n> There exist a quantum algorithm A and a polynomial p such that, for every composite N (n = ⌈log₂N⌉ bits), A runs on a quantum computer capable of arbitrary unitary gates and of coherently executing O(p(n)) steps, and outputs the prime factorization of N in O(p(n)) time using O(p(n)) qubits."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        },
+        {
+          "id": "shor-algorithm-theorem-r139-why",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "why",
+          "statement": {
+            "zh": "**因为它一次性废掉了整个公钥密码的地基，而这块地基下面压着地球上几乎所有的数字信任。**\n\n清单很长：RSA 加密、RSA 签名、Diffie–Hellman、ElGamal、DSA、ECDSA、ECDH、SSL/TLS 的密钥交换、PGP、SSH 主机密钥、比特币和以太坊的地址签名、代码签名证书的根密钥、HSM 里躺着几十年的根密钥、内核模块签名、固件更新签名。**它们共享同一个数学假设——分解整数难、离散对数难——而这个假设在理论上已经不是假设了。**\n\n这件事的历史重量在于：1994 年，一篇论文，一个还不存在的机器，直接威胁了地球上所有的 HTTPS 连接、每一份代码签名、每一枚数字货币私钥——而当时世界上跑着的最好的量子机器能做的事，还不到 10 个逻辑比特。**理论跑在硬件前面三十年，而且跑得很远。**\n\n1.**后量子密码（PQC）这件事发生了。** NIST 在 2016 年发起征集，2024 年 8 月 13 日发布 FIPS 203（ML-KEM）、FIPS 204（ML-DSA）、FIPS 205（SLH-DSA）。整条后量子迁移路线的源头就是 1994 年这一篇论文。2.**\"先收割、后解密\"成了真实威胁。** 今天抓走的密文可以存着，等机器造出来再解。保密期超过十年的数据，暴露面从\"传输中\"变成了\"存储中\"。**这是唯一一条让\"你不做迁移就等于已经泄露了\"的威胁模型。**\n3.**密码敏捷性成了硬需求。",
+            "en": "**Because it demolished the foundation under all of public-key cryptography in one stroke, and that foundation carries almost all of the digital trust on earth.**\n\nThe list is long: RSA encryption, RSA signatures, Diffie–Hellman, ElGamal, DSA, ECDSA, ECDH, SSL/TLS key exchange, PGP, SSH host keys, Bitcoin and Ethereum address signatures, root keys in code-signing certificates, root keys that have sat in HSMs for decades, kernel module signing, firmware update signing.**They all share one mathematical assumption — that factoring and discrete logarithms are hard — and that assumption is no longer an assumption, it is a theorem with the wrong sign."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        },
+        {
+          "id": "shor-algorithm-theorem-r139-used",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "used",
+          "statement": {
+            "zh": "**今天没有人在生产环境里跑肖尔算法去破东西，因为没有机器跑得动它。它的现实用途是另外几件事：**\n\n- **它是所有后量子方案的标尺。** 每个新算法都要回答同一个问题：\"在有肖尔算法的攻击者面前，我还有多少安全位数？\" ML-KEM-768 的 192 位经典强度 / 约 128 位量子强度，这个 128 就是用肖尔算法定的锚。- **它是迁移时间表的依据。** NIST IR 8547（2024 年 11 月初稿）写得很直接：112 位强度的 RSA、DH、ECDSA、EdDSA 在 2030 年后弃用、2035 年后禁用；NSM-10 把 2035 年定为联邦系统完成迁移的目标年。**这不是保守估计，是\"等不起\"的逻辑。**\n- **它在驱动一整套产业动作。** CISA 在 2026 年 1 月更新了\"使用 PQC 标准的产品类别\"清单，直接回应 2025 年 6 月 6 日的第 14306 号行政令；NIST 在 2025 年 9 月发布 SP 800-227《Recommendations for Key-Encapsulation Mechanisms》，2026 年 6 月更新密码敏捷性指南（CSWP 39）。**\"迁移\"已经从研究议题变成采购条目。**\n- **它是教学与算法设计的母题。** 相位估计、QFT、振幅估计这些今天量子算法的通用工具，都是从肖尔算法里长出来的。- **它给\"长期保密\"定了性。** 十年、二十年后还要读不懂的数据，今天就该用后量子方案加密——这是\"先收割、后解密\"最直接的推论。",
+            "en": "**Nobody runs Shor's algorithm against live systems in production, because no machine can run it.Its real uses are these:**\n\n- **It is the yardstick for every post-quantum scheme.** Every new algorithm has to answer the same question: \"how much security do I still have against an adversary with Shor's algorithm?\" ML-KEM-768's 192 bits of classical strength and roughly 128 bits of quantum strength — that 128 is anchored by Shor's algorithm."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        },
+        {
+          "id": "shor-algorithm-theorem-r139-broken",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**挡在定理和武器之间的是物理，不是数学。定理本身没被推翻，它被硬件卡住了三十年，今天依然卡着。**\n\n- **\"多项式时间\"这个说法有多空。** 电路级估算才是账单：Beauregard、Høyer 与 Mølmer 2011 年给出 0.3n³ 个 Toffoli 门、深度 O(n³)；Gidney 与 Ekerå 2021 年在抽象电路模型下给出 n 位 RSA 需要 `3n + 0.002n·lg n` 个逻辑比特和 0.3n³ 个 Toffoli 门，256 位椭圆曲线离散对数约需 83 万物理比特、30 小时；Gidney 2025 年用近似剩余算术、轭式表面码和魔态培养，把 RSA-2048 压到**不足一百万个含噪物理比特、耗时不到一周**——同一篇论文也承认，在不改变物理假设的前提下他看不出再降一个数量级的办法。**\"多项式\"这个标签，把三个数量级的差别藏了起来。**\n- **今天的机器差着好几个数量级。** IBM 的路线图写着：Nighthawk 是 120 比特方格阵、跑 5000–7500 个门；首台大规模容错机 Starling 在 2029 年，200 个逻辑比特、一亿个门；Blue Jay 在 2033 年之后，2000 个逻辑比特、十个亿个门。Google 的路线图第六阶段目标则是 2029 年前后约一百万个物理比特。**对一下数字：Gidney 2025 的\"一百万物理比特、不到一周\"恰好压在 Google 2029 年的目标上；而 IBM 2029 年的 200 个逻辑比特，按那份估算连一次\"试射\"都不够（需要约 1600 个逻辑比特）。",
+            "en": "**What stands between the theorem and the weapon is physics, not mathematics.The theorem was never refuted — it has been blocked by hardware for thirty years, and it still is.**\n\n- **\"Polynomial time\" hides an enormous gap.** Circuit-level estimates are the real invoice."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        },
+        {
+          "id": "shor-algorithm-theorem-r139-history",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1994 年**：肖尔在 FOCS 上发表《Algorithms for Quantum Computation: Discrete Logarithms and Factoring》，第一次给出多项式时间的分解与离散对数算法。\"量子密码分析\"这个说法就出自这篇论文的摘要。- **1995 年**：Pedersen 与 Shor 提出高效（半经典）量子傅里叶变换，把 QFT 门数从 O(n²) 压到 O(n)；肖尔在《Physical Review A》给出通用量子计算所需门集的分析。- **1997 年**：肖尔的正式版《Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer》发表在《SIAM Journal on Computing》第 26 卷第 5 期，1484–1509 页；同期还有 Bernstein 与 Vazirani 的《Quantum Complexity Theory》。- **2011 年**：Beauregard、Høyer 与 Mølmer 给出电路级估算——二十八亿个量子比特、八小时破 2048 位 RSA。这个数字在往后十四年里被反复压缩。- **2016 年**：NIST 发起后量子密码标准化征集，公钥密码的\"死期\"第一次被写进正式文件。- **2021 年**：Gidney 与 Ekerå 把估算压到二千万个含噪量子比特、八小时（*Quantum* 5, 433）。",
+            "en": "- **1994**: Shor presents *Algorithms for Quantum Computation: Discrete Logarithms and Factoring* at FOCS, giving the first polynomial-time algorithms for factoring and discrete logarithms.The phrase \"quantum cryptanalysis\" comes from this paper's abstract."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        },
+        {
+          "id": "shor-algorithm-theorem-r139-refs",
+          "entryId": "shor-algorithm-theorem-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 肖尔算法.https://zh.wikipedia.org/w/index.php?search=%E8%82%96%E5%B0%94%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 肖尔算法.https://zh.wikipedia.org/w/index.php?search=%E8%82%96%E5%B0%94%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "shor-algorithm-theorem-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "shor-algorithm-theorem-wikipedia"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "shor-algorithm-theorem-r139-principle",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：肖尔算法（Shor's Algorithm）。**定理（肖尔 1994）：整数分解和离散对数问题都可以在量子计算机上用多项式时间解决。**\n\n先把量词写清楚，因为这才是定理的骨架：\n\n> 存在一个量子算法 A 和一个多项式 p，使得对任意合数 N（n = ⌈log₂N⌉ 位），A 在一台能执行任意幺正门、且能相干运行 O(p(n)) 步的量子计算机上，以 O(p(n)) 时间和 O(p(n)) 个量子比特输出 N 的素因子分解。对有限域和椭圆曲线群的离散对数问题同理。肖尔 1994 年的原始结果给出的复杂度是 **O(n³) 时间、O(n) 空间**，1997 年的正式版讲得更细。**注意这条定理说的是\"多项式时间\"，不是\"很快\"。** n³ 在 n = 2048 时是 8.6×10⁹——单看这个数字不算离谱，但后面还要乘上纠错开销（见 `broken`）。**归约：整件事被压成\"找周期\"这一个动作。** 给定合数 N 和随机底数 a，考虑 `f(x) = aˣ mod N`。它必然有周期 r（`aʳ ≡ 1 mod N`）。一旦拿到 r：若 r 是偶数且 `a^(r/2) ≠ -1 (mod N)`，那么 `gcd(a^(r/2) - 1, N)` 与 `gcd(a^(r/2) + 1, N)` 里至少有一个是 N 的真因子。**所以\"分解大整数\"被化归成了\"量子周期查找\"。**\n\n量子部分靠两件武器：**叠加**（一次模幂运算同时得到所有 f(x) 的值）和**量子傅里叶变换**（把周期 r 的结构显影到振幅上，连分数一展开，r 就浮出来）。",
+        "en": "**Theorem**: Shor's Algorithm (肖尔算法).**Theorem (Shor, 1994): integer factoring and the discrete logarithm problem can both be solved in polynomial time on a quantum computer.**\n\nStart with the quantifiers, because that is the skeleton of the theorem:\n\n> There exist a quantum algorithm A and a polynomial p such that, for every composite N (n = ⌈log₂N⌉ bits), A runs on a quantum computer capable of arbitrary unitary gates and of coherently executing O(p(n)) steps, and outputs the prime factorization of N in O(p(n)) time using O(p(n)) qubits."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-r139-why",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "why",
+      "statement": {
+        "zh": "**因为它一次性废掉了整个公钥密码的地基，而这块地基下面压着地球上几乎所有的数字信任。**\n\n清单很长：RSA 加密、RSA 签名、Diffie–Hellman、ElGamal、DSA、ECDSA、ECDH、SSL/TLS 的密钥交换、PGP、SSH 主机密钥、比特币和以太坊的地址签名、代码签名证书的根密钥、HSM 里躺着几十年的根密钥、内核模块签名、固件更新签名。**它们共享同一个数学假设——分解整数难、离散对数难——而这个假设在理论上已经不是假设了。**\n\n这件事的历史重量在于：1994 年，一篇论文，一个还不存在的机器，直接威胁了地球上所有的 HTTPS 连接、每一份代码签名、每一枚数字货币私钥——而当时世界上跑着的最好的量子机器能做的事，还不到 10 个逻辑比特。**理论跑在硬件前面三十年，而且跑得很远。**\n\n1.**后量子密码（PQC）这件事发生了。** NIST 在 2016 年发起征集，2024 年 8 月 13 日发布 FIPS 203（ML-KEM）、FIPS 204（ML-DSA）、FIPS 205（SLH-DSA）。整条后量子迁移路线的源头就是 1994 年这一篇论文。2.**\"先收割、后解密\"成了真实威胁。** 今天抓走的密文可以存着，等机器造出来再解。保密期超过十年的数据，暴露面从\"传输中\"变成了\"存储中\"。**这是唯一一条让\"你不做迁移就等于已经泄露了\"的威胁模型。**\n3.**密码敏捷性成了硬需求。",
+        "en": "**Because it demolished the foundation under all of public-key cryptography in one stroke, and that foundation carries almost all of the digital trust on earth.**\n\nThe list is long: RSA encryption, RSA signatures, Diffie–Hellman, ElGamal, DSA, ECDSA, ECDH, SSL/TLS key exchange, PGP, SSH host keys, Bitcoin and Ethereum address signatures, root keys in code-signing certificates, root keys that have sat in HSMs for decades, kernel module signing, firmware update signing.**They all share one mathematical assumption — that factoring and discrete logarithms are hard — and that assumption is no longer an assumption, it is a theorem with the wrong sign."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-r139-used",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "used",
+      "statement": {
+        "zh": "**今天没有人在生产环境里跑肖尔算法去破东西，因为没有机器跑得动它。它的现实用途是另外几件事：**\n\n- **它是所有后量子方案的标尺。** 每个新算法都要回答同一个问题：\"在有肖尔算法的攻击者面前，我还有多少安全位数？\" ML-KEM-768 的 192 位经典强度 / 约 128 位量子强度，这个 128 就是用肖尔算法定的锚。- **它是迁移时间表的依据。** NIST IR 8547（2024 年 11 月初稿）写得很直接：112 位强度的 RSA、DH、ECDSA、EdDSA 在 2030 年后弃用、2035 年后禁用；NSM-10 把 2035 年定为联邦系统完成迁移的目标年。**这不是保守估计，是\"等不起\"的逻辑。**\n- **它在驱动一整套产业动作。** CISA 在 2026 年 1 月更新了\"使用 PQC 标准的产品类别\"清单，直接回应 2025 年 6 月 6 日的第 14306 号行政令；NIST 在 2025 年 9 月发布 SP 800-227《Recommendations for Key-Encapsulation Mechanisms》，2026 年 6 月更新密码敏捷性指南（CSWP 39）。**\"迁移\"已经从研究议题变成采购条目。**\n- **它是教学与算法设计的母题。** 相位估计、QFT、振幅估计这些今天量子算法的通用工具，都是从肖尔算法里长出来的。- **它给\"长期保密\"定了性。** 十年、二十年后还要读不懂的数据，今天就该用后量子方案加密——这是\"先收割、后解密\"最直接的推论。",
+        "en": "**Nobody runs Shor's algorithm against live systems in production, because no machine can run it.Its real uses are these:**\n\n- **It is the yardstick for every post-quantum scheme.** Every new algorithm has to answer the same question: \"how much security do I still have against an adversary with Shor's algorithm?\" ML-KEM-768's 192 bits of classical strength and roughly 128 bits of quantum strength — that 128 is anchored by Shor's algorithm."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-r139-broken",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**挡在定理和武器之间的是物理，不是数学。定理本身没被推翻，它被硬件卡住了三十年，今天依然卡着。**\n\n- **\"多项式时间\"这个说法有多空。** 电路级估算才是账单：Beauregard、Høyer 与 Mølmer 2011 年给出 0.3n³ 个 Toffoli 门、深度 O(n³)；Gidney 与 Ekerå 2021 年在抽象电路模型下给出 n 位 RSA 需要 `3n + 0.002n·lg n` 个逻辑比特和 0.3n³ 个 Toffoli 门，256 位椭圆曲线离散对数约需 83 万物理比特、30 小时；Gidney 2025 年用近似剩余算术、轭式表面码和魔态培养，把 RSA-2048 压到**不足一百万个含噪物理比特、耗时不到一周**——同一篇论文也承认，在不改变物理假设的前提下他看不出再降一个数量级的办法。**\"多项式\"这个标签，把三个数量级的差别藏了起来。**\n- **今天的机器差着好几个数量级。** IBM 的路线图写着：Nighthawk 是 120 比特方格阵、跑 5000–7500 个门；首台大规模容错机 Starling 在 2029 年，200 个逻辑比特、一亿个门；Blue Jay 在 2033 年之后，2000 个逻辑比特、十个亿个门。Google 的路线图第六阶段目标则是 2029 年前后约一百万个物理比特。**对一下数字：Gidney 2025 的\"一百万物理比特、不到一周\"恰好压在 Google 2029 年的目标上；而 IBM 2029 年的 200 个逻辑比特，按那份估算连一次\"试射\"都不够（需要约 1600 个逻辑比特）。",
+        "en": "**What stands between the theorem and the weapon is physics, not mathematics.The theorem was never refuted — it has been blocked by hardware for thirty years, and it still is.**\n\n- **\"Polynomial time\" hides an enormous gap.** Circuit-level estimates are the real invoice."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-r139-history",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1994 年**：肖尔在 FOCS 上发表《Algorithms for Quantum Computation: Discrete Logarithms and Factoring》，第一次给出多项式时间的分解与离散对数算法。\"量子密码分析\"这个说法就出自这篇论文的摘要。- **1995 年**：Pedersen 与 Shor 提出高效（半经典）量子傅里叶变换，把 QFT 门数从 O(n²) 压到 O(n)；肖尔在《Physical Review A》给出通用量子计算所需门集的分析。- **1997 年**：肖尔的正式版《Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer》发表在《SIAM Journal on Computing》第 26 卷第 5 期，1484–1509 页；同期还有 Bernstein 与 Vazirani 的《Quantum Complexity Theory》。- **2011 年**：Beauregard、Høyer 与 Mølmer 给出电路级估算——二十八亿个量子比特、八小时破 2048 位 RSA。这个数字在往后十四年里被反复压缩。- **2016 年**：NIST 发起后量子密码标准化征集，公钥密码的\"死期\"第一次被写进正式文件。- **2021 年**：Gidney 与 Ekerå 把估算压到二千万个含噪量子比特、八小时（*Quantum* 5, 433）。",
+        "en": "- **1994**: Shor presents *Algorithms for Quantum Computation: Discrete Logarithms and Factoring* at FOCS, giving the first polynomial-time algorithms for factoring and discrete logarithms.The phrase \"quantum cryptanalysis\" comes from this paper's abstract."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    },
+    {
+      "id": "shor-algorithm-theorem-r139-refs",
+      "entryId": "shor-algorithm-theorem-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 肖尔算法.https://zh.wikipedia.org/w/index.php?search=%E8%82%96%E5%B0%94%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 肖尔算法.https://zh.wikipedia.org/w/index.php?search=%E8%82%96%E5%B0%94%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "shor-algorithm-theorem-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

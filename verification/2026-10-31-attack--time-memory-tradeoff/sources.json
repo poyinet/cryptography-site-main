@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--time-memory-tradeoff-details",
+  "sources": [
+    {
+      "id": "attack--time-memory-tradeoff-wikipedia",
+      "title": "Wikipedia search entry for 时间-存储权衡",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4-%E5%AD%98%E5%82%A8%E6%9D%83%E8%A1%A1",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 时间-存储权衡",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--time-memory-tradeoff-r139-principle",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：时间-存储权衡（Time-Memory Trade-Off）。时间-存储权衡用预计算表把穷举搜索的时间换成存储：Hellman 对 N=2^m 的密钥空间，在 O(N) 预计算后，用约 O(N^{2/3}) 时间和 O(N^{2/3}) 存储恢复密钥，并需要选择明文。",
+            "en": "**Attack**: Time-Memory Trade-Off (时间-存储权衡).A time-memory trade-off uses precomputed tables to exchange exhaustive-search time for memory."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--time-memory-tradeoff-r139-why",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "why",
+          "statement": {
+            "zh": "预计算表保存每条链的端点，搜索阶段再重建链，从而不必为每个目标从零枚举整个密钥空间。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Precomputed tables store the endpoints of chains and regenerate them during search, so the search phase need not enumerate the whole key space from scratch for each target.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--time-memory-tradeoff-r139-used",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "used",
+          "statement": {
+            "zh": "该方法用于分组密码的穷举密钥搜索；Rivest 的 distinguished points 可以进一步降低搜索时间。",
+            "en": "The method is used for exhaustive key search on block ciphers; Rivest’s distinguished points can further reduce search time.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--time-memory-tradeoff-r139-broken",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "broken",
+          "statement": {
+            "zh": "预计算和存储成本高；若保持时间-存储乘积不变，则相对穷举搜索没有渐近成本优势；表只覆盖预计算过的密钥空间，更换目标空间需要重新预计算。",
+            "en": "Precomputation and storage are costly; with a constant time-memory product there is no asymptotic cost advantage over exhaustive search.A table covers only the precomputed key space, and changing the target space requires new precomputation."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--time-memory-tradeoff-r139-history",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "history",
+          "statement": {
+            "zh": "Hellman 提出该权衡；HAC 在 §7.8 的注记中总结了其 O(N^{2/3}) 时间和空间复杂度。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「时间-存储权衡」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：时间-存储权衡的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 时间-存储权衡 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Hellman proposed the trade-off; HAC summarizes its O(N^{2/3}) time and space complexity in the §7.8 notes.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--time-memory-tradeoff-r139-refs",
+          "entryId": "attack--time-memory-tradeoff-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 时间-存储权衡.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4-%E5%AD%98%E5%82%A8%E6%9D%83%E8%A1%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 时间-存储权衡.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4-%E5%AD%98%E5%82%A8%E6%9D%83%E8%A1%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--time-memory-tradeoff-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--time-memory-tradeoff-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--time-memory-tradeoff-r139-principle",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：时间-存储权衡（Time-Memory Trade-Off）。时间-存储权衡用预计算表把穷举搜索的时间换成存储：Hellman 对 N=2^m 的密钥空间，在 O(N) 预计算后，用约 O(N^{2/3}) 时间和 O(N^{2/3}) 存储恢复密钥，并需要选择明文。",
+        "en": "**Attack**: Time-Memory Trade-Off (时间-存储权衡).A time-memory trade-off uses precomputed tables to exchange exhaustive-search time for memory."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-r139-why",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "why",
+      "statement": {
+        "zh": "预计算表保存每条链的端点，搜索阶段再重建链，从而不必为每个目标从零枚举整个密钥空间。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Precomputed tables store the endpoints of chains and regenerate them during search, so the search phase need not enumerate the whole key space from scratch for each target.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-r139-used",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "used",
+      "statement": {
+        "zh": "该方法用于分组密码的穷举密钥搜索；Rivest 的 distinguished points 可以进一步降低搜索时间。",
+        "en": "The method is used for exhaustive key search on block ciphers; Rivest’s distinguished points can further reduce search time.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-r139-broken",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "broken",
+      "statement": {
+        "zh": "预计算和存储成本高；若保持时间-存储乘积不变，则相对穷举搜索没有渐近成本优势；表只覆盖预计算过的密钥空间，更换目标空间需要重新预计算。",
+        "en": "Precomputation and storage are costly; with a constant time-memory product there is no asymptotic cost advantage over exhaustive search.A table covers only the precomputed key space, and changing the target space requires new precomputation."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-r139-history",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "history",
+      "statement": {
+        "zh": "Hellman 提出该权衡；HAC 在 §7.8 的注记中总结了其 O(N^{2/3}) 时间和空间复杂度。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「时间-存储权衡」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：时间-存储权衡的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 时间-存储权衡 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Hellman proposed the trade-off; HAC summarizes its O(N^{2/3}) time and space complexity in the §7.8 notes.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--time-memory-tradeoff-r139-refs",
+      "entryId": "attack--time-memory-tradeoff-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 时间-存储权衡.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4-%E5%AD%98%E5%82%A8%E6%9D%83%E8%A1%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 时间-存储权衡.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4-%E5%AD%98%E5%82%A8%E6%9D%83%E8%A1%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--time-memory-tradeoff-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

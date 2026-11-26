@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition reviewed dossier for suf-cma-details.",
+  "entries": [
+    {
+      "id": "suf-cma-details",
+      "inventoryIds": [
+        "suf-cma"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R117 隐写分析、侧信道、流密码、交互证明与签名定义批次：把“强不可伪造性”从目录深度条目改写为含机制陈述、符号公式、参数/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition batch: rewrote \"Strong Unforgeability (SUF-CMA)\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, parameters/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "强不可伪造性",
+        "en": "Strong Unforgeability (SUF-CMA)"
+      },
+      "claimIds": [
+        "suf-cma-r139-principle",
+        "suf-cma-r139-why",
+        "suf-cma-r139-used",
+        "suf-cma-r139-broken",
+        "suf-cma-r139-history",
+        "suf-cma-r139-refs"
+      ],
+      "sourceIds": [
+        "suf-cma-wikipedia",
+        "suf-cma-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "euf-cma"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "suf-cma-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "强不可伪造性机制图：签名预言机、Q 中的 (m,σ) 对、EUF 与 SUF 的获胜条件，以及随机化签名的变形边界。",
+            "en": "Strong unforgeability mechanism: signing oracle, (m,σ) pairs in Q, the EUF and SUF winning conditions, and the malleability boundary of randomised signatures."
+          },
+          "alt": {
+            "zh": "上方挑战者与签名预言机，下方敌手输出 (m*,σ*)；中间比较 Q 与输出，右侧标出 ECDSA 的 (r,n-s) 变形和确定性签名的唯一性。",
+            "en": "Challenger and signing oracle above, adversary outputs (m*,σ*) below; the middle compares Q with the output, and the right notes ECDSA (r,n-s) malleability versus deterministic uniqueness."
+          },
+          "files": {
+            "zh": "assets/suf-cma-details-mechanism.zh.svg",
+            "en": "assets/suf-cma-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "0d3d8071c81bbbac84045765287f399aedf99a5b44d5ea1d2c6a67dd7cb42e13",
+            "en": "a6f10aa30989323d8e6f457a962f05a22bbe6bed785a4e303a2071f0c0b04f6a"
+          }
+        },
+        {
+          "id": "suf-cma-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "强不可伪造性 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Strong Unforgeability (SUF-CMA): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "强不可伪造性 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Strong Unforgeability (SUF-CMA), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/suf-cma-details-r138-model.zh.svg",
+            "en": "assets/suf-cma-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "691c78e65bcc35aa694bcbb988d35c4433232249cd37ab2fe458b9920fbcf932",
+            "en": "df8546476d5f5f925a711f6e6a2a733dec8d12bad00f637922942a53ae9dd023"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：强不可伪造（SUF-CMA Security）。### 游戏定义\n\n签名方案由 Gen、Sign、Verify 组成。挑战者生成 (pk,sk)，把 pk 交给敌手 A，并允许 A 查询 Sign(sk,·)。设 Q 为预言机返回的 (m_i,σ_i) 集合。A 输出 (m*,σ*)。EUF-CMA：若 m* 未被查询过且 Verify(pk,m*,σ*)=1，则 A 获胜。SUF-CMA：若 (m*,σ*) ∉ Q 且 Verify(pk,m*,σ*)=1，则 A 获胜。也就是说，即使 m* 被查询过，只要给出一个不同的有效签名，也算伪造。优势 Adv^{SUF-CMA}_{SIG}(A)=Pr[A 获胜]；对所有 PPT A 可忽略时，方案是 SUF-CMA 安全的。### 为什么 Q 必须记录完整签名\n\n如果 Q 只记录消息，敌手拿到 m 的签名 σ 后，只要输出 m 的另一个有效签名 σ′，就会被误判为“没有查询过 m”。SUF-CMA 的关键正是把 σ 与 σ′ 区分开：Q 中的元素是 (m,σ) 对，而不是消息集合。### 与 EUF-CMA 的关系\n\nSUF-CMA ⇒ EUF-CMA：若敌手能为新消息伪造签名，它当然也违反 SUF-CMA。反过来不成立：存在 EUF-CMA 安全但可重随机化/可延展的签名方案。",
+          "why": "EUF-CMA 只禁止“新消息”的伪造；它允许敌手拿到 m 的签名后，输出 m 的另一个有效签名。SUF-CMA 把这种“同一消息的签名变形”也算破坏。对签密、认证加密、群签名和某些 CCA 构造，签名的唯一性/不可变形是安全证明需要的性质。### 与确定性签名的关系\n\n若 Sign 是确定性的且 Verify 只接受唯一编码，那么同一消息的不同有效签名不存在，SUF-CMA 与 EUF-CMA 等价。随机化签名不一定：ECDSA 的 (r,s) 与 (r,n-s) 都验证通过，说明未做规范化时它不是 SUF-CMA。### 对协议设计的含义\n\n协议不能只检查“签名有效”，还要检查签名的规范化、重放保护和唯一编码。把 ECDSA 的高 s 变形当成“另一个签名”可能破坏去重、票据和签名聚合。",
+          "used": "1.写出签名方案的概率算法与验证方程。2.定义预言机返回的完整 (m,σ) 集合 Q，而不是只记录消息。3.让敌手输出 (m*,σ*)；检查 Verify=1 且 (m*,σ*)∉Q。4.对随机化签名，检查是否存在可重随机化/可延展的变形；对确定性签名，检查验证是否接受多编码。5.需要 SUF-CMA 时，采用强不可伪造构造、规范化编码，或加签名唯一性检查。### 典型场景\n\n签密、CCA 安全的混合加密、群签名、许可证/票据去重、区块链交易签名。",
+          "broken": "1.SUF-CMA 不防私钥泄露、侧信道或实现错误；它只是签名伪造的游戏。2.验证算法接受多编码时，数学上唯一的签名可能在协议层变成多个有效串。3.ECDSA 未规范化时存在 (r,n-s) 变形；一些部署用 low-s 规则限制，但这不是所有实现的默认。4.随机化签名方案可能 EUF-CMA 安全但可重随机化；必须单独证明 SUF-CMA。5.强不可伪造不保证匿名、不可链接或抗抵赖；这些是另外的安全目标。6.在 ROM/标准模型中的证明不能自动迁移到具体实现。SUF-CMA 是定义，不是某个算法的属性标签；说“某方案是 SUF-CMA”必须给出具体方案、验证规则和证明/假设。",
+          "history": "Goldwasser、Micali 与 Rivest 在 1988 年给出自适应选择消息攻击下的存在性不可伪造定义，并建立签名安全性的层级。这个定义只要求敌手不能为“新消息”伪造签名。后来的签密与强签名研究把“同一消息的新签名”也纳入攻击目标，形成 SUF-CMA/sEUF-CMA。Boneh、Shen 与 Waters 在 2006 年给出基于 CDH 的强不可伪造构造，说明强安全不必依赖 Strong-RSA 或 Strong-DH 这类更强假设。### 今天的实现\n\nEdDSA 等确定性签名天然接近强不可伪造；ECDSA 需要 low-s 规范化；RSA-PSS 等随机化方案要单独分析。协议设计者应把“签名编码唯一性”写进规范，而不是只依赖数学定义。",
+          "refs": "- Wikipedia search entry for 强不可伪造. https://zh.wikipedia.org/w/index.php?search=%E5%BC%BA%E4%B8%8D%E5%8F%AF%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\n强不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: SUF-CMA Security (强不可伪造). ### The game definition\n\nA signature scheme consists of Gen, Sign and Verify. The challenger generates (pk,sk), gives pk to an adversary A, and lets A query Sign(sk,·). Let Q be the set of (m_i,σ_i) pairs returned by the oracle. A outputs (m*,σ*). EUF-CMA: A wins if m* was never queried and Verify(pk,m*,σ*)=1. SUF-CMA: A wins if (m*,σ*) ∉ Q and Verify(pk,m*,σ*)=1. Even if m* was queried, a different valid signature still counts as a forgery. The advantage is Adv^{SUF-CMA}_{SIG}(A)=Pr[A wins]; the scheme is SUF-CMA secure if it is negligible for every PPT A. ### Why Q must record complete signatures\n\nIf Q recorded only messages, an adversary who receives a signature σ on m could output a different valid signature σ′ on m and be misclassified as “m was never queried”. SUF-CMA distinguishes σ from σ′: the elements of Q are (m,σ) pairs, not a set of messages. ### Relation to EUF-CMA\n\nSUF-CMA ⇒ EUF-CMA: a forgery on a new message also violates SUF-CMA. The converse fails: there are EUF-CMA secure schemes that are re-randomisable or malleable.",
+          "why": "EUF-CMA only forbids a forgery on a new message; it allows an adversary who receives a signature on m to output another valid signature on m. SUF-CMA treats such a signature transformation as a break. For signcryption, authenticated encryption, group signatures and some CCA constructions, uniqueness/non-malleability of signatures is needed in the security proof.\n\nIf Sign is deterministic and Verify accepts only one encoding, no second valid signature on the same message exists, so SUF-CMA and EUF-CMA coincide. Randomised signatures need not: both (r,s) and (r,n-s) verify in ECDSA, so without canonicalisation it is not SUF-CMA.\n\nA protocol must check not only “the signature is valid” but also canonicalisation, replay protection and unique encoding. Treating the high-s variant of ECDSA as “another signature” can break deduplication, tickets and signature aggregation.",
+          "used": "1. Write down the probabilistic algorithms and verification equation. 2. Define Q as the complete set of (m,σ) pairs returned by the oracle, not just the queried messages. 3. Let the adversary output (m*,σ*); check Verify=1 and (m*,σ*)∉Q. 4. For randomised signatures, check for re-randomisation or malleability; for deterministic signatures, check whether verification accepts multiple encodings. 5. When SUF-CMA is required, use a strongly unforgeable construction, canonical encoding, or an explicit signature-uniqueness check.\n\nSigncryption, CCA-secure hybrid encryption, group signatures, licence/ticket deduplication, and blockchain transaction signatures.",
+          "broken": "1. SUF-CMA does not prevent key leakage, side channels or implementation errors; it is only a signature-forgery game. 2. If verification accepts multiple encodings, a mathematically unique signature can become several valid strings at the protocol layer. 3. Uncanonicalised ECDSA has the (r,n-s) transformation; some deployments enforce a low-s rule, but this is not every implementation’s default. 4. A randomised scheme may be EUF-CMA secure and still re-randomisable; SUF-CMA must be proved separately. 5. Strong unforgeability does not provide anonymity, unlinkability or non-repudiation; those are separate goals. 6. A proof in the ROM or standard model does not automatically transfer to a concrete implementation.\n\nSUF-CMA is a definition, not a property label for an algorithm; calling a scheme SUF-CMA requires the concrete scheme, verification rules and a proof or assumption.",
+          "history": "Goldwasser, Micali and Rivest gave the definition of existential unforgeability under adaptive chosen-message attacks in 1988 and established a hierarchy of signature security. That definition only requires that the adversary cannot forge a signature on a “new message”.\n\nLater work on signcryption and strong signatures added “a new signature on the same message” to the attack target, yielding SUF-CMA/sEUF-CMA. In 2006 Boneh, Shen and Waters gave a strongly unforgeable construction based on CDH, showing that strong security need not rely on stronger assumptions such as Strong-RSA or Strong-DH.\n\nDeterministic signatures such as EdDSA are naturally close to strong unforgeability; ECDSA needs low-s canonicalisation; randomised schemes such as RSA-PSS require a separate analysis. Protocol designers should write signature-encoding uniqueness into the specification instead of relying on the mathematical definition alone.",
+          "refs": "- Wikipedia search entry for 强不可伪造. https://zh.wikipedia.org/w/index.php?search=%E5%BC%BA%E4%B8%8D%E5%8F%AF%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nSUF-CMA Security: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "suf-cma-r139-formal",
+          "entryId": "suf-cma-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：强不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 强不可伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "suf-cma-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "suf-cma-r139-formal"
+      ],
+      "sources": [
+        "suf-cma-wikipedia",
+        "suf-cma-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "suf-cma-r139-formal",
+      "entryId": "suf-cma-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：强不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 强不可伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "suf-cma-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

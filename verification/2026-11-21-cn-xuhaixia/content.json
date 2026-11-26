@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R119 full-library mechanism-structure closure for cn-xuhaixia-details.",
+  "entries": [
+    {
+      "id": "cn-xuhaixia-details",
+      "inventoryIds": [
+        "cn-xuhaixia"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出 VSecNN 的加法共享、同态线性层、GC/OT 非线性层、两轮在线、单服务器/多客户端拓扑与 0.7% 实测误差，并区分协议结构与形式化证明。",
+        "en": "This entry gives VSecNN’s additive sharing, homomorphic linear layer, GC/OT nonlinear layer, two online rounds, one-server/multiple-client topology and 0.7% measured error, separating protocol structure from a formal proof."
+      },
+      "title": {
+        "zh": "徐海霞与安全多方计算",
+        "en": "Xu Haixia and Secure Multiparty Computation"
+      },
+      "claimIds": [
+        "cn-xuhaixia-r139-principle",
+        "cn-xuhaixia-r139-why",
+        "cn-xuhaixia-r139-used",
+        "cn-xuhaixia-r139-broken",
+        "cn-xuhaixia-r139-history",
+        "cn-xuhaixia-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按原始论文或来源重算。",
+        "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the papers or sources."
+      },
+      "sourceIds": [
+        "cn-xuhaixia-wikipedia",
+        "cn-xuhaixia-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "cn-lindongdai"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-xuhaixia-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "徐海霞安全多方计算：加法共享、同态线性层、GC/OT 非线性层与两轮在线。",
+            "en": "Xu Haixia and secure multiparty computation: additive sharing, homomorphic linear layer, GC/OT nonlinear layer and two online rounds."
+          },
+          "alt": {
+            "zh": "徐海霞安全多方计算：加法共享、同态线性层、GC/OT 非线性层与两轮在线。",
+            "en": "Xu Haixia and secure multiparty computation: additive sharing, homomorphic linear layer, GC/OT nonlinear layer and two online rounds."
+          },
+          "files": {
+            "zh": "assets/cn-xuhaixia-mechanism.zh.svg",
+            "en": "assets/cn-xuhaixia-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据 VSecNN 论文与徐海霞 UCAS 简介绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the VSecNN paper and Xu Haixia’s UCAS profile)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d6e219f9c3eeb33eac60aeb50c236171a96d13381c3dc42fcaedfcc980259f0e",
+            "en": "ccf2491ba12ee3f90fef554816455645cbfa6eb79309b39cb2841ef6f35d26d3"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：徐海霞与安全多方计算（Xu Haixia and Secure Multiparty Computation）。### 加法共享与线性层\n\nVSecNN 把特征拆成 \\([x]_0+[x]_1=x\\)。加法共享对线性运算同态：若 \\([X]\\) 与 \\([b]\\) 已共享，则 \\([Y]=[X]W+[b]\\) 仍可直接计算。线性层因此可以用同态加密做矩阵乘法，而不必逐元素交互。### 非线性层与在线轮数\n\nReLU 不能在加法共享上直接比较，VSecNN 用混淆电路与茫然传输在隐藏输入的前提下完成非线性函数；每层结果继续以加法共享由服务器与客户端分持。协议把大量计算放到输入无关的预处理，在线阶段只保留两轮：输入掩码特征、输出推理结果。",
+          "why": "隐私保护机器学习的难点不是单个原语，而是“线性层高效、非线性层不泄漏、在线轮数少”三者同时成立。VSecNN 针对特征纵向分布的多客户端场景，把同态加密、GC/OT 与加法共享拼成一个两层结构，是协议分层而非单一密码算法的样本。",
+          "used": "1.先确认威胁模型：单服务器/多客户端、特征纵向分布、半诚实还是恶意。2.检查线性层 HE 参数与定点精度，确保矩阵维度、打包与解密边界一致。3.检查非线性层 GC/OT 的输入掩码、OT 实例数与电路规模。4.每层输出必须重新共享，不能把中间明文留在任一方。5.记录在线轮数、预处理成本、通信量与误差；0.7% 只在原论文的数据集与精度设定下成立。### 不能怎么用\n\n不能把两轮在线说成零交互；不能忽略预处理阶段的输入无关成本；不能把半诚实协议直接用于恶意客户端；不能用 0.7% 覆盖所有模型、数据集与定点格式；不能把本文当作形式化安全证明或实现审计。",
+          "broken": "1.拓扑不匹配：特征不是纵向分布，或客户端数量/信任边界改变，协议假设就变。2.安全模型：半诚实、恶意、勾结与公平性假设不同，GC/OT 与 HE 的参数也要变。3.定点精度：0.7% 是特定数据集与量化设定下的实测，换模型或位宽会变。4.非线性层：ReLU 的 GC/OT 实例、输入掩码或 OT 选择位出错会泄漏或算错。5.实现：侧信道、模型提取、恶意输入与拒绝服务不在公式内。",
+          "history": "徐海霞 2001 年获首都师范大学博士学位，2001–2003 年做博士后，2004 年起在中国科学院研究生院任教，现为中国科学院信息工程研究所副研究员，研究安全协议、安全多方计算、隐私保护机器学习与区块链。VSecNN 由唐涛、徐海霞、董业、周胤昌、唐锦凌合作完成，2025 年发表于《信息安全学报》。\n\n**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是秘密共享与多方计算中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 徐海霞与安全多方计算；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。\n\n不要把“发生过”写成“已证明”，也不要把事件标题扩写成机制结论；没有日期的节点只作逻辑位置。",
+          "refs": "- Wikipedia search entry for 徐海霞与安全多方计算. https://zh.wikipedia.org/w/index.php?search=%E5%BE%90%E6%B5%B7%E9%9C%9E%E4%B8%8E%E5%AE%89%E5%85%A8%E5%A4%9A%E6%96%B9%E8%AE%A1%E7%AE%97\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Xu Haixia and Secure Multiparty Computation. It is registered under secret sharing and MPC. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in secret sharing and MPC, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: China's Parallel Line. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 徐海霞与安全多方计算. https://zh.wikipedia.org/w/index.php?search=%E5%BE%90%E6%B5%B7%E9%9C%9E%E4%B8%8E%E5%AE%89%E5%85%A8%E5%A4%9A%E6%96%B9%E8%AE%A1%E7%AE%97\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "calculationIds": [],
+      "sources": [
+        "cn-xuhaixia-wikipedia",
+        "cn-xuhaixia-reference-ref"
+      ],
+      "calculations": []
+    }
+  ],
+  "calculations": []
+}

@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full XTS-AES storage-mode article only; no completion claim for AES, block-cipher-mode, the IEEE 1619 or SP 800-38E standard entities, AEAD or the whole library.",
+  "entries": [
+    {
+      "id": "xts-details",
+      "inventoryIds": [
+        "xts"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 xts 这一实体：XEX、tweak、密文窃取、数据单元限制和无认证边界；不把 AES、分组密码工作模式、IEEE 1619 或 SP 800-38E 标准实体、AEAD 并入本实体。",
+        "en": "Covers the xts entity: XEX, the tweak, ciphertext stealing, the data-unit limit and the no-authentication boundary. It does not absorb AES, block-cipher-mode, the IEEE 1619 or SP 800-38E standard entities, AEAD or other modes."
+      },
+      "title": {
+        "zh": "XTS-AES：为存储数据单元设计的可调分组模式",
+        "en": "XTS-AES: a tweakable block mode for storage data units"
+      },
+      "claimIds": [
+        "xts-r139-principle",
+        "xts-r139-why",
+        "xts-r139-used",
+        "xts-r139-broken",
+        "xts-r139-history",
+        "xts-r139-refs"
+      ],
+      "calculationIds": [
+        "xts-cavp-vector",
+        "xts-tweak-sensitivity",
+        "xts-cts-roundtrip",
+        "xts-tamper-no-auth",
+        "xts-r139-formal"
+      ],
+      "sourceIds": [
+        "xts-wikipedia",
+        "xts-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "block-cipher-mode",
+        "counter-mode",
+        "galois-counter-mode",
+        "cipher-block-chaining"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：XTS 磁盘加密模式（XTS）。XTS-AES 是 AES 的一种工作模式，全称是 XEX Tweakable Block Cipher with Ciphertext Stealing。它面向存储设备上的固定长度数据单元：每个数据单元独立加密；通常把 tweak 设为数据单元的索引或位置，使同一明文在不同位置得到不同密文。XTS 不是为网络传输设计的，也不提供认证。XTS-AES 使用两个 AES 密钥：K1 处理数据块，K2 处理 tweak。对 128 位 tweak i，先计算 `T = E_K2(i)`；第 j 个块的 tweak 为 `T_j = alpha^j * T`，其中乘法在 GF(2^128) 中进行，模多项式为 `x^128 + x^7 + x^2 + x + 1`。每个块的加密是 XEX：\n\n```text\nC_j = E_K1(P_j xor T_j) xor T_j\n```\n\n解密使用同一个 tweak 序列和逆向函数：\n\n```text\nP_j = D_K1(C_j xor T_j) xor T_j\n```\n\nXTS-AES-128 的密钥是 256 位，由两个 128 位 AES 密钥组成；XTS-AES-256 的密钥是 512 位，由两个 256 位 AES 密钥组成。数据单元的长度不得超过 `2^20` 个 AES 块。当数据单元的长度不是 128 位的整数倍时，XTS 使用密文窃取（ciphertext stealing）。设明文由若干完整块 `P_0 ...P_(m-1)` 和一个非空部分块 `P_m` 组成。先对最后一个完整块计算一个完整的中间块，取其前 s 位作为部分密文 `C_m`；再用 `P_m` 加上被截掉的剩余位组成一个完整块，加密得到 `C_(m-1)`。这样密文与明文等长，不需要填充。标准允许把最后一个完整块和部分块在物理存储中交换位置，只要接口按约定还原逻辑顺序。",
+          "why": "存储设备通常按固定大小的扇区或数据单元读写。ECB 会泄露相同明文块的模式；CBC 需要 IV、填充和链式状态，而且一个单元的改动会影响后续单元。XTS 通常用数据单元索引作为 tweak，从而区分不同位置；用密文窃取避免数据扩展，适合就地加密和随机访问。XTS 的设计目标只是机密性。它故意不加认证标签，因为设计目标是不扩展数据长度，带标签的方案会破坏这一目标。SP 800-38E 指出，在没有认证或访问控制的情况下，XTS 比其他只提供机密性的批准模式更能抵抗对加密数据的未授权操纵，但这不等于完整性保护。因此，XTS 适合磁盘和块设备，不适合需要认证的网络协议。需要检测篡改、重放或数据单元重定位时，必须依赖访问控制、上层完整性机制或 AEAD；不能把 XTS 比 ECB/CBC 更难操纵误读成 XTS 提供认证。",
+          "used": "XTS-AES 面向使用固定长度数据单元的存储设备。IEEE 1619-2007 规定了 XTS-AES，NIST SP 800-38E 在 2010 年按引用批准该模式，并增加数据单元长度不得超过 `2^20` 个 AES 块的要求。NIST CAVP 的 XTS 测试文件提供 XTS-AES-128 和 XTS-AES-256 的加密/解密向量，覆盖 128、256、130 和 200 位等数据单元长度。XTS 的典型场景是磁盘、块设备和存储阵列的就地加密。它不是传输层模式：SP 800-38E 明确说 XTS-AES 不是为数据在传输中的加密而设计的。需要认证的传输应使用 AEAD。本文的示例使用 CAVP `XTSGenAES128.rsp` 的 COUNT 101：256 位数据单元、128 位 tweak、XTS-AES-128。它还用一个 39 字节的数据单元演示字节对齐的密文窃取往返。",
+          "broken": "XTS 不认证数据或来源。修改密文会导致对应明文块改变，但解密方没有标签可以验证；XTS 本身无法检测篡改。它也不防重放或数据单元重定位，除非 tweak、位置和访问控制一起使用。### tweak 与密钥重用\n\n同一个密钥下，不同数据单元应使用不同 tweak。若两个数据单元使用相同密钥和相同 tweak，由 XEX 的确定性可知，它们的密文异或关系会泄露明文异或关系。SP 800-38E 还强调 XTS-AES 的密钥管理很重要，并说明密钥备份结构的 XML 表示不在该推荐范围内。### 数据单元长度限制\n\nSP 800-38E 要求数据单元不超过 `2^20` 个 AES 块。这个限制是合规要求，不是可选的性能建议；更大的数据单元会改变安全边界，不能靠实现能跑这一点绕过。### 侧信道与物理访问\n\nXTS 不防御侧信道或物理访问。存储设备可能面临冷启动、总线探测、重放和离线修改；XTS 只保护数据内容的机密性，访问控制和上层协议仍负责其余部分。本文的教学实现只做 XTS-AES-128 的固定向量、字节对齐密文窃取往返、tweak 敏感性和篡改演示。它不生成密钥或 tweak、不做常量时间处理、不处理密钥管理、存储映射、协议状态机或侧信道防护，不能用于生产环境。",
+          "history": "XTS 建立在 Rogaway 在 2004 年提出的 XEX（XOR-Encrypt-XOR）可调分组密码之上，并加入密文窃取来支持非整块数据单元。IEEE 存储工作组在 IEEE 1619-2007 中规定了 XTS-AES；NIST 在 2010 年的 SP 800-38E 中按引用批准该模式，并增加数据单元长度要求。CAVP 随后提供 XTS-AES 的验证测试和响应文件，覆盖两种密钥长度和多种数据单元长度。XTS 因此成为存储加密的标准化模式，但它的无扩展、无认证设计也决定了它只能解决机密性，不能替代完整的存储安全方案。",
+          "refs": "- Wikipedia search entry for XTS 磁盘加密模式. https://zh.wikipedia.org/w/index.php?search=XTS%20%E7%A3%81%E7%9B%98%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: XTS (XTS 磁盘加密模式). XTS-AES is a mode of operation of AES whose full name is XEX Tweakable Block Cipher with Ciphertext Stealing. It targets fixed-length data units on storage devices: each data unit is encrypted independently; the tweak is typically set to the data-unit index or position, so the same plaintext at different positions yields different ciphertext. XTS is not designed for network transport and does not provide authentication. XTS-AES uses two AES keys: K1 processes data blocks and K2 processes the tweak. For a 128-bit tweak i, compute `T = E_K2(i)`; the tweak for block j is `T_j = alpha^j * T`, where multiplication is in GF(2^128) modulo `x^128 + x^7 + x^2 + x + 1`. Each block is encrypted with XEX:\n\n```text\nC_j = E_K1(P_j xor T_j) xor T_j\n```\n\nDecryption uses the same tweak sequence and the inverse function:\n\n```text\nP_j = D_K1(C_j xor T_j) xor T_j\n```\n\nThe XTS-AES-128 key is 256 bits, consisting of two 128-bit AES keys; the XTS-AES-256 key is 512 bits, consisting of two 256-bit AES keys. A data unit must not exceed `2^20` AES blocks. When a data unit is not a multiple of 128 bits, XTS uses ciphertext stealing. Let the plaintext consist of complete blocks `P_0 ... P_(m-1)` followed by one non-empty partial block `P_m`. First compute a complete intermediate block for the last complete block and take its first s bits as the partial ciphertext `C_m`; then form a complete block from `P_m` plus the discarded bits and encrypt it as `C_(m-1)`. The ciphertext is the same length as the plaintext, with no padding block. The standard allows the last complete block and the partial block to be swapped in physical storage, provided the interface restores the logical order.",
+          "why": "Storage devices read and write fixed-size sectors or data units. ECB leaks patterns when plaintext blocks repeat; CBC needs an IV, padding and chaining state, and a change in one unit can affect later units. XTS typically uses the data-unit index as the tweak, distinguishing positions, and uses ciphertext stealing to avoid expansion, which suits in-place encryption and random access.\n\nXTS is designed for confidentiality only. It deliberately omits an authentication tag because the design goal is no data expansion, and a tagged scheme would defeat that goal. SP 800-38E notes that, in the absence of authentication or access control, XTS provides more protection than the other approved confidentiality-only modes against unauthorized manipulation of encrypted data, but that is not integrity protection.\n\nXTS therefore fits disks and block devices, not network protocols that need authentication. Detecting tampering, replay or relocation of data units requires access control, an upper-layer integrity mechanism or AEAD; XTS being harder to manipulate than ECB/CBC must not be read as XTS providing authentication.",
+          "used": "XTS-AES targets storage devices that use fixed-length data units. IEEE 1619-2007 specifies XTS-AES, and NIST SP 800-38E approved the mode by reference in 2010 with an added requirement that a data unit not exceed `2^20` AES blocks. NIST CAVP XTS files provide XTS-AES-128 and XTS-AES-256 encryption/decryption vectors, including data units of 128, 256, 130 and 200 bits.\n\nThe typical setting is in-place encryption of disks, block devices and storage arrays. It is not a transport mode: SP 800-38E explicitly says XTS-AES was not designed for encrypting data in transit. Transport that needs authentication should use AEAD.\n\nThe example in this article uses COUNT 101 from CAVP `XTSGenAES128.rsp`: a 256-bit data unit, a 128-bit tweak and XTS-AES-128. It also demonstrates a byte-aligned ciphertext-stealing round trip on a 39-byte data unit.",
+          "broken": "XTS does not authenticate data or its source. Modifying ciphertext changes the corresponding plaintext blocks, but the decryptor has no tag to verify; XTS alone cannot detect tampering. It also does not prevent replay or relocation of data units unless the tweak, position and access control are used together.\n\nUnder the same key, different data units should use different tweaks. If two data units use the same key and the same tweak, the determinism of XEX means their ciphertext XOR relation leaks the plaintext XOR relation. SP 800-38E also stresses that key management is important for XTS-AES and states that the XML representation of a key-backup structure is outside the scope of that recommendation.\n\nSP 800-38E requires a data unit not to exceed `2^20` AES blocks. This is a conformance requirement, not an optional performance suggestion; a larger data unit changes the security boundary, and the fact that an implementation runs is not a justification to bypass it.\n\nXTS does not defend against side channels or physical access. Storage devices can face cold boot, bus probing, replay and offline modification; XTS protects only the confidentiality of data content, while access control and upper-layer protocols cover the rest.\n\nThis article's teaching implementation demonstrates XTS-AES-128 fixed vectors, a byte-aligned ciphertext-stealing round trip, tweak sensitivity and a tamper check only. It does not generate keys or tweaks, compare in constant time, manage keys, map storage, run a protocol state machine or defend against side channels, and must not be used in production.",
+          "history": "XTS builds on XEX (XOR-Encrypt-XOR), a tweakable block cipher proposed by Rogaway in 2004, and adds ciphertext stealing to support data units that are not a whole number of blocks. The IEEE storage working group specified XTS-AES in IEEE 1619-2007; NIST approved the mode by reference in SP 800-38E in 2010 and added the data-unit length requirement.\n\nCAVP later supplied XTS-AES validation tests and response files covering both key sizes and several data-unit lengths. XTS thus became a standardized storage-encryption mode, but its no-expansion, no-authentication design also means it solves confidentiality only and cannot replace a complete storage-security design.",
+          "refs": "- Wikipedia search entry for XTS 磁盘加密模式. https://zh.wikipedia.org/w/index.php?search=XTS%20%E7%A3%81%E7%9B%98%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "XTS-AES：XEX 可调分组密码加密码文窃取的 AES 存储加密模式。",
+          "XEX：XOR-Encrypt-XOR，把普通分组密码变成可调分组密码的构造。",
+          "tweak：绑定数据单元位置的 128 位值；第 j 个块使用 alpha^j 推进后的 tweak。",
+          "数据单元：存储设备上一次加密的固定长度单元。",
+          "密文窃取：把最后一个完整块的中间结果截断并补入部分块，使密文与明文等长。",
+          "K1：处理数据块的 AES 密钥。",
+          "K2：处理 tweak 的 AES 密钥。",
+          "alpha 乘法：GF(2^128) 中的乘 x 运算，模多项式 x^128+x^7+x^2+x+1。",
+          "key scope：一个密钥允许保护的用途或存储范围。",
+          "无认证：XTS 不生成标签，不能检测篡改、重放或重定位。",
+          "逻辑顺序：完整块后跟部分块的标准密文顺序；物理存储可以交换。",
+          "存储加密：面向磁盘和块设备的就地加密，不是传输层加密。"
+        ],
+        "en": [
+          "XTS-AES: an AES storage-encryption mode combining XEX with ciphertext stealing.",
+          "XEX: XOR-Encrypt-XOR, a construction turning an ordinary block cipher into a tweakable one.",
+          "Tweak: a 128-bit value bound to the data-unit position; block j uses the tweak advanced by alpha^j.",
+          "Data unit: the fixed-length unit encrypted at one time on a storage device.",
+          "Ciphertext stealing: truncating the intermediate result of the last complete block and folding it into the partial block so ciphertext length equals plaintext length.",
+          "K1: the AES key processing data blocks.",
+          "K2: the AES key processing the tweak.",
+          "Alpha multiplication: multiplication by x in GF(2^128) modulo x^128+x^7+x^2+x+1.",
+          "Key scope: the purpose or storage range one key is allowed to protect.",
+          "No authentication: XTS has no tag and cannot detect tampering, replay or relocation.",
+          "Logical order: the standard ciphertext order of complete blocks followed by the partial block; physical storage may swap them.",
+          "Storage encryption: in-place encryption for disks and block devices, not transport encryption."
+        ]
+      },
+      "figures": [
+        {
+          "id": "xts-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XTS-AES：为存储数据单元设计的可调分组模式：为什么需要 → 核心机制 → 边界。",
+            "en": "XTS-AES: a tweakable block mode for storage data units: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "XTS-AES：为存储数据单元设计的可调分组模式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for XTS-AES: a tweakable block mode for storage data units, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/xts-details-flow.zh.svg",
+            "en": "assets/xts-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9de9fb78f08641742bda3f5b446dadf04ef06100ad94ec41f72d909aec32efb0",
+            "en": "39eccd8a2eaabacd8fe1d67a34b3a4d40c1bf2b3e3f3f98df7bba635f8545ee8"
+          }
+        },
+        {
+          "id": "xts-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XTS-AES：为存储数据单元设计的可调分组模式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for XTS-AES: a tweakable block mode for storage data units: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "XTS-AES：为存储数据单元设计的可调分组模式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for XTS-AES: a tweakable block mode for storage data units, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/xts-details-r138-model.zh.svg",
+            "en": "assets/xts-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f8fd69c7d9fbd894d29ace5761228055ad6937773d86e27289a1cc46cc5f439d",
+            "en": "0834d7aa6193e5936112fdb22e0d3f5780803a8419ba8bf6128e98812d3749d2"
+          }
+        }
+      ],
+      "sources": [
+        "xts-wikipedia",
+        "xts-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "xts-cavp-vector",
+          "entryId": "xts-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "NIST CAVP XTSGenAES128.rsp COUNT 101: XTS-AES-128, 256-bit data unit, 128-bit tweak",
+          "expected": "Ciphertext matches 22e6a3c6...2e19; decryption recovers the original plaintext",
+          "sourceIds": [
+            "xts-wikipedia"
+          ],
+          "dependencies": [
+            "xts-teaching.mjs"
+          ],
+          "limitations": "One official full-block data-unit case; not the CAVP 130-bit or 200-bit ciphertext-stealing cases."
+        },
+        {
+          "id": "xts-tweak-sensitivity",
+          "entryId": "xts-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The CAVP key and plaintext with the original tweak and a different fixed tweak",
+          "expected": "The two ciphertexts differ and each decrypts correctly under its own tweak",
+          "sourceIds": [
+            "xts-wikipedia"
+          ],
+          "dependencies": [
+            "xts-teaching.mjs"
+          ],
+          "limitations": "One fixed pair of tweaks; it demonstrates dependence, not tweak uniqueness or a full key-scope policy."
+        },
+        {
+          "id": "xts-cts-roundtrip",
+          "entryId": "xts-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "A 39-byte data unit (two complete blocks plus a 7-byte partial block) and a 17-byte data unit",
+          "expected": "Ciphertext length equals plaintext length in both cases and decryption recovers the original bytes",
+          "sourceIds": [
+            "xts-wikipedia"
+          ],
+          "dependencies": [
+            "xts-teaching.mjs"
+          ],
+          "limitations": "Byte-aligned partial blocks only; not the CAVP 130-bit or 200-bit bit-level ciphertext-stealing vectors."
+        },
+        {
+          "id": "xts-tamper-no-auth",
+          "entryId": "xts-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The CAVP vector ciphertext with the first byte changed",
+          "expected": "Decryption returns a different plaintext without raising an authentication error",
+          "sourceIds": [
+            "xts-wikipedia"
+          ],
+          "dependencies": [
+            "xts-teaching.mjs"
+          ],
+          "limitations": "One flipped byte; it demonstrates the absence of a tag, not a complete manipulation or replay attack."
+        },
+        {
+          "id": "xts-r139-formal",
+          "entryId": "xts-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "XTS 磁盘加密模式 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "xts-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "xts-cavp-vector",
+      "entryId": "xts-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "NIST CAVP XTSGenAES128.rsp COUNT 101: XTS-AES-128, 256-bit data unit, 128-bit tweak",
+      "expected": "Ciphertext matches 22e6a3c6...2e19; decryption recovers the original plaintext",
+      "sourceIds": [
+        "xts-wikipedia"
+      ],
+      "dependencies": [
+        "xts-teaching.mjs"
+      ],
+      "limitations": "One official full-block data-unit case; not the CAVP 130-bit or 200-bit ciphertext-stealing cases."
+    },
+    {
+      "id": "xts-tweak-sensitivity",
+      "entryId": "xts-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The CAVP key and plaintext with the original tweak and a different fixed tweak",
+      "expected": "The two ciphertexts differ and each decrypts correctly under its own tweak",
+      "sourceIds": [
+        "xts-wikipedia"
+      ],
+      "dependencies": [
+        "xts-teaching.mjs"
+      ],
+      "limitations": "One fixed pair of tweaks; it demonstrates dependence, not tweak uniqueness or a full key-scope policy."
+    },
+    {
+      "id": "xts-cts-roundtrip",
+      "entryId": "xts-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "A 39-byte data unit (two complete blocks plus a 7-byte partial block) and a 17-byte data unit",
+      "expected": "Ciphertext length equals plaintext length in both cases and decryption recovers the original bytes",
+      "sourceIds": [
+        "xts-wikipedia"
+      ],
+      "dependencies": [
+        "xts-teaching.mjs"
+      ],
+      "limitations": "Byte-aligned partial blocks only; not the CAVP 130-bit or 200-bit bit-level ciphertext-stealing vectors."
+    },
+    {
+      "id": "xts-tamper-no-auth",
+      "entryId": "xts-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The CAVP vector ciphertext with the first byte changed",
+      "expected": "Decryption returns a different plaintext without raising an authentication error",
+      "sourceIds": [
+        "xts-wikipedia"
+      ],
+      "dependencies": [
+        "xts-teaching.mjs"
+      ],
+      "limitations": "One flipped byte; it demonstrates the absence of a tag, not a complete manipulation or replay attack."
+    },
+    {
+      "id": "xts-r139-formal",
+      "entryId": "xts-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "XTS 磁盘加密模式 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "xts-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

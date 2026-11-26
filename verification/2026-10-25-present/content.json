@@ -1,0 +1,333 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full PRESENT block-cipher article only; no completion claim for AES, block-cipher-mode, CLEFIA, LEA, ISO/IEC 29192-2 as a standard entity or the whole library.",
+  "entries": [
+    {
+      "id": "present-details",
+      "inventoryIds": [
+        "present"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 present 这一实体：64 位 SPN 结构、4 位 S-box、位置换、80/128 位密钥扩展、ISO/IEC 29192-2 定位和安全边界；不把 AES、CLEFIA、LEA、分组密码工作模式或标准实体并入本实体。",
+        "en": "Covers the present entity: the 64-bit SPN structure, 4-bit S-box, bit permutation, 80/128-bit key schedules, ISO/IEC 29192-2 positioning and security boundary. It does not absorb AES, CLEFIA, LEA, block-cipher-mode or standard entities."
+      },
+      "title": {
+        "zh": "PRESENT：面向受限设备的超轻量级 SPN 分组密码",
+        "en": "PRESENT: an ultra-lightweight SPN block cipher for constrained devices"
+      },
+      "claimIds": [
+        "present-r139-principle",
+        "present-r139-why",
+        "present-r139-used",
+        "present-r139-broken",
+        "present-r139-history",
+        "present-r139-refs"
+      ],
+      "calculationIds": [
+        "present-official-vectors",
+        "present-key-schedule",
+        "present-inverse-layers",
+        "present-diffusion",
+        "present-r139-formal"
+      ],
+      "sourceIds": [
+        "present-wikipedia",
+        "present-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "substitution-permutation-network",
+        "feistel-vs-spn",
+        "block-cipher",
+        "clefia",
+        "lea"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：PRESENT 轻量级分组密码（PRESENT）。PRESENT 是一种 64 位分组密码，支持 80 位和 128 位密钥，分别称为 PRESENT-80 和 PRESENT-128。它采用代换-置换网络（SPN），共 31 轮；每轮依次执行轮密钥异或、16 个并行的 4 位 S-box 代换和一个固定的位置换，最后一轮之后再异或一次轮密钥。```text\nstate = state xor K_i\nstate = sBoxLayer(state)\nstate = pLayer(state)\n\n（重复 31 轮，最后再 xor K_32）\n```\n\nS-box 是一个 4 位到 4 位的置换，输入 `0,1,...,F` 对应输出 `C,5,6,B,9,0,A,D,3,E,F,8,4,7,1,2`。pLayer 把第 i 位移动到第 P(i) 位，其中 `P(i) = 16*(i mod 4) + floor(i/4)`；例如第 1 位移动到第 16 位，第 4 位移动到第 1 位。这个置换只用连线，不需要逻辑门，适合硬件实现。PRESENT-80 的密钥扩展把 80 位密钥保存在寄存器 K 中，每轮取最左边 64 位作为轮密钥；取出后把 K 循环左移 61 位，对最左边 4 位应用 S-box，再把轮计数器 i 异或到第 19 到 15 位。PRESENT-128 使用 128 位寄存器，循环左移 61 位后对最左边 8 位应用两个 S-box，再把轮计数器异或到第 66 到 62 位。两种密钥扩展都产生 32 个轮密钥，对应 31 轮和最后的密钥异或。",
+          "why": "PRESENT 的设计目标是在极受限的设备上同时保持安全性和硬件效率。它的 S-box 只有 4 位，pLayer 只是固定连线，轮函数非常规整；原论文报告其硬件实现约为 1570 个门等效，适合 RFID 标签和传感器网络这类面积、功耗和成本都受限的环境。它也是理解 SPN 的一个清晰样本：S-box 提供非线性，pLayer 提供扩散，轮密钥打断对称性，31 轮把局部变化扩展到整个状态。与 AES 的字节 S-box 和 MixColumns 相比，PRESENT 的 4 位 S-box 和位置换更容易在硬件中做小，但软件实现通常不占优势。PRESENT 不是 AES 的替代品。它适合资源受限、数据量有限的场景；需要处理大量数据或长期密钥时，64 位块和 80 位密钥的安全边界更窄，ISO/IEC 29192-2 也为此给出了单密钥加密次数的限制。",
+          "used": "PRESENT 被 ISO/IEC 29192-2 纳入轻量级分组密码标准，和 CLEFIA、LEA 一起构成该标准的三个算法。它的典型应用是 RFID 标签、无线传感器网络和其他资源受限设备；这些场景更关心门数、功耗和成本，而不是通用服务器上的吞吐量。原论文在 2007 年的 CHES 会议上提出 PRESENT，并给出四组测试向量。本文用这四组向量验证加密和解密：全零/全一明文与全零/全一 80 位密钥的组合，覆盖 S-box、pLayer 和密钥扩展的主要路径。PRESENT 只定义分组密码本身，不定义工作模式。实际使用仍需选择 CBC、CTR、GCM 等模式，并处理 IV、nonce、填充或认证；不能把一个分组密码直接当成完整的加密方案。",
+          "broken": "PRESENT 的块是 64 位，密钥是 80 或 128 位。与 AES 的 128 位块相比，64 位块在生日碰撞意义下的安全边界更窄；ISO/IEC 29192-2 的 Annex D 另外给出了单个密钥可加密次数的限制。这个限制是标准的一部分，不是可选的性能建议。80 位密钥也比现代通用场景常用的 128 位密钥短。PRESENT 的定位是受限设备，不是长期保护高价值数据；密钥长度和块大小必须与威胁模型匹配。### 无完整性\n\n分组密码本身只提供伪随机置换，不提供完整性。PRESENT 不检测密文修改；需要认证时应使用 AEAD 或加密后再 MAC，不能依赖分组密码的轮函数。### 侧信道与实现\n\nPRESENT 的 4 位 S-box 和位置换在硬件上很小，但实现仍可能泄露功耗、时序或电磁信息。掩码、常量时间比较和故障防护属于实现层，不在算法定义内。本文的教学实现只处理 PRESENT-80/128 的固定向量、密钥扩展、S-box 和 pLayer 的逆变换，以及一位差异的扩散演示。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+          "history": "PRESENT 由 Bogdanov、Knudsen、Leander、Paar、Poschmann、Robshaw、Seurin 和 Vikkelsøe 在 2007 年的 CHES 会议上提出。论文把安全性和硬件效率放在同等重要的位置，报告了约 1570 个门等效的实现，并面向 RFID 标签和传感器网络。ISO/IEC 29192-2 后来把 PRESENT 纳入轻量级分组密码标准；当前版本是 2019 年的第二版，和 CLEFIA、LEA 并列。这个标准化路径说明，轻量级密码不是弱化版 AES，而是针对另一类资源约束重新设计的算法。PRESENT 的 31 轮、4 位 S-box 和位置换也成为后续轻量级 SPN 设计的参考。轻量级 SPN 的安全性通常通过差分、线性、代数和其他 reduced-round 分析来评估；这些分析不改变算法定义，但决定了实际部署时的轮数和密钥选择。",
+          "refs": "- Wikipedia search entry for PRESENT 轻量级分组密码. https://zh.wikipedia.org/w/index.php?search=PRESENT%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: PRESENT (PRESENT 轻量级分组密码). PRESENT is a 64-bit block cipher supporting 80-bit and 128-bit keys, called PRESENT-80 and PRESENT-128 respectively. It uses a substitution-permutation network (SPN) with 31 rounds. Each round applies a round-key XOR, sixteen parallel 4-bit S-box substitutions and a fixed bit permutation, followed by one final round-key XOR after the last round. The round function can be written as:\n\n```text\nstate = state xor K_i\nstate = sBoxLayer(state)\nstate = pLayer(state)\n\n(repeat 31 rounds, then xor K_32)\n```\n\nThe S-box is a 4-bit to 4-bit permutation mapping inputs `0,1,...,F` to outputs `C,5,6,B,9,0,A,D,3,E,F,8,4,7,1,2`. The pLayer moves bit i to position P(i), where `P(i) = 16*(i mod 4) + floor(i/4)`; for example, bit 1 moves to bit 16 and bit 4 moves to bit 1. The permutation is wiring only and needs no logic gates, which suits hardware. PRESENT-80 stores the 80-bit key in a register K and takes the leftmost 64 bits as the round key each round. After extraction, K is rotated left by 61 bits, the leftmost four bits pass through the S-box, and the round counter i is XORed into bits 19 to 15. PRESENT-128 uses a 128-bit register, rotates left by 61 bits, applies two S-boxes to the leftmost eight bits, and XORs the round counter into bits 66 to 62. Both key schedules produce 32 round keys for the 31 rounds and the final key addition.",
+          "why": "PRESENT was designed to keep both security and hardware efficiency on extremely constrained devices. Its S-box is only 4 bits, the pLayer is fixed wiring, and the round function is very regular; the original paper reports a hardware implementation of about 1570 gate equivalents, suitable for RFID tags and sensor networks where area, power and cost are tight.\n\nIt is also a clear sample for understanding SPNs: the S-box provides nonlinearity, the pLayer provides diffusion, round keys break symmetry, and 31 rounds spread local changes across the state. Compared with AES's byte S-box and MixColumns, PRESENT's 4-bit S-box and bit permutation are easier to make small in hardware, but usually less attractive in software.\n\nPRESENT is not a replacement for AES. It fits resource-constrained, limited-data settings; for large data volumes or long-term keys, the 64-bit block and 80-bit key have a narrower security boundary, and ISO/IEC 29192-2 therefore gives a limit on encryptions under one key.",
+          "used": "ISO/IEC 29192-2 includes PRESENT among its lightweight block ciphers, alongside CLEFIA and LEA. Its typical applications are RFID tags, wireless sensor networks and other resource-constrained devices, where gate count, power and cost matter more than throughput on a general-purpose server.\n\nThe original paper introduced PRESENT at CHES 2007 and gave four test vectors. This article uses those four vectors to verify encryption and decryption: all-zero and all-one plaintexts combined with all-zero and all-one 80-bit keys, covering the S-box, pLayer and key schedule.\n\nPRESENT defines only the block cipher, not a mode of operation. Real use still requires a mode such as CBC, CTR or GCM, plus IV, nonce, padding or authentication handling; a block cipher alone is not a complete encryption scheme.",
+          "broken": "PRESENT has a 64-bit block and an 80-bit or 128-bit key. Compared with AES's 128-bit block, the 64-bit block has a narrower security boundary in the birthday sense; ISO/IEC 29192-2 Annex D also gives a limit on the number of encryptions under a single key. That limit is part of the standard, not an optional performance suggestion.\n\nAn 80-bit key is also shorter than the 128-bit keys common in modern general-purpose settings. PRESENT targets constrained devices, not long-term protection of high-value data; key length and block size must match the threat model.\n\nA block cipher alone provides a pseudorandom permutation, not integrity. PRESENT cannot detect ciphertext modification; when authentication is needed, use AEAD or encrypt-then-MAC rather than relying on the round function.\n\nPRESENT's 4-bit S-box and bit permutation are small in hardware, but implementations can still leak power, timing or electromagnetic information. Masking, constant-time comparison and fault protection are implementation concerns, not part of the algorithm definition.\n\nThis article's teaching implementation handles only PRESENT-80/128 fixed vectors, key schedules, the S-box and inverse pLayer, and a one-bit diffusion demonstration. It does not generate keys, run in constant time, implement a mode of operation, protocol, key management or side-channel defenses, and must not be used in production.",
+          "history": "PRESENT was proposed by Bogdanov, Knudsen, Leander, Paar, Poschmann, Robshaw, Seurin and Vikkelsøe at CHES 2007. The paper treated security and hardware efficiency as equally important, reported an implementation of about 1570 gate equivalents, and targeted RFID tags and sensor networks.\n\nISO/IEC 29192-2 later included PRESENT in its lightweight block-cipher standard; the current edition is the 2019 second edition, alongside CLEFIA and LEA. This standardization path shows that lightweight cryptography is not a weakened AES but a redesign for a different set of resource constraints.\n\nPRESENT's 31 rounds, 4-bit S-box and bit permutation also became a reference point for later lightweight SPN designs. The security of lightweight SPNs is usually assessed through differential, linear, algebraic and other reduced-round analyses; that work does not change the algorithm definition but informs round counts and key choices in deployment.",
+          "refs": "- Wikipedia search entry for PRESENT 轻量级分组密码. https://zh.wikipedia.org/w/index.php?search=PRESENT%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "PRESENT：64 位块、80/128 位密钥、31 轮的轻量级 SPN 分组密码。",
+          "SPN：代换-置换网络，每轮由非线性代换和线性置换组成。",
+          "S-box：4 位到 4 位的非线性置换，PRESENT 每轮并行使用 16 个。",
+          "pLayer：固定位置换，把第 i 位移动到第 P(i) 位。",
+          "轮密钥：由密钥扩展产生、用于每一轮的 64 位子密钥。",
+          "密钥扩展：把 80/128 位主密钥更新为 32 个轮密钥的过程。",
+          "PRESENT-80：使用 80 位密钥的版本。",
+          "PRESENT-128：使用 128 位密钥的版本。",
+          "门等效：硬件实现面积的粗略度量；原论文报告约 1570 GE。",
+          "RFID：射频识别标签，PRESENT 的目标受限环境之一。",
+          "扩散：位置换和轮函数把局部变化扩展到更多位。",
+          "reduced-round 攻击：针对少于完整轮数的密码分析。"
+        ],
+        "en": [
+          "PRESENT: a lightweight SPN block cipher with a 64-bit block, 80/128-bit keys and 31 rounds.",
+          "SPN: substitution-permutation network, with a nonlinear substitution and a linear permutation each round.",
+          "S-box: a 4-bit nonlinear permutation; PRESENT uses sixteen in parallel each round.",
+          "pLayer: a fixed bit permutation moving bit i to position P(i).",
+          "Round key: a 64-bit subkey produced by the key schedule for each round.",
+          "Key schedule: the process turning an 80/128-bit master key into 32 round keys.",
+          "PRESENT-80: the variant using an 80-bit key.",
+          "PRESENT-128: the variant using a 128-bit key.",
+          "Gate equivalent: a rough measure of hardware area; the paper reports about 1570 GE.",
+          "RFID: radio-frequency identification tags, one target environment for PRESENT.",
+          "Diffusion: the permutation and round function spreading a local change to more bits.",
+          "Reduced-round attack: cryptanalysis targeting fewer than the full number of rounds."
+        ]
+      },
+      "figures": [
+        {
+          "id": "present-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PRESENT：面向受限设备的超轻量级 SPN 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "PRESENT: an ultra-lightweight SPN block cipher for constrained devices: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "PRESENT：面向受限设备的超轻量级 SPN 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for PRESENT: an ultra-lightweight SPN block cipher for constrained devices, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/present-details-flow.zh.svg",
+            "en": "assets/present-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "37be4bcb0512a147cc89fff8780f912c87d09386a8340d35f34949bfbd8e2444",
+            "en": "2bf054692e5e2abc281f1e2f925a5cbc8e35d5be27c8fcf27214409a0a1c75ec"
+          }
+        },
+        {
+          "id": "present-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PRESENT：面向受限设备的超轻量级 SPN 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for PRESENT: an ultra-lightweight SPN block cipher for constrained devices: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "PRESENT：面向受限设备的超轻量级 SPN 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for PRESENT: an ultra-lightweight SPN block cipher for constrained devices, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/present-details-r138-model.zh.svg",
+            "en": "assets/present-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8e29ddfd95c00bb66311008204f9636e0734a77a18b7c25155583e70429d6b50",
+            "en": "3643ca93e9d145614061822a3e2f2e4a4733513e1fe2a748c8c6b6ef6b49c0c9"
+          }
+        }
+      ],
+      "sources": [
+        "present-wikipedia",
+        "present-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "present-official-vectors",
+          "entryId": "present-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The four 80-bit-key PRESENT test vectors from the paper/ISO Annex B",
+          "expected": "Encryption matches all four ciphertexts and decryption recovers all four plaintexts",
+          "sourceIds": [
+            "present-wikipedia"
+          ],
+          "dependencies": [
+            "present-teaching.mjs"
+          ],
+          "limitations": "Four fixed 64-bit vectors; not a full key-size or message-length matrix."
+        },
+        {
+          "id": "present-key-schedule",
+          "entryId": "present-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The all-zero 80-bit key and the 128-bit key 00112233445566778899aabbccddeeff",
+          "expected": "The 80-bit schedule yields final round key 6dab31744f41d700; the 128-bit schedule yields first/last keys 0011223344556677 and 091989a5ae8eab21",
+          "sourceIds": [
+            "present-wikipedia"
+          ],
+          "dependencies": [
+            "present-teaching.mjs"
+          ],
+          "limitations": "Two fixed keys; the 128-bit values are checked against the published Sage example, not an independent ciphertext vector."
+        },
+        {
+          "id": "present-inverse-layers",
+          "entryId": "present-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Every 4-bit S-box input and every 64-bit permutation basis",
+          "expected": "The inverse S-box and inverse pLayer recover every input",
+          "sourceIds": [
+            "present-wikipedia"
+          ],
+          "dependencies": [
+            "present-teaching.mjs"
+          ],
+          "limitations": "Structural inverses only; not a security property."
+        },
+        {
+          "id": "present-diffusion",
+          "entryId": "present-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 80-bit key",
+          "expected": "After one S-box/pLayer step the states differ in 2 bits; after the full 31 rounds they differ in 32 bits",
+          "sourceIds": [
+            "present-wikipedia"
+          ],
+          "dependencies": [
+            "present-teaching.mjs"
+          ],
+          "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential attack."
+        },
+        {
+          "id": "present-r139-formal",
+          "entryId": "present-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "PRESENT 轻量级分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "present-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "present-official-vectors",
+      "entryId": "present-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The four 80-bit-key PRESENT test vectors from the paper/ISO Annex B",
+      "expected": "Encryption matches all four ciphertexts and decryption recovers all four plaintexts",
+      "sourceIds": [
+        "present-wikipedia"
+      ],
+      "dependencies": [
+        "present-teaching.mjs"
+      ],
+      "limitations": "Four fixed 64-bit vectors; not a full key-size or message-length matrix."
+    },
+    {
+      "id": "present-key-schedule",
+      "entryId": "present-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The all-zero 80-bit key and the 128-bit key 00112233445566778899aabbccddeeff",
+      "expected": "The 80-bit schedule yields final round key 6dab31744f41d700; the 128-bit schedule yields first/last keys 0011223344556677 and 091989a5ae8eab21",
+      "sourceIds": [
+        "present-wikipedia"
+      ],
+      "dependencies": [
+        "present-teaching.mjs"
+      ],
+      "limitations": "Two fixed keys; the 128-bit values are checked against the published Sage example, not an independent ciphertext vector."
+    },
+    {
+      "id": "present-inverse-layers",
+      "entryId": "present-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Every 4-bit S-box input and every 64-bit permutation basis",
+      "expected": "The inverse S-box and inverse pLayer recover every input",
+      "sourceIds": [
+        "present-wikipedia"
+      ],
+      "dependencies": [
+        "present-teaching.mjs"
+      ],
+      "limitations": "Structural inverses only; not a security property."
+    },
+    {
+      "id": "present-diffusion",
+      "entryId": "present-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 80-bit key",
+      "expected": "After one S-box/pLayer step the states differ in 2 bits; after the full 31 rounds they differ in 32 bits",
+      "sourceIds": [
+        "present-wikipedia"
+      ],
+      "dependencies": [
+        "present-teaching.mjs"
+      ],
+      "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential attack."
+    },
+    {
+      "id": "present-r139-formal",
+      "entryId": "present-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "PRESENT 轻量级分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "present-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

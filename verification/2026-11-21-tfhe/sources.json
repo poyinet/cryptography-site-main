@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tfhe-details",
+  "sources": [
+    {
+      "id": "tfhe-wikipedia",
+      "title": "Wikipedia search entry for TFHE 全同态加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TFHE 全同态加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tfhe-r139-principle",
+          "entryId": "tfhe-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：TFHE 全同态加密（Fully Homomorphic Encryption over the Torus）。### 环面上的全同态加密\n\nTFHE 是在环面（torus）上定义的全同态加密，基于 LWE/RLWE 与 GSW 的外部乘积。它最基本的模式是“门引导”（gate bootstrapping）：对每个二进制门执行一次 bootstrapping，把噪声刷新掉，从而支持任意深度的布尔电路。TFHE 还提供 leveled 模式，用打包数据和查找表高效计算算术函数；电路 bootstrapping 能把 LWE 密文转成低噪声 RingGSW 密文，使 leveled 模式可组合。",
+            "en": "**Algorithm**: Fully Homomorphic Encryption over the Torus (TFHE 全同态加密).### Fully homomorphic encryption over the torus\n\nTFHE is a fully homomorphic encryption scheme defined over the torus, built on LWE/RLWE and the external product with GSW."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        },
+        {
+          "id": "tfhe-r139-why",
+          "entryId": "tfhe-details",
+          "section": "why",
+          "statement": {
+            "zh": "TFHE 把 bootstrapping 从“每层一次、几十秒”降到“每个门约 13ms、16MB 引导密钥”，让全同态加密第一次在通用 CPU 上处理任意布尔电路成为可能。它的优势是低延迟、门级可编程、支持查找表和自动机；对隐私集合求交、加密数据库查询、隐私机器学习推理等小电路场景很有吸引力。",
+            "en": "TFHE reduced bootstrapping from tens of seconds per level to about 13 ms per gate with a 16 MB bootstrapping key, making FHE over arbitrary Boolean circuits practical on general CPUs for the first time.Its strengths are low latency, gate-level programmability, lookup tables and automata; it is attractive for private set intersection, encrypted database queries and private ML inference on small circuits."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        },
+        {
+          "id": "tfhe-r139-used",
+          "entryId": "tfhe-details",
+          "section": "used",
+          "statement": {
+            "zh": "TFHE 用于加密数据库查询、隐私保护机器学习推理、区块链上的保密智能合约，以及需要任意布尔电路的 MPC/外包计算。它适合布尔/小算术电路；对超大矩阵乘法或深层神经网络，参数、密钥大小和噪声管理仍然是瓶颈。",
+            "en": "TFHE is used for encrypted database queries, privacy-preserving machine-learning inference, confidential smart contracts on blockchains, and MPC/outsourced computation that needs arbitrary Boolean circuits.It suits Boolean and small arithmetic circuits; for huge matrix multiplications or deep neural networks, parameters, key size and noise management remain bottlenecks."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        },
+        {
+          "id": "tfhe-r139-broken",
+          "entryId": "tfhe-details",
+          "section": "broken",
+          "statement": {
+            "zh": "TFHE 的密文膨胀和引导密钥仍然很大；每个门都要 bootstrapping，吞吐量远低于明文计算。参数选择必须在安全、噪声和性能之间折中，参数错了会泄露密钥。它依赖 LWE 假设，不是信息论安全；实现需要常数时间采样、正确分布和侧信道防护。开源库的“可用”不等于“经过审计”。### 形式模型。",
+            "en": "TFHE ciphertexts and bootstrapping keys are still large; every gate needs a bootstrap, so throughput is far below plaintext computation.Parameter selection must trade security, noise and performance, and wrong parameters can leak the key."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        },
+        {
+          "id": "tfhe-r139-history",
+          "entryId": "tfhe-details",
+          "section": "history",
+          "statement": {
+            "zh": "TFHE 源自 Asiacrypt 2016/2017 的两篇工作，完整期刊版发表于 `Journal of Cryptology` 33:34–91 (2020)。论文把 FHEW 的 bootstrapping 从 690ms 降到 13ms，引导密钥从 1GB 降到 16MB。它后来成为全同态加密的主流方案之一，与 BFV/BGV（精确算术）和 CKKS（近似浮点）形成互补。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：TFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "TFHE grew out of Asiacrypt 2016/2017 work; the full journal version appeared in `Journal of Cryptology` 33:34–91 (2020).The paper reduced FHEW bootstrapping from 690 ms to 13 ms and the bootstrapping key from 1 GB to 16 MB."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        },
+        {
+          "id": "tfhe-r139-refs",
+          "entryId": "tfhe-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TFHE 全同态加密.https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for TFHE 全同态加密.https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tfhe-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "tfhe-wikipedia"
+      ]
+    },
+    {
+      "id": "tfhe-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tfhe-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tfhe-r139-principle",
+      "entryId": "tfhe-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：TFHE 全同态加密（Fully Homomorphic Encryption over the Torus）。### 环面上的全同态加密\n\nTFHE 是在环面（torus）上定义的全同态加密，基于 LWE/RLWE 与 GSW 的外部乘积。它最基本的模式是“门引导”（gate bootstrapping）：对每个二进制门执行一次 bootstrapping，把噪声刷新掉，从而支持任意深度的布尔电路。TFHE 还提供 leveled 模式，用打包数据和查找表高效计算算术函数；电路 bootstrapping 能把 LWE 密文转成低噪声 RingGSW 密文，使 leveled 模式可组合。",
+        "en": "**Algorithm**: Fully Homomorphic Encryption over the Torus (TFHE 全同态加密).### Fully homomorphic encryption over the torus\n\nTFHE is a fully homomorphic encryption scheme defined over the torus, built on LWE/RLWE and the external product with GSW."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    },
+    {
+      "id": "tfhe-r139-why",
+      "entryId": "tfhe-details",
+      "section": "why",
+      "statement": {
+        "zh": "TFHE 把 bootstrapping 从“每层一次、几十秒”降到“每个门约 13ms、16MB 引导密钥”，让全同态加密第一次在通用 CPU 上处理任意布尔电路成为可能。它的优势是低延迟、门级可编程、支持查找表和自动机；对隐私集合求交、加密数据库查询、隐私机器学习推理等小电路场景很有吸引力。",
+        "en": "TFHE reduced bootstrapping from tens of seconds per level to about 13 ms per gate with a 16 MB bootstrapping key, making FHE over arbitrary Boolean circuits practical on general CPUs for the first time.Its strengths are low latency, gate-level programmability, lookup tables and automata; it is attractive for private set intersection, encrypted database queries and private ML inference on small circuits."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    },
+    {
+      "id": "tfhe-r139-used",
+      "entryId": "tfhe-details",
+      "section": "used",
+      "statement": {
+        "zh": "TFHE 用于加密数据库查询、隐私保护机器学习推理、区块链上的保密智能合约，以及需要任意布尔电路的 MPC/外包计算。它适合布尔/小算术电路；对超大矩阵乘法或深层神经网络，参数、密钥大小和噪声管理仍然是瓶颈。",
+        "en": "TFHE is used for encrypted database queries, privacy-preserving machine-learning inference, confidential smart contracts on blockchains, and MPC/outsourced computation that needs arbitrary Boolean circuits.It suits Boolean and small arithmetic circuits; for huge matrix multiplications or deep neural networks, parameters, key size and noise management remain bottlenecks."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    },
+    {
+      "id": "tfhe-r139-broken",
+      "entryId": "tfhe-details",
+      "section": "broken",
+      "statement": {
+        "zh": "TFHE 的密文膨胀和引导密钥仍然很大；每个门都要 bootstrapping，吞吐量远低于明文计算。参数选择必须在安全、噪声和性能之间折中，参数错了会泄露密钥。它依赖 LWE 假设，不是信息论安全；实现需要常数时间采样、正确分布和侧信道防护。开源库的“可用”不等于“经过审计”。### 形式模型。",
+        "en": "TFHE ciphertexts and bootstrapping keys are still large; every gate needs a bootstrap, so throughput is far below plaintext computation.Parameter selection must trade security, noise and performance, and wrong parameters can leak the key."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    },
+    {
+      "id": "tfhe-r139-history",
+      "entryId": "tfhe-details",
+      "section": "history",
+      "statement": {
+        "zh": "TFHE 源自 Asiacrypt 2016/2017 的两篇工作，完整期刊版发表于 `Journal of Cryptology` 33:34–91 (2020)。论文把 FHEW 的 bootstrapping 从 690ms 降到 13ms，引导密钥从 1GB 降到 16MB。它后来成为全同态加密的主流方案之一，与 BFV/BGV（精确算术）和 CKKS（近似浮点）形成互补。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：TFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "TFHE grew out of Asiacrypt 2016/2017 work; the full journal version appeared in `Journal of Cryptology` 33:34–91 (2020).The paper reduced FHEW bootstrapping from 690 ms to 13 ms and the bootstrapping key from 1 GB to 16 MB."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    },
+    {
+      "id": "tfhe-r139-refs",
+      "entryId": "tfhe-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TFHE 全同态加密.https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for TFHE 全同态加密.https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tfhe-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

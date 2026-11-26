@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "maurer-bound-details",
+  "sources": [
+    {
+      "id": "maurer-bound-wikipedia",
+      "title": "Wikipedia search entry for Maurer 界",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Maurer 界",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "maurer-bound-r139-principle",
+          "entryId": "maurer-bound-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Maurer 界（Maurer's Bound）。### 无条件认证的模型\n\n发送者与接收者共享同一把密钥 K，要在同一密钥下认证 n 条消息 M1,…,Mn。敌手计算能力不限，只知道系统设计与密文/标签分布，不知道 K。攻击分两类：冒充（直接伪造一条被接收的消息）与替换（截获一条合法消息后改成另一条）。若接收者从不拒绝合法消息，Maurer 的界说\nmax(PI,1,…,PI,n,PS,n) ≥ 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。n=1 时退化为 max(PI,PS) ≥ 2^{-H(K)/2} ≥ 1/√|K|。### 为什么是 n+1 段\n\n直观上，密钥要在 n 次“这条消息是否合法”的判断中提供不确定性，还要留一段给最后一次替换。每认证一条消息就消耗一段密钥预算；把 K 切成 n+1 段后，敌手只要猜中其中一段的有效信息，就能在某次攻击中成功。严格证明把认证看成假设检验：在零假设（合法发送者）与备择假设（敌手伪造）之间，密钥熵限制了两个分布的区分能力。### 熵界与均匀密钥\n\nH(K) 是密钥的香农熵。因为 H(K) ≤ log|K|，所以 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。这把“密钥长度”与“可认证消息数、可达到的欺骗概率”连在一起：要让成功概率不超过 2^{-b}，密钥至少要有约 (n+1)b 位熵。",
+            "en": "**Theorem**: Maurer's Bound (Maurer 界).### The unconditional authentication model\n\nSender and receiver share one key K and must authenticate n messages M1,…,Mn under that same key."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "maurer-bound-r139-why",
+          "entryId": "maurer-bound-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么它重要\n\n它解释了为什么信息论安全的 MAC 不能既用短密钥又认证很多消息。无条件安全不依赖计算假设，因此敌手有无限时间也仍然受这个下界约束。它也解释了“密钥用一次就换”的代价：n 越大，每条消息可分到的密钥熵越少。### 与计算安全 MAC 的区别\n\nHMAC、CMAC 等计算安全 MAC 可以用固定长度密钥认证大量消息，因为安全性建立在 PRF/分组密码假设上，敌手被限制为多项式时间。Maurer 界属于无条件认证理论；它不否定计算 MAC，而是说明“无计算假设”时的硬下限。把两者混在一起，会得出“所有 MAC 都必须和消息一样长”的错误结论。### 对设计的启示\n\n设计信息论 MAC 时，必须同时报告密钥长度、可认证消息数 n 与目标欺骗概率。只写“使用 128 位密钥”而不写 n，无法判断是否达到 2^-64 的欺骗界。",
+            "en": "### Why it matters\n\nIt explains why an information-theoretic MAC cannot use a short key to authenticate many messages.Unconditional security does not rely on computational assumptions, so even an unbounded adversary is constrained by this lower bound."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "maurer-bound-r139-used",
+          "entryId": "maurer-bound-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 如何用这条界做参数检查\n\n1.确定 n：同一密钥计划认证多少条消息。2.确定目标 ε：敌手成功概率上限。3.由 ε ≥ 2^{-H(K)/(n+1)} 反推 H(K) ≥ (n+1) log2(1/ε)。4.检查密钥是否真能达到该熵；短密钥、偏置密钥或可预测密钥都不满足。5.若 n 很大，改用分层密钥、每消息派生密钥或计算安全 MAC，而不是硬撑无条件界。### 典型场景\n\n- 无条件 MAC / 认证码：Carter–Wegman 型通用哈希 + 一次性密钥，必须按 n 计算密钥消耗。- 量子密钥分发后的认证：若用一次性 MAC，密钥长度要与认证的消息量和目标失败概率匹配。- 教学与审计：用 n=1 的 1/√|K| 说明“128 位密钥并不能给出 128 位认证安全”。",
+            "en": "### Using the bound as a parameter check\n\n1.Fix n: how many messages will use the same key."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "maurer-bound-r139-broken",
+          "entryId": "maurer-bound-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 边界与失效条件\n\n1.模型假设接收者从不拒收合法消息。若系统允许拒收、重传或仲裁，界的形式会变，不能直接套用。2.只覆盖冒充与替换两类攻击；不覆盖密钥泄露、实现侧信道、重放或拒绝服务。3.界是下界，不是构造。它说“任何方案都至少有这么高的欺骗概率”，不保证存在达到等号的方案；达到界需要特定的密钥分割与编码设计。4.n 必须事先固定。若方案动态增加消息数，必须重新计算密钥预算；把 n 当成无限会得到无意义的界。5.熵不是长度。H(K) 可能远小于密钥比特数；全零密钥、低熵口令都不满足模型。6.不提供机密性。认证与保密是两个目标；Maurer 界不涉及消息保密，也不替代 Shannon 的密钥熵界。",
+            "en": "### Boundaries and failure conditions\n\n1.The model assumes the receiver never rejects a valid message."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "maurer-bound-r139-history",
+          "entryId": "maurer-bound-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1984 年的起点与 1996 年的统一\n\nSimmons 在 1984 年开启认证理论的下界研究，Gilbert、MacWilliams 与 Sloane 等人给出组合界。Maurer 1996 在 STACS 上把这些结果统一为假设检验框架，给出对 n 条消息的通用下界；2000 年在 IEEE Transactions on Information Theory 上给出更完整的假设检验处理。### 今天的用途\n\n这条界仍是信息论认证、量子密钥分发后认证与无条件 MAC 参数分析的基础。它提醒工程界：计算安全 MAC 的“短密钥”不是免费的，它把安全性转移到了计算假设上。",
+            "en": "### From Simmons 1984 to Maurer 1996\n\nSimmons opened the study of authentication lower bounds in 1984; Gilbert, MacWilliams and Sloane and others gave combinatorial bounds.Maurer’s 1996 STACS paper unified these results in a hypothesis-testing framework and gave a general bound for n messages; his 2000 IEEE Transactions on Information Theory paper gave a fuller hypothesis-testing treatment."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "maurer-bound-r139-refs",
+          "entryId": "maurer-bound-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Maurer 界.https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Maurer 界.https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "maurer-bound-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "maurer-bound-wikipedia"
+      ]
+    },
+    {
+      "id": "maurer-bound-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "maurer-bound-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "maurer-bound-r139-principle",
+      "entryId": "maurer-bound-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Maurer 界（Maurer's Bound）。### 无条件认证的模型\n\n发送者与接收者共享同一把密钥 K，要在同一密钥下认证 n 条消息 M1,…,Mn。敌手计算能力不限，只知道系统设计与密文/标签分布，不知道 K。攻击分两类：冒充（直接伪造一条被接收的消息）与替换（截获一条合法消息后改成另一条）。若接收者从不拒绝合法消息，Maurer 的界说\nmax(PI,1,…,PI,n,PS,n) ≥ 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。n=1 时退化为 max(PI,PS) ≥ 2^{-H(K)/2} ≥ 1/√|K|。### 为什么是 n+1 段\n\n直观上，密钥要在 n 次“这条消息是否合法”的判断中提供不确定性，还要留一段给最后一次替换。每认证一条消息就消耗一段密钥预算；把 K 切成 n+1 段后，敌手只要猜中其中一段的有效信息，就能在某次攻击中成功。严格证明把认证看成假设检验：在零假设（合法发送者）与备择假设（敌手伪造）之间，密钥熵限制了两个分布的区分能力。### 熵界与均匀密钥\n\nH(K) 是密钥的香农熵。因为 H(K) ≤ log|K|，所以 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。这把“密钥长度”与“可认证消息数、可达到的欺骗概率”连在一起：要让成功概率不超过 2^{-b}，密钥至少要有约 (n+1)b 位熵。",
+        "en": "**Theorem**: Maurer's Bound (Maurer 界).### The unconditional authentication model\n\nSender and receiver share one key K and must authenticate n messages M1,…,Mn under that same key."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "maurer-bound-r139-why",
+      "entryId": "maurer-bound-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么它重要\n\n它解释了为什么信息论安全的 MAC 不能既用短密钥又认证很多消息。无条件安全不依赖计算假设，因此敌手有无限时间也仍然受这个下界约束。它也解释了“密钥用一次就换”的代价：n 越大，每条消息可分到的密钥熵越少。### 与计算安全 MAC 的区别\n\nHMAC、CMAC 等计算安全 MAC 可以用固定长度密钥认证大量消息，因为安全性建立在 PRF/分组密码假设上，敌手被限制为多项式时间。Maurer 界属于无条件认证理论；它不否定计算 MAC，而是说明“无计算假设”时的硬下限。把两者混在一起，会得出“所有 MAC 都必须和消息一样长”的错误结论。### 对设计的启示\n\n设计信息论 MAC 时，必须同时报告密钥长度、可认证消息数 n 与目标欺骗概率。只写“使用 128 位密钥”而不写 n，无法判断是否达到 2^-64 的欺骗界。",
+        "en": "### Why it matters\n\nIt explains why an information-theoretic MAC cannot use a short key to authenticate many messages.Unconditional security does not rely on computational assumptions, so even an unbounded adversary is constrained by this lower bound."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "maurer-bound-r139-used",
+      "entryId": "maurer-bound-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 如何用这条界做参数检查\n\n1.确定 n：同一密钥计划认证多少条消息。2.确定目标 ε：敌手成功概率上限。3.由 ε ≥ 2^{-H(K)/(n+1)} 反推 H(K) ≥ (n+1) log2(1/ε)。4.检查密钥是否真能达到该熵；短密钥、偏置密钥或可预测密钥都不满足。5.若 n 很大，改用分层密钥、每消息派生密钥或计算安全 MAC，而不是硬撑无条件界。### 典型场景\n\n- 无条件 MAC / 认证码：Carter–Wegman 型通用哈希 + 一次性密钥，必须按 n 计算密钥消耗。- 量子密钥分发后的认证：若用一次性 MAC，密钥长度要与认证的消息量和目标失败概率匹配。- 教学与审计：用 n=1 的 1/√|K| 说明“128 位密钥并不能给出 128 位认证安全”。",
+        "en": "### Using the bound as a parameter check\n\n1.Fix n: how many messages will use the same key."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "maurer-bound-r139-broken",
+      "entryId": "maurer-bound-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 边界与失效条件\n\n1.模型假设接收者从不拒收合法消息。若系统允许拒收、重传或仲裁，界的形式会变，不能直接套用。2.只覆盖冒充与替换两类攻击；不覆盖密钥泄露、实现侧信道、重放或拒绝服务。3.界是下界，不是构造。它说“任何方案都至少有这么高的欺骗概率”，不保证存在达到等号的方案；达到界需要特定的密钥分割与编码设计。4.n 必须事先固定。若方案动态增加消息数，必须重新计算密钥预算；把 n 当成无限会得到无意义的界。5.熵不是长度。H(K) 可能远小于密钥比特数；全零密钥、低熵口令都不满足模型。6.不提供机密性。认证与保密是两个目标；Maurer 界不涉及消息保密，也不替代 Shannon 的密钥熵界。",
+        "en": "### Boundaries and failure conditions\n\n1.The model assumes the receiver never rejects a valid message."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "maurer-bound-r139-history",
+      "entryId": "maurer-bound-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1984 年的起点与 1996 年的统一\n\nSimmons 在 1984 年开启认证理论的下界研究，Gilbert、MacWilliams 与 Sloane 等人给出组合界。Maurer 1996 在 STACS 上把这些结果统一为假设检验框架，给出对 n 条消息的通用下界；2000 年在 IEEE Transactions on Information Theory 上给出更完整的假设检验处理。### 今天的用途\n\n这条界仍是信息论认证、量子密钥分发后认证与无条件 MAC 参数分析的基础。它提醒工程界：计算安全 MAC 的“短密钥”不是免费的，它把安全性转移到了计算假设上。",
+        "en": "### From Simmons 1984 to Maurer 1996\n\nSimmons opened the study of authentication lower bounds in 1984; Gilbert, MacWilliams and Sloane and others gave combinatorial bounds.Maurer’s 1996 STACS paper unified these results in a hypothesis-testing framework and gave a general bound for n messages; his 2000 IEEE Transactions on Information Theory paper gave a fuller hypothesis-testing treatment."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "maurer-bound-r139-refs",
+      "entryId": "maurer-bound-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Maurer 界.https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Maurer 界.https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "maurer-bound-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

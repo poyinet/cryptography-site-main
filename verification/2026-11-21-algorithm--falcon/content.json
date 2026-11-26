@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening batch for algorithm--falcon-details.",
+  "entries": [
+    {
+      "id": "algorithm--falcon-details",
+      "inventoryIds": [
+        "algorithm--falcon"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R106 后量子签名/KEM、轻量 AEAD、配对签名与门限签名深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Falcon 格签名",
+        "en": "Falcon / FN-DSA Lattice Signature"
+      },
+      "claimIds": [
+        "algorithm--falcon-r139-principle",
+        "algorithm--falcon-r139-why",
+        "algorithm--falcon-r139-used",
+        "algorithm--falcon-r139-broken",
+        "algorithm--falcon-r139-history",
+        "algorithm--falcon-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--falcon-wikipedia",
+        "algorithm--falcon-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "ml-dsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "algorithm--falcon-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Falcon 格签名：为什么需要 → 核心机制 → 边界。",
+            "en": "Falcon / FN-DSA Lattice Signature: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Falcon 格签名 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Falcon / FN-DSA Lattice Signature, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--falcon-details-flow.zh.svg",
+            "en": "assets/algorithm--falcon-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d3c08c29b4192636a4685613613573e358d6ae68932b9f6362615ccae02c10dd",
+            "en": "0c03f48f5a4d83f1ebd6e02a55fff75f2093532b13720b431ad8633bbd8bf372"
+          }
+        },
+        {
+          "id": "algorithm--falcon-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Falcon 格签名 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Falcon / FN-DSA Lattice Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Falcon 格签名 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Falcon / FN-DSA Lattice Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--falcon-details-r138-model.zh.svg",
+            "en": "assets/algorithm--falcon-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b4f682dd78c366e4245dde413df13c177bec7bf4f8204bbf6c16a134917dcfc1",
+            "en": "f1a1133e99ff0eaeb37c2111611e4590685954f96d479a0755af43580c6e9940"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Falcon 格签名（Falcon）。### GPV 哈希—签名\n\nFalcon 是 GPV 框架的 NTRU 格签名：把消息哈希到目标点，用陷门短基采样一个靠近目标的短格向量，输出该向量；验证检查它确实短且落在正确陪集。### NTRU 格与快速傅里叶采样\n\n私钥是 NTRU 方程 fG−gF=q 的解 (f,g,F,G)，构成 NTRU 格的短基；签名在 FFT 域递归分裂，用离散高斯 SamplerZ 在叶节点采样，成本 O(n log n)。安全性归约到 NTRU 格上的 SIS。### 参数\n\nFalcon-512 的公钥 897 B、签名约 666 B；Falcon-1024 的公钥 1793 B、签名约 1280 B。签名是变长编码，验证必须按参数集的上限检查长度。",
+          "why": "Falcon 的定位是“最小的公钥加签名足迹”：在 NIST 三类格签名中，它的联合尺寸最小、验证最快，适合带宽和存储受限的 TLS 证书、JOSE/COSE 令牌和嵌入式固件签名。它不需要 AES 或大矩阵，验签只做多项式乘法和哈希；签名端的快速傅里叶采样让它在通用 CPU 上达到数千次每秒，验签再快五到十倍。",
+          "used": "用于 TLS 1.3 的 FN-DSA 草案、JOSE/COSE 的 FN-DSA-512/1024、代码签名和固件签名；NIST 正把它标准化为 FIPS 206。工程要点：签名需要新鲜随机 salt；Gaussian sampler 必须常量时间；浮点 FFT 在不同平台要防 NaN、异常值和侧信道；不要把内部随机数跨签名复用。",
+          "broken": "Falcon 的安全性归约到 NTRU-SIS，但实现风险突出：签名端使用双精度浮点和离散高斯采样，缓存、时序和故障攻击可恢复私钥；随机数缺失会导致差分故障攻击。",
+          "history": "Falcon 由 Fouque、Hoffstein、Kirchner、Lyubashevsky、Pornin、Prest、Ricosset、Seiler、Whyte、Zhang 设计，2017-11-30 提交 NIST PQC；2022 年被 NIST 选为标准化签名之一，标准化名 FN-DSA，标准号为 FIPS 206（预计 2026 末到 2027 初发布）。它的前身是 NTRUSign，Fast Fourier sampling 来自 Ducas–Prest 2016 的陷门采样工作。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：Falcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。 预期输出：按 Falcon 格签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 封装方采样随机种子并生成密文 2. 解封装方用私钥恢复种子 3. 双方得到同一会话密钥并校验。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for Falcon 格签名. https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nFalcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。1.封装方采样随机种子并生成密文。2.解封装方用私钥恢复种子。3.双方得到同一会话密钥并校验。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Falcon (Falcon 格签名). ### GPV hash-and-sign\n\nFalcon is a GPV-style NTRU lattice signature: it hashes the message to a target point, uses a trapdoor short basis to sample a short lattice vector near that target, and outputs the vector; verification checks that it is short and lies in the correct coset. ### NTRU lattice and fast Fourier sampling\n\nThe private key is a solution (f,g,F,G) of the NTRU equation fG−gF=q, forming a short basis of an NTRU lattice. Signing recursively splits the problem in the FFT domain and samples at the leaves with the discrete Gaussian SamplerZ in O(n log n). Security reduces to SIS over NTRU lattices. ### Parameters\n\nFalcon-512 has an 897-byte public key and a signature averaging about 666 bytes; Falcon-1024 has a 1793-byte public key and a signature averaging about 1280 bytes. Signatures are variable-length, so verification must enforce the parameter set’s upper bound.",
+          "why": "Falcon targets the smallest public-key-plus-signature footprint: among the NIST lattice signatures it has the smallest combined size and the fastest verification, which suits bandwidth- and storage-constrained TLS certificates, JOSE/COSE tokens and embedded firmware signatures.\n\nIt needs no AES or large matrices; verification is polynomial multiplication plus hashing. Fast Fourier sampling lets it reach thousands of signatures per second on a general CPU, with verification five to ten times faster.",
+          "used": "It is used in TLS 1.3 FN-DSA drafts, JOSE/COSE FN-DSA-512/1024, code signing and firmware signing; NIST is standardizing it as FIPS 206.\n\nRequirements: fresh random salt per signature; constant-time Gaussian sampling; guard floating-point FFT against NaN, exceptional values and side channels across platforms; never reuse internal randomness across signatures.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Falcon reduces to NTRU-SIS, but implementation risk dominates: signing uses double-precision floating point and discrete Gaussian sampling, so cache, timing and fault attacks can recover the private key; missing randomness enables differential fault attacks.\n\nBoundaries: signatures are variable-length, so protocols must budget the upper bound; Falcon is unsuitable when deterministic signatures are required; only 512/1024 parameter sets exist and cannot be rescaled; verification must check encoding length, ranges and subgroups.",
+          "history": "Falcon was designed by Fouque, Hoffstein, Kirchner, Lyubashevsky, Pornin, Prest, Ricosset, Seiler, Whyte and Zhang and submitted to NIST PQC on 30 November 2017. NIST selected it in 2022; the standardized name is FN-DSA and the standard is FIPS 206, expected in late 2026 or early 2027.\n\nIts predecessor is NTRUSign; fast Fourier sampling comes from the Ducas–Prest 2016 trapdoor-sampling work.",
+          "refs": "- Wikipedia search entry for Falcon 格签名. https://zh.wikipedia.org/w/index.php?search=Falcon%20%E6%A0%BC%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nFalcon: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "algorithm--falcon-r139-formal",
+          "entryId": "algorithm--falcon-details",
+          "kind": "formal-model",
+          "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+          "inputs": "输入：Falcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+          "expected": "按 Falcon 格签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "封装方采样随机种子并生成密文",
+            "解封装方用私钥恢复种子",
+            "双方得到同一会话密钥并校验"
+          ],
+          "sourceIds": [
+            "algorithm--falcon-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--falcon-r139-formal"
+      ],
+      "sources": [
+        "algorithm--falcon-wikipedia",
+        "algorithm--falcon-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--falcon-r139-formal",
+      "entryId": "algorithm--falcon-details",
+      "kind": "formal-model",
+      "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+      "inputs": "输入：Falcon 格签名的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+      "expected": "按 Falcon 格签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "封装方采样随机种子并生成密文",
+        "解封装方用私钥恢复种子",
+        "双方得到同一会话密钥并校验"
+      ],
+      "sourceIds": [
+        "algorithm--falcon-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

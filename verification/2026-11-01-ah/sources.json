@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ah-details",
+  "sources": [
+    {
+      "id": "ah-wikipedia",
+      "title": "Wikipedia search entry for AH 认证头",
+      "url": "https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: AH 认证头",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ah-r139-principle",
+          "entryId": "ah-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：AH 认证头（Authentication Header）。AH 的 §1 服务清单里没有加密：§1 写「The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams」并补「and to provide protection against replays.」§2 给出协议号「The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].」§2.4 说明索引字段：「The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.」。",
+            "en": "**Protocol**: Authentication Header (AH 认证头).Encryption appears nowhere in the §1 service list for AH: §1 states \"The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams\" and adds \"and to provide protection against replays.\" §2 gives the protocol number — \"The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].\" §2.4 explains the index field: \"The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.\"。."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        },
+        {
+          "id": "ah-r139-why",
+          "entryId": "ah-details",
+          "section": "why",
+          "statement": {
+            "zh": "覆盖范围是 AH 存在的理由，也是它的软肋：§1 说「AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.」但途中可变的字段无法保护——「some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.」结论是「Thus, the protection provided to the IP header by AH is piecemeal.」同节把 AH 与 ESP 的差别定位在覆盖面：「ESP does not protect any IP header fields unless those fields are encapsulated by ESP」。",
+            "en": "Coverage is both AH's reason for existing and its weakness: §1 says \"AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.\" But fields that change en route cannot be covered — \"some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.\" The conclusion is \"Thus, the protection provided to the IP header by AH is piecemeal.\" The same section places the AH/ESP difference in coverage: \"ESP does not protect any IP header fields unless those fields are encapsulated by ESP\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        },
+        {
+          "id": "ah-r139-used",
+          "entryId": "ah-details",
+          "section": "used",
+          "statement": {
+            "zh": "序号字段是强制的，即便不启用反重放：§2.5 规定「The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.」递增义务的范围写得很清楚——「For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.」§2.6 把校验参数交给算法规范：「The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.」§3.1 同样只有两种用法——「AH may be employed in two ways: transport mode or tunnel mode.」§3.2 给出适用的算法类型：「suitable integrity algorithms include keyed Message Authentication Codes (MACs) based on symmetric encryption algorithms」。",
+            "en": "The sequence field is mandatory even when anti-replay is off: §2.5 requires \"The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.\" and the increment duty is scoped — \"For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.\" §2.6 delegates the verification parameters to the algorithm specification: \"The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.\" §3.1 again offers two usages — \"AH may be employed in two ways: transport mode or tunnel mode.\" — and §3."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        },
+        {
+          "id": "ah-r139-broken",
+          "entryId": "ah-details",
+          "section": "broken",
+          "statement": {
+            "zh": "多发送方直接使反重放不可用：§2.5 说「Thus, for a multi-sender SA, the anti-reply features of AH are not available」。启用反重放（默认）时序号也不允许回绕：「If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.」§5 从工程角度给出对人工密钥的态度——若 ICV 密钥手工分发，反重放要求发送端持续维护计数器且溢出时没有自动恢复，因此「a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed.」同节还强调符合性要求覆盖语法与体系结构文档，并把算法清单外包给另一份 RFC：「The mandatory-to-implement algorithms for use with AH are described in a separate RFC [Eas04]」。",
+            "en": "Multiple senders make anti-replay unavailable outright: §2.5 says \"Thus, for a multi-sender SA, the anti-reply features of AH are not available\".With anti-replay enabled — the default — the counter may not wrap: \"If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.\" §5 takes the engineering view on manually keyed SAs — if the ICV key is distributed by hand, anti-replay needs the sender to maintain counter state with no automatic recovery near overflow, so \"a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        },
+        {
+          "id": "ah-r139-history",
+          "entryId": "ah-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 4302 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2402」；摘要称其为「an updated version of the IP Authentication Header (AH)」、目标是「which is designed to provide authentication services in IPv4 and IPv6」。§5 记录强制算法已迁出本文另发 RFC，理由是便于独立更新算法要求。§7 列出与 RFC 2402 的差异，其中新序号选项的描述是「added a new option for a 64-bit sequence number for very high-speed communications.」。",
+            "en": "RFC 4302 is signed by S.Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2402” in the header; the abstract calls it \"an updated version of the IP Authentication Header (AH)\", \"which is designed to provide authentication services in IPv4 and IPv6\"."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        },
+        {
+          "id": "ah-r139-refs",
+          "entryId": "ah-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for AH 认证头.https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4302: IP Authentication Header.https://www.rfc-editor.org/rfc/rfc4302。",
+            "en": "- Wikipedia search entry for AH 认证头.https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ah-reference-ref",
+            "ah-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "ah-wikipedia"
+      ]
+    },
+    {
+      "id": "ah-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ah-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "ah-specific",
+      "title": "RFC 4302: IP Authentication Header",
+      "url": "https://www.rfc-editor.org/rfc/rfc4302",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ah-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ah-r139-principle",
+      "entryId": "ah-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：AH 认证头（Authentication Header）。AH 的 §1 服务清单里没有加密：§1 写「The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams」并补「and to provide protection against replays.」§2 给出协议号「The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].」§2.4 说明索引字段：「The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.」。",
+        "en": "**Protocol**: Authentication Header (AH 认证头).Encryption appears nowhere in the §1 service list for AH: §1 states \"The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams\" and adds \"and to provide protection against replays.\" §2 gives the protocol number — \"The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].\" §2.4 explains the index field: \"The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.\"。."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    },
+    {
+      "id": "ah-r139-why",
+      "entryId": "ah-details",
+      "section": "why",
+      "statement": {
+        "zh": "覆盖范围是 AH 存在的理由，也是它的软肋：§1 说「AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.」但途中可变的字段无法保护——「some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.」结论是「Thus, the protection provided to the IP header by AH is piecemeal.」同节把 AH 与 ESP 的差别定位在覆盖面：「ESP does not protect any IP header fields unless those fields are encapsulated by ESP」。",
+        "en": "Coverage is both AH's reason for existing and its weakness: §1 says \"AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.\" But fields that change en route cannot be covered — \"some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.\" The conclusion is \"Thus, the protection provided to the IP header by AH is piecemeal.\" The same section places the AH/ESP difference in coverage: \"ESP does not protect any IP header fields unless those fields are encapsulated by ESP\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    },
+    {
+      "id": "ah-r139-used",
+      "entryId": "ah-details",
+      "section": "used",
+      "statement": {
+        "zh": "序号字段是强制的，即便不启用反重放：§2.5 规定「The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.」递增义务的范围写得很清楚——「For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.」§2.6 把校验参数交给算法规范：「The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.」§3.1 同样只有两种用法——「AH may be employed in two ways: transport mode or tunnel mode.」§3.2 给出适用的算法类型：「suitable integrity algorithms include keyed Message Authentication Codes (MACs) based on symmetric encryption algorithms」。",
+        "en": "The sequence field is mandatory even when anti-replay is off: §2.5 requires \"The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.\" and the increment duty is scoped — \"For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.\" §2.6 delegates the verification parameters to the algorithm specification: \"The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.\" §3.1 again offers two usages — \"AH may be employed in two ways: transport mode or tunnel mode.\" — and §3."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    },
+    {
+      "id": "ah-r139-broken",
+      "entryId": "ah-details",
+      "section": "broken",
+      "statement": {
+        "zh": "多发送方直接使反重放不可用：§2.5 说「Thus, for a multi-sender SA, the anti-reply features of AH are not available」。启用反重放（默认）时序号也不允许回绕：「If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.」§5 从工程角度给出对人工密钥的态度——若 ICV 密钥手工分发，反重放要求发送端持续维护计数器且溢出时没有自动恢复，因此「a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed.」同节还强调符合性要求覆盖语法与体系结构文档，并把算法清单外包给另一份 RFC：「The mandatory-to-implement algorithms for use with AH are described in a separate RFC [Eas04]」。",
+        "en": "Multiple senders make anti-replay unavailable outright: §2.5 says \"Thus, for a multi-sender SA, the anti-reply features of AH are not available\".With anti-replay enabled — the default — the counter may not wrap: \"If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.\" §5 takes the engineering view on manually keyed SAs — if the ICV key is distributed by hand, anti-replay needs the sender to maintain counter state with no automatic recovery near overflow, so \"a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    },
+    {
+      "id": "ah-r139-history",
+      "entryId": "ah-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 4302 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2402」；摘要称其为「an updated version of the IP Authentication Header (AH)」、目标是「which is designed to provide authentication services in IPv4 and IPv6」。§5 记录强制算法已迁出本文另发 RFC，理由是便于独立更新算法要求。§7 列出与 RFC 2402 的差异，其中新序号选项的描述是「added a new option for a 64-bit sequence number for very high-speed communications.」。",
+        "en": "RFC 4302 is signed by S.Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2402” in the header; the abstract calls it \"an updated version of the IP Authentication Header (AH)\", \"which is designed to provide authentication services in IPv4 and IPv6\"."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    },
+    {
+      "id": "ah-r139-refs",
+      "entryId": "ah-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for AH 认证头.https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4302: IP Authentication Header.https://www.rfc-editor.org/rfc/rfc4302。",
+        "en": "- Wikipedia search entry for AH 认证头.https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

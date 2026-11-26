@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for hash-based-signatures: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "hash-based-signatures-details",
+      "inventoryIds": [
+        "hash-based-signatures"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释哈希签名（基于哈希的签名）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Hash-Based Signatures: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "哈希签名（基于哈希的签名）",
+        "en": "Hash-Based Signatures"
+      },
+      "claimIds": [
+        "hash-based-signatures-r139-principle",
+        "hash-based-signatures-r139-why",
+        "hash-based-signatures-r139-used",
+        "hash-based-signatures-r139-broken",
+        "hash-based-signatures-r139-history",
+        "hash-based-signatures-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "hash-based-signatures-wikipedia",
+        "hash-based-signatures-standard-ref"
+      ],
+      "related": [
+        "merkle-tree",
+        "cryptographic-hash",
+        "post-quantum-cryptography",
+        "digital-signature"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：哈希签名（基于哈希的签名）（Hash-Based Signatures）。FIPS 205（2024 年 8 月 13 日发布）的 SLH-DSA「is a stateless hash-based signature scheme that is constructed using other hash-based signature schemes as components」：少次签名方案 FORS 与多次签名方案 XMSS，而 XMSS 又以一次性签名 WOTS+ 为部件。标准说明「Conceptually, an SLH-DSA key pair consists of a very large set of FORS key pairs」，每个 FORS 密钥对只安全签名少量消息；超树是 XMSS 树组成的树，私钥含秘密种子与 PRF 密钥，公钥由 PK.seed 与超树根组成。",
+          "why": "安全性不依赖素数分解或离散对数：The security of ...SLH-DSA relies on the presumed difficulty of finding preimages for hash functions as well as several related properties of the same hash functions，并且「Unlike the algorithms specified in FIPS 186-5 [1], SLH-DSA is designed to provide resistance against attacks from a large-scale quantum computer」。参数名同时编码哈希族（SHA2 或 SHAKE）、安全参数 n 的位数，以及为签名更小（s）或生成更快（f）的设计取向。",
+          "used": "标准给出 12 组参数集，n 为 16、24、32 的分别落在安全类别 1、3、5，且「each parameter set is claimed to be at least as secure as a generic block cipher with a prescribed key size」。§9.2 说明 hedged 变体是默认值，「should be used on platforms where side-channel attacks are a concern」。",
+          "broken": "私钥机密性是核心：§3.2 单列「Side-channel and fault attacks」并提醒「the secrecy of the private key is critical」。签名总量存在设计条件，§11 的脚注是举例说明量级：若以每秒 100 亿个消息签名，签满 2^64 个消息需要 58 年以上。§3 脚注 2 强调本文的 WOTS+ 与 XMSS「are not the same as」RFC 8391 与 SP 800-208 中的同名方案；§6 说明每个 WOTS+ 密钥只签一条消息、高度 h 的 XMSS 密钥签 2^h 条。",
+          "history": "NIST IR 8547（2026 年 10 月）在 §2.1.1 记录 SLH-DSA 源自 SPHINCS+ 提交，并把 FIPS 204 与 205 并列为量子抗性签名标准；§4 规定量子脆弱的公钥密码在 2030 年后弃用、2035 年后「disallow its use under NIST standards and guidelines」，同时 §3.2 说明迁移初期可采用混合方案，「typically designed to remain secure if at least one of the component algorithms is secure」。",
+          "refs": "- Wikipedia search entry for 哈希签名（基于哈希的签名）. https://zh.wikipedia.org/w/index.php?search=%E5%93%88%E5%B8%8C%E7%AD%BE%E5%90%8D%EF%BC%88%E5%9F%BA%E4%BA%8E%E5%93%88%E5%B8%8C%E7%9A%84%E7%AD%BE%E5%90%8D%EF%BC%89\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Hash-Based Signatures. It is registered under digital signatures, post-quantum cryptography. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in digital signatures, post-quantum cryptography, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Post-quantum Era. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 哈希签名（基于哈希的签名）. https://zh.wikipedia.org/w/index.php?search=%E5%93%88%E5%B8%8C%E7%AD%BE%E5%90%8D%EF%BC%88%E5%9F%BA%E4%BA%8E%E5%93%88%E5%B8%8C%E7%9A%84%E7%AD%BE%E5%90%8D%EF%BC%89\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "一次性签名：一个密钥对只能安全签名一条消息的签名方案。",
+          "WOTS+：FIPS 205 使用的哈希基一次性签名部件。",
+          "FORS：允许每密钥对安全签名少量消息的少次签名方案。",
+          "XMSS：把一次性密钥组织成 Merkle 树的多次签名方案。",
+          "超树（hypertree）：XMSS 树组成的树。",
+          "hedged 变体：使用额外随机、默认推荐的签名变体。"
+        ],
+        "en": [
+          "One-time signature: a scheme whose key pair safely signs a single message.",
+          "WOTS+: the hash-based one-time signature component used by FIPS 205.",
+          "FORS: a few-time scheme safely signing a small number of messages per key pair.",
+          "XMSS: a multi-time scheme organising one-time keys into a Merkle tree.",
+          "Hypertree: a tree of XMSS trees.",
+          "Hedged variant: the default signing variant that adds randomness."
+        ]
+      },
+      "subtopicIds": [
+        "hash-based-signatures"
+      ],
+      "figures": [
+        {
+          "id": "hash-based-signatures-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "哈希签名（基于哈希的签名）：为什么需要 → 核心机制 → 边界。",
+            "en": "Hash-Based Signatures: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "哈希签名（基于哈希的签名） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Hash-Based Signatures, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/hash-based-signatures-details-flow.zh.svg",
+            "en": "assets/hash-based-signatures-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6a739297e178d8a3435d9ff2866dcfadab8777d2d6f8b0607d10863ba858d1b4",
+            "en": "2e2c6552f028e473e8156d3771b0f27bf14e3ee1fdd6da604623e2d8a38e0b42"
+          }
+        }
+      ],
+      "sources": [
+        "hash-based-signatures-wikipedia",
+        "hash-based-signatures-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

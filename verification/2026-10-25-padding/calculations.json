@@ -1,0 +1,42 @@
+[
+  {
+    "id": "padding-pkcs7-lengths",
+    "entryId": "padding-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Messages of 0, 1, 15, 16 and 17 bytes padded with PKCS#7 and a 16-byte block",
+    "expected": "Padded lengths are 16, 16, 16, 32 and 32; final bytes are 10, 0f, 01, 10 and 0f",
+    "sourceIds": ["rfc5652"],
+    "dependencies": ["padding-teaching.mjs"],
+    "limitations": "One fixed block size and five lengths; not an exhaustive length matrix."
+  },
+  {
+    "id": "padding-unpad-validation",
+    "entryId": "padding-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Round-trip padding for lengths 0 through 32, plus empty, non-multiple, zero-length, oversized and inconsistent padding",
+    "expected": "Every round trip returns the original message; every malformed padding is rejected",
+    "sourceIds": ["rfc5652"],
+    "dependencies": ["padding-teaching.mjs"],
+    "limitations": "Strict-removal checks on fixed malformed cases; not a fuzzing campaign."
+  },
+  {
+    "id": "padding-cbc-overhead",
+    "entryId": "padding-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "15-byte and 16-byte plaintexts padded and encrypted with AES-128-CBC without automatic padding",
+    "expected": "15 bytes produce a 16-byte ciphertext; 16 bytes produce a 32-byte ciphertext; both decrypt and unpad correctly",
+    "sourceIds": ["rfc5652", "sp800-38a"],
+    "dependencies": ["padding-teaching.mjs"],
+    "limitations": "One key, IV and two lengths; it demonstrates overhead, not protocol behavior."
+  },
+  {
+    "id": "padding-oracle-recovery",
+    "entryId": "padding-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "A fixed two-block AES-128-CBC ciphertext and a simulated valid-padding oracle",
+    "expected": "The oracle rejects the original ciphertext, and the byte-flipping search recovers the original last plaintext byte 60",
+    "sourceIds": ["black-urtubia-2002", "rfc5652"],
+    "dependencies": ["padding-teaching.mjs"],
+    "limitations": "One fixed byte and fixed ciphertext; not a full multi-byte or end-to-end protocol attack."
+  }
+]

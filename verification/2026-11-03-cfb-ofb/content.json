@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for cfb-ofb: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "cfb-ofb-details",
+      "inventoryIds": [
+        "cfb-ofb"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释CFB/OFB 模式的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of CFB/OFB Modes: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "CFB/OFB 模式",
+        "en": "CFB/OFB Modes"
+      },
+      "claimIds": [
+        "cfb-ofb-r139-principle",
+        "cfb-ofb-r139-why",
+        "cfb-ofb-r139-used",
+        "cfb-ofb-r139-broken",
+        "cfb-ofb-r139-history",
+        "cfb-ofb-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "cfb-ofb-wikipedia",
+        "cfb-ofb-standard-ref"
+      ],
+      "related": [
+        "block-cipher-mode",
+        "block-cipher",
+        "stream-cipher"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：CFB/OFB 模式（CFB/OFB Modes）。CFB 的定义句在 SP 800-38A 的 6.3 节：「The Cipher Feedback (CFB) mode is a confidentiality mode that features the feedback of successive ciphertext segments into the input blocks of the forward cipher to generate output blocks that are exclusive-ORed with the plaintext to produce the ciphertext, and vice versa.」关键词是`密文段反馈`——反馈的是密文，因此解密侧要把前一段密文作为输入块。",
+          "why": "OFB 与 CFB 的分工写在 6.4 节的定义句里：「The Output Feedback (OFB) mode is a confidentiality mode that features the iteration of the forward cipher on an IV to generate a sequence of output blocks that are exclusive-ORed with the plaintext to produce the ciphertext, and vice versa.」差别就在迭代对象：OFB 只迭代自己的输出、与密文无关，因此该节说明在已知 IV 的前提下输出序列可在明文到达之前生成——这也是它与 CFB 的反馈链最根本的区别。",
+          "used": "用法上两模式对 IV 的要求并不相同，且都在留存件里：CFB 侧「The CFB mode requires an IV as the initial input block.The IV need not be secret, but it must be unpredictable」；OFB 侧则要求 IV 是一个 nonce，即在该密钥下每次执行都必须唯一。CFB 另引入段长参数 s，该建议说明这个值有时并入模式名（如 1-bit、8-bit、64-bit、128-bit CFB 这些写法就印在同节）。",
+          "broken": "失效条件在 6.4 节写得最直白：「The OFB mode requires a unique IV for every message that is ever encrypted under the given key.If, contrary to this requirement, the same IV is used for the encryption of more than one message, then the confidentiality of those messages may be compromised.」同段接着给出机理：若其中任一消息的第 j 个明文块已知，就能由该消息的第 j 个密文块推出正向密码的第 j 个输出，从而危及其他消息——注意原文的条件句用的是可能被危害，而不是必然。",
+          "history": "版本事实（按项目口径写在引号外）：留存件首块把文档标为 NIST Special Publication 800-38A、Recommendation for Block Cipher Modes of Operation: Methods and Techniques，作者行印作 Morris Dworkin；版本行作 2001 Edition，而计算机安全分会的前置页日期印为 December 2001，留存件首块又是两栏排版、标题行与版本行在同一物理行上交错，因此这些事实只作转述、不作引用。该建议还在附录里逐模式给出测试向量（命名形如 CFB1-AES128）。该条目只登记这些印刷事实。",
+          "refs": "- Wikipedia search entry for CFB/OFB 模式. https://zh.wikipedia.org/w/index.php?search=CFB%2FOFB%20%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: CFB/OFB Modes. It is registered under symmetric block ciphers. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for CFB/OFB 模式. https://zh.wikipedia.org/w/index.php?search=CFB%2FOFB%20%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CFB 模式：把连续密文段反馈进正向密码输入块的机密性模式。",
+          "OFB 模式：对 IV 迭代正向密码、用输出块与明文异或的机密性模式。",
+          "forward cipher：两模式共用的加密方向函数（解密不需要逆密码）。",
+          "IV：CFB 要求不可预测；OFB 要求是 nonce，即同密钥下每次执行唯一。",
+          "s：CFB 的段长参数（以比特计；该建议说明该值有时并入模式名）。",
+          "output block：正向密码产生的块，与明文异或得到密文。"
+        ],
+        "en": [
+          "CFB mode: a confidentiality mode feeding successive ciphertext segments into the forward cipher's input blocks.",
+          "OFB mode: a confidentiality mode iterating the forward cipher on an IV and XORing its output blocks with the plaintext.",
+          "forward cipher: the encryption direction both modes use, so decryption needs no inverse cipher.",
+          "IV: unpredictable for CFB; a nonce for OFB, i.e. unique for each execution under the given key.",
+          "s: CFB's segment-size parameter in bits, which the Recommendation says is sometimes incorporated into the mode name.",
+          "output block: the forward cipher's result, XORed with the plaintext to make ciphertext."
+        ]
+      },
+      "figures": [
+        {
+          "id": "cfb-ofb-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CFB/OFB 模式：为什么需要 → 核心机制 → 边界。",
+            "en": "CFB/OFB Modes: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CFB/OFB 模式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for CFB/OFB Modes, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cfb-ofb-details-flow.zh.svg",
+            "en": "assets/cfb-ofb-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7b992dec7b8526e4a5e3eccbccdbc33976c20901cd7b5224b0872f6be6982c36",
+            "en": "fa53a016633b81f01cd0df08093b33655cf996f1ae0d2ad7fdc7f9de593b380b"
+          }
+        }
+      ],
+      "sources": [
+        "cfb-ofb-wikipedia",
+        "cfb-ofb-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

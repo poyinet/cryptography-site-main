@@ -1,0 +1,87 @@
+[
+  {
+    "id": "friedman-calc-ic-definition",
+    "entryId": "friedman-details",
+    "kind": "known-answer-check",
+    "inputs": "the printed definition of IC as the probability that two characters drawn from the sample are equal, implemented from equation (7.2) and independently by enumerating the pairs",
+    "expected": "hand cases AAB = 1/3, AABBC = 4/20, ABCD = 0, AAAA = 1, and agreement between the two routes on the 4598-letter sample",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "friedman-ic-calc.mjs",
+      "vigenre-shim.mjs"
+    ],
+    "limitations": "Definition only; the statistical behaviour of IC is the next record, not this one."
+  },
+  {
+    "id": "friedman-calc-ic-range",
+    "entryId": "friedman-details",
+    "kind": "property-check",
+    "inputs": "the sample, a mono-alphabetic substitution of it, and Vigenere ciphertexts of periods 1, 2, 3, 5, 8, 13 and 26",
+    "expected": "the text prints that IC ranges from 1/n for an infinite-period polyalphabetic to p for a mono-alphabetic substitution, and prints r = 0.03846 for n = 26 and English p = 0.0667 in Table 7.1; a mono-alphabetic substitution must leave IC unchanged and the values must fall inside that band as the period grows",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "friedman-ic-calc.mjs",
+      "vigenre-shim.mjs"
+    ],
+    "limitations": "The sample is this repository's own prose, so its plaintext IC (0.07107) is measured rather than assumed; the printed p = 0.0667 is quoted as the source's estimate for English, not as a match to this sample."
+  },
+  {
+    "id": "friedman-calc-period-by-partitioning",
+    "entryId": "friedman-details",
+    "kind": "method-check",
+    "inputs": "a ciphertext produced with the five-letter keyword LEMON and candidate periods t = 1..10, each partitioned into t groups whose ICs are averaged",
+    "expected": "Example 7.76 describes comparing the candidate values with the sample IC; the smallest candidate whose group means match the plaintext IC must be the period planted without the analysis being told it, and every candidate that matches must be a multiple of it - disclosed rather than smoothed over, because 10 matches as well as 5",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "friedman-ic-calc.mjs",
+      "vigenre-shim.mjs"
+    ],
+    "limitations": "One planted period on one sample; a real message with an unknown period gives a weaker, noisier signal than this constructed case."
+  },
+  {
+    "id": "friedman-calc-shim-anchored",
+    "entryId": "friedman-details",
+    "kind": "known-answer-check",
+    "inputs": "the local encipherment helper used by the two records above, run on the printed example ATTACKATDAWN with keyword LEMON",
+    "expected": "it must give the ciphertext the course text prints, so the partitions above are built on a mapping anchored outside this dossier",
+    "sourceIds": [
+      "krzyzanowski-classical",
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "friedman-ic-calc.mjs",
+      "vigenre-shim.mjs"
+    ],
+    "limitations": "The anchor is a single 12-letter example."
+  }
+]

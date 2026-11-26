@@ -1,0 +1,60 @@
+[
+  {
+    "id": "cast128-calc-rfc-vectors",
+    "entryId": "cast128-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The three RFC 2144 Appendix B.1 vectors with 128-, 80- and 40-bit keys",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns 0123456789abcdef; the 128-bit key uses 16 rounds and the 80/40-bit keys use 12",
+    "sourceIds": [
+      "cast128-rfc2144"
+    ],
+    "dependencies": [
+      "cast128-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Three fixed vectors; only the 128-bit key exercises 16 rounds, and the 80/40-bit keys exercise 12 rounds with zero-padded key material."
+  },
+  {
+    "id": "cast128-calc-maintenance",
+    "entryId": "cast128-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 2144 Appendix B.2: initial a=b=0123456712345678234567893456789a, 1,000,000 iterations, each encrypting a's halves under b and then b's halves under the updated a",
+    "expected": "Final a=eea9d0a249fd3ba6b3436fb89d6dca92 and b=b2c95eb00c31ad7180ac05b8e83d696e",
+    "sourceIds": [
+      "cast128-rfc2144"
+    ],
+    "dependencies": [
+      "cast128-teaching.mjs"
+    ],
+    "limitations": "One official initial value and one fixed iteration count; it is a strong consistency test, not a proof of security or an exhaustive key test."
+  },
+  {
+    "id": "cast128-calc-key-sizes",
+    "entryId": "cast128-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All twelve RFC 2144 key sizes from 40 to 128 bits in 8-bit steps, fixed plaintext 0123456789abcdef",
+    "expected": "Every ciphertext decrypts back to the plaintext; 40-80-bit keys use 12 rounds and 88-128-bit keys use 16; every padded key is 16 bytes with the original bytes first",
+    "sourceIds": [
+      "cast128-rfc2144"
+    ],
+    "dependencies": [
+      "cast128-teaching.mjs"
+    ],
+    "limitations": "Twelve fixed key sizes with one plaintext; only the 128/80/40-bit sizes have published known-answer ciphertexts."
+  },
+  {
+    "id": "cast128-calc-structure",
+    "entryId": "cast128-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The RFC 2144 Appendix A S-box tables, the 32-subkey schedule for the 128-bit test key and the round-type pattern",
+    "expected": "Eight S-boxes with 256 entries each; S1 first/last entries 30fb40d4/5c8165bf and S8 first/last entries e216300d/ea8bf59e; K1..K4=bc173e26 78a207ef ece0a7f5 7cb0fb6b; 16 pairs Km/Kr; the 16-round type pattern 1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1; the three types produce different outputs for a fixed input",
+    "sourceIds": [
+      "cast128-rfc2144"
+    ],
+    "dependencies": [
+      "cast128-teaching.mjs",
+      "sboxes.json"
+    ],
+    "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+  }
+]

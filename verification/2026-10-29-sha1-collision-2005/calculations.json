@@ -1,0 +1,47 @@
+[
+  {
+    "id": "sha1event-calc-shattered-pair",
+    "entryId": "sha1event-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The two SHAttered one-page PDFs, shattered-1.pdf and shattered-2.pdf, each 422435 bytes, with their SHA-1 and SHA-256 digests stored in vectors.json",
+    "expected": "The two files have equal length, different byte contents, and the same SHA-1 38762cf7f55934b34d179ae6a4c80cadccbb7f0a under both the teaching implementation and Node/OpenSSL",
+    "sourceIds": [
+      "shattered-2017",
+      "shattered-files"
+    ],
+    "dependencies": [
+      "sha1event-check.mjs",
+      "event-sha1-teaching.mjs",
+      "shattered-1.pdf",
+      "shattered-2.pdf",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "This verifies the 2017 SHAttered collision pair as later context; it does not produce, verify or date the 2005 attack, which reported a complexity estimate rather than a concrete pair."
+  },
+  {
+    "id": "sha1event-calc-complexity",
+    "entryId": "sha1event-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The complexity exponents 80 (birthday bound), 69 (2005 full-SHA-1 attack), 63.1 (2017 SHAttered) and 63.4 (2020 Shambles chosen-prefix)",
+    "expected": "2^69 is less than 2^80, the ratio 2^80/2^69 is exactly 2048, the ratio 2^(69-63.1) is about 59.7, and the timeline orders 2005 < 2011 < 2017 < 2020",
+    "sourceIds": [
+      "rfc6194",
+      "shattered-2017",
+      "shambles-2020"
+    ],
+    "dependencies": [
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Arithmetic on published exponents only; it does not reproduce the attacks or measure runtime."
+  }
+]

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--depth-details",
+  "sources": [
+    {
+      "id": "attack--depth-wikipedia",
+      "title": "Wikipedia search entry for 深度",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 深度",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--depth-r139-principle",
+          "entryId": "attack--depth-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：深度（Depth）。### 密钥流抵消\n\n设两条报文使用同一密钥流 K：C_i=P_i⊕ K、C_j=P_j⊕ K。异或两密文得 C_i⊕ C_j=P_i⊕ P_j，密钥流被消去，只剩两个明文之差。对逐位模 10 的加法密码，同样有 C_i⊖ C_j=(P_i⊖ P_j)mod 10。### 对齐与统计\n\n若报文长度不同，需要先找对齐偏移。Friedman 重合指数 IC=Σ_x f_x(f_x-1)/N(N-1) 衡量文本字母分布的集中度：英语约为 0.065，随机 26 字母约为 0.038。两条自然语言文本在 N 个对齐位置上期望有 NΣ_x p_x^2 个相同字母；这个峰值帮助确认偏移，再用 crib 或语言模型恢复明文。",
+            "en": "**Attack**: Depth (深度).### Cancelling the keystream\n\nLet two messages use the same keystream K: C_i=P_i⊕ K, C_j=P_j⊕ K."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--depth-r139-why",
+          "entryId": "attack--depth-details",
+          "section": "why",
+          "statement": {
+            "zh": "深度说明“密钥复用”本身就是漏洞，不需要密码算法有统计缺陷。它把一次一密的安全条件——密钥只使用一次——变成可检验的攻击模型，也解释了为什么同一加法页、同一密钥流会制造大量报文对。",
+            "en": "### Why it is separate\n\nDepth shows that key reuse is a vulnerability by itself, without a statistical defect in the cipher.It turns the one-time-pad condition—use the key once—into a testable attack model, and explains why the same additive page or keystream creates many message pairs."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--depth-r139-used",
+          "entryId": "attack--depth-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.确认多条报文使用同一密钥流或同一加法页。2.找对齐偏移，可用已知 crib 或 IC 峰值。3.异或/相减两条密文，得到明文差。4.用语言统计、crib 字典或候选明文分段恢复两侧文本。5.用另一对报文交叉验证，避免把偶然匹配当明文。### 不能怎么用\n\n不能把深度当“已知密钥”；不能在真正一次性且不复用的密钥上使用；不能忽略不同页、不同编码和压缩造成的错位。",
+            "en": "### Correct use\n\n1.Confirm that several messages use the same keystream or additive page."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--depth-r139-broken",
+          "entryId": "attack--depth-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.密钥只使用一次：C_i⊕ C_j 仍是两个独立随机流之积，不泄露明文差。2.不同页/不同密钥：相减后仍含未知密钥差。3.对齐错误：一个字符的偏移就会让统计峰值消失。4.编码变化：压缩、转码、填充改变字母分布，IC 与 crib 失效。5.报文太短：可用重叠位置不足，统计不显著。",
+            "en": "### Failure conditions\n\n1.One-time use: C_i⊕ C_j is still the product of two independent random streams and leaks no plaintext difference."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--depth-r139-history",
+          "entryId": "attack--depth-details",
+          "section": "history",
+          "statement": {
+            "zh": "Friedman 在 1922 年系统提出重合指数，用于判断多表替换的密钥长度与文本语言。二战中，同一加法页的复用制造了 JN-25 与 VENONA 的深度：JN-25 的加法簿为 300 页 × 100 组，VENONA 约有 35,000 页重复密钥。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### Historical location\n\nFriedman systematised the index of coincidence in 1922 for estimating the key length and language of polyalphabetic text.In World War II, reuse of the same additive page created depth in JN-25 and VENONA: the JN-25 additive book had 300 pages × 100 groups, and VENONA had about 35,000 duplicate-key pages."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--depth-r139-refs",
+          "entryId": "attack--depth-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 深度.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 深度.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--depth-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--depth-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--depth-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--depth-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--depth-r139-principle",
+      "entryId": "attack--depth-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：深度（Depth）。### 密钥流抵消\n\n设两条报文使用同一密钥流 K：C_i=P_i⊕ K、C_j=P_j⊕ K。异或两密文得 C_i⊕ C_j=P_i⊕ P_j，密钥流被消去，只剩两个明文之差。对逐位模 10 的加法密码，同样有 C_i⊖ C_j=(P_i⊖ P_j)mod 10。### 对齐与统计\n\n若报文长度不同，需要先找对齐偏移。Friedman 重合指数 IC=Σ_x f_x(f_x-1)/N(N-1) 衡量文本字母分布的集中度：英语约为 0.065，随机 26 字母约为 0.038。两条自然语言文本在 N 个对齐位置上期望有 NΣ_x p_x^2 个相同字母；这个峰值帮助确认偏移，再用 crib 或语言模型恢复明文。",
+        "en": "**Attack**: Depth (深度).### Cancelling the keystream\n\nLet two messages use the same keystream K: C_i=P_i⊕ K, C_j=P_j⊕ K."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--depth-r139-why",
+      "entryId": "attack--depth-details",
+      "section": "why",
+      "statement": {
+        "zh": "深度说明“密钥复用”本身就是漏洞，不需要密码算法有统计缺陷。它把一次一密的安全条件——密钥只使用一次——变成可检验的攻击模型，也解释了为什么同一加法页、同一密钥流会制造大量报文对。",
+        "en": "### Why it is separate\n\nDepth shows that key reuse is a vulnerability by itself, without a statistical defect in the cipher.It turns the one-time-pad condition—use the key once—into a testable attack model, and explains why the same additive page or keystream creates many message pairs."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--depth-r139-used",
+      "entryId": "attack--depth-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.确认多条报文使用同一密钥流或同一加法页。2.找对齐偏移，可用已知 crib 或 IC 峰值。3.异或/相减两条密文，得到明文差。4.用语言统计、crib 字典或候选明文分段恢复两侧文本。5.用另一对报文交叉验证，避免把偶然匹配当明文。### 不能怎么用\n\n不能把深度当“已知密钥”；不能在真正一次性且不复用的密钥上使用；不能忽略不同页、不同编码和压缩造成的错位。",
+        "en": "### Correct use\n\n1.Confirm that several messages use the same keystream or additive page."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--depth-r139-broken",
+      "entryId": "attack--depth-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.密钥只使用一次：C_i⊕ C_j 仍是两个独立随机流之积，不泄露明文差。2.不同页/不同密钥：相减后仍含未知密钥差。3.对齐错误：一个字符的偏移就会让统计峰值消失。4.编码变化：压缩、转码、填充改变字母分布，IC 与 crib 失效。5.报文太短：可用重叠位置不足，统计不显著。",
+        "en": "### Failure conditions\n\n1.One-time use: C_i⊕ C_j is still the product of two independent random streams and leaks no plaintext difference."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--depth-r139-history",
+      "entryId": "attack--depth-details",
+      "section": "history",
+      "statement": {
+        "zh": "Friedman 在 1922 年系统提出重合指数，用于判断多表替换的密钥长度与文本语言。二战中，同一加法页的复用制造了 JN-25 与 VENONA 的深度：JN-25 的加法簿为 300 页 × 100 组，VENONA 约有 35,000 页重复密钥。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### Historical location\n\nFriedman systematised the index of coincidence in 1922 for estimating the key length and language of polyalphabetic text.In World War II, reuse of the same additive page created depth in JN-25 and VENONA: the JN-25 additive book had 300 pages × 100 groups, and VENONA had about 35,000 duplicate-key pages."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--depth-r139-refs",
+      "entryId": "attack--depth-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 深度.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 深度.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--depth-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

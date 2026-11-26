@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "masque-connect-udp-details",
+  "sources": [
+    {
+      "id": "masque-connect-udp-wikipedia",
+      "title": "Wikipedia search entry for MASQUE CONNECT-UDP",
+      "url": "https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: MASQUE CONNECT-UDP",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "masque-connect-udp-r139-principle",
+          "entryId": "masque-connect-udp-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：MASQUE CONNECT-UDP（MASQUE Proxying UDP over HTTP）。RFC 9298 的定义句写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」并立刻限定形状——「More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」即它约定的是 HTTP 之下的 UDP 隧道，不是新的传输协议。",
+            "en": "**Protocol**: MASQUE Proxying UDP over HTTP (MASQUE CONNECT-UDP).The defining sentence sits in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — quoted exactly as \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — and it is immediately narrowed: \"More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" The subject is a UDP tunnel carried by HTTP, not a new transport."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        },
+        {
+          "id": "masque-connect-udp-r139-why",
+          "entryId": "masque-connect-udp-details",
+          "section": "why",
+          "statement": {
+            "zh": "要补的缺口写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」§1 说明承载方式并不绑在某个 HTTP 版本上——「This protocol supports all existing versions of HTTP by using HTTP Datagrams」，HTTP/2 与 HTTP/3 用 Extended CONNECT，HTTP/1.x 用 Upgrade。文首的状态声明自陈它是共识产物：「This document is a product of the Internet Engineering Task Force (IETF).It represents the consensus of the IETF community.」。",
+            "en": "The gap is stated in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" Clause 1 shows the carriage is not tied to one HTTP version — \"This protocol supports all existing versions of HTTP by using HTTP Datagrams\", with Extended CONNECT for HTTP/2 and HTTP/3 and Upgrade for HTTP/1.x.The status statement in the front matter records the consensus provenance: \"This document is a product of the Internet Engineering Task Force (IETF)."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        },
+        {
+          "id": "masque-connect-udp-r139-used",
+          "entryId": "masque-connect-udp-details",
+          "section": "used",
+          "statement": {
+            "zh": "使用形态是客户端经服务器建一条 UDP 隧道：摘要写「this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」§3 起给出的是协议与消息格式，被转发内容的安全由上层协议负责——§1 预期「UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.」。",
+            "en": "The usage shape is a client building a UDP tunnel through a proxying server: the abstract says \"this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" From §3 onward the document gives the protocol and message formats, while the safety of the carried content is left to the upper layer — §1 expects that \"UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.\"。."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        },
+        {
+          "id": "masque-connect-udp-r139-broken",
+          "entryId": "masque-connect-udp-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度一是它只规定隧道本身，转发内容是否机密取决于上层协议（§1 的 QUIC 句），本文件不给被转发负载添加机密性或完整性。限度二是代理位置的滥用风险，安全考量在 §7（§9 是参考文献）：「There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.」并建议「HTTP servers that support UDP proxying ought to restrict its use to authenticated users.」。",
+            "en": "The first limit is that only the tunnel is specified: whether the forwarded payload is confidential depends on the protocol run above UDP (§1), and this document adds no confidentiality or integrity to the payload.The second is the abuse risk of the proxy position, handled in §7 (§9 is the References): \"There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.\" together with the advice that \"HTTP servers that support UDP proxying ought to restrict its use to authenticated users.\"。."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        },
+        {
+          "id": "masque-connect-udp-r139-history",
+          "entryId": "masque-connect-udp-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本史在页眉与版权块：作者栏 D.Schinazi（Google LLC），页眉日期 August 2022，Category 为 Standards Track，版权行为「Copyright (c) 2022 IETF Trust and the persons identified as the document authors.」其后续件 RFC 9484（CONNECT-IP，2023 年 10 月）在自己的页眉标注 Updates: 9298，即本文件是那轮更新的底座；本文件自身未声明更新任何 RFC。",
+            "en": "The history sits in the masthead and copyright block: D.Schinazi (Google LLC), dated August 2022, Category Standards Track, under \"Copyright (c) 2022 IETF Trust and the persons identified as the document authors.\" The successor RFC 9484 (CONNECT-IP, October 2023) carries Updates: 9298 in its own masthead, making this the base of that update; this document claims no update of its own."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        },
+        {
+          "id": "masque-connect-udp-r139-refs",
+          "entryId": "masque-connect-udp-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for MASQUE CONNECT-UDP.https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9298: Proxying UDP in HTTP.https://www.rfc-editor.org/rfc/rfc9298。",
+            "en": "- Wikipedia search entry for MASQUE CONNECT-UDP.https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "masque-connect-udp-reference-ref",
+            "masque-connect-udp-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "masque-connect-udp-wikipedia"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "masque-connect-udp-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "masque-connect-udp-specific",
+      "title": "RFC 9298: Proxying UDP in HTTP",
+      "url": "https://www.rfc-editor.org/rfc/rfc9298",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "masque-connect-udp-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "masque-connect-udp-r139-principle",
+      "entryId": "masque-connect-udp-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：MASQUE CONNECT-UDP（MASQUE Proxying UDP over HTTP）。RFC 9298 的定义句写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」并立刻限定形状——「More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」即它约定的是 HTTP 之下的 UDP 隧道，不是新的传输协议。",
+        "en": "**Protocol**: MASQUE Proxying UDP over HTTP (MASQUE CONNECT-UDP).The defining sentence sits in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — quoted exactly as \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — and it is immediately narrowed: \"More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" The subject is a UDP tunnel carried by HTTP, not a new transport."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-r139-why",
+      "entryId": "masque-connect-udp-details",
+      "section": "why",
+      "statement": {
+        "zh": "要补的缺口写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」§1 说明承载方式并不绑在某个 HTTP 版本上——「This protocol supports all existing versions of HTTP by using HTTP Datagrams」，HTTP/2 与 HTTP/3 用 Extended CONNECT，HTTP/1.x 用 Upgrade。文首的状态声明自陈它是共识产物：「This document is a product of the Internet Engineering Task Force (IETF).It represents the consensus of the IETF community.」。",
+        "en": "The gap is stated in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" Clause 1 shows the carriage is not tied to one HTTP version — \"This protocol supports all existing versions of HTTP by using HTTP Datagrams\", with Extended CONNECT for HTTP/2 and HTTP/3 and Upgrade for HTTP/1.x.The status statement in the front matter records the consensus provenance: \"This document is a product of the Internet Engineering Task Force (IETF)."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-r139-used",
+      "entryId": "masque-connect-udp-details",
+      "section": "used",
+      "statement": {
+        "zh": "使用形态是客户端经服务器建一条 UDP 隧道：摘要写「this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」§3 起给出的是协议与消息格式，被转发内容的安全由上层协议负责——§1 预期「UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.」。",
+        "en": "The usage shape is a client building a UDP tunnel through a proxying server: the abstract says \"this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" From §3 onward the document gives the protocol and message formats, while the safety of the carried content is left to the upper layer — §1 expects that \"UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.\"。."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-r139-broken",
+      "entryId": "masque-connect-udp-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度一是它只规定隧道本身，转发内容是否机密取决于上层协议（§1 的 QUIC 句），本文件不给被转发负载添加机密性或完整性。限度二是代理位置的滥用风险，安全考量在 §7（§9 是参考文献）：「There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.」并建议「HTTP servers that support UDP proxying ought to restrict its use to authenticated users.」。",
+        "en": "The first limit is that only the tunnel is specified: whether the forwarded payload is confidential depends on the protocol run above UDP (§1), and this document adds no confidentiality or integrity to the payload.The second is the abuse risk of the proxy position, handled in §7 (§9 is the References): \"There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.\" together with the advice that \"HTTP servers that support UDP proxying ought to restrict its use to authenticated users.\"。."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-r139-history",
+      "entryId": "masque-connect-udp-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本史在页眉与版权块：作者栏 D.Schinazi（Google LLC），页眉日期 August 2022，Category 为 Standards Track，版权行为「Copyright (c) 2022 IETF Trust and the persons identified as the document authors.」其后续件 RFC 9484（CONNECT-IP，2023 年 10 月）在自己的页眉标注 Updates: 9298，即本文件是那轮更新的底座；本文件自身未声明更新任何 RFC。",
+        "en": "The history sits in the masthead and copyright block: D.Schinazi (Google LLC), dated August 2022, Category Standards Track, under \"Copyright (c) 2022 IETF Trust and the persons identified as the document authors.\" The successor RFC 9484 (CONNECT-IP, October 2023) carries Updates: 9298 in its own masthead, making this the base of that update; this document claims no update of its own."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    },
+    {
+      "id": "masque-connect-udp-r139-refs",
+      "entryId": "masque-connect-udp-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for MASQUE CONNECT-UDP.https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9298: Proxying UDP in HTTP.https://www.rfc-editor.org/rfc/rfc9298。",
+        "en": "- Wikipedia search entry for MASQUE CONNECT-UDP.https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

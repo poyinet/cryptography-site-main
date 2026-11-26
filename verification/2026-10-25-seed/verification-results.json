@@ -1,0 +1,188 @@
+{
+  "results": [
+    {
+      "id": "seed-calc-rfc-vectors",
+      "entryId": "seed-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "df4d8fb0538721ff1479f1fc0cc0dc96fce43d87428b46d6497b3ce3dbcfce6a",
+      "dependencyHashes": {
+        "seed-teaching.mjs": "76df00627bf9261165b2a730cc8d42f8a6bbf0735be0eb43a411f6fed9620e9a",
+        "sboxes.json": "62c6f54cc77394db5f7d952ecc898b920a4a2724c79abe01b50c1981ddc1b1a3",
+        "vectors.json": "54d53bb8b131fe40cea5ce3a8687bfc55bf549d40ea7a7c4b1a30279b501b52e",
+        "article.zh.md": "801e6f075a4dabaafd08f1c6e0c5aa202a96356ecb390497a82bf79052240aa9",
+        "article.en.md": "780e33a632a8a5d694da1be4c0f6735889c6d46dbcaadc33fd5910bfde3ddb2c",
+        "meta.json": "d46fbe04266c1822e8ce221e057640ddb5a8ac5254ae5fee68b432e97e9c2907",
+        "glossary.json": "d4002aba76ae54c5f59e6feb82b0089d9cb143c304460fabb9ee9ef0c72766cb",
+        "calculations.json": "ef8d6658cd0812177dfdbe5a8a39a9c6f11780ed7d3f58e5a479f94b4b4a6235"
+      },
+      "inputs": "The four RFC 4269 Appendix B vectors B.1-B.4, each with a 128-bit key and a 128-bit plaintext",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the original plaintext; the B.1 table also matches all sixteen round subkeys and per-round input states, the state after round i equals the input state of round i+1, and the state after round 16 equals the ciphertext halves",
+      "observed": {
+        "id": "seed-calc-rfc-vectors",
+        "passed": true,
+        "vectors": 4,
+        "ciphertexts": [
+          "5ebac6e0054e166819aff1cc6d346cdb",
+          "c11f22f20140505084483597e4370f43",
+          "ee54d13ebcae706d226bc3142cd40d4a",
+          "9b9b7bfcd1813cb95d0b3618f40f5122"
+        ],
+        "publishedRounds": 16,
+        "firstRow": {
+          "round": 1,
+          "ki0": "7c8f8c7e",
+          "ki1": "c737a22c",
+          "l0": "00010203",
+          "l1": "04050607",
+          "r0": "08090a0b",
+          "r1": "0c0d0e0f"
+        },
+        "lastRow": {
+          "round": 16,
+          "ki0": "71891150",
+          "ki1": "98b255b0",
+          "l0": "1a415792",
+          "l1": "a02b8c54",
+          "r0": "19aff1cc",
+          "r1": "6d346cdb"
+        },
+        "limit": "Four fixed vectors and one published round table; a match does not establish security against cryptanalysis."
+      },
+      "contentSha256": "51db1baf9a4769879876ec76a098299721cd9264d1af4ebab1fbb1caf099ac6f",
+      "sourcesSha256": "03c7f8b67837bd13307fed8d7847a4285806898f67f1f28859d73507e12dfdc9",
+      "executedOn": "2026-11-25T07:04:18.072Z"
+    },
+    {
+      "id": "seed-calc-key-schedule",
+      "entryId": "seed-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "df4d8fb0538721ff1479f1fc0cc0dc96fce43d87428b46d6497b3ce3dbcfce6a",
+      "dependencyHashes": {
+        "seed-teaching.mjs": "76df00627bf9261165b2a730cc8d42f8a6bbf0735be0eb43a411f6fed9620e9a",
+        "sboxes.json": "62c6f54cc77394db5f7d952ecc898b920a4a2724c79abe01b50c1981ddc1b1a3",
+        "vectors.json": "54d53bb8b131fe40cea5ce3a8687bfc55bf549d40ea7a7c4b1a30279b501b52e",
+        "article.zh.md": "801e6f075a4dabaafd08f1c6e0c5aa202a96356ecb390497a82bf79052240aa9",
+        "article.en.md": "780e33a632a8a5d694da1be4c0f6735889c6d46dbcaadc33fd5910bfde3ddb2c",
+        "meta.json": "d46fbe04266c1822e8ce221e057640ddb5a8ac5254ae5fee68b432e97e9c2907",
+        "glossary.json": "d4002aba76ae54c5f59e6feb82b0089d9cb143c304460fabb9ee9ef0c72766cb",
+        "calculations.json": "ef8d6658cd0812177dfdbe5a8a39a9c6f11780ed7d3f58e5a479f94b4b4a6235"
+      },
+      "inputs": "The all-zero B.1 key and the RFC 4269 KC constants, compared with the sixteen Ki0/Ki1 pairs listed in Appendix B.1",
+      "expected": "K1=7C8F8C7EC737A22C, K2=FF276CDBA7CA684A and K16=7189115098B255B0; all sixteen Ki match the RFC table; the decryption schedule is the reverse of the encryption schedule",
+      "observed": {
+        "id": "seed-calc-key-schedule",
+        "passed": true,
+        "key": "00000000000000000000000000000000",
+        "first": "7c8f8c7ec737a22c",
+        "last": "7189115098b255b0",
+        "rounds": 16,
+        "limit": "Only the all-zero key has published per-round subkeys; other keys are checked indirectly by the remaining vectors."
+      },
+      "contentSha256": "51db1baf9a4769879876ec76a098299721cd9264d1af4ebab1fbb1caf099ac6f",
+      "sourcesSha256": "03c7f8b67837bd13307fed8d7847a4285806898f67f1f28859d73507e12dfdc9",
+      "executedOn": "2026-11-25T07:04:18.072Z"
+    },
+    {
+      "id": "seed-calc-sboxes-g",
+      "entryId": "seed-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "df4d8fb0538721ff1479f1fc0cc0dc96fce43d87428b46d6497b3ce3dbcfce6a",
+      "dependencyHashes": {
+        "seed-teaching.mjs": "76df00627bf9261165b2a730cc8d42f8a6bbf0735be0eb43a411f6fed9620e9a",
+        "sboxes.json": "62c6f54cc77394db5f7d952ecc898b920a4a2724c79abe01b50c1981ddc1b1a3",
+        "vectors.json": "54d53bb8b131fe40cea5ce3a8687bfc55bf549d40ea7a7c4b1a30279b501b52e",
+        "article.zh.md": "801e6f075a4dabaafd08f1c6e0c5aa202a96356ecb390497a82bf79052240aa9",
+        "article.en.md": "780e33a632a8a5d694da1be4c0f6735889c6d46dbcaadc33fd5910bfde3ddb2c",
+        "meta.json": "d46fbe04266c1822e8ce221e057640ddb5a8ac5254ae5fee68b432e97e9c2907",
+        "glossary.json": "d4002aba76ae54c5f59e6feb82b0089d9cb143c304460fabb9ee9ef0c72766cb",
+        "calculations.json": "ef8d6658cd0812177dfdbe5a8a39a9c6f11780ed7d3f58e5a479f94b4b4a6235"
+      },
+      "inputs": "RFC 4269 Appendix A S0, S1 and SS0-SS3, the mask definitions m0=FC, m1=F3, m2=CF, m3=3F, and deterministic G/F samples",
+      "expected": "S0 and S1 each have 256 entries; all four SS-boxes are reproduced from S0/S1 and the masks for all 256 inputs; S0[0]=A9, S1[0]=38, S0[255]=9A, S1[255]=B7; G(00000000)=B829B829, G(01234567)=27E4246B and F(K1,08090A0B0C0D0E0F)=8080BE54C0EF8C18",
+      "observed": {
+        "id": "seed-calc-sboxes-g",
+        "passed": true,
+        "sboxes": 2,
+        "entriesPerBox": 256,
+        "extendedSboxes": 4,
+        "G0": "b829b829",
+        "G01234567": "27e4246b",
+        "F1": "8080be54c0ef8c18",
+        "limit": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+      },
+      "contentSha256": "51db1baf9a4769879876ec76a098299721cd9264d1af4ebab1fbb1caf099ac6f",
+      "sourcesSha256": "03c7f8b67837bd13307fed8d7847a4285806898f67f1f28859d73507e12dfdc9",
+      "executedOn": "2026-11-25T07:04:18.072Z"
+    },
+    {
+      "id": "seed-calc-roundtrip",
+      "entryId": "seed-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "df4d8fb0538721ff1479f1fc0cc0dc96fce43d87428b46d6497b3ce3dbcfce6a",
+      "dependencyHashes": {
+        "seed-teaching.mjs": "76df00627bf9261165b2a730cc8d42f8a6bbf0735be0eb43a411f6fed9620e9a",
+        "sboxes.json": "62c6f54cc77394db5f7d952ecc898b920a4a2724c79abe01b50c1981ddc1b1a3",
+        "vectors.json": "54d53bb8b131fe40cea5ce3a8687bfc55bf549d40ea7a7c4b1a30279b501b52e",
+        "article.zh.md": "801e6f075a4dabaafd08f1c6e0c5aa202a96356ecb390497a82bf79052240aa9",
+        "article.en.md": "780e33a632a8a5d694da1be4c0f6735889c6d46dbcaadc33fd5910bfde3ddb2c",
+        "meta.json": "d46fbe04266c1822e8ce221e057640ddb5a8ac5254ae5fee68b432e97e9c2907",
+        "glossary.json": "d4002aba76ae54c5f59e6feb82b0089d9cb143c304460fabb9ee9ef0c72766cb",
+        "calculations.json": "ef8d6658cd0812177dfdbe5a8a39a9c6f11780ed7d3f58e5a479f94b4b4a6235"
+      },
+      "inputs": "Three fixed keys (B.1 zero key, B.3 key and B.4 key) times eight deterministic plaintext patterns, including the B.1 and B.2 official plaintexts",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three keys produce three pairwise distinct schedules",
+      "observed": {
+        "id": "seed-calc-roundtrip",
+        "passed": true,
+        "roundTrips": 24,
+        "keys": 3,
+        "first": {
+          "key": "00000000000000000000000000000000",
+          "plaintext": "00000000000000000000000000000000",
+          "ciphertext": "90699de47893701e7511196be312af92"
+        },
+        "last": {
+          "key": "28dbc3bc49ffd87dcfa509b11d422be7",
+          "plaintext": "ffeeddccbbaa99887766554433221100",
+          "ciphertext": "fd3198cf358f1a761768ea27af0b63a7"
+        },
+        "limit": "Deterministic round trips only; no modes, protocols, key management, side channels or randomness are tested."
+      },
+      "contentSha256": "51db1baf9a4769879876ec76a098299721cd9264d1af4ebab1fbb1caf099ac6f",
+      "sourcesSha256": "03c7f8b67837bd13307fed8d7847a4285806898f67f1f28859d73507e12dfdc9",
+      "executedOn": "2026-11-25T07:04:18.072Z"
+    },
+    {
+      "id": "seed-r139-formal",
+      "entryId": "seed-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "df4d8fb0538721ff1479f1fc0cc0dc96fce43d87428b46d6497b3ce3dbcfce6a",
+      "dependencyHashes": {
+        "seed-teaching.mjs": "76df00627bf9261165b2a730cc8d42f8a6bbf0735be0eb43a411f6fed9620e9a",
+        "sboxes.json": "62c6f54cc77394db5f7d952ecc898b920a4a2724c79abe01b50c1981ddc1b1a3",
+        "vectors.json": "54d53bb8b131fe40cea5ce3a8687bfc55bf549d40ea7a7c4b1a30279b501b52e",
+        "article.zh.md": "801e6f075a4dabaafd08f1c6e0c5aa202a96356ecb390497a82bf79052240aa9",
+        "article.en.md": "780e33a632a8a5d694da1be4c0f6735889c6d46dbcaadc33fd5910bfde3ddb2c",
+        "meta.json": "d46fbe04266c1822e8ce221e057640ddb5a8ac5254ae5fee68b432e97e9c2907",
+        "glossary.json": "d4002aba76ae54c5f59e6feb82b0089d9cb143c304460fabb9ee9ef0c72766cb",
+        "calculations.json": "ef8d6658cd0812177dfdbe5a8a39a9c6f11780ed7d3f58e5a479f94b4b4a6235"
+      },
+      "inputs": "SEED 韩国内对称加密 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "seed-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "51db1baf9a4769879876ec76a098299721cd9264d1af4ebab1fbb1caf099ac6f",
+      "sourcesSha256": "03c7f8b67837bd13307fed8d7847a4285806898f67f1f28859d73507e12dfdc9",
+      "executedOn": "2026-11-25T07:29:59.089Z"
+    }
+  ]
+}

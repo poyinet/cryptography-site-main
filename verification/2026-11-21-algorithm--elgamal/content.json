@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for algorithm--elgamal.",
+  "entries": [
+    {
+      "id": "algorithm--elgamal-details",
+      "inventoryIds": [
+        "algorithm--elgamal"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R102 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R102 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "ElGamal 公钥密码",
+        "en": "ElGamal Public-Key Encryption"
+      },
+      "claimIds": [
+        "algorithm--elgamal-r139-principle",
+        "algorithm--elgamal-r139-why",
+        "algorithm--elgamal-r139-used",
+        "algorithm--elgamal-r139-broken",
+        "algorithm--elgamal-r139-history",
+        "algorithm--elgamal-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--elgamal-wikipedia",
+        "algorithm--elgamal-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography",
+        "elgamal"
+      ],
+      "related": [
+        "dsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "algorithm--elgamal-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ElGamal 公钥密码：为什么需要 → 核心机制 → 边界。",
+            "en": "ElGamal Public-Key Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ElGamal 公钥密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ElGamal Public-Key Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--elgamal-details-flow.zh.svg",
+            "en": "assets/algorithm--elgamal-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4c7cb894a23a673a27a8f06aa49ecc802e2849e681e42706de5001e09d44c706",
+            "en": "c34fc43b92521741cdc6a13fb3ce46c92fa8d67c949708322218d72a73cfa429"
+          }
+        },
+        {
+          "id": "algorithm--elgamal-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ElGamal 公钥密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ElGamal Public-Key Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ElGamal 公钥密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ElGamal Public-Key Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--elgamal-details-r138-model.zh.svg",
+            "en": "assets/algorithm--elgamal-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "de4e22fb852fc0c1fd86a90e5109c42256d2615ee5b5a9ecd1f48c164380e178",
+            "en": "347ec265b548a3685d1cee710d2278116f9f8c1a1615a3704c39957a728ff4d3"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：ElGamal 公钥密码（ElGamal）。### 从 Diffie–Hellman 到加密\n\nElGamal 加密把 Diffie–Hellman 的共享秘密变成一次性掩码。公开参数是循环群 `G`、阶 `q`、生成元 `g` 和公钥 `h=g^x`；私钥 `x` 保密。加密时选择随机 `k`，计算 `c1=g^k`、`c2=m·h^k`；解密计算 `m=c2·(c1^x)^{-1}`。### 正确性从哪来\n\n`c1^x=(g^k)^x=g^{kx}=h^k`，所以掩码 `h^k` 能被消掉。消息必须先编码成群元素；如果消息只是任意字节串，不能直接当成群元素相乘。### 实际用法\n\n裸 ElGamal 很少直接加密长消息。实际系统把它当作 KEM 或混合加密的一部分：用 ElGamal 封装一个对称密钥，再用 AES-GCM 等 AEAD 加密正文。椭圆曲线版本通常称为 ECIES 或 DHIES。",
+          "why": "它把“计算离散对数很难”变成了可用的公钥加密。与 RSA 依赖大整数分解不同，ElGamal 依赖有限域或椭圆曲线上的离散对数难题；随机数 `k` 让同一明文每次加密都得到不同密文。代价是密文约为明文的两倍，加密需要两次模幂，解密需要一次模幂，速度远慢于对称密码。因此它的现实价值主要是密钥封装和混合加密，而不是直接处理大文件。",
+          "used": "GnuPG 和 PGP 的 ElGamal 密钥、DSA 签名方案都与同一类离散对数难题有关；椭圆曲线上的 ElGamal 变体用于 ECIES 等混合加密。TLS 1.3 不用裸 ElGamal，而是用 ECDHE 协商密钥，再用 AEAD 保护记录。读这条时要注意：ElGamal 加密与 ElGamal 签名是两个不同构造，不能因为名字相同就互相替代。",
+          "broken": "教科书 ElGamal 是可延展的：攻击者把 `c2` 乘以 `t`，就得到 `t·m` 的合法密文。因此它不抗选择密文攻击，不能直接当作“认证加密”使用。工程上必须做三件事：校验群元素确实在正确的子群里，避免小群攻击；使用经过审计的群参数和安全素数/椭圆曲线；用带认证的 KEM/DEM、DHIES 或 ECIES 包装，而不是把裸变换直接暴露给不可信输入。",
+          "history": "Taher ElGamal 在 1984 年 CRYPTO 会议提出该方案，1985 年发表在 `IEEE Transactions on Information Theory` 31(4):469–472。它把 Diffie–Hellman 密钥协商改造成公钥加密，并给出一个签名方案；后者成为 DSA 的重要思想来源。“ElGamal 加密”和“ElGamal 签名”共享离散对数难题，但协议目标不同。把它放进目录时，应与 RSA、DSA、ECDSA 等条目区分，而不是混成一个算法。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 ElGamal 公钥密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for ElGamal 公钥密码. https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: ElGamal (ElGamal 公钥密码). ### From Diffie–Hellman to encryption\n\nElGamal encryption turns a Diffie–Hellman shared secret into a one-time mask. The public parameters are a cyclic group `G` of order `q`, a generator `g`, and a public key `h=g^x`; the private key `x` stays secret. Encryption picks a random `k` and computes `c1=g^k`, `c2=m·h^k`; decryption computes `m=c2·(c1^x)^{-1}`. ### Why it is correct\n\n`c1^x=(g^k)^x=g^{kx}=h^k`, so the mask `h^k` cancels. A message must first be encoded as a group element; arbitrary bytes cannot simply be multiplied as if they were group elements. ### How it is used\n\nBare ElGamal is rarely used to encrypt long messages. Real systems use it as a KEM or inside hybrid encryption: ElGamal wraps a symmetric key, and an AEAD such as AES-GCM protects the body. The elliptic-curve variant is commonly called ECIES or DHIES.",
+          "why": "It turns “computing discrete logarithms is hard” into usable public-key encryption. Unlike RSA, which relies on integer factorization, ElGamal relies on the discrete-logarithm problem in a finite field or elliptic curve. The random value `k` makes every encryption of the same plaintext different.\n\nThe price is a ciphertext roughly twice the size of the plaintext, two modular exponentiations for encryption and one for decryption. It is far slower than symmetric cryptography, so its practical role is key encapsulation and hybrid encryption, not bulk data.",
+          "used": "GnuPG and PGP ElGamal keys and the DSA signature scheme are tied to the same family of discrete-logarithm problems; elliptic-curve ElGamal variants appear in ECIES and similar hybrid schemes. TLS 1.3 does not use bare ElGamal: it uses ECDHE for key agreement and AEAD for record protection.\n\nDo not confuse ElGamal encryption with ElGamal signatures. They share a hardness assumption but solve different protocol problems.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Textbook ElGamal is malleable: multiplying `c2` by `t` produces a valid ciphertext for `t·m`. It is therefore not chosen-ciphertext secure and must not be presented as authenticated encryption.\n\nImplementations must validate that group elements lie in the correct subgroup, avoid small-subgroup attacks, use audited group parameters or curves, and wrap the primitive in an authenticated KEM/DEM, DHIES or ECIES construction rather than exposing the raw transform to untrusted input.",
+          "history": "Taher ElGamal presented the scheme at CRYPTO 1984 and published it in `IEEE Transactions on Information Theory` 31(4):469–472 in 1985. It adapted Diffie–Hellman key agreement into public-key encryption and also introduced a signature scheme that became an important influence on DSA.\n\nElGamal encryption and ElGamal signatures share the discrete-logarithm setting but have different goals. In a catalog they belong beside RSA, DSA and ECDSA, not merged into one “algorithm”.",
+          "refs": "- Wikipedia search entry for ElGamal 公钥密码. https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nElGamal: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "algorithm--elgamal-r139-formal",
+          "entryId": "algorithm--elgamal-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：ElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 ElGamal 公钥密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "algorithm--elgamal-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--elgamal-r139-formal"
+      ],
+      "sources": [
+        "algorithm--elgamal-wikipedia",
+        "algorithm--elgamal-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--elgamal-r139-formal",
+      "entryId": "algorithm--elgamal-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：ElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 ElGamal 公钥密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "algorithm--elgamal-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

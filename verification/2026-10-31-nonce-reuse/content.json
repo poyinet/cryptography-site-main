@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact foundational entry for nonce-reuse: definition, role, boundaries and source attribution.",
+  "entries": [
+    {
+      "id": "nonce-reuse-details",
+      "inventoryIds": [
+        "nonce-reuse"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释nonce 复用的定义、作用、边界和来源；不复制其他算法或协议实体。",
+        "en": "A compact definition of Nonce Reuse: definition, role, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "nonce 复用",
+        "en": "Nonce Reuse"
+      },
+      "claimIds": [
+        "nonce-reuse-r139-principle",
+        "nonce-reuse-r139-why",
+        "nonce-reuse-r139-used",
+        "nonce-reuse-r139-broken",
+        "nonce-reuse-r139-history",
+        "nonce-reuse-r139-refs"
+      ],
+      "sourceIds": [
+        "nonce-reuse-wikipedia",
+        "nonce-reuse-reference-ref"
+      ],
+      "related": [
+        "gcm",
+        "counter-mode",
+        "initialization-vector"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：nonce 复用（Nonce Reuse）。nonce（初始化向量）是每次加密调用使用的值；在同一密钥下，GCM 要求 IV 唯一，重复概率不得超过 2^-32。nonce 复用指同一密钥和同一 IV 被用于两组不同输入。",
+          "why": "GCM 的机密性和认证都依赖 IV 的唯一性；标准要求同一密钥下重复 IV 的概率不超过 2^-32，并称即使一次重复也可能导致伪造攻击。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "GCM 允许确定性 IV（固定字段加调用字段）或 RBG 构造；96 位以下的 IV 必须使用确定性构造。确定性构造常用计数器，RBG 构造要求随机字段至少 96 位，并对非 96 位确定性 IV 或 RBG 构造限制每密钥调用次数。",
+          "broken": "nonce 复用会使 GCM 的认证保证实质失效，并可能让攻击者构造与所选明文等长的伪造密文；防御包括唯一计数器、足够随机的 nonce，以及对非 96 位确定性 IV 或 RBG 构造遵守 2^32 次调用上限。### 形式模型",
+          "history": "NIST SP 800-38D 在 2007 年标准化 GCM/GMAC，并指出在确保 IV 唯一性之前不应部署 GCM。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「nonce 复用」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：nonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 nonce 复用 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 nonce 复用 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for nonce 复用. https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nnonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Nonce Reuse (nonce 复用). A nonce (initialization vector) is a value used for an encryption invocation; under one key, GCM requires IV uniqueness with a repetition probability no greater than 2^-32. Nonce reuse means the same key and IV are used for two distinct sets of input data.",
+          "why": "GCM confidentiality and authentication both depend on IV uniqueness. The standard requires the probability of repeating an IV under one key to be no greater than 2^-32, and notes that even one repetition can enable forgery attacks.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "GCM allows either a deterministic IV construction (fixed field plus invocation field) or an RBG-based construction; IVs shorter than 96 bits must use the deterministic construction. Deterministic construction commonly uses a counter, while the RBG construction requires a random field of at least 96 bits and imposes invocation limits for non-96-bit deterministic IVs and RBG-based IVs.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Nonce reuse essentially destroys GCM’s authentication assurance and may let an attacker construct forged ciphertexts for a desired plaintext of the same length. Defenses include unique counters, sufficiently random nonces, and respecting the 2^32 invocation limit for non-96-bit deterministic IVs or RBG-based IVs.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "NIST SP 800-38D standardized GCM and GMAC in 2007 and states that GCM should not be deployed unless IV uniqueness is ensured.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for nonce 复用. https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nNonce Reuse: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "nonce：在同一密钥下只使用一次的数值。",
+          "初始化向量：与一次加密调用关联的 nonce。",
+          "GCM：带关联数据的 Galois/计数器认证加密模式。",
+          "唯一性：同一密钥下不重复使用 IV。",
+          "伪造：构造出能通过认证的密文。",
+          "换钥：在达到调用上限前更换密钥。"
+        ],
+        "en": [
+          "Nonce: a value used only once under a given key.",
+          "Initialization vector: a nonce associated with one encryption invocation.",
+          "GCM: Galois/Counter Mode authenticated encryption with associated data.",
+          "Uniqueness: not reusing an IV under the same key.",
+          "Forgery: constructing a ciphertext that passes authentication.",
+          "Rekeying: replacing a key before its invocation limit."
+        ]
+      },
+      "figures": [
+        {
+          "id": "nonce-reuse-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "nonce 复用：为什么需要 → 核心机制 → 边界。",
+            "en": "Nonce Reuse: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "nonce 复用 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Nonce Reuse, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/nonce-reuse-details-flow.zh.svg",
+            "en": "assets/nonce-reuse-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8cf2036509ecef1c12b388e8ec95f1d9b7230918a80dc85788442ef30426482e",
+            "en": "eaf5c5dab28c617e7387a40b5d74947112600d006148391fc61192fbb078facb"
+          }
+        },
+        {
+          "id": "nonce-reuse-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "nonce 复用 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Nonce Reuse: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "nonce 复用 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Nonce Reuse, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/nonce-reuse-details-r138-model.zh.svg",
+            "en": "assets/nonce-reuse-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "358df86cfbb0d6718ba509dd138c5c739c29bf40cdcc73fe4aa7d9c49a54095e",
+            "en": "7f9fcdfa10a27289117533b8f61bad3d030708ad247be20f275d97ef396a87ea"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "nonce-reuse-r139-formal",
+          "entryId": "nonce-reuse-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：nonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 nonce 复用 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "nonce-reuse-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "nonce-reuse-r139-formal"
+      ],
+      "sources": [
+        "nonce-reuse-wikipedia",
+        "nonce-reuse-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "nonce-reuse-r139-formal",
+      "entryId": "nonce-reuse-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：nonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 nonce 复用 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "nonce-reuse-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

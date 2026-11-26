@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ieee2883-details",
+  "sources": [
+    {
+      "id": "ieee2883-wikipedia",
+      "title": "Wikipedia search entry for 存储净化",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%87%80%E5%8C%96",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 存储净化",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ieee2883-r139-principle",
+          "entryId": "ieee2883-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：存储净化（Storage Sanitization）。IEEE 2883-2022 把存储净化分成三种方法：Clear 用接口可用的逻辑覆写/块擦除，防简单非侵入恢复；Purge 用覆写、块擦除或密码擦除，防实验室级恢复；Destruct 用粉碎、焚烧、熔化等让介质不可再用。标准同时覆盖逻辑存储与物理存储，并按 HDD、SSD、光介质、可移动介质以及 SATA/SAS/NVMe 接口给出具体要求。",
+            "en": "**Standard**: Storage Sanitization (存储净化).IEEE 2883-2022 divides storage sanitization into three methods: Clear uses logical overwrite/block erase through the interface against simple non-invasive recovery; Purge uses overwrite, block erase or cryptographic erase against laboratory recovery; Destruct shreds, incinerates or melts media so it cannot be reused."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee2883-r139-why",
+          "entryId": "ieee2883-details",
+          "section": "why",
+          "statement": {
+            "zh": "三种方法对应不同威胁模型与验证强度。Clear 只需代表抽样；Purge 要全量读取；Destruct 只能物理检查。把验证强度和方法混在一起，会出现“做了 Clear 却按 Purge 宣称”的过度承诺。密码擦除（CE）走另一条路径：数据仍以密文留在介质上，但媒体加密密钥被销毁；没有密钥，残留密文不可解。",
+            "en": "The three methods map to different threat models and verification strengths.Clear needs representative sampling; Purge needs a full read; Destruct needs physical inspection."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee2883-r139-used",
+          "entryId": "ieee2883-details",
+          "section": "used",
+          "statement": {
+            "zh": "数据生命周期先选方法：复用/转售可选 Purge 以保留介质价值；报废可选 Destruct；低敏临时清理可选 Clear，但要接受抽样验证的检测概率。Clear 抽样至少覆盖 5% 可寻址空间，或每 10,000 等分子区取 2 点并加首尾；Purge 读全可寻址空间；CE 要保留密钥销毁、密钥层级与访问控制证据；Destruct 保留物理检查记录。",
+            "en": "The data lifecycle first chooses a method: reuse/resale may use Purge to retain media value; disposal may use Destruct; low-sensitivity temporary cleanup may use Clear but accepts the detection probability of sampling.Clear samples at least 5% of addressable space, or two points per 10,000 equal subsections plus first/last; Purge reads the whole addressable space; CE keeps key-destruction, key-hierarchy and access-control evidence; Destruct keeps physical-inspection records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee2883-r139-broken",
+          "entryId": "ieee2883-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误包括：把 Clear 当 Purge；把一次覆写当对所有介质都有效；忽略 SSD 磨损均衡、预留区和坏块导致的可寻址范围之外残留；把 5% 抽样通过当成“数据必然不可恢复”。CE 也不自动安全：密钥是否真销毁、是否有备份密钥、密钥管理是否可审计，决定 CE 是否成立。标准给方法与验证，不给具体产品的合规证书。### 形式模型。",
+            "en": "Common errors include: treating Clear as Purge; treating one overwrite as effective on all media; ignoring SSD wear levelling, over-provisioning and bad blocks outside the addressable range; treating a 5% sample pass as proof of unrecoverability.CE is not automatically safe: whether the key is truly destroyed, whether backup keys exist and whether key management is auditable decide whether CE holds."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee2883-r139-history",
+          "entryId": "ieee2883-details",
+          "section": "history",
+          "statement": {
+            "zh": "IEEE 2883-2022 于 2022-06-16 董事会批准、2022-08-17 发布，是存储净化从零散覆写指南走向方法/介质/接口分层标准的节点。IEEE 2883.1-2025 于 2025-02-12 批准、2025-06-19 发布，补充 Clear/Purge/Destruct 在复用、转售、报废和循环经济中的选择与证据要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：存储净化的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "IEEE 2883-2022 was approved by the IEEE SA Board on 2022-06-16 and published on 2022-08-17, marking the shift from scattered overwrite guides to a method/media/interface standard.IEEE 2883.1-2025 was approved on 2025-02-12 and published on 2025-06-19, adding method selection and evidence for reuse, resale, disposal and the circular economy."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee2883-r139-refs",
+          "entryId": "ieee2883-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 存储净化.https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%87%80%E5%8C%96\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 存储净化.https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%87%80%E5%8C%96\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ieee2883-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ieee2883-wikipedia"
+      ]
+    },
+    {
+      "id": "ieee2883-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ieee2883-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ieee2883-r139-principle",
+      "entryId": "ieee2883-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：存储净化（Storage Sanitization）。IEEE 2883-2022 把存储净化分成三种方法：Clear 用接口可用的逻辑覆写/块擦除，防简单非侵入恢复；Purge 用覆写、块擦除或密码擦除，防实验室级恢复；Destruct 用粉碎、焚烧、熔化等让介质不可再用。标准同时覆盖逻辑存储与物理存储，并按 HDD、SSD、光介质、可移动介质以及 SATA/SAS/NVMe 接口给出具体要求。",
+        "en": "**Standard**: Storage Sanitization (存储净化).IEEE 2883-2022 divides storage sanitization into three methods: Clear uses logical overwrite/block erase through the interface against simple non-invasive recovery; Purge uses overwrite, block erase or cryptographic erase against laboratory recovery; Destruct shreds, incinerates or melts media so it cannot be reused."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee2883-r139-why",
+      "entryId": "ieee2883-details",
+      "section": "why",
+      "statement": {
+        "zh": "三种方法对应不同威胁模型与验证强度。Clear 只需代表抽样；Purge 要全量读取；Destruct 只能物理检查。把验证强度和方法混在一起，会出现“做了 Clear 却按 Purge 宣称”的过度承诺。密码擦除（CE）走另一条路径：数据仍以密文留在介质上，但媒体加密密钥被销毁；没有密钥，残留密文不可解。",
+        "en": "The three methods map to different threat models and verification strengths.Clear needs representative sampling; Purge needs a full read; Destruct needs physical inspection."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee2883-r139-used",
+      "entryId": "ieee2883-details",
+      "section": "used",
+      "statement": {
+        "zh": "数据生命周期先选方法：复用/转售可选 Purge 以保留介质价值；报废可选 Destruct；低敏临时清理可选 Clear，但要接受抽样验证的检测概率。Clear 抽样至少覆盖 5% 可寻址空间，或每 10,000 等分子区取 2 点并加首尾；Purge 读全可寻址空间；CE 要保留密钥销毁、密钥层级与访问控制证据；Destruct 保留物理检查记录。",
+        "en": "The data lifecycle first chooses a method: reuse/resale may use Purge to retain media value; disposal may use Destruct; low-sensitivity temporary cleanup may use Clear but accepts the detection probability of sampling.Clear samples at least 5% of addressable space, or two points per 10,000 equal subsections plus first/last; Purge reads the whole addressable space; CE keeps key-destruction, key-hierarchy and access-control evidence; Destruct keeps physical-inspection records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee2883-r139-broken",
+      "entryId": "ieee2883-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误包括：把 Clear 当 Purge；把一次覆写当对所有介质都有效；忽略 SSD 磨损均衡、预留区和坏块导致的可寻址范围之外残留；把 5% 抽样通过当成“数据必然不可恢复”。CE 也不自动安全：密钥是否真销毁、是否有备份密钥、密钥管理是否可审计，决定 CE 是否成立。标准给方法与验证，不给具体产品的合规证书。### 形式模型。",
+        "en": "Common errors include: treating Clear as Purge; treating one overwrite as effective on all media; ignoring SSD wear levelling, over-provisioning and bad blocks outside the addressable range; treating a 5% sample pass as proof of unrecoverability.CE is not automatically safe: whether the key is truly destroyed, whether backup keys exist and whether key management is auditable decide whether CE holds."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee2883-r139-history",
+      "entryId": "ieee2883-details",
+      "section": "history",
+      "statement": {
+        "zh": "IEEE 2883-2022 于 2022-06-16 董事会批准、2022-08-17 发布，是存储净化从零散覆写指南走向方法/介质/接口分层标准的节点。IEEE 2883.1-2025 于 2025-02-12 批准、2025-06-19 发布，补充 Clear/Purge/Destruct 在复用、转售、报废和循环经济中的选择与证据要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：存储净化的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "IEEE 2883-2022 was approved by the IEEE SA Board on 2022-06-16 and published on 2022-08-17, marking the shift from scattered overwrite guides to a method/media/interface standard.IEEE 2883.1-2025 was approved on 2025-02-12 and published on 2025-06-19, adding method selection and evidence for reuse, resale, disposal and the circular economy."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee2883-r139-refs",
+      "entryId": "ieee2883-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 存储净化.https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%87%80%E5%8C%96\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 存储净化.https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%87%80%E5%8C%96\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ieee2883-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

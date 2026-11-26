@@ -1,0 +1,62 @@
+[
+  {
+    "id": "camellia-calc-spec-vectors",
+    "entryId": "camellia-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The three Appendix B vectors of the 2000 Camellia specification with 128-, 192- and 256-bit keys and the common plaintext 0123456789abcdeffedcba9876543210",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns 0123456789abcdeffedcba9876543210; the 128-bit key uses 18 rounds with 4 kw, 18 k and 4 ke subkeys, and the 192/256-bit keys use 24 rounds with 4 kw, 24 k and 6 ke subkeys",
+    "sourceIds": [
+      "camellia-spec-2000"
+    ],
+    "dependencies": [
+      "camellia-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Three fixed vectors; they cover all three key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+  },
+  {
+    "id": "camellia-calc-key-schedule",
+    "entryId": "camellia-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The KL/KR definitions for the three key lengths, the 192-bit complement construction, and the KA/KB, kw, k and ke values computed for the 128-bit test key",
+    "expected": "128-bit KL=0123456789abcdeffedcba9876543210 and KR=0; 192-bit KR=0011223344556677ffeeddccbbaa9988; 256-bit KR=00112233445566778899aabbccddeeff; 128-bit KA=ae71c3d55ba6bf1d169240a795f89256 and KB=6408e232ac24708fcc3a213a704bd393; sample kw1..kw4, k1..k4, k17, k18 and ke1..ke4 as recorded in vectors.json; the decryption schedule reverses kw, k and ke",
+    "sourceIds": [
+      "camellia-spec-2000"
+    ],
+    "dependencies": [
+      "camellia-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "One published key length (128 bits) is checked against recorded computed samples; the 192/256-bit values are checked by their vectors and structural properties, not by published intermediate subkeys."
+  },
+  {
+    "id": "camellia-calc-sboxes-fl",
+    "entryId": "camellia-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Tables 4-7 of the 2000 specification, the derived s2/s3/s4 definitions, and deterministic samples for S, P, F, FL and FL^-1",
+    "expected": "All four tables have 256 entries; s2(x)=s1(x)<<<1, s3(x)=s1(x)<<<7 and s4(x)=s1(x<<<1) reproduce all 256 entries of Tables 5-7; s1[0x3d]=86; S(0123456789abcdef)=821f66b4b6f9daa4, P(0123456789abcdef)=aaeeaaeeabcdef89 and F(0123456789abcdef,0)=d7e110581ab139a3; FL(0123456789abcdef,fedcba9876543210)=fedcba9889abcdef and FL^-1 returns the input for all 256 deterministic samples",
+    "sourceIds": [
+      "camellia-spec-2000"
+    ],
+    "dependencies": [
+      "camellia-teaching.mjs",
+      "sboxes.json",
+      "vectors.json"
+    ],
+    "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+  },
+  {
+    "id": "camellia-calc-roundtrip",
+    "entryId": "camellia-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Three key lengths times eight deterministic plaintext patterns, including the official plaintext, with fixed test keys",
+    "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the 128-, 192- and 256-bit keys produce distinct schedules; and the 192- and 256-bit test keys, which share the left 128 bits, produce different KA and KB values",
+    "sourceIds": [
+      "camellia-spec-2000"
+    ],
+    "dependencies": [
+      "camellia-teaching.mjs"
+    ],
+    "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

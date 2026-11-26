@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for ffdhe: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ffdhe-details",
+      "inventoryIds": [
+        "ffdhe"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释FFDHE 有限域 Diffie-Hellman 临时密钥交换的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Finite Field Diffie-Hellman Ephemeral (FFDHE): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "FFDHE 有限域 Diffie-Hellman 临时密钥交换",
+        "en": "Finite Field Diffie-Hellman Ephemeral (FFDHE)"
+      },
+      "claimIds": [
+        "ffdhe-r139-principle",
+        "ffdhe-r139-why",
+        "ffdhe-r139-used",
+        "ffdhe-r139-broken",
+        "ffdhe-r139-history",
+        "ffdhe-r139-refs"
+      ],
+      "sourceIds": [
+        "ffdhe-wikipedia",
+        "ffdhe-reference-ref"
+      ],
+      "related": [
+        "rfc7919",
+        "attack--logjam",
+        "algorithm--dh-ephemeral"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：FFDHE 有限域 DH（Finite Field Diffie-Hellman Ephemeral）。§1 首句给出被扩展的既有机制：「Traditional TLS [RFC5246] offers a Diffie-Hellman Ephemeral (DHE) key exchange mode that provides forward secrecy for the connection.」FFDHE 即在有限域上做临时 Diffie-Hellman，并为连接提供前向保密。§1.2 界定了术语归属（原文将 DHE/FFDHE 加了 ASCII 引号，此处不引那段），该条目原理据上句即可：密钥交换双方各取临时私钥，据商定的有限域群参数算出共享秘密，且该临时性带来前向保密。",
+          "why": "摘要给出缺口：「Traditional finite-field-based Diffie-Hellman (DH) key exchange during the Transport Layer Security (TLS) handshake suffers from a number of security, interoperability, and efficiency shortcomings.」并把根因归到参数不清：「These shortcomings arise from lack of clarity about which DH group parameters TLS servers should offer and clients should accept.」§2 另解释所定义群的构造理由——群模数取自自然对数的底以保证中段比特无秘密可疑结构：「The goal is to guarantee that the bits in the middle of the modulus are effectively random, while avoiding any suspicion that the primes have secretly been selected to be weak according to some secret criteria.」于是本文的动机有二：把`该提供/接受哪些群`变成可协商的命名群，并让群参数有可核查的无特殊结构来源。",
+          "used": "动作与力度分处三节，措辞层级各异。§2 的扩展发送是 MAY：「This extension MAY be sent by the client when either FFDHE or ECDHE cipher suites are listed.」§4 的服务端约束是 MUST NOT：「A TLS server MUST NOT select a named FFDHE group that was not offered by a compatible client.」§8.2 的强度考量则落在 should：「TLS implementations using FFDHE key exchange should consider the strength of the group they negotiate.」三句合起来是使用面貌：客户端可用 Supported Groups 扩展宣告其愿协商的命名 FFDHE 群，服务端只能在该列表内选定，且实现者应据所需机密性斟酌群强度。may、MUST NOT、should 在此不可互换，该条目按各自印出的力度记录。",
+          "broken": "限度有三条。§8.3 先划范围（并非弱点，而是适用面）：「Note that this document specifically targets only finite field Diffie-Hellman ephemeral key exchange mechanisms.」并给出相对短板：「Measured by computational cost to the TLS peers, ECDHE appears today to offer a much stronger key exchange mechanism than FFDHE.」——按计算代价衡量，ECDHE 目前比 FFDHE 更强。§8.4 记未来失效：「Advances in hardware or in finite field cryptanalysis may cause some of the negotiated groups to not provide the desired security margins」——硬件或密码分析进步可能使某些群不再够用，且「Revisions of this document should mark known weak groups as explicitly deprecated for use in TLS」——已知弱群应由修订版明确标记为弃用。于是被承认的脆弱是相对 ECDHE 的效率劣势与群随时间贬值，而本文件把弃用判定留给 should 级的后续修订。",
+          "history": "门面板块印明身份与力度：标题行 Negotiated Finite Field Diffie-Hellman Ephemeral Parameters for Transport Layer Security (TLS)，作者行 D.Gillmor，头部印 Request for Comments: 7919、Category: Standards Track、Updates: 2246, 4346, 4492, 5246 与日期 August 2016（这些头部行复述于引号外）。其 Status of This Memo 首句为：「This is an Internet Standards Track document.」摘要末句交代更新关系：「This document updates TLS versions 1.0 (RFC 2246), 1.1 (RFC 4346), and 1.2 (RFC 5246), as well as the TLS Elliptic Curve Cryptography (ECC) extensions (RFC 4492).」两句均在 Abstract/Status 块内。据此，本文件是标准轨、并显式更新上述 TLS 与 ECC 扩展文档。",
+          "refs": "- Wikipedia search entry for FFDHE 有限域 DH. https://zh.wikipedia.org/w/index.php?search=FFDHE%20%E6%9C%89%E9%99%90%E5%9F%9F%20DH\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G\\]\n\nFFDHE 有限域 DH的公开参数、密钥/随机数与消息；变量说明：a,b 私有随机数，g 生成元，p 模数，G 椭圆曲线基点。1.双方各自生成私钥并计算公钥。2.交换公钥。3.用对方公钥与自己的私钥计算共享点。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Finite Field Diffie-Hellman Ephemeral (FFDHE 有限域 DH). The opening sentence of §1 gives the mechanism being extended: \"Traditional TLS [RFC5246] offers a Diffie-Hellman Ephemeral (DHE) key exchange mode that provides forward secrecy for the connection.\" FFDHE is Diffie-Hellman performed over a finite field in ephemeral mode, giving the connection forward secrecy. Section 1.2 assigns the vocabulary (that sentence ASCII-quotes DHE and FFDHE and is not quoted here), so the principle rests on the sentence above: each party takes an ephemeral private key, computes a shared secret over agreed finite-field group parameters, and that ephemerality is what yields forward secrecy.",
+          "why": "The abstract gives the gap: \"Traditional finite-field-based Diffie-Hellman (DH) key exchange during the Transport Layer Security (TLS) handshake suffers from a number of security, interoperability, and efficiency shortcomings.\" and lays the root cause on unclear parameters: \"These shortcomings arise from lack of clarity about which DH group parameters TLS servers should offer and clients should accept.\" Section 2 explains why the defined groups are built the way they are, deriving the modulus from the base of the natural logarithm so its middle bits carry no secretly chosen structure: \"The goal is to guarantee that the bits in the middle of the modulus are effectively random, while avoiding any suspicion that the primes have secretly been selected to be weak according to some secret criteria.\" The motive is therefore twofold: turn which groups to offer and accept into negotiable named groups, and give the group parameters a checkable nothing-up-my-sleeve origin.",
+          "used": "The actions and their strengths sit in three sections at different wording levels. The extension-sending in §2 is MAY: \"This extension MAY be sent by the client when either FFDHE or ECDHE cipher suites are listed.\" The server rule in §4 is MUST NOT: \"A TLS server MUST NOT select a named FFDHE group that was not offered by a compatible client.\" The strength guidance in §8.2 is should: \"TLS implementations using FFDHE key exchange should consider the strength of the group they negotiate.\" Together these give the picture of use: a client may advertise the named FFDHE groups it is willing to negotiate via the Supported Groups extension, the server may only pick from that list, and implementers should weigh group strength against their confidentiality needs. may, MUST NOT and should are not interchangeable here and are recorded at their printed levels.",
+          "broken": "There are three limits. Section 8.3 first draws the scope (a boundary, not a weakness): \"Note that this document specifically targets only finite field Diffie-Hellman ephemeral key exchange mechanisms.\" and then a relative shortfall: \"Measured by computational cost to the TLS peers, ECDHE appears today to offer a much stronger key exchange mechanism than FFDHE.\" by computational cost, ECDHE is today stronger than FFDHE. Section 8.4 records future decay: \"Advances in hardware or in finite field cryptanalysis may cause some of the negotiated groups to not provide the desired security margins\" hardware or cryptanalysis may leave some groups short, and \"Revisions of this document should mark known weak groups as explicitly deprecated for use in TLS\" known-weak groups are to be marked deprecated by a future revision. So the acknowledged fragility is a per-bit efficiency disadvantage against ECDHE and group value eroding over time, with the deprecation decision left to a should-level revision.",
+          "history": "The front matter prints identity and strength: the title line Negotiated Finite Field Diffie-Hellman Ephemeral Parameters for Transport Layer Security (TLS), the author line D. Gillmor, and the header Request for Comments: 7919, Category: Standards Track, Updates: 2246, 4346, 4492, 5246, and the date August 2016 (header lines stated outside the quotes). The first Status sentence is \"This is an Internet Standards Track document.\" and the last abstract sentence gives the update relation: \"This document updates TLS versions 1.0 (RFC 2246), 1.1 (RFC 4346), and 1.2 (RFC 5246), as well as the TLS Elliptic Curve Cryptography (ECC) extensions (RFC 4492).\" both reported inside the Abstract/Status block. On this the file is standards-track and explicitly updates the TLS and ECC-extension documents named there.",
+          "refs": "- Wikipedia search entry for FFDHE 有限域 DH. https://zh.wikipedia.org/w/index.php?search=FFDHE%20%E6%9C%89%E9%99%90%E5%9F%9F%20DH\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G\\]\n\nFinite Field Diffie-Hellman Ephemeral: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Diffie-Hellman Ephemeral (DHE)：双方各用一次性私钥的有限域密钥交换，提供前向保密。",
+          "Supported Groups extension：客户端用于宣告可协商群列表的 TLS 扩展（原名 elliptic_curves）。",
+          "named group：文档内为 FFDHE 预留代码点区间、按强度命名（如 ffdhe2048）的有限域群。",
+          "safe prime：本文件群的构造前提，高 64 位与低 64 位置 1 以便高效归约。",
+          "nothing-up-my-sleeve：以自然对数的底导出模数、以排除秘密挑弱素数的构造方式。",
+          "deprecated group：§8.4 规定应由未来修订显式标记为弃用的弱有限域群。"
+        ],
+        "en": [
+          "Diffie-Hellman Ephemeral (DHE): finite-field key exchange in which each side uses a one-time private key, giving forward secrecy.",
+          "Supported Groups extension: the TLS extension a client uses to advertise its list of negotiable groups (formerly elliptic_curves).",
+          "Named group: a finite-field group reserved under FFDHE codepoints and named by strength (e.g. ffdhe2048).",
+          "Safe prime: the construction premise for this file's groups, with the high and low 64 bits set to 1 for efficient reduction.",
+          "Nothing-up-my-sleeve: deriving the modulus from the base of the natural logarithm to rule out secretly weak prime selection.",
+          "Deprecated group: a weak finite-field group that §8.4 says a future revision should mark deprecated."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ffdhe-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "FFDHE 有限域 Diffie-Hellman 临时密钥交换：为什么需要 → 核心机制 → 边界。",
+            "en": "Finite Field Diffie-Hellman Ephemeral (FFDHE): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "FFDHE 有限域 Diffie-Hellman 临时密钥交换 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Finite Field Diffie-Hellman Ephemeral (FFDHE), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ffdhe-details-flow.zh.svg",
+            "en": "assets/ffdhe-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3322749b68096bbbd880823f3e037d1d53e5475760c072e42b9343311ebdc68d",
+            "en": "2b9b87188d8f390b59b40bd7f35b12ff56bb1e1c2e7a1ed814a12d34775f4e13"
+          }
+        },
+        {
+          "id": "ffdhe-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "FFDHE 有限域 Diffie-Hellman 临时密钥交换 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Finite Field Diffie-Hellman Ephemeral (FFDHE): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "FFDHE 有限域 Diffie-Hellman 临时密钥交换 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Finite Field Diffie-Hellman Ephemeral (FFDHE), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ffdhe-details-r138-model.zh.svg",
+            "en": "assets/ffdhe-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9c0009963c8554da09de0355477b9015f2fbc5d25b0df0a9741bf550a4b701db",
+            "en": "35acd0d0c04c9cfcc5442cb2157b9508d09b2d5242d9c72bc1cc4be3e684831f"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ffdhe-r139-formal",
+          "entryId": "ffdhe-details",
+          "kind": "formal-model",
+          "formula": "K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G",
+          "inputs": "输入：FFDHE 有限域 DH的公开参数、密钥/随机数与消息；变量说明：a,b 私有随机数，g 生成元，p 模数，G 椭圆曲线基点。",
+          "expected": "按 FFDHE 有限域 DH 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "双方各自生成私钥并计算公钥",
+            "交换公钥",
+            "用对方公钥与自己的私钥计算共享点"
+          ],
+          "sourceIds": [
+            "ffdhe-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ffdhe-r139-formal"
+      ],
+      "sources": [
+        "ffdhe-wikipedia",
+        "ffdhe-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ffdhe-r139-formal",
+      "entryId": "ffdhe-details",
+      "kind": "formal-model",
+      "formula": "K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G",
+      "inputs": "输入：FFDHE 有限域 DH的公开参数、密钥/随机数与消息；变量说明：a,b 私有随机数，g 生成元，p 模数，G 椭圆曲线基点。",
+      "expected": "按 FFDHE 有限域 DH 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "双方各自生成私钥并计算公钥",
+        "交换公钥",
+        "用对方公钥与自己的私钥计算共享点"
+      ],
+      "sourceIds": [
+        "ffdhe-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

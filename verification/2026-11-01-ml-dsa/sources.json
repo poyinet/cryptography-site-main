@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ml-dsa-details",
+  "sources": [
+    {
+      "id": "ml-dsa-wikipedia",
+      "title": "Wikipedia search entry for ML-DSA 格基签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ML-DSA%20%E6%A0%BC%E5%9F%BA%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ML-DSA 格基签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ml-dsa-r139-principle",
+          "entryId": "ml-dsa-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ML-DSA 格基签名（Module-Lattice-Based Digital Signature Standard）。FIPS 204（2024 年 8 月 13 日发布）说明「ML-DSA is a digital signature scheme based on CRYSTALS-DILITHIUM」。§6.1 给出公钥 pk 是公开随机种子与压缩多项式向量 t1 的字节编码：t1 由未压缩公钥多项式 t 的每个系数丢弃最低 d 位得到，而 t = As1 + s2；同节给出私钥 sk 是公开随机种子、签名时使用的私有随机种子、公钥的 64 字节哈希、秘密多项式向量 s1 与 s2，以及编码 t 每个系数最低 d 位的多项式向量 t0 的字节编码；该节还指出实现可以只保存 32 字节种子再重建私钥其余部分。",
+            "en": "**Algorithm**: Module-Lattice-Based Digital Signature Standard (ML-DSA 格基签名).FIPS 204, published 13 August 2024, states: \"ML-DSA is a digital signature scheme based on CRYSTALS-DILITHIUM\"."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        },
+        {
+          "id": "ml-dsa-r139-why",
+          "entryId": "ml-dsa-details",
+          "section": "why",
+          "statement": {
+            "zh": "标准写明「The ML-DSA scheme uses the Fiat-Shamir With Aborts construction」。为纠正偏差，the signer applies rejection sampling to z; if coefficients of z fall outside of a specified range, the signing process is aborted，签名的主要部分就是这样一个拒绝采样循环，每轮要么产出有效签名，要么产出「an invalid signature whose release would leak information about the private key」；§3.3 还说明为保证正确性必须加入第二阶段拒绝采样（算法 7 的第 28 行）。",
+            "en": "The standard says \"The ML-DSA scheme uses the Fiat-Shamir With Aborts construction\".To correct a bias, the signer applies rejection sampling to z; if coefficients of z fall outside of a specified range, the signing process is aborted, so signing is largely a rejection-sampling loop whose iterations either produce a valid signature or \"an invalid signature whose release would leak information about the private key\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        },
+        {
+          "id": "ml-dsa-r139-used",
+          "entryId": "ml-dsa-details",
+          "section": "used",
+          "statement": {
+            "zh": "参数集缩写为 ML-DSA-44、ML-DSA-65 与 ML-DSA-87，the numerical suffix refers to the dimension of the matrix A，例如 ML-DSA-65 的 A 是 6×5 矩阵；三者分别声称处于安全强度类别 2、3、5。",
+            "en": "The parameter sets are ML-DSA-44, ML-DSA-65 and ML-DSA-87, where the numerical suffix refers to the dimension of the matrix A — for ML-DSA-65 the matrix A is 6 by 5 — and the three are claimed to be in security strength categories 2, 3 and 5.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        },
+        {
+          "id": "ml-dsa-r139-broken",
+          "entryId": "ml-dsa-details",
+          "section": "broken",
+          "statement": {
+            "zh": "签名随机性是主要失效点：For ML-DSA to be secure, the signer's commitment value y must not be used to sign more than one message, and it must not be easily guessed by an attacker.This requires randomness.标准指出新鲜随机有助于缓解侧信道攻击，而确定性变体「the lack of randomness in the deterministic variant makes the risk of side-channel attacks (particularly fault attacks) more difficult to mitigate.Therefore, this variant should not be used on platforms where side-channel attacks are a concern and where they cannot be otherwise mitigated」。§3.6.1 还说明若随机数发生器只有至少 128 位但低于 192 位的安全强度，ML-DSA-44 的声称类别从 2 降为 1。",
+            "en": "Signing randomness is the main failure point: for ML-DSA to be secure, the signer's commitment value y must not be used to sign more than one message, and it must not be easily guessed by an attacker.This requires randomness."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        },
+        {
+          "id": "ml-dsa-r139-history",
+          "entryId": "ml-dsa-details",
+          "section": "history",
+          "statement": {
+            "zh": "NIST IR 8547（2026 年 10 月）记录 FIPS 204 与 205 各规定量子抗性数字签名方案，并在 §2.1.1 说明 ML-DSA 源自 CRYSTALS-Dilithium 提交；§4 的时间线要求政府最高敏感系统在 2030 年 12 月 31 日前完成密钥建立的后量子迁移，并在 2031 年 12 月 31 日前为数字签名采用后量子密码。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：ML-DSA 格基签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "NIST IR 8547 (October 2026) records that FIPS 204 and 205 each specify a quantum-resistant digital signature scheme, with ML-DSA in §2.1.1 derived from the CRYSTALS-Dilithium submission, and its §4 timeline requires the government's most sensitive systems to complete post-quantum key establishment by 31 December 2030 and to adopt post-quantum digital signatures by 31 December 2031."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        },
+        {
+          "id": "ml-dsa-r139-refs",
+          "entryId": "ml-dsa-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ML-DSA 格基签名.https://zh.wikipedia.org/w/index.php?search=ML-DSA%20%E6%A0%BC%E5%9F%BA%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- NIST FIPS 204: ML-DSA.https://csrc.nist.gov/pubs/fips/204/final。",
+            "en": "- Wikipedia search entry for ML-DSA 格基签名.https://zh.wikipedia.org/w/index.php?search=ML-DSA%20%E6%A0%BC%E5%9F%BA%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ml-dsa-reference-ref",
+            "ml-dsa-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "ml-dsa-wikipedia"
+      ]
+    },
+    {
+      "id": "ml-dsa-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ml-dsa-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "ml-dsa-specific",
+      "title": "NIST FIPS 204: ML-DSA",
+      "url": "https://csrc.nist.gov/pubs/fips/204/final",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ml-dsa-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ml-dsa-r139-principle",
+      "entryId": "ml-dsa-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ML-DSA 格基签名（Module-Lattice-Based Digital Signature Standard）。FIPS 204（2024 年 8 月 13 日发布）说明「ML-DSA is a digital signature scheme based on CRYSTALS-DILITHIUM」。§6.1 给出公钥 pk 是公开随机种子与压缩多项式向量 t1 的字节编码：t1 由未压缩公钥多项式 t 的每个系数丢弃最低 d 位得到，而 t = As1 + s2；同节给出私钥 sk 是公开随机种子、签名时使用的私有随机种子、公钥的 64 字节哈希、秘密多项式向量 s1 与 s2，以及编码 t 每个系数最低 d 位的多项式向量 t0 的字节编码；该节还指出实现可以只保存 32 字节种子再重建私钥其余部分。",
+        "en": "**Algorithm**: Module-Lattice-Based Digital Signature Standard (ML-DSA 格基签名).FIPS 204, published 13 August 2024, states: \"ML-DSA is a digital signature scheme based on CRYSTALS-DILITHIUM\"."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    },
+    {
+      "id": "ml-dsa-r139-why",
+      "entryId": "ml-dsa-details",
+      "section": "why",
+      "statement": {
+        "zh": "标准写明「The ML-DSA scheme uses the Fiat-Shamir With Aborts construction」。为纠正偏差，the signer applies rejection sampling to z; if coefficients of z fall outside of a specified range, the signing process is aborted，签名的主要部分就是这样一个拒绝采样循环，每轮要么产出有效签名，要么产出「an invalid signature whose release would leak information about the private key」；§3.3 还说明为保证正确性必须加入第二阶段拒绝采样（算法 7 的第 28 行）。",
+        "en": "The standard says \"The ML-DSA scheme uses the Fiat-Shamir With Aborts construction\".To correct a bias, the signer applies rejection sampling to z; if coefficients of z fall outside of a specified range, the signing process is aborted, so signing is largely a rejection-sampling loop whose iterations either produce a valid signature or \"an invalid signature whose release would leak information about the private key\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    },
+    {
+      "id": "ml-dsa-r139-used",
+      "entryId": "ml-dsa-details",
+      "section": "used",
+      "statement": {
+        "zh": "参数集缩写为 ML-DSA-44、ML-DSA-65 与 ML-DSA-87，the numerical suffix refers to the dimension of the matrix A，例如 ML-DSA-65 的 A 是 6×5 矩阵；三者分别声称处于安全强度类别 2、3、5。",
+        "en": "The parameter sets are ML-DSA-44, ML-DSA-65 and ML-DSA-87, where the numerical suffix refers to the dimension of the matrix A — for ML-DSA-65 the matrix A is 6 by 5 — and the three are claimed to be in security strength categories 2, 3 and 5.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    },
+    {
+      "id": "ml-dsa-r139-broken",
+      "entryId": "ml-dsa-details",
+      "section": "broken",
+      "statement": {
+        "zh": "签名随机性是主要失效点：For ML-DSA to be secure, the signer's commitment value y must not be used to sign more than one message, and it must not be easily guessed by an attacker.This requires randomness.标准指出新鲜随机有助于缓解侧信道攻击，而确定性变体「the lack of randomness in the deterministic variant makes the risk of side-channel attacks (particularly fault attacks) more difficult to mitigate.Therefore, this variant should not be used on platforms where side-channel attacks are a concern and where they cannot be otherwise mitigated」。§3.6.1 还说明若随机数发生器只有至少 128 位但低于 192 位的安全强度，ML-DSA-44 的声称类别从 2 降为 1。",
+        "en": "Signing randomness is the main failure point: for ML-DSA to be secure, the signer's commitment value y must not be used to sign more than one message, and it must not be easily guessed by an attacker.This requires randomness."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    },
+    {
+      "id": "ml-dsa-r139-history",
+      "entryId": "ml-dsa-details",
+      "section": "history",
+      "statement": {
+        "zh": "NIST IR 8547（2026 年 10 月）记录 FIPS 204 与 205 各规定量子抗性数字签名方案，并在 §2.1.1 说明 ML-DSA 源自 CRYSTALS-Dilithium 提交；§4 的时间线要求政府最高敏感系统在 2030 年 12 月 31 日前完成密钥建立的后量子迁移，并在 2031 年 12 月 31 日前为数字签名采用后量子密码。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：ML-DSA 格基签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "NIST IR 8547 (October 2026) records that FIPS 204 and 205 each specify a quantum-resistant digital signature scheme, with ML-DSA in §2.1.1 derived from the CRYSTALS-Dilithium submission, and its §4 timeline requires the government's most sensitive systems to complete post-quantum key establishment by 31 December 2030 and to adopt post-quantum digital signatures by 31 December 2031."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    },
+    {
+      "id": "ml-dsa-r139-refs",
+      "entryId": "ml-dsa-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ML-DSA 格基签名.https://zh.wikipedia.org/w/index.php?search=ML-DSA%20%E6%A0%BC%E5%9F%BA%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- NIST FIPS 204: ML-DSA.https://csrc.nist.gov/pubs/fips/204/final。",
+        "en": "- Wikipedia search entry for ML-DSA 格基签名.https://zh.wikipedia.org/w/index.php?search=ML-DSA%20%E6%A0%BC%E5%9F%BA%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ml-dsa-reference-ref",
+        "ml-dsa-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

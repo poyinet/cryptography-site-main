@@ -1,0 +1,63 @@
+[
+  {
+    "id": "rc6-calc-submission-vectors",
+    "entryId": "rc6-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The six RC6 AES submission Appendix vectors covering 128-, 192- and 256-bit keys with zero and non-zero plaintexts",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the zero-key schedule sample S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83 also matches",
+    "sourceIds": [
+      "rc6-submission"
+    ],
+    "dependencies": [
+      "rc6-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Six fixed vectors; they cover all key lengths but only two plaintexts, and a match does not prove resistance to cryptanalysis."
+  },
+  {
+    "id": "rc6-calc-key-schedule",
+    "entryId": "rc6-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 128-bit all-zero key, P=0xb7e15163, Q=0x9e3779b9 and the 44-word S array",
+    "expected": "The schedule has 44 S words; P=0xb7e15163, Q=0x9e3779b9 and the initial S[1]=P+Q=0x5618cb1c; the mixed zero-key S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83; the 128-bit zero key produces four L words; all six submission vectors reproduce after the schedule",
+    "sourceIds": [
+      "rc6-submission"
+    ],
+    "dependencies": [
+      "rc6-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The mixed S values for the zero key are computed, not published; the key schedule is verified through the six ciphertexts and the published P/Q rule."
+  },
+  {
+    "id": "rc6-calc-draft-vector",
+    "entryId": "rc6-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The draft-krovetz-rc6-rc5-vectors-00 RC6-32/20/16 vector with key and plaintext 000102030405060708090a0b0c0d0e0f",
+    "expected": "The ciphertext is 3a96f9c7f6755cfe46f00e3dcd5d2a3c and decryption returns the plaintext",
+    "sourceIds": [
+      "rc6-submission",
+      "rc6-vectors-draft"
+    ],
+    "dependencies": [
+      "rc6-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "One independent vector from an IETF draft, not a standard; it cross-checks but does not replace the six submission vectors."
+  },
+  {
+    "id": "rc6-calc-roundtrip",
+    "entryId": "rc6-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Three zero keys (128, 192 and 256 bits) times eight deterministic plaintext patterns",
+    "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce distinct schedules",
+    "sourceIds": [
+      "rc6-submission"
+    ],
+    "dependencies": [
+      "rc6-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

@@ -1,0 +1,210 @@
+{
+  "results": [
+    {
+      "id": "sha2-calc-rfc-suite",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "RFC 6234's SHA-224, SHA-256, SHA-384 and SHA-512 test vectors (abc, the 56-/112-byte strings and one million 'a'), plus the SHA-512/224 and SHA-512/256 abc vectors generated with the FIPS 180-4 IVs, stored in vectors.json",
+      "expected": "The teaching implementation reproduces every stored digest exactly, including SHA-256(abc)=ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad, SHA-512(abc)=ddaf35a1…, SHA-512/224(abc)=4634270f… and SHA-512/256(abc)=53048e26…",
+      "observed": {
+        "id": "sha2-calc-rfc-suite",
+        "passed": true,
+        "rfcVectors": 12,
+        "oracleVariants": 2,
+        "sha256Abc": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "sha512Abc": "ddaf35a193617abacc417349ae20413112e6fa4e89a97ea20a9eeee64b55d39a2192992a274fc1a836ba3c23a3feebbd454d4423643ce80e2a9ac94fa54ca49f",
+        "limit": "Conformance vectors only; the SHA-512/224 and SHA-512/256 abc values are implementation checks generated from the FIPS IVs."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-calc-abc-trace",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "The SHA-256 single-block computation of abc: block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first four round traces, the registers after rounds 16/32/48/64, the feed-forward values and the final digest stored in vectors.json",
+      "expected": "The block words are derived from pad(abc); W16=0x61626380, W17=0x000f0000, W18=0x7da86405, W19=0x600003c6; the first step has T1=0x54da50e8, T2=0x08909ae5 and a=0x5d6aebcd; the group registers and feed-forward values match the implementation; the digest is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "observed": {
+        "id": "sha2-calc-abc-trace",
+        "passed": true,
+        "groups": 4,
+        "roundsPerBlock": 64,
+        "digest": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "limit": "One single-block trace; the per-group intermediates come from the teaching implementation itself."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-calc-crosscheck",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "70 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA-224/256/384/512/512-224/512-256): empty and abc for each variant, 32-bit boundary lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, and 64-bit boundary lengths 111, 112, 113, 127, 128, 129, 239, 240 and 241",
+      "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all block-boundary lengths",
+      "observed": {
+        "id": "sha2-calc-crosscheck",
+        "passed": true,
+        "cases": 70,
+        "variants": 6,
+        "systemOracleCases": 70,
+        "limit": "Conformance agreement with the system SHA-2 in Node (OpenSSL), not security."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-calc-structure",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "The six IVs; the 64 32-bit and 80 64-bit constants; the message schedule; padding boundaries for 512/1024-bit blocks; the SHA-512/t IV generation; negative controls for little-endian parsing, missing feed-forward and a rotated constant table; the published code block; and the article hex vectors",
+      "expected": "The IVs and constants match the FIPS values generated from square/cube roots of primes; the SHA-512/t IVs match the FIPS 180-4 values; padding boundaries map correctly; the negative controls fail to reproduce the RFC digest; the article's js code block is a substring of sha2-teaching.mjs; the Chinese and English articles expose the same 100 hex-token set",
+      "observed": {
+        "id": "sha2-calc-structure",
+        "passed": true,
+        "ivs": 6,
+        "k256": 64,
+        "k512": 80,
+        "paddingBoundaries": 18,
+        "negativeControls": 3,
+        "articleHexVectors": 97,
+        "articleHexParity": true,
+        "articleCodeMatchesImplementation": true,
+        "limit": "Structural invariants and negative controls only; they prove nothing about security."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-calc-hmac",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "Four RFC 4231 HMAC-SHA-2 test cases: the Hi There and Jefe cases for HMAC-SHA-256 and HMAC-SHA-512, stored in vectors.json",
+      "expected": "The teaching hmacSha2 reproduces all four RFC 4231 digests, including HMAC-SHA-256(Jefe)=5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843 and HMAC-SHA-512(Jefe)=164b7a7b…",
+      "observed": {
+        "id": "sha2-calc-hmac",
+        "passed": true,
+        "cases": 4,
+        "variants": 2,
+        "limit": "Four HMAC-SHA-2 conformance vectors; not a security proof for any protocol."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-calc-length-extension",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "The SHA-256 digest of abc, the 64-byte padded length, and the suffix \"extra\"; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+      "expected": "The state-based extension equals the direct SHA-256 of the 69-byte extended message: f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4; the demo shows length extension, not a collision",
+      "observed": {
+        "id": "sha2-calc-length-extension",
+        "passed": true,
+        "original": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+        "suffix": "extra",
+        "extended": "f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4",
+        "limit": "One structural length-extension demonstration on SHA-256; not a collision or a key-recovery attack."
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:13:34.535Z"
+    },
+    {
+      "id": "sha2-r139-formal",
+      "entryId": "sha2-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "e14029caaf6be23b62b294fb09525081ab44af5a33f5bef7698c55bf33e81fec",
+      "dependencyHashes": {
+        "sha2-teaching.mjs": "28132d775ae3b3e8e25fdba3e7b719017d89a360ebcdd2a4c357abb4782c36c1",
+        "vectors.json": "822ea1cf740a68ed60829cd81a28d0991b8767fe4976a41c23221bb55a458874",
+        "article.zh.md": "9c6a4d2afc058d488131d2b5e5e9b88074a67385cecab59619bf10c66c753710",
+        "article.en.md": "25b9cc8567c6a1da5e2829bafb8c251177470625819cd9818240387e559ae0fc",
+        "meta.json": "17439bd94e42f9458025be455df7f66ae34176a124f98e6fa8d83264c807f094",
+        "glossary.json": "147a6e000716a6fcd566850de3fe5705b0890b83ef564aca59a59879cfbfecd0",
+        "calculations.json": "2c128e32ab2c9414d4b8c1eaafe74a5017c83e0f88ec3728b7eb20a4524ba5eb"
+      },
+      "inputs": "SHA-2 散列家族 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "sha2-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}"
+      },
+      "contentSha256": "710556a93cd288017055d07fd200bb3f3cab06049ae542f973f57a5eba143acb",
+      "sourcesSha256": "e0f901c036b0f6ba768bfdd820793225ac03c7b8d0f5f27cab95f87896d88a46",
+      "executedOn": "2026-11-25T07:30:10.440Z"
+    }
+  ]
+}

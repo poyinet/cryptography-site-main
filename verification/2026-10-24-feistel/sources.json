@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "feistel-details",
+  "sources": [
+    {
+      "id": "feistel-network-wikipedia",
+      "title": "Wikipedia search entry for 费斯妥网络",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 费斯妥网络",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "feistel-network-r139-principle",
+          "entryId": "feistel-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：费斯妥网络（Feistel Network）。Feistel 网络把分组分成左右两半，重复应用同一个轮函数。设第 i−1 轮的状态为 (L_{i−1}, R_{i−1})，第 i 轮计算：\n\n`R_i = L_{i−1} ⊕ F(R_{i−1}, K_i)`\n\n其中 F 是轮函数，K_i 是该轮子密钥。做完 n 轮后，把左右两半交换，输出 (R_n, L_n)。交换不是装饰：它让解密可以使用同一套轮函数和相反顺序的子密钥。解密从 (R_n, L_n) 开始，反向执行：\n\n`L_{i−1} = R_i ⊕ F(L_i, K_i)`\n\n因此无论 F 是否可逆、是否一一映射，整个 Feistel 网络都可逆。这是它最重要的工程性质：设计者可以用一个非线性的、不可逆的 F，仍然得到一个可逆的分组密码。Feistel 网络可以是平衡的（两半等长，例如 DES 的 32+32 位）或不平衡的（两半长度不同）。轮数、F 的结构、子密钥调度和分组长度共同决定具体密码的安全性和性能；Feistel 只规定状态如何更新，不规定 F 必须是什么。与代换—置换网络（SPN）相比，Feistel 不需要为解密单独实现逆 S 盒和逆线性层。SPN 的每一步通常必须可逆，Feistel 只要求 F 确定；代价是每轮只更新一半状态，达到同等扩散通常需要更多轮。",
+            "en": "**Term**: Feistel Network.It is registered under symmetric block ciphers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        },
+        {
+          "id": "feistel-network-r139-why",
+          "entryId": "feistel-details",
+          "section": "why",
+          "statement": {
+            "zh": "Feistel 网络是一个把任意函数变成可逆置换的设计模式。它降低了分组密码的实现门槛：只要 F 能快速计算，加解密可以共享同一段代码，减少重复实现。DES 和 3DES/TDEA 都采用这一结构。它也是可证明安全理论的早期对象。该定理归给 Luby 与 Rackoff（1988 年）：在轮函数为伪随机函数的模型下，3 轮 Feistel 网络是伪随机置换，4 轮是强伪随机置换（可抵抗选择密文攻击）。本档只有 3 轮那一半可核——登记的 1988 条目没有留存正文，而 HAC 以“under suitable assumptions”转述该结论。这个结果说明轮数不是随便选的，但它依赖理想化模型，不能直接证明某个具体密码安全。理解 Feistel 也有助于区分结构性质和算法安全性。Feistel 保证可逆，不保证安全；安全取决于 F、子密钥、轮数、分组长度和攻击模型。",
+            "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        },
+        {
+          "id": "feistel-network-r139-used",
+          "entryId": "feistel-details",
+          "section": "used",
+          "statement": {
+            "zh": "DES 是最著名的平衡 Feistel 实例：64 位分组，左右各 32 位，16 轮，轮函数由扩展置换、与子密钥异或、S 盒和 P 置换组成。3DES/TDEA 按 E-D-E 顺序执行三次 DEA 运算，因而内部共有 48 个 DES 轮；它仍是 64 位分组。具体的轮函数和密钥调度属于 DES/TDEA 实体，本文不重复。Feistel 结构也出现在其他分组密码中，但它们的具体 F、轮数和分组长度不同；不能因为都是 Feistel 就认为它们有相同的安全边界。具体算法需要各自的证据和攻击分析。在教学中，Feistel 适合演示可逆性不要求轮函数可逆、状态机、扩散与轮数、以及结构与实例的区分。它不是一个可直接部署的密码，而是一个构造模板。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        },
+        {
+          "id": "feistel-network-r139-broken",
+          "entryId": "feistel-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 可逆不等于安全\n\nFeistel 只保证存在逆变换。若 F 是线性的、轮数太少、子密钥可预测或分组太短，网络仍可能被区分、恢复或穷举。可逆性是必要条件，不是安全证明。本档留存文本能证到的只有 3 轮那一半：HAC 记述当轮由伪随机函数构成时，某个变体在「under suitable assumptions」（合适假设下）可证明安全。4 轮的强伪随机/选择密文加强，以及把轮函数限定为独立的说法，本档没有任何留存来源这样表述（HAC 确实用「independent」这个词，但说的是别处）；而本档登记的 Luby–Rackoff 条目根本没有留存正文。真实密码的 F 是固定的、由密钥参数化的公开函数，轮子密钥也不是独立随机函数。把 Luby–Rackoff 直接套到 DES 上，会忽略具体 S 盒、密钥调度和已知攻击。### 轮数与扩散\n\n平衡 Feistel 每轮只改变一半状态；一轮后，输入左半的变化只影响下一轮的右半。达到充分扩散需要足够轮数和合适的 F。轮数不足会留下结构性区分器；轮数增加会提高成本，但不自动修复 F 的缺陷。### 分组长度与实例限制\n\nFeistel 不规定分组长度。DES/TDEA 的 64 位分组会带来生日碰撞和 Sweet32 类风险，但这是具体实例的限制，不是 Feistel 结构的普遍属性。一个使用 128 位分组的 Feistel 密码不会继承 64 位分组问题。### 实现与侧信道\n\n教学实现只验证可逆性和结构，不处理侧信道、故障注入、密钥清零或协议集成。真实实现还要保证 F 的常数时间、子密钥安全存储和错误处理；这些不在结构定义内。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        },
+        {
+          "id": "feistel-network-r139-history",
+          "entryId": "feistel-details",
+          "section": "history",
+          "statement": {
+            "zh": "Horst Feistel 在 IBM 研究密码结构，以他命名的 Feistel 网络后来成为公开分组密码的核心设计之一；他于 1973 年发表了《Cryptography and Computer Privacy》。DES 在 1970 年代标准化时采用了 16 轮平衡 Feistel。1988 年，Michael Luby 和 Charles Rackoff 发表了 Feistel 网络的可证明安全结果，把 3 轮和 4 轮的伪随机性条件形式化。DES 采用了这一结构；差分、线性和其他分析也提醒人们，结构本身不提供安全保证。这段历史说明，Feistel 的贡献不是某一个算法，而是一种可复用、可分析、可实现的设计语言。它的价值在于把任意轮函数与可逆置换连接起来。",
+            "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        },
+        {
+          "id": "feistel-network-r139-refs",
+          "entryId": "feistel-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 费斯妥网络.https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+            "en": "- Wikipedia search entry for 费斯妥网络.https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "feistel-network-standard-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "feistel-network-wikipedia"
+      ]
+    },
+    {
+      "id": "feistel-network-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "feistel-network-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "feistel-network-r139-principle",
+      "entryId": "feistel-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：费斯妥网络（Feistel Network）。Feistel 网络把分组分成左右两半，重复应用同一个轮函数。设第 i−1 轮的状态为 (L_{i−1}, R_{i−1})，第 i 轮计算：\n\n`R_i = L_{i−1} ⊕ F(R_{i−1}, K_i)`\n\n其中 F 是轮函数，K_i 是该轮子密钥。做完 n 轮后，把左右两半交换，输出 (R_n, L_n)。交换不是装饰：它让解密可以使用同一套轮函数和相反顺序的子密钥。解密从 (R_n, L_n) 开始，反向执行：\n\n`L_{i−1} = R_i ⊕ F(L_i, K_i)`\n\n因此无论 F 是否可逆、是否一一映射，整个 Feistel 网络都可逆。这是它最重要的工程性质：设计者可以用一个非线性的、不可逆的 F，仍然得到一个可逆的分组密码。Feistel 网络可以是平衡的（两半等长，例如 DES 的 32+32 位）或不平衡的（两半长度不同）。轮数、F 的结构、子密钥调度和分组长度共同决定具体密码的安全性和性能；Feistel 只规定状态如何更新，不规定 F 必须是什么。与代换—置换网络（SPN）相比，Feistel 不需要为解密单独实现逆 S 盒和逆线性层。SPN 的每一步通常必须可逆，Feistel 只要求 F 确定；代价是每轮只更新一半状态，达到同等扩散通常需要更多轮。",
+        "en": "**Term**: Feistel Network.It is registered under symmetric block ciphers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    },
+    {
+      "id": "feistel-network-r139-why",
+      "entryId": "feistel-details",
+      "section": "why",
+      "statement": {
+        "zh": "Feistel 网络是一个把任意函数变成可逆置换的设计模式。它降低了分组密码的实现门槛：只要 F 能快速计算，加解密可以共享同一段代码，减少重复实现。DES 和 3DES/TDEA 都采用这一结构。它也是可证明安全理论的早期对象。该定理归给 Luby 与 Rackoff（1988 年）：在轮函数为伪随机函数的模型下，3 轮 Feistel 网络是伪随机置换，4 轮是强伪随机置换（可抵抗选择密文攻击）。本档只有 3 轮那一半可核——登记的 1988 条目没有留存正文，而 HAC 以“under suitable assumptions”转述该结论。这个结果说明轮数不是随便选的，但它依赖理想化模型，不能直接证明某个具体密码安全。理解 Feistel 也有助于区分结构性质和算法安全性。Feistel 保证可逆，不保证安全；安全取决于 F、子密钥、轮数、分组长度和攻击模型。",
+        "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    },
+    {
+      "id": "feistel-network-r139-used",
+      "entryId": "feistel-details",
+      "section": "used",
+      "statement": {
+        "zh": "DES 是最著名的平衡 Feistel 实例：64 位分组，左右各 32 位，16 轮，轮函数由扩展置换、与子密钥异或、S 盒和 P 置换组成。3DES/TDEA 按 E-D-E 顺序执行三次 DEA 运算，因而内部共有 48 个 DES 轮；它仍是 64 位分组。具体的轮函数和密钥调度属于 DES/TDEA 实体，本文不重复。Feistel 结构也出现在其他分组密码中，但它们的具体 F、轮数和分组长度不同；不能因为都是 Feistel 就认为它们有相同的安全边界。具体算法需要各自的证据和攻击分析。在教学中，Feistel 适合演示可逆性不要求轮函数可逆、状态机、扩散与轮数、以及结构与实例的区分。它不是一个可直接部署的密码，而是一个构造模板。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    },
+    {
+      "id": "feistel-network-r139-broken",
+      "entryId": "feistel-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 可逆不等于安全\n\nFeistel 只保证存在逆变换。若 F 是线性的、轮数太少、子密钥可预测或分组太短，网络仍可能被区分、恢复或穷举。可逆性是必要条件，不是安全证明。本档留存文本能证到的只有 3 轮那一半：HAC 记述当轮由伪随机函数构成时，某个变体在「under suitable assumptions」（合适假设下）可证明安全。4 轮的强伪随机/选择密文加强，以及把轮函数限定为独立的说法，本档没有任何留存来源这样表述（HAC 确实用「independent」这个词，但说的是别处）；而本档登记的 Luby–Rackoff 条目根本没有留存正文。真实密码的 F 是固定的、由密钥参数化的公开函数，轮子密钥也不是独立随机函数。把 Luby–Rackoff 直接套到 DES 上，会忽略具体 S 盒、密钥调度和已知攻击。### 轮数与扩散\n\n平衡 Feistel 每轮只改变一半状态；一轮后，输入左半的变化只影响下一轮的右半。达到充分扩散需要足够轮数和合适的 F。轮数不足会留下结构性区分器；轮数增加会提高成本，但不自动修复 F 的缺陷。### 分组长度与实例限制\n\nFeistel 不规定分组长度。DES/TDEA 的 64 位分组会带来生日碰撞和 Sweet32 类风险，但这是具体实例的限制，不是 Feistel 结构的普遍属性。一个使用 128 位分组的 Feistel 密码不会继承 64 位分组问题。### 实现与侧信道\n\n教学实现只验证可逆性和结构，不处理侧信道、故障注入、密钥清零或协议集成。真实实现还要保证 F 的常数时间、子密钥安全存储和错误处理；这些不在结构定义内。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    },
+    {
+      "id": "feistel-network-r139-history",
+      "entryId": "feistel-details",
+      "section": "history",
+      "statement": {
+        "zh": "Horst Feistel 在 IBM 研究密码结构，以他命名的 Feistel 网络后来成为公开分组密码的核心设计之一；他于 1973 年发表了《Cryptography and Computer Privacy》。DES 在 1970 年代标准化时采用了 16 轮平衡 Feistel。1988 年，Michael Luby 和 Charles Rackoff 发表了 Feistel 网络的可证明安全结果，把 3 轮和 4 轮的伪随机性条件形式化。DES 采用了这一结构；差分、线性和其他分析也提醒人们，结构本身不提供安全保证。这段历史说明，Feistel 的贡献不是某一个算法，而是一种可复用、可分析、可实现的设计语言。它的价值在于把任意轮函数与可逆置换连接起来。",
+        "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    },
+    {
+      "id": "feistel-network-r139-refs",
+      "entryId": "feistel-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 费斯妥网络.https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+        "en": "- Wikipedia search entry for 费斯妥网络.https://zh.wikipedia.org/w/index.php?search=%E8%B4%B9%E6%96%AF%E5%A6%A5%E7%BD%91%E7%BB%9C\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "feistel-network-standard-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

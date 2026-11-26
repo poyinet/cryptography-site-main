@@ -1,0 +1,105 @@
+[
+  {
+    "id": "sha3-calc-cavp",
+    "entryId": "sha3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "24 selected NIST CAVP SHA-3 byte vectors (six short-message vectors for each of SHA3-224/256/384/512), stored in vectors.json",
+    "expected": "The teaching implementation reproduces every CAVP digest exactly, including SHA3-256 Len=0 = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a and SHA3-512 Len=0 = a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26",
+    "sourceIds": [
+      "cavp-sha3",
+      "fips202"
+    ],
+    "dependencies": [
+      "sha3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Short-message CAVP vectors only; they check conformance, not collision resistance or any security property."
+  },
+  {
+    "id": "sha3-calc-abc-trace",
+    "entryId": "sha3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The SHA3-256 empty-message padding block and the state before/after the first permutation, plus the SHA3-256 abc digest, stored in vectors.json",
+    "expected": "The empty-message block starts with 06 and ends with 80; the rate is 136 bytes and the capacity is 512 bits; the first four lanes after the first permutation match the stored trace; the empty digest is a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a; the abc digest is 3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532",
+    "sourceIds": [
+      "fips202",
+      "cavp-sha3"
+    ],
+    "dependencies": [
+      "sha3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One empty-message and one abc trace; the state intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+  },
+  {
+    "id": "sha3-calc-crosscheck",
+    "entryId": "sha3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "72 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA3-224/256/384/512, SHAKE128 and SHAKE256): empty, one-byte, eight-byte, 31/32/33-byte inputs and rate-boundary lengths for each variant (r-1, r, r+1, 2r-1, 2r, 2r+1)",
+    "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all rate-boundary lengths and SHAKE output lengths from 32 to 64 bytes",
+    "sourceIds": [
+      "fips202"
+    ],
+    "dependencies": [
+      "sha3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-3/SHAKE in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+  },
+  {
+    "id": "sha3-calc-structure",
+    "entryId": "sha3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The six rate/capacity pairs; 24 round constants; rho rotation offsets and pi lane permutation; the empty-message padded block; the SHA3-256 domain suffix; and negative controls for the SHAKE domain suffix and missing padding",
+    "expected": "The rate/capacity table matches FIPS 202; the round constants start at 0000000000000001 and end at 8000000080008008; the empty block starts with 06 and ends with 80; using SHAKE's 1111 suffix with the SHA3-256 rate gives SHAKE256(abc,32)=483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739, not SHA3-256(abc); missing padding gives a different digest; the article's js code block is a substring of sha3-teaching.mjs; zh/en hex-token sets are identical",
+    "sourceIds": [
+      "fips202",
+      "keccak-reference"
+    ],
+    "dependencies": [
+      "sha3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security."
+  },
+  {
+    "id": "sha3-calc-shake",
+    "entryId": "sha3-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "SHAKE128 and SHAKE256 outputs for empty and abc at lengths 0, 16, 32, 64 and 128 bytes, plus 32-vs-64-byte prefix checks",
+    "expected": "All stored SHAKE values match the teaching implementation; SHAKE128(abc,32)=5881092dd818bf5cf8a3ddb793fbcba74097d5c526a6d35f97b83351940f2cc8; the 32-byte output is a prefix of the 64-byte output for both SHAKE variants",
+    "sourceIds": [
+      "fips202"
+    ],
+    "dependencies": [
+      "sha3-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "SHAKE conformance and prefix property only; the output values are Node/OpenSSL implementation checks, not FIPS 202 appendix vectors."
+  }
+]

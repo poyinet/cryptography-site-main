@@ -1,0 +1,82 @@
+[
+  {
+    "id": "jefferson-calc-block-structure",
+    "entryId": "jefferson-details",
+    "kind": "structural-check",
+    "inputs": "a cylinder modelled to the printed description - 36 disks, each periphery divided into 26 parts, each disk carrying the letters in a different random ordering - and one 36-character plaintext block set along the reference bar",
+    "expected": "the text says the 25 other parallel reference positions each define a ciphertext: the model must yield exactly 26 rows, the reference row reading back the block and the other 25 being distinct from it and from one another",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "jefferson-cylinder-calc.mjs"
+    ],
+    "limitations": "The 36 random orderings are generated from a fixed seed here; the historical arrangement is not printed in the source, so no claim is made about it."
+  },
+  {
+    "id": "jefferson-calc-equals-full-vigenere",
+    "entryId": "jefferson-details",
+    "kind": "equivalence-check",
+    "inputs": "the 127 whole 36-letter blocks of the sample read from row 17 of the cylinder, plus a permutation table built by probing the device once per wheel and per alphabet letter",
+    "expected": "the handbook states a family of t permutations with the subscript taken modulo t (hac-ch7.txt:1098-1099). Tested against that statement: the permutation acting at position i must equal the one at i + 36 for all 4562 positions checked, the device must present exactly 36 distinct permutations rather than more or fewer, and the row read from the device must equal that family applied with the subscript modulo 36. The equality of position i with position i + 36 holds by construction for this model and is reported as a model property; what is measured is that exactly 36 distinct permutations appear, and the printed sentences are re-read from the registered text.",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "jefferson-cylinder-calc.mjs"
+    ],
+    "limitations": "One row offset over one sample. It establishes the period-36 polyalphabetic structure the handbook describes; it is a structural claim, not a security claim, and it does not test the wheel orderings, which are generated here."
+  },
+  {
+    "id": "jefferson-calc-key-space",
+    "entryId": "jefferson-details",
+    "kind": "known-answer-check",
+    "inputs": "36! and 25! computed with exact integer arithmetic",
+    "expected": "the handbook prints that reordering the disks changes the key and that the number of possible orderings is 36!, given there as about 3.72 x 10^41, and that re-lettering a disk affords 25! further mappings per disk (hac-ch7.txt:1184-1186); The extract prints the fragments \"36!\", \"3.72\" and \"1041\"; the reconstruction 3.72 x 10^41 must equal 36! rounded, and the fragments themselves are asserted. 25! is computed too, but the handbook names it without printing a decimal value, so no printed figure exists to match and the record says so.",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "jefferson-cylinder-calc.mjs"
+    ],
+    "limitations": "These are the source's own counts; they size the key space as printed and say nothing about the security of any particular ordering."
+  },
+  {
+    "id": "jefferson-calc-decryption-side",
+    "entryId": "jefferson-details",
+    "kind": "round-trip-check",
+    "inputs": "the 127 whole blocks enciphered at row offsets 1, 7 and 25, then read back from the ciphertext",
+    "expected": "the source prints that the second party holds a cylinder with identically marked and ordered disks, rotates each disk until the ciphertext matches a fixed reference line and examines the other 25 positions for a recognizable plaintext (hac-ch7.txt:1174-1179); the search sentence and the agreed-index sentence are re-read from the registered text; that the plaintext appears exactly once among the 26 rows follows from every wheel being a permutation, so it is reported as a model property that matches the printed instruction rather than as an observation of the source.",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "jefferson-cylinder-calc.mjs"
+    ],
+    "limitations": "Round-trips the model at three offsets; it shows the printed description is internally consistent, not how recognizable a real plaintext would be."
+  }
+]

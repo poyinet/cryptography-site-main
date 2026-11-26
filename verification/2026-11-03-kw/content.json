@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for kw: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "kw-details",
+      "inventoryIds": [
+        "kw"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密钥包装 KW/KWP/TKW的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Key Wrapping (KW, KWP, TKW): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "密钥包装 KW/KWP/TKW",
+        "en": "Key Wrapping (KW, KWP, TKW)"
+      },
+      "claimIds": [
+        "kw-r139-principle",
+        "kw-r139-why",
+        "kw-r139-used",
+        "kw-r139-broken",
+        "kw-r139-history",
+        "kw-r139-refs"
+      ],
+      "sourceIds": [
+        "kw-wikipedia",
+        "kw-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "term--kek",
+        "standard-sp800-38f"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：KW 密钥包装（Key Wrap）。§5.1 给出结构与密钥命名：「The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher.The key for the underlying block cipher is called the key encryption key (KEK), denoted K.」§4.1 对完整性校验值的定义说明了为什么包装不是普通加密：「A fixed string that is prepended to the plaintext within the authenticated-encryption function of a key-wrap algorithm, in order to enable the verification of the integrity of the plaintext within the authenticated-decryption function.」",
+          "why": "§1 直接写明目的：「The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.」保护的对象是密钥本身，而 §3.1 又把适用面扩展开：「Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.」两条合起来给出动机：密钥在存储与传输时需要同时得到机密性与完整性保护，普通加密只给前者。",
+          "used": "用法由两句确定：§3.1 说「KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys」，即三种变体都可用于一般数据；§5.1 说「each variant is a mode of operation (mode, for short) of the block cipher」，即实现上以分组密码模式的方式接入。故密钥库、HSM 与密钥分发链路里用 KEK 包装待保护的密钥，KWP 与 TKW 分别覆盖需填充与非 AES 的情形。",
+          "broken": "限度写在解密函数的定义里：「A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data.The output is either the plaintext or an indication that the plaintext is not authentic.」即包装方案不提供`尽力解密`：校验失败就不返回明文，攻击者无法借部分解密结果试探；同一节还给出「authenticity」在密钥包装语境下的含义——来源是能持有该 KEK 认证加密实现的实体。",
+          "history": "§1 说明它在系列里的位置与年份口径：「This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.」§3.1 给出与更早规范的接界：「In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.」即 2002 年的 RFC 3394 与 2009 年的 RFC 5649 先于本份 2012 年建议。",
+          "refs": "- Wikipedia search entry for KW 密钥包装. https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nKW 密钥包装的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Key Wrap (KW 密钥包装). Section 5.1 gives the structure and the key name: \"The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher. The key for the underlying block cipher is called the key encryption key (KEK), denoted K.\" The §4.1 definition of the integrity check value shows why wrapping is not plain encryption: \"A fixed string that is prepended to the plaintext within the authenticated-encryption function of a key-wrap algorithm, in order to enable the verification of the integrity of the plaintext within the authenticated-decryption function.\"",
+          "why": "Section 1 states the purpose outright: \"The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.\" The protected object is a key, and §3.1 widens the scope: \"Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.\" Together these give the motive: keys at rest and in transit need confidentiality and integrity together, which ordinary encryption supplies only half of.",
+          "used": "Usage follows from two sentences. §3.1 says \"KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys\", so all three variants serve general data too; §5.1 says \"each variant is a mode of operation (mode, for short) of the block cipher\", so implementations plug them in as block cipher modes. Key stores, HSMs and key-distribution paths therefore wrap protected keys under a KEK, with KWP covering padded cases and TKW the non-AES case.",
+          "broken": "The limit is printed in the definition of the decryption function: \"A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data. The output is either the plaintext or an indication that the plaintext is not authentic.\" Wrapping offers no best-effort decryption: verification failure returns no plaintext, so an attacker cannot probe with partially decrypted output. The same section defines authenticity in this context as originating from an entity holding an implementation of the authenticated-encryption function with the KEK.",
+          "history": "Section 1 places the document in its series: \"This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.\" Section 3.1 fixes the boundary with earlier specifications: \"In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11]. The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.\" RFC 3394 (2002) and RFC 5649 (2009) therefore precede this December 2012 recommendation.",
+          "refs": "- Wikipedia search entry for KW 密钥包装. https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nKey Wrap: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "KEK：包装所用的底层分组密码密钥，即密钥加密密钥。",
+          "ICV：前置到明文的固定串，使解密侧能够校验完整性。",
+          "KW：不带填充的密钥包装基本变体。",
+          "KWP：允许任意长度数据的填充式包装变体。",
+          "TKW：以三重数据加密算法为内核的包装变体。",
+          "authenticated-encryption：同时提供机密性与真实性校验的包装函数。"
+        ],
+        "en": [
+          "KEK: the underlying block cipher key used for wrapping, i.e. the key-encryption key.",
+          "ICV: the fixed string prepended to the plaintext so decryption can verify integrity.",
+          "KW: the basic key-wrap variant without padding.",
+          "KWP: the padded key-wrap variant that accepts arbitrary-length data.",
+          "TKW: the key-wrap variant built on the Triple Data Encryption Algorithm.",
+          "Authenticated-encryption: the wrapping function that provides both confidentiality and authenticity."
+        ]
+      },
+      "figures": [
+        {
+          "id": "kw-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥包装 KW/KWP/TKW：为什么需要 → 核心机制 → 边界。",
+            "en": "Key Wrapping (KW, KWP, TKW): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密钥包装 KW/KWP/TKW 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Key Wrapping (KW, KWP, TKW), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/kw-details-flow.zh.svg",
+            "en": "assets/kw-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f7c043007bf843e118a67fb0d571c0136180ac476b26f0cca4c9828671b7f852",
+            "en": "6469bd17afd9b7e140e0a4ae01b7181d84c0cfeea107256c0434827b3d7d16a8"
+          }
+        },
+        {
+          "id": "kw-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥包装 KW/KWP/TKW 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Key Wrapping (KW, KWP, TKW): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "密钥包装 KW/KWP/TKW 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Key Wrapping (KW, KWP, TKW), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/kw-details-r138-model.zh.svg",
+            "en": "assets/kw-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "406d5864ee9ff4c846495e64dee40f0124bc68cc084871f9dfd827127e422599",
+            "en": "36ed96fbab815f3000fb32f9002ba4310e87a2224b2f347bc1d900a213674add"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "kw-r139-formal",
+          "entryId": "kw-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：KW 密钥包装的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 KW 密钥包装 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "kw-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "kw-r139-formal"
+      ],
+      "sources": [
+        "kw-wikipedia",
+        "kw-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "kw-r139-formal",
+      "entryId": "kw-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：KW 密钥包装的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 KW 密钥包装 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "kw-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

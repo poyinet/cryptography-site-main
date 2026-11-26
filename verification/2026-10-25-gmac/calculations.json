@@ -1,0 +1,42 @@
+[
+  {
+    "id": "gmac-official-vector",
+    "entryId": "gmac-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "NIST CAVP gcmEncryptExtIV128.rsp GMAC Count 0 (128-bit key, 96-bit IV, empty plaintext, 128-bit AAD, 128-bit tag)",
+    "expected": "Tag 209fcc8d3675ed938e9c7166709dd946; verification succeeds",
+    "sourceIds": ["cavp-gmac"],
+    "dependencies": ["gmac-teaching.mjs"],
+    "limitations": "One official GMAC case; not a full AAD-length or malformed-input test."
+  },
+  {
+    "id": "gmac-aad-mismatch",
+    "entryId": "gmac-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The CAVP GMAC vector with one AAD byte changed",
+    "expected": "Verification fails",
+    "sourceIds": ["cavp-gmac"],
+    "dependencies": ["gmac-teaching.mjs"],
+    "limitations": "One fixed AAD change; not exhaustive AAD parsing."
+  },
+  {
+    "id": "gmac-tag-tamper",
+    "entryId": "gmac-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The CAVP GMAC vector with one tag byte changed",
+    "expected": "Verification fails",
+    "sourceIds": ["cavp-gmac"],
+    "dependencies": ["gmac-teaching.mjs"],
+    "limitations": "One fixed tag change; not exhaustive malformed-input testing."
+  },
+  {
+    "id": "gmac-tag-truncation",
+    "entryId": "gmac-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The CAVP GMAC 128-bit tag truncated to 96 bits",
+    "expected": "Verification accepts the 96-bit tag; changing one truncated-tag byte makes it fail",
+    "sourceIds": ["sp800-38d"],
+    "dependencies": ["gmac-teaching.mjs"],
+    "limitations": "Truncation mechanics only; no quantitative security estimate."
+  }
+]

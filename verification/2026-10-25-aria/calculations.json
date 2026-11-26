@@ -1,0 +1,63 @@
+[
+  {
+    "id": "aria-calc-rfc-vectors",
+    "entryId": "aria-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The three RFC 5794 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 00112233445566778899aabbccddeeff",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix A.1 W0..W3, ek1..ek13 and P1..P11 intermediates also match",
+    "sourceIds": [
+      "aria-rfc5794"
+    ],
+    "dependencies": [
+      "aria-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Three fixed vectors; they cover all key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+  },
+  {
+    "id": "aria-calc-key-schedule",
+    "entryId": "aria-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 128-bit test key, the CK1..CK3 selection, the W0..W3 intermediates, the ek1..ek17 formulas and the dk derivation",
+    "expected": "W0=000102030405060708090a0b0c0d0e0f, W1=2afbea741e1746dd55c63ba1afcea0a5, W2=7c8578018bb127e02dfe4e78c288e33c and W3=6785b52b74da46bf181054082763ff6d; ek1..ek13 match Appendix A.1; the three key sizes need 13/15/17 round keys; dk1=ek(n+1), dk(n+1)=ek1 and the middle dk values are A(ek) in reverse",
+    "sourceIds": [
+      "aria-rfc5794"
+    ],
+    "dependencies": [
+      "aria-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Only the 128-bit key has published W/ek/P intermediates; the 192/256-bit schedules are checked indirectly through their vectors."
+  },
+  {
+    "id": "aria-calc-components",
+    "entryId": "aria-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 5794 SB1/SB2 tables, the inverse SB3/SB4 tables, the diffusion layer A and a deterministic set of 256 diffusion samples",
+    "expected": "SB1 and SB2 each have 256 entries; SB3 and SB4 are the exact inverses of SB1 and SB2; SB1(0x23)=0x26 and SB4(0xEF)=0xD3; A maps 000102030405060708090a0b0c0d0e0f to 03020100050407060a0b08090c0d0e0f and is an involution on all 256 samples",
+    "sourceIds": [
+      "aria-rfc5794"
+    ],
+    "dependencies": [
+      "aria-teaching.mjs",
+      "sboxes.json",
+      "vectors.json"
+    ],
+    "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+  },
+  {
+    "id": "aria-calc-roundtrip",
+    "entryId": "aria-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+    "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+    "sourceIds": [
+      "aria-rfc5794"
+    ],
+    "dependencies": [
+      "aria-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for algorithm--slh-dsa: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "algorithm--slh-dsa-details",
+      "inventoryIds": [
+        "algorithm--slh-dsa"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释SLH-DSA 无状态哈希基数字签名的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of SLH-DSA Stateless Hash-Based Digital Signature: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "SLH-DSA 无状态哈希基数字签名",
+        "en": "SLH-DSA Stateless Hash-Based Digital Signature"
+      },
+      "claimIds": [
+        "algorithm--slh-dsa-r139-principle",
+        "algorithm--slh-dsa-r139-why",
+        "algorithm--slh-dsa-r139-used",
+        "algorithm--slh-dsa-r139-broken",
+        "algorithm--slh-dsa-r139-history",
+        "algorithm--slh-dsa-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--slh-dsa-wikipedia",
+        "algorithm--slh-dsa-reference-ref"
+      ],
+      "related": [
+        "fips205",
+        "algorithm--sphincs-plus",
+        "term--one-time-signature"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SLH-DSA 状态哈希签名（SLH-DSA (SPHINCS+) stateless hash-based signature algorithm）。留存 FIPS 205 文本在 Abstract 段定名：「This standard specifies the stateless hash-based digital signature algorithm (SLH-DSA).」§3 给出构造骨架：「SLH-DSA is a stateless hash-based signature scheme that is constructed using other hash-based signature schemes as components:」并列出两类组件——「a few-time signature scheme, forest of random subsets (FORS), and (2) a multi-time signature scheme, the eXtended Merkle Signature Scheme (XMSS).」原理即此：SLH-DSA 以少次签名 FORS 与多次签名 XMSS（后者又建于一次性签名 WOTS+）为构件，组合成一个无状态、以哈希为基的数字签名。该条目据算法在标准文本里的自述立论，与记述该出版物的 fips205 标准记录相区别。",
+          "why": "§1.1 说明它与既有签名的区别及理由：「Unlike the algorithms specified in FIPS 186-5 [1], SLH-DSA is designed to provide resistance against attacks from a large-scale quantum computer.」即相较于经典数字签名标准，它是为抗量子攻击而设计。其同段给出安全前提：「The security of the stateless hash-based digital signature algorithm (SLH-DSA) relies on the presumed difficulty of finding preimages for hash functions」——其安全归于哈希原像的困难性。Abstract 补上来源：「SLH-DSA is based on SPHINCS+, which was selected for standardization as part of the NIST Post-Quantum Cryptography Standardization process.」理由链因此是：经典签名在量子下失效，而以哈希原像困难为基础、无状态、由 SPHINCS+ 标准化的方案可提供量子抗力。措辞是 presumed difficulty，不作证明性断言。",
+          "used": "使用约束在编号小节，措辞层级分明。§3.2 对组件外泄给出 should not：「As WOTS+, XMSS, FORS, and hypertree signature schemes are not approved for use as stand-alone signature schemes, cryptographic modules should not make interfaces to these components available to applications.」即组件仅用于拼出 SLH-DSA，模块不宜把它们做成对外接口。§3.1 对算术给出 shall not：「Implementations of SLH-DSA shall not use floating-point arithmetic, as rounding errors in floating point operations may lead to incorrect results in some cases.」——实现不得用浮点运算，理由是舍入误差可能致错。用途面貌因此是把 SLH-DSA 作整体签名方案使用，组件不作独立接口对外（should not），算术须避免浮点（shall not）。should not 与 shall not 在此不可互换。",
+          "broken": "留存文本自陈的限度在实现与前提两面。§3.2 记侧信道与故障攻击敞口：「Care must be taken to protect implementations against attacks, such as side-channel attacks or fault attacks [17, 18, 19, 20, 21].」即私钥保密性关键，实现须防侧信道与故障提取。前提侧的限度见 why 段所引：其安全系于哈希原像之 presumed difficulty，而非归约到已被普遍接受的困难问题的证明。故被承认的脆弱来自实现（侧信道/故障）与假设（哈希抗力），而非标准文本给出的对 SLH-DSA 本身的攻破。§3.1 那句 shall-not 浮点限制（见 used 段）也属此类——它约束的是正确性，非攻击结果，该条目据文本如实记录，不作`已被破解`的断言。",
+          "history": "§1.2 交代它与候选版本的沿革。先记遴选：「After three rounds of evaluation and analysis, NIST selected the first four algorithms for standardization.」再记本标准对第三轮版本的关系：「This standard contains several minor modifications compared to Version 3 [4], which was submitted at the beginning of round three of the NIST PQC Standardization process.」并给出改名约定：「Throughout this standard, SPHINCS+ will be referred to as SLH-DSA for stateless hash-based digital signature algorithm.」门面板块（Title block）印标题 Stateless Hash-Based Digital Signature Standard 与 Published: August 13, 2024 Effective: August 13, 2024。据此，该条目所述算法是 SPHINCS+ 定稿后的标准形态 SLH-DSA，与记述该出版物的 fips205 记录分列，二者不互相作为别名。",
+          "refs": "- Wikipedia search entry for SLH-DSA 状态哈希签名. https://zh.wikipedia.org/w/index.php?search=SLH-DSA%20%E7%8A%B6%E6%80%81%E5%93%88%E5%B8%8C%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nSLH-DSA 状态哈希签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。1.选择随机 k，计算 R=kG 与 r。2.计算 s=k^{-1}(H(m)+rd) mod n。3.输出 (r,s)，验证者检查签名方程。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: SLH-DSA (SPHINCS+) stateless hash-based signature algorithm (SLH-DSA 状态哈希签名). The retained FIPS 205 text names it in the Abstract: \"This standard specifies the stateless hash-based digital signature algorithm (SLH-DSA).\" Section 3 gives the construction skeleton: \"SLH-DSA is a stateless hash-based signature scheme that is constructed using other hash-based signature schemes as components:\" and lists the two kinds — \"a few-time signature scheme, forest of random subsets (FORS), and (2) a multi-time signature scheme, the eXtended Merkle Signature Scheme (XMSS).\" The principle is that SLH-DSA composes a few-time FORS scheme and a multi-time XMSS scheme (itself built on the one-time WOTS+) into a stateless, hash-based digital signature. This dossier rests on the algorithm's own description inside the standard text and is kept distinct from the fips205 standard record, which documents the publication.",
+          "why": "Section 1.1 states how it differs from the existing signatures and why: \"Unlike the algorithms specified in FIPS 186-5 [1], SLH-DSA is designed to provide resistance against attacks from a large-scale quantum computer.\" unlike the classical signature standard, it is designed for quantum resistance. The same paragraph gives the security premise: \"The security of the stateless hash-based digital signature algorithm (SLH-DSA) relies on the presumed difficulty of finding preimages for hash functions\" its safety rests on hash-preimage hardness. The abstract adds the origin: \"SLH-DSA is based on SPHINCS+, which was selected for standardization as part of the NIST Post-Quantum Cryptography Standardization process.\" The chain of reasons is therefore that classical signatures fail under quantum computing, while a stateless scheme grounded in hash-preimage hardness and standardized from SPHINCS+ can provide quantum resistance. The wording is presumed difficulty, not a proof.",
+          "used": "The usage constraints sit in the numbered sections at distinct wording levels. Section 3.2 puts component exposure at should not: \"As WOTS+, XMSS, FORS, and hypertree signature schemes are not approved for use as stand-alone signature schemes, cryptographic modules should not make interfaces to these components available to applications.\" the components serve only to build SLH-DSA, so modules should not expose them as application interfaces. Section 3.1 puts arithmetic at shall not: \"Implementations of SLH-DSA shall not use floating-point arithmetic, as rounding errors in floating point operations may lead to incorrect results in some cases.\" implementations must avoid floating-point because rounding errors can give wrong results. So SLH-DSA is used as a whole signature scheme, its components not surfaced as stand-alone interfaces (should not), and its arithmetic kept off floating point (shall not). should not and shall not are not interchangeable here.",
+          "broken": "The limits the retained text states are on the implementation and on the premise. Section 3.2 records the side-channel and fault exposure: \"Care must be taken to protect implementations against attacks, such as side-channel attacks or fault attacks [17, 18, 19, 20, 21].\" private-key secrecy is critical, so implementations must guard against side-channel and fault extraction. The premise-side limit is in the why claim: security rests on the presumed difficulty of hash-preimage finding, not on a proof reducible to a broadly accepted hard problem. The acknowledged fragility therefore comes from the implementation (side channels and faults) and the assumption (hash resistance), not from any break of SLH-DSA itself recorded in the standard. The shall-not floating-point limit in §3.1 (see the used claim) is of the same kind — it constrains correctness, not an attack outcome; the text is recorded as printed and no `already broken` assertion is made.",
+          "history": "Section 1.2 gives the relation to its candidate lineage. The selection is recorded: \"After three rounds of evaluation and analysis, NIST selected the first four algorithms for standardization.\" and the tie to the round-three submission: \"This standard contains several minor modifications compared to Version 3 [4], which was submitted at the beginning of round three of the NIST PQC Standardization process.\" with the renaming stated: \"Throughout this standard, SPHINCS+ will be referred to as SLH-DSA for stateless hash-based digital signature algorithm.\" The title block prints Stateless Hash-Based Digital Signature Standard and Published: August 13, 2024 Effective: August 13, 2024. So the algorithm this dossier describes is the finalized standard form of SPHINCS+, named SLH-DSA, and it is kept separate from the fips205 record that documents the publication; neither is registered as an alias of the other.",
+          "refs": "- Wikipedia search entry for SLH-DSA 状态哈希签名. https://zh.wikipedia.org/w/index.php?search=SLH-DSA%20%E7%8A%B6%E6%80%81%E5%93%88%E5%B8%8C%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nSLH-DSA (SPHINCS+) stateless hash-based signature algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "stateless hash-based digital signature (SLH-DSA)：以哈希为基、不需维护签名状态的数字签名算法。",
+          "SPHINCS+：被 NIST 选作标准化的无状态哈希签名方案，SLH-DSA 由其派生并略作修改。",
+          "WOTS+：Winternitz One-Time Signature Plus，一次性签名构件，用于组成 XMSS。",
+          "XMSS：eXtended Merkle Signature Scheme，以 WOTS+ 叶与 Merkle 树构成的多次签名方案。",
+          "FORS：forest of random subsets，少次签名方案，被 SLH-DSA 用作叶层。",
+          "hypertree：XMSS 树的分层树，其签名与 FORS 签名共同组成一个 SLH-DSA 签名。"
+        ],
+        "en": [
+          "Stateless hash-based digital signature (SLH-DSA): a hash-based digital signature algorithm that needs no signing state to maintain.",
+          "SPHINCS+: the stateless hash-based scheme NIST selected for standardization, from which SLH-DSA is derived with minor changes.",
+          "WOTS+: Winternitz One-Time Signature Plus, the one-time signature component used to build XMSS.",
+          "XMSS: the eXtended Merkle Signature Scheme, a multi-time scheme of WOTS+ leaves and a Merkle tree.",
+          "FORS: forest of random subsets, the few-time signature scheme used at the leaves of SLH-DSA.",
+          "Hypertree: a layered tree of XMSS trees whose signature, with a FORS signature, forms an SLH-DSA signature."
+        ]
+      },
+      "subtopicIds": [
+        "slh-dsa"
+      ],
+      "figures": [
+        {
+          "id": "algorithm--slh-dsa-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SLH-DSA 无状态哈希基数字签名：为什么需要 → 核心机制 → 边界。",
+            "en": "SLH-DSA Stateless Hash-Based Digital Signature: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SLH-DSA 无状态哈希基数字签名 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SLH-DSA Stateless Hash-Based Digital Signature, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--slh-dsa-details-flow.zh.svg",
+            "en": "assets/algorithm--slh-dsa-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c13c79f467c92c21ef6dab3b1c0c59fe418cac169c71674fd14eea0d08ca45ea",
+            "en": "522e3c90890e5fc1ee3645661becf3374f5c4d6348fcb5416d4716cdf3b9e6c2"
+          }
+        },
+        {
+          "id": "algorithm--slh-dsa-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SLH-DSA 无状态哈希基数字签名 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SLH-DSA Stateless Hash-Based Digital Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SLH-DSA 无状态哈希基数字签名 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SLH-DSA Stateless Hash-Based Digital Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--slh-dsa-details-r138-model.zh.svg",
+            "en": "assets/algorithm--slh-dsa-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7ba047a0900f81f5a6bc0a0fa1412998057fb045f63a03e83f913968b6a20338",
+            "en": "6c7ba113b35a8b9ff63f163ff814f45740c4ca7121ddeb16e83ca02d4b6f4fa7"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "algorithm--slh-dsa-r139-formal",
+          "entryId": "algorithm--slh-dsa-details",
+          "kind": "formal-model",
+          "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+          "inputs": "输入：SLH-DSA 状态哈希签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+          "expected": "按 SLH-DSA 状态哈希签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "选择随机 k，计算 R=kG 与 r",
+            "计算 s=k^{-1}(H(m)+rd) mod n",
+            "输出 (r,s)，验证者检查签名方程"
+          ],
+          "sourceIds": [
+            "algorithm--slh-dsa-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--slh-dsa-r139-formal"
+      ],
+      "sources": [
+        "algorithm--slh-dsa-wikipedia",
+        "algorithm--slh-dsa-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--slh-dsa-r139-formal",
+      "entryId": "algorithm--slh-dsa-details",
+      "kind": "formal-model",
+      "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+      "inputs": "输入：SLH-DSA 状态哈希签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+      "expected": "按 SLH-DSA 状态哈希签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "选择随机 k，计算 R=kG 与 r",
+        "计算 s=k^{-1}(H(m)+rd) mod n",
+        "输出 (r,s)，验证者检查签名方程"
+      ],
+      "sourceIds": [
+        "algorithm--slh-dsa-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

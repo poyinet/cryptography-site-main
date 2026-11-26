@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack entry for attack--distinguishing-attack: mechanism, applications, limits and source attribution.",
+  "entries": [
+    {
+      "id": "attack--distinguishing-attack-details",
+      "inventoryIds": [
+        "attack--distinguishing-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释区分攻击的攻击原理、适用场景、边界和来源；不复制其他密码算法或协议实体。",
+        "en": "A compact explanation of Distinguishing Attack: mechanism, applications, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "区分攻击",
+        "en": "Distinguishing Attack"
+      },
+      "claimIds": [
+        "attack--distinguishing-attack-r139-principle",
+        "attack--distinguishing-attack-r139-why",
+        "attack--distinguishing-attack-r139-used",
+        "attack--distinguishing-attack-r139-broken",
+        "attack--distinguishing-attack-r139-history",
+        "attack--distinguishing-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--distinguishing-attack-wikipedia",
+        "attack--distinguishing-attack-reference-ref"
+      ],
+      "related": [
+        "attack--differential-cryptanalysis",
+        "block-cipher",
+        "stream-cipher"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：区分攻击（Distinguishing Attack）。区分攻击用统计检验判断密码输出更像随机序列还是某个密码的输出；它不一定恢复密钥，但能证明输出存在可检测的非随机偏差。",
+          "why": "只要输出分布与均匀随机有可测量的偏差，攻击者就能区分；偏差越大、所需输出越少，区分攻击越强。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文精确计算小输出宽度（n=3–5）的双字节概率，并外推到 8 位 RC4：只需约 2^30.6 字节输出（在 10% 假阳性/假阴性下）即可把 RC4 与随机序列区分开；它还观察到有时能以非平凡概率确定部分内部状态。",
+          "broken": "区分攻击需要足够多的输出和正确的统计模型；它本身不等于密钥恢复，输出越多统计检验越强，但后续处理或参数变化可能改变可观测偏差。",
+          "history": "Fluhrer 和 McGrew 在 2000 年 FSE 论文中系统计算 RC4 双字节偏差，并给出当时输出量最低的 RC4 区分攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「区分攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 区分攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 区分攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 区分攻击 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。",
+          "refs": "- Wikipedia search entry for 区分攻击. https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Distinguishing Attack (区分攻击). A distinguishing attack uses a statistical test to decide whether cipher output looks random or like the output of a particular cipher; it need not recover the key, but it demonstrates a detectable non-random bias.",
+          "why": "Any measurable deviation from a uniform random distribution lets an attacker distinguish; the larger the bias and the less output required, the stronger the distinguishing attack.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper computes digraph probabilities exactly for small output widths (n=3–5) and extrapolates to 8-bit RC4: about 2^30.6 bytes of output (at 10% false-positive/false-negative rates) suffice to distinguish RC4 from randomness; it also observes that parts of the internal state can sometimes be determined with non-trivial probability.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "A distinguishing attack requires enough output and a correct statistical model; it is not equivalent to key recovery, more output strengthens the statistical test, and subsequent processing or parameter changes can alter the observable bias.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Fluhrer and McGrew systematically computed RC4 digraph biases in their 2000 FSE paper and gave the RC4 distinguishing attack with the lowest output requirement at the time.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 区分攻击. https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nDistinguishing Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "区分攻击：区分密码输出与随机序列。",
+          "偏差：输出分布偏离均匀随机的程度。",
+          "密钥流：流密码产生的伪随机序列。",
+          "RC4：一种流密码。",
+          "随机性：均匀随机分布的性质。",
+          "统计检验：判断观测是否符合假设的方法。"
+        ],
+        "en": [
+          "Distinguishing attack: distinguishing cipher output from random.",
+          "Bias: the deviation of an output distribution from uniform randomness.",
+          "Keystream: the pseudorandom sequence produced by a stream cipher.",
+          "RC4: a stream cipher.",
+          "Randomness: the property of a uniform random distribution.",
+          "Statistical test: a method for deciding whether observations fit a hypothesis."
+        ]
+      },
+      "subtopicIds": [
+        "distinguishing-attack"
+      ],
+      "figures": [
+        {
+          "id": "attack--distinguishing-attack-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "区分攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Distinguishing Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "区分攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Distinguishing Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--distinguishing-attack-details-flow.zh.svg",
+            "en": "assets/attack--distinguishing-attack-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f49dfa1ebf853721658d71236bd3bfd5bfafed423d3720361741104890a2a0db",
+            "en": "a88daa3279b79904c2a3dde35c189fb788f3e799c4ce44bb17827537edf732d3"
+          }
+        },
+        {
+          "id": "attack--distinguishing-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "区分攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Distinguishing Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "区分攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Distinguishing Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--distinguishing-attack-details-r138-model.zh.svg",
+            "en": "assets/attack--distinguishing-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c24d59e6d85651e489d058e58ad35b4e669257d85b40511c7c7eceb06153fac8",
+            "en": "61eec8ad5655c026fa1f9dff619c2f79e67234e35ed8993788b02a8da4728e29"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--distinguishing-attack-r139-formal",
+          "entryId": "attack--distinguishing-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 区分攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--distinguishing-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--distinguishing-attack-r139-formal"
+      ],
+      "sources": [
+        "attack--distinguishing-attack-wikipedia",
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--distinguishing-attack-r139-formal",
+      "entryId": "attack--distinguishing-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 区分攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--distinguishing-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

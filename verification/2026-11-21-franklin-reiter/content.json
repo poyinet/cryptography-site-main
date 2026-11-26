@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R116 public-key and hash-attack reviewed dossier for franklin-reiter-details.",
+  "entries": [
+    {
+      "id": "franklin-reiter-details",
+      "inventoryIds": [
+        "franklin-reiter"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R116 公钥与哈希攻击批次：把“Franklin-Reiter 相关消息攻击”从目录深度条目改写为含机制陈述、符号公式、复杂度/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R116 public-key and hash-attack batch: rewrote \"Franklin-Reiter Related-Message Attack\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, complexity/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "Franklin-Reiter 相关消息攻击",
+        "en": "Franklin-Reiter Related-Message Attack"
+      },
+      "claimIds": [
+        "franklin-reiter-r139-principle",
+        "franklin-reiter-r139-why",
+        "franklin-reiter-r139-used",
+        "franklin-reiter-r139-broken",
+        "franklin-reiter-r139-history",
+        "franklin-reiter-r139-refs"
+      ],
+      "sourceIds": [
+        "franklin-reiter-wikipedia",
+        "franklin-reiter-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "franklin-reiter-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Franklin-Reiter 机制图：同一模数下的两条密文、两个多项式与 gcd 得到的线性因子。",
+            "en": "Franklin-Reiter mechanism: two ciphertexts under one modulus, two polynomials, and the linear factor returned by the gcd."
+          },
+          "alt": {
+            "zh": "左侧两条密文框汇入多项式 gcd 框，下方是 f1、f2 与 z - m1 的公式，底部标出随机填充使攻击失效。",
+            "en": "Two ciphertext boxes feed a polynomial gcd box, with formulas for f1, f2 and z - m1 below, and a note that random padding defeats the attack."
+          },
+          "files": {
+            "zh": "assets/franklin-reiter-details-mechanism.zh.svg",
+            "en": "assets/franklin-reiter-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "1462bdbf414c45a3fde0524474ad1a593d622bca015b9b3e10ff205f439c5d3c",
+            "en": "d75bf039ba70e5275c3ee11623403cd3faf2748397b1d6568b2685dda3116229"
+          }
+        },
+        {
+          "id": "franklin-reiter-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Franklin-Reiter 相关消息攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Franklin-Reiter Related-Message Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Franklin-Reiter 相关消息攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Franklin-Reiter Related-Message Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/franklin-reiter-details-r138-model.zh.svg",
+            "en": "assets/franklin-reiter-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8a413390e8cab6a729e0e8537ac357c812f8e0a11d13dab0b7d45d1627958945",
+            "en": "fcc36e418912549ea47ca4891ef24642e6e6936de2da01be0baf66f3b7541348"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：Franklin-Reiter 相关消息攻击（Franklin-Reiter Related-Message Attack）。### 同模数、低指数、已知关系\n\n设同一 RSA 公钥 (N,e) 下加密了两条消息 m1、m2，且攻击者知道仿射关系 m2 = α m1 + β。记 c1 = m1^e mod N、c2 = m2^e mod N。构造两个一元多项式\n\nf2(z) = (α z + β)^e - c2。它们都把 z = m1 作为模 N 的根。攻击的目标不是分解 N，而是把这个共同的根从两个高次多项式中分离出来。### 多项式 gcd 消去高次项\n\n在环 Z/NZ[z] 上计算 g(z) = gcd(f1, f2)。若首项系数可逆且不落入论文列出的例外情形，g 就是一次多项式 z - m1；求出它的根即恢复 m1，再由仿射关系得到 m2。直观上，gcd 把两个次数为 e 的多项式共有的根分离出来，而不需要知道 N 的因子。### 复杂度与适用指数\n\n朴素欧几里得算法约 O(e^2) 次环运算，快速多项式 gcd 可做到 O(e log^2 e)。因此攻击对 e=3 几乎即时，对 e=65537 也远快于 2^16 级暴力；论文指出在实现得当的情况下，e 的长度到约 32 位仍可能实用。这里的成本随 e 增长，而不是随 N 的因子规模增长。",
+          "why": "e=3 或 e=65537 常被选来降低加密与验签成本。低指数本身不是问题；问题是它把“消息之间的关系”放大成可解的低次方程。若协议让两条消息保持已知仿射关系，例如计数器、时间戳、序列号或共享填充，攻击者就能用密文消去未知的高次项。### 与广播攻击的区别\n\nFranklin-Reiter 攻击要求同一个模数 N；Håstad 广播攻击则用不同模数和 CRT。两者都利用低指数，但数学入口不同：前者是同一环上的多项式 gcd，后者是跨模数的 CRT 与整数 e 次根。把它们混成“低指数攻击”会掩盖防御差异。### 对协议设计的含义\n\n只要消息关系可预测，确定性填充并不自动安全。随机化填充、先把消息散列到随机化编码、或使用能破坏代数关系的方案，才会让“已知多项式关系”这一前提失效。判断时应问：攻击者是否知道 m_i 之间的精确代数关系？模数是否相同？e 是否小到可做多项式 gcd？",
+          "used": "1.收集同一公钥下的多条密文，确认它们来自同一模数与同一指数。2.找出消息之间的已知关系：仿射、同次多项式，或协议规定的线性约束。3.建立 f_i(z) = (p_i(z))^e - c_i，计算多项式 gcd；若得到一次因子，恢复消息。4.若 gcd 次数较高，改用结式、代数消元或 Coppersmith 型格方法处理。5.记录 e、关系次数 δ 与消息个数 k；这些参数决定攻击是否多项式时间。### 防御审计\n\n审计 RSA 协议时，检查是否存在“同一密钥 + 低指数 + 可预测关系”的组合；检查填充是否随机化；检查是否把消息直接作为多项式变量，而不是先做随机化编码。仅把 e 调大并不总是可行，但在关系无法消除时，它是论文明确讨论的修复方向之一。",
+          "broken": "1.模数不同。Franklin-Reiter 的 gcd 在同一个 Z/NZ 上进行；换成不同模数就进入 Håstad/CRT 的路线。2.关系未知或不确定。若消息关系含未知随机量，攻击者无法写出 f2。3.首项系数不可逆或落入例外情形。论文明确列出 gcd 可能不是线性的罕见情况；实现时必须检查。4.e 太大。多项式次数为 e，gcd 成本随 e 增长；e 很大时攻击不再实用。5.随机化填充有效。若填充使 m1、m2 的关系不再固定，代数前提被破坏。论文也提醒，并非所有填充都足够；需要随机化并经过分析。6.齐次关系。论文指出齐次情形可能只能恢复齐次多项式，不能直接恢复单条消息。",
+          "history": "Franklin 与 Reiter 先给出 k=2、e=3、δ=1 的仿射关系特例。1996 年，Coppersmith、Franklin、Patarin 与 Reiter 在 EUROCRYPT 上把它推广：e 可以任意，关系次数 δ 可以大于 1，消息条数 k 也可以更多。论文把这一路线与 Moore、Håstad 及 Simons 的攻击明确区分：那些攻击针对不同公钥，本文针对同一公钥。### 方法的位置\n\n这篇论文把“已知代数关系”变成 RSA 密码分析的一类独立入口。后来的 Coppersmith 小根方法与格归约把同类思想推广到更一般的模方程；在阅读现代 RSA 攻击文献时，Franklin-Reiter 常被当作“同模数、低指数、相关消息”的标准起点。",
+          "refs": "- Wikipedia search entry for Franklin-Reiter 相关消息攻击. https://zh.wikipedia.org/w/index.php?search=Franklin-Reiter%20%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nFranklin-Reiter 相关消息攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Franklin-Reiter Related-Message Attack (Franklin-Reiter 相关消息攻击). ### One modulus, low exponent, known relation\n\nSuppose two messages m1 and m2 are encrypted under the same RSA public key (N,e), and the attacker knows the affine relation m2 = α m1 + β. Let c1 = m1^e mod N and c2 = m2^e mod N. Construct two univariate polynomials\n\nf2(z) = (α z + β)^e - c2. Both have z = m1 as a root modulo N. The goal is not to factor N, but to separate this common root from the two high-degree polynomials. ### Polynomial gcd removes the high-degree terms\n\nCompute g(z) = gcd(f1, f2) over the ring Z/NZ[z]. If the leading coefficients are invertible and the case is not one of the exceptions listed in the paper, g is the linear polynomial z - m1. Its root recovers m1, and the affine relation gives m2. Intuitively, the gcd isolates the common root of two degree-e polynomials without knowledge of the factors of N. ### Complexity and the usable exponent range\n\nPlain Euclid costs about O(e^2) ring operations; fast polynomial gcd algorithms reach O(e log^2 e). The attack is therefore almost immediate for e=3 and still far cheaper than a 2^16 brute force for e=65537. The paper notes that, with a good implementation, exponents up to roughly 32 bits may remain practical. The cost grows with e, not with the size of the factors of N.",
+          "why": "e=3 or e=65537 is often chosen to reduce encryption and verification cost. The low exponent itself is not the problem; it turns a relation between messages into a solvable low-degree equation. If a protocol preserves a known affine relation, for example a counter, timestamp, sequence number or shared padding, the attacker can cancel the unknown high-degree terms using the ciphertexts.\n\nFranklin-Reiter requires one modulus N; Hastad's broadcast attack uses distinct moduli and CRT. Both exploit a low exponent, but the mathematical entry points differ: a polynomial gcd over one ring versus CRT plus an integer e-th root across moduli. Calling both simply “low-exponent attacks” hides the difference in defences.\n\nDeterministic padding is not automatically safe when the message relation is predictable. Randomised padding, hashing the message into a randomised encoding, or a scheme that destroys the algebraic relation makes the “known polynomial relation” premise false. The audit questions are: does the attacker know the exact algebraic relation between the m_i, is the modulus the same, and is e small enough for a polynomial gcd?",
+          "used": "1. Collect several ciphertexts under one public key and confirm that they share both modulus and exponent. 2. Identify a known relation between the messages: affine, same-degree polynomial, or a linear constraint imposed by the protocol. 3. Build f_i(z) = (p_i(z))^e - c_i and compute the polynomial gcd; a linear factor recovers the message. 4. If the gcd has higher degree, use resultants, algebraic elimination or a Coppersmith-style lattice method. 5. Record e, the relation degree δ and the number of messages k; these parameters decide whether the attack is polynomial time.\n\nWhen auditing RSA protocols, look for the combination “same key + low exponent + predictable relation”; check whether padding is randomised; check whether the message is used directly as a polynomial variable instead of being passed through a randomised encoding. Raising e is not always feasible, but it is one repair explicitly discussed in the paper when the relation cannot be removed.",
+          "broken": "1. Different moduli. The Franklin-Reiter gcd runs over one Z/NZ; distinct moduli move the problem into the Hastad/CRT route. 2. Unknown or uncertain relation. If the relation contains an unknown random quantity, the attacker cannot write f2. 3. Non-invertible leading coefficient or an exceptional case. The paper lists rare cases where the gcd may not be linear; an implementation must check them. 4. e too large. The polynomials have degree e and the gcd cost grows with e; for very large e the attack is no longer practical. 5. Effective randomised padding. If padding makes the relation between m1 and m2 non-fixed, the algebraic premise is broken. The paper also warns that not every padding is sufficient; it must be randomised and analysed. 6. Homogeneous relations. The paper notes that in the homogeneous case one may recover only homogeneous polynomials, not the individual message.",
+          "history": "Franklin and Reiter first gave the k=2, e=3, δ=1 affine case. In 1996, Coppersmith, Franklin, Patarin and Reiter generalised it at EUROCRYPT: e can be arbitrary, the relation degree δ can exceed 1, and the number of messages k can grow. The paper explicitly separates this route from the attacks of Moore, Hastad and Simons: those target different public keys, while this one targets one public key.\n\nThe paper turned “known algebraic relation” into an independent entry point in RSA cryptanalysis. Later Coppersmith small-root methods and lattice reductions extended the same idea to more general modular equations; in modern RSA attack literature, Franklin-Reiter is the standard starting point for “same modulus, low exponent, related messages”.",
+          "refs": "- Wikipedia search entry for Franklin-Reiter 相关消息攻击. https://zh.wikipedia.org/w/index.php?search=Franklin-Reiter%20%E7%9B%B8%E5%85%B3%E6%B6%88%E6%81%AF%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nFranklin-Reiter Related-Message Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "franklin-reiter-r139-formal",
+          "entryId": "franklin-reiter-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：Franklin-Reiter 相关消息攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 Franklin-Reiter 相关消息攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "franklin-reiter-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "franklin-reiter-r139-formal"
+      ],
+      "sources": [
+        "franklin-reiter-wikipedia",
+        "franklin-reiter-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "franklin-reiter-r139-formal",
+      "entryId": "franklin-reiter-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：Franklin-Reiter 相关消息攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 Franklin-Reiter 相关消息攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "franklin-reiter-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

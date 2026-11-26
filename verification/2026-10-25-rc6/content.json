@@ -1,0 +1,346 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-26",
+  "scope": "Full RC6 algorithm article only; no completion claim for RC5, AES, other AES candidates, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "rc6-details",
+      "inventoryIds": [
+        "algorithm--rc6"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 RC6 这一种 128 位块、20 轮的 AES 候选分组密码：RC6-w/r/b 参数、四寄存器加解密、乘法-旋转混合、P/Q 密钥调度、小端字节序、提交文档的六组向量和 2018 年草案的独立向量；不把 RC5、AES、其他 AES 候选者、工作模式或整个库并入本实体。",
+        "en": "Covers the RC6 128-bit-block, 20-round AES candidate: the RC6-w/r/b parameters, four-register encryption/decryption, multiplication-rotation mixing, P/Q key schedule, little-endian byte order, the six submission vectors and the independent 2018 draft vector. It does not absorb RC5, AES, the other AES candidates, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "RC6：128 位 20 轮 AES 候选分组密码",
+        "en": "RC6: a 128-bit 20-round AES candidate block cipher"
+      },
+      "claimIds": [
+        "algorithm--rc6-r139-principle",
+        "algorithm--rc6-r139-why",
+        "algorithm--rc6-r139-used",
+        "algorithm--rc6-r139-broken",
+        "algorithm--rc6-r139-history",
+        "algorithm--rc6-r139-refs"
+      ],
+      "calculationIds": [
+        "rc6-calc-submission-vectors",
+        "rc6-calc-key-schedule",
+        "rc6-calc-draft-vector",
+        "rc6-calc-roundtrip",
+        "algorithm--rc6-r139-formal"
+      ],
+      "sourceIds": [
+        "algorithm--rc6-wikipedia",
+        "algorithm--rc6-reference-ref"
+      ],
+      "related": [
+        "algorithm--rc5",
+        "algorithm--aes",
+        "term--rc6"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. The term--rc6 record is a glossary duplicate and is not the algorithm article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：RC6 分组密码（RC6）。RC6 是参数化分组密码 RC6-w/r/b：块长 4w 位，密钥 8b 位，执行 r 轮。AES 提交版本使用 w=32、r=20、b=16/24/32，即 128 位块、128/192/256 位密钥和 20 轮。128 位块分成四个 32 位寄存器 A、B、C、D。加密先做两次预白化，再执行 20 轮，最后做两次后白化：\n\n```text\nB = B + S[0]\nD = D + S[1]\nfor i = 1..20:\n  t = (B * (2B + 1)) <<< 5\n  u = (D * (2D + 1)) <<< 5\n  A = ((A XOR t) <<< u) + S[2i]\n  C = ((C XOR u) <<< t) + S[2i+1]\n  (A, B, C, D) = (B, C, D, A)\nA = A + S[42]\nC = C + S[43]\n```\n\n这里的乘法和加法都是模 2^32，`<<<` 是 32 位循环左移，旋转量取低 5 位。每轮先由 B、D 算出 t、u，再用它们旋转 A、C 并加上轮密钥，最后把四个寄存器整体左移一位。```text\nC = C - S[43]\nA = A - S[42]\nfor i = 20..1:\n  (A, B, C, D) = (D, A, B, C)\n  u = (D * (2D + 1)) <<< 5\n  t = (B * (2B + 1)) <<< 5\n  C = ((C - S[2i+1]) >>> t) XOR u\n  A = ((A - S[2i]) >>> u) XOR t\nB = B - S[0]\nD = D - S[1]\n```\n\n密钥调度把用户密钥按小端序装成 c 个 32 位字 L，然后生成 2r+4=44 个 S 字：\n\n```text\nS[0] = P = 0xB7E15163\nS[i] = S[i-1] + Q      // Q = 0x9E3779B9\nA = B = i = j = 0\nfor s = 1..3*max(c, 2r+4):\n  A = S[i] = (S[i] + A + B) <<< 3\n  B = L[j] = (L[j] + A + B) <<< ((A + B) mod 32)\n  i = (i + 1) mod (2r+4)\n  j = (j + 1) mod c\n```\n\nAES 版本 c=4/6/8、2r+4=44，因此混合次数是 132。P 和 Q 来自自然常数 e 和黄金比例。用户密钥的字节顺序与数据相同：第一个密钥字节进入 L[0] 的最低有效字节，后续字节依次填充。RC6 的字节序是小端：第一个明文字节放入 A 的最低有效字节，最后一个明文字节放入 D 的最高有效字节。实现时如果按大端解析 128 位块，会得到完全不同的结果。本文的实现显式按小端装入四个 32 位寄存器，并在输出时按同样顺序写回。",
+          "why": "RC6 的设计目标是简单、快速、紧凑和安全。它只使用加法、减法、乘法、异或和循环移位这些现代处理器擅长的运算，因此适合软件实现；AES 提交版本使用 128 位块和 20 轮，密钥长度 128/192/256 位。RC6 提交文档第 6 节总结说：目前最好的攻击似乎是穷举密钥；差分和线性分析所需的数据量超过可获得的明文量；没有已知的弱密钥。这些是 1998 年设计者的评估，不是对全部攻击模型的形式化证明。RC6 在 1998 年作为 AES 候选算法提交，AES 版本使用 128 位块和 20 轮。2018 年的 IETF 草案说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。",
+          "used": "RC6 提交文档附录给出六组向量，覆盖 128/192/256 位密钥和零/非零明文：\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8F5FBD0510D15FA893FA3FDA6E857EC2\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF01032547698BADCFE\nM = 02132435465768798A9BACBDCEDFE0F1\nC = C8241816F0D7E48920AD16A1674E5D48\n```\n\n2018 年 4 月的 IETF 草案 draft-krovetz-rc6-rc5-vectors-00 还给出 RC6-32/20/16 的独立向量：密钥和明文都是 `000102030405060708090A0B0C0D0E0F`，密文是 `3A96F9C7F6755CFE46F00E3DCD5D2A3C`。它与提交文档的六组向量互为交叉校验。本文按提交文档的密钥调度为 128 位全零密钥算出 `S[0..3]=2A66311C、9B17852D、8108B207、39D14185`，`S[42..43]=05B4016A、4B38AC83`。这些中间值不是提交文档直接列出的，而是由 P、Q 和混合规则计算，并由六组向量间接验证。",
+          "broken": "RC6 的最好攻击是穷举密钥、差分/线性所需数据超过可得数据、没有弱密钥这三项都是 1998 年提交文档中的设计者评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它们扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 RC6 已被攻破。提交文档第 6 节说 RC6 可以安排成加密/解密时间与数据无关，从而抵抗某些时序攻击。这是对实现方式的建议，不保证所有处理器、编译器和实现都自动获得常量时间行为；本文的教学实现也不是常量时间实现。RC6 的部署位置需要区分：它是 1998 年提交给 AES 的候选算法，2018 年 IETF 草案说明相关专利已过期、名称仍是商标；AES 的最终标准是 NIST 于 2001 年 11 月 26 日发布的 FIPS 197，RC6 没有成为 AES。把 AES 候选者当成 AES 标准是不准确的。实现层面，本文的教学实现按 32 位字做乘法和循环移位，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。RC6 只定义分组密码，协议层必须自己处理这些事项。",
+          "history": "RC6 提交文档的版本是 v1.1（1998 年 8 月 20 日），由 R.L.Rivest、M.J.B.Robshaw、R.Sidney 和 Y.L.Yin 署名，作为 AES 候选算法提交。AES 版本使用 128 位块、128/192/256 位密钥和 20 轮。2018 年 4 月的 IETF 草案 draft-krovetz-rc6-rc5-vectors-00 说明 RC6 是 AES 最终候选者之一，相关专利已经过期，但 RC6 名称仍是商标。该草案提供 RC6/RC5 的多参数测试向量，本文用它给出的 RC6-32/20/16 向量做独立交叉校验。本文的 RC6 实体只指这一种 128 位块、20 轮的 AES 候选分组密码；RC5 是另一种参数化分组密码，AES 是最终标准 FIPS 197（NIST 于 2001 年 11 月 26 日发布），二者都不是 RC6 的别名或被本文完成的实体。",
+          "refs": "- Wikipedia search entry for RC6 分组密码. https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: RC6 (RC6 分组密码). RC6 is the parameterized block cipher RC6-w/r/b: the block is 4w bits, the key is 8b bits, and it runs r rounds. The AES submission uses w=32, r=20 and b=16/24/32, i.e., a 128-bit block, 128/192/256-bit keys and 20 rounds. The 128-bit block is split into four 32-bit registers A, B, C and D. Encryption performs two prewhitening steps, twenty rounds and two postwhitening steps:\n\n```text\nB = B + S[0]\nD = D + S[1]\nfor i = 1..20:\n  t = (B * (2B + 1)) <<< 5\n  u = (D * (2D + 1)) <<< 5\n  A = ((A XOR t) <<< u) + S[2i]\n  C = ((C XOR u) <<< t) + S[2i+1]\n  (A, B, C, D) = (B, C, D, A)\nA = A + S[42]\nC = C + S[43]\n```\n\nMultiplication and addition are modulo 2^32, `<<<` is a 32-bit left rotation, and the rotation amounts use the low five bits. Each round derives t and u from B and D, uses them to rotate A and C and add round keys, then rotates the four registers left by one position. Decryption inverts the process:\n\n```text\nC = C - S[43]\nA = A - S[42]\nfor i = 20..1:\n  (A, B, C, D) = (D, A, B, C)\n  u = (D * (2D + 1)) <<< 5\n  t = (B * (2B + 1)) <<< 5\n  C = ((C - S[2i+1]) >>> t) XOR u\n  A = ((A - S[2i]) >>> u) XOR t\nB = B - S[0]\nD = D - S[1]\n```\n\nThe key schedule loads the user key little-endian into c 32-bit words L and generates 2r+4=44 S words:\n\n```text\nS[0] = P = 0xB7E15163\nS[i] = S[i-1] + Q      // Q = 0x9E3779B9\nA = B = i = j = 0\nfor s = 1..3*max(c, 2r+4):\n  A = S[i] = (S[i] + A + B) <<< 3\n  B = L[j] = (L[j] + A + B) <<< ((A + B) mod 32)\n  i = (i + 1) mod (2r+4)\n  j = (j + 1) mod c\n```\n\nThe AES version has c=4/6/8 and 2r+4=44, hence 132 mixing steps. P and Q are derived from the mathematical constants e and the golden ratio. The key bytes use the same order as the data: the first key byte enters the least significant byte of L[0], and later bytes fill the following bytes. RC6's byte order is little-endian: the first plaintext byte goes into the least significant byte of A, and the last plaintext byte into the most significant byte of D. Parsing the 128-bit block big-endian produces a completely different result. This article's implementation explicitly loads four 32-bit registers little-endian and writes them back in the same order.",
+          "why": "RC6's design goals are simplicity, speed, compactness and security. It uses only addition, subtraction, multiplication, XOR and rotation, operations that modern processors handle well, so it suits software implementations; the AES submission uses a 128-bit block, 20 rounds and 128/192/256-bit keys.\n\nThe RC6 submission's Section 6 summarizes that the best attack appears to be exhaustive key search, that the data required for differential and linear cryptanalysis exceeds the available plaintext, and that no weak keys are known. These are the 1998 designers' assessments, not formal proofs against every attack model.\n\nRC6 was submitted as an AES candidate in 1998, with the AES version using a 128-bit block and 20 rounds. A 2018 IETF draft says RC6 was one of the AES finalists, that the related patents have expired, and that the RC6 name remains a trademark.",
+          "used": "The RC6 submission's appendix gives six vectors covering 128/192/256-bit keys and zero/non-zero plaintexts:\n\n```text\nK = 00000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8FC3A53656B1F778C129DF4E9848A41E\n\nK = 0123456789ABCDEF0112233445566778\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 524E192F4715C6231F51F6367EA43F18\n\nK = 000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 6CD61BCB190B30384E8A3F168690AE82\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF0\nM = 02132435465768798A9BACBDCEDFE0F1\nC = 688329D019E505041E52E92AF95291D4\n\nK = 0000000000000000000000000000000000000000000000000000000000000000\nM = 00000000000000000000000000000000\nC = 8F5FBD0510D15FA893FA3FDA6E857EC2\n\nK = 0123456789ABCDEF0112233445566778899AABBCCDDEEFF01032547698BADCFE\nM = 02132435465768798A9BACBDCEDFE0F1\nC = C8241816F0D7E48920AD16A1674E5D48\n```\n\nThe April 2018 IETF draft draft-krovetz-rc6-rc5-vectors-00 also gives an independent RC6-32/20/16 vector: the key and plaintext are both `000102030405060708090A0B0C0D0E0F`, and the ciphertext is `3A96F9C7F6755CFE46F00E3DCD5D2A3C`. It cross-checks the six submission vectors.\n\nUsing the submission key schedule, this article's implementation computes for the 128-bit all-zero key `S[0..3]=2A66311C, 9B17852D, 8108B207, 39D14185` and `S[42..43]=05B4016A, 4B38AC83`. These intermediates are not listed by the submission; they are computed from P, Q and the mixing rule and indirectly verified by the six vectors.",
+          "broken": "RC6's claims that the best attack is exhaustive search, that differential/linear data exceeds available data and that no weak keys are known are designer assessments in the 1998 submission, not formal proofs against every attack model, and they do not guarantee that no better analysis will appear. This article does not expand them into an absolute security claim, and it does not cite unverified attack papers to claim that RC6 has been broken.\n\nThe submission's Section 6 says RC6 can be arranged so that encryption/decryption time is data-independent, resisting some timing attacks. This is an implementation recommendation and does not guarantee constant-time behaviour for every processor, compiler and implementation; this article's teaching code is also not constant-time.\n\nRC6's deployment position needs to be stated carefully: it was submitted to AES in 1998, and the 2018 IETF draft says the related patents have expired while the name remains a trademark; the final AES standard is FIPS 197, published by NIST on 26 November 2001, and RC6 did not become AES. Treating an AES candidate as the AES standard is inaccurate.\n\nAt the implementation level, this article's teaching code performs 32-bit multiplications and rotations and is not constant-time; caches and timing may leak key-dependent access patterns. It does not generate keys and implements no mode of operation, IV management, padding, integrity protection or side-channel defence, so it must not be used to protect real data. RC6 defines only a block cipher; the protocol layer must handle those matters.",
+          "history": "The RC6 submission is version 1.1 (20 August 1998), attributed to R.L. Rivest, M.J.B. Robshaw, R. Sidney and Y.L. Yin, and was submitted as an AES candidate. The AES version uses a 128-bit block, 128/192/256-bit keys and 20 rounds.\n\nThe April 2018 IETF draft draft-krovetz-rc6-rc5-vectors-00 says RC6 was one of the AES finalists, that the related patents have expired, and that the RC6 name remains a trademark. It supplies multi-parameter RC6/RC5 test vectors, and this article uses its RC6-32/20/16 vector as an independent cross-check.\n\nThis article's RC6 entity is the 128-bit-block, 20-round AES candidate only; RC5 is a different parameterized block cipher and AES is the final FIPS 197 standard (published by NIST on 26 November 2001), neither an alias nor an entity completed by this article.",
+          "refs": "- Wikipedia search entry for RC6 分组密码. https://zh.wikipedia.org/w/index.php?search=RC6%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "RC6：Rivest 等 1998 年提交给 AES 的 128 位分组密码，20 轮。",
+          "RC6-w/r/b：块长 4w 位、密钥 8b 位、r 轮的参数化记法。",
+          "128 位块：AES 提交版本的块长，分成 A、B、C、D 四个 32 位寄存器。",
+          "20 轮：AES 提交版本的轮数。",
+          "128/192/256 位密钥：b=16/24/32 对应的三种密钥长度。",
+          "乘法-旋转：每轮把 B、D 映射为 (x*(2x+1)) mod 2^32 再循环左移 5 位。",
+          "t 和 u：每轮由 B、D 计算出的两个 32 位混合值。",
+          "S 数组：2r+4 个 32 位轮密钥，AES 版本共 44 个。",
+          "P 和 Q：密钥调度常数 0xB7E15163 和 0x9E3779B9。",
+          "L 数组：用户密钥按小端序装成的 c 个 32 位字。",
+          "小端字节序：第一个明文字节放入 A 的最低有效字节，最后一个放入 D 的最高有效字节。",
+          "预白化/后白化：加密前 B、D 加 S[0]、S[1]，最后 A、C 加 S[42]、S[43]。",
+          "逆轮：解密时右旋寄存器并使用减法、循环右移和异或恢复状态。",
+          "AES 候选：RC6 是 1998 年提交给 NIST AES 进程的算法之一。",
+          "FIPS 197：最终的 AES 标准，RC6 不是它。",
+          "IETF 草案：draft-krovetz-rc6-rc5-vectors-00 提供多参数 RC6/RC5 向量。"
+        ],
+        "en": [
+          "RC6: the 128-bit, 20-round block cipher submitted to AES by Rivest and co-authors in 1998.",
+          "RC6-w/r/b: the parameterized notation with a 4w-bit block, 8b-bit key and r rounds.",
+          "128-bit block: the AES submission's block size, split into 32-bit A, B, C and D registers.",
+          "20 rounds: the AES submission's round count.",
+          "128/192/256-bit keys: the three key lengths corresponding to b=16/24/32.",
+          "Multiplication-rotation: each round maps B and D through (x*(2x+1)) mod 2^32 and rotates left by 5.",
+          "t and u: the two 32-bit mixing values computed from B and D each round.",
+          "S array: the 2r+4 32-bit round keys, 44 in the AES version.",
+          "P and Q: the key-schedule constants 0xB7E15163 and 0x9E3779B9.",
+          "L array: the c 32-bit words formed from the user key in little-endian order.",
+          "Little-endian byte order: the first plaintext byte goes to the least significant byte of A, and the last to the most significant byte of D.",
+          "Prewhitening/postwhitening: B and D are added to S[0] and S[1] before the rounds, and A and C to S[42] and S[43] after them.",
+          "Inverse round: decryption rotates the registers right and uses subtraction, right rotation and XOR to restore the state.",
+          "AES candidate: RC6 was one of the algorithms submitted to the NIST AES process in 1998.",
+          "FIPS 197: the final AES standard; RC6 is not AES.",
+          "IETF draft: draft-krovetz-rc6-rc5-vectors-00 supplies multi-parameter RC6/RC5 vectors."
+        ]
+      },
+      "figures": [
+        {
+          "id": "rc6-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RC6：128 位 20 轮 AES 候选分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "RC6: a 128-bit 20-round AES candidate block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RC6：128 位 20 轮 AES 候选分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RC6: a 128-bit 20-round AES candidate block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rc6-details-flow.zh.svg",
+            "en": "assets/rc6-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "52080a8c1e58bc8c569fc40d2c3149d9213745c68a7b1af60661475c5ecb17aa",
+            "en": "e4b9eb594245f6eb9386eb0dde07d67096727908cb2a74baf7be40f82dc92b47"
+          }
+        },
+        {
+          "id": "rc6-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RC6：128 位 20 轮 AES 候选分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RC6: a 128-bit 20-round AES candidate block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RC6：128 位 20 轮 AES 候选分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RC6: a 128-bit 20-round AES candidate block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rc6-details-r138-model.zh.svg",
+            "en": "assets/rc6-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8d5d4cef843388984a7c634b0bd98eb3bccc23c44995e697c70251d26338a422",
+            "en": "ef862c5819d814a19777b294be2d986301035438ce77f1e528894c07966846e9"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--rc6-wikipedia",
+        "algorithm--rc6-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "rc6-calc-submission-vectors",
+          "entryId": "rc6-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The six RC6 AES submission Appendix vectors covering 128-, 192- and 256-bit keys with zero and non-zero plaintexts",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the zero-key schedule sample S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83 also matches",
+          "sourceIds": [
+            "algorithm--rc6-wikipedia"
+          ],
+          "dependencies": [
+            "rc6-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Six fixed vectors; they cover all key lengths but only two plaintexts, and a match does not prove resistance to cryptanalysis."
+        },
+        {
+          "id": "rc6-calc-key-schedule",
+          "entryId": "rc6-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 128-bit all-zero key, P=0xb7e15163, Q=0x9e3779b9 and the 44-word S array",
+          "expected": "The schedule has 44 S words; P=0xb7e15163, Q=0x9e3779b9 and the initial S[1]=P+Q=0x5618cb1c; the mixed zero-key S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83; the 128-bit zero key produces four L words; all six submission vectors reproduce after the schedule",
+          "sourceIds": [
+            "algorithm--rc6-wikipedia"
+          ],
+          "dependencies": [
+            "rc6-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "The mixed S values for the zero key are computed, not published; the key schedule is verified through the six ciphertexts and the published P/Q rule."
+        },
+        {
+          "id": "rc6-calc-draft-vector",
+          "entryId": "rc6-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The draft-krovetz-rc6-rc5-vectors-00 RC6-32/20/16 vector with key and plaintext 000102030405060708090a0b0c0d0e0f",
+          "expected": "The ciphertext is 3a96f9c7f6755cfe46f00e3dcd5d2a3c and decryption returns the plaintext",
+          "sourceIds": [
+            "algorithm--rc6-wikipedia"
+          ],
+          "dependencies": [
+            "rc6-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "One independent vector from an IETF draft, not a standard; it cross-checks but does not replace the six submission vectors."
+        },
+        {
+          "id": "rc6-calc-roundtrip",
+          "entryId": "rc6-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Three zero keys (128, 192 and 256 bits) times eight deterministic plaintext patterns",
+          "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce distinct schedules",
+          "sourceIds": [
+            "algorithm--rc6-wikipedia"
+          ],
+          "dependencies": [
+            "rc6-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "algorithm--rc6-r139-formal",
+          "entryId": "rc6-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "RC6 分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--rc6-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rc6-calc-submission-vectors",
+      "entryId": "rc6-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The six RC6 AES submission Appendix vectors covering 128-, 192- and 256-bit keys with zero and non-zero plaintexts",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the zero-key schedule sample S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83 also matches",
+      "sourceIds": [
+        "algorithm--rc6-wikipedia"
+      ],
+      "dependencies": [
+        "rc6-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Six fixed vectors; they cover all key lengths but only two plaintexts, and a match does not prove resistance to cryptanalysis."
+    },
+    {
+      "id": "rc6-calc-key-schedule",
+      "entryId": "rc6-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 128-bit all-zero key, P=0xb7e15163, Q=0x9e3779b9 and the 44-word S array",
+      "expected": "The schedule has 44 S words; P=0xb7e15163, Q=0x9e3779b9 and the initial S[1]=P+Q=0x5618cb1c; the mixed zero-key S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83; the 128-bit zero key produces four L words; all six submission vectors reproduce after the schedule",
+      "sourceIds": [
+        "algorithm--rc6-wikipedia"
+      ],
+      "dependencies": [
+        "rc6-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "The mixed S values for the zero key are computed, not published; the key schedule is verified through the six ciphertexts and the published P/Q rule."
+    },
+    {
+      "id": "rc6-calc-draft-vector",
+      "entryId": "rc6-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The draft-krovetz-rc6-rc5-vectors-00 RC6-32/20/16 vector with key and plaintext 000102030405060708090a0b0c0d0e0f",
+      "expected": "The ciphertext is 3a96f9c7f6755cfe46f00e3dcd5d2a3c and decryption returns the plaintext",
+      "sourceIds": [
+        "algorithm--rc6-wikipedia"
+      ],
+      "dependencies": [
+        "rc6-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "One independent vector from an IETF draft, not a standard; it cross-checks but does not replace the six submission vectors."
+    },
+    {
+      "id": "rc6-calc-roundtrip",
+      "entryId": "rc6-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Three zero keys (128, 192 and 256 bits) times eight deterministic plaintext patterns",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce distinct schedules",
+      "sourceIds": [
+        "algorithm--rc6-wikipedia"
+      ],
+      "dependencies": [
+        "rc6-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "algorithm--rc6-r139-formal",
+      "entryId": "rc6-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "RC6 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--rc6-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

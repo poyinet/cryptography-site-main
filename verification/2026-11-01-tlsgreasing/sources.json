@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tlsgreasing-details",
+  "sources": [
+    {
+      "id": "tlsgreasing-wikipedia",
+      "title": "Wikipedia search entry for TLS GREasing 扩展性保活",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TLS%20GREasing%20%E6%89%A9%E5%B1%95%E6%80%A7%E4%BF%9D%E6%B4%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TLS GREasing 扩展性保活",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tlsgreasing-r139-principle",
+          "entryId": "tlsgreasing-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：TLS GREasing 扩展性保活（TLS GREasing Extensibility）。机制是预留一批永不协商的取值供随机通告：§1「To avoid this problem, this document reserves some currently unused values for TLS implementations to advertise at random.」并解释正确的对端会忽略它们，而不宽容的对端会立刻失败——「Peers that do not tolerate unknown values will fail to interoperate, revealing the mistake before it is widespread.」§2 对扩展、命名组、签名算法与版本给出成对重复字节的取值集合（0x0A0A 0x1A1A 0x2A2A…），而 PskKeyExchangeModes 另有一套单字节预留值：「The following values are reserved as GREASE values for PskKeyExchangeModes: 0x0B 0x2A 0x49 0x68 0x87 0xA6 0xC5 0xE4」。",
+            "en": "**Protocol**: TLS GREasing Extensibility (TLS GREasing 扩展性保活).The mechanism reserves values that can never be negotiated so peers advertise them at random: §1 \"To avoid this problem, this document reserves some currently unused values for TLS implementations to advertise at random.\" and explains that tolerant peers ignore them while intolerant ones fail fast — \"Peers that do not tolerate unknown values will fail to interoperate, revealing the mistake before it is widespread."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        },
+        {
+          "id": "tlsgreasing-r139-why",
+          "entryId": "tlsgreasing-details",
+          "section": "why",
+          "statement": {
+            "zh": "要防的是扩展性锈蚀。§1 说明 TLS 依赖「The responding side must ignore unknown values so that new capabilities may be introduced to the ecosystem while maintaining interoperability.」但缺陷会静默扩散：「However, bugs may cause an implementation to reject unknown values.」并指出后果——「updated peers will discover that the metaphorical joint in the protocol has rusted shut and the new values cannot be deployed without interoperability failures.」命名由此而来：「this technique is called “GREASE” (Generate Random Extensions And Sustain Extensibility)」。",
+            "en": "What is being prevented is extensibility rust.§1 explains the dependency: \"The responding side must ignore unknown values so that new capabilities may be introduced to the ecosystem while maintaining interoperability.\" but bugs spread silently: \"However, bugs may cause an implementation to reject unknown values.\" and the consequence is that \"updated peers will discover that the metaphorical joint in the protocol has rusted shut and the new values cannot be deployed without interoperability failures.\" Hence the name: \"this technique is called “GREASE” (Generate Random Extensions And Sustain Extensibility)\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        },
+        {
+          "id": "tlsgreasing-r139-used",
+          "entryId": "tlsgreasing-details",
+          "section": "used",
+          "statement": {
+            "zh": "客户侧在 ClientHello 里随机插入各类 GREASE 值（§3.1 用一串 MAY 逐项列出套件、扩展、命名组、签名算法、版本、PSK 模式与 ALPN）；服务器侧在 CertificateRequest 与 NewSessionTicket 里同理（§4.1）。发送策略由 §5 规定：「Implementations advertising GREASE values SHOULD select them at random.」以避免只对单个取值宽容，同时要求「Implementations MUST honor protocol specifications when sending GREASE values.」并提醒确定性与多样性的权衡。",
+            "en": "Clients insert GREASE values into the ClientHello (§3.1 lists MAY items for cipher suites, extensions, named groups, signature algorithms, versions, PSK modes and ALPN); servers do the equivalent in CertificateRequest and NewSessionTicket (§4.1).§5 sets the sending policy: \"Implementations advertising GREASE values SHOULD select them at random.\" so that tolerance is not limited to one value, while requiring \"Implementations MUST honor protocol specifications when sending GREASE values.\" and weighing diversity against determinism."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        },
+        {
+          "id": "tlsgreasing-r139-broken",
+          "entryId": "tlsgreasing-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界与风险都写在文档里。协商结果里出现 GREASE 值必须判死：客户侧「Clients MUST reject GREASE values when negotiated by the server.」服务器侧「Servers MUST reject GREASE values when negotiated by the client.」§7 说明这些值本身不参与协商，因此「GREASE values cannot be negotiated, so they do not directly impact the security of TLS connections.」但回退重试会削弱它——「Implementations SHOULD NOT retry with GREASE disabled on connection failure.」并且固定取值会带来指纹化风险。",
+            "en": "The limits and risks are in the document.A negotiated GREASE value is fatal: \"Clients MUST reject GREASE values when negotiated by the server.\" and \"Servers MUST reject GREASE values when negotiated by the client.\" §7 notes the values are never negotiated, so \"GREASE values cannot be negotiated, so they do not directly impact the security of TLS connections.\" but retrying without them weakens the defence — \"Implementations SHOULD NOT retry with GREASE disabled on connection failure.\" — and non-random selection creates a fingerprinting risk."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        },
+        {
+          "id": "tlsgreasing-r139-history",
+          "entryId": "tlsgreasing-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 8701 由 D.Benjamin（Google LLC）署名，2020 年 1 月发布，Category 标注 Informational。§2 记录预留值的连带后果：这些值「The values allocated above are thus no longer available for use as TLS or DTLS [RFC6347] version numbers.」分配刻意稀疏，「These values were allocated sparsely to discourage server implementations from conditioning on them.」。",
+            "en": "RFC 8701 is signed by D.Benjamin (Google LLC), published January 2020 with Category: Informational."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        },
+        {
+          "id": "tlsgreasing-r139-refs",
+          "entryId": "tlsgreasing-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TLS GREasing 扩展性保活.https://zh.wikipedia.org/w/index.php?search=TLS%20GREasing%20%E6%89%A9%E5%B1%95%E6%80%A7%E4%BF%9D%E6%B4%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for TLS GREasing 扩展性保活.https://zh.wikipedia.org/w/index.php?search=TLS%20GREasing%20%E6%89%A9%E5%B1%95%E6%80%A7%E4%BF%9D%E6%B4%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tlsgreasing-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "tlsgreasing-wikipedia"
+      ]
+    },
+    {
+      "id": "tlsgreasing-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tlsgreasing-r139-principle",
+      "entryId": "tlsgreasing-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：TLS GREasing 扩展性保活（TLS GREasing Extensibility）。机制是预留一批永不协商的取值供随机通告：§1「To avoid this problem, this document reserves some currently unused values for TLS implementations to advertise at random.」并解释正确的对端会忽略它们，而不宽容的对端会立刻失败——「Peers that do not tolerate unknown values will fail to interoperate, revealing the mistake before it is widespread.」§2 对扩展、命名组、签名算法与版本给出成对重复字节的取值集合（0x0A0A 0x1A1A 0x2A2A…），而 PskKeyExchangeModes 另有一套单字节预留值：「The following values are reserved as GREASE values for PskKeyExchangeModes: 0x0B 0x2A 0x49 0x68 0x87 0xA6 0xC5 0xE4」。",
+        "en": "**Protocol**: TLS GREasing Extensibility (TLS GREasing 扩展性保活).The mechanism reserves values that can never be negotiated so peers advertise them at random: §1 \"To avoid this problem, this document reserves some currently unused values for TLS implementations to advertise at random.\" and explains that tolerant peers ignore them while intolerant ones fail fast — \"Peers that do not tolerate unknown values will fail to interoperate, revealing the mistake before it is widespread."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    },
+    {
+      "id": "tlsgreasing-r139-why",
+      "entryId": "tlsgreasing-details",
+      "section": "why",
+      "statement": {
+        "zh": "要防的是扩展性锈蚀。§1 说明 TLS 依赖「The responding side must ignore unknown values so that new capabilities may be introduced to the ecosystem while maintaining interoperability.」但缺陷会静默扩散：「However, bugs may cause an implementation to reject unknown values.」并指出后果——「updated peers will discover that the metaphorical joint in the protocol has rusted shut and the new values cannot be deployed without interoperability failures.」命名由此而来：「this technique is called “GREASE” (Generate Random Extensions And Sustain Extensibility)」。",
+        "en": "What is being prevented is extensibility rust.§1 explains the dependency: \"The responding side must ignore unknown values so that new capabilities may be introduced to the ecosystem while maintaining interoperability.\" but bugs spread silently: \"However, bugs may cause an implementation to reject unknown values.\" and the consequence is that \"updated peers will discover that the metaphorical joint in the protocol has rusted shut and the new values cannot be deployed without interoperability failures.\" Hence the name: \"this technique is called “GREASE” (Generate Random Extensions And Sustain Extensibility)\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    },
+    {
+      "id": "tlsgreasing-r139-used",
+      "entryId": "tlsgreasing-details",
+      "section": "used",
+      "statement": {
+        "zh": "客户侧在 ClientHello 里随机插入各类 GREASE 值（§3.1 用一串 MAY 逐项列出套件、扩展、命名组、签名算法、版本、PSK 模式与 ALPN）；服务器侧在 CertificateRequest 与 NewSessionTicket 里同理（§4.1）。发送策略由 §5 规定：「Implementations advertising GREASE values SHOULD select them at random.」以避免只对单个取值宽容，同时要求「Implementations MUST honor protocol specifications when sending GREASE values.」并提醒确定性与多样性的权衡。",
+        "en": "Clients insert GREASE values into the ClientHello (§3.1 lists MAY items for cipher suites, extensions, named groups, signature algorithms, versions, PSK modes and ALPN); servers do the equivalent in CertificateRequest and NewSessionTicket (§4.1).§5 sets the sending policy: \"Implementations advertising GREASE values SHOULD select them at random.\" so that tolerance is not limited to one value, while requiring \"Implementations MUST honor protocol specifications when sending GREASE values.\" and weighing diversity against determinism."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    },
+    {
+      "id": "tlsgreasing-r139-broken",
+      "entryId": "tlsgreasing-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界与风险都写在文档里。协商结果里出现 GREASE 值必须判死：客户侧「Clients MUST reject GREASE values when negotiated by the server.」服务器侧「Servers MUST reject GREASE values when negotiated by the client.」§7 说明这些值本身不参与协商，因此「GREASE values cannot be negotiated, so they do not directly impact the security of TLS connections.」但回退重试会削弱它——「Implementations SHOULD NOT retry with GREASE disabled on connection failure.」并且固定取值会带来指纹化风险。",
+        "en": "The limits and risks are in the document.A negotiated GREASE value is fatal: \"Clients MUST reject GREASE values when negotiated by the server.\" and \"Servers MUST reject GREASE values when negotiated by the client.\" §7 notes the values are never negotiated, so \"GREASE values cannot be negotiated, so they do not directly impact the security of TLS connections.\" but retrying without them weakens the defence — \"Implementations SHOULD NOT retry with GREASE disabled on connection failure.\" — and non-random selection creates a fingerprinting risk."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    },
+    {
+      "id": "tlsgreasing-r139-history",
+      "entryId": "tlsgreasing-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 8701 由 D.Benjamin（Google LLC）署名，2020 年 1 月发布，Category 标注 Informational。§2 记录预留值的连带后果：这些值「The values allocated above are thus no longer available for use as TLS or DTLS [RFC6347] version numbers.」分配刻意稀疏，「These values were allocated sparsely to discourage server implementations from conditioning on them.」。",
+        "en": "RFC 8701 is signed by D.Benjamin (Google LLC), published January 2020 with Category: Informational."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    },
+    {
+      "id": "tlsgreasing-r139-refs",
+      "entryId": "tlsgreasing-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TLS GREasing 扩展性保活.https://zh.wikipedia.org/w/index.php?search=TLS%20GREasing%20%E6%89%A9%E5%B1%95%E6%80%A7%E4%BF%9D%E6%B4%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for TLS GREasing 扩展性保活.https://zh.wikipedia.org/w/index.php?search=TLS%20GREasing%20%E6%89%A9%E5%B1%95%E6%80%A7%E4%BF%9D%E6%B4%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tlsgreasing-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--elgamal-details",
+  "sources": [
+    {
+      "id": "algorithm--elgamal-wikipedia",
+      "title": "Wikipedia search entry for ElGamal 公钥密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ElGamal 公钥密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--elgamal-r139-principle",
+          "entryId": "algorithm--elgamal-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ElGamal 公钥密码（ElGamal）。### 从 Diffie–Hellman 到加密\n\nElGamal 加密把 Diffie–Hellman 的共享秘密变成一次性掩码。公开参数是循环群 `G`、阶 `q`、生成元 `g` 和公钥 `h=g^x`；私钥 `x` 保密。加密时选择随机 `k`，计算 `c1=g^k`、`c2=m·h^k`；解密计算 `m=c2·(c1^x)^{-1}`。### 正确性从哪来\n\n`c1^x=(g^k)^x=g^{kx}=h^k`，所以掩码 `h^k` 能被消掉。消息必须先编码成群元素；如果消息只是任意字节串，不能直接当成群元素相乘。### 实际用法\n\n裸 ElGamal 很少直接加密长消息。实际系统把它当作 KEM 或混合加密的一部分：用 ElGamal 封装一个对称密钥，再用 AES-GCM 等 AEAD 加密正文。椭圆曲线版本通常称为 ECIES 或 DHIES。",
+            "en": "**Algorithm**: ElGamal (ElGamal 公钥密码).### From Diffie–Hellman to encryption\n\nElGamal encryption turns a Diffie–Hellman shared secret into a one-time mask."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--elgamal-r139-why",
+          "entryId": "algorithm--elgamal-details",
+          "section": "why",
+          "statement": {
+            "zh": "它把“计算离散对数很难”变成了可用的公钥加密。与 RSA 依赖大整数分解不同，ElGamal 依赖有限域或椭圆曲线上的离散对数难题；随机数 `k` 让同一明文每次加密都得到不同密文。代价是密文约为明文的两倍，加密需要两次模幂，解密需要一次模幂，速度远慢于对称密码。因此它的现实价值主要是密钥封装和混合加密，而不是直接处理大文件。",
+            "en": "It turns “computing discrete logarithms is hard” into usable public-key encryption.Unlike RSA, which relies on integer factorization, ElGamal relies on the discrete-logarithm problem in a finite field or elliptic curve."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--elgamal-r139-used",
+          "entryId": "algorithm--elgamal-details",
+          "section": "used",
+          "statement": {
+            "zh": "GnuPG 和 PGP 的 ElGamal 密钥、DSA 签名方案都与同一类离散对数难题有关；椭圆曲线上的 ElGamal 变体用于 ECIES 等混合加密。TLS 1.3 不用裸 ElGamal，而是用 ECDHE 协商密钥，再用 AEAD 保护记录。读这条时要注意：ElGamal 加密与 ElGamal 签名是两个不同构造，不能因为名字相同就互相替代。",
+            "en": "GnuPG and PGP ElGamal keys and the DSA signature scheme are tied to the same family of discrete-logarithm problems; elliptic-curve ElGamal variants appear in ECIES and similar hybrid schemes.TLS 1.3 does not use bare ElGamal: it uses ECDHE for key agreement and AEAD for record protection."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--elgamal-r139-broken",
+          "entryId": "algorithm--elgamal-details",
+          "section": "broken",
+          "statement": {
+            "zh": "教科书 ElGamal 是可延展的：攻击者把 `c2` 乘以 `t`，就得到 `t·m` 的合法密文。因此它不抗选择密文攻击，不能直接当作“认证加密”使用。工程上必须做三件事：校验群元素确实在正确的子群里，避免小群攻击；使用经过审计的群参数和安全素数/椭圆曲线；用带认证的 KEM/DEM、DHIES 或 ECIES 包装，而不是把裸变换直接暴露给不可信输入。",
+            "en": "Textbook ElGamal is malleable: multiplying `c2` by `t` produces a valid ciphertext for `t·m`.It is therefore not chosen-ciphertext secure and must not be presented as authenticated encryption."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--elgamal-r139-history",
+          "entryId": "algorithm--elgamal-details",
+          "section": "history",
+          "statement": {
+            "zh": "Taher ElGamal 在 1984 年 CRYPTO 会议提出该方案，1985 年发表在 `IEEE Transactions on Information Theory` 31(4):469–472。它把 Diffie–Hellman 密钥协商改造成公钥加密，并给出一个签名方案；后者成为 DSA 的重要思想来源。“ElGamal 加密”和“ElGamal 签名”共享离散对数难题，但协议目标不同。把它放进目录时，应与 RSA、DSA、ECDSA 等条目区分，而不是混成一个算法。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Taher ElGamal presented the scheme at CRYPTO 1984 and published it in `IEEE Transactions on Information Theory` 31(4):469–472 in 1985.It adapted Diffie–Hellman key agreement into public-key encryption and also introduced a signature scheme that became an important influence on DSA."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--elgamal-r139-refs",
+          "entryId": "algorithm--elgamal-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ElGamal 公钥密码.https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ElGamal 公钥密码.https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--elgamal-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--elgamal-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--elgamal-r139-principle",
+      "entryId": "algorithm--elgamal-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ElGamal 公钥密码（ElGamal）。### 从 Diffie–Hellman 到加密\n\nElGamal 加密把 Diffie–Hellman 的共享秘密变成一次性掩码。公开参数是循环群 `G`、阶 `q`、生成元 `g` 和公钥 `h=g^x`；私钥 `x` 保密。加密时选择随机 `k`，计算 `c1=g^k`、`c2=m·h^k`；解密计算 `m=c2·(c1^x)^{-1}`。### 正确性从哪来\n\n`c1^x=(g^k)^x=g^{kx}=h^k`，所以掩码 `h^k` 能被消掉。消息必须先编码成群元素；如果消息只是任意字节串，不能直接当成群元素相乘。### 实际用法\n\n裸 ElGamal 很少直接加密长消息。实际系统把它当作 KEM 或混合加密的一部分：用 ElGamal 封装一个对称密钥，再用 AES-GCM 等 AEAD 加密正文。椭圆曲线版本通常称为 ECIES 或 DHIES。",
+        "en": "**Algorithm**: ElGamal (ElGamal 公钥密码).### From Diffie–Hellman to encryption\n\nElGamal encryption turns a Diffie–Hellman shared secret into a one-time mask."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-r139-why",
+      "entryId": "algorithm--elgamal-details",
+      "section": "why",
+      "statement": {
+        "zh": "它把“计算离散对数很难”变成了可用的公钥加密。与 RSA 依赖大整数分解不同，ElGamal 依赖有限域或椭圆曲线上的离散对数难题；随机数 `k` 让同一明文每次加密都得到不同密文。代价是密文约为明文的两倍，加密需要两次模幂，解密需要一次模幂，速度远慢于对称密码。因此它的现实价值主要是密钥封装和混合加密，而不是直接处理大文件。",
+        "en": "It turns “computing discrete logarithms is hard” into usable public-key encryption.Unlike RSA, which relies on integer factorization, ElGamal relies on the discrete-logarithm problem in a finite field or elliptic curve."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-r139-used",
+      "entryId": "algorithm--elgamal-details",
+      "section": "used",
+      "statement": {
+        "zh": "GnuPG 和 PGP 的 ElGamal 密钥、DSA 签名方案都与同一类离散对数难题有关；椭圆曲线上的 ElGamal 变体用于 ECIES 等混合加密。TLS 1.3 不用裸 ElGamal，而是用 ECDHE 协商密钥，再用 AEAD 保护记录。读这条时要注意：ElGamal 加密与 ElGamal 签名是两个不同构造，不能因为名字相同就互相替代。",
+        "en": "GnuPG and PGP ElGamal keys and the DSA signature scheme are tied to the same family of discrete-logarithm problems; elliptic-curve ElGamal variants appear in ECIES and similar hybrid schemes.TLS 1.3 does not use bare ElGamal: it uses ECDHE for key agreement and AEAD for record protection."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-r139-broken",
+      "entryId": "algorithm--elgamal-details",
+      "section": "broken",
+      "statement": {
+        "zh": "教科书 ElGamal 是可延展的：攻击者把 `c2` 乘以 `t`，就得到 `t·m` 的合法密文。因此它不抗选择密文攻击，不能直接当作“认证加密”使用。工程上必须做三件事：校验群元素确实在正确的子群里，避免小群攻击；使用经过审计的群参数和安全素数/椭圆曲线；用带认证的 KEM/DEM、DHIES 或 ECIES 包装，而不是把裸变换直接暴露给不可信输入。",
+        "en": "Textbook ElGamal is malleable: multiplying `c2` by `t` produces a valid ciphertext for `t·m`.It is therefore not chosen-ciphertext secure and must not be presented as authenticated encryption."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-r139-history",
+      "entryId": "algorithm--elgamal-details",
+      "section": "history",
+      "statement": {
+        "zh": "Taher ElGamal 在 1984 年 CRYPTO 会议提出该方案，1985 年发表在 `IEEE Transactions on Information Theory` 31(4):469–472。它把 Diffie–Hellman 密钥协商改造成公钥加密，并给出一个签名方案；后者成为 DSA 的重要思想来源。“ElGamal 加密”和“ElGamal 签名”共享离散对数难题，但协议目标不同。把它放进目录时，应与 RSA、DSA、ECDSA 等条目区分，而不是混成一个算法。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ElGamal 公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Taher ElGamal presented the scheme at CRYPTO 1984 and published it in `IEEE Transactions on Information Theory` 31(4):469–472 in 1985.It adapted Diffie–Hellman key agreement into public-key encryption and also introduced a signature scheme that became an important influence on DSA."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--elgamal-r139-refs",
+      "entryId": "algorithm--elgamal-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ElGamal 公钥密码.https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ElGamal 公钥密码.https://zh.wikipedia.org/w/index.php?search=ElGamal%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--elgamal-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

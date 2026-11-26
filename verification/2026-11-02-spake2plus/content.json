@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for spake2plus: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "spake2plus-details",
+      "inventoryIds": [
+        "spake2plus"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释SPAKE2+ 口令认证密钥交换的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of SPAKE2+ Password-Authenticated Key Exchange: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "SPAKE2+ 口令认证密钥交换",
+        "en": "SPAKE2+ Password-Authenticated Key Exchange"
+      },
+      "claimIds": [
+        "spake2plus-r139-principle",
+        "spake2plus-r139-why",
+        "spake2plus-r139-used",
+        "spake2plus-r139-broken",
+        "spake2plus-r139-history",
+        "spake2plus-r139-refs"
+      ],
+      "sourceIds": [
+        "spake2plus-wikipedia",
+        "spake2plus-reference-ref"
+      ],
+      "related": [
+        "pake",
+        "diffie-hellman",
+        "attack--dictionary-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：SPAKE2+ 口令认证密钥交换（SPAKE2+, an Augmented Password-Authenticated Key Exchange (PAKE) Protocol）。RFC 9383 摘要给出机制定义：「This document describes SPAKE2+, a Password-Authenticated Key Exchange (PAKE) protocol run between two parties for deriving a strong shared key with no risk of disclosing the password.」并说明它是增强型：「SPAKE2+ is an augmented PAKE protocol, as only one party has knowledge of the password.」",
+          "why": "动机是口令不能裸奔于交换过程：摘要把目标写成「deriving a strong shared key with no risk of disclosing the password」，并把工程卖点列在一起——「This method is simple to implement, compatible with any prime-order group, and computationally efficient.」",
+          "used": "使用位置写在 §1：增补性质在执行受限、攻击者无法提前查询口令散列盐值的场景特别有价值，文件举出两类约束——「a constraint may be when physical proximity through a local network is required or when a first authentication factor is required for initiation of the protocol.」摘要给出通用形态：只有一侧持有口令，仍完成认证并得到会话密钥。",
+          "broken": "限度一是身份模型：「SPAKE2+ is the asymmetric or augmented version of SPAKE2, wherein only one party has knowledge of the password.」服务器侧仍需保存盐值/记录。限度二是标准地位：文件自陈「Neither SPAKE2 nor SPAKE2+ was selected as the result of the Crypto Forum Research Group (CFRG) PAKE selection competition.」，页眉 Category 为 Informational，不是 Standards Track。",
+          "history": "版本信息在页眉：流别为 Independent Submission，Category 标注 Informational，日期 September 2023，作者 T.Taubert（Apple Inc.）与 C.A.Wood。§1 交代血缘：本文内容从「[RFC9382], which specifies SPAKE2」拆出，因对称与增补 PAKE 的用例不同而分别规范。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SPAKE2+ 口令认证密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 SPAKE2+ 口令认证密钥交换 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for SPAKE2+ 口令认证密钥交换. https://zh.wikipedia.org/w/index.php?search=SPAKE2%2B%20%E5%8F%A3%E4%BB%A4%E8%AE%A4%E8%AF%81%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nSPAKE2+ 口令认证密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: SPAKE2+, an Augmented Password-Authenticated Key Exchange (PAKE) Protocol (SPAKE2+ 口令认证密钥交换). The abstract defines the mechanism: \"This document describes SPAKE2+, a Password-Authenticated Key Exchange (PAKE) protocol run between two parties for deriving a strong shared key with no risk of disclosing the password.\" and states the variant: \"SPAKE2+ is an augmented PAKE protocol, as only one party has knowledge of the password.\"",
+          "why": "The motivation is that a password must not be exposed by the exchange: the abstract states the goal as \"deriving a strong shared key with no risk of disclosing the password\" and bundles the engineering claims with it — \"This method is simple to implement, compatible with any prime-order group, and computationally efficient.\"",
+          "used": "The placement is in §1: the augmented property is valuable where execution is constrained and the adversary cannot query the salt of the password-hashing function ahead of the attack, and the document names two constraints — \"a constraint may be when physical proximity through a local network is required or when a first authentication factor is required for initiation of the protocol.\" The abstract gives the general shape: only one party holds the password, yet authentication and a session key result.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The first limit is the identity model: \"SPAKE2+ is the asymmetric or augmented version of SPAKE2, wherein only one party has knowledge of the password.\" — the other side still stores the salt or record. The second is standing: the document states \"Neither SPAKE2 nor SPAKE2+ was selected as the result of the Crypto Forum Research Group (CFRG) PAKE selection competition.\" and its masthead Category is Informational, not Standards Track.",
+          "history": "The masthead gives the history: the Independent Submission stream with Category: Informational, dated September 2023 and authored by T. Taubert (Apple Inc.) and C. A. Wood. Clause 1 records the lineage — the content was split out from \"[RFC9382], which specifies SPAKE2\", because symmetric and augmented PAKEs serve different use cases and so warrant different specifications.",
+          "refs": "- Wikipedia search entry for SPAKE2+ 口令认证密钥交换. https://zh.wikipedia.org/w/index.php?search=SPAKE2%2B%20%E5%8F%A3%E4%BB%A4%E8%AE%A4%E8%AF%81%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nSPAKE2+, an Augmented Password-Authenticated Key Exchange (PAKE) Protocol: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "PAKE：口令认证密钥交换。",
+          "augmented PAKE：仅一方知道口令的 PAKE 变体。",
+          "strong shared key：由协议导出的会话密钥。",
+          "prime-order group：协议可适配的群类型。",
+          "Independent Submission：RFC Editor 独立投稿流。",
+          "password file：验证方保存的口令派生记录。"
+        ],
+        "en": [
+          "PAKE: password-authenticated key exchange.",
+          "Augmented PAKE: the variant where only one party knows the password.",
+          "Strong shared key: the session key the protocol derives.",
+          "Prime-order group: the group class the protocol fits.",
+          "Independent Submission: the RFC Editor stream it appeared in.",
+          "Password file: the verifier’s stored password-derived record."
+        ]
+      },
+      "figures": [
+        {
+          "id": "spake2plus-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SPAKE2+ 口令认证密钥交换：为什么需要 → 核心机制 → 边界。",
+            "en": "SPAKE2+ Password-Authenticated Key Exchange: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SPAKE2+ 口令认证密钥交换 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SPAKE2+ Password-Authenticated Key Exchange, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/spake2plus-details-flow.zh.svg",
+            "en": "assets/spake2plus-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "53e50462ed75c9b10e705462d13465edc4aefabf304bb30005ea5fbe41ce09e2",
+            "en": "3adda543fc5378300cb0a02aa5e43ff52d5192bf18dffeb62f45b44de885bcb0"
+          }
+        },
+        {
+          "id": "spake2plus-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SPAKE2+ 口令认证密钥交换 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SPAKE2+ Password-Authenticated Key Exchange: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SPAKE2+ 口令认证密钥交换 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SPAKE2+ Password-Authenticated Key Exchange, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/spake2plus-details-r138-model.zh.svg",
+            "en": "assets/spake2plus-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4cbb3dbf837916bf735ff6d54d9ac4aa206ae1946d0b4fab4e330167b628891b",
+            "en": "5f668f1e9a7747384e1286839be6dc138e1f9c4c21478baf8bdef34c376871ae"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "spake2plus-r139-formal",
+          "entryId": "spake2plus-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：SPAKE2+ 口令认证密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 SPAKE2+ 口令认证密钥交换 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "spake2plus-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "spake2plus-r139-formal"
+      ],
+      "sources": [
+        "spake2plus-wikipedia",
+        "spake2plus-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "spake2plus-r139-formal",
+      "entryId": "spake2plus-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：SPAKE2+ 口令认证密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 SPAKE2+ 口令认证密钥交换 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "spake2plus-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

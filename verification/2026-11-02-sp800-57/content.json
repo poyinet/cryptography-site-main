@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for sp800-57: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-57-details",
+      "inventoryIds": [
+        "sp800-57"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密钥管理的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Key Management: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "密钥管理",
+        "en": "Key Management"
+      },
+      "claimIds": [
+        "sp800-57-r139-principle",
+        "sp800-57-r139-why",
+        "sp800-57-r139-used",
+        "sp800-57-r139-broken",
+        "sp800-57-r139-history",
+        "sp800-57-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-57-wikipedia",
+        "sp800-57-reference-ref"
+      ],
+      "related": [
+        "key-rotation",
+        "sp800-131a",
+        "fips-140"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：密钥管理（Key Management）。它的自我定义写在摘要第一句：「This Recommendation provides cryptographic key-management guidance.」下一句说明全书分三部分，而留存的本份是第一部分：「Part 1 provides general guidance and best practices for the management of cryptographic keying material, including definitions of the security services that may be provided when using cryptography and the algorithms and key types that may be employed」。同一摘要把政策与规划要求分派给另一册：「Part 2 provides guidance on policy and security planning requirements for U.S.government agencies.」引文点名其中两类：可用的安全服务定义、可以采用的算法与密钥类型；`每一类密钥需要哪种保护、如何提供`写在同一摘要的后续句里。它因此给出的是框架、术语与保护要求，而不是一份算法规范。",
+          "why": "风险陈述在文首的执行摘要：「The proper management of cryptographic keys is essential to the effective use of cryptography for security.」同页紧接一句说明选择错误的代价：「Inappropriate choices may result in an illusion of security but little or no real security for the protocol or application.」§1.1 复述同一个判断，并写出它要处理的成因：「Organizations and developers are presented with many new choices in their use of cryptographic mechanisms.」两句合起来是一个判断：管理失当时算法强度并不等于系统安全，选择失误换来的只是安全感的错觉。",
+          "used": "谁该做什么写在编号章节。§5.6.2 面向采购方：「Agencies that procure systems should consider the potential operational lifetime of the system.」并紧跟一条硬性要求：「The agencies shall either select algorithms and key sizes that are expected to be secure during the entire system lifetime or should ensure that the algorithms and key sizes can be easily updated.」§6.1 把保护义务落在密钥信息本身：「Confidentiality protection shall be provided for all secret key information」，以及「Integrity protection shall be provided for all key information.」层级在同一条里就分了手：考虑运行寿命是 should，第一个分支「The agencies shall either select algorithms and key sizes that are expected to be secure during the entire system lifetime」是 shall，第二个分支「or should ensure that the algorithms and key sizes can be easily updated」回落为 should；§6.1 的两条保护则都是 shall 级。",
+          "broken": "§1.3 的范围段自己划出两条边界。第一条是模块实现：「This Recommendation does not address the implementation details for cryptographic modules that may be used to achieve the identified security requirements.」紧接的一句把细节交回别处：「These details are addressed in FIPS 140,9 the FIPS 140 implementation guidance, and the derived test requirements」（原句在此处接一个 csrc 网址，该条目按发布文本不带 URL 的规矩截到该处之前）」，其后才是归档与备份的运维程序：「This Recommendation does not address the requirements or procedures for operating a key archive or backup capability other than discussing the types of keying material that are appropriate to back up or include in an archive and the protection to be provided to that keying material.」同段还自陈其补位性质：「This Recommendation supplements more focused standards and guidelines.」紧接第一条边界之后另有一句交接：「These details are addressed in FIPS 140」。两条边界合起来的限度是：它规定密钥信息应得何种保护，不规定模块怎样做出，也不给出归档与备份的步骤。",
+          "history": "扉页首两行给出「NIST Special Publication 800-57 Part 1 Revision 5」，作者与单位为「Elaine Barker Computer Security Division Information Technology Laboratory」，DOI 行是「This publication is available free of charge from:」，DOI 10.6028/NIST.SP.800-57pt1r5。致谢页记下第五版所继承的前任作者与机构：「The National Institute of Standards and Technology (NIST) gratefully acknowledges and appreciates contributions by previous authors of this document on the many security issues associated with this Recommendation: William Barker, William Burr, and Timothy Polk from NIST; Miles Smid from Orion Security; and Lydia Zieglar from the National Security Agency.」这些都是文件自己的门面信息：分册与修订号、作者与所在部门、以 DOI 给出的免费获取地址，以及致谢点名的前任作者与机构，可见第五版是在早期版本的作者工作之上重写。",
+          "refs": "- Wikipedia search entry for 密钥管理. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n密钥管理的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Key Management (密钥管理). Its self-definition is the first sentence of the abstract: \"This Recommendation provides cryptographic key-management guidance.\" The next sentence says the work has three parts and that the retained file is Part 1: \"Part 1 provides general guidance and best practices for the management of cryptographic keying material, including definitions of the security services that may be provided when using cryptography and the algorithms and key types that may be employed\". The same abstract assigns the policy content elsewhere: \"Part 2 provides guidance on policy and security planning requirements for U.S. government agencies.\" The first quotation names two of them — the security services cryptography can provide and the algorithms and key types that may be used — while the protection each kind of key needs is stated in the following sentences of the same abstract. The content is a framework, definitions and protection requirements, not an algorithm specification.",
+          "why": "The risk statement opens the Executive Summary: \"The proper management of cryptographic keys is essential to the effective use of cryptography for security.\" The same page gives the cost of choosing badly: \"Inappropriate choices may result in an illusion of security but little or no real security for the protocol or application.\" Section 1.1 repeats that judgement and names the cause it sets out to handle: \"Organizations and developers are presented with many new choices in their use of cryptographic mechanisms.\" Read together, the two sentences say that algorithm strength does not become system security unless key management holds, and that a bad choice buys an appearance of security.",
+          "used": "Who has to do what is stated in numbered sections. Section 5.6.2 addresses procurers: \"Agencies that procure systems should consider the potential operational lifetime of the system.\" followed immediately by a hard requirement: \"The agencies shall either select algorithms and key sizes that are expected to be secure during the entire system lifetime or should ensure that the algorithms and key sizes can be easily updated.\" Section 6.1 puts the duty on the key information itself: \"Confidentiality protection shall be provided for all secret key information\" and \"Integrity protection shall be provided for all key information.\" The wording levels split inside a single sentence: considering the operational lifetime is a should, the first branch \"The agencies shall either select algorithms and key sizes that are expected to be secure during the entire system lifetime\" is a shall, and the second branch \"or should ensure that the algorithms and key sizes can be easily updated\" falls back to should; both §6.1 protections are shall-level.",
+          "broken": "The scope subsection draws two boundaries itself. The first excludes module implementation: \"This Recommendation does not address the implementation details for cryptographic modules that may be used to achieve the identified security requirements.\" The second excludes archive and backup operations: \"This Recommendation does not address the requirements or procedures for operating a key archive or backup capability other than discussing the types of keying material that are appropriate to back up or include in an archive and the protection to be provided to that keying material.\" The same subsection states its complementary role: \"This Recommendation supplements more focused standards and guidelines.\" The first exclusion is followed by the handover itself: \"These details are addressed in FIPS 140\". Taken together the limit is this: the text specifies what protection keying material should receive, not how a module is built and not the procedures for running an archive or backup.",
+          "history": "The first two title-block lines read \"NIST Special Publication 800-57 Part 1 Revision 5\", the author line reads \"Elaine Barker Computer Security Division Information Technology Laboratory\", and the DOI line reads \"This publication is available free of charge from:\" followed by the DOI 10.6028/NIST.SP.800-57pt1r5. The acknowledgements record the predecessors whose work Revision 5 carries forward: \"The National Institute of Standards and Technology (NIST) gratefully acknowledges and appreciates contributions by previous authors of this document on the many security issues associated with this Recommendation: William Barker, William Burr, and Timothy Polk from NIST; Miles Smid from Orion Security; and Lydia Zieglar from the National Security Agency.\" These are front-matter facts taken from the file itself: the part and revision number, the author and division, the free-access DOI line, and the named predecessors, which show that Revision 5 was rewritten on the work of the earlier authors.",
+          "refs": "- Wikipedia search entry for 密钥管理. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nKey Management: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "keying material：一枚密码密钥以及与之配套使用的其他参数。",
+          "cryptoperiod：一枚密钥被允许使用的时间区间。",
+          "security strength：以等效对称密钥位数表示的强度档位。",
+          "trust anchor：被信任用来验证签名的实体及其公钥。",
+          "key management system：自动执行密钥管理流程的系统。",
+          "shall / should：本文件区分强制要求与重要建议的两个措辞。"
+        ],
+        "en": [
+          "Keying material: a cryptographic key and other parameters used with it.",
+          "Cryptoperiod: the period during which a key is allowed to be used.",
+          "Security strength: strength expressed in equivalent symmetric key bits.",
+          "Trust anchor: the trusted entity and its public key used to verify signatures.",
+          "Key management system: the system that automates the key-management process.",
+          "Shall / should: the two wording levels this Recommendation distinguishes."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-57-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥管理：为什么需要 → 核心机制 → 边界。",
+            "en": "Key Management: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密钥管理 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Key Management, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-57-details-flow.zh.svg",
+            "en": "assets/sp800-57-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ca1d3aa3e83d13d4748d41a38b66e900e0db74fdac77fdb1ace0f07f6841e615",
+            "en": "b3f795a9fb2f8b37073ee15a993654c2cbbc402fbd4ec978b373fe8410b53b8c"
+          }
+        },
+        {
+          "id": "sp800-57-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥管理 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Key Management: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "密钥管理 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Key Management, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-57-details-r138-model.zh.svg",
+            "en": "assets/sp800-57-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "96dc7df773c742dd1c3b971623927c2955d022b90e20a9f96bf809a50fcd52a7",
+            "en": "13f7499389bad2544cc0e79ba4a34aa6763aa364c993038874ea15ea9f7811f2"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-57-r139-formal",
+          "entryId": "sp800-57-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：密钥管理的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 密钥管理 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-57-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-57-r139-formal"
+      ],
+      "sources": [
+        "sp800-57-wikipedia",
+        "sp800-57-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-57-r139-formal",
+      "entryId": "sp800-57-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：密钥管理的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 密钥管理 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-57-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

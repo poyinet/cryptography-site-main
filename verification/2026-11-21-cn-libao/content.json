@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R119 full-library mechanism-structure closure for cn-libao-details.",
+  "entries": [
+    {
+      "id": "cn-libao-details",
+      "inventoryIds": [
+        "cn-libao"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出 ECC 点群、ECDLP、SM2 256 位素域参数、ECDH 共享点、Huff 曲线编码 O(log^3 q) 与 MOV 条件，并区分编码、随机 oracle 与实现审计。",
+        "en": "This entry gives the ECC point group, ECDLP, SM2 256-bit prime-field parameters, ECDH shared point, Huff-curve encoding in O(log^3 q) and the MOV condition, separating encoding from a random oracle and an implementation audit."
+      },
+      "title": {
+        "zh": "李宝与椭圆曲线密码",
+        "en": "Li Bao and Elliptic Curve Cryptography"
+      },
+      "claimIds": [
+        "cn-libao-r139-principle",
+        "cn-libao-r139-why",
+        "cn-libao-r139-used",
+        "cn-libao-r139-broken",
+        "cn-libao-r139-history",
+        "cn-libao-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按原始论文或来源重算。",
+        "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the papers or sources."
+      },
+      "sourceIds": [
+        "cn-libao-wikipedia",
+        "cn-libao-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-libao-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "李宝椭圆曲线密码：点群与 ECDLP、SM2 参数、ECDH 与哈希到曲线。",
+            "en": "Li Bao and elliptic-curve cryptography: point group and ECDLP, SM2 parameters, ECDH and hashing to curves."
+          },
+          "alt": {
+            "zh": "李宝椭圆曲线密码：点群与 ECDLP、SM2 参数、ECDH 与哈希到曲线。",
+            "en": "Li Bao and elliptic-curve cryptography: point group and ECDLP, SM2 parameters, ECDH and hashing to curves."
+          },
+          "files": {
+            "zh": "assets/cn-libao-mechanism.zh.svg",
+            "en": "assets/cn-libao-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据 SM2 参数草案、2014 JUSTC 论文与 2018 综述绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the SM2 parameter draft, the 2014 JUSTC paper and the 2018 survey)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "a993ad51a9158eaf0d832add75ac8edccf57e3bcfb8a67ae785d634a41d34381",
+            "en": "9db0c0d8b4619e939f9e284337b1c1a3c627452b0c0ef7bc5ba0e91c4604cb27"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：李宝与椭圆曲线密码（Li Bao and Elliptic Curve Cryptography）。### 点群与离散对数\n\n椭圆曲线 \\(E/\\mathbb{F}_p: y^2=x^3+ax+b\\) 需要判别式 \\(\\Delta=4a^3+27b^2\\ne0\\)。点按弦切法则构成群，公钥 \\(Q=[k]P\\)，ECDLP 就是从 \\(P,Q\\) 求 \\(k\\)。SM2 使用 256 位素域、基点 \\(G\\) 与阶 \\(n\\)；ECDH 的共享点是 \\(S=[d_A]Q_B=[d_A d_B]G\\)。### 从字符串到点\n\n哈希到曲线不是“把哈希值当 x 坐标”那么简单：先把字符串映射到 \\(\\mathbb{F}_q\\)，再用确定编码 \\(\\varphi:\\mathbb{F}_q\\to E(\\mathbb{F}_q)\\) 找点，失败时按规范重试。李宝团队 2014 年给出的 Huff 曲线编码时间为 \\(O(\\log^3 q)\\)，在 SM2 素域上实测 557.8 微秒。",
+          "why": "椭圆曲线把离散对数放到点群，256 位曲线就能提供与传统大整数密码相当的安全级别；但“曲线方程”“基点阶”“哈希到曲线”“签名/密钥交换”是四个不同层面。李宝团队的工作落在“从有限域到曲线的确定编码”这个接口上，正好解释为什么基于身份加密和 SM2 需要它。",
+          "used": "1.先验证曲线方程、判别式、基点阶、余因子与点是否在曲线上。2.生成密钥时检查私钥范围 \\(1\\le d<n\\)，公钥 \\(Q=[d]G\\)。3.ECDH 只输出共享点的 x 坐标时，要按协议做 KDF，不能直接当密钥。4.哈希到曲线要检查编码的像分布、失败重试与常数时间实现；确定编码不是随机 oracle。5.记录曲线名称、参数源、点验证与侧信道防护，别把测试向量当成实现审计。### 不能怎么用\n\n不能只看曲线位数就断言安全；不能忽略无效曲线/小子群攻击；不能把 MOV 的“嵌入次数小”条件省略；不能把 557.8 微秒当成所有平台上的常数时间性能。",
+          "broken": "1.曲线参数错误：a、b、p、n、G 任一不匹配，点群与签名都会失效。2.无效曲线/小子群：未做点验证时，攻击者可把计算引到弱曲线或小阶子群。3.嵌入次数：MOV 攻击在 k 很小时把 ECDLP 降到 \\(\\mathbb{F}_{p^k}\\) 上的离散对数；k 大时这条路径不适用。4.编码映射：\\(\\varphi\\) 不是随机 oracle，像分布、重试与不可微性要单独证明。5.实现：标量乘的访问模式、故障注入与随机数质量不在曲线方程内。",
+          "history": "Koblitz 与 Miller 在 1985 年前后独立提出椭圆曲线密码。SM2 于 2010 年公布，2012 年成为 GM/T 0003 系列标准，规定 256 位素域、曲线参数与签名/密钥交换/加密示例。李宝自 1995 年从事密码学研究，2014 年与于伟、王鲲鹏发表从字符串到 Huff 曲线的散列函数，给出 \\(O(\\log^3 q)\\) 的确定编码与 SM2 素域上 557.8 微秒的实测。\n\n**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是非对称公钥中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 李宝与椭圆曲线密码；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。\n\n不要把“发生过”写成“已证明”，也不要把事件标题扩写成机制结论；没有日期的节点只作逻辑位置。",
+          "refs": "- Wikipedia search entry for 李宝与椭圆曲线密码. https://zh.wikipedia.org/w/index.php?search=%E6%9D%8E%E5%AE%9D%E4%B8%8E%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Li Bao and Elliptic Curve Cryptography. It is registered under asymmetric public-key cryptography. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: China's Parallel Line. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 李宝与椭圆曲线密码. https://zh.wikipedia.org/w/index.php?search=%E6%9D%8E%E5%AE%9D%E4%B8%8E%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "calculationIds": [],
+      "sources": [
+        "cn-libao-wikipedia",
+        "cn-libao-reference-ref"
+      ],
+      "calculations": []
+    }
+  ],
+  "calculations": []
+}

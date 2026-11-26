@@ -1,0 +1,251 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full 2005 SHA-1 collision-event article: the early-2005 53-round attack, the CRYPTO 2005 full 80-round 2^69 attack, the 2^69 vs 2^80 collision-strength gap, NIST deprecation, the 2017 SHAttered first actual collision instance, and the 2020 Shambles chosen-prefix collision. It does not claim the 2005 paper produced a concrete collision pair, and it does not redefine the SHA-1 algorithm entity or the separate 2017/2020 events as this 2005 event.",
+  "entries": [
+    {
+      "id": "sha1event-details",
+      "inventoryIds": [
+        "event-sha1-collision-2005"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 2005 年 SHA-1 碰撞攻击被公开这一事件：53 轮前置攻击、CRYPTO 2005 的完整 80 轮 2^69 攻击、2^69 与 2^80 的碰撞强度差、NIST 弃用，以及 2017 年 SHAttered 首个实际碰撞和 2020 年 Shambles 选择前缀碰撞的后续区分。它不声称 2005 年论文给出了具体碰撞实例，也不把 SHA-1 算法实体、2017/2020 事件并入本事件。",
+        "en": "Covers the 2005 announcement of a SHA-1 collision attack: the earlier 53-round attack, the CRYPTO 2005 full 80-round 2^69 attack, the 2^69 versus 2^80 collision-strength gap, NIST deprecation, and the later distinction from the 2017 SHAttered first actual collision and the 2020 Shambles chosen-prefix collision. It does not claim the 2005 paper produced a concrete collision instance and does not absorb the SHA-1 algorithm entity or the 2017/2020 events."
+      },
+      "title": {
+        "zh": "2005 年 SHA-1 碰撞攻击被公开",
+        "en": "The 2005 full-SHA-1 collision attack"
+      },
+      "claimIds": [
+        "event-sha1-collision-2005-r139-principle",
+        "event-sha1-collision-2005-r139-why",
+        "event-sha1-collision-2005-r139-used",
+        "event-sha1-collision-2005-r139-broken",
+        "event-sha1-collision-2005-r139-history",
+        "event-sha1-collision-2005-r139-refs"
+      ],
+      "calculationIds": [
+        "sha1event-calc-shattered-pair",
+        "sha1event-calc-complexity"
+      ],
+      "sourceIds": [
+        "event-sha1-collision-2005-wikipedia",
+        "event-sha1-collision-2005-reference-ref"
+      ],
+      "related": [
+        "sha1",
+        "event-md5-collision-2004",
+        "term--birthday-attack",
+        "cryptographic-hash"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. sha1 is the algorithm; event-md5-collision-2004 is the 2004 MD5 event; the birthday-attack term is generic; cryptographic-hash is the domain term. SHAttered 2017 and Shambles 2020 are discussed as later context, not aliases or merged identities of this 2005 event.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**事件**：2005 年 SHA-1 碰撞攻击被公开（The 2005 full-SHA-1 collision attack）。2005 年初，SHA-1 碰撞攻击被公开。RFC 6194 记载：第一项攻击针对缩减到 53 轮的 SHA-1；紧接着 Wang、Yin、Yu 的论文把结果推进到完整 80 轮，并给出约 2^69 次操作的碰撞攻击。2005 年论文（CRYPTO 2005，LNCS 3621）报告的是攻击方法与复杂度估计，不是一条可以直接下载验证的具体碰撞消息对。SHA-1 输出 160 位摘要，完整算法为 80 轮。对 160 位摘要，通用生日攻击约需 2^80 次操作；2005 年的 2^69 估计因此明显低于理想碰撞强度。它不改变 SHA-1 的原像或第二原像安全性结论：RFC 6194 指出，2005 年结果是碰撞攻击，截至 2011 年没有已知的完整 SHA-1 原像攻击。真正可独立验证的完整 SHA-1 碰撞实例出现在 2017 年：Stevens 等的 SHAttered 给出两条哈希相同、显示内容不同的 PDF。2020 年 Leurent 与 Peyrin 的 Shambles 又给出了选择前缀碰撞，并演示了 PGP/GnuPG 身份冒充。三者是相关但不同的事件，不能把 2005 年的 2^69 估计直接等同于 2017 年的实际碰撞，也不能把 SHAttered 当作 2005 年的成果。",
+          "why": "2005 年结果之所以重要，是因为它把 SHA-1 的碰撞抗性从理想的 2^80 降到约 2^69，并证明完整 80 轮 SHA-1 的差分分析已经可行。对数字签名和证书而言，碰撞抗性是签名只绑定一个消息的关键假设；碰撞成本下降会直接侵蚀这一假设。RFC 6194 在 2011 年总结 SHA-0/SHA-1 安全考虑时指出，SHA-1 的碰撞抗性显著低于理想哈希函数，并建议协议设计者认真考虑支持更强的哈希。NIST 随后限制 SHA-1 的签名用途：NIST 建议 2010 年 12 月 31 日之后不再用 SHA-1 生成数字签名，并规定美国联邦政府机构在 2013 年 12 月 31 日之后不得为敏感但非机密信息生成 SHA-1 签名。",
+          "used": "对协议和产品的影响是安全策略层面的：SHA-1 不应再用于需要碰撞抗性的新签名或证书场景。NIST SP 800-131A Rev.2 表 8 对 SHA-1 的数字签名生成、签名验证、不要求碰撞抗性的非签名应用分别给出判级\"disallowed\"、\"legacy use\"与\"acceptable\"；其中数字签名生成不允许，除非 NIST 协议特定指南明确允许。SHAttered 论文指出，尽管已被弃用，SHA-1 在 2017 年仍广泛用于文档与 TLS 证书签名，以及 Git 等软件的完整性与备份；这正说明`弃用建议`与`实际迁移`之间的差距。本文只讨论 2005 年事件及其后续安全影响，不把 SHA-1 算法实体或 2017/2020 事件并入本事件。",
+          "broken": "**2005 年是复杂度结果，不是公开的具体碰撞对**：论文报告完整 80 轮、约 2^69 次操作的碰撞攻击；它给出了攻击方法、差分路径和复杂度估计，而不是可直接验证的两条消息。把它说成2005 年已经实际碰撞 SHA-1会混淆事件。**2017 年才是首个实际碰撞实例**：SHAttered 的两份 PDF 都是 422435 字节，SHA-1 都是 38762cf7f55934b34d179ae6a4c80cadccbb7f0a，但字节内容不同；该工作的计算量约等于 2^63.1 次 SHA-1 压缩，耗费约 6,500 CPU 年和 100 GPU 年。**2020 年进一步扩展到选择前缀碰撞**：Shambles 的选择前缀碰撞复杂度约 2^63.4（普通/同前缀碰撞约 2^61.2），实际计算用 900 块 Nvidia GTX 1060 GPU 跑了两个月，并演示了 PGP/GnuPG 身份冒充。作者的结论是 SHA-1 不应用于任何期望碰撞抗性的安全协议。**边界**：这些数字是复杂度或成本估计，不是运行时间测量；2005 年的 2^69、2017 年的 2^63.1、2020 年的 2^63.4 属于不同工作和不同攻击模型。SHA-1 的原像安全性并未被这些碰撞结果直接攻破；不要把碰撞、第二原像和原像混为一谈。",
+          "history": "- **2005 年初**：针对缩减到 53 轮 SHA-1 的攻击被公开。- **2005 年**：Wang、Yin、Yu 在 CRYPTO 2005 发表 \"Finding Collisions in the Full SHA-1\"，报告完整 80 轮、约 2^69 次操作的碰撞攻击。- **2011 年 3 月**：RFC 6194 汇总 SHA-0/SHA-1 安全考虑；NIST 同年正式弃用 SHA-1。- **2017 年**：Stevens 等在 CRYPTO 2017 发表 SHAttered，给出首个完整 SHA-1 实际碰撞实例。- **2019 年 3 月**：NIST SP 800-131A Rev.2 表 8 给出 SHA-1 的当前用途状态。- **2020 年 8 月**：Leurent 与 Peyrin 在 USENIX Security 发表 Shambles，给出 SHA-1 选择前缀碰撞与 PGP 演示。",
+          "refs": "- Wikipedia search entry for 2005 年 SHA-1 碰撞攻击被公开. https://zh.wikipedia.org/w/index.php?search=2005%20%E5%B9%B4%20SHA-1%20%E7%A2%B0%E6%92%9E%E6%94%BB%E5%87%BB%E8%A2%AB%E5%85%AC%E5%BC%80\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "2005 年的 2^69 次操作比生日攻击的 2^80 少约 2048 倍：2^(80−69) = 2^11 = 2048。这个比例说明复杂度估计的意义，但它不是实际运行时间。作为后续事件的可验证实例，SHAttered 的两份一页 PDF 都是 422435 字节，SHA-1 都是 `38762cf7f55934b34d179ae6a4c80cadccbb7f0a`，但字节内容不同；本批次用 SHA-1 教学实现和 Node/OpenSSL 复算这一对文件。它验证的是 2017 年碰撞，不是 2005 年的攻击结果。2017 年的 2^63.1 与 2020 年的 2^63.4 是不同工作的成本估计；2^(69−63.1) 约等于 59.7，说明 2017 年实际碰撞比 2005 年的理论估计又低了约六十倍（量级比较，非严格换算）。"
+        },
+        "en": {
+          "principle": "**Event**: The 2005 full-SHA-1 collision attack. It is registered under hashes, dated 2005. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in hashes, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The registered date is 2005; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 2005 年 SHA-1 碰撞攻击被公开. https://zh.wikipedia.org/w/index.php?search=2005%20%E5%B9%B4%20SHA-1%20%E7%A2%B0%E6%92%9E%E6%94%BB%E5%87%BB%E8%A2%AB%E5%85%AC%E5%BC%80\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "2005 年 SHA-1 碰撞事件：2005 年公开的针对完整 SHA-1 的碰撞攻击结果，不是具体碰撞实例的公开。",
+          "SHA-1：输出 160 位摘要、完整 80 轮的哈希函数；2005 年攻击针对完整 80 轮版本。",
+          "碰撞：两条不同消息得到相同摘要。",
+          "碰撞攻击：寻找同摘要消息对的方法；2005 年结果是攻击方法与复杂度估计。",
+          "生日界：对 160 位摘要，通用生日攻击约需 2^80 次操作。",
+          "53 轮攻击：2005 年初针对缩减到 53 轮的 SHA-1 的理论攻击。",
+          "完整 80 轮：SHA-1 的完整轮数；2005 年论文报告约 2^69 次操作的碰撞攻击。",
+          "2^69：2005 年论文给出的完整 SHA-1 碰撞攻击复杂度估计。",
+          "复杂度估计：对攻击所需操作数的理论估计，不等于实际执行时间或成本。",
+          "差分路径：差分攻击中规定消息差分如何传播的路径。",
+          "消息修改：在搜索前调整消息字以满足差分条件的技术。",
+          "缩减轮：为分析方便而减少轮数的 SHA-1 版本；结果不能直接等同于完整算法。",
+          "SHAttered：2017 年 Stevens 等给出的首个完整 SHA-1 实际碰撞实例；不是 2005 年事件。",
+          "实际碰撞实例：两条具体消息及其相同摘要，可被独立验证。",
+          "选择前缀碰撞：攻击者可分别为两条消息选择不同前缀而仍得到碰撞。",
+          "Shambles：2020 年 Leurent 与 Peyrin 的 SHA-1 选择前缀碰撞工作。",
+          "PGP 身份冒充：利用碰撞证书把第三方对一把密钥的认证签名转移到另一把伪造密钥。",
+          "NIST 弃用：NIST 因密码分析弱点限制或停止 SHA-1 的某些用途。",
+          "SP 800-131A：NIST 的算法过渡指南；表 8 给出 SHA-1 在签名生成、验证和非签名应用中的状态。",
+          "RFC 6194：2011 年汇总 SHA-0/SHA-1 安全考虑的 RFC。",
+          "CPU 年/GPU 年：计算资源的时间单位；用于描述碰撞搜索成本，不是严格能耗或价格。",
+          "SHA-1 压缩：SHA-1 每处理一个 512 位块执行的一次压缩函数调用。",
+          "证书签名：证书颁发机构用私钥对证书内容生成的签名；哈希碰撞可破坏其唯一绑定。",
+          "时间线：2005 年攻击、2011 年安全建议、2017 年 SHAttered、2020 年 Shambles 的顺序关系。"
+        ],
+        "en": [
+          "2005 SHA-1 collision event: the 2005 announcement of a collision attack on full SHA-1, not the publication of a concrete collision instance.",
+          "SHA-1: a 160-bit, 80-round hash function; the 2005 attack targets the full 80-round version.",
+          "Collision: two different messages with the same digest.",
+          "Collision attack: a method for finding same-digest message pairs; the 2005 result is an attack method and complexity estimate.",
+          "Birthday bound: for a 160-bit digest, a generic birthday attack costs about 2^80.",
+          "53-round attack: the early-2005 theoretical attack on SHA-1 reduced to 53 rounds.",
+          "Full 80 rounds: the complete SHA-1 round count; the 2005 paper reports a collision attack with about 2^69 operations.",
+          "2^69: the 2005 paper's complexity estimate for a full-SHA-1 collision attack.",
+          "Complexity estimate: a theoretical estimate of required operations, not a measured runtime or cost.",
+          "Differential path: the path specifying how message differences propagate in a differential attack.",
+          "Message modification: adjusting message words before the search so differential conditions hold.",
+          "Reduced rounds: a SHA-1 version with fewer rounds for analysis; results do not automatically apply to the full algorithm.",
+          "SHAttered: the first actual full-SHA-1 collision instance, produced by Stevens et al. in 2017; not the 2005 event.",
+          "Actual collision instance: two concrete messages and their common digest that can be independently verified.",
+          "Chosen-prefix collision: a collision where the attacker chooses a different prefix for each message.",
+          "Shambles: the 2020 SHA-1 chosen-prefix collision work by Leurent and Peyrin.",
+          "PGP identity impersonation: using colliding certificates to transfer a third party's certification signature from one key to a forged key.",
+          "NIST deprecation: NIST restricting or ending certain SHA-1 uses because of cryptanalytic weaknesses.",
+          "SP 800-131A: NIST's algorithm-transition guidance; Table 8 gives SHA-1 status for signature generation, verification and non-signature applications.",
+          "RFC 6194: the 2011 RFC summarizing SHA-0/SHA-1 security considerations.",
+          "CPU-year/GPU-year: units of compute time used to describe collision-search cost, not strict energy or price.",
+          "SHA-1 compression: one invocation of the SHA-1 compression function per 512-bit block.",
+          "Certificate signature: a CA's signature over certificate content; a hash collision can break its unique binding.",
+          "Timeline: the ordering of the 2005 attack, 2011 guidance, 2017 SHAttered and 2020 Shambles."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sha1event-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "2005 年 SHA-1 碰撞攻击被公开：为什么需要 → 核心机制 → 边界。",
+            "en": "The 2005 full-SHA-1 collision attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "2005 年 SHA-1 碰撞攻击被公开 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for The 2005 full-SHA-1 collision attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sha1event-details-flow.zh.svg",
+            "en": "assets/sha1event-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "22610c892d11670b91158a9f0b857f827dda7fc383d7a6ae98a7e13750b7f1b6",
+            "en": "97e576e696ac78fd845f1b96283ffa5d13fe3ab8b59c1c057972fa267ea5f10d"
+          }
+        }
+      ],
+      "sources": [
+        "event-sha1-collision-2005-wikipedia",
+        "event-sha1-collision-2005-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "sha1event-calc-shattered-pair",
+          "entryId": "sha1event-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The two SHAttered one-page PDFs, shattered-1.pdf and shattered-2.pdf, each 422435 bytes, with their SHA-1 and SHA-256 digests stored in vectors.json",
+          "expected": "The two files have equal length, different byte contents, and the same SHA-1 38762cf7f55934b34d179ae6a4c80cadccbb7f0a under both the teaching implementation and Node/OpenSSL",
+          "sourceIds": [
+            "event-sha1-collision-2005-wikipedia"
+          ],
+          "dependencies": [
+            "sha1event-check.mjs",
+            "event-sha1-teaching.mjs",
+            "shattered-1.pdf",
+            "shattered-2.pdf",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "This verifies the 2017 SHAttered collision pair as later context; it does not produce, verify or date the 2005 attack, which reported a complexity estimate rather than a concrete pair."
+        },
+        {
+          "id": "sha1event-calc-complexity",
+          "entryId": "sha1event-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The complexity exponents 80 (birthday bound), 69 (2005 full-SHA-1 attack), 63.1 (2017 SHAttered) and 63.4 (2020 Shambles chosen-prefix)",
+          "expected": "2^69 is less than 2^80, the ratio 2^80/2^69 is exactly 2048, the ratio 2^(69-63.1) is about 59.7, and the timeline orders 2005 < 2011 < 2017 < 2020",
+          "sourceIds": [
+            "event-sha1-collision-2005-wikipedia"
+          ],
+          "dependencies": [
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Arithmetic on published exponents only; it does not reproduce the attacks or measure runtime."
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sha1event-calc-shattered-pair",
+      "entryId": "sha1event-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The two SHAttered one-page PDFs, shattered-1.pdf and shattered-2.pdf, each 422435 bytes, with their SHA-1 and SHA-256 digests stored in vectors.json",
+      "expected": "The two files have equal length, different byte contents, and the same SHA-1 38762cf7f55934b34d179ae6a4c80cadccbb7f0a under both the teaching implementation and Node/OpenSSL",
+      "sourceIds": [
+        "event-sha1-collision-2005-wikipedia"
+      ],
+      "dependencies": [
+        "sha1event-check.mjs",
+        "event-sha1-teaching.mjs",
+        "shattered-1.pdf",
+        "shattered-2.pdf",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "This verifies the 2017 SHAttered collision pair as later context; it does not produce, verify or date the 2005 attack, which reported a complexity estimate rather than a concrete pair."
+    },
+    {
+      "id": "sha1event-calc-complexity",
+      "entryId": "sha1event-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The complexity exponents 80 (birthday bound), 69 (2005 full-SHA-1 attack), 63.1 (2017 SHAttered) and 63.4 (2020 Shambles chosen-prefix)",
+      "expected": "2^69 is less than 2^80, the ratio 2^80/2^69 is exactly 2048, the ratio 2^(69-63.1) is about 59.7, and the timeline orders 2005 < 2011 < 2017 < 2020",
+      "sourceIds": [
+        "event-sha1-collision-2005-wikipedia"
+      ],
+      "dependencies": [
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Arithmetic on published exponents only; it does not reproduce the attacks or measure runtime."
+    }
+  ]
+}

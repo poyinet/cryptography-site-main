@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R119 full-library mechanism-structure closure for gmt0125-details.",
+  "entries": [
+    {
+      "id": "gmt0125-details",
+      "inventoryIds": [
+        "gmt0125"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "把 GM/T 0125.2—2022 的 JWS 保护头部、签名输入、SM2/SM3 签名、HMAC-SM3、紧凑/JSON 序列化写成公式；把“算法标识必须与密钥绑定”写成可检查条件。",
+        "en": "States GM/T 0125.2—2022 JWS protected headers, signing input, SM2/SM3 signatures, HMAC-SM3 and compact/JSON serialization as formulas; it makes “algorithm identifier must bind to the key” a checkable condition."
+      },
+      "title": {
+        "zh": "国密 JSON Web 语法",
+        "en": "GM/T 0125 Chinese JOSE"
+      },
+      "claimIds": [
+        "gmt0125-r139-principle",
+        "gmt0125-r139-why",
+        "gmt0125-r139-used",
+        "gmt0125-r139-broken",
+        "gmt0125-r139-history",
+        "gmt0125-r139-refs"
+      ],
+      "sourceIds": [
+        "gmt0125-wikipedia",
+        "gmt0125-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "cose",
+        "sm2"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gmt0125-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "GM/T 0125：保护头部、签名输入、SM2/HMAC-SM3 与三段序列化。",
+            "en": "GM/T 0125: protected header, signing input, SM2/HMAC-SM3 and three-part serialization."
+          },
+          "alt": {
+            "zh": "GM/T 0125：保护头部、签名输入、SM2/HMAC-SM3 与三段序列化。",
+            "en": "GM/T 0125: protected header, signing input, SM2/HMAC-SM3 and three-part serialization."
+          },
+          "files": {
+            "zh": "assets/gmt0125-mechanism.zh.svg",
+            "en": "assets/gmt0125-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "来源：GM/T 0125.1/.2—2022 官方公告与第 2 部分全文；公式按 §6-§12 重述。",
+            "en": "Sources: GM/T 0125.1/.2—2022 official announcement and Part 2 full text; formulas restate §§6-12."
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-24"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "ac1e11b6d0248c99d353389a60b94ffb650d172594cfc4e874fa8aa554711e26",
+            "en": "96387114417da1abd30742b961a4740c4cb15ef39ccb973ebf3b6c118fa1c003"
+          }
+        },
+        {
+          "id": "gmt0125-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "国密 JSON Web 语法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for GM/T 0125 Chinese JOSE: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "国密 JSON Web 语法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for GM/T 0125 Chinese JOSE, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gmt0125-details-r138-model.zh.svg",
+            "en": "assets/gmt0125-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6163e8b87294c9a552b21a2e4607371cb002c308c7632c9527dd6cd091229ee1",
+            "en": "310f597461ca58e5204d3b1a05365ef26aec684c0d61bd6a3d52cfcd72919c8a"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：国密 JSON Web 语法（Chinese JSON Object Signing and Encryption）。GM/T 0125.2—2022 的 JWS 由 JOSE 头部、有效载荷和签名组成。保护头部先 \\(UTF8\\) 再 \\(base64url\\)：\\(protected\\_b64=base64url(UTF8(header))\\)；有效载荷编码为 \\(payload\\_b64=base64url(payload)\\)。签名输入是 \\(M=ASCII(protected\\_b64\\|\\text{“.”}\\|payload\\_b64)\\)。数字签名算法 \\(SGD\\_SM3\\_SM2\\) 用 SM2 私钥对 \\(M\\) 签名，杂凑为 SM3，输出按 DER 编码；消息鉴别算法 \\(SGD\\_SM3\\_HMAC\\) 用 \\(HMAC\\text{-}SM3(K,M)\\)，输出 256 位。紧凑序列化为 \\(protected\\_b64\\|\\text{“.”}\\|payload\\_b64\\|\\text{“.”}\\|base64url(sig)\\)；JSON 序列化支持多个签名对象，但保护头部与无保护头部的并集必须满足 \\(alg\\) 必选、名称唯一。",
+          "why": "国密 JOSE 不是“把 JWT 换个签名算法”那么简单。它把 \\(alg\\) 作为算法标识，把 \\(kid/jwk/x5c/x5t#sm3\\) 作为密钥标识，把保护头部与无保护头部分开；验证时如果只读 \\(alg\\) 字符串、不校验密钥类型，就会重演 JWS 算法混淆。公式化的关键是把“签名输入”“签名值编码”“密钥绑定”三件事分开：签名输入固定为保护头部编码、点、载荷编码；SM2 输出 DER；HMAC 输出 256 位；验证条件是 \\(alg\\in Allow(key)\\) 且 \\(key=KeyStore[Id]\\)。",
+          "used": "生成时先选算法：SM2 签名用 \\(SGD\\_SM3\\_SM2\\)，共享密钥 MAC 用 \\(SGD\\_SM3\\_HMAC\\)；再构造保护头部并编码，拼出 \\(M\\)，计算签名并 base64url。验证时解析紧凑或 JSON 序列化，检查 \\(alg\\) 存在且在密钥允许列表内，按 \\(kid/jwk/x5c/x5t#sm3\\) 找到密钥，重新拼 \\(M\\) 并验证签名。多签名场景逐个验证；无保护头部可以携带展示信息，但不能作为安全决策的唯一依据。",
+          "broken": "边界有四条。第一，无保护头部不进入签名，攻击者可以改它；任何影响安全决策的头部都应放进保护头部。第二，\\(alg\\) 与密钥类型必须绑定：把 SM2 公钥当 HMAC 密钥、或接受 \\(none\\)，都会破坏验证。第三，base64url 必须去 padding 且按标准解码，JSON 序列化中重复头部参数应拒绝。第四，SM2 签名值按 DER 编码，长度不是固定 64 字节；实现不能把 DER 当固定长度切片。标准不规定 JWT 声明语义、密钥生命周期或侧信道防护。",
+          "history": "GM/T 0125《JSON Web 密码应用语法规范》于 2022-11-20 发布、2023-06-01 实施，分为算法标识、数字签名、数据加密、密钥四部分；第 2 部分规定 JWS，给出 \\(SGD\\_SM3\\_SM2\\) 与 \\(SGD\\_SM3\\_HMAC\\) 的生成/验证流程和紧凑/JSON 序列化示例。这里按国家密码管理局公告与第 2 部分全文叙述，不把通用 JWT 生态的算法混进国密标识。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 国密 JSON Web 语法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for 国密 JSON Web 语法. https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Chinese JSON Object Signing and Encryption (国密 JSON Web 语法). GM/T 0125.2—2022 JWS has a JOSE header, payload and signature. The protected header is UTF-8 then base64url: \\(protected\\_b64=base64url(UTF8(header))\\); the payload is \\(payload\\_b64=base64url(payload)\\). The signing input is \\(M=ASCII(protected\\_b64\\|\\text{“.”}\\|payload\\_b64)\\). \\(SGD\\_SM3\\_SM2\\) signs \\(M\\) with an SM2 private key, hashes with SM3 and encodes the signature in DER; \\(SGD\\_SM3\\_HMAC\\) computes \\(HMAC\\text{-}SM3(K,M)\\) with 256-bit output. Compact serialization is \\(protected\\_b64\\|\\text{“.”}\\|payload\\_b64\\|\\text{“.”}\\|base64url(sig)\\); JSON serialization supports multiple signatures, but the union of protected and unprotected headers must have a required \\(alg\\) and unique names.",
+          "why": "Chinese JOSE is not just “JWT with a different signature algorithm”. It treats \\(alg\\) as the algorithm identifier, \\(kid/jwk/x5c/x5t#sm3\\) as key identifiers, and separates protected from unprotected headers; a verifier that reads only the \\(alg\\) string without checking the key type repeats JWS algorithm confusion. The formula-level split is threefold: signing input is protected_b64 dot payload_b64; SM2 output is DER; HMAC output is 256 bits; verification requires \\(alg\\in Allow(key)\\) and \\(key=KeyStore[Id]\\).",
+          "used": "To generate, choose the algorithm first: \\(SGD\\_SM3\\_SM2\\) for SM2 signatures or \\(SGD\\_SM3\\_HMAC\\) for a shared-key MAC; build and encode the protected header, form \\(M\\), compute the signature and base64url it. To verify, parse compact or JSON serialization, check that \\(alg\\) exists and is allowed for the key, locate the key by \\(kid/jwk/x5c/x5t#sm3\\), rebuild \\(M\\) and verify. In multi-signature cases verify each signature; unprotected headers may carry presentation data but must not be the sole basis for a security decision.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "There are four boundaries. First, unprotected headers are outside the signature and can be changed; any header that affects a security decision belongs in the protected header. Second, \\(alg\\) and key type must bind: treating an SM2 public key as an HMAC key or accepting \\(none\\) breaks verification. Third, base64url must omit padding and decode by the standard, and duplicate header parameters in JSON serialization must be rejected. Fourth, SM2 signatures are DER-encoded and not a fixed 64 bytes; implementations must not slice DER as a fixed-length value. The standard does not define JWT claim semantics, key lifecycle or side-channel protection.",
+          "history": "GM/T 0125 “JSON Web cryptographic application syntax specification” was published on 2022-11-20 and took effect on 2023-06-01, in four parts: algorithm identifiers, signatures, data encryption and keys. Part 2 specifies JWS, with \\(SGD\\_SM3\\_SM2\\) and \\(SGD\\_SM3\\_HMAC\\) generation/verification and compact/JSON examples. The account follows the State Cryptography Administration announcement and Part 2, and does not mix generic JWT ecosystem algorithms into the Chinese identifiers.",
+          "refs": "- Wikipedia search entry for 国密 JSON Web 语法. https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nChinese JSON Object Signing and Encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculationIds": [
+        "gmt0125-r139-formal"
+      ],
+      "calculations": [
+        {
+          "id": "gmt0125-r139-formal",
+          "entryId": "gmt0125-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 国密 JSON Web 语法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gmt0125-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "sources": [
+        "gmt0125-wikipedia",
+        "gmt0125-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gmt0125-r139-formal",
+      "entryId": "gmt0125-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 国密 JSON Web 语法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gmt0125-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

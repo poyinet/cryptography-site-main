@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition reviewed dossier for chi-square-steganalysis-details.",
+  "entries": [
+    {
+      "id": "chi-square-steganalysis-details",
+      "inventoryIds": [
+        "chi-square-steganalysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R117 隐写分析、侧信道、流密码、交互证明与签名定义批次：把“卡方隐写分析”从目录深度条目改写为含机制陈述、符号公式、参数/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition batch: rewrote \"Chi-Square Steganalysis\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, parameters/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "卡方隐写分析",
+        "en": "Chi-Square Steganalysis"
+      },
+      "claimIds": [
+        "chi-square-steganalysis-r139-principle",
+        "chi-square-steganalysis-r139-why",
+        "chi-square-steganalysis-r139-used",
+        "chi-square-steganalysis-r139-broken",
+        "chi-square-steganalysis-r139-history",
+        "chi-square-steganalysis-r139-refs"
+      ],
+      "sourceIds": [
+        "chi-square-steganalysis-wikipedia",
+        "chi-square-steganalysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "term--steganalysis"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "chi-square-steganalysis-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "卡方隐写分析机制图：LSB 替换前后的成对直方图、χ² 统计量与 p 的读法，以及失效条件。",
+            "en": "Chi-square steganalysis mechanism: paired histograms before and after LSB replacement, the χ² statistic and p reading, plus failure conditions."
+          },
+          "alt": {
+            "zh": "左右两组成对桶显示替换前后的计数变化，中间是 χ² 公式与自由度，底部标出随机分散嵌入等失效条件。",
+            "en": "Paired bins on the left and right show counts before and after replacement, with the χ² formula and degrees of freedom in the middle, and failure conditions below."
+          },
+          "files": {
+            "zh": "assets/chi-square-steganalysis-details-mechanism.zh.svg",
+            "en": "assets/chi-square-steganalysis-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "af55dc0488fdd342baf69f1b605c30ade0801945d8b77ead6b744c7eeb66064f",
+            "en": "80810d1e49ae86894711ddb87dc675c4d350b0f91e86356230e07c9431654061"
+          }
+        },
+        {
+          "id": "chi-square-steganalysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "卡方隐写分析 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Chi-Square Steganalysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "卡方隐写分析 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Chi-Square Steganalysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/chi-square-steganalysis-details-r138-model.zh.svg",
+            "en": "assets/chi-square-steganalysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "979140b3dcbec388a0c5048a7aa7fd35150edae3416a9e6fe77c37cc066df27e",
+            "en": "ce63d6470633284895f869f7ad4f4519e52a364d85873e3fd73d6894d736ffd5"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：卡方隐写分析（Chi-Square Steganalysis）。### 成对值的直方图\n\nLSB replacement 把每个样本的最低比特替换为消息位。若消息位近似随机，原本落在 2i 与 2i+1 两个相邻取值的样本会互相混合；嵌入率越高，两个桶的计数越接近相等。把第 i 对的观测计数记为 h_{2i}、h_{2i+1}，零假设下的期望为 y_i^* = (h_{2i} + h_{2i+1}) / 2。### 卡方统计量\n\n以 y_i = h_{2i} 为观测值，计算\n\nχ² = Σ_i (y_i - y_i^*)^2 / y_i^*。只保留 y_i^* > 4 的对；若相邻桶计数太少，要先合并，并把自由度相应减一。自由度 ν 等于合并后的对数减一。这个统计量衡量的是“观测到的偶数桶计数”与“成对平均后的期望”之间的偏差。在原论文的检验里，p = 1 - F_{χ²,ν}(χ²)，其中 F 是卡方分布的累积分布函数。χ² 越小，p 越接近 1，表示“成对值已被拉平”的解释越强；χ² 很大时 p 接近 0。这个 p 不是“隐藏消息内容”的概率，只是 LSB replacement 假设下的拟合程度。逐窗扫描可以估计顺序嵌入的结束位置。",
+          "why": "自然图像的最低比特并不独立；相邻灰度或 DCT 系数对通常不相等。LSB 替换把一对值变成可交换的桶，统计上的“成对相等”因此成为可检测的痕迹。它不需要知道密钥或消息内容，只需要直方图。### 与视觉攻击的分工\n\n位平面视觉攻击靠人眼观察 LSB 平面的结构；卡方攻击把同一现象变成可重复的统计量。两者都针对朴素的 LSB replacement，不等价于对所有隐写方案都有效。### 对隐写设计的含义\n\n矩阵嵌入、F5、湿纸编码、扩频和自适应嵌入会打乱成对值关系；随机分散嵌入会让固定窗口的卡方统计失去位置信息。设计者必须让嵌入修改的统计分布接近载体，而不是只把消息位写进 LSB。",
+          "used": "1.取得可疑载体，记录格式、量化表、色彩空间和重采样历史。2.按取值对建立直方图；对 DCT 系数按相邻量化值配对，对索引图像按调色板顺序配对。3.合并期望计数过小的桶，计算 χ² 与 ν。4.用 p = 1 - F(χ²,ν) 判断“成对值被拉平”的强度，并对图像做滑窗扫描定位可能的嵌入区间。5.用已知载体、已知嵌入器和不同嵌入率做校准；报告只能写“存在 LSB replacement 的统计迹象”，不能直接写“提取到消息”。### 工具位置\n\nStegdetect 把卡方、RS 分析等测试组合成候选筛选；卡方负责快速筛出成对值异常，后续仍要人工或专用工具验证。",
+          "broken": "1.非 LSB replacement：LSB matching、矩阵嵌入、F5、湿纸编码等不保证成对值相等。2.随机分散嵌入：固定窗口的统计被稀释，原版顺序扫描可能找不到明显区间。3.低嵌入率：少量修改淹没在载体天然噪声中。4.载体本身成对值接近相等（合成图、调色板图、强量化图），会产生高 p 的假阳性。5.消息位不随机，或嵌入器做了统计补偿。6.经过有损重压缩、裁剪、缩放或滤波，痕迹被破坏。卡方检验的是直方图拟合，不是密码分析；高 p 不能证明存在秘密消息，低 p 也不能证明没有。它的结论依赖载体、嵌入器和窗口参数，必须与校准样本一起报告。",
+          "history": "Westfeld 与 Pfitzmann 在 1999 年系统化了对 EzStego、Jsteg、Steganos、S-Tools 等工具的攻击，把 LSB 平面的视觉异常与成对值卡方检验结合起来。论文强调：LSB 并非天然随机，朴素替换会留下统计结构。### 后续发展\n\nProvos 与 Honeyman 在 2002 年把卡方等检测器放进互联网图像扫描框架，并指出统计检测只能给出候选，不能替代密钥或消息提取。后来的扩展卡方、RS 分析、校准和机器学习方法继续处理随机分散嵌入与低嵌入率。",
+          "refs": "- Wikipedia search entry for 卡方隐写分析. https://zh.wikipedia.org/w/index.php?search=%E5%8D%A1%E6%96%B9%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n卡方隐写分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Chi-Square Steganalysis (卡方隐写分析). ### The paired-value histogram\n\nLSB replacement overwrites the least significant bit of each sample with a message bit. If the message bits are close to random, samples originally in the adjacent values 2i and 2i+1 are mixed; the higher the embedding rate, the closer the two bins become. Write the observed counts of pair i as h_{2i} and h_{2i+1}. Under the null hypothesis the expected count is y_i^* = (h_{2i} + h_{2i+1}) / 2. ### The chi-square statistic\n\nUsing y_i = h_{2i} as the observation, compute\n\nχ² = Σ_i (y_i - y_i^*)^2 / y_i^*. Keep only pairs with y_i^* > 4. If a pair has too few counts, pool adjacent categories first and reduce the degrees of freedom accordingly. The degrees of freedom ν equal the number of pooled pairs minus one. The statistic measures the deviation between the observed even-bin counts and the paired-average expectation. ### Reading the embedding probability\n\nIn the original test, p = 1 - F_{χ²,ν}(χ²), where F is the chi-square cumulative distribution. Smaller χ² and p closer to 1 support the explanation that the paired values have been flattened; a large χ² gives p near 0. This p is not the probability that a secret message exists; it is a goodness-of-fit reading under the LSB-replacement hypothesis. A sliding-window scan can estimate where a sequential embedding ends.",
+          "why": "Natural images do not have independent least significant bits; adjacent grey levels or DCT coefficient pairs are usually unequal. LSB replacement turns a pair into interchangeable bins, so “paired equality” becomes a detectable trace. It requires no key and no message content, only a histogram.\n\nA bit-plane visual attack relies on a human looking at the structure of the LSB plane; the chi-square attack turns the same phenomenon into a repeatable statistic. Both target simple LSB replacement and neither is valid for every steganographic scheme.\n\nMatrix embedding, F5, wet-paper coding, spread spectrum and adaptive embedding disturb the paired-value relation; randomly scattered embedding dilutes the statistic in a fixed window. A designer must make the statistical distribution of modifications resemble the cover, not merely write message bits into the LSB.",
+          "used": "1. Obtain the suspect carrier and record its format, quantisation tables, colour space and resampling history. 2. Build histograms by value pairs; for DCT coefficients pair adjacent quantised values, and for indexed images follow the palette order. 3. Pool bins whose expected counts are too small, then compute χ² and ν. 4. Read p = 1 - F(χ²,ν) as the strength of the “pairs flattened” explanation, and scan with a sliding window to locate a possible embedding interval. 5. Calibrate against known covers, known embedders and several embedding rates. The report may say “a statistical trace of LSB replacement”, not “the message was extracted”.\n\nStegdetect combines chi-square, RS analysis and other tests into a candidate filter. Chi-square provides a fast screen for paired-value anomalies; a human or a specialised extractor must still verify the result.",
+          "broken": "1. Not LSB replacement: LSB matching, matrix embedding, F5 and wet-paper coding do not guarantee equal paired bins. 2. Randomly scattered embedding dilutes a fixed-window statistic, so the original sequential scan may find no clear interval. 3. A low embedding rate is buried in the cover’s natural noise. 4. Covers whose paired bins are already nearly equal (synthetic images, palette images, strongly quantised images) can produce false positives with high p. 5. Message bits are not random, or the embedder applies statistical compensation. 6. Lossy recompression, cropping, scaling or filtering destroys the trace.\n\nThe chi-square test examines a histogram fit, not a cipher. A high p does not prove a secret message, and a low p does not prove its absence. Conclusions depend on the cover, embedder and window parameters, and must be reported with calibration samples.",
+          "history": "In 1999 Westfeld and Pfitzmann systematised attacks on EzStego, Jsteg, Steganos and S-Tools, combining visual anomalies in the LSB plane with a paired-value chi-square test. They stressed that LSBs are not naturally random and that naive replacement leaves a statistical structure.\n\nIn 2002 Provos and Honeyman put chi-square and other detectors into an Internet-scale image scanning framework, and noted that statistical detection only yields candidates; it does not replace key recovery or message extraction. Extended chi-square tests, RS analysis, calibration and machine-learning methods later addressed scattered embedding and low embedding rates.",
+          "refs": "- Wikipedia search entry for 卡方隐写分析. https://zh.wikipedia.org/w/index.php?search=%E5%8D%A1%E6%96%B9%E9%9A%90%E5%86%99%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nChi-Square Steganalysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "chi-square-steganalysis-r139-formal",
+          "entryId": "chi-square-steganalysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：卡方隐写分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 卡方隐写分析 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "chi-square-steganalysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "chi-square-steganalysis-r139-formal"
+      ],
+      "sources": [
+        "chi-square-steganalysis-wikipedia",
+        "chi-square-steganalysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "chi-square-steganalysis-r139-formal",
+      "entryId": "chi-square-steganalysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：卡方隐写分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 卡方隐写分析 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "chi-square-steganalysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

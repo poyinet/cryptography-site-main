@@ -1,0 +1,371 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full IDEA algorithm article only; no completion claim for PES, DES, AES, CMS/S/MIME, modes of operation or the whole library.",
+  "entries": [
+    {
+      "id": "idea-details",
+      "inventoryIds": [
+        "idea"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 IDEA 这一种 64 位分组密码：8 轮加输出变换、52 个 16 位子密钥、异或/模 2^16 加法/模 2^16+1 乘法、25 位循环移位的密钥扩展、逆子密钥解密、HAC 与 GnuPG 向量，以及 64 位块和弱密钥边界；不把 PES、DES、AES、CMS/S/MIME 工作模式或整个 IDEA 家族并入本实体。",
+        "en": "Covers the IDEA 64-bit block cipher: eight rounds plus output transformation, 52 16-bit subkeys, XOR/addition modulo 2^16/multiplication modulo 2^16+1, the 25-bit rotation key schedule, inverse-subkey decryption, HAC and GnuPG vectors, and the 64-bit block and weak-key bounds. It does not absorb PES, DES, AES, CMS/S/MIME modes or the whole IDEA family."
+      },
+      "title": {
+        "zh": "IDEA：混合三种群运算的 64 位分组密码",
+        "en": "IDEA: a 64-bit block cipher mixing three group operations"
+      },
+      "claimIds": [
+        "idea-r139-principle",
+        "idea-r139-why",
+        "idea-r139-used",
+        "idea-r139-broken",
+        "idea-r139-history",
+        "idea-r139-refs"
+      ],
+      "calculationIds": [
+        "idea-calc-hac-encryption",
+        "idea-calc-hac-decryption",
+        "idea-calc-gnupg-vectors",
+        "idea-calc-key-schedule",
+        "idea-calc-multiplication",
+        "idea-r139-formal"
+      ],
+      "sourceIds": [
+        "idea-wikipedia",
+        "idea-reference-ref"
+      ],
+      "related": [
+        "algorithm--des",
+        "algorithm--aes",
+        "blowfish",
+        "rc5",
+        "tea"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：IDEA 国际数据加密算法（International Data Encryption Algorithm）。IDEA（International Data Encryption Algorithm，国际数据加密算法）是 Xuejia Lai 与 James L.Massey 设计的 64 位分组密码。HAC 的注释记载，它的前身是 1990 年提出的 PES，经修改得到 IPES，后来以 IDEA 之名商业化；IETF 草案把 Lai 1992 年的学位论文《On the design and security of block ciphers》列为 IDEA 的参考文献；HAC 称其为主参考（primary reference）。HAC 把 IDEA 描述为「Based in part on a novel generalization of the Feistel structure」（部分基于 Feistel 结构的一种新推广）：64 位明文被分成四个 16 位字 X1、X2、X3、X4，每一轮四个字都参与运算，因此它不是只更新一半的经典 Feistel 网络；HAC 把轮内的乘加混合部件称为 MA 结构。IDEA 使用 128 位密钥，导出 52 个 16 位子密钥：8 轮各 6 个，输出变换 4 个。HAC 强调，IDEA 的设计核心是在 16 位子块上混合三种不同代数群的运算：\n\n- 按位异或 ⊕；\n- 模 2^16 加法 +；\n- 模 2^16+1 乘法 ⊗，其中 0 代表 2^16（65536），结果若为 2^16 则写回 0。每一轮先做四次键控运算，再用 MA 结构混合：\n\n```text\nX1 = X1 ⊗ K1\nX4 = X4 ⊗ K4\nX2 = X2 + K2\nX3 = X3 + K3\nt0 = K5 ⊗ (X1 ⊕ X3)\nt1 = K6 ⊗ (t0 + (X2 ⊕ X4))\nt2 = t0 + t1\nX1 = X1 ⊕ t1\nX4 = X4 ⊕ t2\na  = X2 ⊕ t2\nX2 = X3 ⊕ t1\nX3 = a\n```\n\n第 8 轮之后是输出变换，它只使用乘法和加法：\n\n```text\nY1 = X1 ⊗ K(9)1\nY4 = X4 ⊗ K(9)4\nY2 = X3 + K(9)2\nY3 = X2 + K(9)3\n```\n\n密钥扩展（key schedule）把 128 位密钥按大端顺序分成 8 个 16 位字，直接作为前 8 个子密钥；随后把整个 128 位密钥循环左移 25 位，再分成 8 个字，作为下一组子密钥；重复这一过程，直到 52 个子密钥全部分配完毕。HAC 的表 7.12 列出了本示例每一轮使用的子密钥。解密与加密使用同一套轮结构，但要用加密子密钥导出解密子密钥。按 HAC 表 7.11，第 1 轮使用输出变换子密钥 K(9)1..K(9)4 的逆元，K5、K6 取自第 8 轮；第 2 到第 8 轮使用第 10-r 轮加密子密钥 K1..K4 的逆元，但 K2 和 K3 的加法逆元要交换位置，K5、K6 取自第 9-r 轮；最后一轮使用第 1 轮 K1..K4 的逆元。其中 K1、K4 取模 2^16+1 的乘法逆元，K2、K3 取模 2^16 的加法逆元。由于 0 在乘法中代表 2^16，而 2^16 是自身的乘法逆元，所以 0 的乘法逆元定义为 0。",
+          "why": "1991 年的论文把其初步设计（HAC 的注释称为 PES）定位为新加密标准的候选：64 位明文块和密文块、128 位密钥，设计概念是「mixing operations from different algebraic groups」（混合不同代数群的运算），目标是提供混淆与扩散，并便于硬件和软件实现。HAC 记载 IDEA 是修改后的 IPES 商业化版本；HAC 对 IDEA 的描述同样以三种群运算的混合为核心。本文分析认为，IDEA 与 DES 的差别不只是把位级置换换成更大的表，而是让异或、模 2^16 加法和模 2^16+1 乘法交替作用；这三种运算来自结构不同的代数系统，HAC 认为它们的代数不兼容性正是设计的关键。HAC 的注释还指出，MA 结构使 IDEA 在一轮之后即达到「complete」（完备）：每个输出位都依赖每个输入位。这个性质说明设计者追求的是快速扩散，而不是依赖很多相同的轮来慢慢累积。IDEA 的差分分析历史也是设计动机的一部分。HAC 记载，早期版本 PES 被 Lai、Massey 与 Murphy 的广义差分分析攻破，但攻击需要全部 2^64 个密文；随后的修改包括交换受 K2、K4 控制的群运算、改变每级之后的 16 位置换，以及只修改解密密钥表。修改后的版本称为 IPES，后来以 IDEA 之名商业化。IETF 草案也把 IDEA 描述为「particularly strengthened to protect against differential cryptoanalysis attacks」（特别加强以抵抗差分密码分析攻击；cryptoanalysis 是草案的原始拼写）。IETF 草案把 IDEA 描述为瑞士联邦理工学院与 Ascom 的联合项目，目标是开发一种可以替代 DES 的强加密算法。这里 DES 是历史动机和替代目标，不是 IDEA 的组成部件；因此本文不把 DES 当作学习 IDEA 的必修前置，DES 只在历史脉络中出现。",
+          "used": "2000 年的 Internet-Draft `draft-ietf-smime-idea-07` 建议把 IDEA 用于 CMS/S/MIME：密钥长度固定为 128 位，内容加密推荐 CBC 模式，初始化向量为 8 字节，并定义了内容加密与密钥包装的 OID 和两遍 CBC 的密钥包装流程。该草案已经过期，本文只把它当作当时的标准化提案，不声称它已经被广泛部署。HAC 例 7.106 给出一个完整的加密样本：\n\n```text\nK = 0001 0002 0003 0004 0005 0006 0007 0008\nM = 0000 0001 0002 0003\nC = 11fb ed2b 0198 6de5\n```\n\n表 7.12 还列出每一轮的 6 个子密钥和该轮结束后的四个 16 位字。第 1 轮结束后的状态是 `00f0 00f5 010a 0105`，第 8 轮结束后是 `0a24 0098 ec6b 4925`，输出变换使用子密钥 `0080 00c0 0100 0140`。本文的验证脚本逐项复算了这些中间值，而不只是检查最后密文。GnuPG 1.4 的 IDEA 自检提供 11 组已知答案向量。第一组就是上面的 HAC 样本；第 8 到第 11 组使用不同的 128 位密钥，因而也覆盖了密钥扩展的不同输入。本文对这 11 组都执行加密，并把密文解密回原明文。IDEA 本身只定义分组密码，不定义工作模式、填充、IV 管理或消息认证。把 IDEA 用于实际数据时，模式和协议必须负责 IV、填充和完整性；CBC 草案中的 8 字节 IV 是模式层的约定，不是 IDEA 分组算法的一部分。",
+          "broken": "按 HAC 注 7.107 的记载，对于完整的 8 轮 IDEA，除弱密钥类之外，没有已发表的攻击优于对 128 位密钥空间的穷举搜索；2000 年草案也表述为没有已知攻击优于对 128 位密钥空间的穷举搜索。HAC 认为 IDEA 的安全性只受相对较小的 64 位块长限制。这些判断是上述来源在各自写作时的结论，本文不把它们推广成对今天所有攻击的永久保证。HAC 的注释详细记录了 Daemen 发现的弱密钥类：最大一类包含 2^51 个密钥，可以用两次加密加少量计算判断成员关系，然后用 16 个选择明文差分、约 2^16 次群运算和约 2^17 次密钥搜索加密恢复密钥；随机密钥落入该类的概率是 2^-77。Lai 更早观察到较小的弱密钥块，Meier 的分析没有发现对完整 8 轮 IDEA 可行的攻击，并支持 Lai 的结论：IDEA 在 8 轮中的 4 轮之后似乎已能抵抗差分分析（HAC 原文用「appears」）。对这些具体数字，本文按 HAC 的叙述保留其模型和条件，不把它们简化成 IDEA 已被攻破或 IDEA 绝对安全。64 位块长带来另一个边界。HAC 注 7.8 说明，块长 n 较小时，约 2^(n/2) 个块后就可能出现匹配；对 IDEA 的 n=64，生日碰撞尺度约为 2^32 个块。本文据此认为同一密钥下可安全处理的数据量有限，但这是通用生日分析，不是 IDEA 专属的 2^32 定理。HAC 注 7.107 也只把 64 位块长列为安全性边界。实现层面，模 2^16+1 乘法通常需要 32 位中间结果和条件修正，或用查表实现；这些操作在普通软件中不是常量时间。本文的教学实现直接使用 JavaScript 的整数和 BigInt，不保证常量时间，也不测试缓存、时序或故障注入等侧信道。IDEA 也不提供完整性：翻转密文会改变对应明文，但分组密码本身无法检测，完整性需要 AEAD 或加密后再 MAC。",
+          "history": "IDEA 的前身是 Lai 与 Massey 在 1990 年提出的 PES。1991 年的论文《A Proposal for a New Block Encryption Standard》发表在 EUROCRYPT '90 会议论文集（LNCS 473，第 389–404 页）；HAC 的注释把这篇论文的初步设计称为 PES，而不是 IDEA。PES 被广义差分分析攻破后，经过交换群运算、改变级间置换和修改解密密钥表，得到 IPES，并最终以 IDEA 之名商业化。IETF 草案把 Lai 1992 年的学位论文《On the design and security of block ciphers》（ETH Series in Information Processing 第 1 卷，Hartung-Gorre Verlag）列为 IDEA 的参考文献；HAC 称其为主参考。IETF 草案附录 C 记载，Ascom 持有 IDEA 专利，并按 IETF 的知识产权程序提供非独占许可；草案还说明非商业用途免费。GnuPG 1.4 的源码头注释记录了相关专利的到期日期：欧洲 EP0482154 与日本 JP3225440 于 2011-05-16 到期，美国 5,214,703 于 2012-01-07 到期。本文把专利状态写成这些来源记录的历史信息，不据此给出法律意见。本文的 IDEA 实体指 1990 年 PES 设计经修改为 IPES 后、以 IDEA 之名商业化的 8 轮 64 位分组密码；1991 年论文是 PES 的文献，1992 年学位论文是 IDEA 的主参考。PES 是它的前身，DES 是它试图替代的对象，AES 和工作模式是另外的实体。把它们合并成一个条目会混淆身份和范围，因此本文只做上下文链接，不做别名或合并。",
+          "refs": "- Wikipedia search entry for IDEA 国际数据加密算法. https://zh.wikipedia.org/w/index.php?search=IDEA%20%E5%9B%BD%E9%99%85%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: International Data Encryption Algorithm (IDEA 国际数据加密算法). IDEA (International Data Encryption Algorithm) is a 64-bit block cipher designed by Xuejia Lai and James L. Massey. HAC's notes record that its predecessor was PES, proposed in 1990, that modifications produced IPES, and that IPES was commercialized under the name IDEA; the IETF draft cites Lai's 1992 dissertation, \"On the design and security of block ciphers\", as IDEA's reference, and HAC calls it the primary reference. HAC describes IDEA as \"Based in part on a novel generalization of the Feistel structure\": a 64-bit plaintext is split into four 16-bit words X1, X2, X3 and X4, and all four words take part in every round, so it is not a classical Feistel network that updates only one half; HAC calls the multiplication-addition mixing component within the round the MA structure. IDEA uses a 128-bit key and derives 52 16-bit subkeys: six for each of eight rounds and four for the output transformation. HAC stresses that the design mixes three group operations on 16-bit subblocks:\n\n- bitwise XOR, written ⊕;\n- addition modulo 2^16, written +;\n- multiplication modulo 2^16+1, written ⊗, with 0 representing 2^16 (65536) and a result of 2^16 written back as 0. Each round first applies four keyed operations and then mixes through the MA structure:\n\n```text\nX1 = X1 ⊗ K1\nX4 = X4 ⊗ K4\nX2 = X2 + K2\nX3 = X3 + K3\nt0 = K5 ⊗ (X1 ⊕ X3)\nt1 = K6 ⊗ (t0 + (X2 ⊕ X4))\nt2 = t0 + t1\nX1 = X1 ⊕ t1\nX4 = X4 ⊕ t2\na  = X2 ⊕ t2\nX2 = X3 ⊕ t1\nX3 = a\n```\n\nAfter round 8 the output transformation uses only multiplication and addition:\n\n```text\nY1 = X1 ⊗ K(9)1\nY4 = X4 ⊗ K(9)4\nY2 = X3 + K(9)2\nY3 = X2 + K(9)3\n```\n\nThe key schedule splits the 128-bit key, in big-endian order, into eight 16-bit words that become the first eight subkeys. It then cyclically shifts the whole 128-bit key left by 25 bits, splits it into eight words again, and repeats until all 52 subkeys are assigned. HAC Table 7.12 lists the subkeys used in each round of the worked example. Decryption uses the same round structure but derives its subkeys from the encryption subkeys. According to HAC Table 7.11, round 1 uses inverses of the output-transformation subkeys K(9)1..K(9)4 and takes K5/K6 from round 8; rounds 2 through 8 use inverses of round 10-r's K1..K4, but the additive inverses of K2 and K3 are swapped, and K5/K6 come from round 9-r; the last round uses inverses of round 1's K1..K4. K1 and K4 take multiplicative inverses modulo 2^16+1, while K2 and K3 take additive inverses modulo 2^16. Because 0 represents 2^16 in the multiplication, and 2^16 is its own multiplicative inverse, the multiplicative inverse of 0 is defined to be 0.",
+          "why": "The 1991 paper proposes its preliminary design (called PES in HAC's notes) as a candidate for a new encryption standard: 64-bit plaintext and ciphertext blocks and a 128-bit key, with a design concept of \"mixing operations from different algebraic groups\" and the goals of confusion, diffusion, and convenient hardware and software implementation. HAC records that IDEA is the commercialized version of the modified IPES; HAC's description of IDEA likewise centers on mixing three group operations. In this article's analysis, IDEA does not merely replace DES's bit permutations with larger tables; it alternates XOR, addition modulo 2^16 and multiplication modulo 2^16+1. These operations come from structurally different algebraic systems, and HAC treats their algebraic incompatibility as the heart of the design.\n\nHAC's notes also state that the MA structure makes IDEA \"complete\" after a single round: every output bit depends on every input bit. This property shows that the designers sought rapid diffusion rather than relying on many identical rounds to accumulate it.\n\nThe differential-analysis history is part of the motivation. HAC records that the earlier PES was broken by the generalized differential cryptanalysis of Lai, Massey and Murphy, although the attack required all 2^64 possible ciphertexts. Subsequent changes reversed the group operations keyed by K2 and K4, altered the 16-bit permutation after each stage, and changed only the decryption key schedule. The modified version, IPES, was commercialized under the name IDEA. The IETF draft likewise describes IDEA as \"particularly strengthened to protect against differential cryptoanalysis attacks\" (the spelling and the trailing word are the draft's).\n\nThe IETF draft describes IDEA as a joint project of the Swiss Federal Institute of Technology in Zurich and Ascom, aimed at developing a strong encryption algorithm that could replace DES. Here DES is historical motivation and a replacement target, not a component of IDEA; this article therefore does not treat DES as a mandatory prerequisite for learning IDEA, and mentions it only in the historical context.",
+          "used": "The 2000 Internet-Draft `draft-ietf-smime-idea-07` proposed using IDEA in CMS/S/MIME: the key length is fixed at 128 bits, CBC is recommended for content encryption, the initialization vector is 8 octets, and the draft defines object identifiers plus a two-pass CBC key-wrap procedure for content-encryption and key-encryption keys. The draft has expired; this article treats it as a standardization proposal of its time and does not claim wide deployment.\n\nHAC Example 7.106 gives a complete encryption sample:\n\n```text\nK = 0001 0002 0003 0004 0005 0006 0007 0008\nM = 0000 0001 0002 0003\nC = 11fb ed2b 0198 6de5\n```\n\nTable 7.12 also lists the six subkeys and the four 16-bit words at the end of every round. After round 1 the state is `00f0 00f5 010a 0105`; after round 8 it is `0a24 0098 ec6b 4925`; the output transformation uses subkeys `0080 00c0 0100 0140`. This article's verification script recomputes these intermediate values, not only the final ciphertext.\n\nGnuPG 1.4's IDEA self-test provides 11 known-answer vectors. The first is the HAC sample above; vectors 8 through 11 use different 128-bit keys, so they also exercise different key-schedule inputs. This article encrypts all 11 vectors and decrypts every ciphertext back to its plaintext.\n\nIDEA itself defines only a block cipher, not a mode of operation, padding, IV management or message authentication. When IDEA is used on real data, the mode and protocol must handle the IV, padding and integrity; the 8-octet IV in the CBC draft is a mode-level convention, not part of the IDEA block algorithm.",
+          "broken": "According to HAC Note 7.107, for full eight-round IDEA, apart from weak-key classes, no published attack is better than exhaustive search over the 128-bit key space; the 2000 draft likewise states that no known attack is better than exhaustive search over the 128-bit key space. HAC considers IDEA's security bounded only by the relatively small 64-bit block length. These are the conclusions of those sources at the time they were written; this article does not turn them into a permanent guarantee against every later attack.\n\nHAC's notes record in detail the weak-key classes found by Daemen: the largest contains 2^51 keys, membership can be tested with two encryptions plus a small number of computations, and the key can then be recovered with 16 chosen plaintext differences, about 2^16 group operations and about 2^17 key-search encryptions; the probability that a random key falls in this class is 2^-77. Lai had earlier observed smaller weak-key blocks, and Meier's analysis found no attack feasible against full eight-round IDEA, supporting Lai's conclusion that IDEA appears to resist differential cryptanalysis after four of its eight rounds (HAC uses \"appears\"). This article keeps those numbers, models and conditions as HAC states them and does not reduce them to either IDEA being broken or IDEA being absolutely secure.\n\nThe 64-bit block length imposes another bound. HAC Note 7.8 explains that with a small block length n, a matching pair becomes likely after about 2^(n/2) blocks; for IDEA's n=64 the birthday scale is about 2^32 blocks. This article therefore treats the safe data volume under one key as limited, but this is a generic birthday analysis, not a 2^32 theorem specific to IDEA. HAC Note 7.107 likewise identifies only the 64-bit block length as the security bound.\n\nAt the implementation level, multiplication modulo 2^16+1 usually needs 32-bit intermediate results and conditional correction, or a table lookup; such operations are not constant-time in ordinary software. This article's teaching implementation uses JavaScript integers and BigInt directly, is not constant-time, and does not test cache, timing or fault-injection side channels. IDEA also provides no integrity: flipping ciphertext changes the corresponding plaintext, but the block cipher itself cannot detect it, and integrity requires AEAD or encrypt-then-MAC.",
+          "history": "IDEA's predecessor was PES, proposed by Lai and Massey in 1990. The 1991 paper \"A Proposal for a New Block Encryption Standard\" appeared in the EUROCRYPT '90 proceedings (Lecture Notes in Computer Science, vol. 473, pp. 389-404); HAC's notes call that paper's preliminary design PES, not IDEA. After PES was broken by generalized differential cryptanalysis, the design was changed by reversing group operations, altering the inter-stage permutation and modifying the decryption key schedule; the result, IPES, was commercialized as IDEA. The IETF draft cites Lai's 1992 dissertation, \"On the design and security of block ciphers\" (ETH Series in Information Processing, vol. 1, Hartung-Gorre Verlag), as IDEA's reference; HAC calls it the primary reference.\n\nAppendix C of the IETF draft states that Ascom holds the IDEA patent and offers a non-exclusive license under the IETF intellectual-property procedures; the draft also says non-commercial use was free. The GnuPG 1.4 source header records the expiry dates of the related patents: EP0482154 in Europe and JP3225440 in Japan expired on 2011-05-16, and US 5,214,703 expired on 2012-01-07. This article reports the patent status as those sources record it and does not offer legal advice.\n\nThe IDEA entity in this article is the eight-round 64-bit block cipher that resulted from modifying PES into IPES and was commercialized as IDEA; the 1991 paper is the PES paper, and the 1992 dissertation is the primary IDEA reference. PES is its predecessor, DES is the algorithm it aimed to replace, and AES and modes of operation are separate entities. Merging them into one entry would confuse identity and scope, so this article only links them for context and does not treat them as aliases or merges.",
+          "refs": "- Wikipedia search entry for IDEA 国际数据加密算法. https://zh.wikipedia.org/w/index.php?search=IDEA%20%E5%9B%BD%E9%99%85%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "IDEA：International Data Encryption Algorithm，Lai 与 Massey 提出的 64 位分组密码，128 位密钥，8 轮加输出变换。",
+          "64 位块：IDEA 的明文和密文单位，分成四个 16 位字处理。",
+          "128 位密钥：IDEA 的固定输入密钥长度，扩展成 52 个 16 位子密钥。",
+          "子密钥：由 128 位密钥经 25 位循环移位导出的 16 位键值。",
+          "轮：IDEA 的重复运算单元，每轮使用 6 个子密钥并更新四个 16 位字。",
+          "输出变换：第 8 轮之后的最后 4 次键控乘法和加法。",
+          "MA 结构：乘法-加法混合结构，计算 t0、t1、t2 并更新四个字。",
+          "模 2^16 加法：16 位整数相加后只保留低 16 位。",
+          "模 2^16+1 乘法：把 0 当作 2^16 的乘法，结果 2^16 写回 0。",
+          "25 位循环移位：密钥扩展中把整个 128 位密钥循环左移 25 位。",
+          "解密子密钥：由加密子密钥的乘法逆元和加法逆元按表 7.11 导出的子密钥。",
+          "弱密钥类：Daemen 发现的一类特殊 IDEA 密钥，可被专门攻击识别和恢复。",
+          "PES：IDEA 的前身，Proposed Encryption Standard，曾被广义差分分析攻破。"
+        ],
+        "en": [
+          "IDEA: International Data Encryption Algorithm, a 64-bit block cipher by Lai and Massey with a 128-bit key, eight rounds and an output transformation.",
+          "64-bit block: the plaintext and ciphertext unit of IDEA, processed as four 16-bit words.",
+          "128-bit key: IDEA's fixed input key length, expanded into 52 16-bit subkeys.",
+          "Subkey: a 16-bit key value derived from the 128-bit key by 25-bit cyclic rotations.",
+          "Round: IDEA's repeated unit, using six subkeys and updating four 16-bit words.",
+          "Output transformation: the final four keyed multiplications and additions after round 8.",
+          "MA structure: the multiplication-addition mixing structure that computes t0, t1 and t2 and updates the four words.",
+          "Addition modulo 2^16: 16-bit integer addition keeping only the low 16 bits.",
+          "Multiplication modulo 2^16+1: multiplication that treats 0 as 2^16 and writes a result of 2^16 back as 0.",
+          "25-bit cyclic shift: the key-schedule step that rotates the whole 128-bit key left by 25 bits.",
+          "Decryption subkey: a subkey derived from encryption subkeys through multiplicative and additive inverses following Table 7.11.",
+          "Weak-key class: a special set of IDEA keys found by Daemen that a dedicated attack can identify and recover.",
+          "PES: IDEA's predecessor, the Proposed Encryption Standard, broken by generalized differential cryptanalysis."
+        ]
+      },
+      "figures": [
+        {
+          "id": "idea-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IDEA：混合三种群运算的 64 位分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "IDEA: a 64-bit block cipher mixing three group operations: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "IDEA：混合三种群运算的 64 位分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for IDEA: a 64-bit block cipher mixing three group operations, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/idea-details-flow.zh.svg",
+            "en": "assets/idea-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "de684c93320447321b0d8c03b14e2f21ccd7a747f3cce36c3ef09ee80dfa699a",
+            "en": "a8b8edc500a9273a57355c65def8a1d7c13966ba5b5c109da1513f68b805a620"
+          }
+        },
+        {
+          "id": "idea-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IDEA：混合三种群运算的 64 位分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for IDEA: a 64-bit block cipher mixing three group operations: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "IDEA：混合三种群运算的 64 位分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for IDEA: a 64-bit block cipher mixing three group operations, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/idea-details-r138-model.zh.svg",
+            "en": "assets/idea-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e91f903f848eca46a0bbb9b1e1a380bab3e4ccc19295f03f2e922d22f4e8ecb8",
+            "en": "565d02c709944fb9333acd7fce8ffbeffb5b92e3b490af7cff40526285fb9163"
+          }
+        }
+      ],
+      "sources": [
+        "idea-wikipedia",
+        "idea-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "idea-calc-hac-encryption",
+          "entryId": "idea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "HAC Example 7.106 key 0001 0002 0003 0004 0005 0006 0007 0008 and plaintext 0000 0001 0002 0003, with the per-round subkeys and states of Table 7.12",
+          "expected": "All 48 round subkeys, the eight intermediate states, the output subkeys 0080 00c0 0100 0140 and the ciphertext 11fb ed2b 0198 6de5 match HAC",
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "dependencies": [
+            "idea-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "One authoritative worked example; it validates this key and plaintext but not every key or block."
+        },
+        {
+          "id": "idea-calc-hac-decryption",
+          "entryId": "idea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The HAC Table 7.13 decryption subkeys and states for ciphertext 11fb ed2b 0198 6de5 under the same key",
+          "expected": "All nine decryption subkey rows, the eight intermediate states and the recovered plaintext 0000 0001 0002 0003 match HAC",
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "dependencies": [
+            "idea-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "One authoritative worked example; it checks the inverse-subkey derivation for this key only."
+        },
+        {
+          "id": "idea-calc-gnupg-vectors",
+          "entryId": "idea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 11 known-answer vectors in GnuPG 1.4 cipher/idea.c selftest()",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the listed plaintext",
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "dependencies": [
+            "idea-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Eleven fixed vectors; the first duplicates the HAC example, four use different keys, and they do not cover every key or plaintext."
+        },
+        {
+          "id": "idea-calc-key-schedule",
+          "entryId": "idea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Key 0001 0002 0003 0004 0005 0006 0007 0008 and the 52-subkey schedule of HAC Algorithm 7.102 and Table 7.12",
+          "expected": "The first eight subkeys equal the eight key words; each later group is the previous 128-bit key rotated left by 25 bits; the 52nd subkey is 0140",
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "dependencies": [
+            "idea-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "One key; the rotation rule is checked on this key and the GnuPG vectors exercise four other keys."
+        },
+        {
+          "id": "idea-calc-multiplication",
+          "entryId": "idea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Boundary operands for the modified multiplication modulo 2^16+1 and the additive inverse modulo 2^16",
+          "expected": "0⊗0=1, 0⊗1=0, 0100⊗0100=0, 0100^-1=ff01, 0000^-1=0000, ffff⊗ffff=4, additive inverses of 0000 and 0001 are 0000 and ffff",
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "dependencies": [
+            "idea-teaching.mjs"
+          ],
+          "limitations": "Selected boundary values, not an exhaustive test of all 2^16 operands."
+        },
+        {
+          "id": "idea-r139-formal",
+          "entryId": "idea-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "IDEA 国际数据加密算法 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "idea-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "idea-calc-hac-encryption",
+      "entryId": "idea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "HAC Example 7.106 key 0001 0002 0003 0004 0005 0006 0007 0008 and plaintext 0000 0001 0002 0003, with the per-round subkeys and states of Table 7.12",
+      "expected": "All 48 round subkeys, the eight intermediate states, the output subkeys 0080 00c0 0100 0140 and the ciphertext 11fb ed2b 0198 6de5 match HAC",
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "dependencies": [
+        "idea-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "One authoritative worked example; it validates this key and plaintext but not every key or block."
+    },
+    {
+      "id": "idea-calc-hac-decryption",
+      "entryId": "idea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The HAC Table 7.13 decryption subkeys and states for ciphertext 11fb ed2b 0198 6de5 under the same key",
+      "expected": "All nine decryption subkey rows, the eight intermediate states and the recovered plaintext 0000 0001 0002 0003 match HAC",
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "dependencies": [
+        "idea-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "One authoritative worked example; it checks the inverse-subkey derivation for this key only."
+    },
+    {
+      "id": "idea-calc-gnupg-vectors",
+      "entryId": "idea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 11 known-answer vectors in GnuPG 1.4 cipher/idea.c selftest()",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the listed plaintext",
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "dependencies": [
+        "idea-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Eleven fixed vectors; the first duplicates the HAC example, four use different keys, and they do not cover every key or plaintext."
+    },
+    {
+      "id": "idea-calc-key-schedule",
+      "entryId": "idea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Key 0001 0002 0003 0004 0005 0006 0007 0008 and the 52-subkey schedule of HAC Algorithm 7.102 and Table 7.12",
+      "expected": "The first eight subkeys equal the eight key words; each later group is the previous 128-bit key rotated left by 25 bits; the 52nd subkey is 0140",
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "dependencies": [
+        "idea-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "One key; the rotation rule is checked on this key and the GnuPG vectors exercise four other keys."
+    },
+    {
+      "id": "idea-calc-multiplication",
+      "entryId": "idea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Boundary operands for the modified multiplication modulo 2^16+1 and the additive inverse modulo 2^16",
+      "expected": "0⊗0=1, 0⊗1=0, 0100⊗0100=0, 0100^-1=ff01, 0000^-1=0000, ffff⊗ffff=4, additive inverses of 0000 and 0001 are 0000 and ffff",
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "dependencies": [
+        "idea-teaching.mjs"
+      ],
+      "limitations": "Selected boundary values, not an exhaustive test of all 2^16 operands."
+    },
+    {
+      "id": "idea-r139-formal",
+      "entryId": "idea-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "IDEA 国际数据加密算法 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "idea-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

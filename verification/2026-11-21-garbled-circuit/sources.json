@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "garbled-circuit-details",
+  "sources": [
+    {
+      "id": "garbled-circuit-wikipedia",
+      "title": "Wikipedia search entry for 混淆电路",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 混淆电路",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "garbled-circuit-r139-principle",
+          "entryId": "garbled-circuit-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：混淆电路（Garbled Circuit）。### 标签、门表与求值\n\n混淆电路给每条线两个标签 L_i^0、L_i^1，门表用输入标签加密输出标签；求值者经 OT 取得自己的输入标签，逐门解密。FREE-XOR 令 XOR 门免费，半门把 AND 降到两个密文。### 点置换与正确性\n\n点置换给标签附一个选择位，使求值者直接定位门表中的一行；XOR 门用全局偏移 R 令 L_i^1=L_i^0⊕R，AND 门分解为两个各有一个已知输入的门。门表用 H(L_a||L_b||tweak) 加密，解密失败即拒绝。半门安全性依赖相关稳健性（CCR）哈希；默认协议只保证半诚实安全，恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。",
+            "en": "**Algorithm**: Garbled Circuit (混淆电路).### Labels, gate tables and evaluation\n\nA garbled circuit gives every wire two labels L_i^0 and L_i^1; gate tables encrypt output labels under input labels, and the evaluator obtains its input labels by OT and decrypts gate by gate."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        },
+        {
+          "id": "garbled-circuit-r139-why",
+          "entryId": "garbled-circuit-details",
+          "section": "why",
+          "statement": {
+            "zh": "Yao 协议只需对称加密和 OT，就能对任意布尔电路做两方计算；比全同态加密快几个数量级，适合中等规模电路。它把“计算”变成“加密查表”，让双方在不暴露输入的情况下得到同一输出；这是隐私集合求交、隐私推理和 MPC 的工程基础。",
+            "en": "Yao’s protocol needs only symmetric encryption and OT to evaluate any Boolean circuit between two parties; it is orders of magnitude faster than fully homomorphic encryption for medium-size circuits.It turns computation into encrypted table lookup, letting both parties learn the same output without revealing their inputs."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        },
+        {
+          "id": "garbled-circuit-r139-used",
+          "entryId": "garbled-circuit-details",
+          "section": "used",
+          "statement": {
+            "zh": "PSI、隐私保护机器学习推理、私有拍卖、基因组比较、区块链暗拍和密钥管理都用 GC；EMP-toolkit、MP-SPDZ 与 Fresco 提供实现。半门是当前主流：每个 AND 门两个 AES 调用、两段密文，XOR 免费；固定密钥 AES 可进一步加速，但需要 concrete-security 参数。",
+            "en": "PSI, privacy-preserving machine-learning inference, private auctions, genomic comparison, blockchain sealed-bid auctions and key management use GC; EMP-toolkit, MP-SPDZ and Fresco provide implementations.Half-gates are the mainstream choice: two AES calls and two ciphertext segments per AND gate, with XOR free."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        },
+        {
+          "id": "garbled-circuit-r139-broken",
+          "entryId": "garbled-circuit-details",
+          "section": "broken",
+          "statement": {
+            "zh": "默认 GC 只保证半诚实安全；恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。侧信道、电路规模、OT 带宽和固定密钥 AES 的联合安全界都是边界；不要把“加密门表”误当成全同态加密。### 形式模型。",
+            "en": "Default GC gives only semi-honest security; a malicious garbler can build wrong gate tables, requiring cut-and-choose, authenticated garbling or zero-knowledge proofs.The evaluator may leak intermediate labels, and output privacy needs separate handling."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        },
+        {
+          "id": "garbled-circuit-r139-history",
+          "entryId": "garbled-circuit-details",
+          "section": "history",
+          "statement": {
+            "zh": "Yao 1982/1986 提出；Lindell–Pinkas 2004/2009 给出半诚实安全证明；Kolesnikov–Schneier 2008 的 FREE-XOR、Zahur–Rosulek–Evans 2015 的半门把通信降到每 AND 两密文；后续工作处理恶意安全与标准模型实例化。从理论协议到 EMP/MP-SPDZ 工程，GC 是安全计算最成熟的实用路线之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Yao introduced the protocol in 1982/1986; Lindell and Pinkas gave a semi-honest security proof in 2004/2009; Kolesnikov–Schneier’s FREE-XOR in 2008 and Zahur–Rosulek–Evans’s half-gates in 2015 cut communication to two ciphertexts per AND gate; later work addressed malicious security and standard-model instantiation.From a theoretical protocol to EMP and MP-SPDZ, GC is one of the most mature practical routes to secure computation."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        },
+        {
+          "id": "garbled-circuit-r139-refs",
+          "entryId": "garbled-circuit-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 混淆电路.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 混淆电路.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "garbled-circuit-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "garbled-circuit-wikipedia"
+      ]
+    },
+    {
+      "id": "garbled-circuit-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "garbled-circuit-r139-principle",
+      "entryId": "garbled-circuit-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：混淆电路（Garbled Circuit）。### 标签、门表与求值\n\n混淆电路给每条线两个标签 L_i^0、L_i^1，门表用输入标签加密输出标签；求值者经 OT 取得自己的输入标签，逐门解密。FREE-XOR 令 XOR 门免费，半门把 AND 降到两个密文。### 点置换与正确性\n\n点置换给标签附一个选择位，使求值者直接定位门表中的一行；XOR 门用全局偏移 R 令 L_i^1=L_i^0⊕R，AND 门分解为两个各有一个已知输入的门。门表用 H(L_a||L_b||tweak) 加密，解密失败即拒绝。半门安全性依赖相关稳健性（CCR）哈希；默认协议只保证半诚实安全，恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。",
+        "en": "**Algorithm**: Garbled Circuit (混淆电路).### Labels, gate tables and evaluation\n\nA garbled circuit gives every wire two labels L_i^0 and L_i^1; gate tables encrypt output labels under input labels, and the evaluator obtains its input labels by OT and decrypts gate by gate."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    },
+    {
+      "id": "garbled-circuit-r139-why",
+      "entryId": "garbled-circuit-details",
+      "section": "why",
+      "statement": {
+        "zh": "Yao 协议只需对称加密和 OT，就能对任意布尔电路做两方计算；比全同态加密快几个数量级，适合中等规模电路。它把“计算”变成“加密查表”，让双方在不暴露输入的情况下得到同一输出；这是隐私集合求交、隐私推理和 MPC 的工程基础。",
+        "en": "Yao’s protocol needs only symmetric encryption and OT to evaluate any Boolean circuit between two parties; it is orders of magnitude faster than fully homomorphic encryption for medium-size circuits.It turns computation into encrypted table lookup, letting both parties learn the same output without revealing their inputs."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    },
+    {
+      "id": "garbled-circuit-r139-used",
+      "entryId": "garbled-circuit-details",
+      "section": "used",
+      "statement": {
+        "zh": "PSI、隐私保护机器学习推理、私有拍卖、基因组比较、区块链暗拍和密钥管理都用 GC；EMP-toolkit、MP-SPDZ 与 Fresco 提供实现。半门是当前主流：每个 AND 门两个 AES 调用、两段密文，XOR 免费；固定密钥 AES 可进一步加速，但需要 concrete-security 参数。",
+        "en": "PSI, privacy-preserving machine-learning inference, private auctions, genomic comparison, blockchain sealed-bid auctions and key management use GC; EMP-toolkit, MP-SPDZ and Fresco provide implementations.Half-gates are the mainstream choice: two AES calls and two ciphertext segments per AND gate, with XOR free."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    },
+    {
+      "id": "garbled-circuit-r139-broken",
+      "entryId": "garbled-circuit-details",
+      "section": "broken",
+      "statement": {
+        "zh": "默认 GC 只保证半诚实安全；恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。侧信道、电路规模、OT 带宽和固定密钥 AES 的联合安全界都是边界；不要把“加密门表”误当成全同态加密。### 形式模型。",
+        "en": "Default GC gives only semi-honest security; a malicious garbler can build wrong gate tables, requiring cut-and-choose, authenticated garbling or zero-knowledge proofs.The evaluator may leak intermediate labels, and output privacy needs separate handling."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    },
+    {
+      "id": "garbled-circuit-r139-history",
+      "entryId": "garbled-circuit-details",
+      "section": "history",
+      "statement": {
+        "zh": "Yao 1982/1986 提出；Lindell–Pinkas 2004/2009 给出半诚实安全证明；Kolesnikov–Schneier 2008 的 FREE-XOR、Zahur–Rosulek–Evans 2015 的半门把通信降到每 AND 两密文；后续工作处理恶意安全与标准模型实例化。从理论协议到 EMP/MP-SPDZ 工程，GC 是安全计算最成熟的实用路线之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Yao introduced the protocol in 1982/1986; Lindell and Pinkas gave a semi-honest security proof in 2004/2009; Kolesnikov–Schneier’s FREE-XOR in 2008 and Zahur–Rosulek–Evans’s half-gates in 2015 cut communication to two ciphertexts per AND gate; later work addressed malicious security and standard-model instantiation.From a theoretical protocol to EMP and MP-SPDZ, GC is one of the most mature practical routes to secure computation."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    },
+    {
+      "id": "garbled-circuit-r139-refs",
+      "entryId": "garbled-circuit-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 混淆电路.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 混淆电路.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "garbled-circuit-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

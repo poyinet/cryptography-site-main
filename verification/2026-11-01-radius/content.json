@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for radius: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "radius-details",
+      "inventoryIds": [
+        "radius"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释RADIUS 认证协议的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Remote Authentication Dial-In User Service: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "RADIUS 认证协议",
+        "en": "Remote Authentication Dial-In User Service"
+      },
+      "claimIds": [
+        "radius-r139-principle",
+        "radius-r139-why",
+        "radius-r139-used",
+        "radius-r139-broken",
+        "radius-r139-history",
+        "radius-r139-refs"
+      ],
+      "sourceIds": [
+        "radius-wikipedia",
+        "radius-reference-ref"
+      ],
+      "related": [
+        "eap",
+        "two-factor-authentication",
+        "key-exchange"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：RADIUS 认证协议（Remote Authentication Dial-In User Service）。RADIUS 是 NAS 与后端认证服务器之间的客户/服务器协议：§1 说明「A Network Access Server (NAS) operates as a client of RADIUS.」§3 则规定报文封装：「Exactly one RADIUS packet is encapsulated in the UDP Data field [4], where the UDP Destination Port field indicates 1812 (decimal).」",
+          "why": "信任建立在预共享密钥上：§1 Network Security 说明「Transactions between the client and RADIUS server are authenticated through the use of a shared secret, which is never sent over the network.」因此认证不依赖信道本身。",
+          "used": "属性承载请求与应答中的具体认证、授权、信息与配置细节：§5 说明「RADIUS Attributes carry the specific authentication, authorization, information and configuration details for the request and reply.」§2 对无共享秘密的请求给出硬性处置：「A request from a client for which the RADIUS server does not have a shared secret MUST be silently discarded.」",
+          "broken": "弱点在口令隐藏与 MD5 依赖：§2 说明口令「is hidden using a method based on the RSA Message Digest Algorithm MD5 [3].」§8 承认「The User-Password hiding mechanism described in Section 5.2 has not been subjected to significant amounts of cryptanalysis in the published literature.」RFC 2865/2866 都未记载 Message-Authenticator 扩展（那属 RFC 2869），也未宣布 MD5 已被攻破。",
+          "history": "两份文件同于 2000 年 6 月发布：RFC 2865 是 Standards Track，头部写明取代 RFC 2138；RFC 2866（RADIUS Accounting）是 Informational、标注 Obsoletes: 2139，并说明「All transactions are comprised of variable length Attribute-Length-Value 3-tuples.」两者都没有 Updates 行。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：RADIUS 认证协议的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 RADIUS 认证协议 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for RADIUS 认证协议. https://zh.wikipedia.org/w/index.php?search=RADIUS%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nRADIUS 认证协议的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Remote Authentication Dial-In User Service (RADIUS 认证协议). RADIUS is a client/server protocol between the NAS and a backend server: §1 states \"A Network Access Server (NAS) operates as a client of RADIUS.\" and §3 fixes the carriage: \"Exactly one RADIUS packet is encapsulated in the UDP Data field [4], where the UDP Destination Port field indicates 1812 (decimal).\"",
+          "why": "Trust rests on a pre-shared secret: §1 Network Security says \"Transactions between the client and RADIUS server are authenticated through the use of a shared secret, which is never sent over the network.\" Authentication therefore does not rely on the channel.",
+          "used": "Attributes carry the details a request and reply need: §5 states \"RADIUS Attributes carry the specific authentication, authorization, information and configuration details for the request and reply.\" Section 2 sets a hard rule for unknown clients: \"A request from a client for which the RADIUS server does not have a shared secret MUST be silently discarded.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The weak points are password hiding and MD5: §2 explains the password \"is hidden using a method based on the RSA Message Digest Algorithm MD5 [3].\" and §8 concedes \"The User-Password hiding mechanism described in Section 5.2 has not been subjected to significant amounts of cryptanalysis in the published literature.\" Neither RFC 2865 nor 2866 mentions the Message-Authenticator attribute (that is RFC 2869), and neither declares MD5 broken.",
+          "history": "Both documents date from June 2000: RFC 2865 is Standards Track and its header obsoletes RFC 2138, while RFC 2866 (RADIUS Accounting) is Informational, obsoletes RFC 2139, and states \"All transactions are comprised of variable length Attribute-Length-Value 3-tuples.\" Neither header carries an Updates line.",
+          "refs": "- Wikipedia search entry for RADIUS 认证协议. https://zh.wikipedia.org/w/index.php?search=RADIUS%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nRemote Authentication Dial-In User Service: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "NAS：作为 RADIUS 客户端的网络接入服务器。",
+          "共享密钥：认证与口令隐藏的基础，不在网上传输。",
+          "UDP 1812：RADIUS 认证报文的目的地端口。",
+          "Attribute-Length-Value：RADIUS 属性的三元组编码。",
+          "User-Password 隐藏：基于 MD5 的口令保护方法。",
+          "RADIUS Accounting：RFC 2866 规定的记账报文族。"
+        ],
+        "en": [
+          "NAS: the network access server acting as a RADIUS client.",
+          "Shared secret: basis of authentication and password hiding, never transmitted.",
+          "UDP 1812: the destination port for RADIUS authentication packets.",
+          "Attribute-Length-Value: the encoding of RADIUS attributes.",
+          "User-Password hiding: the MD5-based password protection method.",
+          "RADIUS accounting: the message family defined by RFC 2866."
+        ]
+      },
+      "figures": [
+        {
+          "id": "radius-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RADIUS 认证协议：为什么需要 → 核心机制 → 边界。",
+            "en": "Remote Authentication Dial-In User Service: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RADIUS 认证协议 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Remote Authentication Dial-In User Service, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/radius-details-flow.zh.svg",
+            "en": "assets/radius-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "21a606cc693fd387d25cf05988039f2df597eeb63acde385f4ce220506ba50e8",
+            "en": "8a34470cb144b639e06dc6469bf35ff2fe616f775380b4b1f06c88172fb17e70"
+          }
+        },
+        {
+          "id": "radius-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RADIUS 认证协议 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Remote Authentication Dial-In User Service: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RADIUS 认证协议 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Remote Authentication Dial-In User Service, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/radius-details-r138-model.zh.svg",
+            "en": "assets/radius-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "38edef8820bba306d4fa01a2b074c2ca82d595e9c85c1a72b01378c7e71c790f",
+            "en": "5207d0523f4d8b3e4a12ca27ce323b967ea59df9d498fd3ebcb31be89e260111"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "radius-r139-formal",
+          "entryId": "radius-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：RADIUS 认证协议的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 RADIUS 认证协议 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "radius-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "radius-r139-formal"
+      ],
+      "sources": [
+        "radius-wikipedia",
+        "radius-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "radius-r139-formal",
+      "entryId": "radius-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：RADIUS 认证协议的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 RADIUS 认证协议 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "radius-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

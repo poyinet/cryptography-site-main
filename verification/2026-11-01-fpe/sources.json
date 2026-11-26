@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "fpe-details",
+  "sources": [
+    {
+      "id": "fpe-wikipedia",
+      "title": "Wikipedia search entry for FPE 格式保留加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: FPE 格式保留加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "fpe-r139-principle",
+          "entryId": "fpe-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：FPE 格式保留加密（Format-Preserving Encryption）。2016 年版的 SP 800-38G 说明格式保留加密「is designed for data that is not necessarily binary」：给定任意有限符号集（例如十进制数字），把由这些符号组成的数据加密后，密文「has the same format, including the length, as the original data」。文档把符号集称为 alphabet，其字符数为 radix（radix ≥ 2），小于基数的非负整数是 numeral，其有限有序序列是 numeral string。",
+            "en": "**Algorithm**: Format-Preserving Encryption (FPE 格式保留加密).The 2016 edition of SP 800-38G says format-preserving encryption \"is designed for data that is not necessarily binary\": for any finite set of symbols such as decimal numerals, the encrypted form \"has the same format, including the length, as the original data\"."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        },
+        {
+          "id": "fpe-r139-why",
+          "entryId": "fpe-details",
+          "section": "why",
+          "statement": {
+            "zh": "动机是普通加密会改变数据长度或字符集：文档以九位十进制的社会保险号为例，若密文变长就会超出格式。因此「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」，应用包括金融信息安全、数据净化以及遗留数据库字段的透明加密。",
+            "en": "Ordinary encryption changes length or character set.The document uses the nine-decimal-digit Social Security number as its example: a longer ciphertext would no longer fit the format."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        },
+        {
+          "id": "fpe-r139-used",
+          "entryId": "fpe-details",
+          "section": "used",
+          "statement": {
+            "zh": "该建议（2016 年 3 月，含 2016 年 8 月 4 日更新）给出 FF1 与 FF3 两种模式，即算法 7 到 10 的加密与解密。§4.3 要求底层分组密码被批准且块长为 128 位：「Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile」；§4.5 说明 FF1 使用十轮、FF3 使用八轮；§4.4 与附录 C 强烈建议可变 tweak。",
+            "en": "The Recommendation (March 2016, with updates of 4 August 2016) provides the FF1 and FF3 modes, Algorithms 7 to 10 for encryption and decryption.Section 4.3 requires an approved block cipher with a 128-bit block: \"Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile\"."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        },
+        {
+          "id": "fpe-r139-broken",
+          "entryId": "fpe-details",
+          "section": "broken",
+          "statement": {
+            "zh": "附录 A 指出输入空间足够小时「encrypted data may be vulnerable to guessing attacks」，并建议 radix 的 minlen 次方一般至少达到一百万以限制猜测，同时要求该值不小于 100「in order to preclude a generic meet-in-the-middle attack on the Feistel structure」。§6 规定 PRF 等组件函数「not approved for use independent of these four functions」；§2 的脚注提醒数据净化「does not necessarily provide strong assurance that individuals cannot be re-identified」。",
+            "en": "Appendix A notes that \"encrypted data may be vulnerable to guessing attacks\" when the input space is small, suggesting that radix raised to minlen should generally reach at least one million to limit guessing, and requiring that value to be at least 100 \"in order to preclude a generic meet-in-the-middle attack on the Feistel structure\".Section 6 states that component functions such as the PRF are \"not approved for use independent of these four functions\", and a footnote in §2 warns that sanitization \"does not necessarily provide strong assurance that individuals cannot be re-identified\"."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        },
+        {
+          "id": "fpe-r139-history",
+          "entryId": "fpe-details",
+          "section": "history",
+          "statement": {
+            "zh": "SP 800-38G 由 Morris Dworkin 撰写，2016 年 3 月发布（含 2016 年 8 月 4 日的页面更新）。§2 记录草案中的 FF2 模式被移除：NIST 收到国家安全局的一般性告知，认为草案中的 FF2「did not provide the expected 128 bits of security strength」，随后宣布删除。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：FPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "SP 800-38G, by Morris Dworkin, was published in March 2016 with updates as of 4 August 2016.Section 2 records the removal of the FF2 mode from the draft: NIST was advised by the National Security Agency in general terms that FF2 in the draft \"did not provide the expected 128 bits of security strength\", and announced its removal."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        },
+        {
+          "id": "fpe-r139-refs",
+          "entryId": "fpe-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for FPE 格式保留加密.https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for FPE 格式保留加密.https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "fpe-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "fpe-wikipedia"
+      ]
+    },
+    {
+      "id": "fpe-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "fpe-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "fpe-r139-principle",
+      "entryId": "fpe-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：FPE 格式保留加密（Format-Preserving Encryption）。2016 年版的 SP 800-38G 说明格式保留加密「is designed for data that is not necessarily binary」：给定任意有限符号集（例如十进制数字），把由这些符号组成的数据加密后，密文「has the same format, including the length, as the original data」。文档把符号集称为 alphabet，其字符数为 radix（radix ≥ 2），小于基数的非负整数是 numeral，其有限有序序列是 numeral string。",
+        "en": "**Algorithm**: Format-Preserving Encryption (FPE 格式保留加密).The 2016 edition of SP 800-38G says format-preserving encryption \"is designed for data that is not necessarily binary\": for any finite set of symbols such as decimal numerals, the encrypted form \"has the same format, including the length, as the original data\"."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    },
+    {
+      "id": "fpe-r139-why",
+      "entryId": "fpe-details",
+      "section": "why",
+      "statement": {
+        "zh": "动机是普通加密会改变数据长度或字符集：文档以九位十进制的社会保险号为例，若密文变长就会超出格式。因此「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」，应用包括金融信息安全、数据净化以及遗留数据库字段的透明加密。",
+        "en": "Ordinary encryption changes length or character set.The document uses the nine-decimal-digit Social Security number as its example: a longer ciphertext would no longer fit the format."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    },
+    {
+      "id": "fpe-r139-used",
+      "entryId": "fpe-details",
+      "section": "used",
+      "statement": {
+        "zh": "该建议（2016 年 3 月，含 2016 年 8 月 4 日更新）给出 FF1 与 FF3 两种模式，即算法 7 到 10 的加密与解密。§4.3 要求底层分组密码被批准且块长为 128 位：「Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile」；§4.5 说明 FF1 使用十轮、FF3 使用八轮；§4.4 与附录 C 强烈建议可变 tweak。",
+        "en": "The Recommendation (March 2016, with updates of 4 August 2016) provides the FF1 and FF3 modes, Algorithms 7 to 10 for encryption and decryption.Section 4.3 requires an approved block cipher with a 128-bit block: \"Currently, the AES block cipher, with key lengths of 128, 192, or 256 bits, is the only block cipher that fits this profile\"."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    },
+    {
+      "id": "fpe-r139-broken",
+      "entryId": "fpe-details",
+      "section": "broken",
+      "statement": {
+        "zh": "附录 A 指出输入空间足够小时「encrypted data may be vulnerable to guessing attacks」，并建议 radix 的 minlen 次方一般至少达到一百万以限制猜测，同时要求该值不小于 100「in order to preclude a generic meet-in-the-middle attack on the Feistel structure」。§6 规定 PRF 等组件函数「not approved for use independent of these four functions」；§2 的脚注提醒数据净化「does not necessarily provide strong assurance that individuals cannot be re-identified」。",
+        "en": "Appendix A notes that \"encrypted data may be vulnerable to guessing attacks\" when the input space is small, suggesting that radix raised to minlen should generally reach at least one million to limit guessing, and requiring that value to be at least 100 \"in order to preclude a generic meet-in-the-middle attack on the Feistel structure\".Section 6 states that component functions such as the PRF are \"not approved for use independent of these four functions\", and a footnote in §2 warns that sanitization \"does not necessarily provide strong assurance that individuals cannot be re-identified\"."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    },
+    {
+      "id": "fpe-r139-history",
+      "entryId": "fpe-details",
+      "section": "history",
+      "statement": {
+        "zh": "SP 800-38G 由 Morris Dworkin 撰写，2016 年 3 月发布（含 2016 年 8 月 4 日的页面更新）。§2 记录草案中的 FF2 模式被移除：NIST 收到国家安全局的一般性告知，认为草案中的 FF2「did not provide the expected 128 bits of security strength」，随后宣布删除。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：FPE 格式保留加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "SP 800-38G, by Morris Dworkin, was published in March 2016 with updates as of 4 August 2016.Section 2 records the removal of the FF2 mode from the draft: NIST was advised by the National Security Agency in general terms that FF2 in the draft \"did not provide the expected 128 bits of security strength\", and announced its removal."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    },
+    {
+      "id": "fpe-r139-refs",
+      "entryId": "fpe-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for FPE 格式保留加密.https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for FPE 格式保留加密.https://zh.wikipedia.org/w/index.php?search=FPE%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "fpe-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

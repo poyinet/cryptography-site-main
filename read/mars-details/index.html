@@ -1,0 +1,119 @@
+<!doctype html><html lang="zh-CN" data-root="../../"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="index,follow"><meta name="color-scheme" content="light dark"><meta name="theme-color" content="#faf9f5"><meta name="description" content="MARS：128 位 32 轮 AES 候选混合结构分组密码"><title>MARS：128 位 32 轮 AES 候选混合结构分组密码 · 密码学探索馆</title><link rel="canonical" href="https://poyi.net/entries/mars/"><link rel="alternate" hreflang="en" href="https://poyi.net/en/entries/mars/"><link rel="icon" type="image/svg+xml" href="../../assets/logo.svg"><link rel="apple-touch-icon" href="../../assets/icon-192.png"><link rel="manifest" href="../../manifest.webmanifest"><script>(()=>{let c='system';try{c=localStorage.getItem('poyi_knowledge_theme')||c}catch{}document.documentElement.dataset.theme=(c==='dark'||c==='system'&&matchMedia('(prefers-color-scheme:dark)').matches)?'dark':'light';document.querySelector('meta[name="theme-color"]').content=document.documentElement.dataset.theme==='dark'?'#171b2f':'#faf9f5'})();</script><link rel="stylesheet" href="../../assets/site.dc4b38f06ae6.css"><link rel="stylesheet" href="../../assets/three-site.css"></head><body><a class="skip-link" href="#main">跳到主要内容</a><header class="site-header"><div class="header-inner"><a class="brand" href="../../"><svg viewBox="0 0 48 48" class="logo-mark" aria-hidden="true"><rect x="1" y="1" width="21" height="21" rx="8" fill="#6c65e9"/><rect x="26" y="1" width="21" height="21" rx="8" fill="#ffb873"/><rect x="1" y="26" width="21" height="21" rx="8" fill="#77cbb8"/><rect x="26" y="26" width="21" height="21" rx="8" fill="#ed99b5"/><circle cx="11.5" cy="10" r="3.3" fill="#fff"/><path d="M11.5 11v5" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="m32 11 3 3 6-6" fill="none" stroke="#674227" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-words"><strong>密码学探索馆</strong><small>THE CRYPTO CLUB</small></span></a><nav class="desktop-nav" aria-label="主导航"><a href="../../explore/">知识</a><a href="../../views/timeline/">时代</a><a href="https://learn.poyi.net/">学习</a><a href="https://play.poyi.net/">游戏</a><a href="../../about/">关于</a></nav><div class="header-actions"><a class="language-button" data-language href="../../en/read/mars-details/" aria-label="切换至英文"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><ellipse cx="24" cy="24" rx="8" ry="18"/><path d="M7 18h34M7 30h34"/></svg><span>English</span></a><button class="icon-button theme-button" type="button" data-settings aria-label="外观设置"><svg class="icon sun-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v5m0 30v5M4 24h5m30 0h5M10 10l4 4m20 20 4 4m0-28-4 4M14 34l-4 4"/></svg><svg class="icon moon-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M39 29A17 17 0 0 1 19 9a17 17 0 1 0 20 20Z"/></svg></button></div></div></header><main id="main" class="document-main"><div class="page-heading"><p class="eyebrow">已独立复核的实体详解正文</p><h1>MARS：128 位 32 轮 AES 候选混合结构分组密码</h1></div><p class="status-notice">本篇详解的复核与目录元数据验收分别记录；全库仍在逐项建设。</p><nav class="article-toc" aria-label="本文目录"><a href="#principle">原理与机制</a><a href="#why">为什么重要</a><a href="#used">应用与实例</a><a href="#broken">边界与攻击面</a><a href="#history">历史与背景</a><a href="#example">逐步示例与核验</a><a href="#refs">参考出处</a></nav><article class="prose article-content"><section id="principle"><h2>原理与机制</h2><p><strong>算法</strong>：MARS 分组密码（MARS）。MARS 是 IBM 为 AES 设计的 128 位分组密码，支持 128 到 448 位的可变密钥（4 到 14 个 32 位字；AES 要求 128/192/256 位）。它有 32 轮，分成三个阶段：8 轮无密钥的前向混合、16 轮带密钥的核心轮、8 轮无密钥的后向混合；外围还有 4 个初始密钥字和 4 个末尾密钥字。密钥扩展产生 40 个 32 位字 K0..K39，其中 K0..K3 用于初始加法，K4..K35 用于 16 个核心轮，K36..K39 用于最后的减法。128 位明文按小端序装入四个 32 位字 D0..D3。加密的总体结构是：</p>
+<pre><code>D_i = P_i + K_i              i = 0..3
+8 轮前向混合（无密钥）
+16 轮核心轮（使用 K4..K35）
+8 轮后向混合（无密钥）
+C_i = D_i - K_{36+i}        i = 0..3
+</code></pre>
+<p>前向混合每轮用 D0 的四个字节分别查 S0/S1，把结果异或或加到 D1、D2、D3 上，再旋转 D0：</p>
+<pre><code>for i = 0..7:
+  D1 ^= S0[low byte of D0]
+  D1 += S1[2nd byte of D0]
+  D2 += S0[3rd byte of D0]
+  D3 ^= S1[high byte of D0]
+  D0 = ROR(D0, 24)
+  if i = 0 or 4: D0 += D3
+  if i = 1 or 5: D0 += D1
+  (D0, D1, D2, D3) = (D1, D2, D3, D0)
+</code></pre>
+<p>核心轮使用 E 函数。E 取一个数据字和两个密钥字，产生三个输出 L、M、R：</p>
+<pre><code>M = (in + K_{2i+4}) mod 2^32
+R = ((in &lt;&lt;&lt; 13) * K_{2i+5}) mod 2^32
+L = S[M mod 512]
+R = R &lt;&lt;&lt; 5
+r = R mod 32
+M = M &lt;&lt;&lt; r
+L = L XOR R
+R = R &lt;&lt;&lt; 5
+L = L XOR R
+r = R mod 32
+L = L &lt;&lt;&lt; r
+return (L, M, R)
+</code></pre>
+<p><code>&lt;&lt;&lt;</code> 是 32 位循环左移，<code>*</code> 是模 2^32 乘法；「the key words used for multiplication」（用于乘法的密钥字）必须是奇数，且不能含十个连续 0 或十个连续 1，这由密钥扩展保证。核心轮把 E 的输出分散到四个字：</p>
+<pre><code>for i = 0..15:
+  (L, M, R) = E(D0, K_{2i+4}, K_{2i+5})
+  D0 = D0 &lt;&lt;&lt; 13
+  D2 += M
+  if i &lt; 8:
+    D1 += L
+    D3 ^= R
+  else:
+    D3 += L
+    D1 ^= R
+  (D0, D1, D2, D3) = (D1, D2, D3, D0)
+</code></pre>
+<p>前 8 个核心轮和后 8 个核心轮使用不同的目标字，这是 MARS 混合结构的一部分。论文把 16 轮核心称为 type-3 Feistel 网络：每轮用一个数据字和两个密钥字「to modify the other three data words」（修改其余三个数据字）。后向混合与前向混合方向相反，用减法代替部分加法：</p>
+<pre><code>for i = 0..7:
+  if i = 2 or 6: D0 -= D3
+  if i = 3 or 7: D0 -= D1
+  D1 ^= S1[low byte of D0]
+  D2 -= S0[high byte of D0]
+  D3 -= S1[3rd byte of D0]
+  D3 ^= S0[2nd byte of D0]
+  D0 = D0 &lt;&lt;&lt; 24
+  (D0, D1, D2, D3) = (D1, D2, D3, D0)
+</code></pre>
+<p>密钥扩展从一个 15 字的临时表 T 开始：T 的前 n 个字是用户密钥（n=4..14），T[n]=n，其余为 0。然后执行 4 次迭代，每次先做线性变换，再做 4 轮搅拌，最后取 10 个字作为 K 的下 10 个字：</p>
+<pre><code>for j = 0..3:
+  for i = 0..14:
+    T[i] ^= ((T[(i-7) mod 15] ^ T[(i-2) mod 15]) &lt;&lt;&lt; 3) ^ (4*i + j)
+  repeat 4 times:
+    for i = 0..14:
+      T[i] = (T[i] + S[low 9 bits of T[(i-1) mod 15]]) &lt;&lt;&lt; 9
+  for i = 0..9:
+    K[10*j + i] = T[(4*i) mod 15]
+</code></pre>
+<p>最后修正 16 个用于乘法的密钥字 K5、K7、…、K35。对每个这样的 K[i]：</p>
+<pre><code>j = K[i] mod 4
+w = K[i] with both lowest bits set to 1
+M_l = 1 iff w_l belongs to a run of at least 10 equal bits
+      and 2 &lt;= l &lt;= 30 and w_{l-1} = w_l = w_{l+1}
+r = K[i-1] mod 32
+p = B[j] &lt;&lt;&lt; r
+K[i] = w XOR (p AND M)
+</code></pre>
+<p>固定表 B 是 <code>{0xA4A8D57B, 0x5B5D193B, 0xC8A8309B, 0x73F9A978}</code>，来自 S-box 的第 265 到 268 项。这个修正保证乘法密钥的最低位为 1，且没有十个连续 0 或 1。S-box 是 512 个 32 位字，前 256 个记为 S0，后 256 个记为 S1。论文说明它由 SHA-1 以伪随机方式生成：<code>S[5i+j]</code> 取自 SHA-1(5i、j、c1、c2、c3) 的第 j 个输出字，c1=0xB7E15162、c2=0x243F6A88，c3 是经过筛选的常数。完整表在论文附录 A。S-box 满足：不含全 0 或全 1 字；S0 和 S1 内部任意两个条目至少有三个字节不同；不存在相等、逐位取反或相加为零的条目对。解密是加密的严格逆过程。先从密文加回 K36..K39，再依次撤销 8 轮后向混合、16 轮核心轮和 8 轮前向混合，最后减去 K0..K3。撤销后向混合时先右旋字数组、D0 右旋 24 位，再按加密的逆序撤销 S-box 更新和可选减法；撤销核心轮时先右旋字数组、D0 右旋 13 位，再用同一个 E 函数撤销 L/M/R 的加法和异或；撤销前向混合时要先减去 D1/D3，再左旋 D0 24 位，最后撤销四个 S-box 更新。这个顺序不能随意交换，否则加法中的进位和旋转不会抵消。</p>
+<figure class="article-figure diagram"><span class="figure-scroll-hint">示意图较宽，可左右滑动查看</span><a class="figure-zoom" href="../../assets/articles/mars-details/mars-details-flow.zh.svg" target="_blank" rel="noopener noreferrer"><img src="../../assets/articles/mars-details/mars-details-flow.zh.svg" alt="MARS：128 位 32 轮 AES 候选混合结构分组密码 的三段解释图，文字摘自本篇正文。" loading="lazy"></a><figcaption>MARS：128 位 32 轮 AES 候选混合结构分组密码：为什么需要 → 核心机制 → 边界。<span class="figure-credit">原创示意图（正文摘句） · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer">CC BY 4.0</a></span><span class="figure-zoom-hint">点击图片查看原尺寸；手机端可左右滑动</span></figcaption></figure></section><section id="why"><h2>为什么重要</h2><p>MARS 的设计目标是在现代处理器上同时获得高安全性和高性能。论文认为当时的计算机已经支持快速乘法、数据相关旋转和表查找，因此 MARS 没有沿用纯 Feistel 或纯 SP 网络的单一结构，而是把 8 轮无密钥的前向混合、16 轮带密钥的核心轮和 8 轮无密钥的后向混合组合起来：外层混合提供快速的密钥和数据扩散，核心轮提供主要的密码学强度。设计者估计 MARS 比三密钥 3DES 更安全，并认为所有已知密码分析（包括线性和差分分析）需要超过 2^128 的数据，因此在 128 位块上不可行。这个结论是 1999 年的设计者估计，不是对全部攻击模型的形式化证明。性能方面，论文报告其 C 实现在 200 MHz Pentium-Pro 上约 65 Mbit/s，在 200 MHz PowerPC 上约 85 Mbit/s；专用硬件可获得约 10 倍加速。这些是 1999 年的实现数据，不是今天平台的性能承诺。MARS 的密钥扩展成本与密钥长度基本无关，因此 128/192/256 位密钥的加密速度接近。MARS 在 1999 年 8 月被选为五种 AES 最终候选之一，但没有被选为 AES。NIST 最终选择 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197；FIPS 197 在 2023 年 5 月 9 日更新为 FIPS 197-upd1。MARS 的 1999 年修订包含一个被 NIST 接受的密钥扩展微调，本文的密钥扩展和测试向量都采用修订后的版本。从教学角度看，MARS 是一个混合结构案例：它把无密钥混合层和带密钥核心层分开，核心轮使用乘法、数据相关旋转和 S-box，密钥扩展还包含位级修正。它的中间值和 Expanded Key 向量适合检查实现是否在密钥扩展、字节序、旋转方向和加法/减法逆序上逐项对齐。</p>
+</section><section id="used"><h2>应用与实例</h2><p>作者页面提供的测试向量有四个文件：<code>ecb_ivt.txt</code> 给出三组密钥长度的加密和解密中间值，<code>ecb_vk.txt</code> 给出 576 组可变密钥向量（每组还印出 40 个扩展密钥字），<code>ecb_vt.txt</code> 给出 384 组可变明文向量，<code>ecb_tbl.txt</code> 给出 120 组覆盖 S-box 条目的表测试。本文完整复现了：</p>
+<ul>
+<li>6 组 IVT 块（128/192/256 位各一组加密和一组解密），每组 35 个中间值；本文只校验其明文与密文，密钥扩展改由 VK 的 40 个字逐字校验，不逐行声称复现全部中间值；</li>
+<li>576 组 VK 向量：40 个 Expanded Key 字逐字匹配，零明文加密得到印出的密文，解密回到零明文；</li>
+<li>384 组 VT 向量和 120 组 TBL 向量：加密、解密都与文件一致。```text
+128 位，全零密钥、全零明文：
+K = 00000000000000000000000000000000
+P = 00000000000000000000000000000000
+C = DCC07B8DFB0738D6E30A22DFCF27E886</li>
+</ul>
+<p>192 位，全零密钥、全零明文：
+K = 000000000000000000000000000000000000000000000000
+P = 00000000000000000000000000000000
+C = F6B1B53C34B2B9E87F748482197E67E6</p>
+<p>256 位，全零密钥、全零明文：
+K = 0000000000000000000000000000000000000000000000000000000000000000
+P = 00000000000000000000000000000000
+C = E998F63D39378523A951320451085D56</p>
+<pre><code>
+```text
+K = 80000000000000000000000000000000
+Expanded Key[0..7] =
+  7A690123 4A4CF6EE D1C145FD 4A929170
+  551A7316 D46B4D1F 6A68B2DD 52A45B5F
+P = 00000000000000000000000000000000
+C = B3E2AD5608AC1B6733A7CB4FDF8F9952
+</code></pre>
+<p>VT 128 位第 1 条（全零密钥，明文只有最高位为 1）：</p>
+<pre><code>K = 00000000000000000000000000000000
+P = 80000000000000000000000000000000
+C = D962EFEBA75817BF6ED24BBBB5B7820D
+</code></pre>
+<p>这些向量覆盖三种密钥长度，VK 与 VT 的每条向量都只把密钥或明文的一个位置 1（单比特密钥/明文），并覆盖零与非零情形以及 S-box 的全部 512 个条目。它们不是加密后能解密的自洽测试，而是作者提交的固定答案文件；留存件只保住列出文件名与大小的目录页，向量正文本身没有留存，因此本行不断言与向量内容做过逐字比对。</p>
+<figure class="article-figure diagram"><span class="figure-scroll-hint">示意图较宽，可左右滑动查看</span><a class="figure-zoom" href="../../assets/articles/mars-details/mars-details-r138-model.zh.svg" target="_blank" rel="noopener noreferrer"><img src="../../assets/articles/mars-details/mars-details-r138-model.zh.svg" alt="MARS：128 位 32 轮 AES 候选混合结构分组密码 的三段结构图，列出对象、读法和边界。" loading="lazy"></a><figcaption>MARS：128 位 32 轮 AES 候选混合结构分组密码 的目录级结构：对象、读法与边界。<span class="figure-credit">原创示意图（目录级模型） · <a href="https://creativecommons.org/licenses/by/4.0/" rel="license noopener noreferrer">CC BY 4.0</a></span><span class="figure-zoom-hint">点击图片查看原尺寸；手机端可左右滑动</span></figcaption></figure></section><section id="broken"><h2>边界与攻击面</h2><p>MARS 的安全结论必须限定在论文的分析范围内。论文自己的估计——任何线性或差分攻击的数据复杂度都必须超过 2^128——是设计者 1999 年的估计，不是对 32 轮 MARS 的形式化证明，也不保证未来不会出现新的分析方法。本文不引用未经核实的第三方攻击来宣称 MARS 已被攻破或绝对安全。实现层面，MARS 使用 512 字的 S-box 查表、32 位乘法和数据相关旋转。查表会带来缓存和时序侧信道风险；数据相关旋转在不同处理器和编译器上可能产生不同的时序行为。本文的教学实现使用普通 JavaScript 数组和位运算，不是常量时间实现，也没有掩码、密钥隔离或故障检测，不能用于保护真实数据。密钥扩展的位级修正和 E 函数中的乘法、旋转顺序都是常见的实现错误来源。IVT 文件虽然给出中间值，但本文只校验明文与密文，不逐行声称复现全部 IVT 中间值；密钥扩展的正确性由 576 组 VK 的 40 个字逐字校验，而实现与规范的一致性还依靠 384 组 VT 和 120 组 TBL 的密文比对。部署范围需要区分：作者提供的测试向量只证明实现与规范一致，不证明安全性；MARS 是 AES 候选而不是 AES 标准；FIPS 197 只规定 Rijndael。MARS 只定义分组密码，不提供工作模式、IV 管理、填充、完整性保护、密钥协商或侧信道防护。</p>
+</section><section id="history"><h2>历史与背景</h2><p>MARS 由 IBM 的 Carolynn Burwick、Don Coppersmith、Edward D'Avignon、Rosario Gennaro、Shai Halevi、Charanjit Jutla、Stephen M.Matyas Jr.、Luke O'Connor、Mohammad Peyravian、David Safford 和 Nevenko Zunic 设计，作为 AES 候选算法提交。论文的修订日期是 1999 年 9 月 22 日。MARS 的结构是混合式的：外层是无密钥的 S-box 混合，中间是 16 轮带密钥的核心轮。设计者解释，这种分层让外层快速扩散密钥和数据，核心轮承担主要的安全分析；这与纯 Feistel 网络或纯 SP 网络都不同。1999 年 8 月 11 日，MARS 被选为五种 AES 最终候选之一。NIST 接受了一个密钥扩展的微调，作者页面提供了新的密钥扩展伪代码和新的测试向量；本文使用修订后的版本。AES 最终选择 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197；MARS 没有被选为 AES。作者页面还报告了 1999 年的性能数据：200 MHz Pentium-Pro 上约 65 Mbit/s，200 MHz PowerPC 上约 85 Mbit/s，硬件约 10 倍加速。这些数字属于当时的实现，不是今天的基准。</p>
+</section><section id="example"><h2>逐步示例与核验</h2><p><strong>复算示例</strong></p>
+<p>取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 (C=E_K(P;r),\qquad P=D_K(C))；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。</p>
+</section><section id="refs"><h2>参考出处</h2><ul>
+<li>Wikipedia search entry for MARS 分组密码. https://zh.wikipedia.org/w/index.php?search=MARS%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81</li>
+<li>Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/</li>
+</ul>
+</section><section id="glossary"><h2>术语小词典</h2><dl class="metadata"><div><dt>MARS</dt><dd>IBM 为 AES 设计的 128 位分组密码，支持 128-448 位密钥和 32 轮。</dd></div><div><dt>混合结构</dt><dd>MARS 的外层无密钥混合、核心带密钥轮的分层结构，不是纯 Feistel 或纯 SP 网络。</dd></div><div><dt>type-3 Feistel</dt><dd>每轮用一个数据字和若干密钥字修改其余三个数据字的结构；MARS 的 16 轮核心采用这种网络。</dd></div><div><dt>128 位块</dt><dd>MARS 的分组长度，按小端序装入四个 32 位字。</dd></div><div><dt>可变密钥</dt><dd>MARS 接受 128-448 位（4-14 个 32 位字）的密钥；AES 使用 128/192/256 位。</dd></div><div><dt>40 字扩展密钥</dt><dd>K0..K39；K0..K3 初始加法，K4..K35 核心轮，K36..K39 最终减法。</dd></div><div><dt>前向混合</dt><dd>8 轮无密钥轮，用 D0 的字节查 S0/S1，异或或加到其他字，并旋转 D0。</dd></div><div><dt>核心轮</dt><dd>16 轮带密钥轮，使用 E 函数、乘法、数据相关旋转和 S-box。</dd></div><div><dt>后向混合</dt><dd>8 轮无密钥轮，结构与前向混合相反，部分操作用减法。</dd></div><div><dt>E 函数</dt><dd>输入一个字和两个密钥字，输出 L、M、R；包含乘法、数据相关旋转和 S-box 查表。</dd></div><div><dt>乘法密钥</dt><dd>用于 E 函数乘法的 16 个密钥字 K5,K7,...,K35，必须为奇数且不含十个连续相同位。</dd></div><div><dt>密钥扩展</dt><dd>从 15 字 T 表出发，经 4 次线性变换、每次 4 轮共 16 轮搅拌和位级修正生成 40 字 K。</dd></div><div><dt>T 表</dt><dd>15 个 32 位字的临时表，保存密钥、密钥字数和中间状态。</dd></div><div><dt>搅拌</dt><dd>T[i]=(T[i]+S[低 9 位 T[i-1]])&lt;&lt;&lt;9 的变换，每次迭代 4 轮，共 16 轮。</dd></div><div><dt>位级修正</dt><dd>用 B 表和掩码修正乘法密钥，保证最低两位为 1 且没有十个连续相同位。</dd></div><div><dt>B 表</dt><dd>0xA4A8D57B、0x5B5D193B、0xC8A8309B、0x73F9A978，取自 S-box 第 265-268 项。</dd></div><div><dt>S-box</dt><dd>512 个 32 位字，前 256 个为 S0、后 256 个为 S1。</dd></div><div><dt>S0/S1</dt><dd>MARS S-box 的两半，按 8 位索引，共 512 项。</dd></div><div><dt>数据相关旋转</dt><dd>旋转量取自数据字低 5 位的旋转，E 函数中使用两次。</dd></div><div><dt>小端字节序</dt><dd>明文、密钥和密文的字节按低到高填入 32 位字。</dd></div><div><dt>IVT</dt><dd>作者提供的中间值测试文件，含 128/192/256 位的加密和解密中间状态。</dd></div><div><dt>VK/VT/TBL</dt><dd>作者提供的可变密钥、可变明文和 S-box 表测试文件。</dd></div><div><dt>AES 最终候选</dt><dd>MARS 是五种 AES 最终候选之一，但未被选为 AES。</dd></div></dl></section></article><details class="data-group"><summary>查看证据、复核与可运行教学源码</summary><p>这些是本篇复核所绑定的公开文件。教学代码仅用于公开示例；离线包只承诺正文可读，下载文件需先联网访问。</p><ul class="source-downloads"><li><a href="../../verification/2026-10-27-mars/content.json" download>content.json</a></li><li><a href="../../verification/2026-10-27-mars/sources.json" download>sources.json</a></li><li><a href="../../verification/2026-10-27-mars/reviews.json" download>reviews.json</a></li><li><a href="../../verification/2026-10-27-mars/verification-results.json" download>verification-results.json</a></li><li><a href="../../verification/2026-10-27-mars/verify.mjs" download>verify.mjs</a></li><li><a href="../../verification/2026-10-27-mars/mars-teaching.mjs" download>mars-teaching.mjs</a></li><li><a href="../../verification/2026-10-27-mars/vectors.json" download>vectors.json</a></li><li><a href="../../verification/2026-10-27-mars/article.zh.md" download>article.zh.md</a></li><li><a href="../../verification/2026-10-27-mars/article.en.md" download>article.en.md</a></li><li><a href="../../verification/2026-10-27-mars/meta.json" download>meta.json</a></li><li><a href="../../verification/2026-10-27-mars/glossary.json" download>glossary.json</a></li><li><a href="../../verification/2026-10-27-mars/calculations.json" download>calculations.json</a></li></ul></details><div class="reading-mark"><label><input type="checkbox" data-read="mars-details">在本机标记已读</label></div><a class="text-button" href="../../views/paths/">继续学习路线<svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 24h29M27 13l11 11-11 11"/></svg></a></main><footer class="site-footer"><div class="footer-inner"><a class="brand" href="../../"><svg viewBox="0 0 48 48" class="logo-mark" aria-hidden="true"><rect x="1" y="1" width="21" height="21" rx="8" fill="#6c65e9"/><rect x="26" y="1" width="21" height="21" rx="8" fill="#ffb873"/><rect x="1" y="26" width="21" height="21" rx="8" fill="#77cbb8"/><rect x="26" y="26" width="21" height="21" rx="8" fill="#ed99b5"/><circle cx="11.5" cy="10" r="3.3" fill="#fff"/><path d="M11.5 11v5" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="m32 11 3 3 6-6" fill="none" stroke="#674227" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg><span><strong>密码学探索馆</strong><small>知识用来分享，好奇心用来连接。</small></span></a><div class="footer-links"><a href="https://poyi.net/">主站</a><a href="https://learn.poyi.net/">学习站</a><a href="https://play.poyi.net/">游戏站</a><a href="https://github.com/poyinet/cryptography-decode-history" target="_blank" rel="noopener noreferrer">内容仓 ↗</a><a href="https://github.com/poyinet/cryptography-games" target="_blank" rel="noopener noreferrer">游戏仓 ↗</a><span>内容 CC BY 4.0 · 脚本 MIT</span></div></div><p class="footer-note">一个站，三种走法：在知识里查清楚，在课程里走一遍，在游戏里练一次。<span aria-hidden="true">✦</span></p></footer><nav class="bottom-nav" aria-label="移动导航"><a href="../../"><span aria-hidden="true">⌂</span><span>首页</span></a><a href="../../explore/"><span aria-hidden="true">◎</span><span>探索</span></a><a href="https://learn.poyi.net/"><span aria-hidden="true">▤</span><span>学习</span></a><a href="https://play.poyi.net/"><span aria-hidden="true">▶</span><span>游戏</span></a><button type="button" data-settings><span aria-hidden="true">⚙</span><span>设置</span></button></nav><dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title"><div class="dialog-bar"><h2 id="settings-title">让探索更舒服</h2><button class="icon-button" type="button" data-close aria-label="关闭"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 12 24 24m0-24L12 36"/></svg></button></div><div class="dialog-content"><section class="settings-block"><h3>页面外观</h3><div class="theme-options"><button type="button" data-theme-choice="system" aria-pressed="false"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 13h32M8 24h32M8 35h32"/><circle cx="17" cy="13" r="4"/><circle cx="31" cy="24" r="4"/><circle cx="20" cy="35" r="4"/></svg>跟随系统</button><button type="button" data-theme-choice="light" aria-pressed="false"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="8"/><path d="M24 4v5m0 30v5M4 24h5m30 0h5M10 10l4 4m20 20 4 4m0-28-4 4M14 34l-4 4"/></svg>浅色</button><button type="button" data-theme-choice="dark" aria-pressed="false"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M39 29A17 17 0 0 1 19 9a17 17 0 1 0 20 20Z"/></svg>深色</button></div></section><section class="settings-block"><h3>阅读语言</h3><a class="language-setting" data-language href="../../en/read/mars-details/"><svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><ellipse cx="24" cy="24" rx="8" ry="18"/><path d="M7 18h34M7 30h34"/></svg>English<svg class="icon " viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 24h29M27 13l11 11-11 11"/></svg></a></section><section class="settings-block"><h3>离线阅读</h3><p id="offline-state" role="status">正在检查首页与专题稿缓存…</p><p class="small">首页、927篇文章及其已核证详解入口已列入离线缓存。其余目录与视图需联网或此前已缓存。</p><button class="text-button" id="offline-retry" type="button">检查并补齐缓存</button></section><section class="install-block"><h3>把探索馆放进口袋</h3><p>支持的浏览器可以将首页添加到主屏幕，以独立窗口打开。</p><button class="button primary" type="button" id="install" hidden>安装探索馆</button><details><summary>查看添加方式</summary><p>在手机浏览器菜单中选择“添加到主屏幕”；iPhone 可从 Safari 的分享菜单中操作。具体入口取决于浏览器。</p></details></section></div></dialog><p class="network-toast" id="offline-toast" role="status" hidden>当前离线：仅已缓存的页面可读。</p><script type="application/json" id="page-data">{"lang":"zh","root":"../../","searchPage":false,"count":912,"articles":927}</script><script type="module" src="../../assets/site.34f1999fb57c.mjs"></script><script src="../../assets/local-links.js" defer></script></body></html>

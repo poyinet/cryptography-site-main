@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "jn25-cryptanalysis-details",
+  "sources": [
+    {
+      "id": "jn25-cryptanalysis-wikipedia",
+      "title": "Wikipedia search entry for JN-25 破译",
+      "url": "https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: JN-25 破译",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "jn25-cryptanalysis-r139-principle",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：JN-25 破译（JN-25 Cryptanalysis）。### 码本与叠加\n\nJN-25 先把日文电文查五位数码本，得到码组 x_i；再从加法簿取五位数 k_i，按十进制逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。这不是二进制异或，而是逐位不进位加法；接收方用同一加法簿逐位相减还原码组。加法簿按页/行组织，电文开头的指示组指出所用页与行。### 深度与码本恢复\n\n同一加法簿页被多条电文复用时，两条密文逐位相减：\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。加法被消去，剩下码本码组的差。大量“深度”加上已知码组、猜测的 crib 和频率分析，可以恢复码本含义；再把新码组反查，逐步读出明文。",
+            "en": "**Attack**: JN-25 Cryptanalysis (JN-25 破译).### Codebook and additive\n\nJN-25 first looked up Japanese text in a five-digit codebook, producing code groups x_i; it then took five-digit groups k_i from an additive book and added them digitwise modulo 10:\n\nc_i=(x_i+k_i) mod 10."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "jn25-cryptanalysis-r139-why",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "why",
+          "statement": {
+            "zh": "JN-25 是“码本 + 加法超加密”的典型。它的弱点不是加法算法本身，而是加法簿的重复使用和码本规模有限；一旦深度足够，统计攻击就能把一次性掩码变成可分析的码本差分。VENONA 同样利用一次性密码本页重复，但 VENONA 的失败点是“OTP 页重复”；JN-25 的加法簿本来就不是 OTP，重复使用是设计常态，深度更容易积累。两者不能当成同一种密钥复用错误。",
+            "en": "### Why it is separate\n\nJN-25 is a canonical codebook-plus-additive system.Its weakness is not the addition itself but additive-page reuse and a finite codebook; once depth is sufficient, statistical attack turns a one-time-looking mask into analyzable codebook differences."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "jn25-cryptanalysis-r139-used",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.读指示组，确定加法簿页/行。2.用加法簿逐位相减，得到码组序列。3.对齐使用同一页的电文，构造 depth。4.用已知码组、crib、频率和交通分析恢复码本。5.迭代：新读出的码组加入码本，扩大下一轮解密。### 不能怎么用\n\n不能把 JN-25 的逐位模 10 加法写成 XOR；不能忽略指示组和 garble check；不能把部分码本恢复说成全文可读。",
+            "en": "### Correct use\n\n1.Read the indicator to identify the additive page and line."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "jn25-cryptanalysis-r139-broken",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.加法簿更换：换页/换簿会使已有深度失效，必须重新积累。2.码本扩充：新码组没有已知含义，只能靠上下文猜。3.指示组或抄收错误：逐位相减会产生大量乱码，需 garble check。4.不是现代密码：JN-25 的码本+加法结构不等价于现代流密码或分组密码；不能把历史破译直接外推到 OTP 或 AES。",
+            "en": "### Failure conditions\n\n1.Additive-book change: a new page or book destroys existing depth and forces a new accumulation."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "jn25-cryptanalysis-r139-history",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "history",
+          "statement": {
+            "zh": "JN-25 于 1939 年启用，1940 年起英国远东联合局与美军 OP-20-G 先后投入。到 1941 年 8 月加法簿更换前，美方约恢复 2,000 个码组，约占 27,500 组的 4%，且多为数字与套语；1941 年 12 月 4 日再次换簿，迫使分析重新开始。JN-25 的破译是渐进过程，不能把某一次战斗的结果简单归因于单一解密。该条目只写密码机制、规模与进度，不把战术结果当作算法结论。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：JN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### Historical location\n\nJN-25 entered service in 1939; from 1940 the British Far East Combined Bureau and the U.S.OP-20-G worked on it."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "jn25-cryptanalysis-r139-refs",
+          "entryId": "jn25-cryptanalysis-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for JN-25 破译.https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for JN-25 破译.https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "jn25-cryptanalysis-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "jn25-cryptanalysis-wikipedia"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "jn25-cryptanalysis-r139-principle",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：JN-25 破译（JN-25 Cryptanalysis）。### 码本与叠加\n\nJN-25 先把日文电文查五位数码本，得到码组 x_i；再从加法簿取五位数 k_i，按十进制逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。这不是二进制异或，而是逐位不进位加法；接收方用同一加法簿逐位相减还原码组。加法簿按页/行组织，电文开头的指示组指出所用页与行。### 深度与码本恢复\n\n同一加法簿页被多条电文复用时，两条密文逐位相减：\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。加法被消去，剩下码本码组的差。大量“深度”加上已知码组、猜测的 crib 和频率分析，可以恢复码本含义；再把新码组反查，逐步读出明文。",
+        "en": "**Attack**: JN-25 Cryptanalysis (JN-25 破译).### Codebook and additive\n\nJN-25 first looked up Japanese text in a five-digit codebook, producing code groups x_i; it then took five-digit groups k_i from an additive book and added them digitwise modulo 10:\n\nc_i=(x_i+k_i) mod 10."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-r139-why",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "why",
+      "statement": {
+        "zh": "JN-25 是“码本 + 加法超加密”的典型。它的弱点不是加法算法本身，而是加法簿的重复使用和码本规模有限；一旦深度足够，统计攻击就能把一次性掩码变成可分析的码本差分。VENONA 同样利用一次性密码本页重复，但 VENONA 的失败点是“OTP 页重复”；JN-25 的加法簿本来就不是 OTP，重复使用是设计常态，深度更容易积累。两者不能当成同一种密钥复用错误。",
+        "en": "### Why it is separate\n\nJN-25 is a canonical codebook-plus-additive system.Its weakness is not the addition itself but additive-page reuse and a finite codebook; once depth is sufficient, statistical attack turns a one-time-looking mask into analyzable codebook differences."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-r139-used",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.读指示组，确定加法簿页/行。2.用加法簿逐位相减，得到码组序列。3.对齐使用同一页的电文，构造 depth。4.用已知码组、crib、频率和交通分析恢复码本。5.迭代：新读出的码组加入码本，扩大下一轮解密。### 不能怎么用\n\n不能把 JN-25 的逐位模 10 加法写成 XOR；不能忽略指示组和 garble check；不能把部分码本恢复说成全文可读。",
+        "en": "### Correct use\n\n1.Read the indicator to identify the additive page and line."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-r139-broken",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.加法簿更换：换页/换簿会使已有深度失效，必须重新积累。2.码本扩充：新码组没有已知含义，只能靠上下文猜。3.指示组或抄收错误：逐位相减会产生大量乱码，需 garble check。4.不是现代密码：JN-25 的码本+加法结构不等价于现代流密码或分组密码；不能把历史破译直接外推到 OTP 或 AES。",
+        "en": "### Failure conditions\n\n1.Additive-book change: a new page or book destroys existing depth and forces a new accumulation."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-r139-history",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "history",
+      "statement": {
+        "zh": "JN-25 于 1939 年启用，1940 年起英国远东联合局与美军 OP-20-G 先后投入。到 1941 年 8 月加法簿更换前，美方约恢复 2,000 个码组，约占 27,500 组的 4%，且多为数字与套语；1941 年 12 月 4 日再次换簿，迫使分析重新开始。JN-25 的破译是渐进过程，不能把某一次战斗的结果简单归因于单一解密。该条目只写密码机制、规模与进度，不把战术结果当作算法结论。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：JN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### Historical location\n\nJN-25 entered service in 1939; from 1940 the British Far East Combined Bureau and the U.S.OP-20-G worked on it."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "jn25-cryptanalysis-r139-refs",
+      "entryId": "jn25-cryptanalysis-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for JN-25 破译.https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for JN-25 破译.https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

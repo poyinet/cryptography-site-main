@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--fault-attack-details",
+  "sources": [
+    {
+      "id": "attack--fault-attack-wikipedia",
+      "title": "Wikipedia search entry for 故障注入攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 故障注入攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--fault-attack-r139-principle",
+          "entryId": "attack--fault-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：故障注入攻击（Fault Attack）。故障攻击利用硬件在计算中产生的错误。对使用中国剩余定理的 RSA 签名，若故障只发生在一个 CRT 素因子的计算中，则同一消息的正确签名和错误签名各有一个，或只有一个已知消息的错误签名，就可以通过最大公约数分解模数 N；非 CRT 实现通常需要多得多的故障。",
+            "en": "**Attack**: Fault Attack (故障注入攻击).A fault attack exploits errors produced by hardware during computation."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--fault-attack-r139-why",
+          "entryId": "attack--fault-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "硬件故障虽少但确实会发生，拥有物理访问的攻击者还可以主动诱发故障；错误输出使攻击者绕过直接分解模数的困难。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Hardware faults are rare but do occur, and an attacker with physical access can also induce them; faulty outputs let the attacker bypass the difficulty of directly factoring the modulus.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--fault-attack-r139-used",
+          "entryId": "attack--fault-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文攻击 CRT-RSA 和 Rabin 签名的特定实现，利用的是单素数计算故障，也攻破 Fiat-Shamir 与 Schnorr 身份识别协议；证书颁发机构生成错误证书是一个现实场景。",
+            "en": "The paper attacks specific CRT-RSA and Rabin signature implementations using single-prime computation faults, and also breaks the Fiat-Shamir and Schnorr identification protocols; a certification authority issuing faulty certificates is a realistic scenario.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--fault-attack-r139-broken",
+          "entryId": "attack--fault-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御包括在输出签名前验证结果、使用错误检测位或 CRC、以及随机填充；论文强调不应把未经验证的计算结果直接发送给外部，并指出验证本身不能修复 Fiat-Shamir/Schnorr 的寄存器故障。### 形式模型。",
+            "en": "Defenses include verifying the result before releasing a signature, using error-detection bits or CRCs, and random padding; the paper stresses that unverified results should not be sent out, and notes that verification alone does not fix register faults in Fiat-Shamir or Schnorr.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--fault-attack-r139-history",
+          "entryId": "attack--fault-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Boneh、DeMillo 和 Lipton 在 1997 年 EUROCRYPT 论文中提出故障攻击，并把它扩展到多种签名和身份识别协议。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「故障注入攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 故障注入攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Boneh, DeMillo and Lipton introduced fault attacks in their 1997 EUROCRYPT paper and extended them to several signature and identification protocols.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--fault-attack-r139-refs",
+          "entryId": "attack--fault-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 故障注入攻击.https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 故障注入攻击.https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--fault-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--fault-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--fault-attack-r139-principle",
+      "entryId": "attack--fault-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：故障注入攻击（Fault Attack）。故障攻击利用硬件在计算中产生的错误。对使用中国剩余定理的 RSA 签名，若故障只发生在一个 CRT 素因子的计算中，则同一消息的正确签名和错误签名各有一个，或只有一个已知消息的错误签名，就可以通过最大公约数分解模数 N；非 CRT 实现通常需要多得多的故障。",
+        "en": "**Attack**: Fault Attack (故障注入攻击).A fault attack exploits errors produced by hardware during computation."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-r139-why",
+      "entryId": "attack--fault-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "硬件故障虽少但确实会发生，拥有物理访问的攻击者还可以主动诱发故障；错误输出使攻击者绕过直接分解模数的困难。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Hardware faults are rare but do occur, and an attacker with physical access can also induce them; faulty outputs let the attacker bypass the difficulty of directly factoring the modulus.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-r139-used",
+      "entryId": "attack--fault-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文攻击 CRT-RSA 和 Rabin 签名的特定实现，利用的是单素数计算故障，也攻破 Fiat-Shamir 与 Schnorr 身份识别协议；证书颁发机构生成错误证书是一个现实场景。",
+        "en": "The paper attacks specific CRT-RSA and Rabin signature implementations using single-prime computation faults, and also breaks the Fiat-Shamir and Schnorr identification protocols; a certification authority issuing faulty certificates is a realistic scenario.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-r139-broken",
+      "entryId": "attack--fault-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御包括在输出签名前验证结果、使用错误检测位或 CRC、以及随机填充；论文强调不应把未经验证的计算结果直接发送给外部，并指出验证本身不能修复 Fiat-Shamir/Schnorr 的寄存器故障。### 形式模型。",
+        "en": "Defenses include verifying the result before releasing a signature, using error-detection bits or CRCs, and random padding; the paper stresses that unverified results should not be sent out, and notes that verification alone does not fix register faults in Fiat-Shamir or Schnorr.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-r139-history",
+      "entryId": "attack--fault-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Boneh、DeMillo 和 Lipton 在 1997 年 EUROCRYPT 论文中提出故障攻击，并把它扩展到多种签名和身份识别协议。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「故障注入攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 故障注入攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Boneh, DeMillo and Lipton introduced fault attacks in their 1997 EUROCRYPT paper and extended them to several signature and identification protocols.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--fault-attack-r139-refs",
+      "entryId": "attack--fault-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 故障注入攻击.https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 故障注入攻击.https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--fault-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

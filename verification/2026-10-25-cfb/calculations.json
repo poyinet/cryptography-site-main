@@ -1,0 +1,52 @@
+[
+  {
+    "id": "cfb-official-vector128",
+    "entryId": "cfb-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "SP 800-38A Appendix F.3.13 AES-128-CFB128 four-block vector",
+    "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cfb-teaching.mjs"],
+    "limitations": "One official four-block case for s=128; not full-message protocol validation."
+  },
+  {
+    "id": "cfb-official-vector8",
+    "entryId": "cfb-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "SP 800-38A Appendix F.3.7 AES-128-CFB8 first 16 bytes",
+    "expected": "The first 16 ciphertext bytes are 3b79424c9c0dd436bace9e0ed4586a4f",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cfb-teaching.mjs"],
+    "limitations": "Checks the first 16 bytes of the CFB8 example; it does not reproduce the full segment table."
+  },
+  {
+    "id": "cfb-bitflip",
+    "entryId": "cfb-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Four-block AES-128-CFB128 ciphertext with one bit flipped in the second block",
+    "expected": "The second plaintext block flips the same bit, the third block is corrupted and the fourth is unchanged",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cfb-teaching.mjs"],
+    "limitations": "One fixed s=b case; it does not measure propagation for smaller s."
+  },
+  {
+    "id": "cfb-iv-reuse",
+    "entryId": "cfb-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Two messages with the same key, IV and first plaintext segment",
+    "expected": "The XOR of the first ciphertext segments equals the XOR of the first plaintext segments",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cfb-teaching.mjs"],
+    "limitations": "First-segment arithmetic only; later segments differ because they feed back different ciphertext."
+  },
+  {
+    "id": "cfb-no-padding",
+    "entryId": "cfb-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "20-byte plaintext encrypted with AES-128-CFB8",
+    "expected": "Ciphertext length equals plaintext length; no padding block is added",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["cfb-teaching.mjs"],
+    "limitations": "s=8 length behavior only; s=128 still requires block-aligned input unless the protocol defines final-segment handling."
+  }
+]

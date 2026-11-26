@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "lea-details",
+  "sources": [
+    {
+      "id": "lea-wikipedia",
+      "title": "Wikipedia search entry for LEA 轻量级分组密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=LEA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: LEA 轻量级分组密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "lea-r139-principle",
+          "entryId": "lea-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：LEA 轻量级分组密码（LEA）。### 128 位分组与 32 位 ARX\n\nLEA 的分组固定 128 位，拆成四个 32 位字 X0..X3。轮函数只做三类运算：模 2^32 加法、按位循环移位和异或。三个子变换分别用左旋 9、右旋 5、右旋 3，把两个字与轮密钥混合后再写回，第四个字直接搬到下一轮；没有 S 盒，也没有查找表。### 轮数与密钥编排\n\nLEA-128/192/256 分别跑 24/28/32 轮，每轮需要 6 个 32 位轮密钥。密钥编排把主密钥扩成 6×(轮数) 个 32 位字，轮常数由黄金比例常数派生；解密用同一套轮密钥逆序执行。128 位分组意味着生日界是 2^64，单密钥下的多块数据要控制加密量。",
+            "en": "**Algorithm**: LEA (LEA 轻量级分组密码).### 128-bit block and 32-bit ARX\n\nLEA has a fixed 128-bit block split into four 32-bit words X0..X3."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        },
+        {
+          "id": "lea-r139-why",
+          "entryId": "lea-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为通用处理器做轻量\n\nLEA 的设计目标是“软件轻量”：32 位 ARX 指令在 Intel、AMD、ARM 和 ColdFire 上都是一条或几条原生指令，代码体小、寄存器压力低、没有表查 cache 泄漏。论文的实验显示它在这些平台上快于 AES，适合手机、嵌入式网关和云端批量加密。### 硬件与侧信道\n\nARX 没有 S 盒，硬件面积小，但也意味着差分/线性分析直接作用在加法与旋转上；实现方通常加掩码或隐藏来抗侧信道。LEA 的轻量定位是“代码小、速度快”，不是“自带侧信道防护”。",
+            "en": "### Lightweight for general-purpose CPUs\n\nLEA targets “software lightweightness”: 32-bit ARX instructions are one or a few native instructions on Intel, AMD, ARM and ColdFire, with small code, low register pressure and no table-lookup cache leakage.The paper's experiments show it faster than AES on those platforms, which suits phones, embedded gateways and bulk cloud encryption."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        },
+        {
+          "id": "lea-r139-used",
+          "entryId": "lea-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 韩国标准与国际标准\n\nLEA 是韩国 KS X 3246 标准，也是韩国 KCMVP 密码模块验证的批准算法；2019 年进入 ISO/IEC 29192-2，与 PRESENT、CLEFIA 同列轻量分组密码。它出现在移动设备、IoT 固件和需要小代码体的加密库里。### 生态\n\nLEA 有 Crypto++、Bouncy Castle 等实现，也有硬件 IP；但它的协议采用面远不如 AES，跨组织互通通常仍以 AES 为默认。选 LEA 往往是因为韩国合规、代码尺寸或特定 CPU 的吞吐，而不是全球生态。",
+            "en": "### Korean and international standards\n\nLEA is a Korean KS X 3246 standard and an approved algorithm in Korea's KCMVP cryptographic-module validation; it entered ISO/IEC 29192-2 in 2019 alongside PRESENT and CLEFIA as lightweight block ciphers.It appears in mobile devices, IoT firmware and crypto libraries that need a small code footprint."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        },
+        {
+          "id": "lea-r139-broken",
+          "entryId": "lea-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 全轮没有实用攻击，但不等于无条件安全\n\n公开文献对全 24/28/32 轮 LEA 没有实用密钥恢复；缩减轮的差分、线性与不可能差分分析仍在推进，说明轮函数的安全边际需要按轮数评估。LEA 只提供分组密码，不提供认证；CBC、CTR、GCM 等模式要单独选，nonce/IV 规则也要单独保证。128 位分组在大量数据下会碰到 2^64 块的生日界，CTR 模式还要限制同一密钥的块数。ARX 实现的时序可能依赖数据，软件实现要做常数时间检查；硬件实现要评估故障注入与功耗分析。",
+            "en": "### No practical full-round attack, but not unconditionally safe\n\nThe public literature has no practical key recovery against all 24/28/32 rounds; reduced-round differential, linear and impossible-differential analysis continues, so the security margin must be assessed by round count.LEA is a block cipher only, not authentication; CBC, CTR, GCM and their nonce/IV rules are separate choices."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        },
+        {
+          "id": "lea-r139-history",
+          "entryId": "lea-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 2013 年 ETRI 设计，2019 年 ISO\n\nLEA 由韩国 ETRI 的 Hong、Lee、Kim、Kwon、Ryu、Lee 在 2013 年 WISA 提出，论文标题是 “LEA: A 128-Bit Block Cipher for Fast Encryption on Common Processors”。它在 2019 年进入 ISO/IEC 29192-2:2019，成为国际轻量密码标准的一部分。### 命名\n\nLEA 是 “Lightweight Encryption Algorithm” 的缩写，不是某款产品的型号；它与 AES 的差别不在分组长度，而在轮函数：AES 用 S 盒与列混合，LEA 用 32 位 ARX。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：LEA 轻量级分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "### ETRI 2013, ISO 2019\n\nLEA was proposed at WISA 2013 by Hong, Lee, Kim, Kwon, Ryu and Lee of ETRI Korea, in “LEA: A 128-Bit Block Cipher for Fast Encryption on Common Processors”.It entered ISO/IEC 29192-2:2019, becoming part of the international lightweight-cipher standard."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        },
+        {
+          "id": "lea-r139-refs",
+          "entryId": "lea-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for LEA 轻量级分组密码.https://zh.wikipedia.org/w/index.php?search=LEA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for LEA 轻量级分组密码.https://zh.wikipedia.org/w/index.php?search=LEA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "lea-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "lea-wikipedia"
+      ]
+    },
+    {
+      "id": "lea-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "lea-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "lea-r139-principle",
+      "entryId": "lea-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：LEA 轻量级分组密码（LEA）。### 128 位分组与 32 位 ARX\n\nLEA 的分组固定 128 位，拆成四个 32 位字 X0..X3。轮函数只做三类运算：模 2^32 加法、按位循环移位和异或。三个子变换分别用左旋 9、右旋 5、右旋 3，把两个字与轮密钥混合后再写回，第四个字直接搬到下一轮；没有 S 盒，也没有查找表。### 轮数与密钥编排\n\nLEA-128/192/256 分别跑 24/28/32 轮，每轮需要 6 个 32 位轮密钥。密钥编排把主密钥扩成 6×(轮数) 个 32 位字，轮常数由黄金比例常数派生；解密用同一套轮密钥逆序执行。128 位分组意味着生日界是 2^64，单密钥下的多块数据要控制加密量。",
+        "en": "**Algorithm**: LEA (LEA 轻量级分组密码).### 128-bit block and 32-bit ARX\n\nLEA has a fixed 128-bit block split into four 32-bit words X0..X3."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    },
+    {
+      "id": "lea-r139-why",
+      "entryId": "lea-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为通用处理器做轻量\n\nLEA 的设计目标是“软件轻量”：32 位 ARX 指令在 Intel、AMD、ARM 和 ColdFire 上都是一条或几条原生指令，代码体小、寄存器压力低、没有表查 cache 泄漏。论文的实验显示它在这些平台上快于 AES，适合手机、嵌入式网关和云端批量加密。### 硬件与侧信道\n\nARX 没有 S 盒，硬件面积小，但也意味着差分/线性分析直接作用在加法与旋转上；实现方通常加掩码或隐藏来抗侧信道。LEA 的轻量定位是“代码小、速度快”，不是“自带侧信道防护”。",
+        "en": "### Lightweight for general-purpose CPUs\n\nLEA targets “software lightweightness”: 32-bit ARX instructions are one or a few native instructions on Intel, AMD, ARM and ColdFire, with small code, low register pressure and no table-lookup cache leakage.The paper's experiments show it faster than AES on those platforms, which suits phones, embedded gateways and bulk cloud encryption."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    },
+    {
+      "id": "lea-r139-used",
+      "entryId": "lea-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 韩国标准与国际标准\n\nLEA 是韩国 KS X 3246 标准，也是韩国 KCMVP 密码模块验证的批准算法；2019 年进入 ISO/IEC 29192-2，与 PRESENT、CLEFIA 同列轻量分组密码。它出现在移动设备、IoT 固件和需要小代码体的加密库里。### 生态\n\nLEA 有 Crypto++、Bouncy Castle 等实现，也有硬件 IP；但它的协议采用面远不如 AES，跨组织互通通常仍以 AES 为默认。选 LEA 往往是因为韩国合规、代码尺寸或特定 CPU 的吞吐，而不是全球生态。",
+        "en": "### Korean and international standards\n\nLEA is a Korean KS X 3246 standard and an approved algorithm in Korea's KCMVP cryptographic-module validation; it entered ISO/IEC 29192-2 in 2019 alongside PRESENT and CLEFIA as lightweight block ciphers.It appears in mobile devices, IoT firmware and crypto libraries that need a small code footprint."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    },
+    {
+      "id": "lea-r139-broken",
+      "entryId": "lea-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 全轮没有实用攻击，但不等于无条件安全\n\n公开文献对全 24/28/32 轮 LEA 没有实用密钥恢复；缩减轮的差分、线性与不可能差分分析仍在推进，说明轮函数的安全边际需要按轮数评估。LEA 只提供分组密码，不提供认证；CBC、CTR、GCM 等模式要单独选，nonce/IV 规则也要单独保证。128 位分组在大量数据下会碰到 2^64 块的生日界，CTR 模式还要限制同一密钥的块数。ARX 实现的时序可能依赖数据，软件实现要做常数时间检查；硬件实现要评估故障注入与功耗分析。",
+        "en": "### No practical full-round attack, but not unconditionally safe\n\nThe public literature has no practical key recovery against all 24/28/32 rounds; reduced-round differential, linear and impossible-differential analysis continues, so the security margin must be assessed by round count.LEA is a block cipher only, not authentication; CBC, CTR, GCM and their nonce/IV rules are separate choices."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    },
+    {
+      "id": "lea-r139-history",
+      "entryId": "lea-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 2013 年 ETRI 设计，2019 年 ISO\n\nLEA 由韩国 ETRI 的 Hong、Lee、Kim、Kwon、Ryu、Lee 在 2013 年 WISA 提出，论文标题是 “LEA: A 128-Bit Block Cipher for Fast Encryption on Common Processors”。它在 2019 年进入 ISO/IEC 29192-2:2019，成为国际轻量密码标准的一部分。### 命名\n\nLEA 是 “Lightweight Encryption Algorithm” 的缩写，不是某款产品的型号；它与 AES 的差别不在分组长度，而在轮函数：AES 用 S 盒与列混合，LEA 用 32 位 ARX。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：LEA 轻量级分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "### ETRI 2013, ISO 2019\n\nLEA was proposed at WISA 2013 by Hong, Lee, Kim, Kwon, Ryu and Lee of ETRI Korea, in “LEA: A 128-Bit Block Cipher for Fast Encryption on Common Processors”.It entered ISO/IEC 29192-2:2019, becoming part of the international lightweight-cipher standard."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    },
+    {
+      "id": "lea-r139-refs",
+      "entryId": "lea-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for LEA 轻量级分组密码.https://zh.wikipedia.org/w/index.php?search=LEA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for LEA 轻量级分组密码.https://zh.wikipedia.org/w/index.php?search=LEA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "lea-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

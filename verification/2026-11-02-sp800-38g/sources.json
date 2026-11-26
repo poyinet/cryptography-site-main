@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sp800-38g-details",
+  "sources": [
+    {
+      "id": "sp800-38g-wikipedia",
+      "title": "Wikipedia search entry for NIST SP 800-38G 格式保留加密模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: NIST SP 800-38G 格式保留加密模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sp800-38g-r139-principle",
+          "entryId": "sp800-38g-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：NIST SP 800-38G 格式保留加密模式（NIST SP 800-38G Format-Preserving Encryption Modes）。摘要给出方法与定位：「This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.」并说明二者关系——「Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.」即密文保持明文格式（长度与字母表）。",
+            "en": "**Standard**: NIST SP 800-38G Format-Preserving Encryption Modes (NIST SP 800-38G 格式保留加密模式).The abstract gives methods and placement: \"This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.\" and their relation to a cipher: \"Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.\" Ciphertext keeps the plaintext’s format — length and alphabet."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38g-r139-why",
+          "entryId": "sp800-38g-details",
+          "section": "why",
+          "statement": {
+            "zh": "动机写在 §2：格式保留加密面向的不是二进制数据，而是「designed for data that is not necessarily binary」，并且「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」——老系统的数据字段不便改长度或格式。关键词表只给检索入口：「Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption」。",
+            "en": "The motivation is in §2: format-preserving encryption is \"designed for data that is not necessarily binary\" and \"FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications\", where fields cannot easily change length or format.The keyword line is an index entry, not an argument: \"Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38g-r139-used",
+          "entryId": "sp800-38g-details",
+          "section": "used",
+          "statement": {
+            "zh": "使用形态是在批准分组密码之上调用 FF1/FF3；一致性测试一节把它接入验证框架，文档要求底层算法为「an underlying, approved symmetric-key block cipher algorithm」，因此在实现里通常落到 AES。",
+            "en": "In use, FF1/FF3 are invoked over an approved block cipher; the conformance-testing section wires it into the validation framework, and the abstract requires \"an underlying, approved symmetric-key block cipher algorithm\", which in implementations means AES.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38g-r139-broken",
+          "entryId": "sp800-38g-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度一是构造前提：两个模式都是建立在分组密码之上的 Feistel 置换，作用在固定进制的数字串上，而非任意格式；「an underlying, approved symmetric-key block cipher algorithm」是必要条件。限度二是参数下限的两种语气：附录区分了硬性下限与推荐值——radix^minlen 至少 100 是为了排除一类通用 meet-in-the-middle 攻击，而「the value radix minlen should generally be at least one million」在原文里是 suggested rather than required。",
+            "en": "The first limit is the construction: both modes are Feistel permutations over digit strings in a fixed radix built on \"an underlying, approved symmetric-key block cipher algorithm\", not arbitrary formats.The second is the two registers of the parameter floors: Appendix A requires radix^minlen to be at least 100 to preclude a generic meet-in-the-middle attack, while the larger figure — \"the value radix minlen should generally be at least one million\" — is stated as suggested rather than required."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38g-r139-history",
+          "entryId": "sp800-38g-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本与更新痕迹在标题页：日期行「March 2016」，引用行「Spec.Publ.800-38G, 28 pages (March 2016)」，页眉还留有「INCLUDES UPDATES AS OF 08-04-2016: PAGE I」，即 2016 年 8 月 4 日并入专利披露说明的版次。§2 交代历史一笔：第三模式 FF2（提交时名 VAES3）曾列入初稿，公开评审后被撤下。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：NIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "The version marks are on the title page: the date line \"March 2016\", the citation \"Spec.Publ."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38g-r139-refs",
+          "entryId": "sp800-38g-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式.https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式.https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sp800-38g-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sp800-38g-wikipedia"
+      ]
+    },
+    {
+      "id": "sp800-38g-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sp800-38g-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sp800-38g-r139-principle",
+      "entryId": "sp800-38g-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：NIST SP 800-38G 格式保留加密模式（NIST SP 800-38G Format-Preserving Encryption Modes）。摘要给出方法与定位：「This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.」并说明二者关系——「Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.」即密文保持明文格式（长度与字母表）。",
+        "en": "**Standard**: NIST SP 800-38G Format-Preserving Encryption Modes (NIST SP 800-38G 格式保留加密模式).The abstract gives methods and placement: \"This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.\" and their relation to a cipher: \"Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.\" Ciphertext keeps the plaintext’s format — length and alphabet."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38g-r139-why",
+      "entryId": "sp800-38g-details",
+      "section": "why",
+      "statement": {
+        "zh": "动机写在 §2：格式保留加密面向的不是二进制数据，而是「designed for data that is not necessarily binary」，并且「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」——老系统的数据字段不便改长度或格式。关键词表只给检索入口：「Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption」。",
+        "en": "The motivation is in §2: format-preserving encryption is \"designed for data that is not necessarily binary\" and \"FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications\", where fields cannot easily change length or format.The keyword line is an index entry, not an argument: \"Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38g-r139-used",
+      "entryId": "sp800-38g-details",
+      "section": "used",
+      "statement": {
+        "zh": "使用形态是在批准分组密码之上调用 FF1/FF3；一致性测试一节把它接入验证框架，文档要求底层算法为「an underlying, approved symmetric-key block cipher algorithm」，因此在实现里通常落到 AES。",
+        "en": "In use, FF1/FF3 are invoked over an approved block cipher; the conformance-testing section wires it into the validation framework, and the abstract requires \"an underlying, approved symmetric-key block cipher algorithm\", which in implementations means AES.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38g-r139-broken",
+      "entryId": "sp800-38g-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度一是构造前提：两个模式都是建立在分组密码之上的 Feistel 置换，作用在固定进制的数字串上，而非任意格式；「an underlying, approved symmetric-key block cipher algorithm」是必要条件。限度二是参数下限的两种语气：附录区分了硬性下限与推荐值——radix^minlen 至少 100 是为了排除一类通用 meet-in-the-middle 攻击，而「the value radix minlen should generally be at least one million」在原文里是 suggested rather than required。",
+        "en": "The first limit is the construction: both modes are Feistel permutations over digit strings in a fixed radix built on \"an underlying, approved symmetric-key block cipher algorithm\", not arbitrary formats.The second is the two registers of the parameter floors: Appendix A requires radix^minlen to be at least 100 to preclude a generic meet-in-the-middle attack, while the larger figure — \"the value radix minlen should generally be at least one million\" — is stated as suggested rather than required."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38g-r139-history",
+      "entryId": "sp800-38g-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本与更新痕迹在标题页：日期行「March 2016」，引用行「Spec.Publ.800-38G, 28 pages (March 2016)」，页眉还留有「INCLUDES UPDATES AS OF 08-04-2016: PAGE I」，即 2016 年 8 月 4 日并入专利披露说明的版次。§2 交代历史一笔：第三模式 FF2（提交时名 VAES3）曾列入初稿，公开评审后被撤下。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：NIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "The version marks are on the title page: the date line \"March 2016\", the citation \"Spec.Publ."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38g-r139-refs",
+      "entryId": "sp800-38g-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式.https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式.https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sp800-38g-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "protocol--sm9-details",
+  "sources": [
+    {
+      "id": "protocol--sm9-wikipedia",
+      "title": "Wikipedia search entry for SM9 标识密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SM9 标识密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "protocol--sm9-r139-principle",
+          "entryId": "protocol--sm9-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：SM9 标识密码（SM9 Identity-Based Cryptography）。### 标识即公钥\n\nSM9 在 256 位 BN 曲线上用双线性对实现标识密码：公钥是身份字符串，私钥由 KGC 用主私钥派生；签名用 (h,S)，加密用 C1/C2/C3。系统有签名主密钥对和加密主密钥对，主公钥公开，主私钥由 KGC 保管；用户公钥由身份字符串唯一确定。### 双线性对与签名\n\nSM9 使用 256 位 BN 曲线上的双线性对 e: G1×G2→GT，阶为素数 N。签名私钥 dsA = [ks/(H1(IDA||hid,N)+ks)]P1；签名 (h,S) 用 g=e(P1,Ppub-s)、w=g^r、h=H2(M||w,N)、l=(r−h) mod n、S=[l]dsA。验证用 e(S, [H1(IDA||hid,N)]P2+Ppub-s) 恢复 w。### 加密与密钥交换\n\n加密用接收方标识 IDB 和加密主公钥 Ppub-e 计算共享配对值，KDF 导出密钥，密文含 C1=[r]Q、C2、C3；密钥交换用双方标识和私钥计算共享值，再导出会话密钥。",
+            "en": "**Protocol**: SM9 Identity-Based Cryptography (SM9 标识密码).### Identity is the public key\n\nSM9 is identity-based cryptography: a user’s public key is determined by an identity string (email, ID number, domain name), and the private key is derived by a key generation center (KGC) from the master secret and the identity."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        },
+        {
+          "id": "protocol--sm9-r139-why",
+          "entryId": "protocol--sm9-details",
+          "section": "why",
+          "statement": {
+            "zh": "SM9 的价值是去掉证书链：公钥直接是身份，KGC 派生私钥，适合 IoT、政务、邮件和企业内网等身份已存在的场景。它把签名、加密、密钥交换、KEM 放在同一套标识密码标准里，减少证书申请、分发、吊销的开销。代价是密钥托管：KGC 知道或能生成所有用户私钥；主密钥泄露会导致全系统私钥泄露。它适合“身份由中心管理”的封闭域，不适合完全去中心化的场景。",
+            "en": "SM9’s value is removing certificate chains: the public key is the identity and the KGC derives private keys, which suits IoT, government, email and enterprise intranets where identities already exist.One identity-based standard family covers signatures, encryption, key exchange and KEM, reducing certificate issuance, distribution and revocation overhead."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        },
+        {
+          "id": "protocol--sm9-r139-used",
+          "entryId": "protocol--sm9-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于标识认证、加密邮件、电子签章、物联网设备身份、政务/企业专网；TLCP 之外，SM9 有独立的签名、加密、密钥交换流程。标准为 GM/T 0044 系列，2020 年上升为 GB/T 38635 系列；2021 年标识加密进入 ISO/IEC 18033-5。工程要点：hid 和曲线参数固定；KGC 主密钥必须分层保护或门限化；用户私钥要安全分发；签名验证要检查 h 范围和 S 在 G1；加密要验证 C1 在 G1。",
+            "en": "It is used for identity authentication, encrypted mail, electronic seals, IoT device identity and government/enterprise networks; outside TLCP, SM9 has separate signature, encryption and key-exchange flows.The standards are the GM/T 0044 series, raised to GB/T 38635 in 2020; identity-based encryption entered ISO/IEC 18033-5 in 2021."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        },
+        {
+          "id": "protocol--sm9-r139-broken",
+          "entryId": "protocol--sm9-details",
+          "section": "broken",
+          "statement": {
+            "zh": "SM9 的安全性依赖双线性 DH 类难题、SM3、KGC 主密钥和用户私钥。主密钥单点泄露、KGC 作恶、私钥托管、配对实现侧信道、身份字符串歧义和私钥撤销都是现实风险。",
+            "en": "SM9 security rests on bilinear Diffie–Hellman-type problems, SM3, the KGC master secret and user private keys.Single-point master-key leakage, a malicious KGC, key escrow, pairing side channels, identity-string ambiguity and private-key revocation are real risks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        },
+        {
+          "id": "protocol--sm9-r139-history",
+          "entryId": "protocol--sm9-details",
+          "section": "history",
+          "statement": {
+            "zh": "标识密码由 Shamir 在 1984 年提出；SM9 由国家密码管理局组织制定，2016 年 3 月 28 日发布 GM/T 0044 系列（5 部分），2020 年 4 月 28 日发布 GB/T 38635.1/.2-2020，2020 年 11 月实施。2018 年 SM9 数字签名进入 ISO/IEC 14888-3；2021 年 2 月 SM9 标识加密进入 ISO/IEC 18033-5 Amendment 1。SM9 的意义是把标识密码从论文概念变成可互操作的中国商用密码标准，并在国际标准中占位。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "Identity-based cryptography was proposed by Shamir in 1984.SM9 was organized by OSCCA: the GM/T 0044 series (five parts) appeared on 28 March 2016, and GB/T 38635.1/.2-2020 was published on 28 April 2020 and took effect in November 2020."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        },
+        {
+          "id": "protocol--sm9-r139-refs",
+          "entryId": "protocol--sm9-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SM9 标识密码.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SM9 标识密码.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "protocol--sm9-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "protocol--sm9-wikipedia"
+      ]
+    },
+    {
+      "id": "protocol--sm9-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "protocol--sm9-r139-principle",
+      "entryId": "protocol--sm9-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：SM9 标识密码（SM9 Identity-Based Cryptography）。### 标识即公钥\n\nSM9 在 256 位 BN 曲线上用双线性对实现标识密码：公钥是身份字符串，私钥由 KGC 用主私钥派生；签名用 (h,S)，加密用 C1/C2/C3。系统有签名主密钥对和加密主密钥对，主公钥公开，主私钥由 KGC 保管；用户公钥由身份字符串唯一确定。### 双线性对与签名\n\nSM9 使用 256 位 BN 曲线上的双线性对 e: G1×G2→GT，阶为素数 N。签名私钥 dsA = [ks/(H1(IDA||hid,N)+ks)]P1；签名 (h,S) 用 g=e(P1,Ppub-s)、w=g^r、h=H2(M||w,N)、l=(r−h) mod n、S=[l]dsA。验证用 e(S, [H1(IDA||hid,N)]P2+Ppub-s) 恢复 w。### 加密与密钥交换\n\n加密用接收方标识 IDB 和加密主公钥 Ppub-e 计算共享配对值，KDF 导出密钥，密文含 C1=[r]Q、C2、C3；密钥交换用双方标识和私钥计算共享值，再导出会话密钥。",
+        "en": "**Protocol**: SM9 Identity-Based Cryptography (SM9 标识密码).### Identity is the public key\n\nSM9 is identity-based cryptography: a user’s public key is determined by an identity string (email, ID number, domain name), and the private key is derived by a key generation center (KGC) from the master secret and the identity."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    },
+    {
+      "id": "protocol--sm9-r139-why",
+      "entryId": "protocol--sm9-details",
+      "section": "why",
+      "statement": {
+        "zh": "SM9 的价值是去掉证书链：公钥直接是身份，KGC 派生私钥，适合 IoT、政务、邮件和企业内网等身份已存在的场景。它把签名、加密、密钥交换、KEM 放在同一套标识密码标准里，减少证书申请、分发、吊销的开销。代价是密钥托管：KGC 知道或能生成所有用户私钥；主密钥泄露会导致全系统私钥泄露。它适合“身份由中心管理”的封闭域，不适合完全去中心化的场景。",
+        "en": "SM9’s value is removing certificate chains: the public key is the identity and the KGC derives private keys, which suits IoT, government, email and enterprise intranets where identities already exist.One identity-based standard family covers signatures, encryption, key exchange and KEM, reducing certificate issuance, distribution and revocation overhead."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    },
+    {
+      "id": "protocol--sm9-r139-used",
+      "entryId": "protocol--sm9-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于标识认证、加密邮件、电子签章、物联网设备身份、政务/企业专网；TLCP 之外，SM9 有独立的签名、加密、密钥交换流程。标准为 GM/T 0044 系列，2020 年上升为 GB/T 38635 系列；2021 年标识加密进入 ISO/IEC 18033-5。工程要点：hid 和曲线参数固定；KGC 主密钥必须分层保护或门限化；用户私钥要安全分发；签名验证要检查 h 范围和 S 在 G1；加密要验证 C1 在 G1。",
+        "en": "It is used for identity authentication, encrypted mail, electronic seals, IoT device identity and government/enterprise networks; outside TLCP, SM9 has separate signature, encryption and key-exchange flows.The standards are the GM/T 0044 series, raised to GB/T 38635 in 2020; identity-based encryption entered ISO/IEC 18033-5 in 2021."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    },
+    {
+      "id": "protocol--sm9-r139-broken",
+      "entryId": "protocol--sm9-details",
+      "section": "broken",
+      "statement": {
+        "zh": "SM9 的安全性依赖双线性 DH 类难题、SM3、KGC 主密钥和用户私钥。主密钥单点泄露、KGC 作恶、私钥托管、配对实现侧信道、身份字符串歧义和私钥撤销都是现实风险。",
+        "en": "SM9 security rests on bilinear Diffie–Hellman-type problems, SM3, the KGC master secret and user private keys.Single-point master-key leakage, a malicious KGC, key escrow, pairing side channels, identity-string ambiguity and private-key revocation are real risks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    },
+    {
+      "id": "protocol--sm9-r139-history",
+      "entryId": "protocol--sm9-details",
+      "section": "history",
+      "statement": {
+        "zh": "标识密码由 Shamir 在 1984 年提出；SM9 由国家密码管理局组织制定，2016 年 3 月 28 日发布 GM/T 0044 系列（5 部分），2020 年 4 月 28 日发布 GB/T 38635.1/.2-2020，2020 年 11 月实施。2018 年 SM9 数字签名进入 ISO/IEC 14888-3；2021 年 2 月 SM9 标识加密进入 ISO/IEC 18033-5 Amendment 1。SM9 的意义是把标识密码从论文概念变成可互操作的中国商用密码标准，并在国际标准中占位。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "Identity-based cryptography was proposed by Shamir in 1984.SM9 was organized by OSCCA: the GM/T 0044 series (five parts) appeared on 28 March 2016, and GB/T 38635.1/.2-2020 was published on 28 April 2020 and took effect in November 2020."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    },
+    {
+      "id": "protocol--sm9-r139-refs",
+      "entryId": "protocol--sm9-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SM9 标识密码.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SM9 标识密码.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "protocol--sm9-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

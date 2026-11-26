@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-24",
+  "scope": "R132 formula-level deepening for ieee8021ar-details.",
+  "entries": [
+    {
+      "id": "ieee8021ar-details",
+      "inventoryIds": [
+        "ieee8021ar"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "把 IEEE 802.1AR-2018 写成可复述的设备身份链：IDevID 厂商证书、LDevID 域证书、IDevID 私钥注册证明、LDevID 证书链验证与“证书≠授权”的边界；不把证书绑定冒充访问控制。",
+        "en": "Turns IEEE 802.1AR-2018 into a reproducible device-identity chain: manufacturer IDevID, domain LDevID, IDevID-key enrollment proof, LDevID path validation and the “certificate ≠ authorization” boundary, without pretending binding is access control."
+      },
+      "title": {
+        "zh": "安全设备标识",
+        "en": "IEEE 802.1AR-2018 Secure Device Identity"
+      },
+      "claimIds": [
+        "ieee8021ar-r139-principle",
+        "ieee8021ar-r139-why",
+        "ieee8021ar-r139-used",
+        "ieee8021ar-r139-broken",
+        "ieee8021ar-r139-history",
+        "ieee8021ar-r139-refs"
+      ],
+      "sourceIds": [
+        "ieee8021ar-wikipedia",
+        "ieee8021ar-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "ieee8021ar-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IEEE 802.1AR-2018 的 IDevID/LDevID 证书绑定、注册证明、证书链与授权边界。",
+            "en": "IEEE 802.1AR-2018: IDevID/LDevID certificate binding, enrollment proof, certificate path and authorization boundary."
+          },
+          "alt": {
+            "zh": "IEEE 802.1AR-2018 的 IDevID/LDevID 证书绑定、注册证明、证书链与授权边界。",
+            "en": "IEEE 802.1AR-2018: IDevID/LDevID certificate binding, enrollment proof, certificate path and authorization boundary."
+          },
+          "files": {
+            "zh": "assets/ieee8021ar-mechanism.zh.svg",
+            "en": "assets/ieee8021ar-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "来源：IEEE 802.1AR-2018 官方记录与工作组说明、IEC/IEEE 60802 IDevID 配置草案、RFC 9733 BRSKI-AE 与 RFC 5280。",
+            "en": "Sources: official IEEE 802.1AR-2018 record and WG note, the IEC/IEEE 60802 IDevID profile draft, RFC 9733 BRSKI-AE and RFC 5280."
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-24"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "249478665d7cb1903759f442f2e461f7e5f4cc107667c591dd09ed6458528eb2",
+            "en": "94796d07929adbf09264c69dbb1a1da318bd6077d57342e0048549de7ac0ff94"
+          }
+        },
+        {
+          "id": "ieee8021ar-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "安全设备标识 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for IEEE 802.1AR-2018 Secure Device Identity: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "安全设备标识 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for IEEE 802.1AR-2018 Secure Device Identity, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ieee8021ar-details-r138-model.zh.svg",
+            "en": "assets/ieee8021ar-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fa837515ebc3bbf8614bf8d716810a48bb2f6e9c0528afca819217118b60698b",
+            "en": "55503cda66868ae4a07351dee5448856852a6ba71d32043a1f100fc107b6ccb3"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：安全设备标识（Secure Device Identity）。IEEE 802.1AR-2018 给网络设备定义 Secure Device Identifier（DevID）：一张绑定设备私钥的 X.509 证书。IDevID 由厂商在出厂时提供、全局唯一、防修改；LDevID 由本地管理员或域 CA 在设备入域时签发。DevID 的目标是让设备在没有用户登录的情况下，仍能用 EAP-TLS、BRSKI/EST 等协议证明“我是哪一台设备”。",
+          "why": "设备身份的核心不是证书文件名，而是私钥持有证明。IDevID 私钥通常放在安全元件，不能导出；LDevID 必须绑定到同一设备的 IDevID，否则把 LDevID 拷到另一台设备就能冒充。绑定关系用 IDevID 证书指纹/公钥与注册证明维持；验证方还要验证 LDevID 到域信任锚的证书链和吊销状态。",
+          "used": "典型流程：厂商烧录 IDevID 与私钥；设备入域时向注册商出示 IDevID 证书，用 IDevID 私钥签 nonce/域标识；域 CA 验证后签发 LDevID；后续 EAP-TLS 用 LDevID 做设备认证。证书字段按 RFC 5280；设备序列号、厂商、型号可放 subject 或 SAN otherName；2018 版新增 ECDSA P-384/SHA-384 套件以对齐 Suite B。",
+          "broken": "常见错误包括：把证书当授权令牌；只验 LDevID 不验 IDevID 绑定；忽略吊销与时钟；把 IDevID 私钥当普通文件拷贝；把 802.1AR 当 EAP 本身。802.1AR 只定义身份与绑定，不定义业务角色、访问控制策略或具体 EAP 方法；这些由 802.1X、RADIUS/AAA、BRSKI 与本地策略完成。### 形式模型",
+          "history": "IEEE 802.1AR-2018 于 2018-06-14 董事会批准、2018-08-02 发布，替代 802.1AR-2009；2018 版增加 ECDSA P-384/SHA-384 签名套件，并对 IDevID/LDevID 证书字段与供应商信息做细化。IEEE GET 计划提供免费标准 PDF；后续 802.1AReg 修订仍在推进，不能把草案当现行。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 安全设备标识 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for 安全设备标识. https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Secure Device Identity (安全设备标识). IEEE 802.1AR-2018 defines a Secure Device Identifier (DevID) for network devices: an X.509 certificate bound to a device private key. IDevID is manufacturer-provided at production, globally unique and protected from modification; LDevID is issued by a local administrator or domain CA when the device joins a domain. The goal is to let a device prove “which device I am” without a human login, using EAP-TLS, BRSKI/EST and similar protocols.",
+          "why": "Device identity is not a certificate filename but proof of private-key possession. The IDevID private key normally sits in a secure element and cannot be exported; LDevID must bind to the same device IDevID, otherwise copying an LDevID to another device would impersonate it.\n\nThe binding is maintained by the IDevID certificate fingerprint/public key and the enrollment proof; the verifier also checks the LDevID path to the domain trust anchor and revocation status.",
+          "used": "Typical flow: the manufacturer burns in IDevID and private key; at domain join the device presents the IDevID certificate and signs a nonce/domain ID with the IDevID key; the domain CA verifies and issues LDevID; later EAP-TLS uses LDevID for device authentication.\n\nCertificate fields follow RFC 5280; serial, vendor and model can sit in subject or SAN otherName; the 2018 revision adds the ECDSA P-384/SHA-384 suite for Suite B alignment.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Common errors include treating a certificate as an authorization token, validating LDevID without the IDevID binding, ignoring revocation and time, copying the IDevID private key like a normal file, or treating 802.1AR as EAP itself.\n\n802.1AR defines identity and binding only; business roles, access policy and the EAP method are supplied by 802.1X, RADIUS/AAA, BRSKI and local policy.\n\nConformance = Requirements ∧ TestVectors；Status ∈ {current, superseded, withdrawn}；Scope = (terms, requirements). Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "IEEE 802.1AR-2018 was approved by the IEEE SA Board on 2018-06-14 and published on 2018-08-02, superseding 802.1AR-2009. The 2018 revision adds the ECDSA P-384/SHA-384 signature suite and refines IDevID/LDevID certificate fields and supplier information.\n\nThe IEEE GET program provides a free standard PDF; the later 802.1AReg amendment is still in progress and must not be treated as current text.",
+          "refs": "- Wikipedia search entry for 安全设备标识. https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSecure Device Identity: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculationIds": [
+        "ieee8021ar-r139-formal"
+      ],
+      "calculations": [
+        {
+          "id": "ieee8021ar-r139-formal",
+          "entryId": "ieee8021ar-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 安全设备标识 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "ieee8021ar-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "sources": [
+        "ieee8021ar-wikipedia",
+        "ieee8021ar-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ieee8021ar-r139-formal",
+      "entryId": "ieee8021ar-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 安全设备标识 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "ieee8021ar-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

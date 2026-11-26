@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ecdh-details",
+  "sources": [
+    {
+      "id": "ecdh-wikipedia",
+      "title": "Wikipedia search entry for ECDH 椭圆曲线密钥协商",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ECDH%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ECDH 椭圆曲线密钥协商",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ecdh-r139-principle",
+          "entryId": "ecdh-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ECDH 椭圆曲线密钥协商（Elliptic Curve Diffie-Hellman）。对于素数域曲线 secp256r1、secp384r1、secp521r1，ECDH 的密钥协商步骤印在 rfc8446.txt:5329-5334：该计算按 IEEE 1363 以 ECKAS-DH1 方案进行，得到的值用原文说就是 「the shared secret is the x-coordinate」（共享秘密是椭圆曲线 ECDH 点的 x 坐标），并以定长八位组串表示、前导零不得截断。整句因换行带缩进而被拆到多个续行，所以只引用 x 坐标这一段、其余按行号转述。关于范围有两点：这是经典的 ECDH 原语（用私有标量乘对端公钥点、取其 x 坐标），而 RFC 8446 把这个 x 坐标当作中间值而非最终密钥——密钥派生是另一条目，故此处不作断言。",
+            "en": "**Algorithm**: Elliptic Curve Diffie-Hellman (ECDH 椭圆曲线密钥协商).The ECDH key-agreement step, for the prime curves secp256r1, secp384r1 and secp521r1, is printed at rfc8446.txt:5329-5334: the calculation follows IEEE 1363 under the ECKAS-DH1 scheme, and the derived value is, in the file's own words, \"the shared secret is the x-coordinate\" of the ECDH shared-secret elliptic curve point, expressed as a fixed-length octet string whose leading zeros are not to be truncated."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdh-r139-why",
+          "entryId": "ecdh-details",
+          "section": "why",
+          "statement": {
+            "zh": "RFC 7919 讨论的是有限域 Diffie-Hellman，而正是这一框架说明了为何更倾向椭圆曲线形式：与有限域 DHE（FFDHE）相比，rfc7919.txt:720 对 ECDHE 印着 「a much stronger key exchange mechanism than FFDHE」（比 FFDHE 强得多的密钥交换机制）（在可比的计算代价下）。同一节明确说 RFC 7919 自身不涵盖仅有限域的情形、也不处理 ECDHE（文中称 ECDHE 定义于 RFC 4492）——这句话是在作比较，而不是给 ECDH 下定义。于是标准给出的设计理由是效率：椭圆曲线群能以更低的每安全级代价完成同一种协商。这正是被引文件断言的取舍；它没有声称两种设定之间存在等价性证明。",
+            "en": "RFC 7919 is about finite-field Diffie-Hellman, and it is that framing that states the reason to prefer the elliptic-curve form: measured against finite-field DHE (FFDHE), the retained text prints, at rfc7919.txt:720, \"a much stronger key exchange mechanism than FFDHE\" for ECDHE at comparable computational cost.The same section is explicit that RFC 7919 itself does not cover finite-field-only cases nor address ECDHE (which it says is defined in RFC 4492) - the point of the sentence is comparative, not a definition of ECDH."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdh-r139-used",
+          "entryId": "ecdh-details",
+          "section": "used",
+          "statement": {
+            "zh": "NIST SP 800-186 把 ECDH 归入椭圆曲线的用途。整句类别陈述印在 sp800-186.txt:335-337：「Elliptic curve cryptography (ECC) has uses in applications involving digital signatures (e.g., Elliptic Curve Digital Signature Algorithm [ECDSA]) and key agreement schemes (e.g., Elliptic Curve Diffie-Hellman [ECDH]).」（椭圆曲线密码用于数字签名（如 ECDSA）与密钥协商方案（如椭圆曲线 Diffie-Hellman 即 ECDH））。该建议还在 sp800-186.txt:357-359 附近说明其规定的密钥对仅用于签名或密钥协商、不应作其他用途。这就是证据支持的部署角色：ECDH 是这套基于离散对数的椭圆曲线家族里的密钥协商成员。同一文档正文左对齐，所以这句以普通单空格接合、可整段引用。",
+            "en": "NIST SP 800-186 places ECDH among the uses of elliptic curves.The whole category sentence is printed at sp800-186.txt:335-337: \"Elliptic curve cryptography (ECC) has uses in applications involving digital signatures (e.g., Elliptic Curve Digital Signature Algorithm [ECDSA]) and key agreement schemes (e.g., Elliptic Curve Diffie-Hellman [ECDH]).\" The Recommendation also states, near sp800-186.txt:357-359, that the key pairs it specifies are for signature or key agreement only and should not be used for other purposes."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdh-r139-broken",
+          "entryId": "ecdh-details",
+          "section": "broken",
+          "statement": {
+            "zh": "ECDH 的难度只等同于它背后的椭圆曲线离散对数问题，而 SP 800-186 记录了让这一假设站得住的归约。在 sp800-186.txt:2184-2198 的曲线选择准则里，第 5 条印着椭圆曲线离散对数问题可被转化为 「an ordinary discrete logarithm problem defined over the finite field GF(qk)」（定义在有限域 GF(qk) 上的普通离散对数问题）（即 MOV 型迁移）；GF(q^k) 的上标与随后的同余号在本抽取中退化，所以嵌入度的条件按行号转述而不引用。正因为这一归约存在，同一准则要求每条曲线都有大嵌入度、小余因子的大素数阶子群、以及非异常曲线的阶。这里没有说的：本留存文件不提量子计算机，所以该条目目不把量子破解附加到 ECDH 上——经典边界就是该归约，而标准划出的防线是能抵抗它的曲线选择。",
+            "en": "ECDH is only as hard as the elliptic-curve discrete logarithm problem behind it, and SP 800-186 records the reduction that keeps that assumption honest.In the curve-selection criteria at sp800-186.txt:2184-2198, item 5 prints that \"an ordinary discrete logarithm problem defined over the finite field GF(qk)\" is what the elliptic-curve discrete logarithm problem can be converted into (this is the MOV-type transfer); the superscript in GF(q^k) and the congruence sign that follows degrade in this extraction, so the embedding-degree condition is stated by line rather than quoted."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdh-r139-history",
+          "entryId": "ecdh-details",
+          "section": "history",
+          "statement": {
+            "zh": "留存文本记录的是 ECDH 何时进入标准，而非谁发明了它。RFC 7568（2015 年 6 月，运行页眉在 rfc7568.txt:60）在列举较新 TLS 版本相对 SSLv3 新增的特性时，于 rfc7568.txt:205 印着 「Elliptic Curve Diffie-Hellman (ECDH)」（椭圆曲线 Diffie-Hellman（ECDH）），紧接着说明 ECDH 与 ECDSA 是在 RFC 4492 中加入——续行带缩进，故只引用 (ECDH) 这一术语、RFC 4492 的归属作转述。RFC 7919（2016 年 8 月）把 ECDHE 当作由 RFC 4492 定义的既有机制，并与自身的有限域范围作比较。这些留存文件都没有给出 ECDH 原语的提出者或首次发表年代，所以该条目目只陈述文中确实印出的、可定年的标准化节点，不作无法核实的起源声明。",
+            "en": "The retained texts date when ECDH entered a standard, not who invented it.RFC 7568 (June 2015, running header at rfc7568.txt:60) lists, among the features that recent TLS versions added over SSLv3, \"Elliptic Curve Diffie-Hellman (ECDH)\" at rfc7568.txt:205, and the very next words say that ECDH and ECDSA are added in RFC 4492 - the continuation wraps with indentation, so only the (ECDH) term is quoted and the RFC 4492 attribution is paraphrased."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        },
+        {
+          "id": "ecdh-r139-refs",
+          "entryId": "ecdh-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ECDH 椭圆曲线密钥协商.https://zh.wikipedia.org/w/index.php?search=ECDH%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ECDH 椭圆曲线密钥协商.https://zh.wikipedia.org/w/index.php?search=ECDH%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ecdh-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ecdh-wikipedia"
+      ]
+    },
+    {
+      "id": "ecdh-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ecdh-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ecdh-r139-principle",
+      "entryId": "ecdh-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ECDH 椭圆曲线密钥协商（Elliptic Curve Diffie-Hellman）。对于素数域曲线 secp256r1、secp384r1、secp521r1，ECDH 的密钥协商步骤印在 rfc8446.txt:5329-5334：该计算按 IEEE 1363 以 ECKAS-DH1 方案进行，得到的值用原文说就是 「the shared secret is the x-coordinate」（共享秘密是椭圆曲线 ECDH 点的 x 坐标），并以定长八位组串表示、前导零不得截断。整句因换行带缩进而被拆到多个续行，所以只引用 x 坐标这一段、其余按行号转述。关于范围有两点：这是经典的 ECDH 原语（用私有标量乘对端公钥点、取其 x 坐标），而 RFC 8446 把这个 x 坐标当作中间值而非最终密钥——密钥派生是另一条目，故此处不作断言。",
+        "en": "**Algorithm**: Elliptic Curve Diffie-Hellman (ECDH 椭圆曲线密钥协商).The ECDH key-agreement step, for the prime curves secp256r1, secp384r1 and secp521r1, is printed at rfc8446.txt:5329-5334: the calculation follows IEEE 1363 under the ECKAS-DH1 scheme, and the derived value is, in the file's own words, \"the shared secret is the x-coordinate\" of the ECDH shared-secret elliptic curve point, expressed as a fixed-length octet string whose leading zeros are not to be truncated."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdh-r139-why",
+      "entryId": "ecdh-details",
+      "section": "why",
+      "statement": {
+        "zh": "RFC 7919 讨论的是有限域 Diffie-Hellman，而正是这一框架说明了为何更倾向椭圆曲线形式：与有限域 DHE（FFDHE）相比，rfc7919.txt:720 对 ECDHE 印着 「a much stronger key exchange mechanism than FFDHE」（比 FFDHE 强得多的密钥交换机制）（在可比的计算代价下）。同一节明确说 RFC 7919 自身不涵盖仅有限域的情形、也不处理 ECDHE（文中称 ECDHE 定义于 RFC 4492）——这句话是在作比较，而不是给 ECDH 下定义。于是标准给出的设计理由是效率：椭圆曲线群能以更低的每安全级代价完成同一种协商。这正是被引文件断言的取舍；它没有声称两种设定之间存在等价性证明。",
+        "en": "RFC 7919 is about finite-field Diffie-Hellman, and it is that framing that states the reason to prefer the elliptic-curve form: measured against finite-field DHE (FFDHE), the retained text prints, at rfc7919.txt:720, \"a much stronger key exchange mechanism than FFDHE\" for ECDHE at comparable computational cost.The same section is explicit that RFC 7919 itself does not cover finite-field-only cases nor address ECDHE (which it says is defined in RFC 4492) - the point of the sentence is comparative, not a definition of ECDH."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdh-r139-used",
+      "entryId": "ecdh-details",
+      "section": "used",
+      "statement": {
+        "zh": "NIST SP 800-186 把 ECDH 归入椭圆曲线的用途。整句类别陈述印在 sp800-186.txt:335-337：「Elliptic curve cryptography (ECC) has uses in applications involving digital signatures (e.g., Elliptic Curve Digital Signature Algorithm [ECDSA]) and key agreement schemes (e.g., Elliptic Curve Diffie-Hellman [ECDH]).」（椭圆曲线密码用于数字签名（如 ECDSA）与密钥协商方案（如椭圆曲线 Diffie-Hellman 即 ECDH））。该建议还在 sp800-186.txt:357-359 附近说明其规定的密钥对仅用于签名或密钥协商、不应作其他用途。这就是证据支持的部署角色：ECDH 是这套基于离散对数的椭圆曲线家族里的密钥协商成员。同一文档正文左对齐，所以这句以普通单空格接合、可整段引用。",
+        "en": "NIST SP 800-186 places ECDH among the uses of elliptic curves.The whole category sentence is printed at sp800-186.txt:335-337: \"Elliptic curve cryptography (ECC) has uses in applications involving digital signatures (e.g., Elliptic Curve Digital Signature Algorithm [ECDSA]) and key agreement schemes (e.g., Elliptic Curve Diffie-Hellman [ECDH]).\" The Recommendation also states, near sp800-186.txt:357-359, that the key pairs it specifies are for signature or key agreement only and should not be used for other purposes."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdh-r139-broken",
+      "entryId": "ecdh-details",
+      "section": "broken",
+      "statement": {
+        "zh": "ECDH 的难度只等同于它背后的椭圆曲线离散对数问题，而 SP 800-186 记录了让这一假设站得住的归约。在 sp800-186.txt:2184-2198 的曲线选择准则里，第 5 条印着椭圆曲线离散对数问题可被转化为 「an ordinary discrete logarithm problem defined over the finite field GF(qk)」（定义在有限域 GF(qk) 上的普通离散对数问题）（即 MOV 型迁移）；GF(q^k) 的上标与随后的同余号在本抽取中退化，所以嵌入度的条件按行号转述而不引用。正因为这一归约存在，同一准则要求每条曲线都有大嵌入度、小余因子的大素数阶子群、以及非异常曲线的阶。这里没有说的：本留存文件不提量子计算机，所以该条目目不把量子破解附加到 ECDH 上——经典边界就是该归约，而标准划出的防线是能抵抗它的曲线选择。",
+        "en": "ECDH is only as hard as the elliptic-curve discrete logarithm problem behind it, and SP 800-186 records the reduction that keeps that assumption honest.In the curve-selection criteria at sp800-186.txt:2184-2198, item 5 prints that \"an ordinary discrete logarithm problem defined over the finite field GF(qk)\" is what the elliptic-curve discrete logarithm problem can be converted into (this is the MOV-type transfer); the superscript in GF(q^k) and the congruence sign that follows degrade in this extraction, so the embedding-degree condition is stated by line rather than quoted."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdh-r139-history",
+      "entryId": "ecdh-details",
+      "section": "history",
+      "statement": {
+        "zh": "留存文本记录的是 ECDH 何时进入标准，而非谁发明了它。RFC 7568（2015 年 6 月，运行页眉在 rfc7568.txt:60）在列举较新 TLS 版本相对 SSLv3 新增的特性时，于 rfc7568.txt:205 印着 「Elliptic Curve Diffie-Hellman (ECDH)」（椭圆曲线 Diffie-Hellman（ECDH）），紧接着说明 ECDH 与 ECDSA 是在 RFC 4492 中加入——续行带缩进，故只引用 (ECDH) 这一术语、RFC 4492 的归属作转述。RFC 7919（2016 年 8 月）把 ECDHE 当作由 RFC 4492 定义的既有机制，并与自身的有限域范围作比较。这些留存文件都没有给出 ECDH 原语的提出者或首次发表年代，所以该条目目只陈述文中确实印出的、可定年的标准化节点，不作无法核实的起源声明。",
+        "en": "The retained texts date when ECDH entered a standard, not who invented it.RFC 7568 (June 2015, running header at rfc7568.txt:60) lists, among the features that recent TLS versions added over SSLv3, \"Elliptic Curve Diffie-Hellman (ECDH)\" at rfc7568.txt:205, and the very next words say that ECDH and ECDSA are added in RFC 4492 - the continuation wraps with indentation, so only the (ECDH) term is quoted and the RFC 4492 attribution is paraphrased."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    },
+    {
+      "id": "ecdh-r139-refs",
+      "entryId": "ecdh-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ECDH 椭圆曲线密钥协商.https://zh.wikipedia.org/w/index.php?search=ECDH%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ECDH 椭圆曲线密钥协商.https://zh.wikipedia.org/w/index.php?search=ECDH%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ecdh-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

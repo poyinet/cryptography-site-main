@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension batch for fiat-shamir-heuristic-details.",
+  "entries": [
+    {
+      "id": "fiat-shamir-heuristic-details",
+      "inventoryIds": [
+        "fiat-shamir-heuristic"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R108 证明变换、混淆电路、硬件根信任、编码型 KEM 与哈希长度扩展深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Fiat-Shamir 启发式",
+        "en": "Fiat–Shamir Heuristic"
+      },
+      "claimIds": [
+        "fiat-shamir-heuristic-r139-principle",
+        "fiat-shamir-heuristic-r139-why",
+        "fiat-shamir-heuristic-r139-used",
+        "fiat-shamir-heuristic-r139-broken",
+        "fiat-shamir-heuristic-r139-history",
+        "fiat-shamir-heuristic-r139-refs"
+      ],
+      "sourceIds": [
+        "fiat-shamir-heuristic-wikipedia",
+        "fiat-shamir-heuristic-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sigma-protocol"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "fiat-shamir-heuristic-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Fiat-Shamir 启发式：为什么需要 → 核心机制 → 边界。",
+            "en": "Fiat–Shamir Heuristic: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Fiat-Shamir 启发式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Fiat–Shamir Heuristic, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/fiat-shamir-heuristic-details-flow.zh.svg",
+            "en": "assets/fiat-shamir-heuristic-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "50432f580c4de01c60383bb970a4c79ed893fe14198d1cc8bda7392e34b2ce3d",
+            "en": "f13bba71d9210ff48d64c44bbfb5c3e00b1745fba957c8222c4a3abdd62bef69"
+          }
+        },
+        {
+          "id": "fiat-shamir-heuristic-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Fiat-Shamir 启发式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Fiat–Shamir Heuristic: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Fiat-Shamir 启发式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Fiat–Shamir Heuristic, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/fiat-shamir-heuristic-details-r138-model.zh.svg",
+            "en": "assets/fiat-shamir-heuristic-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a7864cb0ede33de5754c593b706ea37ffd80f0cf6d05bb737899e7e60fd11179",
+            "en": "e7dbe3572b8d7b971f7e51558250b492700259764491d9d235d5c4de233aeedb"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：Fiat-Shamir 启发式（Fiat-Shamir Heuristic）。### 三次交互压缩成一次哈希\n\nSigma 协议由承诺 a、挑战 c、响应 z 三步组成。Fiat–Shamir 变换把验证者的随机挑战改成 c=H(x,a)，证明者只发送 (a,z)；验证者重算 c，并检查 (x,a,c,z) 是否被原协议接受。### Schnorr 实例\n\n在 Schnorr 中，证明者取随机 r，计算 R=g^r；令 c=H(x||R)、s=r+c·x，输出 (R,s)。验证者检查 g^s=R·y^c。哈希把交互挑战变成可验证的伪随机挑战，同时把陈述或消息绑定进来。### 强变换与知识可靠性\n\n只哈希承诺 a 的弱变换不绑定陈述 x 与公共参数，攻击者可搜索对虚假陈述有利的挑战；强变换把 x、a 和所有公共输入都放进哈希。随机预言机模型下，FS 保持特殊可靠性与知识提取；对格签名还要用拒绝采样（Fiat–Shamir with aborts）。",
+          "why": "FS 把交互证明变成一条消息的 NIZK 或签名，消除在线验证者，适合区块链、凭证、TLS 和嵌入式设备。它让 Schnorr/EdDSA 这类签名只需一次哈希和一次群运算；在 zkSNARK 中，FS 把多项式恒等式检查压成链上可验证的单一证明。成本优势来自哈希，而不是额外可信设置。",
+          "used": "Schnorr、EdDSA、Bulletproofs、PLONK、Groth16、Spartan 与 STARK 的验证器都用 FS 派生挑战；Dilithium 使用带拒绝采样的 FS 变体。FROST 门限签名也以 FS 绑定 nonce 承诺与消息。它也用于身份认证与可验证随机函数：验证者只需重算挑战，无需保留交互会话。IRTF CFRG 的 Fiat–Shamir 草案正在统一哈希输入编码、域分离与序列化。",
+          "broken": "弱 FS 是真实事故来源：Bulletproofs、Plonk 和 Girault 证明曾因挑战未绑定全部公共值而可伪造（Frozen Heart，CVE-2022-29566）。挑战空间过小可被暴力搜索；遗漏“最后挑战”同样会破坏 KZG SNARK 的知识可靠性。",
+          "history": "Fiat 与 Shamir 1986 年提出把 identification 协议转成签名；Pointcheval–Stern 2000 年给出签名与盲签名的随机预言机安全论证；2016 年“How not to Prove Yourself”区分弱/强变换并指出 Helios 问题；2022 年 Frozen Heart 披露多个生产证明系统；2026 年 CFRG 开始标准化变换。它从智能卡身份认证出发，最终成为 zkSNARK 和现代签名的基础编译器。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Fiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。 预期输出：按 Fiat-Shamir 启发式 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义失败事件 2. 构造归约把攻击者转成困难问题求解器 3. 证明失败概率上界。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for Fiat-Shamir 启发式. https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nFiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Fiat-Shamir Heuristic (Fiat-Shamir 启发式). ### Three moves compressed into one hash\n\nA sigma protocol has a commitment a, a challenge c and a response z. The Fiat–Shamir transform replaces the verifier’s random challenge with c=H(x,a), so the prover sends only (a,z); the verifier recomputes c and checks whether the original protocol accepts (x,a,c,z). ### Schnorr instantiation\n\nIn Schnorr the prover samples r and sets R=g^r; then c=H(x||R), s=r+c·x, and the proof is (R,s). The verifier checks g^s=R·y^c. Hashing turns an interactive challenge into a verifiable pseudorandom one and binds the statement or message into it. ### Strong transform and knowledge soundness\n\nThe weak transform hashes only the commitment a, so it does not bind the statement x or public parameters; an attacker can grind for a challenge that favors a false statement. The strong transform hashes x, a and all public inputs. In the random oracle model FS preserves special soundness and knowledge extraction; lattice signatures additionally need rejection sampling (Fiat–Shamir with aborts).",
+          "why": "FS turns an interactive proof into a one-message NIZK or signature, removing the online verifier and suiting blockchains, credentials, TLS and embedded devices.\n\nIt lets Schnorr/EdDSA signatures use one hash and one group operation; in zkSNARKs FS compresses a polynomial identity check into one proof verifiable on chain. The saving comes from hashing, not from extra trusted setup.",
+          "used": "Schnorr, EdDSA, Bulletproofs, PLONK, Groth16, Spartan and STARK verifiers derive challenges with FS; Dilithium uses a rejection-sampling FS variant. FROST threshold signatures also bind nonce commitments and the message through FS.\n\nIt is also used for authentication and verifiable random functions: the verifier only recomputes the challenge and keeps no interactive session. The IRTF CFRG Fiat–Shamir draft is unifying input encoding, domain separation and serialization.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Weak FS has caused real incidents: Bulletproofs, Plonk and Girault proofs were forgeable when the challenge omitted public values (Frozen Heart, CVE-2022-29566). A small challenge space can be brute-forced; omitting the “last challenge” also breaks knowledge soundness of KZG SNARKs.",
+          "history": "Fiat and Shamir introduced the identification-to-signature transform in 1986; Pointcheval and Stern gave random-oracle security arguments for signatures and blind signatures in 2000; “How not to Prove Yourself” distinguished weak and strong transforms in 2016 and exposed Helios; Frozen Heart disclosed several production proof systems in 2022; CFRG began standardizing the transform in 2026.\n\nIt started in smart-card identification and became a foundational compiler for zkSNARKs and modern signatures.",
+          "refs": "- Wikipedia search entry for Fiat-Shamir 启发式. https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nFiat-Shamir Heuristic: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "fiat-shamir-heuristic-r139-formal",
+          "entryId": "fiat-shamir-heuristic-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：Fiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 Fiat-Shamir 启发式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "fiat-shamir-heuristic-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "fiat-shamir-heuristic-r139-formal"
+      ],
+      "sources": [
+        "fiat-shamir-heuristic-wikipedia",
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "fiat-shamir-heuristic-r139-formal",
+      "entryId": "fiat-shamir-heuristic-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：Fiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 Fiat-Shamir 启发式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "fiat-shamir-heuristic-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension batch for bike-details.",
+  "entries": [
+    {
+      "id": "bike-details",
+      "inventoryIds": [
+        "bike"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R108 证明变换、混淆电路、硬件根信任、编码型 KEM 与哈希长度扩展深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "BIKE 备选 KEM",
+        "en": "BIKE Code-Based KEM"
+      },
+      "claimIds": [
+        "bike-r139-principle",
+        "bike-r139-why",
+        "bike-r139-used",
+        "bike-r139-broken",
+        "bike-r139-history",
+        "bike-r139-refs"
+      ],
+      "sourceIds": [
+        "bike-wikipedia",
+        "bike-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "bike-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BIKE 备选 KEM：为什么需要 → 核心机制 → 边界。",
+            "en": "BIKE Code-Based KEM: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "BIKE 备选 KEM 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for BIKE Code-Based KEM, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/bike-details-flow.zh.svg",
+            "en": "assets/bike-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b4355ddc90c02afdb596560c59c171bb65721e9d27f4aa8c6e661b299cb8f3c4",
+            "en": "45250f3673526280d074bcc6dd46082078577845416452a75f27c876b5464ec8"
+          }
+        },
+        {
+          "id": "bike-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BIKE 备选 KEM 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for BIKE Code-Based KEM: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "BIKE 备选 KEM 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for BIKE Code-Based KEM, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bike-details-r138-model.zh.svg",
+            "en": "assets/bike-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "38df499cfd768f84a43d630b41fc36694c9183b10d0dcddee66a94bafa853359",
+            "en": "9c25c8661c23ca81ca7722f2959dfc12df3cdeac24e546dbebc966f6482721d0"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：BIKE 备选 KEM（BIKE）。### 密钥、封装与解封\n\nBIKE 在模 x^r−1 的多项式环上令 h=h1·h0^{-1}，封装 c=(e0+e1h,m⊕L(e0,e1))。### QC-MDPC 结构\n\n私钥是重量各为 w/2 的稀疏多项式 (h0,h1)，码长 n=2r，错误向量 (e0,e1) 的总重量为 t；解封用 decoder(c0h0,h0,h1) 恢复 e′ 并验 e′=H(m′)。### 参数与尺寸\n\nNIST 第四轮参数：Level 1 r=12323,w=142,t=134；Level 3 r=24659,w=206,t=199；Level 5 r=40973,w=274,t=264。LibOQS 5.1 报告 BIKE-L1 公钥 1541 B、私钥 5223 B、密文 1573 B、共享密钥 32 B。",
+          "why": "BIKE 是 code-based KEM，安全性建立在 QC syndrome decoding 与码区分困难上；比 McEliece 公钥小得多，封装/解封快，适合 TLS 等临时密钥。它只需一个对称原语（Keccak/SHAKE）和多项式运算，硬件 footprint 小；作为 NIST 备选方案，提供了不同于格密码的假设多样性。",
+          "used": "BIKE 进入 NIST PQC 第四轮备选评估，liboqs 提供 C 实现；典型用法是 TLS/QUIC 的临时 KEM、混合密钥交换和研究对比。由于未被 NIST 最终标准化，生产部署应使用混合 KEM 并等待标准与侧信道审计；不能把它当成已批准算法。",
+          "broken": "解码失败率必须可证明地低（目标 2^-128/192/256），否则攻击者可用反应攻击恢复私钥；解码器必须常量时间，避免计时和故障。密钥重用、多目标攻击、弱私钥多项式和不正确 FO 变换都破坏 IND-CCA；BIKE 的安全证明依赖理想 decoder 与随机预言机假设，不是无条件安全。### 形式模型",
+          "history": "BIKE 源自 QC-MDPC 码与 Niederreiter 框架，2017 年提交 NIST PQC；经过 Round 2/3/4 与多次参数、解码器修订，2022/2023 规范 v5.x 固定单变体与 BGF 解码器。它推动了 code-based KEM 的工程化，但在 NIST 最终选择中未成为标准；其参数选择与解码器研究继续影响 HQC 等方案。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：BIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。 预期输出：按 BIKE 备选 KEM 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 封装方采样随机种子并生成密文 2. 解封装方用私钥恢复种子 3. 双方得到同一会话密钥并校验。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for BIKE 备选 KEM. https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nBIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。1.封装方采样随机种子并生成密文。2.解封装方用私钥恢复种子。3.双方得到同一会话密钥并校验。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: BIKE (BIKE 备选 KEM). ### Key, encapsulation and decapsulation\n\nBIKE works in the polynomial ring modulo x^r−1 with h=h1·h0^{-1}, and encapsulation forms c=(e0+e1h,m⊕L(e0,e1)). ### QC-MDPC structure\n\nThe private key is a pair of sparse polynomials (h0,h1), each of weight w/2; the code length is n=2r, the error vector (e0,e1) has total weight t, and decapsulation uses decoder(c0h0,h0,h1) to recover e′ and check e′=H(m′). ### Parameters and sizes\n\nNIST Round-4 parameters: Level 1 r=12323, w=142, t=134; Level 3 r=24659, w=206, t=199; Level 5 r=40973, w=274, t=264. LibOQS 5.1 reports BIKE-L1 public key 1541 B, secret key 5223 B, ciphertext 1573 B and shared secret 32 B.",
+          "why": "BIKE is a code-based KEM whose security rests on quasi-cyclic syndrome decoding and code distinguishing; its public key is far smaller than McEliece, and encapsulation/decapsulation are fast, suiting ephemeral TLS keys.\n\nIt needs one symmetric primitive (Keccak/SHAKE) and polynomial arithmetic, giving a small hardware footprint. As a NIST alternate it offers assumption diversity from lattice cryptography.",
+          "used": "BIKE entered NIST PQC Round 4 as an alternate candidate, and liboqs provides a C implementation; typical uses are ephemeral TLS/QUIC KEMs, hybrid key exchange and research comparison.\n\nBecause NIST did not standardize it, production should use a hybrid KEM and wait for standards and side-channel audits; it is not an approved algorithm.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The decoding failure rate must be provably low (targets 2^-128/192/256); otherwise reaction attacks can recover the private key. The decoder must be constant-time against timing and faults.\n\nKey reuse, multi-target attacks, weak private polynomials and a wrong FO transform break IND-CCA. BIKE’s proof relies on an ideal decoder and random-oracle assumptions, not unconditional security.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "BIKE grew from QC-MDPC codes and the Niederreiter framework and was submitted to NIST PQC in 2017; after Rounds 2/3/4 and several parameter and decoder revisions, the 2022/2023 v5.x specification fixed a single variant and the BGF decoder.\n\nIt advanced the engineering of code-based KEMs but was not selected for NIST standardization; its parameter and decoder research continues to influence schemes such as HQC.",
+          "refs": "- Wikipedia search entry for BIKE 备选 KEM. https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nBIKE: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "bike-r139-formal",
+          "entryId": "bike-details",
+          "kind": "formal-model",
+          "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+          "inputs": "输入：BIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+          "expected": "按 BIKE 备选 KEM 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "封装方采样随机种子并生成密文",
+            "解封装方用私钥恢复种子",
+            "双方得到同一会话密钥并校验"
+          ],
+          "sourceIds": [
+            "bike-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bike-r139-formal"
+      ],
+      "sources": [
+        "bike-wikipedia",
+        "bike-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bike-r139-formal",
+      "entryId": "bike-details",
+      "kind": "formal-model",
+      "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+      "inputs": "输入：BIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+      "expected": "按 BIKE 备选 KEM 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "封装方采样随机种子并生成密文",
+        "解封装方用私钥恢复种子",
+        "双方得到同一会话密钥并校验"
+      ],
+      "sourceIds": [
+        "bike-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

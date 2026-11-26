@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R111 standards/modes/theory batch for iso9797-1-details.",
+  "entries": [
+    {
+      "id": "iso9797-1-details",
+      "inventoryIds": [
+        "iso9797-1"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R111 标准机制批次：把 ISO/IEC 9797-1 的目录身份卡改写为六算法模型、三种 padding、CBC-MAC/Retail MAC 结构、2011 版替换 Algorithm 5/6、金融标准谱系与可变长度/截断边界。",
+        "en": "R111 standards-mechanism batch: replaced ISO/IEC 9797-1's catalog identity card with source-backed text on the six-algorithm model, three padding methods, CBC-MAC/Retail MAC structure, the 2011 replacement of Algorithms 5/6, the banking-standard lineage and variable-length/truncation boundaries."
+      },
+      "title": {
+        "zh": "ISO/IEC 9797-1 分组密码 MAC",
+        "en": "ISO/IEC 9797-1 block-cipher MAC"
+      },
+      "claimIds": [
+        "iso9797-1-r139-principle",
+        "iso9797-1-r139-why",
+        "iso9797-1-r139-used",
+        "iso9797-1-r139-broken",
+        "iso9797-1-r139-history",
+        "iso9797-1-r139-refs"
+      ],
+      "sourceIds": [
+        "iso9797-1-wikipedia",
+        "iso9797-1-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "cmac"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "iso9797-1-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ISO/IEC 9797-1 机制图：消息经 padding 切块，进入 CBC 链 E_K，再经可选最终变换与截断得到 m 位 MAC。",
+            "en": "ISO/IEC 9797-1 mechanism: the message is padded and split into blocks, enters the CBC E_K chain, then an optional final transform and truncation produce an m-bit MAC."
+          },
+          "alt": {
+            "zh": "图中左侧为消息与 padding，中部为 D1…Dq 分块和 CBC 的 E_K 链，右侧为最终变换、截断和 MAC 输出。",
+            "en": "Diagram shows message and padding on the left, D1…Dq blocks and the CBC E_K chain in the middle, and the final transform, truncation and MAC output on the right."
+          },
+          "files": {
+            "zh": "assets/iso9797-1-details-mechanism.zh.svg",
+            "en": "assets/iso9797-1-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "4ce793c359ee4951542fd032679d72c38fbf197aaafe3c970082651bf0e291f4",
+            "en": "3ab79f176859230bf8d1eedc52370dc07a32f1825bb81e8b377f7df93d2cad4d"
+          }
+        },
+        {
+          "id": "iso9797-1-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ISO/IEC 9797-1 分组密码 MAC 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ISO/IEC 9797-1 block-cipher MAC: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ISO/IEC 9797-1 分组密码 MAC 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ISO/IEC 9797-1 block-cipher MAC, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/iso9797-1-details-r138-model.zh.svg",
+            "en": "assets/iso9797-1-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9fd685e896d445412e0266124f5dc2a5688474c2fb39612b0eec3f0e3009e3ea",
+            "en": "e913022cc34ba612dcaf7214e68517b24d39ee0a365d4f20c98fe93a4989397b"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：ISO/IEC 9797-1 分组密码 MAC（ISO/IEC 9797-1 block-cipher MAC）。### 一个模型，六种算法\n\nISO/IEC 9797-1 不定义单一 MAC，而是定义基于 n 位分组密码的 MAC 模型：密钥派生、padding、分块、初始变换、迭代、最终变换/输出变换、截断。MAC 长度 m 不超过分组长度 n；安全强度取决于密钥长度与保密性、分组密码强度、m 以及具体机制。### Padding 与 CBC 链\n\n标准给出三种 padding：方法 1 在末尾补 0；方法 2 先补一个 1 再补 0；方法 3 在数据前加一个 n 位长度块，再补 0。Algorithm 1 就是 CBC-MAC：H1 = E_K(D1)，H_i = E_K(H_{i-1} ⊕ D_i)，输出 H_q，可截断到 m 位。Algorithm 2/3 在末尾加一次或两次变换，Algorithm 3 又称 Retail MAC；Algorithm 4 在首尾都加变换；Algorithm 5/6 是单链优化变体。### 2011 版的关键变化\n\n1999 年首版；2011 年第二版把 1999 的 Algorithm 5/6（两条并行 CBC-MAC）替换为单条 CBC-MAC 的更高效算法，并新增 OID Annex A、更新安全分析 Annex C、增加与旧标准关系的 Annex D。2023 年还有 Amendment 1。",
+          "why": "分组密码 MAC 复用现有 AES/DES 硬件，不引入新散列；CBC 链结构简单、可流式处理，适合金融报文、智能卡和协议消息认证。它把“消息完整性/来源认证”压在同一个分组密码假设上。### 为什么需要变体\n\n纯 CBC-MAC 只在固定长度消息下可证明安全。Padding 1 下，攻击者可在尾部追加块并保持 MAC 不变，形成 trivial forgery；加最终变换（Algorithm 2/3/4）或改用 CMAC 才能处理可变长度。截断到 m 位会把伪造概率降到约 2^-m，但也直接削弱标签强度。",
+          "used": "ISO 8731-1、ANSI X9.9、X9.19、ISO 9807 的 MAC 都是 ISO/IEC 9797-1 的特例；银行报文、EMV 和 ISO 8583 场景常用 CBC-MAC/Retail MAC。NIST SP 800-38B 的 CMAC 是另一条标准化路径，二者常被并列比较。### 选型必须写全参数\n\n只写“用 ISO/IEC 9797-1”不够。双方必须同时约定分组密码、padding 方法、算法号、MAC 长度和密钥派生方法；任何一项不一致都会导致互操作失败或安全强度下降。",
+          "broken": "标准 Annex B 明确 Padding 1 可能遭受 trivial forgery；CBC-MAC 的安全证明要求固定长度消息。对可变长度消息应选带最终变换的算法或 CMAC，并避免把 MAC 密钥与加密密钥共用。### 截断、密钥与实现\n\nm 位标签的伪造概率约 2^-m；32 位标签在高速网络里不够。密钥派生要有域分离，验证方必须常数时间比较。实现还要评估时序、故障注入和侧信道，因为 MAC 验证失败常被用作填充 oracle。",
+          "history": "ISO/IEC 9797-1:1999 首次整合 CBC-MAC 及变体；2011-03 第二版做技术修订，替换 Algorithm 5/6，新增 OID 和更新安全分析；2022 年确认仍现行，2023 年发布 Amendment 1。它源于 ISO 8731-1、ANSI X9.9 等银行 MAC 实践，后来扩展到通用 IT 安全。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：ISO/IEC 9797-1 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 ISO/IEC 9797-1 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for ISO/IEC 9797-1 分组密码 MAC. https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%209797-1%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nISO/IEC 9797-1 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: ISO/IEC 9797-1 block-cipher MAC (ISO/IEC 9797-1 分组密码 MAC). ### One model, six algorithms\n\nISO/IEC 9797-1 does not define a single MAC; it defines a model for MACs based on an n-bit block cipher: key derivation, padding, splitting, initial transformation, iteration, final/output transformation and truncation. The MAC length m is at most the block length n; strength depends on key length and secrecy, block-cipher strength, m and the specific mechanism. ### Padding and the CBC chain\n\nThe standard defines three padding methods: method 1 appends zero bits; method 2 appends a single 1 then zeros; method 3 prefixes an n-bit length block, then pads with zeros. Algorithm 1 is CBC-MAC: H1 = E_K(D1), H_i = E_K(H_{i-1} ⊕ D_i), output H_q, optionally truncated to m bits. Algorithms 2/3 add one or two final transforms, with Algorithm 3 also called Retail MAC; Algorithm 4 adds transforms at both ends; Algorithms 5/6 are single-chain optimized variants. ### What changed in 2011\n\nThe first edition appeared in 1999. The 2011 second edition replaced the 1999 Algorithms 5/6 (two parallel CBC-MAC computations) with more efficient single-CBC-chain algorithms, added OID Annex A, updated security analysis Annex C and added Annex D on relations to older standards. Amendment 1 followed in 2023.",
+          "why": "A block-cipher MAC reuses existing AES/DES hardware and introduces no new hash; the CBC chain is simple and streamable, which suits financial messages, smart cards and protocol authentication. It bases message integrity and origin authentication on the same block-cipher assumption.\n\nPlain CBC-MAC is provably secure only for fixed-length messages. With Padding 1, an attacker can append blocks and preserve the MAC, a trivial forgery; a final transform (Algorithms 2/3/4) or CMAC is needed for variable-length messages. Truncating to m bits lowers forgery probability to about 2^-m but also weakens the tag.",
+          "used": "The MACs in ISO 8731-1, ANSI X9.9, X9.19 and ISO 9807 are special cases of ISO/IEC 9797-1; banking messages, EMV and ISO 8583 deployments commonly use CBC-MAC or Retail MAC. NIST SP 800-38B's CMAC is a separate standardized path, often compared with these mechanisms.\n\nSaying “use ISO/IEC 9797-1” is not enough. Both sides must agree on the block cipher, padding method, algorithm number, MAC length and key-derivation method; any mismatch breaks interoperability or lowers security.",
+          "broken": "Annex B explicitly notes that Padding 1 can suffer trivial forgery; the CBC-MAC security proof assumes fixed-length messages. For variable-length messages, use a final-transform algorithm or CMAC, and never share the MAC key with encryption.\n\nAn m-bit tag has forgery probability about 2^-m; a 32-bit tag is too short for high-speed networks. Key derivation needs domain separation, and verification must compare in constant time. Implementations must also assess timing, fault injection and side channels, because MAC verification failures are often used as padding oracles.",
+          "history": "ISO/IEC 9797-1:1999 first consolidated CBC-MAC and its variants; the March 2011 second edition made a technical revision, replaced Algorithms 5/6, added OIDs and updated the security analysis; it was confirmed current in 2022, and Amendment 1 appeared in 2023. It grew out of banking MAC practice in ISO 8731-1 and ANSI X9.9 and later expanded to general IT security.",
+          "refs": "- Wikipedia search entry for ISO/IEC 9797-1 分组密码 MAC. https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%209797-1%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nISO/IEC 9797-1 block-cipher MAC: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "iso9797-1-r139-formal",
+          "entryId": "iso9797-1-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：ISO/IEC 9797-1 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 ISO/IEC 9797-1 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "iso9797-1-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "iso9797-1-r139-formal"
+      ],
+      "sources": [
+        "iso9797-1-wikipedia",
+        "iso9797-1-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "iso9797-1-r139-formal",
+      "entryId": "iso9797-1-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：ISO/IEC 9797-1 分组密码 MAC的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 ISO/IEC 9797-1 分组密码 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "iso9797-1-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

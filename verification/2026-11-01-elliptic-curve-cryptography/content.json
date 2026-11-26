@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for elliptic-curve-cryptography: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "elliptic-curve-cryptography-details",
+      "inventoryIds": [
+        "elliptic-curve-cryptography"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释椭圆曲线密码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Elliptic Curve Cryptography: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "椭圆曲线密码",
+        "en": "Elliptic Curve Cryptography"
+      },
+      "claimIds": [
+        "elliptic-curve-cryptography-r139-principle",
+        "elliptic-curve-cryptography-r139-why",
+        "elliptic-curve-cryptography-r139-used",
+        "elliptic-curve-cryptography-r139-broken",
+        "elliptic-curve-cryptography-r139-history",
+        "elliptic-curve-cryptography-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "elliptic-curve-cryptography-wikipedia",
+        "elliptic-curve-cryptography-standard-ref"
+      ],
+      "related": [
+        "diffie-hellman-key-exchange",
+        "dsa",
+        "nist",
+        "post-quantum-cryptography"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：椭圆曲线密码（Elliptic Curve Cryptography (ECC)）。NIST SP 800-186「Recommendations for Discrete Logarithm-based Cryptography: Elliptic Curve Domain Parameters」（2023 年 2 月）规定曲线的表示方式：「Each recommended curve is uniquely defined by its domain parameters D, which indicate the field GF(q) over which the elliptic curve is defined, the parameters of its defining equation, and principal parameters, such as the cofactor h of the curve, the order n of its prime-order subgroup, and a designated point G on the curve of order n (i.e., the \"base point\")」。§2.1.1 给出 Weierstrass 方程 y² = x³ + ax + b，§2.1.3 给出 twisted Edwards 形式并说明 a = 1 时即为 Edwards 曲线。",
+          "why": "强度与基阶直接挂钩：§3.1.2 说明「The security strength of an elliptic curve is directly related to the order of the basepoint.In general, if an elliptic curve has a basepoint of order n, then the security strength will be approximately one half of the bit length of n」。表 1 据此给出对应：112 位强度用 P-224、K-233、B-233，128 位用 P-256、Curve25519、Edwards25519 等，192 位用 P-384，224 位用 Curve448/Edwards448/E448/W-448，256 位用 P-521 与 K-571/B-571。",
+          "used": "该文件说明自己「intended for use in conjunction with … NIST SP 800-56A …; FIPS 186-5, Digital Signature Standard」。表 2 规定各曲线允许用途：P-224 到 P-521 与 Edwards25519/Edwards448 分别用于「ECDSA, EC key establishment」与 EdDSA，而 Curve25519、W-25519、Curve448、E448、W-448 标注「Not to be used for ECDSA or EdDSA directly」。执行摘要还说明文件承接 FIPS 186-4 中的曲线、新增两条 Edwards 曲线，并把二进制曲线标记为弃用。",
+          "broken": "两条边界被明确写出。其一是遗留曲线：不满足 SP 800-57 Part 1 当前比特强度要求的 FIPS 186-4 曲线成为 legacy-use，「They may be used to process already protected information (e.g., decrypt or verify) but not to apply protection to information (e.g., encrypt or sign)」，P-192、K-163、B-163 即属此类。其二是域参数有效性：§3.2.1.2 的脚注说「it is essential to verify domain parameter validity to ensure that users are performing operations on P-224 and not on its quadratic twist」；附录 C.1 要求曲线与二次 twists 都满足准则，并规定 cofactor h ≤ 2^10 与避免异常曲线（|E| ≠ q）。",
+          "history": "SP 800-186 由 Chen、Moody、Randall、Regenscheid 与 Robinson 撰写，2023 年 2 月发布，NIST 编辑评审委员会于 2022 年 9 月 7 日批准。文件把 FIPS 186-4 时代的曲线清单迁移到 FIPS 186-5 的框架下（后者 §6 说明 ECDSA 是「the elliptic curve analog of DSA」并把域参数生成指向 SP 800-186），同时新增 Edwards 曲线、弃用二进制曲线。",
+          "refs": "- Wikipedia search entry for 椭圆曲线密码. https://zh.wikipedia.org/w/index.php?search=%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Elliptic Curve Cryptography (ECC). It is registered under asymmetric public-key cryptography, digital signatures. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, digital signatures, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Public-key Revolution, The Frontier. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 椭圆曲线密码. https://zh.wikipedia.org/w/index.php?search=%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "域参数：定义一条曲线及其子群的参数组 D。",
+          "基阶 n：基点 G 生成子群的阶。",
+          "余因子 h：曲线阶除以 n 的商。",
+          "二次扭曲：与原曲线基数为 (q+1)±t 配对的关联曲线。",
+          "Weierstrass 曲线：形如 y² = x³ + ax + b 的曲线。",
+          "遗留使用：只允许解密或验签、不允许新保护。"
+        ],
+        "en": [
+          "Domain parameters: the tuple D defining a curve and its subgroup.",
+          "Basepoint order n: the order of the subgroup generated by G.",
+          "Cofactor h: the curve order divided by n.",
+          "Quadratic twist: the companion curve with cardinality (q+1)±t.",
+          "Weierstrass curve: a curve of the form y2 = x3 + ax + b.",
+          "Legacy use: decrypt or verify only, no new protection."
+        ]
+      },
+      "figures": [
+        {
+          "id": "elliptic-curve-cryptography-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "椭圆曲线密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Elliptic Curve Cryptography: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "椭圆曲线密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Elliptic Curve Cryptography, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/elliptic-curve-cryptography-details-flow.zh.svg",
+            "en": "assets/elliptic-curve-cryptography-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "85322baba970f24968c1d45893d8c63021a93184113f3845925e5a8e0b51cb1c",
+            "en": "671c1769a8b851002c1c8cbcb5dde2b97eb79cacbb07b66ebda9f6166653a1f8"
+          }
+        }
+      ],
+      "sources": [
+        "elliptic-curve-cryptography-wikipedia",
+        "elliptic-curve-cryptography-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

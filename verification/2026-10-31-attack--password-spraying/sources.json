@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--password-spraying-details",
+  "sources": [
+    {
+      "id": "attack--password-spraying-wikipedia",
+      "title": "Wikipedia search entry for 口令喷洒",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 口令喷洒",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--password-spraying-r139-principle",
+          "entryId": "attack--password-spraying-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：口令喷洒（Password Spraying）。口令喷洒使用一个或少量常见口令，对许多不同账户尝试登录，以获取可用凭据；它与对单个账户尝试许多口令的暴力破解相反。",
+            "en": "**Attack**: Password Spraying (口令喷洒).Password spraying uses one or a small list of common passwords against many different accounts to obtain valid credentials; it is the opposite of brute-forcing one account with many passwords."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--password-spraying-r139-why",
+          "entryId": "attack--password-spraying-details",
+          "section": "why",
+          "statement": {
+            "zh": "这种顺序可以避免对单个账户的多次失败触发锁定；攻击者可能选择符合域复杂度策略的常见口令，以提高命中率。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "This order avoids triggering lockouts from repeated failures on one account; attackers may choose common passwords that satisfy the domain complexity policy to improve the hit rate.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--password-spraying-r139-used",
+          "entryId": "attack--password-spraying-details",
+          "section": "used",
+          "statement": {
+            "zh": "常见目标是管理服务、单点登录和联邦认证、云应用以及外部可访问的邮件系统；攻击者可能限速以避开检测阈值，并利用 LDAP/Kerberos 等较少产生高可见性事件的认证方式。",
+            "en": "Common targets include management services, single sign-on and federated authentication, cloud applications and externally facing email systems; attackers may throttle attempts to avoid detection thresholds and use LDAP or Kerberos authentication that generates fewer high-visibility events.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--password-spraying-r139-broken",
+          "entryId": "attack--password-spraying-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御包括账户锁定/条件访问、阻断匿名代理、要求多因素认证、采用 NIST 风格的口令策略，以及监测`同一口令跨多个账户失败`的模式；严格锁定本身也可能被用来造成拒绝服务。",
+            "en": "Defenses include account lockout or conditional access, blocking anonymizing proxies, requiring multi-factor authentication, using NIST-style password policy, and monitoring failures of one password across many accounts; strict lockout can itself be abused for denial of service.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--password-spraying-r139-history",
+          "entryId": "attack--password-spraying-details",
+          "section": "history",
+          "statement": {
+            "zh": "MITRE ATT&CK 把口令喷洒列为暴力破解的子技术 T1110.003，用于描述针对多个账户的凭据攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「口令喷洒」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\)。输入：输入：口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。预期输出：按 口令喷洒 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "MITRE ATT&CK lists password spraying as brute-force sub-technique T1110.003 for credential attacks against multiple accounts.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--password-spraying-r139-refs",
+          "entryId": "attack--password-spraying-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 口令喷洒.https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 口令喷洒.https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--password-spraying-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--password-spraying-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--password-spraying-r139-principle",
+      "entryId": "attack--password-spraying-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：口令喷洒（Password Spraying）。口令喷洒使用一个或少量常见口令，对许多不同账户尝试登录，以获取可用凭据；它与对单个账户尝试许多口令的暴力破解相反。",
+        "en": "**Attack**: Password Spraying (口令喷洒).Password spraying uses one or a small list of common passwords against many different accounts to obtain valid credentials; it is the opposite of brute-forcing one account with many passwords."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-r139-why",
+      "entryId": "attack--password-spraying-details",
+      "section": "why",
+      "statement": {
+        "zh": "这种顺序可以避免对单个账户的多次失败触发锁定；攻击者可能选择符合域复杂度策略的常见口令，以提高命中率。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "This order avoids triggering lockouts from repeated failures on one account; attackers may choose common passwords that satisfy the domain complexity policy to improve the hit rate.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-r139-used",
+      "entryId": "attack--password-spraying-details",
+      "section": "used",
+      "statement": {
+        "zh": "常见目标是管理服务、单点登录和联邦认证、云应用以及外部可访问的邮件系统；攻击者可能限速以避开检测阈值，并利用 LDAP/Kerberos 等较少产生高可见性事件的认证方式。",
+        "en": "Common targets include management services, single sign-on and federated authentication, cloud applications and externally facing email systems; attackers may throttle attempts to avoid detection thresholds and use LDAP or Kerberos authentication that generates fewer high-visibility events.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-r139-broken",
+      "entryId": "attack--password-spraying-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御包括账户锁定/条件访问、阻断匿名代理、要求多因素认证、采用 NIST 风格的口令策略，以及监测`同一口令跨多个账户失败`的模式；严格锁定本身也可能被用来造成拒绝服务。",
+        "en": "Defenses include account lockout or conditional access, blocking anonymizing proxies, requiring multi-factor authentication, using NIST-style password policy, and monitoring failures of one password across many accounts; strict lockout can itself be abused for denial of service.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-r139-history",
+      "entryId": "attack--password-spraying-details",
+      "section": "history",
+      "statement": {
+        "zh": "MITRE ATT&CK 把口令喷洒列为暴力破解的子技术 T1110.003，用于描述针对多个账户的凭据攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「口令喷洒」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\)。输入：输入：口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。预期输出：按 口令喷洒 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "MITRE ATT&CK lists password spraying as brute-force sub-technique T1110.003 for credential attacks against multiple accounts.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--password-spraying-r139-refs",
+      "entryId": "attack--password-spraying-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 口令喷洒.https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 口令喷洒.https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--password-spraying-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

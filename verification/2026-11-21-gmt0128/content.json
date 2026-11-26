@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-24",
+  "scope": "R132 formula-level deepening for gmt0128-details.",
+  "entries": [
+    {
+      "id": "gmt0128-details",
+      "inventoryIds": [
+        "gmt0128"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "把 GM/T 0128-2023 的 UDP 改造写成可复述的协议链：显式 epoch/seq 记录头、Cookie 抗 DoS、握手分片字段、预主密钥→主密钥→工作密钥三级派生；明确防重放窗口与 PKI 边界。",
+        "en": "Turns GM/T 0128-2023 into a reproducible protocol chain: explicit epoch/seq record header, cookie anti-DoS, handshake fragment fields and pre-master→master→working-key derivation, with replay-window and PKI boundaries."
+      },
+      "title": {
+        "zh": "数据报传输层密码协议规范",
+        "en": "GM/T 0128-2023 Datagram Transport Layer Cryptography Protocol"
+      },
+      "claimIds": [
+        "gmt0128-r139-principle",
+        "gmt0128-r139-why",
+        "gmt0128-r139-used",
+        "gmt0128-r139-broken",
+        "gmt0128-r139-history",
+        "gmt0128-r139-refs"
+      ],
+      "sourceIds": [
+        "gmt0128-wikipedia",
+        "gmt0128-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "gbt38636"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gmt0128-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "GM/T 0128-2023 DTLCP 的显式 epoch/seq 记录头、Cookie 握手、分片重组与三级密钥派生。",
+            "en": "GM/T 0128-2023 DTLCP: explicit epoch/seq record header, cookie handshake, fragmentation and three-level key derivation."
+          },
+          "alt": {
+            "zh": "GM/T 0128-2023 DTLCP 的显式 epoch/seq 记录头、Cookie 握手、分片重组与三级密钥派生。",
+            "en": "GM/T 0128-2023 DTLCP: explicit epoch/seq record header, cookie handshake, fragmentation and three-level key derivation."
+          },
+          "files": {
+            "zh": "assets/gmt0128-mechanism.zh.svg",
+            "en": "assets/gmt0128-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "来源：GM/T 0128-2023 标准全文题录与解读、全国标准信息公共服务平台记录、国家密码管理局公告第45号。",
+            "en": "Sources: GM/T 0128-2023 record and interpretation, the national standards platform record and NCA Announcement No. 45."
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-24"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "808b382196d56b0c44225eaf2f676eed0082d6bfd04979c214fff433bf66ee35",
+            "en": "96c7e51788ab19832c265b593eedbd67497fd65a00eea5c3d209c772ccb99b16"
+          }
+        },
+        {
+          "id": "gmt0128-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "数据报传输层密码协议规范 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for GM/T 0128-2023 Datagram Transport Layer Cryptography Protocol: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "数据报传输层密码协议规范 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for GM/T 0128-2023 Datagram Transport Layer Cryptography Protocol, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gmt0128-details-r138-model.zh.svg",
+            "en": "assets/gmt0128-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "19b9d2874a228411df3b4e244b221d88e0730db1d294cfd1371d8deb07390857",
+            "en": "a16610aba02708fedfaefccbb857b8fd06d938e963cc9c3a3e8eb9666211b6fa"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：数据报传输层密码协议规范（Specification of Datagram Transport Layer Cryptography Protocol）。GM/T 0128-2023 定义 DTLCP：在 TLCP 的记录层、握手协议族和密钥计算之上，针对 UDP 的丢包、乱序、重复与放大攻击做改造。记录头增加 epoch 与 48 位 seq_num，握手消息增加 message_seq、fragment_offset、fragment_length；大消息按路径 MTU 分片，接收端重组。",
+          "why": "UDP 没有 TCP 的连接状态与字节流语义，不能直接套用 TLS 记录层。Cookie 让服务端在消耗状态前验证源地址；显式序号让接收端在无连接状态下仍能做重放判断。epoch 在换密钥时递增，把“旧密钥下的序号”和“新密钥下的序号”分开，避免跨密钥重放。",
+          "used": "握手先 ClientHello，服务端回 HelloVerifyRequest 带 cookie，客户端带 cookie 重发；随后协商参数、交换证书、完成 ClientKeyExchange 与 Finished。密钥材料按预主密钥→主密钥→工作密钥三级派生；工作密钥拆成客户端/服务端加密键、完整性键和 IV，记录层按方向选键。",
+          "broken": "常见错误是把 DTLCP 当“TLCP over UDP”：DTLCP 的记录层有显式序号、分片与重组，和 TLS 的隐式序号/字节流不同。Cookie 只防伪造源和放大，不证明身份；防重放窗口大小也不是标准固定值。证书、信任链、吊销与 Finished 仍要按 PKI 与协议完成。### 形式模型",
+          "history": "GM/T 0128-2023 于 2023-12-04 发布、2024-06-01 实施，正文 18 页；全国标准信息公共服务平台记为 CCS L80、ICS 35.030，引用 GM/Z 4001 与 GB/T 38636-2020。它补齐了国密协议栈在 UDP 数据报场景的空白：TLCP 解决面向连接的传输层，DTLCP 解决数据报传输层。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 数据报传输层密码协议规范 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for 数据报传输层密码协议规范. https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Specification of Datagram Transport Layer Cryptography Protocol (数据报传输层密码协议规范). GM/T 0128-2023 defines DTLCP: it adapts the TLCP record layer, handshake family and key calculation to UDP loss, reordering, duplication and amplification attacks. The record header adds epoch and a 48-bit seq_num; handshake messages add message_seq, fragment_offset and fragment_length. Large messages are fragmented to path MTU and reassembled by the receiver.",
+          "why": "UDP has no TCP connection state or byte-stream semantics, so TLS record rules cannot be copied directly. Cookies let the server validate the source before spending state; explicit sequence numbers let the receiver make replay decisions without a connection.\n\nEpoch increments on key change, separating “sequence under the old key” from “sequence under the new key” and preventing cross-key replay.",
+          "used": "The handshake starts with ClientHello; the server returns HelloVerifyRequest with a cookie, and the client resends with the cookie. Parameters, certificates, ClientKeyExchange and Finished follow.\n\nKey material derives in three levels: pre-master → master → working keys. Working keys split into client/server encryption, integrity and IV keys, selected by direction at the record layer.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "A common error is treating DTLCP as “TLCP over UDP”: DTLCP records carry explicit sequence numbers, fragmentation and reassembly, unlike TLS implicit sequence numbers and byte streams.\n\nCookies stop spoofed sources and amplification, not identity; replay-window size is not a fixed standard value. Certificates, trust chains, revocation and Finished still follow PKI and protocol rules.\n\nConformance = Requirements ∧ TestVectors；Status ∈ {current, superseded, withdrawn}；Scope = (terms, requirements). Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "GM/T 0128-2023 was published on 2023-12-04 and took effect on 2024-06-01; it has 18 pages. The national standards platform records CCS L80 and ICS 35.030, and it references GM/Z 4001 and GB/T 38636-2020.\n\nIt fills the UDP datagram gap in the Chinese cryptographic protocol stack: TLCP covers connection-oriented transport, DTLCP covers datagram transport.",
+          "refs": "- Wikipedia search entry for 数据报传输层密码协议规范. https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSpecification of Datagram Transport Layer Cryptography Protocol: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculationIds": [
+        "gmt0128-r139-formal"
+      ],
+      "calculations": [
+        {
+          "id": "gmt0128-r139-formal",
+          "entryId": "gmt0128-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 数据报传输层密码协议规范 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gmt0128-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "sources": [
+        "gmt0128-wikipedia",
+        "gmt0128-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gmt0128-r139-formal",
+      "entryId": "gmt0128-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 数据报传输层密码协议规范 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gmt0128-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt29829-details",
+  "sources": [
+    {
+      "id": "gbt29829-wikipedia",
+      "title": "Wikipedia search entry for 可信密码模块",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 可信密码模块",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt29829-r139-principle",
+          "entryId": "gbt29829-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：可信密码模块（Trusted Cryptography Module）。GB/T 29829-2022 规定可信计算密码支撑平台的功能与接口，核心是 TCM：硬件/固件安全芯片，外接 TSM 提供度量、报告、存储等服务。平台有三个可信根 RTM/RTS/RTR，TCM 承载 RTS/RTR；三组主种子 EPS/PPS/SPS 分属背书/平台/存储层次，授权分别用 endorsementAuth/platformAuth/ownerAuth。",
+            "en": "**Standard**: Trusted Cryptography Module (可信密码模块).GB/T 29829-2022 defines the functions and interfaces of a trusted-computing cryptographic platform, centred on the TCM: a hardware/firmware security chip, with a TSM outside it providing measurement, reporting and storage services."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt29829-r139-why",
+          "entryId": "gbt29829-details",
+          "section": "why",
+          "statement": {
+            "zh": "PCR 扩展把任意长度度量值压成固定寄存器：PCR_new=Hash(PCR_old||digest)，事件日志保留原始度量；Quote 用 AK 签名 PCR 与随机数，防止重放。策略会话把授权条件累积到 policyDigest，PolicyPCR 再把选定 PCR 值与 updateCounter 绑进策略；命令/响应走 TCM2_* 接口。",
+            "en": "PCR extension compresses an arbitrary measurement into a fixed register: PCR_new=Hash(PCR_old||digest), while the event log keeps the original measurement; Quote signs PCRs and a nonce with an AK to stop replay.A policy session accumulates authorization conditions into policyDigest, and PolicyPCR binds selected PCR values and updateCounter into the policy; commands and responses use the TCM2_* interface."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt29829-r139-used",
+          "entryId": "gbt29829-details",
+          "section": "used",
+          "statement": {
+            "zh": "设计时先划清 TCM/TSM 边界，再定三个种子与授权域；度量链要同时保存 PCR 和事件日志，远程证明用 Quote+AK+nonce。密钥对象树从 SRK 派生；迁移/备份受 migrate 属性与父密钥控制，EK 唯一不可迁移。",
+            "en": "Design first draws the TCM/TSM boundary, then fixes the three seeds and authorization domains; a measurement chain stores both PCRs and the event log, and remote attestation uses Quote+AK+nonce.The key-object tree derives from the SRK; migration and backup are controlled by the migrate attribute and parent keys, while the EK is unique and non-migratable."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt29829-r139-broken",
+          "entryId": "gbt29829-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误：把 PCR 当可信结论、只存 PCR 丢日志、混用三个授权域、重置 SPS 后仍用旧对象、把 TCM 当 TPM 命令兼容。标准给功能/接口，不给芯片实现安全；PCR 可被重置，日志可被伪造，必须 Quote 与校验策略配合。### 形式模型。",
+            "en": "Common errors: treating a PCR as a trust conclusion, storing PCRs but dropping the log, mixing the three authorization domains, using old objects after resetting SPS, or assuming TCM is command-compatible with TPM.The standard gives functions and interfaces, not chip implementation security; PCRs can be reset and logs can be forged, so Quote and policy verification must be combined."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt29829-r139-history",
+          "entryId": "gbt29829-details",
+          "section": "history",
+          "statement": {
+            "zh": "GB/T 29829-2013 被 2022 版代替；2022-04-15 发布、2022-11-01 实施，标准文本约 260 页，TCM2.0 命令集使用 SM2/SM3/SM4。它与 TPM 2.0 结构相近但不命令兼容；国际标准参考 ISO/IEC 11889，国密算法和授权模型是独立设计。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：可信密码模块的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GB/T 29829-2013 was replaced by the 2022 edition, published on 2022-04-15 and effective on 2022-11-01; the text is about 260 pages and the TCM2.0 command set uses SM2/SM3/SM4.It resembles TPM 2.0 in structure but is not command-compatible; ISO/IEC 11889 is a reference, while the national algorithms and authorization model are independent."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt29829-r139-refs",
+          "entryId": "gbt29829-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 可信密码模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 可信密码模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt29829-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt29829-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt29829-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt29829-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt29829-r139-principle",
+      "entryId": "gbt29829-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：可信密码模块（Trusted Cryptography Module）。GB/T 29829-2022 规定可信计算密码支撑平台的功能与接口，核心是 TCM：硬件/固件安全芯片，外接 TSM 提供度量、报告、存储等服务。平台有三个可信根 RTM/RTS/RTR，TCM 承载 RTS/RTR；三组主种子 EPS/PPS/SPS 分属背书/平台/存储层次，授权分别用 endorsementAuth/platformAuth/ownerAuth。",
+        "en": "**Standard**: Trusted Cryptography Module (可信密码模块).GB/T 29829-2022 defines the functions and interfaces of a trusted-computing cryptographic platform, centred on the TCM: a hardware/firmware security chip, with a TSM outside it providing measurement, reporting and storage services."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt29829-r139-why",
+      "entryId": "gbt29829-details",
+      "section": "why",
+      "statement": {
+        "zh": "PCR 扩展把任意长度度量值压成固定寄存器：PCR_new=Hash(PCR_old||digest)，事件日志保留原始度量；Quote 用 AK 签名 PCR 与随机数，防止重放。策略会话把授权条件累积到 policyDigest，PolicyPCR 再把选定 PCR 值与 updateCounter 绑进策略；命令/响应走 TCM2_* 接口。",
+        "en": "PCR extension compresses an arbitrary measurement into a fixed register: PCR_new=Hash(PCR_old||digest), while the event log keeps the original measurement; Quote signs PCRs and a nonce with an AK to stop replay.A policy session accumulates authorization conditions into policyDigest, and PolicyPCR binds selected PCR values and updateCounter into the policy; commands and responses use the TCM2_* interface."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt29829-r139-used",
+      "entryId": "gbt29829-details",
+      "section": "used",
+      "statement": {
+        "zh": "设计时先划清 TCM/TSM 边界，再定三个种子与授权域；度量链要同时保存 PCR 和事件日志，远程证明用 Quote+AK+nonce。密钥对象树从 SRK 派生；迁移/备份受 migrate 属性与父密钥控制，EK 唯一不可迁移。",
+        "en": "Design first draws the TCM/TSM boundary, then fixes the three seeds and authorization domains; a measurement chain stores both PCRs and the event log, and remote attestation uses Quote+AK+nonce.The key-object tree derives from the SRK; migration and backup are controlled by the migrate attribute and parent keys, while the EK is unique and non-migratable."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt29829-r139-broken",
+      "entryId": "gbt29829-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误：把 PCR 当可信结论、只存 PCR 丢日志、混用三个授权域、重置 SPS 后仍用旧对象、把 TCM 当 TPM 命令兼容。标准给功能/接口，不给芯片实现安全；PCR 可被重置，日志可被伪造，必须 Quote 与校验策略配合。### 形式模型。",
+        "en": "Common errors: treating a PCR as a trust conclusion, storing PCRs but dropping the log, mixing the three authorization domains, using old objects after resetting SPS, or assuming TCM is command-compatible with TPM.The standard gives functions and interfaces, not chip implementation security; PCRs can be reset and logs can be forged, so Quote and policy verification must be combined."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt29829-r139-history",
+      "entryId": "gbt29829-details",
+      "section": "history",
+      "statement": {
+        "zh": "GB/T 29829-2013 被 2022 版代替；2022-04-15 发布、2022-11-01 实施，标准文本约 260 页，TCM2.0 命令集使用 SM2/SM3/SM4。它与 TPM 2.0 结构相近但不命令兼容；国际标准参考 ISO/IEC 11889，国密算法和授权模型是独立设计。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：可信密码模块的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GB/T 29829-2013 was replaced by the 2022 edition, published on 2022-04-15 and effective on 2022-11-01; the text is about 260 pages and the TCM2.0 command set uses SM2/SM3/SM4.It resembles TPM 2.0 in structure but is not command-compatible; ISO/IEC 11889 is a reference, while the national algorithms and authorization model are independent."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt29829-r139-refs",
+      "entryId": "gbt29829-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 可信密码模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 可信密码模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%AF%86%E7%A0%81%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt29829-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,957 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "Six introductory full-section drafts; not full-library completion",
+  "verificationStatus": "source-checked-awaiting-independent-review",
+  "entries": [
+    {
+      "id": "caesar-cipher",
+      "inventoryIds": [],
+      "title": {
+        "zh": "凯撒密码",
+        "en": "Caesar cipher"
+      },
+      "mappingIssues": [
+        "同名 caesar 是人物，不作为密码条目的映射。旧 term 仅中文短稿；新稿不沿用其`最古老密码`断言。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "凯撒密码把字母表当作一个环，用同一偏移量替换每个字母。这里明确采用现代 A–Z 的 26 字母教学约定：A=0，…，Z=25，密钥 k 属于 0…25。加密 c=(m+k) mod 26，解密 m=(c−k) mod 26。相同明文字母总变成相同密文字母，它属于单表替换。\n\n例如 k=3 时，A→D，X→A，HELLO→KHOOR。这里的 mod 是取 0…25 范围内的余数；解密时须处理负数。空格、大小写和标点如何处理，是实现约定，不是公式已经规定的内容。",
+          "why": "它把明文、密文、算法和密钥分开展示：规则不变，k 改变就得到另一次变换。读者可以手算完整的加密与解密，也能亲自检查`可逆`与`保密`是两回事。下面的穷举计算直接说明：有可逆变换，并不意味着拥有足够大的密钥空间。",
+          "used": "本条把它用于教学与字母谜题，不作为现实信息保护方案。做题时先约定字母表和偏移方向，再逐字替换，最后用同一约定解密验证。不要把本例的 26 字母约定倒推成古罗马实际字母表或通信格式。",
+          "broken": "对于本例，包含恒等变换 k=0 在内只有 26 种偏移；排除它才是 25 种。枚举所有候选即可得到包含原文的一组结果。极短文本可能有多个看似合理的候选，所以`试遍密钥`不等于无条件唯一识别原文。更长的自然语言文本还会留下重复和频率线索。",
+          "history": "名称与尤利乌斯·凯撒相关。苏埃托尼乌斯《凯撒传》第 56 节记述了凯撒在保密信件中改变字母，并给出 D 对应 A 的描述。这里把它作为古代文字记录引用，不据此宣称凯撒发明了替换密码，也不把现代公式当作原始文献中的写法。",
+          "refs": "- Chris Savarese and Brian Hart, The Caesar Cipher, Trinity College\n- Suetonius, The Life of Julius Caesar, §56.6, J. C. Rolfe translation; Lexundria transcription\n- A. Menezes, P. van Oorschot and S. Vanstone, Handbook of Applied Cryptography, CRC Press, 1996, Chapter 7\n- Duke University, Math Everywhere, Cryptography — Course Notes"
+        },
+        "en": {
+          "principle": "A Caesar cipher rotates an alphabet by one fixed offset. This lesson explicitly uses modern A–Z: A=0, …, Z=25 and k in 0…25. Encryption is c=(m+k) mod 26; decryption is m=(c−k) mod 26. Repeated plaintext letters retain a single substitution.\n\nWith k=3, A→D, X→A and HELLO→KHOOR. Modulo here returns a value in 0…25, including when decryption first produces a negative number. Handling spaces, case and punctuation requires a separate implementation convention.",
+          "why": "It separates plaintext, ciphertext, algorithm and key. Changing k changes the transformation while leaving the rule public. A complete hand calculation shows why reversibility and secrecy are different properties: being able to undo a transformation says nothing about whether an attacker can cheaply try every key.",
+          "used": "Use it for lessons and letter puzzles, not real confidentiality. Specify the alphabet and direction, transform the letters, then verify by reversing the operation. The 26-letter classroom convention is not a reconstruction of an ancient Roman alphabet or message format.",
+          "broken": "There are 26 shifts including the identity k=0, or 25 nonidentity shifts. Exhaustion produces a list containing the original. A very short message may leave several plausible readings, so trying every key does not guarantee a unique interpretation. Longer natural-language messages also retain repetition and frequency clues.",
+          "history": "The name is associated with Julius Caesar. Suetonius, Life of Julius Caesar §56, describes altered letters in confidential correspondence and mentions D in place of A. This is an ancient written account, not evidence that Caesar invented substitution ciphers; the modular formula above is a modern teaching formulation.",
+          "refs": "- Chris Savarese and Brian Hart, The Caesar Cipher, Trinity College\n- Suetonius, The Life of Julius Caesar, §56.6, J. C. Rolfe translation; Lexundria transcription\n- A. Menezes, P. van Oorschot and S. Vanstone, Handbook of Applied Cryptography, CRC Press, 1996, Chapter 7\n- Duke University, Math Everywhere, Cryptography — Course Notes"
+        }
+      },
+      "claimIds": [
+        "caesar-cipher-shift",
+        "caesar-cipher-pedagogy",
+        "caesar-cipher-keyspace",
+        "caesar-cipher-frequency",
+        "caesar-cipher-history",
+        "caesar-cipher-key-rule"
+      ],
+      "calculationIds": [
+        "caesar-roundtrip"
+      ],
+      "related": [
+        "frequency-analysis"
+      ],
+      "sourceIds": [
+        "trinity-caesar",
+        "suetonius-julius56",
+        "hac-ch7",
+        "duke-frequency"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "明文",
+            "变换前的消息。"
+          ],
+          [
+            "密文",
+            "变换后的消息。"
+          ],
+          [
+            "密钥",
+            "本例中选择偏移的 k。"
+          ],
+          [
+            "模运算",
+            "让字母位置在约定范围内循环。"
+          ]
+        ],
+        "en": [
+          [
+            "Plaintext",
+            "The message before transformation."
+          ],
+          [
+            "Ciphertext",
+            "The transformed message."
+          ],
+          [
+            "Key",
+            "The offset k in this lesson."
+          ],
+          [
+            "Modulo",
+            "Wraps positions within the chosen alphabet."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "caesar-cipher",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "figures": [
+        {
+          "id": "caesar-cipher-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "凯撒密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Caesar cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "凯撒密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Caesar cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/caesar-cipher-flow.zh.svg",
+            "en": "assets/caesar-cipher-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8364edc423e2de1fc67380392bf783257fab09c3e18007172b15a525e0d07ddd",
+            "en": "c2798c965da2ebb9daca17f7b5b3d7ed677ce6b5a965e3b91ebba305609bb676"
+          }
+        }
+      ]
+    },
+    {
+      "id": "frequency-analysis",
+      "inventoryIds": [],
+      "title": {
+        "zh": "频率分析",
+        "en": "Frequency analysis"
+      },
+      "mappingIssues": [
+        "旧稿声称对换位密码失效，过于绝对：换位保留逐字频率，但恢复位置需要其他线索。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "频率分析先统计符号，再用语言结构检验映射猜测。单表替换把每个原字母固定映成另一个符号，所以出现次数只是换了标签。若 π 是替换，密文符号 y 的次数满足 countC(y)=countM(π⁻¹(y))。\n\n工作顺序是：明确计数单位与预处理；列出单字母、重复和字母组合；提出候选映射；把候选放回整段文本，检查是否自洽。语言频率是比较资料，不是逐字母译码表。",
+          "why": "它揭示了`大密钥空间`与`隐藏结构`不是同一个问题。任意替换表的可能性很多，分析者却可以跳过大量无意义候选，利用消息本身的重复来缩小范围。它也是认识统计推断的好入口：先有证据和猜测，再检验，而不是看到最高柱形就宣布答案。",
+          "used": "可以分析教学中的单表替换和移位密文。先比较单字母，再看二元组、重复字母、词长和语境。对于周期性多表替换，有时可先按候选周期分列，再分别分析；这不等于对所有密码都有效。换位不改变字母身份的总次数，频率可帮助识别文本性质，但单凭计数无法恢复排列。",
+          "broken": "它的失败条件是证据与模型不匹配：文本太短，题材特殊，语言选错，或映射并非单表。英文常用字母的统计规律不保证每条短消息都由 E 占第一。我们的反例 BANANA 中 A 出现 3 次、N 两次、B 一次；移位后 EDQDQD 中 D 最多，且 D 对应 A，并不是 E。",
+          "history": "古典密码分析围绕可见结构发展：固定替换留下计数，改用多套字母表则改变这种简单对应。这里不把方法归功于一个未经本轮查阅原稿的人物，也不写未经核证的发明年份。HAC 第 7 章系统比较了换位、单表、多表和转子方法，能看到设计与分析如何相互推动。",
+          "refs": "- A. Menezes, P. van Oorschot and S. Vanstone, Handbook of Applied Cryptography, CRC Press, 1996, Chapter 7\n- Duke University, Math Everywhere, Cryptography — Course Notes\n- Paul Krzyzanowski, Rutgers University, CS 419, Part 1 — Foundations and Classical Ciphers"
+        },
+        "en": {
+          "principle": "Count symbols, then test mapping hypotheses against language structure. A fixed monoalphabetic substitution relabels counts: for substitution π, countC(y)=countM(π⁻¹(y)).\n\nChoose counting units and preprocessing, inspect single symbols, repeats and combinations, propose mappings, then test them across the whole text. Reference frequencies guide hypotheses; they are not a literal decoding table.",
+          "why": "A large keyspace need not hide structure. Even with many possible substitution tables, redundancy can rule out large classes of guesses. It is also an introduction to statistical inference: collect evidence, form a hypothesis and test it rather than treating the tallest bar as an answer.",
+          "used": "Apply it to classroom substitution and shift ciphers. Follow single-letter counts with pairs, repeated letters, word lengths and context. A periodic polyalphabetic cipher may permit separate analysis of position classes after a candidate period is chosen. Transposition preserves total letter counts, but counts alone do not reconstruct the order.",
+          "broken": "It fails when evidence does not fit the model: too little text, unusual subject matter, the wrong language or a changing substitution. Common English frequency patterns do not make E the leader in every short message. In our counterexample BANANA, A occurs three times, N twice and B once. After shifting to EDQDQD, D leads and represents A, not E.",
+          "history": "Classical cryptanalysis and cipher design developed around visible structure: fixed substitution preserves counts, while changing alphabets disrupts that simple correspondence. This account does not assign an invention date without examining the historical record. HAC Chapter 7 provides a comparison of transposition, monoalphabetic, polyalphabetic and rotor methods.",
+          "refs": "- A. Menezes, P. van Oorschot and S. Vanstone, Handbook of Applied Cryptography, CRC Press, 1996, Chapter 7\n- Duke University, Math Everywhere, Cryptography — Course Notes\n- Paul Krzyzanowski, Rutgers University, CS 419, Part 1 — Foundations and Classical Ciphers"
+        }
+      },
+      "claimIds": [
+        "frequency-analysis-counts",
+        "frequency-analysis-workflow",
+        "frequency-analysis-redundancy",
+        "frequency-analysis-scope",
+        "frequency-analysis-corpus",
+        "frequency-analysis-history-scope"
+      ],
+      "calculationIds": [
+        "frequency-preservation"
+      ],
+      "related": [
+        "caesar-cipher",
+        "enigma"
+      ],
+      "sourceIds": [
+        "hac-ch7",
+        "duke-frequency",
+        "rutgers-classical"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "频数",
+            "样本中出现的次数。"
+          ],
+          [
+            "频率",
+            "频数除以样本总量。"
+          ],
+          [
+            "单表替换",
+            "整段使用同一符号映射。"
+          ],
+          [
+            "假设",
+            "须通过其他证据检验的猜测。"
+          ]
+        ],
+        "en": [
+          [
+            "Count",
+            "Number of occurrences in a sample."
+          ],
+          [
+            "Relative frequency",
+            "Count divided by sample size."
+          ],
+          [
+            "Monoalphabetic substitution",
+            "One symbol mapping throughout."
+          ],
+          [
+            "Hypothesis",
+            "A guess requiring further checks."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "frequency-analysis",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "figures": [
+        {
+          "id": "frequency-analysis-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "频率分析：为什么需要 → 核心机制 → 边界。",
+            "en": "Frequency analysis: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "频率分析 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Frequency analysis, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/frequency-analysis-flow.zh.svg",
+            "en": "assets/frequency-analysis-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "840a62cd99d2efc4818d50358d1e0070719d7392fd2dfad354969f0a2acf4288",
+            "en": "b00bafc413cb703739cdc70ead725e0d7959bb56b866f53f1c1515539f52b6e4"
+          }
+        }
+      ]
+    },
+    {
+      "id": "enigma",
+      "inventoryIds": [],
+      "title": {
+        "zh": "恩尼格玛",
+        "en": "Enigma"
+      },
+      "mappingIssues": [
+        "对应 machine/enigma；旧来源把 Gordon Welchman 写成 Brian，不能直接沿用。本条只概括典型反射式转子结构，不冒充所有型号规格。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "恩尼格玛是一系列机电密码机，不是一台固定规格的机器。典型反射式结构让电流经过转子，到达反射器，再反向穿过转子点亮字母灯；某些型号还有接线板。转子步进改变当前映射，因而连续按同一键可得到不同字母。具体转子、接线和步进取决于型号。\n\n冻结一个步进状态后，令 F 表示到反射器的正向置换，U 表示反射器配对，则映射可写作 E=F⁻¹∘U∘F。典型 U 没有自配对且 U²=I，由此可推 E²=I 且 E(x)≠x。这是该结构的数学解释，不是完整机器仿真。",
+          "why": "它展示了密码从固定字母表走向随状态变化的装置，也让`算法之外的系统`变得具体：同一硬件需要正确设置、通信程序与操作协作。理解接线图只是起点，不能从一张复杂电路图直接推出安全性。",
+          "used": "在这里用于历史学习、机械结构观察和置换概念练习。学习真实型号时，要同时记录转子顺序、环设置、起始位置、接线板和步进规则；它们不能混为同一个`密码`。解密需要按相同程序重建起始状态，而不是沿用刚加密完的最终转子位置。",
+          "broken": "典型反射结构不把字母加密成自身，这会排除部分明文猜测。规律性步进、消息程序和操作习惯还可能带来可利用条件。不同型号和不同通信时期的分析任务并不一样；不能把破解简化成穷举一个巨大数字，也不能说某次破译自动打开所有恩尼格玛通信。",
+          "history": "美国国家密码博物馆的展览说明记述了波兰数学家在 1932 年的恩尼格玛分析工作，并介绍 Rejewski、Zygalski 和 Różycki。此处只引用该机构能支持的概括，不把全部成果归于单个人。机器家族、使用程序和破译工作的不同阶段应分别叙述。",
+          "refs": "- Crypto Museum, Enigma cipher machines\n- Crypto Museum, Enigma — How it works\n- NSA/CSS National Cryptologic Museum, New Polish Enigma Exhibit, 11 December 2007"
+        },
+        "en": {
+          "principle": "Enigma is a family of electromechanical machines. In a typical reflecting design, current passes through rotors, is paired by a reflector and returns through the rotors to a lamp; some models add a plugboard. Stepping changes the mapping, so repeated presses can produce different letters. Wiring and stepping are model-specific.\n\nAt a frozen state, let F map inputs toward the reflector and U pair reflector contacts. Then E=F⁻¹∘U∘F. If U²=I and U has no fixed points, E²=I and E(x)≠x. This explains the structure, not a complete emulator.",
+          "why": "It turns a fixed alphabet into a changing state machine and makes system-level questions concrete. Hardware still depends on settings, message procedures and coordinated operation. Understanding a circuit is a starting point, not a proof of security.",
+          "used": "Use this entry for history, mechanism studies and permutation exercises. For a real model, distinguish rotor order, ring settings, starting positions, plugboard and stepping rules. Decryption must recreate the required initial state and procedure rather than reuse the rotors where encryption ended.",
+          "broken": "A typical reflecting Enigma never maps a letter to itself, ruling out some plaintext guesses. Stepping regularities, message procedures and operator habits can add exploitable conditions. Models and communication periods pose different tasks. Neither one large keyspace number nor one historical success describes all Enigma traffic.",
+          "history": "The US National Cryptologic Museum describes Polish mathematical work on Enigma in 1932 and names Rejewski, Zygalski and Różycki. That institutional account supports this limited historical summary; it does not justify crediting all results to one person. Models, procedures and phases of cryptanalysis need separate accounts.",
+          "refs": "- Crypto Museum, Enigma cipher machines\n- Crypto Museum, Enigma — How it works\n- NSA/CSS National Cryptologic Museum, New Polish Enigma Exhibit, 11 December 2007"
+        }
+      },
+      "claimIds": [
+        "enigma-family",
+        "enigma-reflector",
+        "enigma-changing-state",
+        "enigma-settings",
+        "enigma-weaknesses",
+        "enigma-polish-history"
+      ],
+      "calculationIds": [
+        "reflector-conjugation"
+      ],
+      "related": [
+        "frequency-analysis",
+        "caesar-cipher"
+      ],
+      "sourceIds": [
+        "museum-enigma",
+        "museum-enigma-working",
+        "ncm-polish-enigma"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "转子",
+            "把输入接点置换到输出接点的部件。"
+          ],
+          [
+            "反射器",
+            "把接点成对连接并返回信号的部件。"
+          ],
+          [
+            "步进",
+            "按型号规则改变转子位置。"
+          ],
+          [
+            "置换",
+            "一一对应的重新编号。"
+          ]
+        ],
+        "en": [
+          [
+            "Rotor",
+            "A component permuting input contacts to output contacts."
+          ],
+          [
+            "Reflector",
+            "Pairs contacts and returns the signal."
+          ],
+          [
+            "Stepping",
+            "Changes rotor positions under model-specific rules."
+          ],
+          [
+            "Permutation",
+            "A one-to-one rearrangement."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "enigma",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "figures": [
+        {
+          "id": "enigma-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "恩尼格玛：为什么需要 → 核心机制 → 边界。",
+            "en": "Enigma: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "恩尼格玛 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Enigma, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/enigma-flow.zh.svg",
+            "en": "assets/enigma-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a04dfb4e94de40811a3506f55612712cfc2ef55b24a23d0b858f161c81f3e1d3",
+            "en": "e589385876f20d43b16d5737bc203d271e8f1db1db677ea813f69ef219c3d909"
+          }
+        }
+      ]
+    },
+    {
+      "id": "aes",
+      "inventoryIds": [],
+      "title": {
+        "zh": "AES：高级加密标准",
+        "en": "AES: Advanced Encryption Standard"
+      },
+      "mappingIssues": [
+        "旧合并条目 aes 被归为 machine；算法与其标准 fips197 应区分。此处记录关联，不据此确认旧分类。旧 machine/aes 深度稿含已发现的严重错误，不沿用。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "AES 是对称分组密码：在一把固定密钥下，把 128 位输入块可逆地变成 128 位输出块。AES-128、AES-192、AES-256 的后缀是密钥位数，三者分组长度相同，轮数分别是 10、12、14。\n\n状态是 16 个字节。初始 AddRoundKey 后，普通轮依次进行 SubBytes、ShiftRows、MixColumns、AddRoundKey；末轮省去 MixColumns。密钥扩展产生所需轮密钥。SubBytes 是非线性替换，行移位与列混合共同扩散字节影响；不是单独某一步就能解释全部安全性。",
+          "why": "它是标准化、可精确比较实现结果的基础构件。学习时应把三个问题分开：分组密码的规则是否实现正确，工作模式怎样处理多块消息，以及系统怎样管理密钥与认证。通过一组标准测试向量，只证明该输入输出吻合，不能证明实现没有侧信道或整个应用安全。",
+          "used": "一个明确的应用是 TLS 1.3：RFC 9846（取代 RFC 8446）列出 AES-GCM 和 AES-CCM 套件，也列出 ChaCha20-Poly1305。因而不能说 AES 是唯一现代选择，更不能把 AES-ECB 称作 TLS 1.3 的 AEAD 套件。AES 本身处理一个分组；这些协议使用的是带明确模式与参数的完整构造。",
+          "broken": "同一密钥下，裸分组变换对同一输入总给出同一输出；把它直接当作多块消息保护，会留下结构。GCM 另外加入计数器式保密和认证，但它要求在同一密钥下正确处理 IV 唯一性，重用会破坏安全保证。\n\n这里不把生日碰撞界当成 AES 密钥位数，也不宣称算法名称能担保实现。后面的 ECB 单块例子只用于核验 AES 变换，绝不是推荐用 ECB 保护消息。",
+          "history": "NIST 在 1997 年启动 AES 选择流程，2000 年 10 月 2 日宣布选择 Rijndael，FIPS 197 于 2001 年公布。2023 年更新改善了文档编辑与说明，没有改变算法。这些时间点应区别于征集、候选评审和标准生效，不可混成一次`获胜`。",
+          "refs": "- NIST, FIPS 197-upd1, Advanced Encryption Standard (AES), 2023\n- NIST, AES Development archive\n- NIST CSRC, FIPS 197 publication page\n- Morris Dworkin, NIST SP 800-38A, Recommendation for Block Cipher Modes of Operation, 2001\n- Morris Dworkin, NIST SP 800-38D, GCM and GMAC, 2007\n- Eric Rescorla, RFC 9846, The Transport Layer Security (TLS) Protocol Version 1.3; obsoletes RFC 8446",
+          "example": "仅核验单块变换：密钥 2b7e151628aed2a6abf7158809cf4f3c，输入 6bc1bee22e409f96e93d7e117393172a，输出 3ad77bb40d7a3660a89ecaf32466ef97。出处是 NIST SP 800-38A 附录 F.1.1 第一块；verify.mjs 调用 Node/OpenSSL 重新计算，并验证逆变换。所有值都是公开测试向量，不是可复用的真实密钥。"
+        },
+        "en": {
+          "principle": "AES is a symmetric block cipher: for a fixed key it reversibly maps 128-bit blocks to 128-bit blocks. AES-128/192/256 use different key lengths, the same block length and 10/12/14 rounds.\n\nThe state contains 16 bytes. After initial AddRoundKey, ordinary rounds apply SubBytes, ShiftRows, MixColumns and AddRoundKey; the final round omits MixColumns. Key expansion supplies round keys. Nonlinear substitution and diffusion work together; no single operation explains the whole security argument.",
+          "why": "It is a standardized building block with precisely testable outputs. Separate correctness of the block transformation, the mode handling messages, and system management of keys and authentication. Matching one standard vector checks that input/output pair; it does not prove side-channel resistance or application security.",
+          "used": "TLS 1.3 is one specific use. RFC 9846, which obsoletes RFC 8446, lists AES-GCM and AES-CCM suites alongside ChaCha20-Poly1305. AES is therefore not the only modern choice, and AES-ECB is not a TLS 1.3 AEAD suite. A block primitive and a protocol construction are different layers.",
+          "broken": "A fixed-key block transformation is deterministic; direct independent use on messages reveals repeated-block structure. GCM adds confidentiality and authentication but requires correct IV uniqueness under a key; reuse undermines its assurances.\n\nA birthday collision bound is not an AES key length. The ECB single-block example below is only a transformation test, not a recommendation to protect messages with ECB.",
+          "history": "NIST began the AES process in 1997 and announced Rijndael’s selection on October 2, 2000. FIPS 197 was published in 2001. Its 2023 update improved presentation without changing the algorithm. Initiation, selection, publication and effective dates are separate events.",
+          "refs": "- NIST, FIPS 197-upd1, Advanced Encryption Standard (AES), 2023\n- NIST, AES Development archive\n- NIST CSRC, FIPS 197 publication page\n- Morris Dworkin, NIST SP 800-38A, Recommendation for Block Cipher Modes of Operation, 2001\n- Morris Dworkin, NIST SP 800-38D, GCM and GMAC, 2007\n- Eric Rescorla, RFC 9846, The Transport Layer Security (TLS) Protocol Version 1.3; obsoletes RFC 8446",
+          "example": "Single-block check only: key 2b7e151628aed2a6abf7158809cf4f3c, input 6bc1bee22e409f96e93d7e117393172a, output 3ad77bb40d7a3660a89ecaf32466ef97. Source: NIST SP 800-38A Appendix F.1.1, first block. verify.mjs recomputes it using Node/OpenSSL and checks inversion. These public test values are not operational keys."
+        }
+      },
+      "claimIds": [
+        "aes-sizes-rounds",
+        "aes-round-structure",
+        "aes-tls-suites",
+        "aes-ecb-determinism",
+        "aes-iv-uniqueness",
+        "aes-selection",
+        "aes-publication-update",
+        "aes-official-vector",
+        "aes-standardized-transformation",
+        "aes-tls-spec-status"
+      ],
+      "calculationIds": [
+        "aes128-official-vector"
+      ],
+      "related": [
+        "rsa",
+        "post-quantum-cryptography"
+      ],
+      "sourceIds": [
+        "fips197",
+        "nist-aes-development",
+        "nist-fips197-page",
+        "sp800-38a",
+        "sp800-38d",
+        "rfc9846"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "分组长度",
+            "每次变换的输入位数，这里为128。"
+          ],
+          [
+            "密钥长度",
+            "选择变换的秘密参数位数。"
+          ],
+          [
+            "工作模式",
+            "把分组构件用于消息的规则。"
+          ],
+          [
+            "认证",
+            "检测未授权修改等性质；不是裸AES自动提供。"
+          ]
+        ],
+        "en": [
+          [
+            "Block length",
+            "Input size per transformation: 128 bits here."
+          ],
+          [
+            "Key length",
+            "Size of the secret selecting the transformation."
+          ],
+          [
+            "Mode",
+            "Rules for applying the primitive to messages."
+          ],
+          [
+            "Authentication",
+            "Properties such as detecting unauthorized changes; not supplied by bare AES."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "aes",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        },
+        {
+          "legacyId": "fips197",
+          "status": "awaiting-independent-resolution",
+          "relation": "related-standard-not-same-entity"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "figures": [
+        {
+          "id": "aes-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "AES：高级加密标准：为什么需要 → 核心机制 → 边界。",
+            "en": "AES: Advanced Encryption Standard: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "AES：高级加密标准 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for AES: Advanced Encryption Standard, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/aes-flow.zh.svg",
+            "en": "assets/aes-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "dc1e836598a67d98b7da0260909d29312cfc7d77d637d47ffa4319d4c2435e03",
+            "en": "6f6a127d16457cbfba9f0ac4026056127a2688b8cf8b1d55910a141ab1e86cbf"
+          }
+        }
+      ]
+    },
+    {
+      "id": "rsa",
+      "inventoryIds": [],
+      "title": {
+        "zh": "RSA",
+        "en": "RSA"
+      },
+      "mappingIssues": [
+        "旧归属为 term；规范型别待消歧。本稿不继承旧引用被按逗号拆开的作者碎片，不声称RSA是首个公钥系统。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "RSA 使用相关联的公钥与私钥。两素数教学形式取 p、q，令 n=pq，选择与 λ(n)=lcm(p−1,q−1) 互素的 e，再求 d 满足 ed≡1 mod λ(n)。公钥包含 n、e；私钥必须保护 d 等秘密值。\n\n对整数代表 m，原始加密计算 c=mᵉ mod n，逆运算 m=cᵈ mod n，要求代表位于规定范围。本条的小整数例子只解释代数；真实加密与签名还需要编码、检查和消息转换。",
+          "why": "它使`公开如何加密`与`只有持有秘密者能解开`可以同时成立，也让签名成为独立任务：签名者生成可验证的证据，验证者无需获得签名私钥。公钥密码并没有取消信任问题，读者仍须知道正在使用谁的公钥、消息怎样绑定身份。",
+          "used": "RFC 8017 分开规定 RSAES 加密方案和 RSASSA 签名方案，例如 RSAES-OAEP 与 RSASSA-PSS。不要把签名简单称为`用私钥加密`。一个可核查的协议边界是 RFC 9846 规定的 TLS 1.3：它可以使用 RSA 签名认证，但已不提供旧式 RSA 密钥传输。",
+          "broken": "裸模幂是确定性的，且有代数结构，不能直接保护任意消息。把 n 分解能导出相关秘密计算，但不能把`目前不会分解`当成对所有 RSA 方案的完整安全证明。编码错误、验证错误和泄露私钥都能绕开理想代数；方案必须按其完整定义讨论。",
+          "history": "Rivest、Shamir 和 Adleman 的论文发表于 1978 年，完整标题为 A Method for Obtaining Digital Signatures and Public-Key Cryptosystems。RFC 8017 于 2016 年重新发布 PKCS #1 v2.2，反映从数学构造到详细方案、编码和互操作规范的工程化过程。",
+          "refs": "- R. L. Rivest, A. Shamir and L. Adleman, A Method for Obtaining Digital Signatures and Public-Key Cryptosystems, Communications of the ACM 21(2), 1978, pp. 120–126\n- K. Moriarty et al., RFC 8017, PKCS #1: RSA Cryptography Specifications Version 2.2, November 2016\n- Eric Rescorla, RFC 9846, The Transport Layer Security (TLS) Protocol Version 1.3; obsoletes RFC 8446",
+          "example": "公开教学参数 p=61、q=53，n=3233、λ(n)=780。取 e=17、d=413，有 17×413=7021≡1 mod 780。整数 m=65 得到 c=2790，再计算 2790^413 mod 3233=65。verify.mjs 验证所有 0…3232 的往返；这些过小且公开的数毫无现实保密性。"
+        },
+        "en": {
+          "principle": "RSA uses related public and private keys. In the two-prime teaching case, n=pq, λ(n)=lcm(p−1,q−1), gcd(e,λ(n))=1 and ed≡1 mod λ(n). The public key includes n and e; secret values such as d require protection.\n\nFor an in-range integer representative m, the primitives compute c=mᵉ mod n and m=cᵈ mod n. Small numbers explain algebra, not a complete encryption or signature scheme.",
+          "why": "It separates public operations from private capabilities. A signer can also produce verifiable evidence without revealing the signing secret. Public-key techniques do not remove trust questions: a user still needs to establish whose key is being used and what identity the message is bound to.",
+          "used": "RFC 8017 separately defines RSAES encryption and RSASSA signature schemes, including RSAES-OAEP and RSASSA-PSS. Signing is not simply `encrypting with the private key` TLS 1.3 as specified by RFC 9846 illustrates the distinction: RSA signatures may authenticate peers, while legacy RSA key transport is absent.",
+          "broken": "Bare exponentiation is deterministic and algebraically structured, so it cannot directly secure arbitrary messages. Factoring n enables recovery of the relevant secret arithmetic, but difficulty of factoring is not a complete security proof for every RSA construction. Encoding, validation and key exposure matter alongside the algebra.",
+          "history": "Rivest, Shamir and Adleman published A Method for Obtaining Digital Signatures and Public-Key Cryptosystems in 1978. RFC 8017 republished PKCS #1 v2.2 in 2016. The paper and specification show different layers: a mathematical construction and carefully defined schemes, encodings and interchange rules.",
+          "refs": "- R. L. Rivest, A. Shamir and L. Adleman, A Method for Obtaining Digital Signatures and Public-Key Cryptosystems, Communications of the ACM 21(2), 1978, pp. 120–126\n- K. Moriarty et al., RFC 8017, PKCS #1: RSA Cryptography Specifications Version 2.2, November 2016\n- Eric Rescorla, RFC 9846, The Transport Layer Security (TLS) Protocol Version 1.3; obsoletes RFC 8446",
+          "example": "Public teaching parameters: p=61, q=53, n=3233 and λ(n)=780. Choose e=17 and d=413: 17×413=7021≡1 mod 780. For m=65, c=2790 and 2790^413 mod 3233=65. verify.mjs checks every representative 0…3232. These tiny public numbers provide no real secrecy."
+        }
+      },
+      "claimIds": [
+        "rsa-keys-primitives",
+        "rsa-public-private-roles",
+        "rsa-schemes",
+        "rsa-rsa-tls",
+        "rsa-primitive-boundary",
+        "rsa-factoring",
+        "rsa-original-paper",
+        "rsa-specification-date"
+      ],
+      "calculationIds": [
+        "rsa-small-algebra"
+      ],
+      "related": [
+        "aes",
+        "post-quantum-cryptography"
+      ],
+      "sourceIds": [
+        "rsa-original",
+        "rfc8017",
+        "rfc9846"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "模数",
+            "本例中的乘积n=pq。"
+          ],
+          [
+            "公钥",
+            "可公开的n和e。"
+          ],
+          [
+            "私钥",
+            "执行私有运算的秘密参数。"
+          ],
+          [
+            "编码方案",
+            "把消息与安全检查纳入完整构造的规则。"
+          ]
+        ],
+        "en": [
+          [
+            "Modulus",
+            "The product n=pq in this example."
+          ],
+          [
+            "Public key",
+            "Public parameters n and e."
+          ],
+          [
+            "Private key",
+            "Secret parameters for private operations."
+          ],
+          [
+            "Encoding scheme",
+            "Rules incorporating messages and checks into a full construction."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "rsa",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "figures": [
+        {
+          "id": "rsa-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RSA：为什么需要 → 核心机制 → 边界。",
+            "en": "RSA: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RSA 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RSA, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rsa-flow.zh.svg",
+            "en": "assets/rsa-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "355c810c1719160086c35a4ca7eb5343145287d41545994195469312170a22d1",
+            "en": "ebdf3e025f536c1dd27e864c3c7b9a903da56e43438897a7a129e2f2d45381b5"
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography",
+      "inventoryIds": [],
+      "title": {
+        "zh": "后量子密码",
+        "en": "Post-quantum cryptography"
+      },
+      "mappingIssues": [
+        "对应term，不把d22-post-quantum域或e17时代视为同一实体。概念页不等于ML-KEM、ML-DSA或SLH-DSA各自的算法详解。"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "后量子密码研究能在普通计算机上执行、以抵抗经典及量子攻击为目标的密码方案。`后量子`说明考虑的对手能力，不表示运行时需要量子计算机，也不是利用量子通信的密钥分发。\n\n必须先分任务：密钥封装机制 KEM 建立共享秘密；签名方案生成和验证签名。ML-KEM 的安全性与 Module Learning with Errors 问题有关；SLH-DSA 则属于无状态哈希签名。不同结构不能靠一个`量子加密`名称混为一谈。",
+          "why": "迁移涉及长期保存的数据及长期运行的系统，不能等到某个确定日期才讨论；本条也不预测量子计算机何时能攻击现实密钥。把研究问题拆成可审查的方案、参数和协议，有助于理解`设计目标``相信困难`与`已经证明绝对安全`之间的差别。",
+          "used": "NIST FIPS 203 指定 ML-KEM，用于在公开信道建立共享秘密，再由适合的对称构件完成后续任务。FIPS 204 的 ML-DSA 和 FIPS 205 的 SLH-DSA 用于签名，不用于同一种密钥封装任务。将来集成还须处理协议身份认证、密钥管理和格式，不能只改一个算法名称。",
+          "broken": "标准化不等于永久安全保证。FIPS 203/204 的措辞是相信方案抵抗量子对手，而不是数学上证明所有攻击都失败。参数、实现和协议仍须分析；本轮查阅的 FIPS 203 与 204 页面也提供勘误/潜在更新说明，维护时应连同正式文本检查。\n\n本概念页不实现自制ML-KEM，也不用小整数`格子演示`来冒充其安全验证。具体标准的测试向量和参数验证属于后续独立算法条目。",
+          "history": "NIST 于 2024 年 8 月 13 日公布 FIPS 203、204、205，分别覆盖 ML-KEM、ML-DSA、SLH-DSA。这里记录明确已发布的三份标准及其职责，不把候选方案、草案和正式标准混写，也不声称它们穷尽全部后量子研究。状态说明以 2026-10-24 本轮查阅页面为准。",
+          "refs": "- NIST CSRC, Post-Quantum Cryptography project\n- NIST, What Is Post-Quantum Cryptography?\n- NIST, FIPS 203, Module-Lattice-Based Key-Encapsulation Mechanism Standard, August 13, 2024\n- NIST, FIPS 204, Module-Lattice-Based Digital Signature Standard, August 13, 2024\n- NIST, FIPS 205, Stateless Hash-Based Digital Signature Standard, August 13, 2024\n- NSA/CSS, Quantum Key Distribution (QKD) and Quantum Cryptography (QC)"
+        },
+        "en": {
+          "principle": "Post-quantum cryptography targets classical and quantum adversaries while running on conventional computers. The name describes the threat model, not a requirement for quantum hardware or quantum communication.\n\nSeparate tasks: a KEM establishes a shared secret; a signature scheme signs and verifies. ML-KEM relates to Module Learning with Errors, while SLH-DSA is a stateless hash-based signature scheme. These are distinct constructions, not one universal `quantum encryption` algorithm.",
+          "why": "Migration concerns long-lived data and systems. This entry does not predict when a machine could attack operational keys. Separating constructions, parameters and protocols helps distinguish a design goal and a believed hard problem from an unconditional security proof.",
+          "used": "NIST FIPS 203 specifies ML-KEM for establishing a shared secret over a public channel, after which suitable symmetric constructions perform subsequent tasks. FIPS 204 specifies ML-DSA and FIPS 205 SLH-DSA for signatures, not the same encapsulation task. Integration still needs protocol authentication, key management and formats.",
+          "broken": "Standardization is not a permanent security guarantee. FIPS 203/204 describe believed resistance, not proof that every attack fails. Parameters, implementations and protocols still need analysis. Their publication pages include errata or potential-update notes, which maintainers must read alongside the standards.\n\nThis conceptual entry does not implement homemade ML-KEM or present tiny lattice arithmetic as its validation. Standard-specific vectors and parameter checks belong in separate algorithm entries.",
+          "history": "NIST published FIPS 203, 204 and 205 on August 13, 2024, covering ML-KEM, ML-DSA and SLH-DSA respectively. This records three identified final publications, not all PQC research. Candidates, drafts and final standards must remain distinct. Status statements reflect pages consulted on October 24, 2026.",
+          "refs": "- NIST CSRC, Post-Quantum Cryptography project\n- NIST, What Is Post-Quantum Cryptography?\n- NIST, FIPS 203, Module-Lattice-Based Key-Encapsulation Mechanism Standard, August 13, 2024\n- NIST, FIPS 204, Module-Lattice-Based Digital Signature Standard, August 13, 2024\n- NIST, FIPS 205, Stateless Hash-Based Digital Signature Standard, August 13, 2024\n- NSA/CSS, Quantum Key Distribution (QKD) and Quantum Cryptography (QC)"
+        }
+      },
+      "claimIds": [
+        "post-quantum-cryptography-threat-model",
+        "post-quantum-cryptography-kem-purpose",
+        "post-quantum-cryptography-hash-signatures",
+        "post-quantum-cryptography-migration",
+        "post-quantum-cryptography-kem-use",
+        "post-quantum-cryptography-signature-use",
+        "post-quantum-cryptography-belief-errata",
+        "post-quantum-cryptography-dsa-errata",
+        "post-quantum-cryptography-2024-standards",
+        "post-quantum-cryptography-203-date",
+        "post-quantum-cryptography-204-date",
+        "post-quantum-cryptography-205-date",
+        "post-quantum-cryptography-platform-distinction"
+      ],
+      "calculationIds": [],
+      "related": [
+        "rsa",
+        "aes"
+      ],
+      "sourceIds": [
+        "nist-pqc",
+        "nist-pqc-intro",
+        "fips203",
+        "fips204",
+        "fips205",
+        "nsa-qkd-distinction"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "KEM",
+            "密钥封装机制，用于建立共享秘密。"
+          ],
+          [
+            "数字签名",
+            "生成与验证消息完整性和来源证据的构造。"
+          ],
+          [
+            "威胁模型",
+            "讨论对手能力和目标的前提。"
+          ],
+          [
+            "迁移",
+            "系统、协议和运维共同调整的过程。"
+          ]
+        ],
+        "en": [
+          [
+            "KEM",
+            "Key-encapsulation mechanism for establishing a shared secret."
+          ],
+          [
+            "Digital signature",
+            "A construction supplying verifiable origin and integrity evidence."
+          ],
+          [
+            "Threat model",
+            "Assumptions about an adversary’s capabilities and goals."
+          ],
+          [
+            "Migration",
+            "Coordinated changes to systems, protocols and operations."
+          ]
+        ]
+      },
+      "mappingCandidates": [
+        {
+          "legacyId": "post-quantum-cryptography",
+          "status": "awaiting-independent-resolution",
+          "relation": "candidate-concept-mapping"
+        }
+      ],
+      "mappingStatus": "unresolved",
+      "calculationNotApplicable": {
+        "zh": "概念分类页，不给数值算法输出；不伪造计算已验证。具体标准的KAT与参数检查留给对应算法条目。",
+        "en": "Conceptual taxonomy; no numerical algorithm output is claimed. Standard-specific known-answer and parameter tests belong to the algorithm entries."
+      },
+      "figures": [
+        {
+          "id": "post-quantum-cryptography-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "后量子密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Post-quantum cryptography: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "后量子密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Post-quantum cryptography, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/post-quantum-cryptography-flow.zh.svg",
+            "en": "assets/post-quantum-cryptography-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9c3eba9e79c6e4238678285e7952deacd3c3397f07179f2b1e908043a8572e0b",
+            "en": "785b99bb29ecf26f1a61da3e179d41e19296a220237d1be8bae14dff8a3dd4e4"
+          }
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "caesar-roundtrip",
+      "entryId": "caesar-cipher",
+      "kind": "original-teaching-calculation",
+      "inputs": {
+        "alphabet": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "offset": 3,
+        "plaintext": "HELLO"
+      },
+      "expected": {
+        "ciphertext": "KHOOR",
+        "keyCount": 26
+      },
+      "sourceIds": [
+        "trinity-caesar"
+      ],
+      "note": "Modern 26-letter convention; exhaustive inverse check covers all 26 offsets and letters."
+    },
+    {
+      "id": "frequency-preservation",
+      "entryId": "frequency-analysis",
+      "kind": "original-teaching-calculation",
+      "inputs": {
+        "plaintext": "BANANA",
+        "offset": 3
+      },
+      "expected": {
+        "ciphertext": "EDQDQD",
+        "plaintextCounts": {
+          "A": 3,
+          "B": 1,
+          "N": 2
+        },
+        "ciphertextCounts": {
+          "D": 3,
+          "E": 1,
+          "Q": 2
+        }
+      },
+      "sourceIds": [
+        "duke-frequency"
+      ],
+      "note": "Counterexample to automatically mapping the most common ciphertext symbol to E."
+    },
+    {
+      "id": "reflector-conjugation",
+      "entryId": "enigma",
+      "kind": "original-model-proof-check",
+      "inputs": {
+        "size": 4,
+        "reflector": [
+          1,
+          0,
+          3,
+          2
+        ]
+      },
+      "expected": {
+        "testedPermutations": 24,
+        "noFixedPoints": true,
+        "involution": true
+      },
+      "sourceIds": [
+        "museum-enigma-working"
+      ],
+      "note": "Exhaustively checks a 4-symbol abstract conjugation model, not real machine output or stepping."
+    },
+    {
+      "id": "aes128-official-vector",
+      "entryId": "aes",
+      "kind": "official-known-answer",
+      "inputs": {
+        "key": "2b7e151628aed2a6abf7158809cf4f3c",
+        "plaintext": "6bc1bee22e409f96e93d7e117393172a"
+      },
+      "expected": {
+        "ciphertext": "3ad77bb40d7a3660a89ecaf32466ef97"
+      },
+      "sourceIds": [
+        "sp800-38a"
+      ],
+      "locator": "Appendix F.1.1, first block",
+      "note": "Single-block ECB is used to call the AES primitive without padding; not application guidance."
+    },
+    {
+      "id": "rsa-small-algebra",
+      "entryId": "rsa",
+      "kind": "original-teaching-calculation",
+      "inputs": {
+        "p": "61",
+        "q": "53",
+        "e": "17",
+        "d": "413",
+        "plaintext": "65"
+      },
+      "expected": {
+        "n": "3233",
+        "lambda": "780",
+        "ciphertext": "2790",
+        "roundtrip": "65",
+        "allRepresentatives": 3233
+      },
+      "sourceIds": [
+        "rfc8017"
+      ],
+      "note": "Public toy values; exhaustive inverse property is not a security proof."
+    }
+  ]
+}

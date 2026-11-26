@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ech-details",
+  "sources": [
+    {
+      "id": "ech-wikipedia",
+      "title": "Wikipedia search entry for 加密客户端问候",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8A%A0%E5%AF%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%97%AE%E5%80%99",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 加密客户端问候",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ech-r139-principle",
+          "entryId": "ech-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：加密客户端问候（Encrypted Client Hello）。RFC 9849 §1 定义扩展：「This document specifies a new TLS extension called Encrypted Client Hello (ECH) that allows clients to encrypt their ClientHello to the TLS server.」保护对象是明文 SNI——文档称它「is perhaps the most sensitive information left unencrypted in TLS 1.3.」机制在 §3.2：客户端构造私有 ClientHelloInner 与公开 ClientHelloOuter，外层「contains innocuous values for sensitive extensions and an \"encrypted_client_hello\" extension」。§5 给出扩展码点「enum { encrypted_client_hello(0xfe0d), (65535) } ExtensionType;」。",
+            "en": "**Protocol**: Encrypted Client Hello (加密客户端问候).RFC 9849 §1 defines the extension: \"This document specifies a new TLS extension called Encrypted Client Hello (ECH) that allows clients to encrypt their ClientHello to the TLS server.\" The target is the plaintext SNI, described as \"perhaps the most sensitive information left unencrypted in TLS 1.3.\" §3.2 gives the mechanics: the client builds a private ClientHelloInner and a public ClientHelloOuter which \"contains innocuous values for sensitive extensions and an “encrypted_client_hello” extension\"."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        },
+        {
+          "id": "ech-r139-why",
+          "entryId": "ech-details",
+          "section": "why",
+          "statement": {
+            "zh": "目标是让同一匿名集内的连接不可区分：§1「Usage of this mechanism reveals that a client is connecting to a particular service provider, but does not reveal which server from the anonymity set terminates the connection.」§3.2 复述主目标并要求「without affecting any existing security properties of TLS 1.3」。§10.1 把目标拆成三条，含「3.Downgrade resistance.An attacker cannot downgrade a connection that attempts to use ECH to one that does not use ECH.」同节也承认边界：§1「ECH is not in itself sufficient to protect the identity of the server.」。",
+            "en": "The aim is indistinguishability inside an anonymity set: §1 says \"Usage of this mechanism reveals that a client is connecting to a particular service provider, but does not reveal which server from the anonymity set terminates the connection.\" §3.2 restates that as the primary goal and adds, in a lowercase should, that \"it should achieve this goal without affecting any existing security properties of TLS 1.3\".§10.1 lists the goals, including \"3."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        },
+        {
+          "id": "ech-r139-used",
+          "entryId": "ech-details",
+          "section": "used",
+          "statement": {
+            "zh": "配置依赖 HPKE：§4「ECH uses Hybrid Public Key Encryption (HPKE) for public key encryption」并规定「Clients MUST ignore any ECHConfig structure with a version they do not support.」客户端提供方式在 §6.1，其中内层问候「It MUST NOT offer to negotiate TLS 1.2 or below.」以避开版本不兼容；§6.2 的 GREASE ECH 让「a connection between an ECH-capable client and a non-ECH server to appear to use ECH」。§9 定强制实现：一套 HPKE 套件（DHKEM(X25519, HKDF-SHA256)、HKDF-SHA256、AES-128-GCM）。",
+            "en": "Configuration rides on HPKE: §4 \"ECH uses Hybrid Public Key Encryption (HPKE) for public key encryption\" and requires \"Clients MUST ignore any ECHConfig structure with a version they do not support.\" §6.1 governs offering, with the inner hello forbidden to say \"It MUST NOT offer to negotiate TLS 1.2 or below.\" to avoid version mismatch; §6.2 lets \"a connection between an ECH-capable client and a non-ECH server to appear to use ECH\".§9 mandates one HPKE cipher suite: DHKEM(X25519, HKDF-SHA256), HKDF-SHA256 and AES-128-GCM."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        },
+        {
+          "id": "ech-r139-broken",
+          "entryId": "ech-details",
+          "section": "broken",
+          "statement": {
+            "zh": "§3.2 明确被拒时的后果：「When ECH is rejected, the resulting connection is not usable by the client for application data.」§8.1 承认与既有服务器的兼容性问题，并建议运营方「SHOULD ensure servers understand a given set of ECH keys before advertising them」。§10.2 指出配置经 DNS 分发时缺乏真实性——「any attacker which can inject DNS responses or poison DNS caches」可投毒或剥离配置，同时论证这与 IP 层被劫持的情形不比更坏。§10.5 提醒外层的任何字段都可能泄露内层属性：客户端「SHOULD NOT send values in the ClientHelloOuter which would reveal a sensitive ClientHelloInner property, such as the true server name.」。",
+            "en": "§3.2 is blunt about rejection: \"When ECH is rejected, the resulting connection is not usable by the client for application data.\" §8.1 concedes compatibility with existing servers and asks operators to \"SHOULD ensure servers understand a given set of ECH keys before advertising them\".§10.2 notes configuration delivery over DNS carries no authenticity — \"any attacker which can inject DNS responses or poison DNS caches\" can inject or strip it, while arguing that a DNS-controlling attacker could simply change the IP address anyway."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        },
+        {
+          "id": "ech-r139-history",
+          "entryId": "ech-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 9849 由 E.Rescorla（Independent）、奥一穂 K.Oku（Fastly）、N.Sullivan（Cryptography Consulting LLC）与 C.A.Wood（Apple）署名，2026 年 3 月发布，Category: Standards Track。§1 界定适用范围：「ECH is supported in TLS 1.3 [RFC8446], DTLS 1.3 [RFC9147], and newer versions of the TLS and DTLS protocols.」同节还点明配套依赖：域名可见性还需加密 DNS 等手段配合，SNI 加密并非孤立解。",
+            "en": "RFC 9849 is signed by E.Rescorla (Independent), K."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        },
+        {
+          "id": "ech-r139-refs",
+          "entryId": "ech-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 加密客户端问候.https://zh.wikipedia.org/w/index.php?search=%E5%8A%A0%E5%AF%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%97%AE%E5%80%99\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 加密客户端问候.https://zh.wikipedia.org/w/index.php?search=%E5%8A%A0%E5%AF%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%97%AE%E5%80%99\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ech-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ech-wikipedia"
+      ]
+    },
+    {
+      "id": "ech-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ech-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ech-r139-principle",
+      "entryId": "ech-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：加密客户端问候（Encrypted Client Hello）。RFC 9849 §1 定义扩展：「This document specifies a new TLS extension called Encrypted Client Hello (ECH) that allows clients to encrypt their ClientHello to the TLS server.」保护对象是明文 SNI——文档称它「is perhaps the most sensitive information left unencrypted in TLS 1.3.」机制在 §3.2：客户端构造私有 ClientHelloInner 与公开 ClientHelloOuter，外层「contains innocuous values for sensitive extensions and an \"encrypted_client_hello\" extension」。§5 给出扩展码点「enum { encrypted_client_hello(0xfe0d), (65535) } ExtensionType;」。",
+        "en": "**Protocol**: Encrypted Client Hello (加密客户端问候).RFC 9849 §1 defines the extension: \"This document specifies a new TLS extension called Encrypted Client Hello (ECH) that allows clients to encrypt their ClientHello to the TLS server.\" The target is the plaintext SNI, described as \"perhaps the most sensitive information left unencrypted in TLS 1.3.\" §3.2 gives the mechanics: the client builds a private ClientHelloInner and a public ClientHelloOuter which \"contains innocuous values for sensitive extensions and an “encrypted_client_hello” extension\"."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    },
+    {
+      "id": "ech-r139-why",
+      "entryId": "ech-details",
+      "section": "why",
+      "statement": {
+        "zh": "目标是让同一匿名集内的连接不可区分：§1「Usage of this mechanism reveals that a client is connecting to a particular service provider, but does not reveal which server from the anonymity set terminates the connection.」§3.2 复述主目标并要求「without affecting any existing security properties of TLS 1.3」。§10.1 把目标拆成三条，含「3.Downgrade resistance.An attacker cannot downgrade a connection that attempts to use ECH to one that does not use ECH.」同节也承认边界：§1「ECH is not in itself sufficient to protect the identity of the server.」。",
+        "en": "The aim is indistinguishability inside an anonymity set: §1 says \"Usage of this mechanism reveals that a client is connecting to a particular service provider, but does not reveal which server from the anonymity set terminates the connection.\" §3.2 restates that as the primary goal and adds, in a lowercase should, that \"it should achieve this goal without affecting any existing security properties of TLS 1.3\".§10.1 lists the goals, including \"3."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    },
+    {
+      "id": "ech-r139-used",
+      "entryId": "ech-details",
+      "section": "used",
+      "statement": {
+        "zh": "配置依赖 HPKE：§4「ECH uses Hybrid Public Key Encryption (HPKE) for public key encryption」并规定「Clients MUST ignore any ECHConfig structure with a version they do not support.」客户端提供方式在 §6.1，其中内层问候「It MUST NOT offer to negotiate TLS 1.2 or below.」以避开版本不兼容；§6.2 的 GREASE ECH 让「a connection between an ECH-capable client and a non-ECH server to appear to use ECH」。§9 定强制实现：一套 HPKE 套件（DHKEM(X25519, HKDF-SHA256)、HKDF-SHA256、AES-128-GCM）。",
+        "en": "Configuration rides on HPKE: §4 \"ECH uses Hybrid Public Key Encryption (HPKE) for public key encryption\" and requires \"Clients MUST ignore any ECHConfig structure with a version they do not support.\" §6.1 governs offering, with the inner hello forbidden to say \"It MUST NOT offer to negotiate TLS 1.2 or below.\" to avoid version mismatch; §6.2 lets \"a connection between an ECH-capable client and a non-ECH server to appear to use ECH\".§9 mandates one HPKE cipher suite: DHKEM(X25519, HKDF-SHA256), HKDF-SHA256 and AES-128-GCM."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    },
+    {
+      "id": "ech-r139-broken",
+      "entryId": "ech-details",
+      "section": "broken",
+      "statement": {
+        "zh": "§3.2 明确被拒时的后果：「When ECH is rejected, the resulting connection is not usable by the client for application data.」§8.1 承认与既有服务器的兼容性问题，并建议运营方「SHOULD ensure servers understand a given set of ECH keys before advertising them」。§10.2 指出配置经 DNS 分发时缺乏真实性——「any attacker which can inject DNS responses or poison DNS caches」可投毒或剥离配置，同时论证这与 IP 层被劫持的情形不比更坏。§10.5 提醒外层的任何字段都可能泄露内层属性：客户端「SHOULD NOT send values in the ClientHelloOuter which would reveal a sensitive ClientHelloInner property, such as the true server name.」。",
+        "en": "§3.2 is blunt about rejection: \"When ECH is rejected, the resulting connection is not usable by the client for application data.\" §8.1 concedes compatibility with existing servers and asks operators to \"SHOULD ensure servers understand a given set of ECH keys before advertising them\".§10.2 notes configuration delivery over DNS carries no authenticity — \"any attacker which can inject DNS responses or poison DNS caches\" can inject or strip it, while arguing that a DNS-controlling attacker could simply change the IP address anyway."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    },
+    {
+      "id": "ech-r139-history",
+      "entryId": "ech-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 9849 由 E.Rescorla（Independent）、奥一穂 K.Oku（Fastly）、N.Sullivan（Cryptography Consulting LLC）与 C.A.Wood（Apple）署名，2026 年 3 月发布，Category: Standards Track。§1 界定适用范围：「ECH is supported in TLS 1.3 [RFC8446], DTLS 1.3 [RFC9147], and newer versions of the TLS and DTLS protocols.」同节还点明配套依赖：域名可见性还需加密 DNS 等手段配合，SNI 加密并非孤立解。",
+        "en": "RFC 9849 is signed by E.Rescorla (Independent), K."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    },
+    {
+      "id": "ech-r139-refs",
+      "entryId": "ech-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 加密客户端问候.https://zh.wikipedia.org/w/index.php?search=%E5%8A%A0%E5%AF%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%97%AE%E5%80%99\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 加密客户端问候.https://zh.wikipedia.org/w/index.php?search=%E5%8A%A0%E5%AF%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%97%AE%E5%80%99\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ech-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

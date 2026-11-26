@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--rainbow-table-details",
+  "sources": [
+    {
+      "id": "attack--rainbow-table-wikipedia",
+      "title": "Wikipedia search entry for 彩虹表",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%BD%A9%E8%99%B9%E8%A1%A8",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 彩虹表",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--rainbow-table-r139-principle",
+          "entryId": "attack--rainbow-table-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：彩虹表（Rainbow Table）。彩虹表把哈希和每列不同的归约函数交替应用，生成许多链，只保存每条链的起点和终点。不同列使用不同归约函数，因此只有同一列的碰撞才会合并；查找时从目标哈希出发逐列归约，命中终点后重建整条链。",
+            "en": "**Attack**: Rainbow Table (彩虹表).A rainbow table alternates hashing with a different reduction function in each column, building many chains and storing only each chain’s start and end points."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rainbow-table-r139-why",
+          "entryId": "attack--rainbow-table-details",
+          "section": "why",
+          "statement": {
+            "zh": "它用预计算和存储换取在线破解时间：相对 Hellman 方法约减少一半计算量，相对 distinguished points 约减少 7–12 倍计算量，并避免可变链长带来的开销。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "It trades precomputation and storage for online cracking time: about half the calculations of Hellman’s method, roughly 7–12 times fewer than distinguished points, and avoids the overhead of variable-length chains.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rainbow-table-r139-used",
+          "entryId": "attack--rainbow-table-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文实现了针对 MS-Windows 口令哈希的攻击：1.4GB 表可破解 99.9% 的字母数字口令（2^37 个候选）。顺序彩虹表耗时 13.6 秒，普通彩虹表 66.3 秒，经典 distinguished points 方法需 101 秒。",
+            "en": "The paper implemented an attack on MS-Windows password hashes: 1.4GB of tables cracked 99.9% of alphanumeric passwords (2^37 candidates).Sequential rainbow took 13.6 seconds, ordinary rainbow 66.3 seconds, and the classic distinguished-points method 101 seconds."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rainbow-table-r139-broken",
+          "entryId": "attack--rainbow-table-details",
+          "section": "broken",
+          "statement": {
+            "zh": "链合并和碰撞会产生误报并减少表实际覆盖的密钥数；预计算和存储成本高，表也只适用于特定的哈希和字符集。",
+            "en": "Chain merges and collisions cause false alarms and reduce the number of distinct keys actually covered; precomputation and storage are costly, and a table applies only to a specific hash and character set.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rainbow-table-r139-history",
+          "entryId": "attack--rainbow-table-details",
+          "section": "history",
+          "statement": {
+            "zh": "Hellman 在 1980 年提出时间-存储权衡，Rivest 随后引入 distinguished points；Oechslin 在 2003 年提出彩虹表结构并给出更快的结果。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「彩虹表」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：彩虹表的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 彩虹表 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Hellman proposed the time-memory trade-off in 1980, Rivest later introduced distinguished points, and Oechslin proposed the rainbow-table structure with faster results in 2003.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rainbow-table-r139-refs",
+          "entryId": "attack--rainbow-table-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 彩虹表.https://zh.wikipedia.org/w/index.php?search=%E5%BD%A9%E8%99%B9%E8%A1%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 彩虹表.https://zh.wikipedia.org/w/index.php?search=%E5%BD%A9%E8%99%B9%E8%A1%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--rainbow-table-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--rainbow-table-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--rainbow-table-r139-principle",
+      "entryId": "attack--rainbow-table-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：彩虹表（Rainbow Table）。彩虹表把哈希和每列不同的归约函数交替应用，生成许多链，只保存每条链的起点和终点。不同列使用不同归约函数，因此只有同一列的碰撞才会合并；查找时从目标哈希出发逐列归约，命中终点后重建整条链。",
+        "en": "**Attack**: Rainbow Table (彩虹表).A rainbow table alternates hashing with a different reduction function in each column, building many chains and storing only each chain’s start and end points."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-r139-why",
+      "entryId": "attack--rainbow-table-details",
+      "section": "why",
+      "statement": {
+        "zh": "它用预计算和存储换取在线破解时间：相对 Hellman 方法约减少一半计算量，相对 distinguished points 约减少 7–12 倍计算量，并避免可变链长带来的开销。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "It trades precomputation and storage for online cracking time: about half the calculations of Hellman’s method, roughly 7–12 times fewer than distinguished points, and avoids the overhead of variable-length chains.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-r139-used",
+      "entryId": "attack--rainbow-table-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文实现了针对 MS-Windows 口令哈希的攻击：1.4GB 表可破解 99.9% 的字母数字口令（2^37 个候选）。顺序彩虹表耗时 13.6 秒，普通彩虹表 66.3 秒，经典 distinguished points 方法需 101 秒。",
+        "en": "The paper implemented an attack on MS-Windows password hashes: 1.4GB of tables cracked 99.9% of alphanumeric passwords (2^37 candidates).Sequential rainbow took 13.6 seconds, ordinary rainbow 66.3 seconds, and the classic distinguished-points method 101 seconds."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-r139-broken",
+      "entryId": "attack--rainbow-table-details",
+      "section": "broken",
+      "statement": {
+        "zh": "链合并和碰撞会产生误报并减少表实际覆盖的密钥数；预计算和存储成本高，表也只适用于特定的哈希和字符集。",
+        "en": "Chain merges and collisions cause false alarms and reduce the number of distinct keys actually covered; precomputation and storage are costly, and a table applies only to a specific hash and character set.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-r139-history",
+      "entryId": "attack--rainbow-table-details",
+      "section": "history",
+      "statement": {
+        "zh": "Hellman 在 1980 年提出时间-存储权衡，Rivest 随后引入 distinguished points；Oechslin 在 2003 年提出彩虹表结构并给出更快的结果。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「彩虹表」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：彩虹表的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 彩虹表 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Hellman proposed the time-memory trade-off in 1980, Rivest later introduced distinguished points, and Oechslin proposed the rainbow-table structure with faster results in 2003.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rainbow-table-r139-refs",
+      "entryId": "attack--rainbow-table-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 彩虹表.https://zh.wikipedia.org/w/index.php?search=%E5%BD%A9%E8%99%B9%E8%A1%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 彩虹表.https://zh.wikipedia.org/w/index.php?search=%E5%BD%A9%E8%99%B9%E8%A1%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--rainbow-table-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

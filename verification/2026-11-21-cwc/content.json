@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R110 wide-block/hash/AEAD/proof batch for cwc-details.",
+  "entries": [
+    {
+      "id": "cwc-details",
+      "inventoryIds": [
+        "cwc"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R110 AEAD 批次：纠正 CWC 的“携带式工作组密码”误识别，改写为 CTR + GF(2^127−1) Carter–Wegman 哈希、单密钥、10 Gbps 目标、IETF 草案、nonce 边界与 GCM 谱系。",
+        "en": "R110 AEAD batch: corrected CWC's “carried working-group cipher” misidentification and replaced it with source-backed text on CTR + GF(2^127−1) Carter–Wegman hashing, single-key design, 10 Gbps target, IETF draft, nonce boundary and GCM lineage."
+      },
+      "title": {
+        "zh": "CWC 认证加密模式",
+        "en": "CWC authenticated encryption mode"
+      },
+      "claimIds": [
+        "cwc-r139-principle",
+        "cwc-r139-why",
+        "cwc-r139-used",
+        "cwc-r139-broken",
+        "cwc-r139-history",
+        "cwc-r139-refs"
+      ],
+      "sourceIds": [
+        "cwc-wikipedia",
+        "cwc-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "ctr"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cwc-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CWC 机制图：88 位 nonce 与 40 位计数器驱动 CTR，密文和 AD 进入 GF(2¹²⁷−1) 多项式，输出加密成标签。",
+            "en": "CWC mechanism: an 88-bit nonce and 40-bit counter drive CTR, ciphertext and AD enter a GF(2¹²⁷−1) polynomial, and the output is encrypted into a tag."
+          },
+          "alt": {
+            "zh": "图中上方为 K、nonce 与计数器生成 CTR 密钥流并异或明文，下方为 AD 与密文进入多项式哈希，再经 E_K 生成标签。",
+            "en": "Diagram shows K, nonce and counter generating the CTR keystream and XORing plaintext above, while AD and ciphertext enter the polynomial hash and E_K forms the tag below."
+          },
+          "files": {
+            "zh": "assets/cwc-details-mechanism.zh.svg",
+            "en": "assets/cwc-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d49c77ea6dc6c256afb598ef44cb8ed83ed31d7d2f469c8963b52bec907713fe",
+            "en": "77d38b32c27dc07842f6615690fdbe08dba764f61b42a22dd8e425b977b98417"
+          }
+        },
+        {
+          "id": "cwc-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CWC 认证加密模式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for CWC authenticated encryption mode: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CWC 认证加密模式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for CWC authenticated encryption mode, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cwc-details-r138-model.zh.svg",
+            "en": "assets/cwc-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2ed862ccae8f831d028496920f7ec1b2e1525e7a8269846755253ec3bcae81a8",
+            "en": "2b93cde41c5f1d641d542251195594e058272c645f93aa47942dc2ef1bf51f2f"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：CWC 认证加密模式（CWC authenticated encryption mode）。### CTR 加密 + Carter–Wegman 哈希\n\nCWC 是认证加密（AEAD）：用 CTR 模式把明文变成密文，用 Carter–Wegman 多项式通用哈希把密文、关联数据和 nonce 压成一个标签。分组密码 128 位，nonce 88 位，计数器 40 位，消息最多 2^32−1 个块；标签长度可截到 tl 位，最长 128 位。### GF(2^127−1) 上的多项式\n\nCWC-HASH 把输入切成 96 位块，当作 GF(2^127−1) 上的多项式系数，用 Horner 规则在秘密点 Z 上求值；Z 由分组密码加密一个常量并截掉最高位得到。哈希输出再经一次分组密码加密，形成最终标签。整数模 2^127−1 的乘法可以并行归约，这是 CWC 硬件吞吐的关键。",
+          "why": "CWC 的设计特点是加密和认证共用同一把分组密码密钥：CTR 的密钥流和多项式哈希的密钥材料都从这把密钥派生，避免在高速硬件里为两把密钥做额外内存访问。CTR 块之间独立，多项式哈希可以并行归约，所以整条流水线能跑满 10 Gbps。### 为 10 Gbps IPsec 设计\n\n2003 年前后，IPsec 路由器需要一条能线速处理、又没有专利负担的 AEAD。CWC 同时满足可证明安全、可并行、硬件 10 Gbps、软件快、无知识产权主张五个条件；它把 Carter–Wegman 的短标签优势带进高吞吐场景，设计者因此把它送进 IETF CFRG。",
+          "used": "CWC 以 draft-irtf-cfrg-cwc-01 的形式进入 IETF CFRG，目标是 IPsec 的高速认证加密；GCM 的设计者在论文里把 CWC 列为 Carter–Wegman 计数器模式的先行方案。最终 NIST 选中 GCM，CWC 没有成为广泛部署的标准，但它的“CTR + 多项式哈希”路线被 GCM 继承。### 适用面\n\nCWC 适合“高吞吐、可并行、能保证 nonce 唯一”的链路加密原型；不适合 nonce 难以管理的无状态设备，也不适合需要长期密钥、频繁换钥的协议。它的标签可以截短，但截得越短，伪造概率越高。",
+          "broken": "CTR 要求 nonce 唯一：同一密钥下重用 nonce，两条密钥流相同，异或两条密文就能恢复明文异或。多项式哈希的认证密钥也依赖 nonce，重用会让标签的可伪造性上升。标签截断到 tl 位会把伪造概率抬高到约 2^-tl；消息上限 2^32−1 块，超过就必须换密钥。CWC 没有内置密钥派生或 nonce 管理，部署方要自己保证。### 标准生态\n\nCWC 停留在 IETF 草案和 FSE 论文，没有 NIST 标准、没有广泛的 AES-NI 优化、也没有协议默认套件。它不是“被攻破”，而是“没有被标准化生态接住”；这使它在工程选型中天然处于劣势。",
+          "history": "Kohno、Viega 与 Whiting 在 2003 年把 CWC 提交 IETF CFRG，2004 年在 FSE 发表完整论文。它赶上了 IPsec 对高速 AEAD 的需求，却输给了 2007 年 NIST 标准化的 GCM；后者同样基于 CTR 和GF(2^128) 多项式哈希，但实现和标准生态更顺。CWC 现在是理解 GCM 设计谱系的重要中间站。### 名称澄清\n\nCWC 不是“携带式工作组密码”，而是 Carter–Wegman + Counter 的缩写。把它误读成组织或产品名，会完全错过它的 AEAD 结构；这也是该条目从目录身份卡升级为机制正文的原因之一。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 CWC 认证加密模式 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for CWC 认证加密模式. https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nCWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: CWC authenticated encryption mode (CWC 认证加密模式). ### CTR encryption + Carter–Wegman hash\n\nCWC is authenticated encryption (AEAD): CTR mode turns plaintext into ciphertext, and a Carter–Wegman polynomial universal hash compresses ciphertext, associated data and nonce into a tag. The block cipher is 128-bit, the nonce is 88-bit, the counter is 40-bit, and messages are capped at 2^32−1 blocks; the tag can be truncated to tl bits, up to 128. ### The polynomial over GF(2^127−1)\n\nCWC-HASH splits input into 96-bit blocks, treats them as polynomial coefficients over GF(2^127−1), and evaluates at secret point Z with Horner's rule; Z is the block cipher applied to a constant with the top bit cleared. The hash output is encrypted once more by the block cipher to form the final tag. Multiplication modulo 2^127−1 can be reduced in parallel, which is the key to CWC's hardware throughput.",
+          "why": "CWC's signature choice is to share one block-cipher key between encryption and authentication: the CTR keystream and the polynomial hash key material both derive from it, avoiding extra key memory in high-speed hardware. CTR blocks are independent and the polynomial hash can reduce in parallel, so the pipeline can sustain 10 Gbps.\n\nAround 2003, IPsec routers needed a line-rate AEAD with no patent burden. CWC simultaneously offered provable security, parallelism, 10 Gbps hardware, fast software and no intellectual-property claims. It brought Carter–Wegman's short-tag advantage to high-throughput links, which is why the designers brought it to IETF CFRG.",
+          "used": "CWC entered IETF CFRG as draft-irtf-cfrg-cwc-01, targeting high-speed IPsec authenticated encryption. GCM's designers cite CWC as the prior Carter–Wegman counter-mode scheme. NIST ultimately chose GCM; CWC never became a widely deployed standard, but its “CTR + polynomial hash” route was inherited by GCM.\n\nCWC fits link-encryption prototypes with high throughput, parallelism and a reliable unique-nonce discipline; it does not fit stateless devices with poor nonce management or protocols that rotate keys frequently. The tag can be shortened, but shorter tags raise forgery probability.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "CTR requires a unique nonce: reusing one under the same key repeats the keystream, so XORing two ciphertexts recovers the XOR of the plaintexts. The polynomial hash key also depends on the nonce, and reuse raises tag-forgery risk. Truncating the tag to tl bits raises forgery probability to roughly 2^-tl; the message cap is 2^32−1 blocks, after which the key must change. CWC has no built-in key derivation or nonce management, so the deployment must enforce both.\n\nCWC stopped at an IETF draft and an FSE paper: no NIST standard, no broad AES-NI optimization, no default protocol suite. It was not broken; it was not carried by the standards ecosystem, which leaves it structurally disadvantaged in engineering selection.",
+          "history": "Kohno, Viega and Whiting submitted CWC to IETF CFRG in 2003 and published the full paper at FSE 2004. It met IPsec's need for a high-speed AEAD but lost to GCM, standardized by NIST in 2007; GCM also combines CTR with a GF(2^128) polynomial hash, but its implementation and standards ecosystem were smoother. CWC is now an important waypoint for understanding GCM's design lineage.\n\nCWC is not “carried working-group cipher”; it stands for Carter–Wegman + Counter. Reading it as an organization or product name misses its AEAD structure entirely, which is why this entry was upgraded from a catalog identity card to a mechanism article.",
+          "refs": "- Wikipedia search entry for CWC 认证加密模式. https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nCWC authenticated encryption mode: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "cwc-r139-formal",
+          "entryId": "cwc-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：CWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 CWC 认证加密模式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "cwc-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "cwc-r139-formal"
+      ],
+      "sources": [
+        "cwc-wikipedia",
+        "cwc-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cwc-r139-formal",
+      "entryId": "cwc-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：CWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 CWC 认证加密模式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "cwc-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tls11-details",
+  "sources": [
+    {
+      "id": "tls11-wikipedia",
+      "title": "Wikipedia search entry for TLS 1.1",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TLS%201.1",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TLS 1.1",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tls11-r139-principle",
+          "entryId": "tls11-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：TLS 1.1（TLS 1.1）。摘要只声明版本与用途：「This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol.The TLS protocol provides communications security over the Internet.」注意用词已是 communications security 而非 1.0 的 privacy；分层不变，但块加密记录的 IV 处理按本版改动（见 §6.2.3.2）。",
+            "en": "**Protocol**: TLS 1.1 (TLS 1.1).The abstract states version and purpose: \"This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        },
+        {
+          "id": "tls11-r139-why",
+          "entryId": "tls11-details",
+          "section": "why",
+          "statement": {
+            "zh": "改动清单在 §1.1，头两条就是本版的目的：「The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].」与「Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.」前言自陈这只是「some small security improvements, clarifications, and editorial improvements」。",
+            "en": "The change list sits in §1.1 and its first two items are the point of the release: \"The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].\" and \"Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.\" The introduction describes itself as carrying \"some small security improvements, clarifications, and editorial improvements\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        },
+        {
+          "id": "tls11-r139-used",
+          "entryId": "tls11-details",
+          "section": "used",
+          "statement": {
+            "zh": "记录层写下两条义务：接收方「MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.」；面对 Canvel 等人的计时攻击，「implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.」§9 的强制套件此时已是 TLS_RSA_WITH_3DES_EDE_CBC_SHA，附录 F.3 则说明本版「uses an explicit IV in order to protect against this attack.」。",
+            "en": "The record layer states two duties: the receiver \"MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.\", and against the Canvel timing work \"implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.\" The §9 mandatory suite is now TLS_RSA_WITH_3DES_EDE_CBC_SHA, and Appendix F.3 says this version \"uses an explicit IV in order to protect against this attack.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        },
+        {
+          "id": "tls11-r139-broken",
+          "entryId": "tls11-details",
+          "section": "broken",
+          "statement": {
+            "zh": "降级与静态密钥只剩部分处置：§7.4.7.1 写明版本回退检查是不对称的——「Client implementations, MUST and Server implementations MAY, check the version number.」，并把风险轻描淡写为「since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk」；填充错误的告警仍只是 SHOULD。压缩顺序也与 1.0 相同，未作禁止。",
+            "en": "Downgrade and static-key exposure are only partly handled here: §7.4.7.1 makes the version check asymmetric — \"Client implementations, MUST and Server implementations MAY, check the version number.\" — and plays down the risk, \"since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk\".The padding-error alert is still only a SHOULD, and the record order still compresses before encryption without forbidding compression."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        },
+        {
+          "id": "tls11-r139-history",
+          "entryId": "tls11-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 4346 头部为 T.Dierks 与 E.Rescorla（RTFM, Inc.），类别 Standards Track，2006 年 4 月，标注「Obsoletes: 2246」，没有 Updates 行；§1.1 自陈是 TLS 1.0 的修订版。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "The RFC 4346 header lists T.Dierks and E."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        },
+        {
+          "id": "tls11-r139-refs",
+          "entryId": "tls11-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TLS 1.1.https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4346: The Transport Layer Security (TLS) Protocol Version 1.1.https://www.rfc-editor.org/rfc/rfc4346。",
+            "en": "- Wikipedia search entry for TLS 1.1.https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tls11-reference-ref",
+            "tls11-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "tls11-wikipedia"
+      ]
+    },
+    {
+      "id": "tls11-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls11-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "tls11-specific",
+      "title": "RFC 4346: The Transport Layer Security (TLS) Protocol Version 1.1",
+      "url": "https://www.rfc-editor.org/rfc/rfc4346",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls11-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tls11-r139-principle",
+      "entryId": "tls11-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：TLS 1.1（TLS 1.1）。摘要只声明版本与用途：「This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol.The TLS protocol provides communications security over the Internet.」注意用词已是 communications security 而非 1.0 的 privacy；分层不变，但块加密记录的 IV 处理按本版改动（见 §6.2.3.2）。",
+        "en": "**Protocol**: TLS 1.1 (TLS 1.1).The abstract states version and purpose: \"This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    },
+    {
+      "id": "tls11-r139-why",
+      "entryId": "tls11-details",
+      "section": "why",
+      "statement": {
+        "zh": "改动清单在 §1.1，头两条就是本版的目的：「The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].」与「Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.」前言自陈这只是「some small security improvements, clarifications, and editorial improvements」。",
+        "en": "The change list sits in §1.1 and its first two items are the point of the release: \"The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].\" and \"Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.\" The introduction describes itself as carrying \"some small security improvements, clarifications, and editorial improvements\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    },
+    {
+      "id": "tls11-r139-used",
+      "entryId": "tls11-details",
+      "section": "used",
+      "statement": {
+        "zh": "记录层写下两条义务：接收方「MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.」；面对 Canvel 等人的计时攻击，「implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.」§9 的强制套件此时已是 TLS_RSA_WITH_3DES_EDE_CBC_SHA，附录 F.3 则说明本版「uses an explicit IV in order to protect against this attack.」。",
+        "en": "The record layer states two duties: the receiver \"MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.\", and against the Canvel timing work \"implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.\" The §9 mandatory suite is now TLS_RSA_WITH_3DES_EDE_CBC_SHA, and Appendix F.3 says this version \"uses an explicit IV in order to protect against this attack.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    },
+    {
+      "id": "tls11-r139-broken",
+      "entryId": "tls11-details",
+      "section": "broken",
+      "statement": {
+        "zh": "降级与静态密钥只剩部分处置：§7.4.7.1 写明版本回退检查是不对称的——「Client implementations, MUST and Server implementations MAY, check the version number.」，并把风险轻描淡写为「since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk」；填充错误的告警仍只是 SHOULD。压缩顺序也与 1.0 相同，未作禁止。",
+        "en": "Downgrade and static-key exposure are only partly handled here: §7.4.7.1 makes the version check asymmetric — \"Client implementations, MUST and Server implementations MAY, check the version number.\" — and plays down the risk, \"since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk\".The padding-error alert is still only a SHOULD, and the record order still compresses before encryption without forbidding compression."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    },
+    {
+      "id": "tls11-r139-history",
+      "entryId": "tls11-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 4346 头部为 T.Dierks 与 E.Rescorla（RTFM, Inc.），类别 Standards Track，2006 年 4 月，标注「Obsoletes: 2246」，没有 Updates 行；§1.1 自陈是 TLS 1.0 的修订版。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "The RFC 4346 header lists T.Dierks and E."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    },
+    {
+      "id": "tls11-r139-refs",
+      "entryId": "tls11-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TLS 1.1.https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4346: The Transport Layer Security (TLS) Protocol Version 1.1.https://www.rfc-editor.org/rfc/rfc4346。",
+        "en": "- Wikipedia search entry for TLS 1.1.https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

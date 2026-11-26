@@ -1,0 +1,189 @@
+{
+  "results": [
+    {
+      "id": "aria-calc-rfc-vectors",
+      "entryId": "aria-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "1cf853cf3b3f504ed68d345f66bc61d66c79bd9f2b29fd53a616bf4ccb32033a",
+      "dependencyHashes": {
+        "aria-teaching.mjs": "caf7e8c0db06e97b440d628ae20a45bae5cd37ef607d635baccd5323baf0c8be",
+        "sboxes.json": "78ddc3b9806116d2dd9aeedcaddad5b379a1311e31eb4bfa591adaf7cdf3826c",
+        "vectors.json": "07b40016ea10cc6baf349dd507247c6fce6df3b68a66352050edb0e8674b12a3",
+        "article.zh.md": "10798be8a2cde8cbf9ea4adbd3577dcb05f3272acadd8eb721e89edc5fae02f3",
+        "article.en.md": "728b2cd1b7805beeb4bcddc928a46f0b0a324af7b1ccd3c64c52652b959704e4",
+        "meta.json": "c0fb4b344d482fc6e3661ad30e4386365c276093ce3ea0555c16f94bde1cbdc0",
+        "glossary.json": "b0107248f81800f751a13021ea7617cd93bbb0e7ea385960c774f78028e3ba06",
+        "calculations.json": "d2d6ea07ce8a269894d8aaa3cbf54366c48b75ab3b06e073a00d094fe6ad4c03"
+      },
+      "inputs": "The three RFC 5794 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 00112233445566778899aabbccddeeff",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix A.1 W0..W3, ek1..ek13 and P1..P11 intermediates also match",
+      "observed": {
+        "id": "aria-calc-rfc-vectors",
+        "passed": true,
+        "vectors": 3,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "rounds": [
+          12,
+          14,
+          16
+        ],
+        "intermediateW": 4,
+        "intermediateRoundKeys": 13,
+        "intermediateRounds": 11,
+        "limit": "Three fixed vectors with one plaintext each; a match does not establish security against cryptanalysis."
+      },
+      "contentSha256": "f1d12371d2680c76e4b787c1d48003580c0911107bc7c16887aed901acfd1888",
+      "sourcesSha256": "81a9fdcb5620f1c7e7a9d1106639e804079d6d02dfef613d15ea478009f6b8e5",
+      "executedOn": "2026-11-25T07:04:11.326Z"
+    },
+    {
+      "id": "aria-calc-key-schedule",
+      "entryId": "aria-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "1cf853cf3b3f504ed68d345f66bc61d66c79bd9f2b29fd53a616bf4ccb32033a",
+      "dependencyHashes": {
+        "aria-teaching.mjs": "caf7e8c0db06e97b440d628ae20a45bae5cd37ef607d635baccd5323baf0c8be",
+        "sboxes.json": "78ddc3b9806116d2dd9aeedcaddad5b379a1311e31eb4bfa591adaf7cdf3826c",
+        "vectors.json": "07b40016ea10cc6baf349dd507247c6fce6df3b68a66352050edb0e8674b12a3",
+        "article.zh.md": "10798be8a2cde8cbf9ea4adbd3577dcb05f3272acadd8eb721e89edc5fae02f3",
+        "article.en.md": "728b2cd1b7805beeb4bcddc928a46f0b0a324af7b1ccd3c64c52652b959704e4",
+        "meta.json": "c0fb4b344d482fc6e3661ad30e4386365c276093ce3ea0555c16f94bde1cbdc0",
+        "glossary.json": "b0107248f81800f751a13021ea7617cd93bbb0e7ea385960c774f78028e3ba06",
+        "calculations.json": "d2d6ea07ce8a269894d8aaa3cbf54366c48b75ab3b06e073a00d094fe6ad4c03"
+      },
+      "inputs": "The 128-bit test key, the CK1..CK3 selection, the W0..W3 intermediates, the ek1..ek17 formulas and the dk derivation",
+      "expected": "W0=000102030405060708090a0b0c0d0e0f, W1=2afbea741e1746dd55c63ba1afcea0a5, W2=7c8578018bb127e02dfe4e78c288e33c and W3=6785b52b74da46bf181054082763ff6d; ek1..ek13 match Appendix A.1; the three key sizes need 13/15/17 round keys; dk1=ek(n+1), dk(n+1)=ek1 and the middle dk values are A(ek) in reverse",
+      "observed": {
+        "id": "aria-calc-key-schedule",
+        "passed": true,
+        "key": "000102030405060708090a0b0c0d0e0f",
+        "W": [
+          "000102030405060708090a0b0c0d0e0f",
+          "2afbea741e1746dd55c63ba1afcea0a5",
+          "7c8578018bb127e02dfe4e78c288e33c",
+          "6785b52b74da46bf181054082763ff6d"
+        ],
+        "ekFirst": "d415a75c794b85c5e0d2a0b3cb793bf6",
+        "ekLast": "0f0aa16daee61bd7dfee5a599970fb35",
+        "roundKeyCounts": [
+          13,
+          15,
+          17
+        ],
+        "limit": "Only the 128-bit key has published W/ek intermediates; the other key sizes are checked indirectly by their vectors."
+      },
+      "contentSha256": "f1d12371d2680c76e4b787c1d48003580c0911107bc7c16887aed901acfd1888",
+      "sourcesSha256": "81a9fdcb5620f1c7e7a9d1106639e804079d6d02dfef613d15ea478009f6b8e5",
+      "executedOn": "2026-11-25T07:04:11.326Z"
+    },
+    {
+      "id": "aria-calc-components",
+      "entryId": "aria-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "1cf853cf3b3f504ed68d345f66bc61d66c79bd9f2b29fd53a616bf4ccb32033a",
+      "dependencyHashes": {
+        "aria-teaching.mjs": "caf7e8c0db06e97b440d628ae20a45bae5cd37ef607d635baccd5323baf0c8be",
+        "sboxes.json": "78ddc3b9806116d2dd9aeedcaddad5b379a1311e31eb4bfa591adaf7cdf3826c",
+        "vectors.json": "07b40016ea10cc6baf349dd507247c6fce6df3b68a66352050edb0e8674b12a3",
+        "article.zh.md": "10798be8a2cde8cbf9ea4adbd3577dcb05f3272acadd8eb721e89edc5fae02f3",
+        "article.en.md": "728b2cd1b7805beeb4bcddc928a46f0b0a324af7b1ccd3c64c52652b959704e4",
+        "meta.json": "c0fb4b344d482fc6e3661ad30e4386365c276093ce3ea0555c16f94bde1cbdc0",
+        "glossary.json": "b0107248f81800f751a13021ea7617cd93bbb0e7ea385960c774f78028e3ba06",
+        "calculations.json": "d2d6ea07ce8a269894d8aaa3cbf54366c48b75ab3b06e073a00d094fe6ad4c03"
+      },
+      "inputs": "RFC 5794 SB1/SB2 tables, the inverse SB3/SB4 tables, the diffusion layer A and a deterministic set of 256 diffusion samples",
+      "expected": "SB1 and SB2 each have 256 entries; SB3 and SB4 are the exact inverses of SB1 and SB2; SB1(0x23)=0x26 and SB4(0xEF)=0xD3; A maps 000102030405060708090a0b0c0d0e0f to 03020100050407060a0b08090c0d0e0f and is an involution on all 256 samples",
+      "observed": {
+        "id": "aria-calc-components",
+        "passed": true,
+        "sboxes": 4,
+        "entriesPerBox": 256,
+        "inverses": "SB3/SB4 of SB1/SB2",
+        "A": "03020100050407060a0b08090c0d0e0f",
+        "inverseSamples": 256,
+        "limit": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+      },
+      "contentSha256": "f1d12371d2680c76e4b787c1d48003580c0911107bc7c16887aed901acfd1888",
+      "sourcesSha256": "81a9fdcb5620f1c7e7a9d1106639e804079d6d02dfef613d15ea478009f6b8e5",
+      "executedOn": "2026-11-25T07:04:11.326Z"
+    },
+    {
+      "id": "aria-calc-roundtrip",
+      "entryId": "aria-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "1cf853cf3b3f504ed68d345f66bc61d66c79bd9f2b29fd53a616bf4ccb32033a",
+      "dependencyHashes": {
+        "aria-teaching.mjs": "caf7e8c0db06e97b440d628ae20a45bae5cd37ef607d635baccd5323baf0c8be",
+        "sboxes.json": "78ddc3b9806116d2dd9aeedcaddad5b379a1311e31eb4bfa591adaf7cdf3826c",
+        "vectors.json": "07b40016ea10cc6baf349dd507247c6fce6df3b68a66352050edb0e8674b12a3",
+        "article.zh.md": "10798be8a2cde8cbf9ea4adbd3577dcb05f3272acadd8eb721e89edc5fae02f3",
+        "article.en.md": "728b2cd1b7805beeb4bcddc928a46f0b0a324af7b1ccd3c64c52652b959704e4",
+        "meta.json": "c0fb4b344d482fc6e3661ad30e4386365c276093ce3ea0555c16f94bde1cbdc0",
+        "glossary.json": "b0107248f81800f751a13021ea7617cd93bbb0e7ea385960c774f78028e3ba06",
+        "calculations.json": "d2d6ea07ce8a269894d8aaa3cbf54366c48b75ab3b06e073a00d094fe6ad4c03"
+      },
+      "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+      "observed": {
+        "id": "aria-calc-roundtrip",
+        "passed": true,
+        "roundTrips": 24,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "first": {
+          "keyBits": 128,
+          "plaintext": "00000000000000000000000000000000",
+          "ciphertext": "fa2827d1436c8a819973436e60ac4790"
+        },
+        "last": {
+          "keyBits": 256,
+          "plaintext": "0f0e0d0c0b0a09080706050403020100",
+          "ciphertext": "e1f03d03b39e1ee4e1fbb45d23731c2f"
+        },
+        "limit": "Deterministic round trips only; no modes, protocols, key management, side channels or randomness are tested."
+      },
+      "contentSha256": "f1d12371d2680c76e4b787c1d48003580c0911107bc7c16887aed901acfd1888",
+      "sourcesSha256": "81a9fdcb5620f1c7e7a9d1106639e804079d6d02dfef613d15ea478009f6b8e5",
+      "executedOn": "2026-11-25T07:04:11.326Z"
+    },
+    {
+      "id": "aria-r139-formal",
+      "entryId": "aria-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "1cf853cf3b3f504ed68d345f66bc61d66c79bd9f2b29fd53a616bf4ccb32033a",
+      "dependencyHashes": {
+        "aria-teaching.mjs": "caf7e8c0db06e97b440d628ae20a45bae5cd37ef607d635baccd5323baf0c8be",
+        "sboxes.json": "78ddc3b9806116d2dd9aeedcaddad5b379a1311e31eb4bfa591adaf7cdf3826c",
+        "vectors.json": "07b40016ea10cc6baf349dd507247c6fce6df3b68a66352050edb0e8674b12a3",
+        "article.zh.md": "10798be8a2cde8cbf9ea4adbd3577dcb05f3272acadd8eb721e89edc5fae02f3",
+        "article.en.md": "728b2cd1b7805beeb4bcddc928a46f0b0a324af7b1ccd3c64c52652b959704e4",
+        "meta.json": "c0fb4b344d482fc6e3661ad30e4386365c276093ce3ea0555c16f94bde1cbdc0",
+        "glossary.json": "b0107248f81800f751a13021ea7617cd93bbb0e7ea385960c774f78028e3ba06",
+        "calculations.json": "d2d6ea07ce8a269894d8aaa3cbf54366c48b75ab3b06e073a00d094fe6ad4c03"
+      },
+      "inputs": "ARIA 韩国分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "aria-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "f1d12371d2680c76e4b787c1d48003580c0911107bc7c16887aed901acfd1888",
+      "sourcesSha256": "81a9fdcb5620f1c7e7a9d1106639e804079d6d02dfef613d15ea478009f6b8e5",
+      "executedOn": "2026-11-25T07:29:52.496Z"
+    }
+  ]
+}

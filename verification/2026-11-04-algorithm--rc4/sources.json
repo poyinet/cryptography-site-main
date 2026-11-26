@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--rc4-details",
+  "sources": [
+    {
+      "id": "algorithm--rc4-wikipedia",
+      "title": "Wikipedia search entry for RC4 流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=RC4%20%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: RC4 流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--rc4-r139-principle",
+          "entryId": "algorithm--rc4-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：RC4 流密码（RC4）。身份由标准术语表给：RFC 4949 对 RC4 的定义是「A proprietary, variable-key-length stream cipher invented by Ron Rivest for RSA Data Security, Inc.」——专有的、密钥长度可变的流密码，由 Ron Rivest 为 RSA Data Security, Inc.所造；同一份文件另把缩写展开为 Rivest Cipher #4。该条目目不写构造：状态表怎样初始化、每步怎样推进，在这三份留存文件里都没有——6229 只出版向量，7465 只谈禁用，4949 只给定义与用途注记。",
+            "en": "**Algorithm**: RC4 (RC4 流密码).The identity comes from a standards glossary: RFC 4949 defines RC4 as \"A proprietary, variable-key-length stream cipher invented by Ron Rivest for RSA Data Security, Inc.\" - proprietary, taking keys of varying length, with Ron Rivest named as the inventor at RSA Data Security, Inc., while the same document expands the abbreviation as Rivest Cipher #4."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc4-r139-why",
+          "entryId": "algorithm--rc4-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么实现要额外处理这段输出：RFC 6229 的理由就在开篇一段——它先列分析进展，接着写下「initial parts of the stream output need to be discarded」，也就是开头的密钥流已成需要丢掉的负担。这份文件自己的目的止于给实现者可比对的向量：它说测试向量对实现者有用，并记下该密码可用不同长度的密钥、向量覆盖若干长度与偏移。因此这里记的是使用侧的约束，不是设计理由；设计的动因留存件没有给出，该条目目不猜。",
+            "en": "Why implementations must treat part of the output specially: the reason sits in the opening passage of RFC 6229, which lists work on cryptanalysis and then writes that \"initial parts of the stream output need to be discarded\" - the leading keystream had become something to throw away.The document's own ambition stops at comparable vectors for implementers: it calls them useful to implementers and records that RC4 accepts keys of different lengths, with vectors covering several lengths and offsets."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc4-r139-used",
+          "entryId": "algorithm--rc4-details",
+          "section": "used",
+          "statement": {
+            "zh": "RC4 流密码的used见来源账本与正文其他节；该条目不以空段充数。",
+            "en": "This claim covers the TLS side only: RFC 7465 says of RC4 that \"it is widely supported, and often preferred by TLS servers\" - broadly installed, and frequently the server's own preference.It is not a usage inventory: the same glossary cited above records WEP as another user of RC4, and that belongs to a different citation rather than being blended in here."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc4-r139-broken",
+          "entryId": "algorithm--rc4-details",
+          "section": "broken",
+          "statement": {
+            "zh": "破的地方在密钥流本身：RFC 7465 说新的分析结果「exploit biases in the RC4 keystream to recover repeatedly encrypted plaintexts」，并给出该结果当时的成本——文中印的数字是 2^26 个会话，以及 13x2^30 次加密。同一节也说 RC4 早已被知有一系列密码学弱点，而 6229 把更早的分析列进它的参考条目。分寸在于：留存件给的是需要多少会话与多少次加密，没给恢复的做法，该条目目也不补。",
+            "en": "The break is in the keystream: RFC 7465 says newer cryptanalysis results \"exploit biases in the RC4 keystream to recover repeatedly encrypted plaintexts\", and it gives what that cost at the time - the figures printed there are 2^26 sessions, and 13x2^30 encryptions.The same section adds that RC4 has long been known for a variety of cryptographic weaknesses, while RFC 6229 lists earlier analyses among its references."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc4-r139-history",
+          "entryId": "algorithm--rc4-details",
+          "section": "history",
+          "statement": {
+            "zh": "断代落在分析它的那篇论文自己印的话上：第 21 行写「The RC4 keystream generator was created by RSA Data Security, Inc.」，即密钥流生成器出自 RSA Data Security, Inc.；该文第六条参考条目把 Rivest 自己那份题为 The RC4 encryption algorithm 的报告记作 1992 年 3 月；题头行的出版信息显示这是 FSE 2000 的会议论文集一章（讲义编号 1978， Springer，2001 年），但那一行的页码区间短横在这份抽取里丢了字形，故只转述不引用。同一篇论文通篇用 alleged 称呼这套算法，因为设计未由所有者公布，该条目目沿用。时代轴由此在本轮把该行的值从 e14-standardization（论文出版年 2001 落在其 1977–2001 窗口）改为另加 e16-quantum-turn（其 1984–2019 窗口容纳 2011 与 2015 两份 TLS 文件的年份），并如实说明后一窗口的主题是量子转向——现存时代轴里没有更贴切的一个。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：RC4 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Dating lands on what the paper that analyses the cipher prints: line 21 states that \"The RC4 keystream generator was created by RSA Data Security, Inc.\", its sixth reference dates Rivest's own report on the algorithm to March 1992, and the imprint line shows the paper is a chapter of the FSE 2000 proceedings volume (Lecture Notes in Computer Science 1978, Springer, 2001) - paraphrased rather than quoted, because the page-range dash lost its glyph in this extraction.That paper calls the algorithm alleged throughout, since the design was never published by its owner, and this entry keeps the wording."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rc4-r139-refs",
+          "entryId": "algorithm--rc4-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for RC4 流密码.https://zh.wikipedia.org/w/index.php?search=RC4%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for RC4 流密码.https://zh.wikipedia.org/w/index.php?search=RC4%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--rc4-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--rc4-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--rc4-r139-principle",
+      "entryId": "algorithm--rc4-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：RC4 流密码（RC4）。身份由标准术语表给：RFC 4949 对 RC4 的定义是「A proprietary, variable-key-length stream cipher invented by Ron Rivest for RSA Data Security, Inc.」——专有的、密钥长度可变的流密码，由 Ron Rivest 为 RSA Data Security, Inc.所造；同一份文件另把缩写展开为 Rivest Cipher #4。该条目目不写构造：状态表怎样初始化、每步怎样推进，在这三份留存文件里都没有——6229 只出版向量，7465 只谈禁用，4949 只给定义与用途注记。",
+        "en": "**Algorithm**: RC4 (RC4 流密码).The identity comes from a standards glossary: RFC 4949 defines RC4 as \"A proprietary, variable-key-length stream cipher invented by Ron Rivest for RSA Data Security, Inc.\" - proprietary, taking keys of varying length, with Ron Rivest named as the inventor at RSA Data Security, Inc., while the same document expands the abbreviation as Rivest Cipher #4."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-r139-why",
+      "entryId": "algorithm--rc4-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么实现要额外处理这段输出：RFC 6229 的理由就在开篇一段——它先列分析进展，接着写下「initial parts of the stream output need to be discarded」，也就是开头的密钥流已成需要丢掉的负担。这份文件自己的目的止于给实现者可比对的向量：它说测试向量对实现者有用，并记下该密码可用不同长度的密钥、向量覆盖若干长度与偏移。因此这里记的是使用侧的约束，不是设计理由；设计的动因留存件没有给出，该条目目不猜。",
+        "en": "Why implementations must treat part of the output specially: the reason sits in the opening passage of RFC 6229, which lists work on cryptanalysis and then writes that \"initial parts of the stream output need to be discarded\" - the leading keystream had become something to throw away.The document's own ambition stops at comparable vectors for implementers: it calls them useful to implementers and records that RC4 accepts keys of different lengths, with vectors covering several lengths and offsets."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-r139-used",
+      "entryId": "algorithm--rc4-details",
+      "section": "used",
+      "statement": {
+        "zh": "RC4 流密码的used见来源账本与正文其他节；该条目不以空段充数。",
+        "en": "This claim covers the TLS side only: RFC 7465 says of RC4 that \"it is widely supported, and often preferred by TLS servers\" - broadly installed, and frequently the server's own preference.It is not a usage inventory: the same glossary cited above records WEP as another user of RC4, and that belongs to a different citation rather than being blended in here."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-r139-broken",
+      "entryId": "algorithm--rc4-details",
+      "section": "broken",
+      "statement": {
+        "zh": "破的地方在密钥流本身：RFC 7465 说新的分析结果「exploit biases in the RC4 keystream to recover repeatedly encrypted plaintexts」，并给出该结果当时的成本——文中印的数字是 2^26 个会话，以及 13x2^30 次加密。同一节也说 RC4 早已被知有一系列密码学弱点，而 6229 把更早的分析列进它的参考条目。分寸在于：留存件给的是需要多少会话与多少次加密，没给恢复的做法，该条目目也不补。",
+        "en": "The break is in the keystream: RFC 7465 says newer cryptanalysis results \"exploit biases in the RC4 keystream to recover repeatedly encrypted plaintexts\", and it gives what that cost at the time - the figures printed there are 2^26 sessions, and 13x2^30 encryptions.The same section adds that RC4 has long been known for a variety of cryptographic weaknesses, while RFC 6229 lists earlier analyses among its references."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-r139-history",
+      "entryId": "algorithm--rc4-details",
+      "section": "history",
+      "statement": {
+        "zh": "断代落在分析它的那篇论文自己印的话上：第 21 行写「The RC4 keystream generator was created by RSA Data Security, Inc.」，即密钥流生成器出自 RSA Data Security, Inc.；该文第六条参考条目把 Rivest 自己那份题为 The RC4 encryption algorithm 的报告记作 1992 年 3 月；题头行的出版信息显示这是 FSE 2000 的会议论文集一章（讲义编号 1978， Springer，2001 年），但那一行的页码区间短横在这份抽取里丢了字形，故只转述不引用。同一篇论文通篇用 alleged 称呼这套算法，因为设计未由所有者公布，该条目目沿用。时代轴由此在本轮把该行的值从 e14-standardization（论文出版年 2001 落在其 1977–2001 窗口）改为另加 e16-quantum-turn（其 1984–2019 窗口容纳 2011 与 2015 两份 TLS 文件的年份），并如实说明后一窗口的主题是量子转向——现存时代轴里没有更贴切的一个。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：RC4 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Dating lands on what the paper that analyses the cipher prints: line 21 states that \"The RC4 keystream generator was created by RSA Data Security, Inc.\", its sixth reference dates Rivest's own report on the algorithm to March 1992, and the imprint line shows the paper is a chapter of the FSE 2000 proceedings volume (Lecture Notes in Computer Science 1978, Springer, 2001) - paraphrased rather than quoted, because the page-range dash lost its glyph in this extraction.That paper calls the algorithm alleged throughout, since the design was never published by its owner, and this entry keeps the wording."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rc4-r139-refs",
+      "entryId": "algorithm--rc4-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for RC4 流密码.https://zh.wikipedia.org/w/index.php?search=RC4%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for RC4 流密码.https://zh.wikipedia.org/w/index.php?search=RC4%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--rc4-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

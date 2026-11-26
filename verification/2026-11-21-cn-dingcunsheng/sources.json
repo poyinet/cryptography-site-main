@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cn-dingcunsheng-details",
+  "sources": [
+    {
+      "id": "cn-dingcunsheng-wikipedia",
+      "title": "Wikipedia search entry for 丁存生与流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E4%B8%81%E5%AD%98%E7%94%9F%E4%B8%8E%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 丁存生与流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cn-dingcunsheng-r139-principle",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**中国密码史**：丁存生与流密码（Ding Cunsheng and Stream Ciphers）。### 线性复杂度与稳定性\n\n序列 S 的线性复杂度 LC(S) 是能生成它的最短 LFSR 长度。高 LC 只说明“整条序列难用短 LFSR 生成”，不说明“改几位后仍难”。丁存生等在 1991 年提出球复杂度：SC_l(S)=min_{Per(T)=N, 0<wt(T^N)≤l} LC(S+T)；即在周期相同、重量不超过 l 的扰动 T 下，S+T 的最低线性复杂度。### k-错线性复杂度\n\n等价写法是 L_{N,k}(S)=min_{T∈F^N, d(S,T)≤k} L(T)，其中 d 为 Hamming 距离，L(T) 为 T 的线性复杂度；k-错线性复杂度常写 min{LC(S), SC_k(S)}。第一下降点 m(S)=min{k: L_{N,k}(S)<LC(S)} 是“改多少位才开始降”的阈值。k=0 退化为 LC(S)；k 增大时允许的扰动更多，L_{N,k} 不增。球复杂度与 k-错线性复杂度是同一稳定性思想的不同表述：前者排除零扰动，后者把原序列也纳入候选。",
+            "en": "**Cnhistory**: Ding Cunsheng and Stream Ciphers.It is registered under OTP and stream ciphers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-dingcunsheng-r139-why",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "why",
+          "statement": {
+            "zh": "流密码不能只看线性复杂度。攻击者若能改动少量密钥流位（错误、故障、近似序列），高 LC 可能骤降；稳定性指标量化这种下降。丁存生与肖国镇、单炜娟在 1980 年代发展流密码稳定性理论，1991 年出版《The Stability Theory of Stream Ciphers》，提出球复杂度与重量复杂度；k-错线性复杂度后来由 Stamp 与 Martin 独立提出并成为标准指标。",
+            "en": "It is listed because it connects concrete records, objects or procedures in OTP and stream ciphers, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-dingcunsheng-r139-used",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 怎么用\n\n1.先算 LC(S) 与线性复杂度轮廓。2.选定威胁模型中的 k（允许改动的位数或错误数）。3.在 d(S,T)≤k 的候选空间中最小化 L(T)，得到 L_{N,k}；或按球复杂度排除零扰动。4.找第一下降点 m(S)，判断“少量改动是否已经击穿”。5.把 N、k、LC、m(S)、搜索空间大小一起报告；大 k 不要用穷举冒充精确值。6.设计密钥流时，同时要求高 LC、高 k-错线性复杂度、良好相关性与周期。### 不能怎么用\n\n不能把 LC 高就说稳定；不能把 k 设得很大后得到低值就宣布序列不安全；不能把期望上界当最坏情况；不能把稳定性指标当全部安全性。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-dingcunsheng-r139-broken",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.k 选择不当：k=0 只测原序列；k 太大时几乎任何序列都能被拉到低复杂度，指标失去区分度。2.穷举成本：候选空间 Σ_{i=0}^k C(N,i) 随 N,k 爆炸；大周期只能算上界或特定结构。3.只给期望：随机序列的期望上界不等于每条序列的保证。4.结构限制：球复杂度对周期、域、扰动重量有假设；非周期或不同域要重定义。5.其他攻击：稳定性不覆盖相关、代数、立方、侧信道或实现故障。6.指标误读：SC_k 非增，不能拿不同 k 的数值直接比较安全性。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-dingcunsheng-r139-history",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "history",
+          "statement": {
+            "zh": "丁存生 1980 年代在西安电子科技大学研究流密码，1988 年 EUROCRYPT 论文证明 Massey 提出的多序列移位寄存器综合算法猜想，是较早在该会议发表论文的中国作者之一。1980 年代他与肖国镇、单炜娟发展流密码稳定性理论，1991 年出版《The Stability Theory of Stream Ciphers》，提出球复杂度与重量复杂度；后在香港科技大学任教授。k-错线性复杂度在 1990 年代初由他与 M.Stamp 等相继独立提出，成为序列稳定性标准指标。",
+            "en": "Registered period: China's Parallel Line.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-dingcunsheng-r139-refs",
+          "entryId": "cn-dingcunsheng-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 丁存生与流密码.https://zh.wikipedia.org/w/index.php?search=%E4%B8%81%E5%AD%98%E7%94%9F%E4%B8%8E%E6%B5%81%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）.https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464。",
+            "en": "- Wikipedia search entry for 丁存生与流密码.https://zh.wikipedia.org/w/index.php?search=%E4%B8%81%E5%AD%98%E7%94%9F%E4%B8%8E%E6%B5%81%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cn-dingcunsheng-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cn-dingcunsheng-wikipedia"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-reference-ref",
+      "title": "《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）",
+      "url": "https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "中国密码史条目级书目参考；具体页码需按纸本核对。",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cn-dingcunsheng-r139-principle",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**中国密码史**：丁存生与流密码（Ding Cunsheng and Stream Ciphers）。### 线性复杂度与稳定性\n\n序列 S 的线性复杂度 LC(S) 是能生成它的最短 LFSR 长度。高 LC 只说明“整条序列难用短 LFSR 生成”，不说明“改几位后仍难”。丁存生等在 1991 年提出球复杂度：SC_l(S)=min_{Per(T)=N, 0<wt(T^N)≤l} LC(S+T)；即在周期相同、重量不超过 l 的扰动 T 下，S+T 的最低线性复杂度。### k-错线性复杂度\n\n等价写法是 L_{N,k}(S)=min_{T∈F^N, d(S,T)≤k} L(T)，其中 d 为 Hamming 距离，L(T) 为 T 的线性复杂度；k-错线性复杂度常写 min{LC(S), SC_k(S)}。第一下降点 m(S)=min{k: L_{N,k}(S)<LC(S)} 是“改多少位才开始降”的阈值。k=0 退化为 LC(S)；k 增大时允许的扰动更多，L_{N,k} 不增。球复杂度与 k-错线性复杂度是同一稳定性思想的不同表述：前者排除零扰动，后者把原序列也纳入候选。",
+        "en": "**Cnhistory**: Ding Cunsheng and Stream Ciphers.It is registered under OTP and stream ciphers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-r139-why",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "why",
+      "statement": {
+        "zh": "流密码不能只看线性复杂度。攻击者若能改动少量密钥流位（错误、故障、近似序列），高 LC 可能骤降；稳定性指标量化这种下降。丁存生与肖国镇、单炜娟在 1980 年代发展流密码稳定性理论，1991 年出版《The Stability Theory of Stream Ciphers》，提出球复杂度与重量复杂度；k-错线性复杂度后来由 Stamp 与 Martin 独立提出并成为标准指标。",
+        "en": "It is listed because it connects concrete records, objects or procedures in OTP and stream ciphers, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-r139-used",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 怎么用\n\n1.先算 LC(S) 与线性复杂度轮廓。2.选定威胁模型中的 k（允许改动的位数或错误数）。3.在 d(S,T)≤k 的候选空间中最小化 L(T)，得到 L_{N,k}；或按球复杂度排除零扰动。4.找第一下降点 m(S)，判断“少量改动是否已经击穿”。5.把 N、k、LC、m(S)、搜索空间大小一起报告；大 k 不要用穷举冒充精确值。6.设计密钥流时，同时要求高 LC、高 k-错线性复杂度、良好相关性与周期。### 不能怎么用\n\n不能把 LC 高就说稳定；不能把 k 设得很大后得到低值就宣布序列不安全；不能把期望上界当最坏情况；不能把稳定性指标当全部安全性。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-r139-broken",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.k 选择不当：k=0 只测原序列；k 太大时几乎任何序列都能被拉到低复杂度，指标失去区分度。2.穷举成本：候选空间 Σ_{i=0}^k C(N,i) 随 N,k 爆炸；大周期只能算上界或特定结构。3.只给期望：随机序列的期望上界不等于每条序列的保证。4.结构限制：球复杂度对周期、域、扰动重量有假设；非周期或不同域要重定义。5.其他攻击：稳定性不覆盖相关、代数、立方、侧信道或实现故障。6.指标误读：SC_k 非增，不能拿不同 k 的数值直接比较安全性。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-r139-history",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "history",
+      "statement": {
+        "zh": "丁存生 1980 年代在西安电子科技大学研究流密码，1988 年 EUROCRYPT 论文证明 Massey 提出的多序列移位寄存器综合算法猜想，是较早在该会议发表论文的中国作者之一。1980 年代他与肖国镇、单炜娟发展流密码稳定性理论，1991 年出版《The Stability Theory of Stream Ciphers》，提出球复杂度与重量复杂度；后在香港科技大学任教授。k-错线性复杂度在 1990 年代初由他与 M.Stamp 等相继独立提出，成为序列稳定性标准指标。",
+        "en": "Registered period: China's Parallel Line.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-dingcunsheng-r139-refs",
+      "entryId": "cn-dingcunsheng-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 丁存生与流密码.https://zh.wikipedia.org/w/index.php?search=%E4%B8%81%E5%AD%98%E7%94%9F%E4%B8%8E%E6%B5%81%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）.https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464。",
+        "en": "- Wikipedia search entry for 丁存生与流密码.https://zh.wikipedia.org/w/index.php?search=%E4%B8%81%E5%AD%98%E7%94%9F%E4%B8%8E%E6%B5%81%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cn-dingcunsheng-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

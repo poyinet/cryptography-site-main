@@ -1,0 +1,42 @@
+[
+  {
+    "id": "feistel-roundtrip",
+    "entryId": "feistel-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All 65,536 blocks of a 16-bit toy Feistel network, 4 rounds, non-injective F(x,k)=(x+k) mod 4",
+    "expected": "Every block decrypts back to its original value with reversed keys",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["feistel-teaching.mjs"],
+    "limitations": "A finite toy network; it demonstrates structural invertibility, not the security of any real cipher."
+  },
+  {
+    "id": "feistel-noninjective-f",
+    "entryId": "feistel-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 8-bit function F(x,k)=(x+k) mod 4 over all 256 inputs for a fixed key",
+    "expected": "Each of the four outputs has 64 preimages; the network still round-trips on all 65,536 blocks",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["feistel-teaching.mjs"],
+    "limitations": "Shows a deliberately non-invertible round function; it does not model a real cipher's F or key schedule."
+  },
+  {
+    "id": "feistel-three-four-rounds",
+    "entryId": "feistel-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The same 16-bit toy network with 3 and 4 rounds, all 65,536 blocks",
+    "expected": "Both round counts round-trip on every block; invertibility does not distinguish 3 from 4 rounds",
+    "sourceIds": ["hac-ch7", "luby-rackoff-1988"],
+    "dependencies": ["feistel-teaching.mjs"],
+    "limitations": "Round-trip correctness only; the Luby–Rackoff security distinction is a theoretical model result, not an executable attack test."
+  },
+  {
+    "id": "feistel-des-tdea-counts",
+    "entryId": "feistel-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "DES round/block parameters and the TDEA composition of three DES calls",
+    "expected": "DES: 64-bit block, 32+32 halves, 16 rounds; TDEA: 3 x 16 = 48 rounds, block still 64 bits",
+    "sourceIds": ["hac-ch7", "fips46-3", "sp800-67r2"],
+    "dependencies": ["feistel-teaching.mjs"],
+    "limitations": "Counting only; these are concrete algorithm parameters, not fixed properties of Feistel."
+  }
+]

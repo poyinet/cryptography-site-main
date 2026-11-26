@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R124 formula-level deepening for diagonal-board-details.",
+  "entries": [
+    {
+      "id": "diagonal-board-details",
+      "inventoryIds": [
+        "diagonal-board"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出对合插线板的组合计数、对角板接线、Bombe 搜索从插线板组合到 1,054,560 个转子设置的约化，以及 stop 必须二次验证的边界。",
+        "en": "This entry gives the plugboard involution count, diagonal-board wiring, the reduction from plugboard-inclusive combinations to 1,054,560 rotor settings, and the boundary that a stop needs second-message verification."
+      },
+      "title": {
+        "zh": "对角板",
+        "en": "Diagonal Board"
+      },
+      "claimIds": [
+        "diagonal-board-r139-principle",
+        "diagonal-board-r139-why",
+        "diagonal-board-r139-used",
+        "diagonal-board-r139-broken",
+        "diagonal-board-r139-history",
+        "diagonal-board-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出符号公式、攻击模型、参数与失效边界，不含逐步数值算例；论文定理、测试向量与历史统计以来源原文为准。",
+        "en": "This entry gives symbolic formulas, the attack model, parameters and failure boundaries, not a step-by-step numeric example; paper theorems, test vectors and historical counts follow the cited sources."
+      },
+      "sourceIds": [
+        "diagonal-board-wikipedia",
+        "diagonal-board-standard-ref"
+      ],
+      "subtopicIds": [
+        "crypto-machine-cryptanalysis"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "diagonal-board-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "对角板把插线板的对合约束接成 26×26 双向电流路径，使 Bombe 只需枚举转子顺序与位置。",
+            "en": "The diagonal board wires the plugboard involution into a 26×26 bidirectional current path, leaving the Bombe to enumerate rotor order and positions."
+          },
+          "alt": {
+            "zh": "四步公式级机制：识别插线板对合 → 26×26 对角跨接 → 菜单约束传播 → 转子假设筛选；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: identify plugboard involution → wire 26×26 crossbar → propagate menu constraints → screen rotor hypotheses; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/diagonal-board-mechanism.zh.svg",
+            "en": "assets/diagonal-board-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "fffe1e179ae0a6f91ba0d3de84efdbfbcf90d8492ba270d53c39c5d0c3463706",
+            "en": "52285d4264e8f6e130fb13cda1c950f913ddbcf03a41bdb5c431ab2609cc066d"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**术语**：对角板（Diagonal Board）。### 对合性与约束\n\nEnigma 插线板把字母两两交换，因此是一个对合 S，满足 S(S(x))=x；未被插线的字母保持不动。每根电缆交换一对字母，最多 13 根，典型日用 10 根。对角板是一块 26×26 的交叉板，把 (i,j) 与 (j,i) 接在一起：若电流从第 i 行第 j 列进入，就从第 j 行第 i 列流出，于是“i 连 j”与“j 连 i”成为同一条约束。### Bombe 搜索\n\n把菜单中的字母对接到对角板后，插线板的约束会沿电流路径双向传播。Bombe 不再枚举插线板，而是枚举转子顺序与位置：5 转子 Enigma 有 60 种顺序、26^3 个位置，共 1,054,560 个候选；相较之下，10 根插线时的插线板组合为 150,738,274,937,250 个。电流使某个假设自相矛盾时，该转子假设被淘汰；剩下一个 stop 只是候选，必须用第二条报文验证。",
+          "why": "对角板不是“更快的 Bombe”，而是把插线板的代数不变量做成硬件。它说明对合性可以把一个巨大搜索空间从假设中消去，也说明机器设计与密码分析逻辑是耦合的。",
+          "used": "1.确认目标密码有对合插线板，且菜单覆盖足够多的字母。2.把 26×26 板按 (i,j)≤ftrightarrow(j,i) 接线。3.把菜单字母对编码到板上，逐个转子假设运行。4.把 stop 当候选，用第二条报文验证，再单独恢复插线设置。5.报告转子顺序、位置、验证结果与假设，不能只报 stop 数。### 不能怎么用\n\n不能把对角板当成通用解密器；不能用于非对合 S 盒；不能把一个 stop 当成已证明的密钥。",
+          "broken": "1.非对合插线板：若 S^2 不等于恒等，互逆约束不成立。2.菜单过稀：字母太少或 loop 不足会产生大量 false stop。3.接线或电缆故障：一根错线会把错误约束传遍整块板。4.操作变化：第四转子、不同转子顺序或不同指示程序会改变搜索空间，板本身不解决。5.验证缺失：没有第二条报文，stop 可能只是偶然。",
+          "history": "Gordon Welchman 在 1940 年提出对角板；第二台 Bombe“Agnes”加入该板后于 1940 年 8 月工作。战争期间共建造 200 多台 Turing–Welchman Bombe。它利用的正是插线板的自对易性：同一根线既把 i 送到 j，也把 j 送到 i。",
+          "refs": "- Wikipedia search entry for 对角板. https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E8%A7%92%E6%9D%BF\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Diagonal Board. It is registered under cryptanalysis, rotor and mechanical ciphers. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in cryptanalysis, rotor and mechanical ciphers, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: World War II. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 对角板. https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E8%A7%92%E6%9D%BF\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "sources": [
+        "diagonal-board-wikipedia",
+        "diagonal-board-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

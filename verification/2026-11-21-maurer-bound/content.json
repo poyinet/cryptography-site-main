@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R115 security-bounds reviewed dossier for maurer-bound-details.",
+  "entries": [
+    {
+      "id": "maurer-bound-details",
+      "inventoryIds": [
+        "maurer-bound"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R115 安全界批次：把“Maurer 界”从目录深度条目改写为含定理陈述、符号推导、复杂度/熵界、使用条件与失效边界的机制级条目；数值算例仍不由本条承担。",
+        "en": "R115 security-bounds batch: rewrote \"Maurer’s Bound\" from a catalog-depth card into a mechanism-level entry with theorem statements, symbolic derivations, complexity/entropy bounds, conditions of use and failure boundaries; numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "Maurer 界",
+        "en": "Maurer’s Bound"
+      },
+      "claimIds": [
+        "maurer-bound-r139-principle",
+        "maurer-bound-r139-why",
+        "maurer-bound-r139-used",
+        "maurer-bound-r139-broken",
+        "maurer-bound-r139-history",
+        "maurer-bound-r139-refs"
+      ],
+      "sourceIds": [
+        "maurer-bound-wikipedia",
+        "maurer-bound-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "shannon-perfect-secrecy"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "maurer-bound-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Maurer 界机制图：密钥分段、n 条消息的认证消耗与 n+1 段下界。",
+            "en": "Maurer bound diagram: key segmentation, authentication cost for n messages and the n+1-part lower bound."
+          },
+          "alt": {
+            "zh": "密钥条被切成五段，四条消息各消耗一段，第五段留给替换攻击，下方为熵下界公式。",
+            "en": "A key bar split into five parts; four messages consume four parts and the fifth covers substitution, with an entropy bound below."
+          },
+          "files": {
+            "zh": "assets/maurer-bound-details-mechanism.zh.svg",
+            "en": "assets/maurer-bound-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "a367df98d180aceefdd32546d5eb8f9d425fe2a01ac8740d56d9a4d01ab7bee2",
+            "en": "c02c2d9a33cb58fa60ca259dc7250a362654f325155d7728f641bcf553635a81"
+          }
+        },
+        {
+          "id": "maurer-bound-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Maurer 界 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Maurer’s Bound: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Maurer 界 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Maurer’s Bound, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/maurer-bound-details-r138-model.zh.svg",
+            "en": "assets/maurer-bound-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5a68089204b3d66662a95c60db9c31803d9bd6238c8774a73d4e749263320dc4",
+            "en": "07a27a4be386150419e0e95568cb600c41f1cb93ac476b97823a7635ae9eb1f7"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：Maurer 界（Maurer's Bound）。### 无条件认证的模型\n\n发送者与接收者共享同一把密钥 K，要在同一密钥下认证 n 条消息 M1,…,Mn。敌手计算能力不限，只知道系统设计与密文/标签分布，不知道 K。攻击分两类：冒充（直接伪造一条被接收的消息）与替换（截获一条合法消息后改成另一条）。若接收者从不拒绝合法消息，Maurer 的界说\nmax(PI,1,…,PI,n,PS,n) ≥ 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。n=1 时退化为 max(PI,PS) ≥ 2^{-H(K)/2} ≥ 1/√|K|。### 为什么是 n+1 段\n\n直观上，密钥要在 n 次“这条消息是否合法”的判断中提供不确定性，还要留一段给最后一次替换。每认证一条消息就消耗一段密钥预算；把 K 切成 n+1 段后，敌手只要猜中其中一段的有效信息，就能在某次攻击中成功。严格证明把认证看成假设检验：在零假设（合法发送者）与备择假设（敌手伪造）之间，密钥熵限制了两个分布的区分能力。### 熵界与均匀密钥\n\nH(K) 是密钥的香农熵。因为 H(K) ≤ log|K|，所以 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}。这把“密钥长度”与“可认证消息数、可达到的欺骗概率”连在一起：要让成功概率不超过 2^{-b}，密钥至少要有约 (n+1)b 位熵。",
+          "why": "它解释了为什么信息论安全的 MAC 不能既用短密钥又认证很多消息。无条件安全不依赖计算假设，因此敌手有无限时间也仍然受这个下界约束。它也解释了“密钥用一次就换”的代价：n 越大，每条消息可分到的密钥熵越少。### 与计算安全 MAC 的区别\n\nHMAC、CMAC 等计算安全 MAC 可以用固定长度密钥认证大量消息，因为安全性建立在 PRF/分组密码假设上，敌手被限制为多项式时间。Maurer 界属于无条件认证理论；它不否定计算 MAC，而是说明“无计算假设”时的硬下限。把两者混在一起，会得出“所有 MAC 都必须和消息一样长”的错误结论。### 对设计的启示\n\n设计信息论 MAC 时，必须同时报告密钥长度、可认证消息数 n 与目标欺骗概率。只写“使用 128 位密钥”而不写 n，无法判断是否达到 2^-64 的欺骗界。",
+          "used": "1.确定 n：同一密钥计划认证多少条消息。2.确定目标 ε：敌手成功概率上限。3.由 ε ≥ 2^{-H(K)/(n+1)} 反推 H(K) ≥ (n+1) log2(1/ε)。4.检查密钥是否真能达到该熵；短密钥、偏置密钥或可预测密钥都不满足。5.若 n 很大，改用分层密钥、每消息派生密钥或计算安全 MAC，而不是硬撑无条件界。### 典型场景\n\n- 无条件 MAC / 认证码：Carter–Wegman 型通用哈希 + 一次性密钥，必须按 n 计算密钥消耗。- 量子密钥分发后的认证：若用一次性 MAC，密钥长度要与认证的消息量和目标失败概率匹配。- 教学与审计：用 n=1 的 1/√|K| 说明“128 位密钥并不能给出 128 位认证安全”。",
+          "broken": "1.模型假设接收者从不拒收合法消息。若系统允许拒收、重传或仲裁，界的形式会变，不能直接套用。2.只覆盖冒充与替换两类攻击；不覆盖密钥泄露、实现侧信道、重放或拒绝服务。3.界是下界，不是构造。它说“任何方案都至少有这么高的欺骗概率”，不保证存在达到等号的方案；达到界需要特定的密钥分割与编码设计。4.n 必须事先固定。若方案动态增加消息数，必须重新计算密钥预算；把 n 当成无限会得到无意义的界。5.熵不是长度。H(K) 可能远小于密钥比特数；全零密钥、低熵口令都不满足模型。6.不提供机密性。认证与保密是两个目标；Maurer 界不涉及消息保密，也不替代 Shannon 的密钥熵界。",
+          "history": "Simmons 在 1984 年开启认证理论的下界研究，Gilbert、MacWilliams 与 Sloane 等人给出组合界。Maurer 1996 在 STACS 上把这些结果统一为假设检验框架，给出对 n 条消息的通用下界；2000 年在 IEEE Transactions on Information Theory 上给出更完整的假设检验处理。### 今天的用途\n\n这条界仍是信息论认证、量子密钥分发后认证与无条件 MAC 参数分析的基础。它提醒工程界：计算安全 MAC 的“短密钥”不是免费的，它把安全性转移到了计算假设上。",
+          "refs": "- Wikipedia search entry for Maurer 界. https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nMaurer 界的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Maurer's Bound (Maurer 界). ### The unconditional authentication model\n\nSender and receiver share one key K and must authenticate n messages M1,…,Mn under that same key. The adversary has unlimited computation and knows the system design and the distribution of ciphertexts/tags, but not K. Attacks are impersonation (forge a message that the receiver accepts) and substitution (modify a legitimate message into another). If the receiver never rejects a valid message, Maurer’s bound states\nmax(PI,1,…,PI,n,PS,n) ≥ 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}. For n=1 this becomes max(PI,PS) ≥ 2^{-H(K)/2} ≥ 1/√|K|. ### Why n+1 parts\n\nIntuitively, the key must supply uncertainty for n decisions of “is this message authentic”, and one more part for the final substitution. Each authenticated message consumes a slice of the key budget. Split K into n+1 parts; if the adversary guesses the effective information in one part, it succeeds in one of the attacks. The formal proof treats authentication as hypothesis testing: between the null hypothesis (legitimate sender) and the alternative (forgery), key entropy limits how well the two distributions can be distinguished. ### Entropy bound and uniform keys\n\nH(K) is the Shannon entropy of the key. Since H(K) ≤ log|K|, 2^{-H(K)/(n+1)} ≥ |K|^{-1/(n+1)}. This ties key length, number of authenticated messages and achievable deception probability together: to keep success at most 2^{-b}, the key needs about (n+1)b bits of entropy.",
+          "why": "It explains why an information-theoretic MAC cannot use a short key to authenticate many messages. Unconditional security does not rely on computational assumptions, so even an unbounded adversary is constrained by this lower bound. It also explains the price of “key used once”: larger n leaves less key entropy per message.\n\nHMAC, CMAC and similar computational MACs authenticate many messages with a fixed-length key because their security rests on PRF/block-cipher assumptions and the adversary is polynomial-time. Maurer’s bound belongs to unconditional authentication theory; it does not refute computational MACs. It says that without computational assumptions there is a hard lower bound. Mixing the two frameworks produces the false conclusion that “all MACs must be as long as the message”.\n\nAn information-theoretic MAC must report key length, number n of authenticated messages and target deception probability together. “128-bit key” without n does not establish a 2^-64 deception bound.",
+          "used": "1. Fix n: how many messages will use the same key. 2. Fix the target ε: the adversary’s success probability. 3. From ε ≥ 2^{-H(K)/(n+1)}, derive H(K) ≥ (n+1) log2(1/ε). 4. Check that the key actually has that entropy; short, biased or predictable keys do not qualify. 5. If n is large, use key derivation, per-message keys or a computational MAC instead of forcing an unconditional bound.\n\n- Unconditional MAC / authentication codes: Carter–Wegman universal hashing with one-time keys must account for key consumption across n messages. - Authentication after quantum key distribution: a one-time MAC must match key length to message volume and target failure probability. - Teaching and audit: the n=1 case, 1/√|K|, shows that a 128-bit key does not give 128-bit authentication security.",
+          "broken": "1. The model assumes the receiver never rejects a valid message. If rejection, retransmission or arbitration is allowed, the bound changes and cannot be applied directly. 2. It covers impersonation and substitution only; not key leakage, implementation side channels, replay or denial of service. 3. It is a lower bound, not a construction. It says every scheme has at least this deception probability; it does not guarantee a scheme meeting equality. Achieving the bound needs specific key partitioning and encoding. 4. n must be fixed in advance. If the scheme adds messages dynamically, recompute the key budget; treating n as infinite yields a meaningless bound. 5. Entropy is not length. H(K) can be far below the bit length; all-zero keys and low-entropy passwords do not satisfy the model. 6. It provides no confidentiality. Authentication and secrecy are different goals; Maurer’s bound does not replace Shannon’s key-entropy bound.",
+          "history": "Simmons opened the study of authentication lower bounds in 1984; Gilbert, MacWilliams and Sloane and others gave combinatorial bounds. Maurer’s 1996 STACS paper unified these results in a hypothesis-testing framework and gave a general bound for n messages; his 2000 IEEE Transactions on Information Theory paper gave a fuller hypothesis-testing treatment.\n\nThe bound remains foundational for information-theoretic authentication, authentication after quantum key distribution and unconditional MAC parameter analysis. It reminds engineering that the “short key” of a computational MAC is not free: security has been moved into a computational assumption.",
+          "refs": "- Wikipedia search entry for Maurer 界. https://zh.wikipedia.org/w/index.php?search=Maurer%20%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nMaurer's Bound: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "maurer-bound-r139-formal",
+          "entryId": "maurer-bound-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：Maurer 界的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 Maurer 界 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "maurer-bound-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "maurer-bound-r139-formal"
+      ],
+      "sources": [
+        "maurer-bound-wikipedia",
+        "maurer-bound-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "maurer-bound-r139-formal",
+      "entryId": "maurer-bound-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：Maurer 界的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 Maurer 界 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "maurer-bound-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

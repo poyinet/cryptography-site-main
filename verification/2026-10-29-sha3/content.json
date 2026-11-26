@@ -1,0 +1,444 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full SHA-3 article: FIPS 202's six functions, KECCAK-p[1600,24], the sponge construction, rate/capacity, pad10*1, domain separation, the five round mappings, the SHA3-224/256/384/512 hashes and SHAKE128/256 XOFs, the FIPS 202 security table, HMAC-SHA3 block sizes, the SP 800-185 derived functions, NIST approval, CAVP vectors and the capacity/XOF boundaries. No completion claim for SHA-2, SHA-1, KMAC as a standalone entity, cSHAKE/TupleHash/ParallelHash implementations, protocols or any implementation.",
+  "entries": [
+    {
+      "id": "sha3-details",
+      "inventoryIds": [
+        "sha3"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 FIPS 202 的 SHA-3 家族：六个函数的输出/速率/容量、1600 位状态与 5×5 lane、24 轮 KECCAK-p、海绵吸收/挤出、pad10*1、域后缀、θ/ρ/π/χ/ι 五步、SHAKE 的 XOF 行为、安全强度表与 HMAC-SHA3 块长；覆盖 SHA-3 竞赛与 Keccak 来源、SP 800-185 的 cSHAKE/KMAC/TupleHash/ParallelHash、SP 800-131A 的批准状态、CAVP 字节向量，以及容量/XOF 的边界。不把 SHA-2、SHA-1、KMAC、cSHAKE/TupleHash/ParallelHash 的实现或整个哈希家族并入本实体。",
+        "en": "Covers FIPS 202's SHA-3 family: the six functions' output/rate/capacity parameters, the 1600-bit state and 5×5 lanes, the 24-round KECCAK-p, sponge absorption/squeezing, pad10*1, domain suffixes, the θ/ρ/π/χ/ι steps, SHAKE's XOF behavior, the security-strength table and HMAC-SHA3 block sizes; the SHA-3 competition and Keccak lineage, SP 800-185's cSHAKE/KMAC/TupleHash/ParallelHash, SP 800-131A approval, CAVP byte vectors, and the capacity/XOF boundaries. It does not absorb SHA-2, SHA-1, KMAC, implementations of cSHAKE/TupleHash/ParallelHash, or the whole hash family."
+      },
+      "title": {
+        "zh": "SHA-3：FIPS 202 的海绵哈希与 SHAKE 可扩展输出",
+        "en": "SHA-3: the FIPS 202 sponge hash and SHAKE extendable output"
+      },
+      "claimIds": [
+        "sha3-r139-principle",
+        "sha3-r139-why",
+        "sha3-r139-used",
+        "sha3-r139-broken",
+        "sha3-r139-history",
+        "sha3-r139-refs"
+      ],
+      "calculationIds": [
+        "sha3-calc-cavp",
+        "sha3-calc-abc-trace",
+        "sha3-calc-crosscheck",
+        "sha3-calc-structure",
+        "sha3-calc-shake",
+        "sha3-r139-formal"
+      ],
+      "sourceIds": [
+        "sha3-wikipedia",
+        "sha3-reference-ref"
+      ],
+      "related": [
+        "sha2",
+        "sha1",
+        "fips202",
+        "algorithm--hmac"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. SHA-2 and SHA-1 are the Merkle-Damgård families that SHA-3 is an alternative to; FIPS 202 is the standard document; HMAC is the construction whose SHA-3 block-size guidance is discussed here. The term--sha-3 record was merged into sha3 in R4D. The separate fips202 standard entity and its keccak alias ambiguity are deliberately not merged into sha3.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SHA-3 与 Keccak（SHA-3）。SHA-3 是 FIPS 202 定义的六函数家族：四个固定长度哈希函数 SHA3-224、SHA3-256、SHA3-384、SHA3-512，以及两个可扩展输出函数 SHAKE128、SHAKE256。它们都建立在 KECCAK-p[1600,24] 置换上：状态是 5×5 个 64 位 lane，共 1600 位；置换迭代 24 轮。SHA-3 采用海绵构造。设 rate 为 r 位、capacity 为 c 位，r + c = 1600。吸收阶段把输入按 r 位分块：每块与状态前 r 位异或，然后执行一次 KECCAK-p[1600,24]；挤出阶段从状态前 r 位读取输出，若还需要更多位，再执行一次置换并继续读取，直到达到请求长度。capacity 不直接参与输入或输出，是海绵的安全参数。六个函数的 rate/capacity 为：\n\n| 函数 | rate（位） | capacity（位） | 输出 |\n| --- | --- | --- | --- |\n| SHA3-224 | 1152 | 448 | 224 位 |\n| SHA3-256 | 1088 | 512 | 256 位 |\n| SHA3-384 | 832 | 768 | 384 位 |\n| SHA3-512 | 576 | 1024 | 512 位 |\n| SHAKE128 | 1344 | 256 | 任意 d 位 |\n| SHAKE256 | 1088 | 512 | 任意 d 位 |\n\n填充使用 pad10*1：在消息后追加 1、若干 0 和最后的 1，使总长度成为 rate 的整数倍。SHA-3 还在消息后追加两位或四位域后缀：SHA3-224/256/384/512 追加 `01`，SHAKE128/256 追加 `1111`；后缀把哈希与 XOF 的输入放进不同域。KECCAK-p 的每一轮依次执行五个步骤：θ 做列奇偶混合，ρ 在 lane 内旋转，π 重排 lane，χ 做行内非线性混合，ι 异或轮常量。KECCAK-p[1600,24] 使用 24 个 64 位轮常量，从 0000000000000001 到 8000000080008008；ρ 的旋转量与 π 的 lane 重排由固定表给出。state 的 lane 按小端字节序映射到消息/输出字节：一个 8 字节块的第 0 个字节进入 lane 的最低字节。SHA3-224/256/384/512 输出固定 224/256/384/512 位摘要；SHAKE128/SHAKE256 可以输出任意 d 位。输出越短，SHAKE 的碰撞/原像强度越低；这部分由 FIPS 202 的安全强度表给出。",
+          "why": "SHA-3 的来源是 NIST 的公开 SHA-3 密码哈希算法竞赛：FIPS 202 明确说 SHA-3 基于 KECCAK，而 KECCAK 是 NIST 在该竞赛中选中的算法。Keccak 参考文档把 Keccak 定义为以 Keccak-f 置换和 pad10*1 为基础的海绵函数族；rate 与 capacity 的选择决定安全强度。海绵与 SHA-2 的 Merkle-Damgård 迭代不同：SHA-2 把链接值直接作为下一块输入并最终作为摘要，SHA-3 则把状态分成 rate 与 capacity，只从 rate 部分吸收/挤出，最终输出由状态挤出而不是直接暴露链接值。这种结构假设上的差异，使 SHA-3 在设计上能抵抗长度扩展等对 Merkle-Damgård 构造成立的攻击。capacity 是安全参数：capacity 越大，rate 越小，通用攻击的复杂度上界越高。SHA3-256 的 c=512 位，SHA3-512 的 c=1024 位。FIPS 202 表 4 给出的安全强度为：SHA3-224 112 位碰撞/224 位原像，SHA3-256 128/256，SHA3-384 192/384，SHA3-512 256/512；SHAKE128/256 的碰撞强度为 min(d/2,128)/min(d/2,256)，原像强度为 min(d,128)/min(d,256)。这些数字是分析与标准政策的结果，不是永远安全的数学证明；Keccak 的安全声明以 capacity 为核心，通用攻击受 capacity 限制，但这同样不是对具体密码分析的证明。XOF 是 SHA-3 相对 SHA-2 的新能力：SHAKE 可以按需输出任意长度，不必先固定摘要长度再截断。代价是 XOF 的输出长度不影响已经产生的前缀：SHAKE128(M, d) 是 SHAKE128(M, d+e) 的前缀，这与固定长度哈希的行为不同。域后缀则保证 SHA-3 哈希、SHAKE、RawSHAKE 等不同用途的输入不会互相混淆。",
+          "used": "SHA3-224/256/384/512 是 NIST 批准的可用于所有哈希函数应用的哈希函数。SP 800-131A Rev.2 的表 8 明确把 SHA-3 家族列为可用于所有哈希函数应用；SHAKE128/256 是批准的可扩展输出函数，其具体用途由 NIST 特别出版物规定。SHAKE 的一个直接用途是 XOF：需要任意长度输出时，可以调用 SHAKE128 或 SHAKE256。SP 800-185 在 SHA-3 之上定义了 cSHAKE、KMAC、TupleHash 与 ParallelHash 四类派生函数，每类都提供 128 位与 256 位安全强度；KMAC 是 Keccak 消息认证码，提供带密钥的完整性与认证，属于 SHA-3 派生函数而不是 SHA-3 哈希本身。HMAC 也可以使用 SHA-3。FIPS 202 表 3 给出 HMAC-SHA3 的输入块长 B，它等于该 SHA-3 哈希的 rate（以字节计）：SHA3-224 为 144 字节、SHA3-256 为 136 字节、SHA3-384 为 104 字节、SHA3-512 为 72 字节。B 不是摘要长度；例如 SHA3-256 的 B=136 字节，对应 rate=1088 位。",
+          "broken": "SHA-3 目前是 NIST 批准的标准哈希家族，但这不等于没有攻击面。至少有三条边界需要理解。**长度扩展**：FIPS 202 说 SHA-3 被设计为抵抗长度扩展等攻击。它与 Merkle-Damgård 哈希不同，不能把经典的 `H(M || pad(M) || X)` 长度扩展直接套用到 SHA-3 上；这是因为海绵只从 rate 部分吸收/挤出，capacity 不直接暴露。**容量限制**：海绵的安全强度受 capacity 限制；把 SHAKE 的输出加长不会把安全强度提高到容量允许的上界以上。SHAKE128 的碰撞安全强度上限是 128 位，SHAKE256 是 256 位；输出长度 d 很小时，碰撞强度按 min(d/2, …) 下降。**XOF 的相关输出**：SHAKE 的输出长度不影响已产生的前缀。应用不能把 SHAKE 当作可随意改变输出长度的哈希：如果协议把输出长度当作安全参数，较长的输出会包含较短输出的全部比特，可能破坏域分离或密钥派生的假设。**域/rate 误用**：域后缀或 rate 用错会得到不同的输出。本批次把 SHA3-256 的域后缀换成 SHAKE 的 `1111` 后，得到的是 SHAKE256(\"abc\", 32) 的值 `483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739`，而不是 SHA3-256(\"abc\")。这类错误不会给出接近正确的结果，而是完全不同的输出。最后，NIST 的批准是标准政策，不是数学证明；具体应用仍要按容量、输出长度和域分离选型，不能把 SHA-3 当作永远安全的保证。",
+          "history": "- **2011 年 1 月 14 日**：Keccak 参考文档版本 3.0 发布，定义了 Keccak 海绵函数族与 Keccak-f 置换。- **SHA-3 竞赛**：NIST 举行公开的 SHA-3 密码哈希算法竞赛，最终选中 KECCAK；FIPS 202 的说明记载了这一结果。- **2015 年 8 月**：FIPS 202 发布，标准化 SHA3-224/256/384/512 与 SHAKE128/256。- **2016 年 12 月**：SP 800-185 发布，规定 cSHAKE、KMAC、TupleHash 与 ParallelHash 四类 SHA-3 派生函数。- **2019 年 3 月**：SP 800-131A Rev.2 发布，表 8 给出 SHA-3 家族的批准状态。",
+          "refs": "- Wikipedia search entry for SHA-3 与 Keccak. https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E4%B8%8E%20Keccak\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: SHA-3 (SHA-3 与 Keccak). SHA-3 is the six-function family defined by FIPS 202: four fixed-length hash functions, SHA3-224, SHA3-256, SHA3-384 and SHA3-512, plus two extendable-output functions, SHAKE128 and SHAKE256. All six are built on the KECCAK-p[1600,24] permutation: the state is a 5×5 array of 64-bit lanes, 1600 bits in total, and the permutation iterates for 24 rounds. SHA-3 uses the sponge construction. With rate r and capacity c, r + c = 1600. The absorb phase splits the input into r-bit blocks: each block is XORed into the first r bits of the state, followed by one KECCAK-p[1600,24] call. The squeeze phase reads output from the first r bits of the state; if more output is needed, it permutes again and continues until the requested length is reached. The capacity is not directly exposed as input or output; it is the sponge's security parameter. The six rate/capacity pairs are:\n\n| Function | Rate (bits) | Capacity (bits) | Output |\n| --- | --- | --- | --- |\n| SHA3-224 | 1152 | 448 | 224 bits |\n| SHA3-256 | 1088 | 512 | 256 bits |\n| SHA3-384 | 832 | 768 | 384 bits |\n| SHA3-512 | 576 | 1024 | 512 bits |\n| SHAKE128 | 1344 | 256 | any d bits |\n| SHAKE256 | 1088 | 512 | any d bits |\n\nPadding uses pad10*1: append a 1, enough 0 bits and a final 1 so the total length is a multiple of the rate. SHA-3 also appends a two- or four-bit domain suffix: SHA3-224/256/384/512 append `01`, while SHAKE128/256 append `1111`; the suffix puts hash-function and XOF inputs in different domains. Each KECCAK-p round applies five steps: θ does column parity mixing, ρ rotates within lanes, π permutes lanes, χ applies row-wise non-linear mixing and ι XORs a round constant. KECCAK-p[1600,24] uses 24 64-bit round constants, from 0000000000000001 through 8000000080008008; the ρ rotation amounts and π lane permutation are fixed tables. State lanes map to message/output bytes in little-endian order: the first byte of an eight-byte block enters the least significant byte of the lane. SHA3-224/256/384/512 output fixed 224/256/384/512-bit digests; SHAKE128/SHAKE256 can output any d bits. Shorter SHAKE outputs provide lower collision/preimage strength, as given by the FIPS 202 security-strength table.",
+          "why": "SHA-3 comes from NIST's public SHA-3 Cryptographic Hash Algorithm Competition: FIPS 202 states that SHA-3 is based on KECCAK, the algorithm NIST selected as the winner of that competition. The Keccak reference defines Keccak as a family of sponge functions built on the Keccak-f permutation and pad10*1; the choice of rate and capacity determines the security strength.\n\nThe sponge differs from SHA-2's Merkle-Damgård iteration: SHA-2 feeds the chaining value directly into the next block and finally uses it as the digest, while SHA-3 splits the state into rate and capacity, absorbs/squeezes only the rate part, and squeezes the final output from the state rather than exposing the chaining value directly. That structural difference is why SHA-3 is designed to resist length-extension and similar attacks that work against Merkle-Damgård constructions.\n\nCapacity is the security parameter: a larger capacity means a smaller rate and a higher generic-attack bound. SHA3-256 has c=512 bits and SHA3-512 has c=1024 bits. FIPS 202 Table 4 gives the security strengths: SHA3-224 112-bit collision/224-bit preimage, SHA3-256 128/256, SHA3-384 192/384, SHA3-512 256/512; SHAKE128/256 collision strength is min(d/2,128)/min(d/2,256) and preimage strength is min(d,128)/min(d,256). These numbers are the result of analysis and standards policy, not a mathematical proof of permanent security; the Keccak security claim is centered on capacity, and generic attacks are bounded by capacity, but that is not a proof against specific cryptanalysis.\n\nXOF is SHA-3's new capability relative to SHA-2: SHAKE can produce any requested length without first fixing a digest size and truncating. The cost is that the output length does not affect the prefix already produced: SHAKE128(M, d) is a prefix of SHAKE128(M, d+e), unlike a fixed-length hash. The domain suffix keeps SHA-3 hashes, SHAKE, RawSHAKE and other uses from being confused with one another.",
+          "used": "SHA3-224/256/384/512 are NIST-approved hash functions usable for all hash function applications. Table 8 of SP 800-131A Rev. 2 explicitly marks the SHA-3 family acceptable for all hash function applications; SHAKE128/256 are approved extendable-output functions whose specific uses are specified in NIST Special Publications.\n\nOne direct use of SHAKE is as an XOF: when an arbitrary-length output is needed, call SHAKE128 or SHAKE256. SP 800-185 defines four types of SHA-3-derived functions on top of SHA-3 - cSHAKE, KMAC, TupleHash and ParallelHash - each with 128-bit and 256-bit security strengths. KMAC is the Keccak Message Authentication Code, providing keyed integrity and authentication; it is a SHA-3-derived function, not the SHA-3 hash itself.\n\nHMAC can also use SHA-3. FIPS 202 Table 3 gives the HMAC-SHA3 input block size B, which equals the rate in bytes for that SHA-3 hash: 144 bytes for SHA3-224, 136 for SHA3-256, 104 for SHA3-384 and 72 for SHA3-512. B is not the digest length; for example, SHA3-256 has B=136 bytes, corresponding to a rate of 1088 bits.",
+          "broken": "SHA-3 is currently a NIST-approved standard hash family, but that does not mean there is no attack surface. At least three boundaries matter.\n\n**Length extension**: FIPS 202 says SHA-3 is designed to resist length-extension and similar attacks. Unlike Merkle-Damgård hashes, the classic `H(M || pad(M) || X)` length extension does not apply directly to SHA-3; the sponge absorbs and squeezes only the rate part, and the capacity is not directly exposed.\n\n**Capacity limit**: sponge security is bounded by capacity; making a SHAKE output longer does not raise security above the bound allowed by the capacity. SHAKE128's collision strength is capped at 128 bits and SHAKE256's at 256 bits; when the output length d is small, collision strength falls as min(d/2, …).\n\n**XOF related outputs**: SHAKE's output length does not affect the prefix it produces. An application must not treat SHAKE as a hash whose output length can be changed freely: if a protocol treats output length as a security parameter, a longer output contains all the bits of a shorter output, which can break domain separation or key-derivation assumptions.\n\n**Domain/rate misuse**: using the wrong domain suffix or rate produces a different output. Replacing SHA3-256's suffix with SHAKE's `1111` in this batch yields SHAKE256(\"abc\", 32) = `483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739`, not SHA3-256(\"abc\"). Such mistakes do not produce almost correct results; they produce completely different outputs.\n\nFinally, NIST approval is standards policy, not a mathematical proof; applications still need to choose capacity, output length and domain separation appropriately, and must not treat SHA-3 as a guarantee of permanent security.",
+          "history": "- **14 January 2011**: Version 3.0 of the Keccak reference is published, defining the Keccak sponge family and the Keccak-f permutation. - **SHA-3 competition**: NIST runs the public SHA-3 Cryptographic Hash Algorithm Competition and selects KECCAK; FIPS 202 records that result. - **August 2015**: FIPS 202 is published, standardizing SHA3-224/256/384/512 and SHAKE128/256. - **December 2016**: SP 800-185 is published, specifying cSHAKE, KMAC, TupleHash and ParallelHash. - **March 2019**: SP 800-131A Rev. 2 is published; Table 8 gives the approval status of the SHA-3 family.",
+          "refs": "- Wikipedia search entry for SHA-3 与 Keccak. https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E4%B8%8E%20Keccak\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "海绵构造：先按 rate 吸收输入、再从状态挤出输出的哈希构造；SHA-3 的核心结构。",
+          "rate：海绵每轮吸收/挤出的位数；SHA3-256 为 1088 位。",
+          "capacity：状态中不直接暴露的位数；c = 1600 − rate，是海绵的安全参数。",
+          "吸收（absorb）：把输入块异或进状态前 rate 位并调用置换的过程。",
+          "挤出（squeeze）：从状态前 rate 位读取输出，必要时再次置换。",
+          "状态：SHA-3 的 1600 位内部数组，由 5×5 个 64 位 lane 组成。",
+          "lane：状态的基本单元，每个 64 位；按小端字节序对应 8 个消息字节。",
+          "置换：KECCAK-p[1600,24]，对 1600 位状态执行 24 轮 θ、ρ、π、χ、ι。",
+          "Keccak-f：Keccak 的 1600 位置换；SHA-3 的 KECCAK-p[1600,24] 与它等价。",
+          "θ（theta）：列奇偶混合步骤。",
+          "ρ（rho）：lane 内循环旋转步骤。",
+          "π（pi）：lane 重排步骤。",
+          "χ（chi）：行内非线性混合步骤。",
+          "ι（iota）：异或轮常量的步骤。",
+          "轮常量：24 个 64 位常量，从 0000000000000001 到 8000000080008008。",
+          "pad10*1：追加 1、若干 0、最后 1 的填充规则，使长度成为 rate 的倍数。",
+          "域分离：用后缀（SHA3=01、SHAKE=1111）区分不同用途的输入。",
+          "SHA3：FIPS 202 的固定长度哈希函数，输出 224/256/384/512 位。",
+          "SHAKE：SHA-3 的可扩展输出函数，可以输出任意 d 位。",
+          "XOF：可扩展输出函数；输出长度可变，短输出是长输出的前缀。",
+          "cSHAKE：带自定义字符串的 SHAKE 变体，定义于 SP 800-185。",
+          "KMAC：基于 Keccak 的消息认证码，定义于 SP 800-185。",
+          "容量安全：海绵的通用安全上界由 capacity 决定；输出加长不能超过该上界。",
+          "长度扩展抵抗：SHA-3 被设计为抵抗经典 Merkle-Damgård 长度扩展；不能把 H(M||pad||X) 直接套用到海绵上。"
+        ],
+        "en": [
+          "Sponge construction: a hash construction that absorbs input at a rate and squeezes output from a state; the core structure of SHA-3.",
+          "Rate: the number of bits absorbed/squeezed per sponge step; SHA3-256 uses 1088 bits.",
+          "Capacity: the part of the state not directly exposed; c = 1600 − rate, the sponge security parameter.",
+          "Absorb: XOR an input block into the first rate bits of the state and call the permutation.",
+          "Squeeze: read output from the first rate bits of the state, permuting again if needed.",
+          "State: SHA-3's 1600-bit internal array, made of 5×5 64-bit lanes.",
+          "Lane: the basic 64-bit state unit, corresponding to eight message bytes in little-endian order.",
+          "Permutation: KECCAK-p[1600,24], which applies 24 rounds of θ, ρ, π, χ and ι to the 1600-bit state.",
+          "Keccak-f: the 1600-bit Keccak permutation; SHA-3's KECCAK-p[1600,24] is equivalent to it.",
+          "θ (theta): the column-parity mixing step.",
+          "ρ (rho): the in-lane rotation step.",
+          "π (pi): the lane permutation step.",
+          "χ (chi): the row-wise non-linear mixing step.",
+          "ι (iota): the round-constant XOR step.",
+          "Round constants: the 24 64-bit constants from 0000000000000001 through 8000000080008008.",
+          "pad10*1: append a 1, some 0 bits and a final 1, making the length a multiple of the rate.",
+          "Domain separation: distinguishing inputs by suffix (SHA3=01, SHAKE=1111).",
+          "SHA3: the FIPS 202 fixed-length hash functions with 224/256/384/512-bit outputs.",
+          "SHAKE: the SHA-3 extendable-output functions, which can output any d bits.",
+          "XOF: extendable-output function; output length is variable, and a short output is a prefix of a long output.",
+          "cSHAKE: a SHAKE variant with a customization string, defined in SP 800-185.",
+          "KMAC: the Keccak message authentication code, defined in SP 800-185.",
+          "Capacity security: the sponge's generic security bound is set by capacity; longer outputs cannot exceed that bound.",
+          "Length-extension resistance: SHA-3 is designed to resist classic Merkle-Damgård length extension; H(M||pad||X) does not carry over directly to the sponge."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sha3-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-3：FIPS 202 的海绵哈希与 SHAKE 可扩展输出：为什么需要 → 核心机制 → 边界。",
+            "en": "SHA-3: the FIPS 202 sponge hash and SHAKE extendable output: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SHA-3：FIPS 202 的海绵哈希与 SHAKE 可扩展输出 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SHA-3: the FIPS 202 sponge hash and SHAKE extendable output, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sha3-details-flow.zh.svg",
+            "en": "assets/sha3-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3bfd56676db5ba7168b1af21951a46c6ce4ea6562c92d08ce53b3cfb972d1ae4",
+            "en": "7629d55c538039100add723edd0811f6b5b244b45a97ba31ca46035f5e21141d"
+          }
+        },
+        {
+          "id": "sha3-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-3：FIPS 202 的海绵哈希与 SHAKE 可扩展输出 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SHA-3: the FIPS 202 sponge hash and SHAKE extendable output: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SHA-3：FIPS 202 的海绵哈希与 SHAKE 可扩展输出 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SHA-3: the FIPS 202 sponge hash and SHAKE extendable output, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sha3-details-r138-model.zh.svg",
+            "en": "assets/sha3-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "499e8fe75304894a172fa2ce670bbf9678b42eb3effb9696c3bc00ae9ca2531a",
+            "en": "d827431e848e5a801035061e22f80b8206672ed5ddc1643fa8253c7bda600f9c"
+          }
+        }
+      ],
+      "sources": [
+        "sha3-wikipedia",
+        "sha3-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "sha3-calc-cavp",
+          "entryId": "sha3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "24 selected NIST CAVP SHA-3 byte vectors (six short-message vectors for each of SHA3-224/256/384/512), stored in vectors.json",
+          "expected": "The teaching implementation reproduces every CAVP digest exactly, including SHA3-256 Len=0 = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a and SHA3-512 Len=0 = a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26",
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "dependencies": [
+            "sha3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Short-message CAVP vectors only; they check conformance, not collision resistance or any security property."
+        },
+        {
+          "id": "sha3-calc-abc-trace",
+          "entryId": "sha3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The SHA3-256 empty-message padding block and the state before/after the first permutation, plus the SHA3-256 abc digest, stored in vectors.json",
+          "expected": "The empty-message block starts with 06 and ends with 80; the rate is 136 bytes and the capacity is 512 bits; the first four lanes after the first permutation match the stored trace; the empty digest is a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a; the abc digest is 3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532",
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "dependencies": [
+            "sha3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One empty-message and one abc trace; the state intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+        },
+        {
+          "id": "sha3-calc-crosscheck",
+          "entryId": "sha3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "72 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA3-224/256/384/512, SHAKE128 and SHAKE256): empty, one-byte, eight-byte, 31/32/33-byte inputs and rate-boundary lengths for each variant (r-1, r, r+1, 2r-1, 2r, 2r+1)",
+          "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all rate-boundary lengths and SHAKE output lengths from 32 to 64 bytes",
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "dependencies": [
+            "sha3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-3/SHAKE in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+        },
+        {
+          "id": "sha3-calc-structure",
+          "entryId": "sha3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The six rate/capacity pairs; 24 round constants; rho rotation offsets and pi lane permutation; the empty-message padded block; the SHA3-256 domain suffix; and negative controls for the SHAKE domain suffix and missing padding",
+          "expected": "The rate/capacity table matches FIPS 202; the round constants start at 0000000000000001 and end at 8000000080008008; the empty block starts with 06 and ends with 80; using SHAKE's 1111 suffix with the SHA3-256 rate gives SHAKE256(abc,32)=483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739, not SHA3-256(abc); missing padding gives a different digest; the article's js code block is a substring of sha3-teaching.mjs; zh/en hex-token sets are identical",
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "dependencies": [
+            "sha3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security."
+        },
+        {
+          "id": "sha3-calc-shake",
+          "entryId": "sha3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "SHAKE128 and SHAKE256 outputs for empty and abc at lengths 0, 16, 32, 64 and 128 bytes, plus 32-vs-64-byte prefix checks",
+          "expected": "All stored SHAKE values match the teaching implementation; SHAKE128(abc,32)=5881092dd818bf5cf8a3ddb793fbcba74097d5c526a6d35f97b83351940f2cc8; the 32-byte output is a prefix of the 64-byte output for both SHAKE variants",
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "dependencies": [
+            "sha3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "SHAKE conformance and prefix property only; the output values are Node/OpenSSL implementation checks, not FIPS 202 appendix vectors."
+        },
+        {
+          "id": "sha3-r139-formal",
+          "entryId": "sha3-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "SHA-3 与 Keccak 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "sha3-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sha3-calc-cavp",
+      "entryId": "sha3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "24 selected NIST CAVP SHA-3 byte vectors (six short-message vectors for each of SHA3-224/256/384/512), stored in vectors.json",
+      "expected": "The teaching implementation reproduces every CAVP digest exactly, including SHA3-256 Len=0 = a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a and SHA3-512 Len=0 = a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a615b2123af1f5f94c11e3e9402c3ac558f500199d95b6d3e301758586281dcd26",
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "dependencies": [
+        "sha3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Short-message CAVP vectors only; they check conformance, not collision resistance or any security property."
+    },
+    {
+      "id": "sha3-calc-abc-trace",
+      "entryId": "sha3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The SHA3-256 empty-message padding block and the state before/after the first permutation, plus the SHA3-256 abc digest, stored in vectors.json",
+      "expected": "The empty-message block starts with 06 and ends with 80; the rate is 136 bytes and the capacity is 512 bits; the first four lanes after the first permutation match the stored trace; the empty digest is a7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a; the abc digest is 3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532",
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "dependencies": [
+        "sha3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One empty-message and one abc trace; the state intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+    },
+    {
+      "id": "sha3-calc-crosscheck",
+      "entryId": "sha3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "72 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA3-224/256/384/512, SHAKE128 and SHAKE256): empty, one-byte, eight-byte, 31/32/33-byte inputs and rate-boundary lengths for each variant (r-1, r, r+1, 2r-1, 2r, 2r+1)",
+      "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all rate-boundary lengths and SHAKE output lengths from 32 to 64 bytes",
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "dependencies": [
+        "sha3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-3/SHAKE in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+    },
+    {
+      "id": "sha3-calc-structure",
+      "entryId": "sha3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The six rate/capacity pairs; 24 round constants; rho rotation offsets and pi lane permutation; the empty-message padded block; the SHA3-256 domain suffix; and negative controls for the SHAKE domain suffix and missing padding",
+      "expected": "The rate/capacity table matches FIPS 202; the round constants start at 0000000000000001 and end at 8000000080008008; the empty block starts with 06 and ends with 80; using SHAKE's 1111 suffix with the SHA3-256 rate gives SHAKE256(abc,32)=483366601360a8771c6863080cc4114d8db44530f8f1e1ee4f94ea37e78b5739, not SHA3-256(abc); missing padding gives a different digest; the article's js code block is a substring of sha3-teaching.mjs; zh/en hex-token sets are identical",
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "dependencies": [
+        "sha3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security."
+    },
+    {
+      "id": "sha3-calc-shake",
+      "entryId": "sha3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "SHAKE128 and SHAKE256 outputs for empty and abc at lengths 0, 16, 32, 64 and 128 bytes, plus 32-vs-64-byte prefix checks",
+      "expected": "All stored SHAKE values match the teaching implementation; SHAKE128(abc,32)=5881092dd818bf5cf8a3ddb793fbcba74097d5c526a6d35f97b83351940f2cc8; the 32-byte output is a prefix of the 64-byte output for both SHAKE variants",
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "dependencies": [
+        "sha3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "SHAKE conformance and prefix property only; the output values are Node/OpenSSL implementation checks, not FIPS 202 appendix vectors."
+    },
+    {
+      "id": "sha3-r139-formal",
+      "entryId": "sha3-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "SHA-3 与 Keccak 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "sha3-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

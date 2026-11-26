@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "plonk-details",
+  "sources": [
+    {
+      "id": "plonk-wikipedia",
+      "title": "Wikipedia search entry for PLONK 通用证明系统",
+      "url": "https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: PLONK 通用证明系统",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "plonk-r139-principle",
+          "entryId": "plonk-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：PLONK 通用证明系统（PLONK）。### 通用 SRS 上的电路证明\n\nPLONK 把算术电路写成门约束加复制约束：每个门是加法和乘法，复制约束用置换论证保证同一根线在不同位置取相同值。证明者用多项式承诺（通常 KZG）承诺线值、置换多项式和商多项式，验证者检查若干 opening。它使用**通用且可更新的结构化参考串（SRS）**：同一套参数可证明任意不超过容量上限的电路，不再为每个电路单独做 ceremony。",
+            "en": "**Algorithm**: PLONK (PLONK 通用证明系统).### Circuit proofs over a universal SRS\n\nPLONK encodes an arithmetic circuit as gate constraints plus copy constraints: each gate is addition or multiplication, and a permutation argument enforces that the same wire carries the same value at different positions."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        },
+        {
+          "id": "plonk-r139-why",
+          "entryId": "plonk-details",
+          "section": "why",
+          "statement": {
+            "zh": "PLONK 解决了 Groth16 的“每电路一次设置”问题。通用 SRS 可以由多方 ceremony 更新，只要有一个参与者诚实，参数就安全；这让开发者可以复用参数、快速迭代电路。它的证明仍是常数大小，验证是亚线性的；与 Sonic 相比，prover 的群指数运算显著减少，适合实际部署。",
+            "en": "PLONK removes Groth16’s “one setup per circuit” problem.A universal SRS can be updated by a multi-party ceremony; security holds if at least one participant is honest, so developers can reuse parameters and iterate on circuits quickly."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        },
+        {
+          "id": "plonk-r139-used",
+          "entryId": "plonk-details",
+          "section": "used",
+          "statement": {
+            "zh": "PLONK 及其变体（TurboPLONK、UltraPLONK、PlonKup）被 Aztec、zkSync 等隐私/扩容项目使用；自定义门和 lookup 表让哈希、范围检查等操作更便宜。它也是“通用 zk-SNARK”教学与工程化的主流入口：Circom、Halo2、snarkjs 等工具链都提供 PLONK 风格后端。",
+            "en": "PLONK and its variants (TurboPLONK, UltraPLONK, PlonKup) are used by Aztec, zkSync and other privacy/scaling projects; custom gates and lookup tables make hashes and range checks cheaper.It is also the main entry point for engineering universal zk-SNARKs: Circom, Halo2 and snarkjs offer PLONK-style backends."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        },
+        {
+          "id": "plonk-r139-broken",
+          "entryId": "plonk-details",
+          "section": "broken",
+          "statement": {
+            "zh": "PLONK 的通用 SRS 仍是可信设置：KZG 依赖配对群和 q-SDH 类假设，不是后量子安全。证明大小虽为常数，但通常比 Groth16 大，验证也更重。原始 PLONK 的零知识性曾被指出论述不完整，后续版本修补了模拟器问题；实现时必须使用修补后的规范，并严格做域分离、挑战生成和多项式承诺校验。### 形式模型。",
+            "en": "PLONK’s universal SRS is still a trusted setup: KZG relies on pairing groups and q-SDH-style assumptions, so it is not post-quantum.Proofs are constant-size but usually larger than Groth16, and verification is heavier."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        },
+        {
+          "id": "plonk-r139-history",
+          "entryId": "plonk-details",
+          "section": "history",
+          "statement": {
+            "zh": "Ariel Gabizon、Zac Williamson 与 Oana Ciobotaru 在 2019 年发布 ePrint 2019/953，提出 PLONK。论文强调“在乘法子群上取值”而非单项式系数，简化了置换论证和算术化。TurboPLONK、UltraPLONK 与 PlonKup 随后扩展了自定义门、lookup 和更高效的证明生成；PLONK 成为通用 SNARK 的重要家族名。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：PLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Ariel Gabizon, Zac Williamson and Oana Ciobotaru released PLONK as ePrint 2019/953 in 2019.The paper emphasizes “evaluations on a multiplicative subgroup rather than coefficients of monomials”, simplifying both the permutation argument and arithmetization."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        },
+        {
+          "id": "plonk-r139-refs",
+          "entryId": "plonk-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for PLONK 通用证明系统.https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for PLONK 通用证明系统.https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "plonk-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "plonk-wikipedia"
+      ]
+    },
+    {
+      "id": "plonk-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "plonk-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "plonk-r139-principle",
+      "entryId": "plonk-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：PLONK 通用证明系统（PLONK）。### 通用 SRS 上的电路证明\n\nPLONK 把算术电路写成门约束加复制约束：每个门是加法和乘法，复制约束用置换论证保证同一根线在不同位置取相同值。证明者用多项式承诺（通常 KZG）承诺线值、置换多项式和商多项式，验证者检查若干 opening。它使用**通用且可更新的结构化参考串（SRS）**：同一套参数可证明任意不超过容量上限的电路，不再为每个电路单独做 ceremony。",
+        "en": "**Algorithm**: PLONK (PLONK 通用证明系统).### Circuit proofs over a universal SRS\n\nPLONK encodes an arithmetic circuit as gate constraints plus copy constraints: each gate is addition or multiplication, and a permutation argument enforces that the same wire carries the same value at different positions."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    },
+    {
+      "id": "plonk-r139-why",
+      "entryId": "plonk-details",
+      "section": "why",
+      "statement": {
+        "zh": "PLONK 解决了 Groth16 的“每电路一次设置”问题。通用 SRS 可以由多方 ceremony 更新，只要有一个参与者诚实，参数就安全；这让开发者可以复用参数、快速迭代电路。它的证明仍是常数大小，验证是亚线性的；与 Sonic 相比，prover 的群指数运算显著减少，适合实际部署。",
+        "en": "PLONK removes Groth16’s “one setup per circuit” problem.A universal SRS can be updated by a multi-party ceremony; security holds if at least one participant is honest, so developers can reuse parameters and iterate on circuits quickly."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    },
+    {
+      "id": "plonk-r139-used",
+      "entryId": "plonk-details",
+      "section": "used",
+      "statement": {
+        "zh": "PLONK 及其变体（TurboPLONK、UltraPLONK、PlonKup）被 Aztec、zkSync 等隐私/扩容项目使用；自定义门和 lookup 表让哈希、范围检查等操作更便宜。它也是“通用 zk-SNARK”教学与工程化的主流入口：Circom、Halo2、snarkjs 等工具链都提供 PLONK 风格后端。",
+        "en": "PLONK and its variants (TurboPLONK, UltraPLONK, PlonKup) are used by Aztec, zkSync and other privacy/scaling projects; custom gates and lookup tables make hashes and range checks cheaper.It is also the main entry point for engineering universal zk-SNARKs: Circom, Halo2 and snarkjs offer PLONK-style backends."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    },
+    {
+      "id": "plonk-r139-broken",
+      "entryId": "plonk-details",
+      "section": "broken",
+      "statement": {
+        "zh": "PLONK 的通用 SRS 仍是可信设置：KZG 依赖配对群和 q-SDH 类假设，不是后量子安全。证明大小虽为常数，但通常比 Groth16 大，验证也更重。原始 PLONK 的零知识性曾被指出论述不完整，后续版本修补了模拟器问题；实现时必须使用修补后的规范，并严格做域分离、挑战生成和多项式承诺校验。### 形式模型。",
+        "en": "PLONK’s universal SRS is still a trusted setup: KZG relies on pairing groups and q-SDH-style assumptions, so it is not post-quantum.Proofs are constant-size but usually larger than Groth16, and verification is heavier."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    },
+    {
+      "id": "plonk-r139-history",
+      "entryId": "plonk-details",
+      "section": "history",
+      "statement": {
+        "zh": "Ariel Gabizon、Zac Williamson 与 Oana Ciobotaru 在 2019 年发布 ePrint 2019/953，提出 PLONK。论文强调“在乘法子群上取值”而非单项式系数，简化了置换论证和算术化。TurboPLONK、UltraPLONK 与 PlonKup 随后扩展了自定义门、lookup 和更高效的证明生成；PLONK 成为通用 SNARK 的重要家族名。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：PLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Ariel Gabizon, Zac Williamson and Oana Ciobotaru released PLONK as ePrint 2019/953 in 2019.The paper emphasizes “evaluations on a multiplicative subgroup rather than coefficients of monomials”, simplifying both the permutation argument and arithmetization."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    },
+    {
+      "id": "plonk-r139-refs",
+      "entryId": "plonk-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for PLONK 通用证明系统.https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for PLONK 通用证明系统.https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "plonk-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

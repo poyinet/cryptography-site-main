@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--distinguishing-attack-details",
+  "sources": [
+    {
+      "id": "attack--distinguishing-attack-wikipedia",
+      "title": "Wikipedia search entry for 区分攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 区分攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--distinguishing-attack-r139-principle",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：区分攻击（Distinguishing Attack）。区分攻击用统计检验判断密码输出更像随机序列还是某个密码的输出；它不一定恢复密钥，但能证明输出存在可检测的非随机偏差。",
+            "en": "**Attack**: Distinguishing Attack (区分攻击).A distinguishing attack uses a statistical test to decide whether cipher output looks random or like the output of a particular cipher; it need not recover the key, but it demonstrates a detectable non-random bias."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--distinguishing-attack-r139-why",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "只要输出分布与均匀随机有可测量的偏差，攻击者就能区分；偏差越大、所需输出越少，区分攻击越强。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Any measurable deviation from a uniform random distribution lets an attacker distinguish; the larger the bias and the less output required, the stronger the distinguishing attack.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--distinguishing-attack-r139-used",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文精确计算小输出宽度（n=3–5）的双字节概率，并外推到 8 位 RC4：只需约 2^30.6 字节输出（在 10% 假阳性/假阴性下）即可把 RC4 与随机序列区分开；它还观察到有时能以非平凡概率确定部分内部状态。",
+            "en": "The paper computes digraph probabilities exactly for small output widths (n=3–5) and extrapolates to 8-bit RC4: about 2^30.6 bytes of output (at 10% false-positive/false-negative rates) suffice to distinguish RC4 from randomness; it also observes that parts of the internal state can sometimes be determined with non-trivial probability.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--distinguishing-attack-r139-broken",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "区分攻击需要足够多的输出和正确的统计模型；它本身不等于密钥恢复，输出越多统计检验越强，但后续处理或参数变化可能改变可观测偏差。",
+            "en": "A distinguishing attack requires enough output and a correct statistical model; it is not equivalent to key recovery, more output strengthens the statistical test, and subsequent processing or parameter changes can alter the observable bias.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--distinguishing-attack-r139-history",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Fluhrer 和 McGrew 在 2000 年 FSE 论文中系统计算 RC4 双字节偏差，并给出当时输出量最低的 RC4 区分攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「区分攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 区分攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Fluhrer and McGrew systematically computed RC4 digraph biases in their 2000 FSE paper and gave the RC4 distinguishing attack with the lowest output requirement at the time.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--distinguishing-attack-r139-refs",
+          "entryId": "attack--distinguishing-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 区分攻击.https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 区分攻击.https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--distinguishing-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--distinguishing-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--distinguishing-attack-r139-principle",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：区分攻击（Distinguishing Attack）。区分攻击用统计检验判断密码输出更像随机序列还是某个密码的输出；它不一定恢复密钥，但能证明输出存在可检测的非随机偏差。",
+        "en": "**Attack**: Distinguishing Attack (区分攻击).A distinguishing attack uses a statistical test to decide whether cipher output looks random or like the output of a particular cipher; it need not recover the key, but it demonstrates a detectable non-random bias."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-r139-why",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "只要输出分布与均匀随机有可测量的偏差，攻击者就能区分；偏差越大、所需输出越少，区分攻击越强。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Any measurable deviation from a uniform random distribution lets an attacker distinguish; the larger the bias and the less output required, the stronger the distinguishing attack.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-r139-used",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文精确计算小输出宽度（n=3–5）的双字节概率，并外推到 8 位 RC4：只需约 2^30.6 字节输出（在 10% 假阳性/假阴性下）即可把 RC4 与随机序列区分开；它还观察到有时能以非平凡概率确定部分内部状态。",
+        "en": "The paper computes digraph probabilities exactly for small output widths (n=3–5) and extrapolates to 8-bit RC4: about 2^30.6 bytes of output (at 10% false-positive/false-negative rates) suffice to distinguish RC4 from randomness; it also observes that parts of the internal state can sometimes be determined with non-trivial probability.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-r139-broken",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "区分攻击需要足够多的输出和正确的统计模型；它本身不等于密钥恢复，输出越多统计检验越强，但后续处理或参数变化可能改变可观测偏差。",
+        "en": "A distinguishing attack requires enough output and a correct statistical model; it is not equivalent to key recovery, more output strengthens the statistical test, and subsequent processing or parameter changes can alter the observable bias.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-r139-history",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Fluhrer 和 McGrew 在 2000 年 FSE 论文中系统计算 RC4 双字节偏差，并给出当时输出量最低的 RC4 区分攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「区分攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：区分攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 区分攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Fluhrer and McGrew systematically computed RC4 digraph biases in their 2000 FSE paper and gave the RC4 distinguishing attack with the lowest output requirement at the time.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--distinguishing-attack-r139-refs",
+      "entryId": "attack--distinguishing-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 区分攻击.https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 区分攻击.https://zh.wikipedia.org/w/index.php?search=%E5%8C%BA%E5%88%86%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--distinguishing-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

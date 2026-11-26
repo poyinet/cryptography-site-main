@@ -1,0 +1,85 @@
+[
+  {
+    "id": "md5-calc-rfc-suite",
+    "entryId": "md5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 1321 Appendix A.5's seven test messages and their printed digests, stored in vectors.json",
+    "expected": "The teaching implementation reproduces all seven digests exactly, including MD5(\"\")=d41d8cd98f00b204e9800998ecf8427e and MD5(\"abc\")=900150983cd24fb0d6963f7d28e17f72",
+    "sourceIds": [
+      "rfc1321"
+    ],
+    "dependencies": [
+      "md5-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Seven short unkeyed messages only; they cover just the 62- and 80-byte multi-block cases and are correctness checks, not security tests."
+  },
+  {
+    "id": "md5-calc-abc-trace",
+    "entryId": "md5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The single-block computation of \"abc\": block words X[0]=0x80636261 (message bytes plus the 0x80 pad bit), X[14]=0x00000018, X[15]=0, the IV, the first-step chain (F value, sum before rotation, rotated value, value after adding B) and the after-round register quadruples stored in vectors.json",
+    "expected": "The step-1 chain, the after-round1/2/3/4 register values and the final digest in vectors.json equal the teaching implementation's trace, and the digest equals the RFC A.5 value 900150983cd24fb0d6963f7d28e17f72",
+    "sourceIds": [
+      "rfc1321"
+    ],
+    "dependencies": [
+      "md5-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One single-block trace; the per-round and per-step intermediates are produced by the teaching implementation itself, so this calculation pins the worked example's numbers but is not an external oracle for them."
+  },
+  {
+    "id": "md5-calc-crosscheck",
+    "entryId": "md5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "21 deterministic cross-check cases produced with an external oracle (Node's OpenSSL-backed crypto.createHash('md5') and crypto.createHmac('md5')): the seven RFC messages, LCG byte strings of lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128, 129, UTF-16LE empty and \"test\" inputs, and one million repetitions of \"a\"; plus the separate MS-NLMP NTOWFv2 HMAC-MD5 chain",
+    "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths, the UTF-16LE inputs, the 15,626-block million-character input and NTOWFv2(\"Password\",\"User\",\"Domain\")=0c868a403bfd7a93a3001ef22ef02e3f",
+    "sourceIds": [
+      "rfc1321",
+      "ms-nlmp"
+    ],
+    "dependencies": [
+      "md5-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system MD5 in Node/OpenSSL 3.5.5, which is a different codebase but not an independently certified one."
+  },
+  {
+    "id": "md5-calc-structure",
+    "entryId": "md5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The IV words and the C=not(A), D=not(B) property; the 64 formula-generated T constants compared one by one against the constants inlined in RFC 1321 Appendix A.3; the four message-word schedules as permutations of 0..15 and the four shift cycles; padding boundary cases; Dobbertin's semi free-start IV; and negative controls for big-endian parsing, a wrong rotation, dropping the post-rotation add-back, substituting MD4's majority function, using MD4's word schedules and omitting feed-forward",
+    "expected": "IV and constants match the RFC exactly; each round schedule is a permutation of 0..15; the 56-mod-64 length gets an extra block; the formula T[i]=floor(4294967296*abs(sin(i))) reproduces all 64 appendix constants; big-endian parsing, a wrong rotation, dropping the add-back, MD4's G function, MD4's schedules and missing feed-forward all fail to reproduce the RFC abc digest",
+    "sourceIds": [
+      "rfc1321",
+      "rfc1320",
+      "wang-md5-2005"
+    ],
+    "dependencies": [
+      "md5-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the implementation follows the RFC's shape and that the shape is load-bearing, but they prove nothing about security."
+  }
+]

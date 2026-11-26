@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--contact-analysis-details",
+  "sources": [
+    {
+      "id": "attack--contact-analysis-wikipedia",
+      "title": "Wikipedia search entry for 接触分析",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 接触分析",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--contact-analysis-r139-principle",
+          "entryId": "attack--contact-analysis-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：接触分析（Contact Analysis）。接触分析（contact analysis / contact chaining）把通信元数据建成图：节点是电话号码、账号、设备或身份标识，边是通话、短信、邮件等接触事件，边权可以是次数、时长或时间窗。从已知目标 s 出发，一跳邻居 Γ(s) 是直接接触者，k 跳集合 C_k(s)={v | d_G(s,v)≤k} 是扩展接触链。候选关联可用共同邻居与相似度排序：CN(a,b)=|Γ(a)∩Γ(b)|；Jaccard J(a,b)=|Γ(a)∩Γ(b)|/|Γ(a)∪Γ(b)|；Adamic-Adar AA(a,b)=Σ_{z∈Γ(a)∩Γ(b)}1/log deg(z)。这些分数不是罪证，只是把“谁与谁可能相识”变成可排序的假设。评估用阈值 τ：score≥τ 判为正候选，再以 precision=TP/(TP+FP)、recall=TP/(TP+FN) 权衡。k 增大覆盖更广，但 |C_k| 和误报也会上升；所以调查设计同时受 hop 数、时间窗、节点类型和复核能力约束。",
+            "en": "**Attack**: Contact Analysis (接触分析).Contact analysis, or contact chaining, turns communication metadata into a graph."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--contact-analysis-r139-why",
+          "entryId": "attack--contact-analysis-details",
+          "section": "why",
+          "statement": {
+            "zh": "接触链能把分散的通信记录变成网络结构，帮助找到直接联系人、共同联系人、桥梁节点和孤立子网。它对反恐、反欺诈、执法和事件响应有价值，但也是隐私争议核心：元数据虽不含内容，仍能推断关系、位置、作息和社交圈。关键区别：contact chaining 产生的是“可疑关联”，不是“有罪关联”。必须把发现、复核、清除和审计分开，避免把图上的边当成事实。",
+            "en": "Contact chains turn scattered records into network structure and help find direct contacts, shared contacts, bridge nodes and isolated subnetworks.They matter for counterterrorism, fraud, law enforcement and incident response, but they are also a privacy fault line: metadata has no content, yet it can reveal relationships, location, routines and social circles."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--contact-analysis-r139-used",
+          "entryId": "attack--contact-analysis-details",
+          "section": "used",
+          "statement": {
+            "zh": "步骤：1）定义节点、边与时间窗；2）从种子号码做 1..k 跳扩展；3）计算共同邻居、Jaccard、Adamic-Adar；4）按 τ 排序候选；5）人工复核共享号码、NAT、客服/总机、二次验证号；6）记录 precision/recall 与删除策略。对抗性场景要限制查询范围、留存期和结果使用；对高 degree 枢纽（客服、VoIP 网关、短信号）要单独处理，否则两跳会因枢纽把大量无关用户连在一起。",
+            "en": "Steps: 1) define nodes, edges and a time window; 2) expand 1..k hops from the seed; 3) compute common neighbors, Jaccard and Adamic-Adar; 4) rank candidates by τ; 5) review shared numbers, NAT, support lines, switchboards and two-factor numbers; 6) record precision/recall and a deletion policy.In adversarial settings, limit query scope, retention and use of results."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--contact-analysis-r139-broken",
+          "entryId": "attack--contact-analysis-details",
+          "section": "broken",
+          "statement": {
+            "zh": "失效：元数据错误、号码复用、共享手机、NAT/运营商代理、一次性号码；加密只隐藏内容，不隐藏元数据；k 跳扩展会指数级放大误报；ground truth 缺失使 precision/recall 不可信；法律授权与留存边界可能让结果不可用。",
+            "en": "Failure modes: metadata errors, number reuse, shared phones, NAT/carrier proxies, disposable numbers; encryption hides content, not metadata; k-hop expansion multiplies false positives; missing ground truth makes precision/recall unreliable; legal authorization and retention limits may make results unusable."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--contact-analysis-r139-history",
+          "entryId": "attack--contact-analysis-details",
+          "section": "history",
+          "statement": {
+            "zh": "SIGINT 的 contact chaining 在 20 世纪中后期成熟；2013 年斯诺登披露 NSA 国内电话元数据项目后，三跳/两跳、五年/十八个月留存成为公共争论。2015 年美国国家科学院报告把 contact chaining 作为技术选项之一；2016 年开源论文提出可审计的接触链协议；电话元数据研究显示高 degree 枢纽会让“两跳”覆盖远超直觉。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "SIGINT contact chaining matured in the mid-to-late 20th century.After the 2013 Snowden disclosures of the NSA domestic telephone metadata program, three hops versus two hops and five years versus eighteen months became public disputes."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--contact-analysis-r139-refs",
+          "entryId": "attack--contact-analysis-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 接触分析.https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 接触分析.https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--contact-analysis-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--contact-analysis-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--contact-analysis-r139-principle",
+      "entryId": "attack--contact-analysis-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：接触分析（Contact Analysis）。接触分析（contact analysis / contact chaining）把通信元数据建成图：节点是电话号码、账号、设备或身份标识，边是通话、短信、邮件等接触事件，边权可以是次数、时长或时间窗。从已知目标 s 出发，一跳邻居 Γ(s) 是直接接触者，k 跳集合 C_k(s)={v | d_G(s,v)≤k} 是扩展接触链。候选关联可用共同邻居与相似度排序：CN(a,b)=|Γ(a)∩Γ(b)|；Jaccard J(a,b)=|Γ(a)∩Γ(b)|/|Γ(a)∪Γ(b)|；Adamic-Adar AA(a,b)=Σ_{z∈Γ(a)∩Γ(b)}1/log deg(z)。这些分数不是罪证，只是把“谁与谁可能相识”变成可排序的假设。评估用阈值 τ：score≥τ 判为正候选，再以 precision=TP/(TP+FP)、recall=TP/(TP+FN) 权衡。k 增大覆盖更广，但 |C_k| 和误报也会上升；所以调查设计同时受 hop 数、时间窗、节点类型和复核能力约束。",
+        "en": "**Attack**: Contact Analysis (接触分析).Contact analysis, or contact chaining, turns communication metadata into a graph."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-r139-why",
+      "entryId": "attack--contact-analysis-details",
+      "section": "why",
+      "statement": {
+        "zh": "接触链能把分散的通信记录变成网络结构，帮助找到直接联系人、共同联系人、桥梁节点和孤立子网。它对反恐、反欺诈、执法和事件响应有价值，但也是隐私争议核心：元数据虽不含内容，仍能推断关系、位置、作息和社交圈。关键区别：contact chaining 产生的是“可疑关联”，不是“有罪关联”。必须把发现、复核、清除和审计分开，避免把图上的边当成事实。",
+        "en": "Contact chains turn scattered records into network structure and help find direct contacts, shared contacts, bridge nodes and isolated subnetworks.They matter for counterterrorism, fraud, law enforcement and incident response, but they are also a privacy fault line: metadata has no content, yet it can reveal relationships, location, routines and social circles."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-r139-used",
+      "entryId": "attack--contact-analysis-details",
+      "section": "used",
+      "statement": {
+        "zh": "步骤：1）定义节点、边与时间窗；2）从种子号码做 1..k 跳扩展；3）计算共同邻居、Jaccard、Adamic-Adar；4）按 τ 排序候选；5）人工复核共享号码、NAT、客服/总机、二次验证号；6）记录 precision/recall 与删除策略。对抗性场景要限制查询范围、留存期和结果使用；对高 degree 枢纽（客服、VoIP 网关、短信号）要单独处理，否则两跳会因枢纽把大量无关用户连在一起。",
+        "en": "Steps: 1) define nodes, edges and a time window; 2) expand 1..k hops from the seed; 3) compute common neighbors, Jaccard and Adamic-Adar; 4) rank candidates by τ; 5) review shared numbers, NAT, support lines, switchboards and two-factor numbers; 6) record precision/recall and a deletion policy.In adversarial settings, limit query scope, retention and use of results."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-r139-broken",
+      "entryId": "attack--contact-analysis-details",
+      "section": "broken",
+      "statement": {
+        "zh": "失效：元数据错误、号码复用、共享手机、NAT/运营商代理、一次性号码；加密只隐藏内容，不隐藏元数据；k 跳扩展会指数级放大误报；ground truth 缺失使 precision/recall 不可信；法律授权与留存边界可能让结果不可用。",
+        "en": "Failure modes: metadata errors, number reuse, shared phones, NAT/carrier proxies, disposable numbers; encryption hides content, not metadata; k-hop expansion multiplies false positives; missing ground truth makes precision/recall unreliable; legal authorization and retention limits may make results unusable."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-r139-history",
+      "entryId": "attack--contact-analysis-details",
+      "section": "history",
+      "statement": {
+        "zh": "SIGINT 的 contact chaining 在 20 世纪中后期成熟；2013 年斯诺登披露 NSA 国内电话元数据项目后，三跳/两跳、五年/十八个月留存成为公共争论。2015 年美国国家科学院报告把 contact chaining 作为技术选项之一；2016 年开源论文提出可审计的接触链协议；电话元数据研究显示高 degree 枢纽会让“两跳”覆盖远超直觉。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "SIGINT contact chaining matured in the mid-to-late 20th century.After the 2013 Snowden disclosures of the NSA domestic telephone metadata program, three hops versus two hops and five years versus eighteen months became public disputes."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--contact-analysis-r139-refs",
+      "entryId": "attack--contact-analysis-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 接触分析.https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 接触分析.https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--contact-analysis-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

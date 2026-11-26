@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tls10-details",
+  "sources": [
+    {
+      "id": "tls10-wikipedia",
+      "title": "Wikipedia search entry for TLS 1.0",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TLS%201.0",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TLS 1.0",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tls10-r139-principle",
+          "entryId": "tls10-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：TLS 1.0（TLS 1.0）。RFC 2246 §1 给出目标与分层：「The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications.The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.」记录层负责分块、可选压缩、加 MAC 与加密，握手层在此之前完成认证与密钥协商。",
+            "en": "**Protocol**: TLS 1.0 (TLS 1.0).RFC 2246 §1 gives the goal and the layering: \"The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        },
+        {
+          "id": "tls10-r139-why",
+          "entryId": "tls10-details",
+          "section": "why",
+          "statement": {
+            "zh": "它是把加密从各应用里搬进公共一层的第一步：§3 交代血统「This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.」，§6 则把记录层的处理顺序钉死：「The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.」。",
+            "en": "This was the first step in moving crypto out of each application into a shared layer: §3 gives the lineage \"This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.\" and §6 fixes the record order: \"The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        },
+        {
+          "id": "tls10-r139-used",
+          "entryId": "tls10-details",
+          "section": "used",
+          "statement": {
+            "zh": "规范给出的强制基线只有一条：§9 写明「In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.」压缩方面 §6.2.2 只加尺寸限制——「Compression must be lossless and may not increase the content length by more than 1024 bytes.」该条目目只述规范，不谈部署规模。",
+            "en": "The specification sets one mandatory baseline: §9 says \"In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.\" On compression §6.2.2 only bounds size — \"Compression must be lossless and may not increase the content length by more than 1024 bytes.\" This entry stays with the specification and makes no deployment claims.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        },
+        {
+          "id": "tls10-r139-broken",
+          "entryId": "tls10-details",
+          "section": "broken",
+          "statement": {
+            "zh": "两处在文档内部就留下隐患：CBC 的 IV 是隐式的，§6.2.3.2 说明「The IV for subsequent records is the last ciphertext block from the previous record.」，使相邻记录的 IV 可被预测；§3 又承认 TLS 1.0 与 SSL 3.0「do not interoperate」，同时保留了可回落 SSL 3.0 的机制。附录 D.4 仅以非规范措辞劝阻 40 位加密与匿名 Diffie-Hellman，本文件没有把任何套件判死。",
+            "en": "Two weaknesses are visible inside the document: the CBC IV is implicit — §6.2.3.2 states \"The IV for subsequent records is the last ciphertext block from the previous record.\", making successive IVs predictable — and §3 concedes TLS 1.0 and SSL 3.0 \"do not interoperate\" while keeping a mechanism to back down to SSL 3.0.Appendix D.4 discourages 40-bit encryption and anonymous Diffie-Hellman only in non-normative prose; no suite is declared broken here."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        },
+        {
+          "id": "tls10-r139-history",
+          "entryId": "tls10-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 2246 头部为 T.Dierks 与 C.Allen（Certicom），类别 Standards Track，日期 1999 年 1 月，既没有 Obsoletes 也没有 Updates 行；摘要自陈「This document specifies Version 1.0 of the Transport Layer Security (TLS) protocol.」，是 TLS 家族的第一份文档。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "The RFC 2246 header lists T.Dierks and C."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        },
+        {
+          "id": "tls10-r139-refs",
+          "entryId": "tls10-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TLS 1.0.https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 2246: The TLS Protocol Version 1.0.https://www.rfc-editor.org/rfc/rfc2246。",
+            "en": "- Wikipedia search entry for TLS 1.0.https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tls10-reference-ref",
+            "tls10-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "tls10-wikipedia"
+      ]
+    },
+    {
+      "id": "tls10-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls10-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "tls10-specific",
+      "title": "RFC 2246: The TLS Protocol Version 1.0",
+      "url": "https://www.rfc-editor.org/rfc/rfc2246",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls10-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tls10-r139-principle",
+      "entryId": "tls10-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：TLS 1.0（TLS 1.0）。RFC 2246 §1 给出目标与分层：「The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications.The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.」记录层负责分块、可选压缩、加 MAC 与加密，握手层在此之前完成认证与密钥协商。",
+        "en": "**Protocol**: TLS 1.0 (TLS 1.0).RFC 2246 §1 gives the goal and the layering: \"The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    },
+    {
+      "id": "tls10-r139-why",
+      "entryId": "tls10-details",
+      "section": "why",
+      "statement": {
+        "zh": "它是把加密从各应用里搬进公共一层的第一步：§3 交代血统「This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.」，§6 则把记录层的处理顺序钉死：「The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.」。",
+        "en": "This was the first step in moving crypto out of each application into a shared layer: §3 gives the lineage \"This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.\" and §6 fixes the record order: \"The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    },
+    {
+      "id": "tls10-r139-used",
+      "entryId": "tls10-details",
+      "section": "used",
+      "statement": {
+        "zh": "规范给出的强制基线只有一条：§9 写明「In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.」压缩方面 §6.2.2 只加尺寸限制——「Compression must be lossless and may not increase the content length by more than 1024 bytes.」该条目目只述规范，不谈部署规模。",
+        "en": "The specification sets one mandatory baseline: §9 says \"In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.\" On compression §6.2.2 only bounds size — \"Compression must be lossless and may not increase the content length by more than 1024 bytes.\" This entry stays with the specification and makes no deployment claims.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    },
+    {
+      "id": "tls10-r139-broken",
+      "entryId": "tls10-details",
+      "section": "broken",
+      "statement": {
+        "zh": "两处在文档内部就留下隐患：CBC 的 IV 是隐式的，§6.2.3.2 说明「The IV for subsequent records is the last ciphertext block from the previous record.」，使相邻记录的 IV 可被预测；§3 又承认 TLS 1.0 与 SSL 3.0「do not interoperate」，同时保留了可回落 SSL 3.0 的机制。附录 D.4 仅以非规范措辞劝阻 40 位加密与匿名 Diffie-Hellman，本文件没有把任何套件判死。",
+        "en": "Two weaknesses are visible inside the document: the CBC IV is implicit — §6.2.3.2 states \"The IV for subsequent records is the last ciphertext block from the previous record.\", making successive IVs predictable — and §3 concedes TLS 1.0 and SSL 3.0 \"do not interoperate\" while keeping a mechanism to back down to SSL 3.0.Appendix D.4 discourages 40-bit encryption and anonymous Diffie-Hellman only in non-normative prose; no suite is declared broken here."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    },
+    {
+      "id": "tls10-r139-history",
+      "entryId": "tls10-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 2246 头部为 T.Dierks 与 C.Allen（Certicom），类别 Standards Track，日期 1999 年 1 月，既没有 Obsoletes 也没有 Updates 行；摘要自陈「This document specifies Version 1.0 of the Transport Layer Security (TLS) protocol.」，是 TLS 家族的第一份文档。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "The RFC 2246 header lists T.Dierks and C."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    },
+    {
+      "id": "tls10-r139-refs",
+      "entryId": "tls10-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TLS 1.0.https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 2246: The TLS Protocol Version 1.0.https://www.rfc-editor.org/rfc/rfc2246。",
+        "en": "- Wikipedia search entry for TLS 1.0.https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

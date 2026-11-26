@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for dsa: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "dsa-details",
+      "inventoryIds": [
+        "dsa"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释DSA 数字签名算法的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of DSA (Digital Signature Algorithm): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "DSA 数字签名算法",
+        "en": "DSA (Digital Signature Algorithm)"
+      },
+      "claimIds": [
+        "dsa-r139-principle",
+        "dsa-r139-why",
+        "dsa-r139-used",
+        "dsa-r139-broken",
+        "dsa-r139-history",
+        "dsa-r139-refs"
+      ],
+      "sourceIds": [
+        "dsa-wikipedia",
+        "dsa-reference-ref"
+      ],
+      "related": [
+        "digital-signature",
+        "transport-layer-security",
+        "post-quantum-cryptography"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：DSA 数字签名算法（Digital Signature Algorithm）。数字签名用于检测数据是否被未授权修改并认证签署者身份，即所谓不可否认性。数字签名算法（DSA）由 FIPS 186 系列的早期版本批准用于签名生成；FIPS 186-5 写明「This standard no longer approves the DSA for digital signature generation」，但「the DSA may be used to verify signatures generated prior to the implementation date of this standard」，并把 DSA 的完整规范指回 FIPS 186-4。",
+          "why": "FIPS 186-5 批准三种签名技术：RSA（按 IETF RFC 8017）、ECDSA（含 RFC 6979 的确定性 ECDSA）以及 RFC 8032 的 EdDSA 与 HashEdDSA。标准把 ECDSA 描述为「the elliptic curve analog of DSA」，即同一思路的椭圆曲线版本，并把签名生成集中到这些方案，同时在 §4 保留 DSA 的验证用途。",
+          "used": "现行用途是验证在标准实施日之前已经生成的 DSA 签名；新的签名生成按标准批准的方案进行，其中 ECDSA 的生成与验证流程写在 §6.4.1 与 §6.4.2，RSA 签名则交由 RFC 8017。标准在 §3 规定用于签名生成与验证的密钥对「shall not be used for any other purpose」，并在 §5 与 §6 分别对 RSA 与 ECDSA 重复了同一限制。",
+          "broken": "FIPS 186-5 直接声明「the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer」，这是签名生成方案更换、DSA 退出生成的原因；DSA 原先的有限域参数与离散对数设定属于 FIPS 186-4，本标准只在 §4 保留其验证角色。标准另在 §6 提示椭圆曲线方案的实现须防范「side-channel attacks or fault attacks」。",
+          "history": "FIPS 186-5 于 2023 年 2 月 3 日发布并即时生效，取代 FIPS 186-4；附录 E 记录 DSA 不再批准用于签名生成，发布公告还说明 FIPS 186-4 在标准发布后一年内继续有效、随后撤回。DSA 由此从生成算法转为只保留验证旧签名的角色。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：DSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。 预期输出：按 DSA 数字签名算法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 选择随机 k，计算 R=kG 与 r 2. 计算 s=k^{-1}(H(m)+rd) mod n 3. 输出 (r,s)，验证者检查签名方程。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for DSA 数字签名算法. https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nDSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。1.选择随机 k，计算 R=kG 与 r。2.计算 s=k^{-1}(H(m)+rd) mod n。3.输出 (r,s)，验证者检查签名方程。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Digital Signature Algorithm (DSA 数字签名算法). Digital signatures are used to detect unauthorised modification of data and to authenticate the signatory, which is the non-repudiation property. The DSA was approved for signature generation by earlier versions of the FIPS 186 series. FIPS 186-5 states: \"This standard no longer approves the DSA for digital signature generation\", while \"the DSA may be used to verify signatures generated prior to the implementation date of this standard\", and refers the full DSA specification back to FIPS 186-4.",
+          "why": "FIPS 186-5 approves three techniques: RSA (through IETF RFC 8017), ECDSA (including deterministic ECDSA from RFC 6979) and the EdDSA of RFC 8032 together with HashEdDSA. The standard describes ECDSA as \"the elliptic curve analog of DSA\" and concentrates signature generation on those schemes, while §4 retains the verification-only role for the DSA.",
+          "used": "Its current role is verifying DSA signatures generated before the implementation date of the standard, while new signing uses an approved scheme: ECDSA generation and verification are given in §6.4.1 and §6.4.2, and RSA signing is delegated to RFC 8017. Section 3 states that a key pair used for signature generation and verification \"shall not be used for any other purpose\", a restriction repeated for RSA in §5 and for ECDSA in §6.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "FIPS 186-5 states plainly that \"the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer\", which is why signature generation moved on and the DSA left it. The finite-field parameters and discrete-logarithm setting of the DSA belong to FIPS 186-4, of which this standard keeps only the verification role in §4. Section 6 separately warns that implementations of the elliptic-curve schemes must be protected against \"side-channel attacks or fault attacks\".",
+          "history": "FIPS 186-5 was published and became effective on 3 February 2023, superseding FIPS 186-4. Appendix E records that the DSA is no longer approved for signature generation, and the announcement adds that FIPS 186-4 stays in effect for one year after publication and is then withdrawn. The DSA therefore keeps only the verification of older signatures.",
+          "refs": "- Wikipedia search entry for DSA 数字签名算法. https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nDigital Signature Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "数字签名：检测数据被未授权修改并认证签署者的机制。",
+          "不可否认性：签署者事后难以否认自己生成的签名。",
+          "DSA：FIPS 186 早期版本批准的有限域数字签名算法。",
+          "ECDSA：标准所称的 DSA 椭圆曲线类比算法。",
+          "EdDSA：RFC 8032 定义的爱德华曲线签名算法。",
+          "验证遗留签名：只用 DSA 核验标准实施前生成的旧签名。"
+        ],
+        "en": [
+          "Digital signature: detects unauthorised modification and authenticates the signer.",
+          "Non-repudiation: the signer cannot easily deny a signature later.",
+          "DSA: the finite-field signature algorithm approved by earlier FIPS 186 versions.",
+          "ECDSA: what the standard calls the elliptic curve analogue of the DSA.",
+          "EdDSA: the Edwards-curve signature scheme of RFC 8032.",
+          "Legacy verification: using DSA only to check signatures generated before the implementation date."
+        ]
+      },
+      "figures": [
+        {
+          "id": "dsa-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DSA 数字签名算法：为什么需要 → 核心机制 → 边界。",
+            "en": "DSA (Digital Signature Algorithm): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "DSA 数字签名算法 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for DSA (Digital Signature Algorithm), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/dsa-details-flow.zh.svg",
+            "en": "assets/dsa-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cfbcdf14e92379613a88cc71cb741da6fee3a85bbe572ce2a307809a5c0d2010",
+            "en": "bafc36a7b4f686b5fb3e83f917909b5808967915311225283eb4dacab6f64bfb"
+          }
+        },
+        {
+          "id": "dsa-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DSA 数字签名算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for DSA (Digital Signature Algorithm): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "DSA 数字签名算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for DSA (Digital Signature Algorithm), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/dsa-details-r138-model.zh.svg",
+            "en": "assets/dsa-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "87ff617b55c64689c90c42a67492f4508de0a3d22aea9993d684c22ab032289c",
+            "en": "97c29c1aa8156c0abc0f130d8091608038e1dbb26ed8d7a1099ed647dc5ee3b2"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "dsa-r139-formal",
+          "entryId": "dsa-details",
+          "kind": "formal-model",
+          "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+          "inputs": "输入：DSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+          "expected": "按 DSA 数字签名算法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "选择随机 k，计算 R=kG 与 r",
+            "计算 s=k^{-1}(H(m)+rd) mod n",
+            "输出 (r,s)，验证者检查签名方程"
+          ],
+          "sourceIds": [
+            "dsa-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "dsa-r139-formal"
+      ],
+      "sources": [
+        "dsa-wikipedia",
+        "dsa-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "dsa-r139-formal",
+      "entryId": "dsa-details",
+      "kind": "formal-model",
+      "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+      "inputs": "输入：DSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+      "expected": "按 DSA 数字签名算法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "选择随机 k，计算 R=kG 与 r",
+        "计算 s=k^{-1}(H(m)+rd) mod n",
+        "输出 (r,s)，验证者检查签名方程"
+      ],
+      "sourceIds": [
+        "dsa-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

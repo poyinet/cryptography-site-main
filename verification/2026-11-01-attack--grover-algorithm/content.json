@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for attack--grover-algorithm: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "attack--grover-algorithm-details",
+      "inventoryIds": [
+        "attack--grover-algorithm"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释格罗弗算法的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Grover's Algorithm: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "格罗弗算法",
+        "en": "Grover's Algorithm"
+      },
+      "claimIds": [
+        "attack--grover-algorithm-r139-principle",
+        "attack--grover-algorithm-r139-why",
+        "attack--grover-algorithm-r139-used",
+        "attack--grover-algorithm-r139-broken",
+        "attack--grover-algorithm-r139-history",
+        "attack--grover-algorithm-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--grover-algorithm-wikipedia",
+        "attack--grover-algorithm-reference-ref"
+      ],
+      "related": [
+        "post-quantum-cryptography",
+        "harvest-now-decrypt-later",
+        "symmetric-key",
+        "shor-s-algorithm"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：格罗弗算法（Grover's Algorithm）。Grover 的论文题为「A fast quantum mechanical algorithm for database search」，用随机排列的电话簿作例子：「Imagine a phone directory containing N names arranged in completely random order.In order to find someone's phone number with a 50% probability, any classical algorithm (whether deterministic or probabilistic) will need to look at a minimum of N/2 names」，而量子方案「the desired phone number can be obtained in only O(sqrt(N)) steps」。v3 的备注说明证明被简化为使用称作「inversion about average」的新解释，算法本身不变。",
+          "why": "论文对搜索的相对优势给出定位：「The algorithm is within a small constant factor of the fastest possible quantum mechanical algorithm」。对密码学而言，意义在于把对称密钥穷举的尝试次数从与密钥长度成正比降到平方根量级，因此安全强度按比特数折算时减半。",
+          "used": "论文原文把用途界定为数据库/无结构搜索问题，以电话簿查找作为唯一示例，并给出 O(sqrt(N)) 的评估次数；评论字段说明该文是 1996 年 STOC 会议论文「This is an updated version of a paper that was originally presented at STOC 1996」。密码参数选择中的`对称密钥加倍以抵消平方根搜索`是对该结果的应用推论，论文本身未在密码算法参数上作规定。",
+          "broken": "该算法的保证是概率性的：文中以「with a 50% probability」表述成功条件，并把经典下界写成「a minimum of N/2 names」；同时它只主张与最快的量子算法相差「a small constant factor」，并非无条件的绝对最优声明。文本也未使用`二次加速`、`无结构搜索`、`OPTIMAL`这些术语。",
+          "history": "arXiv 记录显示该文编号 quant-ph/9605043，作者为 Lov K.Grover（Bell Labs, Murray Hill NJ），v1 提交于 1996 年 5 月 29 日，v2 于次日被撤回，当前 v3 修订于 1996 年 11 月 19 日；期刊引用为「Proceedings, 28th Annual ACM Symposium on the Theory of Computing (STOC), May 1996, pages 212-219」。摘要中给出的量子结果是与经典 N/2 下界对照的 O(sqrt(N))。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})\\)。输入：输入：格罗弗算法的公开参数、密钥/随机数与消息；变量说明：κ 密钥位数，Q 量子查询复杂度。 预期输出：按 格罗弗算法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 把搜索问题写成 oracle 2. 执行 Grover 迭代 3. 测量并验证候选解。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 格罗弗算法. https://zh.wikipedia.org/w/index.php?search=%E6%A0%BC%E7%BD%97%E5%BC%97%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})\\]\n\n格罗弗算法的公开参数、密钥/随机数与消息；变量说明：κ 密钥位数，Q 量子查询复杂度。1.把搜索问题写成 oracle。2.执行 Grover 迭代。3.测量并验证候选解。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Grover's Algorithm (格罗弗算法). Grover's paper is titled \"A fast quantum mechanical algorithm for database search\" and uses a shuffled phone directory: \"Imagine a phone directory containing N names arranged in completely random order. In order to find someone's phone number with a 50% probability, any classical algorithm (whether deterministic or probabilistic) will need to look at a minimum of N/2 names\", whereas with the quantum scheme \"the desired phone number can be obtained in only O(sqrt(N)) steps\". The v3 comments record that the proof was simplified using a new interpretation termed \"inversion about average\", with the algorithm unchanged.",
+          "why": "The paper positions its advantage: \"The algorithm is within a small constant factor of the fastest possible quantum mechanical algorithm\". For cryptography this matters because exhaustive search over a symmetric key drops from a number proportional to the key space to a square-root order, so the security strength measured in bits halves.",
+          "used": "The paper frames its use as database and unstructured search, with the phone-directory lookup as its example, and gives the O(sqrt(N)) evaluation count. The comments field records that it \"is an updated version of a paper that was originally presented at STOC 1996\". Doubling symmetric key sizes to offset a square-root search is an applied consequence of this result; the paper itself sets no cryptographic parameter requirements.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The guarantee is probabilistic: the abstract states the success condition \"with a 50% probability\" and gives the classical floor as needing \"a minimum of N/2 names\". Its optimality claim is relative — within \"a small constant factor of the fastest possible quantum mechanical algorithm\" — rather than an unconditional statement of optimality. The words `quadratic speedup`, `unstructured search` and `OPTIMAL` do not appear in this text.",
+          "history": "The arXiv record is quant-ph/9605043 by Lov K. Grover (Bell Labs, Murray Hill NJ); v1 was submitted on 29 May 1996, v2 was withdrawn the next day, and the current v3 was revised on 19 November 1996. The journal reference is \"Proceedings, 28th Annual ACM Symposium on the Theory of Computing (STOC), May 1996, pages 212-219\". The abstract gives O(sqrt(N)) against the classical floor of N/2.",
+          "refs": "- Wikipedia search entry for 格罗弗算法. https://zh.wikipedia.org/w/index.php?search=%E6%A0%BC%E7%BD%97%E5%BC%97%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})\\]\n\nGrover's Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "量子搜索：以量子振幅放大思想实现的查找算法。",
+          "平均数反演：v3 用来简化证明的解释方式。",
+          "N/2 下界：经典算法达到 50% 成功率所需的最少查看数。",
+          "O(sqrt(N))：量子算法所需步骤的量级。",
+          "常数因子：本文声明与最快量子算法的差距范围。",
+          "STOC 1996：论文首次发表的 ACM 理论计算会议。"
+        ],
+        "en": [
+          "Quantum search: a search algorithm using amplitude amplification.",
+          "Inversion about average: the interpretation simplifying the v3 proof.",
+          "N/2 floor: lookups a classical method needs for 50% success.",
+          "O(sqrt(N)): the order of steps the quantum scheme requires.",
+          "Small constant factor: the gap this paper claims to the quantum optimum.",
+          "STOC 1996: the ACM theory conference where the paper appeared."
+        ]
+      },
+      "figures": [
+        {
+          "id": "attack--grover-algorithm-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "格罗弗算法：为什么需要 → 核心机制 → 边界。",
+            "en": "Grover's Algorithm: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "格罗弗算法 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Grover's Algorithm, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--grover-algorithm-details-flow.zh.svg",
+            "en": "assets/attack--grover-algorithm-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7bcfaccd23cc52aa26f8021ce58f767762bd77f6d018b95588c198033fcd299a",
+            "en": "8b195e577053837fdf563f0c8e47a7b7d166545dbd5b0e8d9f6abc17a7a8ccee"
+          }
+        },
+        {
+          "id": "attack--grover-algorithm-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "格罗弗算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Grover's Algorithm: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "格罗弗算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Grover's Algorithm, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--grover-algorithm-details-r138-model.zh.svg",
+            "en": "assets/attack--grover-algorithm-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fb870cfb68cf5f0b7ba94029d221678c2fbd9c54e335070f2224d34f790e95d1",
+            "en": "cb97fac65b63e5c9e0a6140e8f0c63cd28e36f3d1440784130ad2d728ec8b550"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--grover-algorithm-r139-formal",
+          "entryId": "attack--grover-algorithm-details",
+          "kind": "formal-model",
+          "formula": "Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})",
+          "inputs": "输入：格罗弗算法的公开参数、密钥/随机数与消息；变量说明：κ 密钥位数，Q 量子查询复杂度。",
+          "expected": "按 格罗弗算法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把搜索问题写成 oracle",
+            "执行 Grover 迭代",
+            "测量并验证候选解"
+          ],
+          "sourceIds": [
+            "attack--grover-algorithm-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--grover-algorithm-r139-formal"
+      ],
+      "sources": [
+        "attack--grover-algorithm-wikipedia",
+        "attack--grover-algorithm-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--grover-algorithm-r139-formal",
+      "entryId": "attack--grover-algorithm-details",
+      "kind": "formal-model",
+      "formula": "Q=\\Theta\\!\\left(\\sqrt{|\\mathcal{K}|}\\right)=\\Theta(2^{\\kappa/2})",
+      "inputs": "输入：格罗弗算法的公开参数、密钥/随机数与消息；变量说明：κ 密钥位数，Q 量子查询复杂度。",
+      "expected": "按 格罗弗算法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把搜索问题写成 oracle",
+        "执行 Grover 迭代",
+        "测量并验证候选解"
+      ],
+      "sourceIds": [
+        "attack--grover-algorithm-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full TEA block-cipher article only; no completion claim for XTEA, XXTEA, DES, AES, block-cipher-mode or the whole library.",
+  "entries": [
+    {
+      "id": "tea-details",
+      "inventoryIds": [
+        "tea"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 tea 这一实体：64 位 ARX 分组密码、32 个循环、128 位密钥的直接使用、等效密钥与相关密钥弱点；不把 XTEA、XXTEA、DES、AES 或工作模式并入本实体。",
+        "en": "Covers the tea entity: the 64-bit ARX block cipher, its 32 cycles, direct use of the 128-bit key, and the equivalent-key and related-key weaknesses. It does not absorb XTEA, XXTEA, DES, AES or a mode of operation."
+      },
+      "title": {
+        "zh": "TEA：以极简代码换取扩散的微型分组密码",
+        "en": "TEA: a tiny block cipher trading code size for diffusion"
+      },
+      "claimIds": [
+        "tea-r139-principle",
+        "tea-r139-why",
+        "tea-r139-used",
+        "tea-r139-broken",
+        "tea-r139-history",
+        "tea-r139-refs"
+      ],
+      "calculationIds": [
+        "tea-reference-vector",
+        "tea-equivalent-keys",
+        "tea-roundtrip",
+        "tea-avalanche",
+        "tea-r139-formal"
+      ],
+      "sourceIds": [
+        "tea-wikipedia",
+        "tea-reference-ref"
+      ],
+      "related": [
+        "xtea",
+        "algorithm--des",
+        "algorithm--aes",
+        "feistel-network",
+        "block-cipher-mode"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：TEA 微型加密算法（Tiny Encryption Algorithm）。TEA（Tiny Encryption Algorithm）是一种 64 位分组密码，使用 128 位密钥。它把 64 位明文分成两个 32 位字 y 和 z，把 128 位密钥分成四个 32 位字 k0、k1、k2、k3，然后执行 32 个循环；每个循环包含两次 Feistel 式混合，因此常被称为 64 轮。每个循环先累加黄金比例常数 `delta = 0x9e3779b9`，再更新 y 和 z：\n\n```text\nsum += delta\ny += ((z << 4) + k0) xor (z + sum) xor ((z >> 5) + k1)\nz += ((y << 4) + k2) xor (y + sum) xor ((y >> 5) + k3)\n```\n\n所有加法都是 32 位模 2^32 加法，移位和异或也是 32 位操作。解密执行相反的 32 个循环：sum 从 `delta * 32` 开始，先逆 z 的更新，再逆 y 的更新，最后减去 delta。TEA 没有密钥扩展：四个密钥字直接进入轮函数。这是它代码极短的原因之一，也是等效密钥问题的来源。TEA 不需要 S-box、查找表或预计算，轮函数只由加法、移位和异或组成，适合用很少的代码实现。",
+          "why": "TEA 的设计目标是用很短的程序、较多的迭代和很少的预计算来完成加密。原论文强调它不需要预设表或长初始化，容易移植到不同语言和机器；在资源受限或代码体积敏感的场景，这种简单性很有吸引力。TEA 也是理解 ARX 设计的清晰样本：没有 S-box，非线性来自加法、移位、异或的组合；每一轮把 y 和 z 交叉混合，32 个循环把局部变化扩散到两个 32 位字。它的代码可以直接写成十几行，因此常被用作教学实现。但 TEA 的简单性有代价。四个密钥字直接使用，导致每个密钥有三个等效密钥，有效密钥长度只有 126 位；相关密钥攻击也被指出。64 位块在生日碰撞意义下的安全边界也比 128 位块窄。TEA 适合作为历史和教学案例，不适合新设计。",
+          "used": "TEA 曾被用于软件和嵌入式场景，因为它不需要表、代码短、容易移植。原论文的目标是让一个短程序在大多数机器上运行；这让 TEA 成为早期轻量级分组密码的代表之一。TEA 的参考测试向量是零明文、零密钥、32 个循环：\n\n```text\n明文 0000000000000000\n密钥 00000000000000000000000000000000\n密文 41ea3a0a94baa940\n```\n\n本文的教学实现复现这个向量，并验证解密回到零明文。它还演示等效密钥：把密钥的 k0/k1 最高位同时翻转、k2/k3 最高位同时翻转，或四个字都翻转，得到的密文完全相同。TEA 只定义分组密码，不定义工作模式。实际使用仍需 CBC、CTR 等模式；而 TEA 的 64 位块和密钥弱点意味着它不应被用于新的协议或长期数据保护。",
+          "broken": "TEA 的四个密钥字直接进入轮函数。把 k0 和 k1 的最高位同时翻转，轮函数中的两项会抵消；k2 和 k3 同理。因此每个密钥都有三个等效密钥，四个密钥产生同一组密文，有效密钥长度只有 126 位。这不是实现错误，而是算法结构的结果。### 相关密钥攻击\n\nTEA 的简单密钥使用方式还导致相关密钥攻击。Needham 和 Wheeler 在 1997 年的 TEA extensions 中指出，TEA 的混合部分看起来未被破坏，但相关密钥攻击是可能的；在两个相关密钥下构造 2^32 个文本看起来并不实际。他们还指出有效密钥长度是 126 位而不是 128 位。### 64 位块\n\nTEA 的块只有 64 位。与 128 位块相比，生日碰撞意义下的安全边界更窄；处理大量数据时，64 位块会限制可安全加密的块数。TEA 没有像后来的标准那样给出单密钥加密次数限制。### 无完整性\n\nTEA 只提供分组密码的伪随机置换，不提供完整性。翻转密文会改变对应明文，但 TEA 本身无法检测；需要认证时应使用 AEAD 或加密后再 MAC。本文的教学实现只处理 TEA 的固定向量、32 循环加密/解密和等效密钥演示。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+          "history": "TEA 由 David Wheeler 和 Roger Needham 在 1994 年的 Fast Software Encryption 会议上提出，论文强调短程序、多次迭代、无预设表和容易移植。它的简洁性使它成为教学和嵌入式实现的常见例子。1997 年，Needham 和 Wheeler 发布 TEA extensions，修正 TEA 的密钥扩展和密钥引入方式，形成 XTEA。XTEA 仍是 64 位块、128 位密钥和 64 轮，但轮函数和密钥调度不同；它本身是独立实体，不能和 TEA 混为一条。TEA 的历史价值在于展示极简轮函数（加法、移位、异或）设计的可能性和边界：它用很少的代码获得扩散，但也暴露了等效密钥和相关密钥问题。后来的轻量级密码在简单性和密钥调度之间做了更谨慎的权衡。",
+          "refs": "- Wikipedia search entry for TEA 微型加密算法. https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Tiny Encryption Algorithm (TEA 微型加密算法). TEA (Tiny Encryption Algorithm) is a 64-bit block cipher with a 128-bit key. It splits the 64-bit plaintext into two 32-bit words y and z and the 128-bit key into four 32-bit words k0, k1, k2 and k3, then runs 32 cycles; each cycle contains two Feistel-style mixes, so it is often described as 64 rounds. Each cycle first adds the golden-ratio constant `delta = 0x9e3779b9`, then updates y and z:\n\n```text\nsum += delta\ny += ((z << 4) + k0) xor (z + sum) xor ((z >> 5) + k1)\nz += ((y << 4) + k2) xor (y + sum) xor ((y >> 5) + k3)\n```\n\nAll additions are modulo 2^32, and the shifts and XORs are 32-bit operations. Decryption runs the 32 cycles in reverse: sum starts at `delta * 32`, the z update is inverted first, then the y update, and delta is subtracted last. TEA has no key schedule: the four key words go directly into the round function. This is one reason its code is so short, and it is also the source of the equivalent-key problem. TEA needs no S-box, lookup table or precomputation; the round function is only addition, shifts and XOR, suitable for a very small implementation.",
+          "why": "TEA was designed to encrypt with a short program, many iterations and little setup. The original paper emphasizes that it needs no preset tables or long initialization and is easy to port across languages and machines; that simplicity is attractive when code size or resources are tight.\n\nTEA is also a clear sample of ARX design: there is no S-box, and the nonlinearity comes from the combination of addition, shifts and XOR; each round cross-mixes y and z, and 32 cycles spread a local change across both 32-bit words. Its code fits in a dozen lines, which makes it a common teaching implementation.\n\nBut TEA's simplicity has a price. The four key words are used directly, so every key has three equivalent keys and the effective key length is only 126 bits; related-key attacks have also been shown. A 64-bit block has a narrower birthday bound than a 128-bit block. TEA is a historical and teaching case, not a choice for new designs.",
+          "used": "TEA has been used in software and embedded settings because it needs no tables, has short code and ports easily. The original paper aimed at a short program that runs on most machines; this made TEA an early representative of lightweight block ciphers.\n\nTEA's reference test vector is zero plaintext, zero key and 32 cycles:\n\n```text\nplaintext  0000000000000000\nkey        00000000000000000000000000000000\nciphertext 41ea3a0a94baa940\n```\n\nThis article's teaching implementation reproduces this vector and verifies that decryption returns zero plaintext. It also demonstrates equivalent keys: flipping the top bits of k0/k1, of k2/k3, or of all four words yields exactly the same ciphertext.\n\nTEA defines only the block cipher, not a mode of operation. Real use still requires CBC, CTR or another mode; and TEA's 64-bit block and key weaknesses mean it should not be used in new protocols or for long-term data protection.",
+          "broken": "TEA's four key words enter the round function directly. Flipping the top bit of both k0 and k1 makes two terms in the round function cancel; the same holds for k2 and k3. Every key therefore has three equivalent keys, four keys produce the same ciphertexts, and the effective key length is only 126 bits. This is a structural result, not an implementation bug.\n\nTEA's simple key use also enables related-key attacks. Needham and Wheeler noted in their 1997 TEA extensions that TEA's mixing appears unbroken, but related-key attacks are possible; constructing 2^32 texts under two related keys seems impractical. They also noted that the effective key length is 126 bits, not 128.\n\nTEA's block is only 64 bits. Compared with a 128-bit block, the birthday bound is narrower; when processing large data volumes, a 64-bit block limits the number of blocks that can be encrypted safely. TEA does not include a per-key encryption limit like later standards.\n\nTEA provides only a block-cipher pseudorandom permutation, not integrity. Flipping ciphertext changes the corresponding plaintext, but TEA itself cannot detect it; when authentication is needed, use AEAD or encrypt-then-MAC.\n\nThis article's teaching implementation handles only TEA fixed vectors, 32-cycle encryption/decryption and the equivalent-key demonstration. It does not generate keys, run in constant time, implement a mode of operation, protocol, key management or side-channel defenses, and must not be used in production.",
+          "history": "TEA was proposed by David Wheeler and Roger Needham at the 1994 Fast Software Encryption workshop; the paper emphasizes a short program, many iterations, no preset tables and easy portability. Its simplicity made it a common example in teaching and embedded implementations.\n\nIn 1997, Needham and Wheeler published TEA extensions, revising TEA's key schedule and key introduction to form XTEA. XTEA still uses a 64-bit block, 128-bit key and 64 rounds, but its round function and key schedule differ; it is a separate entity and must not be merged into TEA.\n\nTEA's historical value is that it shows both the possibilities and the limits of a minimal ARX design: very little code can produce diffusion, but equivalent-key and related-key problems appear. Later lightweight ciphers weighed simplicity against a more careful key schedule.",
+          "refs": "- Wikipedia search entry for TEA 微型加密算法. https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "TEA：64 位块、128 位密钥、32 个循环的微型分组密码。",
+          "ARX：加法、旋转/移位和异或构成的密码设计。",
+          "循环：TEA 中一次 y/z 交叉混合，包含两次 Feistel 式更新。",
+          "delta：TEA 每轮累加的常数 0x9e3779b9。",
+          "密钥字：128 位密钥拆成的四个 32 位字 k0..k3。",
+          "等效密钥：产生相同密文的不同密钥；TEA 每个密钥有三个等效密钥。",
+          "有效密钥长度：扣除等效密钥后的密钥空间，TEA 为 126 位。",
+          "相关密钥攻击：利用两个相关密钥之间关系进行的密码分析。",
+          "生日界：64 位块在大量块加密时的碰撞边界。",
+          "XTEA：1997 年对 TEA 密钥调度和轮函数的修订版。",
+          "无完整性：TEA 只提供分组密码，不检测密文修改。",
+          "教学实现：固定向量和固定数据的最小实现，不是生产代码。"
+        ],
+        "en": [
+          "TEA: a tiny block cipher with a 64-bit block, 128-bit key and 32 cycles.",
+          "ARX: a design built from addition, rotation/shift and XOR.",
+          "Cycle: one y/z cross-mix in TEA, containing two Feistel-style updates.",
+          "Delta: the constant 0x9e3779b9 added to sum each TEA cycle.",
+          "Key words: the four 32-bit words k0..k3 split from the 128-bit key.",
+          "Equivalent keys: different keys producing the same ciphertext; TEA has three equivalent keys per key.",
+          "Effective key length: the key space after equivalent keys, 126 bits for TEA.",
+          "Related-key attack: cryptanalysis using the relation between two related keys.",
+          "Birthday bound: the collision boundary for a 64-bit block under many encryptions.",
+          "XTEA: the 1997 revision of TEA's key schedule and round function.",
+          "No integrity: TEA is only a block cipher and cannot detect ciphertext modification.",
+          "Teaching implementation: a minimal implementation for fixed vectors and data, not production code."
+        ]
+      },
+      "figures": [
+        {
+          "id": "tea-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TEA：以极简代码换取扩散的微型分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "TEA: a tiny block cipher trading code size for diffusion: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TEA：以极简代码换取扩散的微型分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for TEA: a tiny block cipher trading code size for diffusion, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/tea-details-flow.zh.svg",
+            "en": "assets/tea-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0e8f99e8aaab45d3f6e322a9aa139bff11e77889a25a979dd0259f6e7ab09f18",
+            "en": "8af8816ddddbd53ab3a962593675f003dee7356e4e51742a19e57b90c5156997"
+          }
+        },
+        {
+          "id": "tea-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TEA：以极简代码换取扩散的微型分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for TEA: a tiny block cipher trading code size for diffusion: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "TEA：以极简代码换取扩散的微型分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for TEA: a tiny block cipher trading code size for diffusion, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/tea-details-r138-model.zh.svg",
+            "en": "assets/tea-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6284db1baa1ddedd35c213dd53b2ee1be9f820bfccd74dd03343ea4685360e47",
+            "en": "b9018ac5d1bd78adeaa251cc45c2a3a175f63d1c14e79fcf05aa968c2b3854ca"
+          }
+        }
+      ],
+      "sources": [
+        "tea-wikipedia",
+        "tea-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "tea-reference-vector",
+          "entryId": "tea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Zero 64-bit plaintext and zero 128-bit key, 32 TEA cycles",
+          "expected": "Ciphertext 41ea3a0a94baa940; decryption returns the zero plaintext",
+          "sourceIds": [
+            "tea-wikipedia"
+          ],
+          "dependencies": [
+            "tea-teaching.mjs"
+          ],
+          "limitations": "One author-published reference vector; not a key or message matrix."
+        },
+        {
+          "id": "tea-equivalent-keys",
+          "entryId": "tea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Key 00112233445566778899aabbccddeeff and plaintext 0123456789abcdef, plus three keys with top-bit flips",
+          "expected": "All four keys produce ciphertext 126c6b92c0653a3e",
+          "sourceIds": [
+            "tea-wikipedia"
+          ],
+          "dependencies": [
+            "tea-teaching.mjs"
+          ],
+          "limitations": "One fixed key and plaintext; it demonstrates one equivalence class, not every class."
+        },
+        {
+          "id": "tea-roundtrip",
+          "entryId": "tea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Several fixed 64-bit plaintexts and 128-bit keys",
+          "expected": "Every 32-cycle encryption decrypts back to the original plaintext",
+          "sourceIds": [
+            "tea-wikipedia"
+          ],
+          "dependencies": [
+            "tea-teaching.mjs"
+          ],
+          "limitations": "Fixed data only; not a random or exhaustive test."
+        },
+        {
+          "id": "tea-avalanche",
+          "entryId": "tea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 128-bit key",
+          "expected": "The ciphertexts differ in 30 bits after 32 cycles",
+          "sourceIds": [
+            "tea-wikipedia"
+          ],
+          "dependencies": [
+            "tea-teaching.mjs"
+          ],
+          "limitations": "One fixed one-bit difference; it demonstrates diffusion, not an avalanche probability."
+        },
+        {
+          "id": "tea-r139-formal",
+          "entryId": "tea-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "TEA 微型加密算法 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "tea-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tea-reference-vector",
+      "entryId": "tea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Zero 64-bit plaintext and zero 128-bit key, 32 TEA cycles",
+      "expected": "Ciphertext 41ea3a0a94baa940; decryption returns the zero plaintext",
+      "sourceIds": [
+        "tea-wikipedia"
+      ],
+      "dependencies": [
+        "tea-teaching.mjs"
+      ],
+      "limitations": "One author-published reference vector; not a key or message matrix."
+    },
+    {
+      "id": "tea-equivalent-keys",
+      "entryId": "tea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Key 00112233445566778899aabbccddeeff and plaintext 0123456789abcdef, plus three keys with top-bit flips",
+      "expected": "All four keys produce ciphertext 126c6b92c0653a3e",
+      "sourceIds": [
+        "tea-wikipedia"
+      ],
+      "dependencies": [
+        "tea-teaching.mjs"
+      ],
+      "limitations": "One fixed key and plaintext; it demonstrates one equivalence class, not every class."
+    },
+    {
+      "id": "tea-roundtrip",
+      "entryId": "tea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Several fixed 64-bit plaintexts and 128-bit keys",
+      "expected": "Every 32-cycle encryption decrypts back to the original plaintext",
+      "sourceIds": [
+        "tea-wikipedia"
+      ],
+      "dependencies": [
+        "tea-teaching.mjs"
+      ],
+      "limitations": "Fixed data only; not a random or exhaustive test."
+    },
+    {
+      "id": "tea-avalanche",
+      "entryId": "tea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 128-bit key",
+      "expected": "The ciphertexts differ in 30 bits after 32 cycles",
+      "sourceIds": [
+        "tea-wikipedia"
+      ],
+      "dependencies": [
+        "tea-teaching.mjs"
+      ],
+      "limitations": "One fixed one-bit difference; it demonstrates diffusion, not an avalanche probability."
+    },
+    {
+      "id": "tea-r139-formal",
+      "entryId": "tea-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "TEA 微型加密算法 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "tea-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

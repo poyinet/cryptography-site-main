@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "bfvhe-details",
+  "sources": [
+    {
+      "id": "bfvhe-wikipedia",
+      "title": "Wikipedia search entry for BFV 全同态加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=BFV%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: BFV 全同态加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "bfvhe-r139-principle",
+          "entryId": "bfvhe-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：BFV 全同态加密（Brakerski-Fan-Vercauteren FHE）。BFV 把明文编码为多项式环中的元素，用带噪声的环上 LWE 密文承载。加法直接在密文上相加，乘法用张量积后再做密钥切换和重线性化，把密文维度压回两项。每次乘法都会放大噪声；当噪声超过模数允许的预算，解密就会出错。所谓 leveled 电路，就是预先选好参数，让电路深度不超过预算。",
+            "en": "**Algorithm**: Brakerski-Fan-Vercauteren FHE (BFV 全同态加密).BFV encodes plaintext as elements of a polynomial ring and carries them in noisy ring-LWE ciphertexts."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        },
+        {
+          "id": "bfvhe-r139-why",
+          "entryId": "bfvhe-details",
+          "section": "why",
+          "statement": {
+            "zh": "它让“把数据交给云，云在看不到明文的情况下计算”从概念变成工程。BFV 的整数语义适合统计、计费、数据库聚合和机器学习推理中的定点运算；与 CKKS 的近似浮点相比，它更适合要求精确结果的任务。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "It turns “send data to the cloud, let the cloud compute without seeing plaintext” from a concept into engineering.BFV's integer semantics suit statistics, billing, database aggregation and fixed-point inference; compared with CKKS's approximate floating point, it fits tasks that demand exact results."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        },
+        {
+          "id": "bfvhe-r139-used",
+          "entryId": "bfvhe-details",
+          "section": "used",
+          "statement": {
+            "zh": "隐私保护统计、加密数据库查询、联邦学习聚合、基因组计算、金融风控。实际部署常用 SEAL、OpenFHE、HElib 等库，并把深度、模数链和安全参数一起设计。",
+            "en": "Privacy-preserving statistics, encrypted database queries, federated-learning aggregation, genomic computation and financial risk scoring.Deployments use libraries such as SEAL, OpenFHE and HElib and design depth, modulus chain and security parameters together."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        },
+        {
+          "id": "bfvhe-r139-broken",
+          "entryId": "bfvhe-details",
+          "section": "broken",
+          "statement": {
+            "zh": "BFV 不是“任意程序都能加密运行”。乘法深度受噪声预算限制；模数切换、密钥切换和重线性化会引入额外噪声；参数太小会被格攻击，参数太大则性能不可接受。它不隐藏访问模式，计算结果也可能通过解密后的输出泄露信息。侧信道和密钥管理同样重要。### 形式模型。",
+            "en": "BFV is not “run any program encrypted”.Multiplication depth is limited by the noise budget; modulus switching, key switching and relinearisation add noise; parameters that are too small invite lattice attacks, while large parameters are too slow."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        },
+        {
+          "id": "bfvhe-r139-history",
+          "entryId": "bfvhe-details",
+          "section": "history",
+          "statement": {
+            "zh": "Brakerski 在 2012 年提出基于 LWE 的 leveled FHE；Fan 与 Vercauteren 随后给出更实用的 BFV 变体，改进了模数切换和编码。它没有解决 Gentry 的自举开销，而是把“有限深度”的场景做得足够实用。今天的 BFV 与 CKKS 常被并列讨论，但两者语义不同。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：BFV 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Brakerski proposed leveled LWE-based FHE in 2012; Fan and Vercauteren then gave the more practical BFV variant with improved modulus switching and encoding.It did not remove Gentry's bootstrapping cost; it made bounded-depth workloads practical."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        },
+        {
+          "id": "bfvhe-r139-refs",
+          "entryId": "bfvhe-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for BFV 全同态加密.https://zh.wikipedia.org/w/index.php?search=BFV%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for BFV 全同态加密.https://zh.wikipedia.org/w/index.php?search=BFV%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "bfvhe-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "bfvhe-wikipedia"
+      ]
+    },
+    {
+      "id": "bfvhe-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "bfvhe-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "bfvhe-r139-principle",
+      "entryId": "bfvhe-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：BFV 全同态加密（Brakerski-Fan-Vercauteren FHE）。BFV 把明文编码为多项式环中的元素，用带噪声的环上 LWE 密文承载。加法直接在密文上相加，乘法用张量积后再做密钥切换和重线性化，把密文维度压回两项。每次乘法都会放大噪声；当噪声超过模数允许的预算，解密就会出错。所谓 leveled 电路，就是预先选好参数，让电路深度不超过预算。",
+        "en": "**Algorithm**: Brakerski-Fan-Vercauteren FHE (BFV 全同态加密).BFV encodes plaintext as elements of a polynomial ring and carries them in noisy ring-LWE ciphertexts."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    },
+    {
+      "id": "bfvhe-r139-why",
+      "entryId": "bfvhe-details",
+      "section": "why",
+      "statement": {
+        "zh": "它让“把数据交给云，云在看不到明文的情况下计算”从概念变成工程。BFV 的整数语义适合统计、计费、数据库聚合和机器学习推理中的定点运算；与 CKKS 的近似浮点相比，它更适合要求精确结果的任务。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "It turns “send data to the cloud, let the cloud compute without seeing plaintext” from a concept into engineering.BFV's integer semantics suit statistics, billing, database aggregation and fixed-point inference; compared with CKKS's approximate floating point, it fits tasks that demand exact results."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    },
+    {
+      "id": "bfvhe-r139-used",
+      "entryId": "bfvhe-details",
+      "section": "used",
+      "statement": {
+        "zh": "隐私保护统计、加密数据库查询、联邦学习聚合、基因组计算、金融风控。实际部署常用 SEAL、OpenFHE、HElib 等库，并把深度、模数链和安全参数一起设计。",
+        "en": "Privacy-preserving statistics, encrypted database queries, federated-learning aggregation, genomic computation and financial risk scoring.Deployments use libraries such as SEAL, OpenFHE and HElib and design depth, modulus chain and security parameters together."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    },
+    {
+      "id": "bfvhe-r139-broken",
+      "entryId": "bfvhe-details",
+      "section": "broken",
+      "statement": {
+        "zh": "BFV 不是“任意程序都能加密运行”。乘法深度受噪声预算限制；模数切换、密钥切换和重线性化会引入额外噪声；参数太小会被格攻击，参数太大则性能不可接受。它不隐藏访问模式，计算结果也可能通过解密后的输出泄露信息。侧信道和密钥管理同样重要。### 形式模型。",
+        "en": "BFV is not “run any program encrypted”.Multiplication depth is limited by the noise budget; modulus switching, key switching and relinearisation add noise; parameters that are too small invite lattice attacks, while large parameters are too slow."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    },
+    {
+      "id": "bfvhe-r139-history",
+      "entryId": "bfvhe-details",
+      "section": "history",
+      "statement": {
+        "zh": "Brakerski 在 2012 年提出基于 LWE 的 leveled FHE；Fan 与 Vercauteren 随后给出更实用的 BFV 变体，改进了模数切换和编码。它没有解决 Gentry 的自举开销，而是把“有限深度”的场景做得足够实用。今天的 BFV 与 CKKS 常被并列讨论，但两者语义不同。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：BFV 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Brakerski proposed leveled LWE-based FHE in 2012; Fan and Vercauteren then gave the more practical BFV variant with improved modulus switching and encoding.It did not remove Gentry's bootstrapping cost; it made bounded-depth workloads practical."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    },
+    {
+      "id": "bfvhe-r139-refs",
+      "entryId": "bfvhe-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for BFV 全同态加密.https://zh.wikipedia.org/w/index.php?search=BFV%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for BFV 全同态加密.https://zh.wikipedia.org/w/index.php?search=BFV%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "bfvhe-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

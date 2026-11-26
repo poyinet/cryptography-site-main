@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for tlspq: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "tlspq-details",
+      "inventoryIds": [
+        "tlspq"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释PQ/T 混合方案术语的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Terminology for Post-Quantum Traditional Hybrid Schemes: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "PQ/T 混合方案术语",
+        "en": "Terminology for Post-Quantum Traditional Hybrid Schemes"
+      },
+      "claimIds": [
+        "tlspq-r139-principle",
+        "tlspq-r139-why",
+        "tlspq-r139-used",
+        "tlspq-r139-broken",
+        "tlspq-r139-history",
+        "tlspq-r139-refs"
+      ],
+      "sourceIds": [
+        "tlspq-wikipedia",
+        "tlspq-reference-ref"
+      ],
+      "related": [
+        "tls13",
+        "ml-kem-hybrid",
+        "post-quantum-cryptography",
+        "harvest-now-decrypt-later"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：PQ/T 混合方案术语（Terminology for Post-Quantum Traditional Hybrid Schemes）。可引用的权威文本是术语文件 RFC 9794，它把混合方案讲清楚：§4「PQ/T hybrid protocol: A protocol that uses two or more component algorithms providing the same cryptographic functionality, where at least one is a post-quantum algorithm and at least one is a traditional algorithm.」同节还给出复合式定义——字段与消息流与单算法版本相同的形态。",
+          "why": "混合的理由是后量子算法本身也可能被攻破：§2「it should not be assumed that an algorithm will not be compromised just because it is designed to provide post-quantum cryptography.」§1 记录先取后藏的威胁：「Data encrypted today (in 2025) with an algorithm vulnerable to a quantum computer can be stored for decryption by a future attacker with a CRQC.」§5 给出混合属性的定义式表述：只要有一个提供该功能的组件算法仍然安全，性质就成立。",
+          "used": "术语用于区分两种落地路径：§4 用「PQ/T hybrid protocol with composite key establishment」描述在协议字段与消息流不变的前提下引入混合 KEM，用 composite data authentication 描述把 PQ 与 traditional 签名一起呈现为单一接口的做法。§5 则给出选型提示：为互通而做的混合必须满足混合互通性，而为实现安全而做的混合「will likely require」混合机密性或混合认证——原文保留概率措辞。同节还强调「It is not possible for one PQ/T hybrid scheme or PQ/T hybrid protocol to achieve all of the properties in this section.」",
+          "broken": "限制集中在两点。第一，同时提供机密性与认证的协议未必两种混合性质都有：§5 说「PQ/T hybrid protocols that offer both confidentiality and authentication do not necessarily offer both hybrid confidentiality and hybrid authentication.」并举例基于 RFC 5280 单算法证书时只有单算法认证。第二，混合证书不是必然给出混合身份认证：§6「The use of a PQ/T hybrid certificate does not necessarily achieve hybrid authentication of the identity of the sender; this is determined by properties of the chain of trust.」",
+          "history": "**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：PQ/T 混合方案术语的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 PQ/T 混合方案术语 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for PQ/T 混合方案术语. https://zh.wikipedia.org/w/index.php?search=PQ%2FT%20%E6%B7%B7%E5%90%88%E6%96%B9%E6%A1%88%E6%9C%AF%E8%AF%AD\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nPQ/T 混合方案术语的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Terminology for Post-Quantum Traditional Hybrid Schemes (PQ/T 混合方案术语). The citable authority here is the terminology document RFC 9794, which defines the hybrid construction: §4 \"PQ/T hybrid protocol: A protocol that uses two or more component algorithms providing the same cryptographic functionality, where at least one is a post-quantum algorithm and at least one is a traditional algorithm.\" the same section defines the composite form whose fields and message flow match a single-algorithm version. §1 sets out why both algorithm classes are used and fixes the meaning of \"post-quantum\" and \"traditional\".",
+          "why": "Hybridisation is justified because post-quantum algorithms can break too: §2 warns \"it should not be assumed that an algorithm will not be compromised just because it is designed to provide post-quantum cryptography.\" §1 records the harvest-now threat: \"Data encrypted today (in 2025) with an algorithm vulnerable to a quantum computer can be stored for decryption by a future attacker with a CRQC.\" §5 defines the hybrid property: it holds as long as at least one component algorithm providing that function remains secure.",
+          "used": "The vocabulary separates two deployment paths: §4 uses \"PQ/T hybrid protocol with composite key establishment\" for a hybrid KEM that leaves protocol fields and message flow unchanged, and the composite-data-authentication form for exposing PQ and traditional signatures through a single interface. §5 gives selection advice: hybrid interoperability for interworking, implementation-security schemes “will likely require” hybrid confidentiality or authentication, and the document warns \"It is not possible for one PQ/T hybrid scheme or PQ/T hybrid protocol to achieve all of the properties in this section.\"",
+          "broken": "Two limits. A protocol offering both services need not provide both hybrid properties: §5 states \"PQ/T hybrid protocols that offer both confidentiality and authentication do not necessarily offer both hybrid confidentiality and hybrid authentication.\" giving the single-algorithm X.509 certificate example. And a hybrid certificate is not by itself hybrid identity authentication: §6 says \"The use of a PQ/T hybrid certificate does not necessarily achieve hybrid authentication of the identity of the sender; this is determined by properties of the chain of trust.\"",
+          "history": "The source is corrected after verification: the inventory cited RFC 9794(2025) under a post-quantum TLS handshake framing, but RFC 9794 is the June 2025 Informational terminology document (F. Driscoll and M. Parsons, UK National Cyber Security Centre; B. Hale, Naval Postgraduate School) that defines terms and specifies no TLS handshake. §1 also records the naming debate — some prefer “quantum-resistant” or “quantum-safe”, others worry those labels mislead once an algorithm falls, so the document uses “post-quantum”. As of this verification the corpus contains no Standards Track post-quantum TLS protocol RFC; hybrid deployment is still terminology-and-draft territory.",
+          "refs": "- Wikipedia search entry for PQ/T 混合方案术语. https://zh.wikipedia.org/w/index.php?search=PQ%2FT%20%E6%B7%B7%E5%90%88%E6%96%B9%E6%A1%88%E6%9C%AF%E8%AF%AD\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nTerminology for Post-Quantum Traditional Hybrid Schemes: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CRQC：足够大以致能跑 Shor 算法的量子计算机。",
+          "traditional algorithm：基于分解与离散对数的一类。",
+          "component algorithm：混合方案中承担某一功能的子算法。",
+          "composite scheme：对外呈现为单一接口的组合。",
+          "hybrid confidentiality：至少一个组件保密度即成立。",
+          "PQ/T hybrid：量子与传统算法并用的形态。"
+        ],
+        "en": [
+          "CRQC: a quantum computer large enough to run Shor’s algorithm.",
+          "Traditional algorithm: factorisation or discrete-log based.",
+          "Component algorithm: a sub-algorithm carrying one function in a hybrid.",
+          "Composite scheme: a combination exposed through one interface.",
+          "Hybrid confidentiality: holds if one component stays secure.",
+          "PQ/T hybrid: post-quantum and traditional algorithms together."
+        ]
+      },
+      "figures": [
+        {
+          "id": "tlspq-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PQ/T 混合方案术语：为什么需要 → 核心机制 → 边界。",
+            "en": "Terminology for Post-Quantum Traditional Hybrid Schemes: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "PQ/T 混合方案术语 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Terminology for Post-Quantum Traditional Hybrid Schemes, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/tlspq-details-flow.zh.svg",
+            "en": "assets/tlspq-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7e5229fbab36084fb2e3a2e832a4fd19ca934eea770254bf72ebe1361ad1972b",
+            "en": "ab07a8ed4bc11df080f7393c4769f873b1dc5d601c2eb3dbda6db2dc083d2549"
+          }
+        },
+        {
+          "id": "tlspq-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PQ/T 混合方案术语 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Terminology for Post-Quantum Traditional Hybrid Schemes: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "PQ/T 混合方案术语 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Terminology for Post-Quantum Traditional Hybrid Schemes, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/tlspq-details-r138-model.zh.svg",
+            "en": "assets/tlspq-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5a40826b08e1003a865ae51a8b8ddb302fcd7bf7a67bc283bffac65a1d23e462",
+            "en": "4d2cd8435063eb02872ebd39a7f8067062b7f05e5a71eaa998d1655f52c7336c"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "tlspq-r139-formal",
+          "entryId": "tlspq-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：PQ/T 混合方案术语的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 PQ/T 混合方案术语 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "tlspq-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "tlspq-r139-formal"
+      ],
+      "sources": [
+        "tlspq-wikipedia",
+        "tlspq-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tlspq-r139-formal",
+      "entryId": "tlspq-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：PQ/T 混合方案术语的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 PQ/T 混合方案术语 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "tlspq-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

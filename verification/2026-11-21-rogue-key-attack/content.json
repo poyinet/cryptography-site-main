@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R116 public-key and hash-attack reviewed dossier for rogue-key-attack-details.",
+  "entries": [
+    {
+      "id": "rogue-key-attack-details",
+      "inventoryIds": [
+        "rogue-key-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R116 公钥与哈希攻击批次：把“流氓密钥攻击”从目录深度条目改写为含机制陈述、符号公式、复杂度/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R116 public-key and hash-attack batch: rewrote \"Rogue Key Attack\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, complexity/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "流氓密钥攻击",
+        "en": "Rogue Key Attack"
+      },
+      "claimIds": [
+        "rogue-key-attack-r139-principle",
+        "rogue-key-attack-r139-why",
+        "rogue-key-attack-r139-used",
+        "rogue-key-attack-r139-broken",
+        "rogue-key-attack-r139-history",
+        "rogue-key-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "rogue-key-attack-wikipedia",
+        "rogue-key-attack-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "rogue-key-attack-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "流氓密钥机制图：受害者公钥与攻击者公钥相加/相乘后等于攻击者控制的密钥，底部列出 PoP 与 MuSig 系数防御。",
+            "en": "Rogue-key mechanism: the victim and attacker public keys combine into a key the attacker controls, with PoP and MuSig coefficient defences below."
+          },
+          "alt": {
+            "zh": "左侧受害者与攻击者公钥框汇入聚合公钥框，右侧显示攻击者独立签名，底部是抵消公式与两种防御。",
+            "en": "Victim and attacker public-key boxes feed an aggregate-key box, the attacker signs alone on the right, and the cancellation formula plus two defences appear below."
+          },
+          "files": {
+            "zh": "assets/rogue-key-attack-details-mechanism.zh.svg",
+            "en": "assets/rogue-key-attack-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "84a07deeeb6876ff6a58ba22247ca98194e785491284856c4252f23a540c93b8",
+            "en": "8ead20a6614776a76c2ca089aa65208ddd93657caa1284717ccbbfcf4366ac6c"
+          }
+        },
+        {
+          "id": "rogue-key-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "流氓密钥攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Rogue Key Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "流氓密钥攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Rogue Key Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rogue-key-attack-details-r138-model.zh.svg",
+            "en": "assets/rogue-key-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4297f90199460f2e7f63b32dc7c3da37e3f575a4be380afd10f17a55207ee2c1",
+            "en": "2ea61ae2359a5c5594d5d2bbaf050d5c9554d448d20ecf6684568d9b56798f2b"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：流氓密钥攻击（Rogue Key Attack）。### 聚合公钥的简单相加\n\n许多多签名或聚合签名方案把签名者的公钥简单组合：\n\nPK = PK_1 + PK_2 + … + PK_n（加法群），\n\n或 PK = PK_1 · PK_2 · … · PK_n（BLS 的乘法群）。验证者只检查聚合签名 σ 是否对聚合公钥 PK 成立。若密钥注册不要求证明持有私钥，最后加入的攻击者可以“挑选”自己的公钥，使聚合公钥恰好等于它控制的某个密钥。### 两方情形的最简构造\n\n设受害者公钥为 PK_1 = x_1 G（加法群）或 g^{x_1}（乘法群），攻击者想让自己控制 x_A。在乘法群中，它注册\n\nPK_2 = PK_1^{-1} · g^{x_A}，\n\n于是 PK_1 · PK_2 = g^{x_A}。攻击者知道 x_A，可以独立生成对任意消息的聚合签名 σ = H(m)^{x_A}；验证者按聚合公钥检查，看到的是“两个人都签了”，但受害者从未参与。加法群把乘法写成减法：\n\nPK_2 = x_A G - PK_1，PK_1 + PK_2 = x_A G。### 攻击发生在密钥注册，不是签名算法内部\n\n这不是对 BLS 或 Schnorr 单个签名的伪造，而是多签名协议在“明文公钥模型”下的密钥建立缺陷。攻击者必须能在看到受害者公钥后注册自己的公钥；若密钥集合在攻击前已固定，或注册要求证明持有私钥，攻击条件就改变。",
+          "why": "多签名的卖点是“聚合后像一个普通公钥/签名”，这把密钥注册变成了安全边界。只要聚合函数对每个公钥一视同仁，攻击者就能用自己选的密钥抵消或替换别人的贡献。历史上多个早期多签名方案被此类攻击打破，Bellare-Neven 2006 因此把“明文公钥模型”作为正式模型：签名者只需有公钥，不需要在注册时证明持有私钥；但方案本身必须在该模型下可证明安全。### 两种常见防御\n\n1.持有证明（proof of possession）：注册时要求对自身公钥签一条挑战消息，证明知道私钥。它把“任意选键”改成“必须知道对应私钥”，但不是所有实现都足够；Bellare-Neven 指出，某些 KOSK 模型要求的“证明”比 PKCS#10 自签名更强。2.密钥聚合系数：MuSig 令 a_i = H(PK_i, L)，聚合公钥为 Σ a_i PK_i。系数依赖整个公钥列表，攻击者不能再简单地用 PK_2 抵消 PK_1；但系数设计本身需要安全证明，不能随手加一个哈希就宣称安全。### 不是所有多签名都要 PoP\n\nBellare-Neven 的 MS-BN 在明文公钥模型下可证明安全，说明“必须 PoP”不是普遍定理。正确的结论是：简单的无系数聚合加无 PoP 的密钥注册会中招；具体方案要看其安全证明。",
+          "used": "1.列出所有签名者公钥，确认聚合函数是简单求和/乘积还是带系数。2.检查密钥注册是否要求持有证明；证明是否绑定身份、公钥和协议上下文。3.尝试注册一个由受害者公钥计算出的对抗公钥，验证聚合公钥是否等于攻击者控制的密钥。4.检查签名验证是否只针对聚合公钥，是否还要求每个签名者的部分签名。5.对 BLS 聚合，确认是否使用 proof of possession 或带系数的聚合；对 Schnorr 多签名，确认是否使用 MuSig 类系数。### 工程场景\n\n交易所多签、跨链桥、验证者聚合签名、钱包多签都涉及密钥聚合。把“多签”当成“多个单签的简单拼接”最容易忽略密钥注册；审计时应把密钥注册当作独立攻击面。",
+          "broken": "1.攻击者不能在受害者公钥之后注册自己的公钥；密钥集合预先固定或注册顺序受控。2.注册要求真正的持有证明，且证明不可被重放或转移。3.聚合函数使用与整个密钥列表绑定的系数，简单抵消不再成立。4.方案在明文公钥模型下有安全证明；不能仅凭“用了 BLS”判断安全。5.验证要求所有部分签名，且聚合公钥不能由单个密钥替代。6.攻击者不知道 x_A，或无法让聚合公钥等于已知密钥；构造失败。“流氓密钥攻击等于 BLS 被攻破”不成立；它攻破的是密钥聚合或注册方式。“加了 PoP 就万事大吉”也不成立；PoP 的实现、绑定和模型都必须正确。",
+          "history": "早期多签名文献中反复出现密钥建立攻击；Bellare 与 Neven 在 CCS 2006 的论文中把“明文公钥模型”形式化，并给出在该模型下可证明安全的 MS-BN 方案。论文明确指出，流氓密钥攻击是真实威胁，而不是理论玩具。### MuSig 与聚合签名\n\n2018 年 Maxwell、Poelstra、Seurin 与 Wuille 提出 MuSig，用密钥聚合系数在明文公钥模型下构造可证明安全的 Schnorr 多签名，并把多签名用于 Bitcoin。此后“简单聚合加无 PoP”被视为高风险配置，密钥注册与系数设计成为多签名方案的标准审查项。",
+          "refs": "- Wikipedia search entry for 流氓密钥攻击. https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E6%B0%93%E5%AF%86%E9%92%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n流氓密钥攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Rogue Key Attack (流氓密钥攻击). ### Simple addition of aggregate public keys\n\nMany multisignature or aggregate-signature schemes combine signer public keys by simple arithmetic:\n\nPK = PK_1 + PK_2 + … + PK_n in an additive group,\n\nor PK = PK_1 · PK_2 · … · PK_n in the multiplicative group used by BLS. The verifier only checks whether the aggregate signature σ is valid under the aggregate public key PK. If key registration does not require proof of possession of the private key, a last-joining attacker can choose its public key so that the aggregate key equals a key it controls. ### The simplest two-party construction\n\nLet the victim’s public key be PK_1 = x_1 G in an additive group, or g^{x_1} in a multiplicative group, and let the attacker control x_A. In the multiplicative group it registers\n\nPK_2 = PK_1^{-1} · g^{x_A},\n\nso PK_1 · PK_2 = g^{x_A}. The attacker knows x_A and can produce an aggregate signature σ = H(m)^{x_A} on any message by itself. The verifier checks it under the aggregate key and sees “both signed”, although the victim never participated. In an additive group the same cancellation is written as\n\nPK_2 = x_A G - PK_1, so PK_1 + PK_2 = x_A G. ### The attack lives in key registration, not inside the signature scheme\n\nThis is not a forgery of a single BLS or Schnorr signature. It is a key-setup flaw of a multisignature protocol in the “plain public-key model”. The attacker must be able to register its key after seeing the victim’s key; if the key set is fixed before the attack, or registration requires proof of possession, the conditions change.",
+          "why": "The selling point of a multisignature is that the aggregate behaves like one ordinary public key and signature; that makes key registration a security boundary. As long as the aggregation function treats every public key equally, an attacker can cancel or replace another signer’s contribution with a key of its choice. Several early multisignature schemes fell to such attacks, which is why Bellare-Neven 2006 formalised the “plain public-key model”: a signer only needs a public key, without proving knowledge of the private key at registration; but the scheme itself must be provably secure in that model.\n\n1. Proof of possession (PoP): registration requires a signature on a challenge under the key being registered, proving knowledge of the private key. This changes “choose any key” into “must know the matching secret key”, but not every implementation is sufficient; Bellare-Neven note that the “proof” required by some KOSK models is stronger than a PKCS#10 self-signature. 2. Key-aggregation coefficients: MuSig sets a_i = H(PK_i, L) and aggregates as Σ a_i PK_i. The coefficients depend on the whole key list, so the attacker can no longer cancel PK_1 with a simple PK_2; but the coefficient design itself needs a security proof. Adding an arbitrary hash is not a proof.\n\nBellare-Neven’s MS-BN is provably secure in the plain public-key model, so “PoP is mandatory” is not a general theorem. The correct statement is narrower: simple coefficient-free aggregation combined with PoP-free key registration is exposed; a specific scheme must be judged by its security proof.",
+          "used": "1. List every signer public key and determine whether aggregation is simple addition/multiplication or coefficient-based. 2. Check whether key registration requires proof of possession, and whether the proof binds identity, public key and protocol context. 3. Try to register an adversarial key computed from the victim’s key and check whether the aggregate key becomes a key the attacker controls. 4. Check whether verification uses only the aggregate key, or also requires every partial signature. 5. For BLS aggregation, confirm whether proof of possession or coefficient-based aggregation is used; for Schnorr multisignatures, confirm whether MuSig-style coefficients are used.\n\nExchange multisigs, cross-chain bridges, validator aggregate signatures and wallet multisigs all aggregate keys. Treating a multisignature as “several ordinary signatures stapled together” is the quickest way to miss key registration; audit it as a separate attack surface.",
+          "broken": "1. The attacker cannot register its key after the victim’s key; the key set is fixed in advance or registration order is controlled. 2. Registration requires a real proof of possession, and the proof cannot be replayed or transferred. 3. Aggregation uses coefficients bound to the whole key list, so simple cancellation fails. 4. The scheme has a security proof in the plain public-key model; “it uses BLS” is not enough. 5. Verification requires every partial signature and the aggregate key cannot be replaced by one key. 6. The attacker does not know x_A, or cannot make the aggregate key equal a known key; the construction fails.\n\n“A rogue-key attack means BLS is broken” is false; it breaks the key aggregation or registration method. “Adding PoP solves everything” is also false; the PoP implementation, binding and model must all be correct.",
+          "history": "Key-setup attacks recurred in the early multisignature literature. Bellare and Neven formalised the plain public-key model at CCS 2006 and gave the MS-BN scheme, provably secure in that model. The paper is explicit that rogue-key attacks are a real threat, not a theoretical curiosity.\n\nIn 2018, Maxwell, Poelstra, Seurin and Wuille introduced MuSig, using key-aggregation coefficients to build a provably secure Schnorr multisignature in the plain public-key model, with applications to Bitcoin. Since then, “simple aggregation without PoP” has been treated as a high-risk configuration, and key registration plus coefficient design have become standard review items.",
+          "refs": "- Wikipedia search entry for 流氓密钥攻击. https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E6%B0%93%E5%AF%86%E9%92%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nRogue Key Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "rogue-key-attack-r139-formal",
+          "entryId": "rogue-key-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：流氓密钥攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 流氓密钥攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "rogue-key-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "rogue-key-attack-r139-formal"
+      ],
+      "sources": [
+        "rogue-key-attack-wikipedia",
+        "rogue-key-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rogue-key-attack-r139-formal",
+      "entryId": "rogue-key-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：流氓密钥攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 流氓密钥攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "rogue-key-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

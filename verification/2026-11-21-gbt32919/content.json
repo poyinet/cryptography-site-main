@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R121 formula-level deepening for gbt32919-details.",
+  "entries": [
+    {
+      "id": "gbt32919-details",
+      "inventoryIds": [
+        "gbt32919"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R121 公式级深化：把“SM2 数字签名”从机制结构条提升为公式级条目，给出轮函数/签名/密钥流/配对方程、参数、用途与失效边界；具体数值算例仍不冒充标准测试向量。",
+        "en": "R121 formula-level deepening: upgrades “SM2 Digital Signature” from a mechanism-structure card to a formula-level entry with round/signature/keystream/pairing equations, parameters, use and failure boundary; numeric examples are not claimed as standard test vectors."
+      },
+      "title": {
+        "zh": "SM2 数字签名",
+        "en": "SM2 Digital Signature"
+      },
+      "claimIds": [
+        "gbt32919-r139-principle",
+        "gbt32919-r139-why",
+        "gbt32919-r139-used",
+        "gbt32919-r139-broken",
+        "gbt32919-r139-history",
+        "gbt32919-r139-refs"
+      ],
+      "sourceIds": [
+        "gbt32919-wikipedia",
+        "gbt32919-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sm2"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gbt32919-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM2 公式级机制图：曲线密钥、e/r/s 签名、t 与 sG+tP 验证、nonce 与侧信道边界。",
+            "en": "SM2 formula-level mechanism: curve keys, e/r/s signing, t and sG+tP verification, nonce and side-channel boundary."
+          },
+          "alt": {
+            "zh": "四步公式级机制：曲线与密钥对 (d,P) → 签名 (r,s) → 验证 sG+tP → 边界与侧信道；核心公式与参数边界。",
+            "en": "Four formula-level steps: curve and key pair (d,P) → signature (r,s) → verify sG+tP → boundary and side channels; core formulas and parameter boundary."
+          },
+          "files": {
+            "zh": "assets/gbt32919-mechanism.zh.svg",
+            "en": "assets/gbt32919-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引标准绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited standard)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "236f464ef1c5e32dfd1657833ea0a6419a29b774b11727cc7f57b75a133c0657",
+            "en": "c6a0bd2d60d0253077a6a80f0c97b4d6a837e50343625256897487a45c54d86a"
+          }
+        },
+        {
+          "id": "gbt32919-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM2 数字签名 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SM2 Digital Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SM2 数字签名 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SM2 Digital Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gbt32919-details-r138-model.zh.svg",
+            "en": "assets/gbt32919-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "86f97e1d808389ab9ef77b738caaeb58bacda72b6963883d442429f4e92a1594",
+            "en": "40a25a5e524931d9fba72c70b89f87daafbac2e555fb055c2a96b33067314f07"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：SM2 数字签名（SM2 Digital Signature）。### 曲线与密钥\n\nSM2 签名使用 256 位素域椭圆曲线 curveSM2，基点 G 的阶为 n。私钥 d∈[1,n−2]，公钥 P=dG。### 签名\n\n先计算 e=SM3(Z_A‖M)，其中 Z_A 绑定用户标识、曲线参数与公钥。取随机 k∈[1,n−1]，计算 (x1,y1)=kG，令\n\n若 r=0 或 r+k=n 则重取 k。再计算\n\ns=((1+d)^{-1}(k−r d)) mod n；\n\n若 s=0 则重取 k。签名为 (r,s)。### 验证\n\n检查 r,s∈[1,n−1]；令 t=(r+s) mod n，t=0 则拒绝；计算 (x1,y1)=sG+tP，R=(e+x1) mod n；仅当 R=r 时接受。",
+          "why": "SM2 把 SM3 摘要、曲线点运算与用户标识绑定在一个签名流程中，适合证书、TLS 身份认证与电子签章。它不使用 ECDSA 的随机点 x 直接截断，而是把 e、r、s 组成闭环验证。",
+          "used": "1.生成密钥：私钥在密码模块内生成，公钥经证书或带外通道认证。2.计算 Z_A：使用标准规定的 ENTL、ID、曲线参数与公钥，不能省略用户标识。3.签名 nonce：k 必须唯一、不可预测，最好由 DRBG 或硬件生成。4.验证：检查曲线、点、阶与 r/s 范围，再算 t 和 R。### 不能怎么用\n\n不能复用 k；不能跳过 Z_A；不能只验 r 不验 s；不能把 SM2 当抗量子算法。",
+          "broken": "1.nonce 重用：同一 d 与同一 k 签两条消息会暴露私钥；这是最直接的致命错误。2.曲线/点校验缺失：未验证公钥在 curveSM2 上、阶正确，可能遭无效曲线或小群攻击。3.侧信道与故障：标量乘的时序、缓存与故障注入可恢复 d；需要常数时间与冗余。4.协议层：未绑定身份、域分离或证书链，会把有效签名用于错误上下文。",
+          "history": "SM2 于 2010 年发布，2012 年进入 GM/T 0003 序列，2016 年发布 GB/T 32918 系列；RFC 8998（2021）把 SM2 签名与 curveSM2 用于 TLS 1.3。签名格式、Z_A 计算与曲线参数以所声明标准版本为准；该条目不替代标准条款。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM2 数字签名的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 SM2 数字签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for SM2 数字签名. https://zh.wikipedia.org/w/index.php?search=SM2%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM2 数字签名的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: SM2 Digital Signature (SM2 数字签名). ### Curve and keys\n\nSM2 signatures use the 256-bit prime-field curve curveSM2 with base point G of order n. The private key is d∈[1,n−2] and the public key is P=dG. ### Signing\n\nCompute e=SM3(Z_A‖M), where Z_A binds the user identity, curve parameters and public key. Choose random k∈[1,n−1], compute (x1,y1)=kG and\n\nif r=0 or r+k=n, choose a new k. Then compute\n\ns=((1+d)^{-1}(k−r d)) mod n;\n\nif s=0, retry. The signature is (r,s). ### Verification\n\nCheck r,s∈[1,n−1]; set t=(r+s) mod n and reject if t=0; compute (x1,y1)=sG+tP and R=(e+x1) mod n; accept only if R=r.",
+          "why": "SM2 binds the SM3 digest, curve arithmetic and user identity into one signing flow, fitting certificates, TLS authentication and electronic seals. Unlike ECDSA’s truncated x-coordinate, it closes the loop over e, r and s.\n\nSM2 also defines public-key encryption and key exchange; this entry covers signatures only. SM3 is a hash and SM4 a block cipher, with different security goals.",
+          "used": "1. Generate keys: create d inside a cryptographic module and authenticate P by certificate or out-of-band channel. 2. Compute Z_A: use the standard ENTL, ID, curve parameters and public key; do not omit the identity. 3. Nonce: k must be unique and unpredictable, preferably from a DRBG or hardware source. 4. Verify: check the curve, point, order and r/s range before computing t and R.\n\nDo not reuse k; do not skip Z_A; do not verify r without s; do not present SM2 as quantum-resistant.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Nonce reuse: the same d and k over two messages exposes the private key; this is the most direct fatal error. 2. Missing curve/point checks: failing to verify that P lies on curveSM2 with the right order enables invalid-curve or small-subgroup attacks. 3. Side channels and faults: timing, cache access and fault injection in scalar multiplication can recover d; use constant-time code and redundancy. 4. Protocol layer: missing identity binding, domain separation or certificate chain lets a valid signature serve the wrong context.",
+          "history": "SM2 was released in 2010, entered GM/T 0003 in 2012 and was published as the GB/T 32918 series in 2016; RFC 8998 (2021) uses SM2 signatures and curveSM2 in TLS 1.3.\n\nSignature format, Z_A computation and curve parameters follow the claimed standard edition; this entry is not a clause substitute.",
+          "refs": "- Wikipedia search entry for SM2 数字签名. https://zh.wikipedia.org/w/index.php?search=SM2%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM2 Digital Signature: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "gbt32919-r139-formal",
+          "entryId": "gbt32919-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：SM2 数字签名的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 SM2 数字签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gbt32919-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "gbt32919-r139-formal"
+      ],
+      "sources": [
+        "gbt32919-wikipedia",
+        "gbt32919-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gbt32919-r139-formal",
+      "entryId": "gbt32919-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：SM2 数字签名的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 SM2 数字签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gbt32919-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,144 @@
+{
+  "results": [
+    {
+      "id": "ctr-official-vector",
+      "entryId": "ctr-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "18590f79a192ee67951977a60c499ac8a01e02a0ae410f94665f5766e41f6fa6",
+      "dependencyHashes": {
+        "ctr-teaching.mjs": "bcb35114ee2afc6d9a486ad6f58e94c44c2d29ba24f678d90b8306a0a26f2024",
+        "article.zh.md": "5b7cb3aa85e6fc68df6ac68d78f72bbb456322f80709150ec2d43ad21e48e153",
+        "article.en.md": "01192f39790c0003d62c79ccf7b01d5514a7e75531be46588496256ff1615fcc",
+        "meta.json": "702d39a36d02d1de9fd52cb8dad3af36de529ddc815140c48012cf27f8ceec47",
+        "glossary.json": "d122bc88cb43b8a4a760cc8a0ce4fbf29a705bc6b57bc5cc8b566b229edb07ca",
+        "calculations.json": "b886f1b9d6a0c8e95a3dca3df113c210ee041083519ac474ba1bf3846c51f37c"
+      },
+      "inputs": "SP 800-38A Appendix F.5 AES-128-CTR four-block vector",
+      "expected": "All four ciphertext blocks match the NIST values; decryption with the same operation recovers all four plaintext blocks",
+      "observed": {
+        "id": "ctr-official-vector",
+        "passed": true,
+        "blocks": 4,
+        "ciphertext": "874d6191b620e3261bef6864990db6ce9806f66b7970fdff8617187bb9fffdff5ae4df3edbd5d35e5b4f09020db03eab1e031dda2fbe03d1792170a0f3009cee",
+        "limit": "One official four-block case; not protocol validation."
+      },
+      "contentSha256": "7e8750615cef06a32b4ba4750c6ecea09c79c90dfdb73eda9ddbeb49478e6af8",
+      "sourcesSha256": "60e468c8882359d8e76c662d8abd94db1c6d3a680476c697f1833c3f758bf3c0",
+      "executedOn": "2026-11-25T07:03:15.751Z"
+    },
+    {
+      "id": "ctr-parallel",
+      "entryId": "ctr-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "18590f79a192ee67951977a60c499ac8a01e02a0ae410f94665f5766e41f6fa6",
+      "dependencyHashes": {
+        "ctr-teaching.mjs": "bcb35114ee2afc6d9a486ad6f58e94c44c2d29ba24f678d90b8306a0a26f2024",
+        "article.zh.md": "5b7cb3aa85e6fc68df6ac68d78f72bbb456322f80709150ec2d43ad21e48e153",
+        "article.en.md": "01192f39790c0003d62c79ccf7b01d5514a7e75531be46588496256ff1615fcc",
+        "meta.json": "702d39a36d02d1de9fd52cb8dad3af36de529ddc815140c48012cf27f8ceec47",
+        "glossary.json": "d122bc88cb43b8a4a760cc8a0ce4fbf29a705bc6b57bc5cc8b566b229edb07ca",
+        "calculations.json": "b886f1b9d6a0c8e95a3dca3df113c210ee041083519ac474ba1bf3846c51f37c"
+      },
+      "inputs": "The third block of the NIST CTR vector decrypted independently from the first two blocks",
+      "expected": "Direct keystream generation for block 3 recovers the same plaintext as full decryption",
+      "observed": {
+        "id": "ctr-parallel",
+        "passed": true,
+        "counter3": "f0f1f2f3f4f5f6f7f8f9fafbfcfdff01",
+        "keystream3": "6a2cc3787889374fbeb4c81b17ba6c44",
+        "plaintext3": "30c81c46a35ce411e5fbc1191a0a52ef",
+        "limit": "Random-access demonstration on one fixed block; not a parallel benchmark."
+      },
+      "contentSha256": "7e8750615cef06a32b4ba4750c6ecea09c79c90dfdb73eda9ddbeb49478e6af8",
+      "sourcesSha256": "60e468c8882359d8e76c662d8abd94db1c6d3a680476c697f1833c3f758bf3c0",
+      "executedOn": "2026-11-25T07:03:15.751Z"
+    },
+    {
+      "id": "ctr-reuse",
+      "entryId": "ctr-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "18590f79a192ee67951977a60c499ac8a01e02a0ae410f94665f5766e41f6fa6",
+      "dependencyHashes": {
+        "ctr-teaching.mjs": "bcb35114ee2afc6d9a486ad6f58e94c44c2d29ba24f678d90b8306a0a26f2024",
+        "article.zh.md": "5b7cb3aa85e6fc68df6ac68d78f72bbb456322f80709150ec2d43ad21e48e153",
+        "article.en.md": "01192f39790c0003d62c79ccf7b01d5514a7e75531be46588496256ff1615fcc",
+        "meta.json": "702d39a36d02d1de9fd52cb8dad3af36de529ddc815140c48012cf27f8ceec47",
+        "glossary.json": "d122bc88cb43b8a4a760cc8a0ce4fbf29a705bc6b57bc5cc8b566b229edb07ca",
+        "calculations.json": "b886f1b9d6a0c8e95a3dca3df113c210ee041083519ac474ba1bf3846c51f37c"
+      },
+      "inputs": "Two fixed plaintexts under the same AES-128 key and initial counter block, then under a different initial counter block",
+      "expected": "Same-counter ciphertext XOR equals plaintext XOR; a different initial counter block breaks the relation",
+      "observed": {
+        "id": "ctr-reuse",
+        "passed": true,
+        "sameCounterXor": "ffffffffffffffffffffffffffffffff",
+        "plaintextXor": "ffffffffffffffffffffffffffffffff",
+        "differentCounterCipher": "57127d4034b1bebfaef466b9c7726fc6",
+        "limit": "Keystream-reuse arithmetic; not a complete protocol attack."
+      },
+      "contentSha256": "7e8750615cef06a32b4ba4750c6ecea09c79c90dfdb73eda9ddbeb49478e6af8",
+      "sourcesSha256": "60e468c8882359d8e76c662d8abd94db1c6d3a680476c697f1833c3f758bf3c0",
+      "executedOn": "2026-11-25T07:03:15.751Z"
+    },
+    {
+      "id": "ctr-increment-wrap",
+      "entryId": "ctr-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "18590f79a192ee67951977a60c499ac8a01e02a0ae410f94665f5766e41f6fa6",
+      "dependencyHashes": {
+        "ctr-teaching.mjs": "bcb35114ee2afc6d9a486ad6f58e94c44c2d29ba24f678d90b8306a0a26f2024",
+        "article.zh.md": "5b7cb3aa85e6fc68df6ac68d78f72bbb456322f80709150ec2d43ad21e48e153",
+        "article.en.md": "01192f39790c0003d62c79ccf7b01d5514a7e75531be46588496256ff1615fcc",
+        "meta.json": "702d39a36d02d1de9fd52cb8dad3af36de529ddc815140c48012cf27f8ceec47",
+        "glossary.json": "d122bc88cb43b8a4a760cc8a0ce4fbf29a705bc6b57bc5cc8b566b229edb07ca",
+        "calculations.json": "b886f1b9d6a0c8e95a3dca3df113c210ee041083519ac474ba1bf3846c51f37c"
+      },
+      "inputs": "The standard incrementing function applied to 32-bit and toy 8-bit counter fields, including wrap-around",
+      "expected": "Only the rightmost m bits change; an 8-bit counter returns to its start after 256 increments",
+      "observed": {
+        "id": "ctr-increment-wrap",
+        "passed": true,
+        "next32": "f0f1f2f3f4f5f6f7f8f9fafbfcfdff00",
+        "toy8After255": "000000ff",
+        "toy8After256": "00000000",
+        "limit": "Toy field size; the 32-bit case does not iterate 2^32 blocks."
+      },
+      "contentSha256": "7e8750615cef06a32b4ba4750c6ecea09c79c90dfdb73eda9ddbeb49478e6af8",
+      "sourcesSha256": "60e468c8882359d8e76c662d8abd94db1c6d3a680476c697f1833c3f758bf3c0",
+      "executedOn": "2026-11-25T07:03:15.751Z"
+    },
+    {
+      "id": "ctr-no-padding",
+      "entryId": "ctr-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "18590f79a192ee67951977a60c499ac8a01e02a0ae410f94665f5766e41f6fa6",
+      "dependencyHashes": {
+        "ctr-teaching.mjs": "bcb35114ee2afc6d9a486ad6f58e94c44c2d29ba24f678d90b8306a0a26f2024",
+        "article.zh.md": "5b7cb3aa85e6fc68df6ac68d78f72bbb456322f80709150ec2d43ad21e48e153",
+        "article.en.md": "01192f39790c0003d62c79ccf7b01d5514a7e75531be46588496256ff1615fcc",
+        "meta.json": "702d39a36d02d1de9fd52cb8dad3af36de529ddc815140c48012cf27f8ceec47",
+        "glossary.json": "d122bc88cb43b8a4a760cc8a0ce4fbf29a705bc6b57bc5cc8b566b229edb07ca",
+        "calculations.json": "b886f1b9d6a0c8e95a3dca3df113c210ee041083519ac474ba1bf3846c51f37c"
+      },
+      "inputs": "20-byte and 21-byte plaintexts encrypted with AES-128-CTR",
+      "expected": "Ciphertext length equals plaintext length in both cases; no padding block is added",
+      "observed": {
+        "id": "ctr-no-padding",
+        "passed": true,
+        "plaintextBytes": 20,
+        "ciphertextBytes": 20,
+        "plaintextBytes21": 21,
+        "ciphertextBytes21": 21,
+        "limit": "Length behavior only; no long-message counter-limit test."
+      },
+      "contentSha256": "7e8750615cef06a32b4ba4750c6ecea09c79c90dfdb73eda9ddbeb49478e6af8",
+      "sourcesSha256": "60e468c8882359d8e76c662d8abd94db1c6d3a680476c697f1833c3f758bf3c0",
+      "executedOn": "2026-11-25T07:03:15.751Z"
+    }
+  ]
+}

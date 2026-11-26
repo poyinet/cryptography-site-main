@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full RC5 block-cipher article only; no completion claim for RC6, DES, AES, TEA, block-cipher-mode or the whole library.",
+  "entries": [
+    {
+      "id": "rc5-details",
+      "inventoryIds": [
+        "rc5"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 rc5 这一实体：RC5-w/r/b 参数、密钥扩展、A/B 加密与解密、数据相关旋转、64 位块和侧信道边界；不把 RC6、DES、AES、TEA 或工作模式并入本实体。",
+        "en": "Covers the rc5 entity: RC5-w/r/b parameters, key expansion, A/B encryption and decryption, data-dependent rotations, the 64-bit-block and side-channel boundaries. It does not absorb RC6, DES, AES, TEA or a mode of operation."
+      },
+      "title": {
+        "zh": "RC5：参数化 ARX 与数据相关旋转",
+        "en": "RC5: parameterized ARX with data-dependent rotations"
+      },
+      "claimIds": [
+        "rc5-r139-principle",
+        "rc5-r139-why",
+        "rc5-r139-used",
+        "rc5-r139-broken",
+        "rc5-r139-history",
+        "rc5-r139-refs"
+      ],
+      "calculationIds": [
+        "rc5-reference-vector",
+        "rc5-key-schedule",
+        "rc5-roundtrip",
+        "rc5-avalanche",
+        "rc5-r139-formal"
+      ],
+      "sourceIds": [
+        "rc5-wikipedia",
+        "rc5-reference-ref"
+      ],
+      "related": [
+        "rc6",
+        "algorithm--des",
+        "algorithm--aes",
+        "tea",
+        "block-cipher-mode"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：RC5 分组密码（RC5）。RC5 是一种参数化分组密码，记作 RC5-w/r/b：w 是字长（16、32 或 64 位），r 是轮数，b 是密钥字节数。块大小是 2w 位；常用的 RC5-32 使用两个 32 位字 A 和 B，块大小 64 位。Rivest 把 RC5-32/12/16（32 位字、12 轮、16 字节密钥）作为标称参数集。RC5 的密钥扩展把 b 字节密钥转成 c 个字 L，并生成 `T = 2(r+1)` 个轮密钥字 S。S 先用两个常数初始化：\n\n```text\nP = 0xb7e15163\nQ = 0x9e3779b9\nS[0] = P\nS[i] = S[i-1] + Q  (mod 2^w)\n```\n\n然后把 L 混入 S：重复 `3 * max(c, T)` 次，执行 A 和 B 的旋转与相加，把结果写回 S 和 L。RC5 的轮密钥没有 S-box，只有加法、异或和循环旋转。加密先把 S[0]、S[1] 加到 A、B，再执行 r 轮：\n\n```text\nA = ((A xor B) <<< B) + S[2i]\nB = ((B xor A) <<< A) + S[2i+1]\n```\n\n其中 `<<<` 是 W 位循环左移，旋转量只取决于 B 或 A 的低 log2(W) 位。解密反向执行：先减轮密钥，再反向旋转并异或，最后减 S[0]、S[1]。这种旋转量由数据决定的设计是 RC5 的一个显著特征。",
+          "why": "RC5 的设计目标是小、快、简单，并且可参数化。它没有 S-box 和查找表，轮函数只有加法、异或和数据相关旋转，适合硬件和软件实现；参数 w、r、b 让用户可以在块大小、轮数、密钥长度和性能之间取舍。数据相关旋转让轮函数带有非线性：旋转量不是固定常数，而是来自另一半数据。它使 RC5 的扩散和差分行为与固定旋转的 ARX 密码不同，也让时序和功耗分析成为实现层的重要问题。RC5 的历史地位还在于它是 RC6 的前身。RC6 在 1998 年进入 AES 竞选的最后一轮，后来 AES 选择了 Rijndael；RC5 本身没有被标准化为现代通用分组密码，但它是理解 ARX 参数化和数据相关旋转的重要样本。",
+          "used": "RC5 主要出现在软件实现、教学和早期密码库中。它的参数化使它适合演示同一算法在不同 w/r/b 下的行为，而不是提供一个固定标准参数集。RFC 2040 还定义了 RC5-CBC、RC5-CBC-Pad 和 RC5-CTS 三种模式，说明 RC5 曾被考虑用于完整的消息加密。本文使用 RC5-32/20/16 的参考向量：32 位字、20 轮、16 字节密钥。它不是 Rivest 的标称 12 轮参数，而是测试向量文档给出的可复现参数集。标称 RC5-32/12/16 仍是理解参数选择的主要例子。RC5 只定义分组密码（以及 RFC 2040 的模式），不提供认证。实际需要认证时，必须使用 AEAD 或加密后再 MAC；不能把 RC5 的数据相关旋转当成完整性保护。",
+          "broken": "RC5-32 的块只有 64 位。与 128 位块相比，生日碰撞意义下的安全边界更窄；处理大量数据时，64 位块会限制可安全加密的块数。RC5-64 的块更大，但轮数和实现成本也更高。### 数据相关旋转与侧信道\n\nRC5 的旋转量来自数据，软件实现可能因旋转量不同而产生时序差异；硬件实现也可能在功耗或电磁辐射上泄露旋转量。常量时间实现、掩码和故障防护属于实现层，不在算法定义内。### 参数选择\n\nRC5 的安全性依赖 w、r、b 的选择。Rivest 明确警告，过小的轮数或不合适的参数会提供很弱的安全性；标称 RC5-32/12/16 只是建议起点，不是对所有威胁模型都足够。参数必须在设计时固定，不能由接收方在运行时任意选择。### 无完整性\n\nRC5 只提供分组密码的伪随机置换，不提供完整性。翻转密文会改变对应明文，但 RC5 本身无法检测；需要认证时应使用 AEAD 或加密后再 MAC。本文的教学实现只处理 RC5-32、固定轮数和固定密钥/数据。它不生成密钥、不做常量时间处理、不实现 CBC/CTS 模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+          "history": "RC5 由 Ronald Rivest 在 1994 年的 Fast Software Encryption 会议上提出。论文强调快速、适合软硬件实现、使用数据相关旋转，并允许可变字长、轮数和密钥长度；它把 RC5-32/12/16 作为标称参数集。1996 年，Baldwin 和 Rivest 在 RFC 2040 中描述 RC5 的密钥扩展、块加密以及 CBC、CBC-Pad、CTS 模式。RC6 是 RC5 的后继设计，属于另一个实体；它不是本文的覆盖范围。它没有成为现代通用标准，但它的 ARX 结构、参数权衡和侧信道问题仍是理解后续轻量级密码的重要背景。",
+          "refs": "- Wikipedia search entry for RC5 分组密码. https://zh.wikipedia.org/w/index.php?search=RC5%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: RC5 (RC5 分组密码). RC5 is a parameterized block cipher written RC5-w/r/b: w is the word size (16, 32 or 64 bits), r is the number of rounds, and b is the key length in bytes. The block size is 2w bits; the common RC5-32 uses two 32-bit words A and B, for a 64-bit block. Rivest treats RC5-32/12/16 (32-bit words, 12 rounds, 16-byte key) as the nominal parameter set. RC5 key expansion converts the b-byte key into c words L and produces `T = 2(r+1)` round-key words S. S is initialized with two constants:\n\n```text\nP = 0xb7e15163\nQ = 0x9e3779b9\nS[0] = P\nS[i] = S[i-1] + Q  (mod 2^w)\n```\n\nL is then mixed into S: repeat `3 * max(c, T)` times, rotating and adding A and B, and write the results back to S and L. RC5 round keys have no S-box, only addition, XOR and cyclic rotation. Encryption first adds S[0] and S[1] to A and B, then runs r rounds:\n\n```text\nA = ((A xor B) <<< B) + S[2i]\nB = ((B xor A) <<< A) + S[2i+1]\n```\n\nHere `<<<` is a W-bit cyclic left rotation, and the rotation amount depends only on the low log2(W) bits of B or A. Decryption runs backward: subtract the round keys, undo the rotation and XOR, then subtract S[0] and S[1]. This data-dependent rotation-amount design is a distinguishing feature of RC5.",
+          "why": "RC5 was designed to be small, fast and simple, and to be parameterizable. It has no S-box or lookup table; the round function is only addition, XOR and data-dependent rotation, suitable for hardware and software. The parameters w, r and b let users trade block size, rounds, key length and performance.\n\nData-dependent rotations give the round function nonlinearity: the rotation amount is not a fixed constant but comes from the other half of the data. This makes RC5's diffusion and differential behaviour different from ARX ciphers with fixed rotations, and it makes timing and power analysis an important implementation concern.\n\nRC5 is also historically important as RC6's predecessor. RC6 reached the final round of the 1998 AES competition, where AES selected Rijndael; RC5 itself was not standardized as a modern general-purpose block cipher, but it is an important sample for understanding ARX parameterization and data-dependent rotations.",
+          "used": "RC5 appears mainly in software implementations, teaching and early cryptographic libraries. Its parameterization makes it suitable for demonstrating how one algorithm behaves under different w/r/b choices, rather than providing one fixed standard parameter set. RFC 2040 also defines RC5-CBC, RC5-CBC-Pad and RC5-CTS, showing that RC5 was considered for complete message encryption.\n\nThis article uses the RC5-32/20/16 reference vector: 32-bit words, 20 rounds and a 16-byte key. It is not Rivest's nominal 12-round parameter set but a reproducible parameter set from the test-vector document. The nominal RC5-32/12/16 remains the main example for understanding parameter choice.\n\nRC5 defines only a block cipher (and the RFC 2040 modes), not authentication. When authentication is needed, use AEAD or encrypt-then-MAC; RC5's data-dependent rotations are not integrity protection.",
+          "broken": "The RC5-32 block is only 64 bits. Compared with a 128-bit block, the birthday bound is narrower; when processing large data volumes, a 64-bit block limits the number of blocks that can be encrypted safely. RC5-64 has a larger block but also higher round and implementation costs.\n\nRC5's rotation amounts come from the data. Software implementations can show timing differences for different rotation amounts, and hardware implementations can leak the rotation amounts through power or electromagnetic emissions. Constant-time implementation, masking and fault protection are implementation concerns, not part of the algorithm definition.\n\nRC5's security depends on w, r and b. Rivest explicitly warns that too few rounds or unsuitable parameters provide very weak security; the nominal RC5-32/12/16 is only a suggested starting point, not sufficient for every threat model. Parameters must be fixed at design time and must not be chosen arbitrarily by the receiver at run time.\n\nRC5 provides only a block-cipher pseudorandom permutation, not integrity. Flipping ciphertext changes the corresponding plaintext, but RC5 itself cannot detect it; when authentication is needed, use AEAD or encrypt-then-MAC.\n\nThis article's teaching implementation handles only RC5-32 with fixed rounds and fixed keys/data. It does not generate keys, run in constant time, implement CBC/CTS modes, protocols, key management or side-channel defenses, and must not be used in production.",
+          "history": "RC5 was proposed by Ronald Rivest at the 1994 Fast Software Encryption workshop. The paper emphasizes speed, suitability for software and hardware, data-dependent rotations, and variable word size, rounds and key length; it treats RC5-32/12/16 as the nominal parameter set.\n\nIn 1996, Baldwin and Rivest described RC5 key expansion, block encryption and the CBC, CBC-Pad and CTS modes in RFC 2040. RC6 is RC5's successor design and a separate entity; it is outside this article's scope.\n\nRC5's historical value is that it brought \"parameterization\" and \"data-dependent rotations\" into block-cipher design. It did not become a modern general-purpose standard, but its ARX structure, parameter trade-offs and side-channel issues remain important background for later lightweight ciphers.",
+          "refs": "- Wikipedia search entry for RC5 分组密码. https://zh.wikipedia.org/w/index.php?search=RC5%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "RC5：参数化分组密码 RC5-w/r/b，块大小为 2w 位。",
+          "w：字长，RC5-32 使用 32 位字。",
+          "r：轮数；标称 RC5-32 使用 12 轮。",
+          "b：密钥字节数；标称 RC5-32 使用 16 字节密钥。",
+          "A/B：RC5 块的两个 w 位字。",
+          "密钥扩展：把密钥字节转成 L，并混合成 2(r+1) 个轮密钥字 S。",
+          "P/Q：RC5 密钥扩展的 32 位常数 0xb7e15163 和 0x9e3779b9。",
+          "数据相关旋转：旋转量来自另一半数据的低位，而不是固定常数。",
+          "标称参数集：Rivest 建议的 RC5-32/12/16。",
+          "侧信道：时序、功耗或电磁泄漏；数据相关旋转会放大其影响。",
+          "无完整性：RC5 只提供分组密码，不检测密文修改。",
+          "RC6：RC5 的后继设计，属于另一个实体。"
+        ],
+        "en": [
+          "RC5: the parameterized block cipher RC5-w/r/b with a 2w-bit block.",
+          "w: the word size; RC5-32 uses 32-bit words.",
+          "r: the number of rounds; nominal RC5-32 uses 12 rounds.",
+          "b: the key length in bytes; nominal RC5-32 uses a 16-byte key.",
+          "A/B: the two w-bit words of an RC5 block.",
+          "Key expansion: converting key bytes into L and mixing them into 2(r+1) round-key words S.",
+          "P/Q: the RC5 key-expansion constants 0xb7e15163 and 0x9e3779b9.",
+          "Data-dependent rotation: a rotation amount taken from the low bits of the other word, not a fixed constant.",
+          "Nominal parameter set: Rivest's suggested RC5-32/12/16.",
+          "Side channel: timing, power or electromagnetic leakage; data-dependent rotations amplify its impact.",
+          "No integrity: RC5 is only a block cipher and cannot detect ciphertext modification.",
+          "RC6: RC5's successor design, a separate entity."
+        ]
+      },
+      "figures": [
+        {
+          "id": "rc5-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RC5：参数化 ARX 与数据相关旋转：为什么需要 → 核心机制 → 边界。",
+            "en": "RC5: parameterized ARX with data-dependent rotations: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RC5：参数化 ARX 与数据相关旋转 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RC5: parameterized ARX with data-dependent rotations, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rc5-details-flow.zh.svg",
+            "en": "assets/rc5-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6b08593d0d94707669c452f2240d7cf4d5968c51b55be51cef45aa0028a2c020",
+            "en": "36805141743e0e319b5fa09956c70ec097b52d62947fe94c66f00bb13b718c90"
+          }
+        },
+        {
+          "id": "rc5-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RC5：参数化 ARX 与数据相关旋转 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RC5: parameterized ARX with data-dependent rotations: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RC5：参数化 ARX 与数据相关旋转 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RC5: parameterized ARX with data-dependent rotations, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rc5-details-r138-model.zh.svg",
+            "en": "assets/rc5-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "525837b05ae21a5b05185b4afdff3e78a5f394c694078abfc5c38c322f918c49",
+            "en": "62f3b5dc0a7645bfadec904f67ce26fb93016e47003f0212a1a4016f5ef6596d"
+          }
+        }
+      ],
+      "sources": [
+        "rc5-wikipedia",
+        "rc5-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "rc5-reference-vector",
+          "entryId": "rc5-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RC5-32/20/16: key 000102030405060708090a0b0c0d0e0f, block input 0001020304050607",
+          "expected": "Block output 2a0edc0e9431ff73; decryption returns the block input",
+          "sourceIds": [
+            "rc5-wikipedia"
+          ],
+          "dependencies": [
+            "rc5-teaching.mjs"
+          ],
+          "limitations": "One reference vector for one w/r/b parameter set; not a parameter matrix."
+        },
+        {
+          "id": "rc5-key-schedule",
+          "entryId": "rc5-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The RC5-32/20/16 key 000102030405060708090a0b0c0d0e0f",
+          "expected": "42 round-key words; S[0]=98c9276e, S[1]=30979fa4 and S[41]=4765b2f6",
+          "sourceIds": [
+            "rc5-wikipedia"
+          ],
+          "dependencies": [
+            "rc5-teaching.mjs"
+          ],
+          "limitations": "One fixed key and round count; values are derived from the key-expansion algorithm, not a separate official vector."
+        },
+        {
+          "id": "rc5-roundtrip",
+          "entryId": "rc5-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Fixed 64-bit plaintexts and 128-bit keys at 0, 1, 8, 12, 16 and 20 rounds",
+          "expected": "Every encryption decrypts back to the original plaintext",
+          "sourceIds": [
+            "rc5-wikipedia"
+          ],
+          "dependencies": [
+            "rc5-teaching.mjs"
+          ],
+          "limitations": "Fixed data only; not a random or exhaustive test."
+        },
+        {
+          "id": "rc5-avalanche",
+          "entryId": "rc5-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under key 00112233445566778899aabbccddeeff, 20 rounds",
+          "expected": "The ciphertexts differ in 36 bits",
+          "sourceIds": [
+            "rc5-wikipedia"
+          ],
+          "dependencies": [
+            "rc5-teaching.mjs"
+          ],
+          "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential probability."
+        },
+        {
+          "id": "rc5-r139-formal",
+          "entryId": "rc5-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "RC5 分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "rc5-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rc5-reference-vector",
+      "entryId": "rc5-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RC5-32/20/16: key 000102030405060708090a0b0c0d0e0f, block input 0001020304050607",
+      "expected": "Block output 2a0edc0e9431ff73; decryption returns the block input",
+      "sourceIds": [
+        "rc5-wikipedia"
+      ],
+      "dependencies": [
+        "rc5-teaching.mjs"
+      ],
+      "limitations": "One reference vector for one w/r/b parameter set; not a parameter matrix."
+    },
+    {
+      "id": "rc5-key-schedule",
+      "entryId": "rc5-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The RC5-32/20/16 key 000102030405060708090a0b0c0d0e0f",
+      "expected": "42 round-key words; S[0]=98c9276e, S[1]=30979fa4 and S[41]=4765b2f6",
+      "sourceIds": [
+        "rc5-wikipedia"
+      ],
+      "dependencies": [
+        "rc5-teaching.mjs"
+      ],
+      "limitations": "One fixed key and round count; values are derived from the key-expansion algorithm, not a separate official vector."
+    },
+    {
+      "id": "rc5-roundtrip",
+      "entryId": "rc5-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Fixed 64-bit plaintexts and 128-bit keys at 0, 1, 8, 12, 16 and 20 rounds",
+      "expected": "Every encryption decrypts back to the original plaintext",
+      "sourceIds": [
+        "rc5-wikipedia"
+      ],
+      "dependencies": [
+        "rc5-teaching.mjs"
+      ],
+      "limitations": "Fixed data only; not a random or exhaustive test."
+    },
+    {
+      "id": "rc5-avalanche",
+      "entryId": "rc5-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under key 00112233445566778899aabbccddeeff, 20 rounds",
+      "expected": "The ciphertexts differ in 36 bits",
+      "sourceIds": [
+        "rc5-wikipedia"
+      ],
+      "dependencies": [
+        "rc5-teaching.mjs"
+      ],
+      "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential probability."
+    },
+    {
+      "id": "rc5-r139-formal",
+      "entryId": "rc5-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "RC5 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "rc5-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

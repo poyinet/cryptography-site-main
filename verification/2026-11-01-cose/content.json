@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for cose: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "cose-details",
+      "inventoryIds": [
+        "cose"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释COSE 签名与加密格式的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of CBOR Object Signing and Encryption: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "COSE 签名与加密格式",
+        "en": "CBOR Object Signing and Encryption"
+      },
+      "claimIds": [
+        "cose-r139-principle",
+        "cose-r139-why",
+        "cose-r139-used",
+        "cose-r139-broken",
+        "cose-r139-history",
+        "cose-r139-refs"
+      ],
+      "sourceIds": [
+        "cose-wikipedia",
+        "cose-reference-ref",
+        "cose-specific",
+        "cose-standard"
+      ],
+      "related": [
+        "cbor",
+        "passkey",
+        "digital-signature",
+        "message-authentication-code"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：COSE 签名与加密格式（CBOR Object Signing and Encryption）。§1 交代定位：「This document defines the CBOR Object Signing and Encryption (COSE) standard, which does the same thing for the CBOR encoding format.」摘要说明范围包括签名、MAC、加密与密钥表示，并补充「This specification additionally describes how to represent cryptographic keys using CBOR.」§2 给出统一的数组结构：「All of the message structures are built on the CBOR array type.」前三元素固定为「The protected header parameters, encoded and wrapped in a bstr.」「The unprotected header parameters as a map.」以及内容——「The content is either the plaintext or the ciphertext, as appropriate.」",
+          "why": "动因来自受限设备：§1 说「There has been an increased focus on small, constrained devices that make up the Internet of Things (IoT).」并指出「A need exists to provide message security services for IoT, and using CBOR as the message-encoding format makes sense.」§1.3 列出与 JOSE 的设计差别：「A single overall message structure has been defined so that encrypted, signed, and MACed messages can easily be identified and still have a consistent view.」「Binary encodings are used, rather than base64url encodings, to encode binary data.」「The authentication tag for encryption algorithms has been combined with the ciphertext.」§2 则强调解析代码复用：目标是让不同类型安全消息共享大量处理逻辑。",
+          "used": "§2 列出四条识别消息类型的路子：「Identification of which type of message has been presented is done by the following methods:」第一条靠上下文「The specific message type is known from the context.」第二条靠标签「The message type is identified by a CBOR tag.」第四条依托 CoAP 的内容格式选项。§4.2 给签名单签的标签——「A tagged COSE_Sign1 structure is identified by the CBOR tag 18.」§5.2 给单接收者加密——「A tagged COSE_Encrypt0 structure is identified by the CBOR tag 16.」§3.1 规定算法字段必须被认证：「This header parameter MUST be authenticated where the ability to do so exists.」§4.4 定义待签名的规范化字节串：「In order to create a signature, a well-defined byte string is needed.The Sig_structure is used to create the canonical form.」其上下文串包括「“Signature1” for signatures using the COSE_Sign1 structure.」§7 定义密钥图：「The element “kty” is a required element in a COSE_Key map.」",
+          "broken": "编码歧义会破坏签名一致性，§9 因此收紧 CBOR，但把收紧范围写明：「The restriction applies to the encoding of the Sig_structure, the Enc_structure, and the MAC_structure.」——不是整条 COSE 报文的通用要求。在此范围内，「Encoding MUST be done using definite lengths, and the length of the (encoded) argument MUST be the minimum possible length.」并举例「This means that the integer 1 is encoded as “0x01” and not “0x1801”.」§12 给出两条密钥警告：「Use of the same key for two different algorithms can leak information about the key.」以及「Use of “direct” as a recipient algorithm combined with a second recipient algorithm exposes the direct key to the second recipient」。§3.1 提醒密钥提示不可靠：「Applications MUST NOT assume that “kid” values are unique.」§1 还记录一次因安全性质描述错误而做的删除——反签名原先对 COSE_Sign1 的描述不正确。",
+          "history": "RFC 9052 署名 J.Schaad（August Cellars），2022 年 8 月发布，头部标「STD: 96」与「Obsoletes: 8152」。§1.2 列出与旧版的变化，第一条是「Split the original document into this document and [RFC9053].」§1.4 解释为何结构用散文而非 CDDL 规范化描述：「When COSE was originally written, the Concise Data Definition Language (CDDL) [RFC8610] had not yet been published in an RFC」。",
+          "refs": "- Wikipedia search entry for COSE 签名与加密格式. https://zh.wikipedia.org/w/index.php?search=COSE%20%E7%AD%BE%E5%90%8D%E4%B8%8E%E5%8A%A0%E5%AF%86%E6%A0%BC%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9052: CBOR Object Signing and Encryption. https://www.rfc-editor.org/rfc/rfc9052\n- Published standard/RFC for COSE 签名与加密格式. https://www.rfc-editor.org/rfc/rfc9052",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nCOSE 签名与加密格式的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: CBOR Object Signing and Encryption (COSE 签名与加密格式). §1 fixes the scope: \"This document defines the CBOR Object Signing and Encryption (COSE) standard, which does the same thing for the CBOR encoding format.\" The abstract covers signatures, MACs, encryption and key representation, adding \"This specification additionally describes how to represent cryptographic keys using CBOR.\" §2 gives the shared array shape: \"All of the message structures are built on the CBOR array type.\" with the first three elements being \"The protected header parameters, encoded and wrapped in a bstr.\", \"The unprotected header parameters as a map.\" and the content — \"The content is either the plaintext or the ciphertext, as appropriate.\"",
+          "why": "The driver is constrained devices: §1 notes \"There has been an increased focus on small, constrained devices that make up the Internet of Things (IoT).\" and \"A need exists to provide message security services for IoT, and using CBOR as the message-encoding format makes sense.\" §1.3 lists the deliberate departures from JOSE: \"A single overall message structure has been defined so that encrypted, signed, and MACed messages can easily be identified and still have a consistent view.\", \"Binary encodings are used, rather than base64url encodings, to encode binary data.\" and \"The authentication tag for encryption algorithms has been combined with the ciphertext.\" §2 stresses shared parsing code, designing the structures so different security message types reuse the same processing.",
+          "used": "§2 enumerates four ways to identify a message type: \"Identification of which type of message has been presented is done by the following methods:\" — the first is contextual, \"The specific message type is known from the context.\", the second is the tag route, \"The message type is identified by a CBOR tag.\", and the fourth rides on the CoAP Content-Format option. §4.2 gives the single-signer tag — \"A tagged COSE_Sign1 structure is identified by the CBOR tag 18.\" — and §5.2 the single-recipient encryption tag, \"A tagged COSE_Encrypt0 structure is identified by the CBOR tag 16.\" §3.1 requires the algorithm field to be protected: \"This header parameter MUST be authenticated where the ability to do so exists.\" §4.4 defines the bytes that get signed: \"In order to create a signature, a well-defined byte string is needed. The Sig_structure is used to create the canonical form.\" with context strings including \"“Signature1” for signatures using the COSE_Sign1 structure.\" §7 defines the key map: \"The element “kty” is a required element in a COSE_Key map.\"",
+          "broken": "Encoding ambiguity would break signature consistency, so §9 tightens CBOR — but states the scope first: \"The restriction applies to the encoding of the Sig_structure, the Enc_structure, and the MAC_structure.\" — it is not a general requirement on whole COSE messages. Within that scope, \"Encoding MUST be done using definite lengths, and the length of the (encoded) argument MUST be the minimum possible length.\" with the example \"This means that the integer 1 is encoded as “0x01” and not “0x1801”.\" §12 gives two key warnings: \"Use of the same key for two different algorithms can leak information about the key.\" and \"Use of “direct” as a recipient algorithm combined with a second recipient algorithm exposes the direct key to the second recipient\". §3.1 warns key hints are unreliable: \"Applications MUST NOT assume that “kid” values are unique.\" §1 also records a removal made for security reasons — the countersignature properties described for COSE_Sign1 had been stated incorrectly.",
+          "history": "RFC 9052 is signed by J. Schaad (August Cellars), published August 2022 with “STD: 96” and “Obsoletes: 8152” in the header. §1.2 lists the changes from RFC 8152, starting with \"Split the original document into this document and [RFC9053].\" §1.4 explains why the structures are normative in prose rather than CDDL: \"When COSE was originally written, the Concise Data Definition Language (CDDL) [RFC8610] had not yet been published in an RFC\".",
+          "refs": "- Wikipedia search entry for COSE 签名与加密格式. https://zh.wikipedia.org/w/index.php?search=COSE%20%E7%AD%BE%E5%90%8D%E4%B8%8E%E5%8A%A0%E5%AF%86%E6%A0%BC%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9052: CBOR Object Signing and Encryption. https://www.rfc-editor.org/rfc/rfc9052\n- Published standard/RFC for COSE 签名与加密格式. https://www.rfc-editor.org/rfc/rfc9052",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nCBOR Object Signing and Encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "bstr：CBOR 字节串类型。",
+          "protected header：参与认证的属性桶。",
+          "unprotected header：不参与的属性桶。",
+          "Sig_structure：生成待签串的结构。",
+          "COSE_Key：以 map 表示的密钥。",
+          "direct：不封装内容密钥的接收算法。"
+        ],
+        "en": [
+          "bstr: the CBOR byte-string type.",
+          "Protected header: attribute bucket covered by the check.",
+          "Unprotected header: the bucket that is not.",
+          "Sig_structure: the arrangement that yields the bytes to sign.",
+          "COSE_Key: a key expressed as a CBOR map.",
+          "direct: a recipient algorithm that wraps no content key."
+        ]
+      },
+      "figures": [
+        {
+          "id": "cose-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "COSE 签名与加密格式：为什么需要 → 核心机制 → 边界。",
+            "en": "CBOR Object Signing and Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "COSE 签名与加密格式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for CBOR Object Signing and Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cose-details-flow.zh.svg",
+            "en": "assets/cose-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1704cefc136d2faf04a000d9583ba329c383a53273db23eb1f98c5e59987355a",
+            "en": "8c4a92bd7d5cbce92e8a983d49c39926fca2bf855cd8975a563c85dc0f7da21d"
+          }
+        },
+        {
+          "id": "cose-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "COSE 签名与加密格式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for CBOR Object Signing and Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "COSE 签名与加密格式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for CBOR Object Signing and Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cose-details-r138-model.zh.svg",
+            "en": "assets/cose-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "416af28d007eda6dea28e5921cf2b49178fb36f3f022a6fee2a5dbc292c17d12",
+            "en": "fdc848fdcfb45a1dcb641a5dfc6bc79d4fb438818ac76dcda33df9a2db14ef1a"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "cose-r139-formal",
+          "entryId": "cose-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：COSE 签名与加密格式的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 COSE 签名与加密格式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "cose-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "cose-r139-formal"
+      ],
+      "sources": [
+        "cose-wikipedia",
+        "cose-reference-ref",
+        "cose-specific",
+        "cose-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cose-r139-formal",
+      "entryId": "cose-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：COSE 签名与加密格式的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 COSE 签名与加密格式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "cose-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R111 standards/modes/theory batch for deal-details.",
+  "entries": [
+    {
+      "id": "deal-details",
+      "inventoryIds": [
+        "deal"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R111 分组密码史批次：把 DEAL 的目录身份卡改写为 128 位 Feistel 结构、DES 轮函数、6/8 轮密钥编排、AES 竞赛失败原因、Lucks/Kelsey–Schneier 分析与历史位置。",
+        "en": "R111 block-cipher history batch: replaced DEAL's catalog identity card with source-backed text on the 128-bit Feistel structure, DES round function, 6/8-round key schedule, AES competition failure, Lucks/Kelsey–Schneier analysis and historical position."
+      },
+      "title": {
+        "zh": "DEAL 分组密码",
+        "en": "DEAL block cipher"
+      },
+      "claimIds": [
+        "deal-r139-principle",
+        "deal-r139-why",
+        "deal-r139-used",
+        "deal-r139-broken",
+        "deal-r139-history",
+        "deal-r139-refs"
+      ],
+      "sourceIds": [
+        "deal-wikipedia",
+        "deal-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "des"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "deal-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DEAL 机制图：128 位明文拆成 64 位 L/R，DES 轮函数与异或写回，按密钥长度跑 6/8 轮；下方为固定密钥 K* 的轮密钥链。",
+            "en": "DEAL mechanism: a 128-bit plaintext splits into 64-bit L/R, a DES round and XOR write back, for 6/8 rounds by key size; below is the fixed-key K* round-key chain."
+          },
+          "alt": {
+            "zh": "图中左侧为 128 位明文与 L/R 半块，中部为 DES 轮、异或和 6/8 轮循环，右侧为密文，下方为主密钥经固定 DES 密钥生成轮密钥。",
+            "en": "Diagram shows a 128-bit plaintext and L/R halves on the left, a DES round, XOR and 6/8-round loop in the middle, ciphertext on the right, and master-key round-key generation under a fixed DES key below."
+          },
+          "files": {
+            "zh": "assets/deal-details-mechanism.zh.svg",
+            "en": "assets/deal-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d51506d6b4950fed044204fd306f676e65a5dc339f6d4c27a7be1a77b412f0e4",
+            "en": "6e00e0f52a04ecd0f6574333f234692a59f3a19f25b842fb974317398d52220d"
+          }
+        },
+        {
+          "id": "deal-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DEAL 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for DEAL block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "DEAL 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for DEAL block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/deal-details-r138-model.zh.svg",
+            "en": "assets/deal-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4329928b8085b9b487944ba199a43bb82adedc208c780bb5147f33d00bf79c89",
+            "en": "ff420495ae67c5997cf558b08a700fc05aa330946ed8c31d66df88b06df319b2"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：DEAL 分组密码（DEAL block cipher）。### 128 位分组、64 位半块\n\nDEAL 把 128 位明文拆成左右各 64 位，做平衡 Feistel。轮函数不是新的 S 盒，而是直接用 DES 加密一个 64 位半块：y_j = y_{j-1} ⊕ E_{R_j}(x_{j-1})，下一轮交换左右。每个轮密钥名义上是 64 位 DES 密钥，实际使用 56 位，奇偶位被忽略。### 轮数与密钥编排\n\nDEAL-128 与 DEAL-192 跑 6 轮，DEAL-256 跑 8 轮。密钥编排用固定 DES 密钥 0123456789abcdef 做 E，把主密钥的 64 位块 K0、K1……链成 R0 = E(K0)，R_i = E(K_i ⊕ R_{i-1} ⊕ 常数)。解密按相反顺序使用同一套轮密钥。",
+          "why": "1990 年代 DES 仍有大量硬件和分析积累。DEAL 的目标是保留这些积累，同时把 64 位分组翻倍到 128 位，避开匹配密文攻击；128 位分组给出 2^64 的生日界。它的轮函数直接调用 DES，设计者认为这比重新造 S 盒更“保守”。### 为什么没进 AES 决赛\n\nDEAL 的速度接近 Triple DES，远慢于为 AES 竞赛优化的专用候选。NIST 要的是高吞吐、低延迟、宽平台实现，DEAL 的“复用旧硬件”反而成了性能包袱；随后 Kelsey–Schneier 与 Lucks 的分析又暴露了密钥编排和轮数余量问题。",
+          "used": "DEAL 在 1998 年由 Richard Outerbridge 提交 AES 竞赛，没有进入五个决赛算法。它今天更适合作为“如何用现有分组密码构造更大分组”的教学样例，而不是生产算法。### 工程位置\n\n没有主流标准采用 DEAL；现代存储和协议用 AES-XTS、AES-GCM。DEAL 与 Ladder-DES 的亲缘关系让它在 Feistel 构造和安全证明文献里仍有参考价值，但工程选型不会把它当 AES 替代。",
+          "broken": "Lucks 在 FSE 1999 给出针对 DEAL-192 的证书性攻击：利用 6 轮 Feistel 的轮密钥可分离性，在大量选择密文下把密钥搜索空间显著缩小。论文同时指出 6 轮 DEAL 的中间相遇上界约 2^168、8 轮约 2^224，说明有效密钥长度低于名义值。攻击需要巨大的选择密文量，属于“证明设计不够稳”的证书性结果，不是随手可用的破解。### 密钥编排与等价密钥\n\nKelsey–Schneier 在 SAC 1999 发现 DEAL 的密钥编排有结构性问题：DEAL-128 存在等价密钥对，找一对约需 2^64 次 DES；DEAL-192/256 只需 6 或 8 次 DES 就能构造 256 个等价密钥。他们还给出一条相关密钥攻击，约 2^33 个相关密钥、每个密钥 3 个明文。根因是轮密钥由固定密钥下的 DES 链生成，而奇偶位被忽略。DEAL 只提供 128 位分组置换；CBC、CTR 等模式、IV/nonce 和认证要另配。6/8 轮对现代分析余量偏小，不能当 AES 替代。",
+          "history": "Lars Knudsen 在 SAC 1997 提出 DEAL，1998 年由 Richard Outerbridge 提交 AES 竞赛。DEAL 是 “Data Encryption Algorithm with Larger blocks” 的缩写，直说“DES 的更大分组版”。### 未标准化\n\nDEAL 没有进入 AES 决赛，也没有成为 ISO 或 NIST 标准。它的生命主要在 AES 分析文献、Feistel 教学设计和对 DES 复用路线的反思里；2000 年 AES 定案后，DEAL 退出工程视野。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：DEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 DEAL 分组密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for DEAL 分组密码. https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nDEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: DEAL block cipher (DEAL 分组密码). ### 128-bit block, 64-bit halves\n\nDEAL splits a 128-bit plaintext into two 64-bit halves and runs a balanced Feistel network. The round function is not a new S-box; it calls DES on one 64-bit half: y_j = y_{j-1} ⊕ E_{R_j}(x_{j-1}), then swaps halves for the next round. Each round key is nominally a 64-bit DES key but only 56 bits are used; the parity bits are ignored. ### Rounds and key schedule\n\nDEAL-128 and DEAL-192 run 6 rounds; DEAL-256 runs 8. The key schedule uses a fixed DES key 0123456789abcdef and chains the 64-bit master-key blocks K0, K1, ... into R0 = E(K0), R_i = E(K_i ⊕ R_{i-1} ⊕ constant). Decryption uses the same round keys in reverse order.",
+          "why": "DES still had a large installed hardware base and years of analysis in the 1990s. DEAL aimed to keep that base while doubling the 64-bit block to 128 bits, avoiding matching-ciphertext attacks; a 128-bit block gives a 2^64 birthday bound. Its round function calls DES directly, which the designer treated as more conservative than building a new S-box.\n\nDEAL's speed was close to Triple DES, far slower than candidates optimized for the AES competition. NIST wanted high throughput, low latency and broad-platform implementations; DEAL's “reuse old hardware” became a performance burden. The later Kelsey–Schneier and Lucks analyses also exposed weaknesses in the key schedule and round margin.",
+          "used": "Richard Outerbridge submitted DEAL to the AES competition in 1998; it did not reach the five finalists. Today it is better used as a teaching example of “build a larger block from an existing block cipher” than as a production algorithm.\n\nNo mainstream standard adopted DEAL; modern storage and protocols use AES-XTS or AES-GCM. DEAL's kinship with Ladder-DES keeps it relevant in Feistel-construction and security-proof literature, but engineering selections do not treat it as an AES replacement.",
+          "broken": "Lucks presented a certificational attack on DEAL-192 at FSE 1999: using the separability of the six-round Feistel round keys, a large number of chosen ciphertexts significantly narrows the key search space. The paper also notes meet-in-the-middle bounds of about 2^168 for six rounds and 2^224 for eight, showing the effective key length is below the nominal value. The attack needs an enormous number of chosen ciphertexts, so it is a “design is not sound enough” result rather than a practical break.\n\nKelsey–Schneier found structural problems in the key schedule at SAC 1999: DEAL-128 has equivalent-key pairs, finding one costs about 2^64 DES operations; DEAL-192/256 need only 6 or 8 DES operations to construct 256 equivalent keys. They also gave a related-key attack with about 2^33 related keys and 3 plaintexts per key. The root cause is that round keys are generated by a DES chain under a fixed key while parity bits are ignored.\n\nDEAL provides only a 128-bit block permutation; CBC, CTR, IV/nonce rules and authentication are separate choices. Six or eight rounds leave a thin margin against modern analysis, so it is not an AES replacement.",
+          "history": "Lars Knudsen proposed DEAL at SAC 1997; Richard Outerbridge submitted it to the AES competition in 1998. DEAL stands for “Data Encryption Algorithm with Larger blocks”, literally “a larger-block version of DES”.\n\nDEAL did not reach the AES final and never became an ISO or NIST standard. Its life is mainly in AES analysis papers, Feistel teaching designs and reflections on the “reuse DES” route; after AES was chosen in 2000, DEAL left the engineering scene.",
+          "refs": "- Wikipedia search entry for DEAL 分组密码. https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nDEAL block cipher: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "deal-r139-formal",
+          "entryId": "deal-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：DEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 DEAL 分组密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "deal-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "deal-r139-formal"
+      ],
+      "sources": [
+        "deal-wikipedia",
+        "deal-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "deal-r139-formal",
+      "entryId": "deal-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：DEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 DEAL 分组密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "deal-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for ipsec: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ipsec-details",
+      "inventoryIds": [
+        "ipsec"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释IPsec 安全协议族的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Internet Protocol Security: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "IPsec 安全协议族",
+        "en": "Internet Protocol Security"
+      },
+      "claimIds": [
+        "ipsec-r139-principle",
+        "ipsec-r139-why",
+        "ipsec-r139-used",
+        "ipsec-r139-broken",
+        "ipsec-r139-history",
+        "ipsec-r139-refs"
+      ],
+      "sourceIds": [
+        "ipsec-wikipedia",
+        "ipsec-reference-ref",
+        "ipsec-specific",
+        "ipsec-standard"
+      ],
+      "related": [
+        "esp",
+        "ah",
+        "ikev2",
+        "pkix"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：IPsec 安全协议族（Internet Protocol Security）。RFC 4301 是体系结构文档而不是协议线本身：§1 写明「This document specifies the base architecture for IPsec-compliant systems.」它规定 IP 层的安全服务怎么提供。§3.2 给出协议组成「IPsec uses two protocols to provide traffic security services -- Authentication Header (AH) and Encapsulating Security Payload (ESP).」并定下强制基线「IPsec implementations MUST support ESP and MAY support AH.」——即安全关联（SA）上用哪个协议由这套文档约定，密钥与策略管理由另外的文档处理。",
+          "why": "设计选择是把保护做在 IP 层：§2.1 说「IPsec is designed to provide interoperable, high quality, cryptographically-based security for IPv4 and IPv6.」并强调「These services are provided at the IP layer, offering protection in a standard fashion for all protocols that may be carried over IP (including IP itself).」§3.1 把它落成一条边界——「IPsec creates a boundary between unprotected and protected interfaces, for a host or a network」，越界的包可以放行、交给 AH/ESP 保护、或被丢弃。§4.1 限定粒度：「An SA is a simplex “connection” that affords security services to the traffic carried by it.」且「Security services are afforded to an SA by the use of AH, or ESP, but not both.」",
+          "used": "实现面由三个数据库定义：§4.4 写明「There are three nominal databases in this model: the Security Policy Database (SPD), the Security Association Database (SAD), and the Peer Authorization Database (PAD).」§4.5 要求「All IPsec implementations MUST support both manual and automated SA and cryptographic key management.」§4.5.2 进一步说「Widespread deployment and use of IPsec requires an Internet-standard, scalable, automated, SA management protocol.」并指定默认协议——「The default automated key management protocol selected for use with IPsec is IKEv2 [Kau05].」AH 的地位在 §3.2 被降级并给出理由：「Support for AH has been downgraded to MAY because experience has shown that there are very few contexts in which ESP cannot provide the requisite security services.」",
+          "broken": "文档自陈的边界有三处。§2.2 把成败交给实现：「the security offered by use of these protocols ultimately depends on the quality of their implementation」。§4.5 承认认证强度的上限：「In general, data origin authentication in AH and ESP is limited by the extent to which secrets used with the integrity algorithm」——共享密钥的人越多，认证越弱。§11 给出一个具体的配置陷阱：「If an IPsec implementation is configured to pass ICMP error messages over SAs based on the ICMP header values, without checking the header information from the ICMP message payload, serious vulnerabilities may arise.」并评价那条攻击链「This is a very efficient DoS attack that could have been prevented if the ICMP error messages were subjected to the checks that IPsec provides」。",
+          "history": "RFC 4301 由 S.Kent 与 K.Seo（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部标「Obsoletes: 2401」；摘要说明它是「an updated version of the “Security Architecture for IP”」。§13 评估与旧文档的关系：「This architecture document differs substantially from RFC 2401 [RFC2401] in detail and in organization, but the fundamental notions are unchanged.」并把新增数据库点出来——「There is also a new database, the Peer Authorization Database (PAD).」§10 对两个协议族分别提出同一句符合性要求：「All IPv4 IPsec implementations MUST comply with all requirements of this document.」以及「All IPv6 implementations MUST comply with all requirements of this document.」",
+          "refs": "- Wikipedia search entry for IPsec 安全协议族. https://zh.wikipedia.org/w/index.php?search=IPsec%20%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4301: Security Architecture for the Internet Protocol. https://www.rfc-editor.org/rfc/rfc4301\n- Published standard/RFC for IPsec 安全协议族. https://www.rfc-editor.org/rfc/rfc4301",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nIPsec 安全协议族的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Internet Protocol Security (IPsec 安全协议族). RFC 4301 is the architecture document rather than a protocol line itself: §1 states \"This document specifies the base architecture for IPsec-compliant systems.\" and it defines how security services are provided at the IP layer. §3.2 gives the protocol pair \"IPsec uses two protocols to provide traffic security services -- Authentication Header (AH) and Encapsulating Security Payload (ESP).\" and sets the baseline \"IPsec implementations MUST support ESP and MAY support AH.\" — which protocol protects a security association follows from these documents, while policy and key management are handled elsewhere.",
+          "why": "The design choice is to place protection at the IP layer: §2.1 says \"IPsec is designed to provide interoperable, high quality, cryptographically-based security for IPv4 and IPv6.\" and stresses \"These services are provided at the IP layer, offering protection in a standard fashion for all protocols that may be carried over IP (including IP itself).\" §3.1 turns that into a boundary — \"IPsec creates a boundary between unprotected and protected interfaces, for a host or a network\" — where packets may pass unimpeded, get AH/ESP protection, or be discarded. §4.1 fixes the granularity: \"An SA is a simplex “connection” that affords security services to the traffic carried by it.\" and \"Security services are afforded to an SA by the use of AH, or ESP, but not both.\"",
+          "used": "The implementation surface is defined by three databases: §4.4 states \"There are three nominal databases in this model: the Security Policy Database (SPD), the Security Association Database (SAD), and the Peer Authorization Database (PAD).\" §4.5 requires \"All IPsec implementations MUST support both manual and automated SA and cryptographic key management.\" and §4.5.2 adds \"Widespread deployment and use of IPsec requires an Internet-standard, scalable, automated, SA management protocol.\" naming the default — \"The default automated key management protocol selected for use with IPsec is IKEv2 [Kau05].\" AH's standing is downgraded in §3.2 with a reason: \"Support for AH has been downgraded to MAY because experience has shown that there are very few contexts in which ESP cannot provide the requisite security services.\"",
+          "broken": "The document draws three limits itself. §2.2 hands the outcome to implementations: \"the security offered by use of these protocols ultimately depends on the quality of their implementation\". §4.5 admits the ceiling on authentication strength — \"In general, data origin authentication in AH and ESP is limited by the extent to which secrets used with the integrity algorithm\" — the more parties share a secret, the weaker the origin claim. §11 gives a concrete configuration trap: \"If an IPsec implementation is configured to pass ICMP error messages over SAs based on the ICMP header values, without checking the header information from the ICMP message payload, serious vulnerabilities may arise.\" and judges the resulting chain \"This is a very efficient DoS attack that could have been prevented if the ICMP error messages were subjected to the checks that IPsec provides\".",
+          "history": "RFC 4301 is signed by S. Kent and K. Seo (BBN Technologies), published December 2005 as a Standards Track document with an “Obsoletes: 2401” header line; the abstract calls it \"an updated version of the “Security Architecture for IP”\". §13 assesses the relation to the older document: \"This architecture document differs substantially from RFC 2401 [RFC2401] in detail and in organization, but the fundamental notions are unchanged.\" and singles out the new store — \"There is also a new database, the Peer Authorization Database (PAD).\" §10 states the same conformance duty for each protocol family: \"All IPv4 IPsec implementations MUST comply with all requirements of this document.\" and \"All IPv6 implementations MUST comply with all requirements of this document.\"",
+          "refs": "- Wikipedia search entry for IPsec 安全协议族. https://zh.wikipedia.org/w/index.php?search=IPsec%20%E5%AE%89%E5%85%A8%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4301: Security Architecture for the Internet Protocol. https://www.rfc-editor.org/rfc/rfc4301\n- Published standard/RFC for IPsec 安全协议族. https://www.rfc-editor.org/rfc/rfc4301",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nInternet Protocol Security: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "SA：单工方向的安全关联。",
+          "SPD：决定流量处置的策略库。",
+          "SAD：已建立 SA 的参数库。",
+          "PAD：把对端授权连到 SPD 的库。",
+          "AH：提供完整性的认证头。",
+          "ESP：提供加密的封装安全载荷。"
+        ],
+        "en": [
+          "SA: a simplex security association in one direction.",
+          "SPD: policy database deciding traffic disposition.",
+          "SAD: parameters of each established SA.",
+          "PAD: links peer authorization to the SPD.",
+          "AH: Authentication Header offering integrity.",
+          "ESP: Encapsulating Security Payload offering confidentiality."
+        ]
+      },
+      "subtopicIds": [
+        "ipsec"
+      ],
+      "figures": [
+        {
+          "id": "ipsec-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IPsec 安全协议族：为什么需要 → 核心机制 → 边界。",
+            "en": "Internet Protocol Security: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "IPsec 安全协议族 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Internet Protocol Security, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ipsec-details-flow.zh.svg",
+            "en": "assets/ipsec-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9abda2c80d91bd8c23ed04acbfc017432d2f03d60629f73b1571d754c7dde628",
+            "en": "dcb6e93fa9338bd2a447c6805cd999721d5c3c43159efe53173b981b09f4663d"
+          }
+        },
+        {
+          "id": "ipsec-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IPsec 安全协议族 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Internet Protocol Security: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "IPsec 安全协议族 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Internet Protocol Security, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ipsec-details-r138-model.zh.svg",
+            "en": "assets/ipsec-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e6a12b2364366a372421c84af3c0a0217df4fbb305053c43e042a9cfdffb8dc9",
+            "en": "4491d1e3084dbfb89750899f7d88387c50622a7c0195e32ebf2ef9b948ffad2c"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ipsec-r139-formal",
+          "entryId": "ipsec-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：IPsec 安全协议族的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 IPsec 安全协议族 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "ipsec-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ipsec-r139-formal"
+      ],
+      "sources": [
+        "ipsec-wikipedia",
+        "ipsec-reference-ref",
+        "ipsec-specific",
+        "ipsec-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ipsec-r139-formal",
+      "entryId": "ipsec-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：IPsec 安全协议族的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 IPsec 安全协议族 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "ipsec-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cmc-details",
+  "sources": [
+    {
+      "id": "cmc-wikipedia",
+      "title": "Wikipedia search entry for CMC 宽块加密模式（CBC–Mask–CBC）",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CMC%20%E5%AE%BD%E5%9D%97%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F%EF%BC%88CBC%E2%80%93Mask%E2%80%93CBC%EF%BC%89",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CMC 宽块加密模式（CBC–Mask–CBC）",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cmc-r139-principle",
+          "entryId": "cmc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：CMC 宽块加密模式（CBC–Mask–CBC）（CMC wide-block enciphering mode (CBC–Mask–CBC)）。### CBC–Mask–CBC\n\nCMC 把 n 位分组密码变成作用在 mn 位字符串上的 tweakable enciphering scheme（m≥2）。加密先做一遍 CBC 加密，得到一个链值；用首尾链值导出掩码，xor 到每个中间块；再做一遍 CBC 解密。解密对称：先 CBC 加密，xor 同一掩码，再 CBC 解密。名字就是 CBC–Mask–CBC。### 两遍、2m+1 次调用与两把密钥\n\nCMC 是顺序两遍结构：CBC 加密和 CBC 解密都不能并行，处理一个 m 块扇区要 2m+1 次分组密码调用。它用两把密钥 K1、K2 分别处理两遍；tweak（通常是扇区号）参与首块 IV 和掩码导出，使同一明文在不同扇区得到不同密文。安全性目标是 tweakable strong PRP：在强 PRP 假设下，密文不可区分且不可延展。",
+            "en": "**Algorithm**: CMC wide-block enciphering mode (CBC–Mask–CBC) (CMC 宽块加密模式（CBC–Mask–CBC）).### CBC–Mask–CBC\n\nCMC turns an n-bit block cipher into a tweakable enciphering scheme on mn-bit strings (m≥2)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        },
+        {
+          "id": "cmc-r139-why",
+          "entryId": "cmc-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为磁盘扇区做宽块扩散\n\n磁盘按扇区读写，一个扇区通常 512 字节；如果逐块 ECB，攻击者可以重排、替换或复制块。CMC 把整个扇区当成一个宽块，任何一块改变都会扩散到全扇区，且同一扇区号+同一明文才得到同一密文。它不需要 universal hash，也不引入额外原语，适合就地加密。### 设计取舍\n\nCMC 的扩散来自 CBC 链和全局掩码，不需要 EME 的混合层；代价是两遍顺序执行，无法把扇区内的块并行化。它用两把密钥，密钥编排比单密钥模式多一份材料；换来的证明是 tweakable strong PRP，而不是弱 PRP。",
+            "en": "### Wide-block diffusion for disk sectors\n\nDisks read and write sectors, commonly 512 bytes.With per-block ECB, an attacker can reorder, replace or replay blocks."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        },
+        {
+          "id": "cmc-r139-used",
+          "entryId": "cmc-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 从 CMC 到 EME 与 XTS\n\nCMC 是 2003 年 CRYPTO 论文提出的宽块加密模式；Halevi–Rogaway 随后做 EME，把两遍改成可并行，块密码调用仍是 2m+1。磁盘加密标准最终走的是 XTS（IEEE 1619），CMC/EME 更多作为设计谱系和教学对照存在。它们都不是 AEAD。### 适用面\n\nCMC 适合“整段数据必须一起扩散、可以接受两遍延迟”的存储加密原型；不适合需要随机访问、并行吞吐或认证的网络协议。把它放进真实系统前，要确认扇区大小、tweak 唯一性和密钥管理，而不是只比较轮数。",
+            "en": "### From CMC to EME and XTS\n\nCMC was introduced in a 2003 CRYPTO paper.Halevi–Rogaway then built EME, which parallelizes the two passes while keeping 2m+1 block-cipher calls."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        },
+        {
+          "id": "cmc-r139-broken",
+          "entryId": "cmc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 没有认证，tweak 不能重用\n\nCMC 只提供机密性，不产生认证标签；攻击者改一个密文块，解密结果会变成另一段看似随机的明文，接收方无法察觉。tweak 必须唯一：同一 tweak 下重复加密同一明文，密文完全一样，会泄漏相等关系。两遍顺序结构带来延迟，m=1 的单块也不在定义域内。### 边界条件\n\nCMC 要求 m≥2，不能直接加密单个分组；解密端要先验证块数，否则会把不完整扇区送进错误路径。tweak 长度是 n 位，扇区号超过范围就要换密钥或换编码。它不抵抗流量分析，也不隐藏扇区访问模式。",
+            "en": "### No authentication, no tweak reuse\n\nCMC provides confidentiality only; it produces no authentication tag.An attacker who flips a ciphertext block turns the decryption into another seemingly random plaintext, and the receiver cannot tell."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        },
+        {
+          "id": "cmc-r139-history",
+          "entryId": "cmc-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 2003 年的宽块方案\n\nHalevi 与 Rogaway 在 CRYPTO 2003 发表 “A Tweakable Enciphering Mode”，给出 CMC 的定义与 tweakable strong PRP 证明；2004 年的 EME 论文把 CMC 作为顺序基线，提出可并行替代。此后磁盘加密的标准化转向 XTS，CMC 没有成为主流部署模式，但它的“宽块 + tweak”思路仍被后续模式引用。### 名称澄清\n\nCMC 不是“带密文 MAC”，也不提供 MAC；它是 CBC–Mask–CBC 的缩写。把它和 CCM（CBC-MAC + CTR）混淆，会把“只加密”误当成“认证加密”，这是选型中最危险的错误之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CMC 宽块加密模式（CBC–Mask–CBC）的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "### The 2003 wide-block proposal\n\nHalevi and Rogaway published “A Tweakable Enciphering Mode” at CRYPTO 2003, defining CMC and proving it a tweakable strong PRP.The 2004 EME paper used CMC as the sequential baseline and proposed a parallel alternative."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        },
+        {
+          "id": "cmc-r139-refs",
+          "entryId": "cmc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CMC 宽块加密模式（CBC–Mask–CBC）.https://zh.wikipedia.org/w/index.php?search=CMC%20%E5%AE%BD%E5%9D%97%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F%EF%BC%88CBC%E2%80%93Mask%E2%80%93CBC%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for CMC 宽块加密模式（CBC–Mask–CBC）.https://zh.wikipedia.org/w/index.php?search=CMC%20%E5%AE%BD%E5%9D%97%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F%EF%BC%88CBC%E2%80%93Mask%E2%80%93CBC%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cmc-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cmc-wikipedia"
+      ]
+    },
+    {
+      "id": "cmc-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cmc-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cmc-r139-principle",
+      "entryId": "cmc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：CMC 宽块加密模式（CBC–Mask–CBC）（CMC wide-block enciphering mode (CBC–Mask–CBC)）。### CBC–Mask–CBC\n\nCMC 把 n 位分组密码变成作用在 mn 位字符串上的 tweakable enciphering scheme（m≥2）。加密先做一遍 CBC 加密，得到一个链值；用首尾链值导出掩码，xor 到每个中间块；再做一遍 CBC 解密。解密对称：先 CBC 加密，xor 同一掩码，再 CBC 解密。名字就是 CBC–Mask–CBC。### 两遍、2m+1 次调用与两把密钥\n\nCMC 是顺序两遍结构：CBC 加密和 CBC 解密都不能并行，处理一个 m 块扇区要 2m+1 次分组密码调用。它用两把密钥 K1、K2 分别处理两遍；tweak（通常是扇区号）参与首块 IV 和掩码导出，使同一明文在不同扇区得到不同密文。安全性目标是 tweakable strong PRP：在强 PRP 假设下，密文不可区分且不可延展。",
+        "en": "**Algorithm**: CMC wide-block enciphering mode (CBC–Mask–CBC) (CMC 宽块加密模式（CBC–Mask–CBC）).### CBC–Mask–CBC\n\nCMC turns an n-bit block cipher into a tweakable enciphering scheme on mn-bit strings (m≥2)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    },
+    {
+      "id": "cmc-r139-why",
+      "entryId": "cmc-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为磁盘扇区做宽块扩散\n\n磁盘按扇区读写，一个扇区通常 512 字节；如果逐块 ECB，攻击者可以重排、替换或复制块。CMC 把整个扇区当成一个宽块，任何一块改变都会扩散到全扇区，且同一扇区号+同一明文才得到同一密文。它不需要 universal hash，也不引入额外原语，适合就地加密。### 设计取舍\n\nCMC 的扩散来自 CBC 链和全局掩码，不需要 EME 的混合层；代价是两遍顺序执行，无法把扇区内的块并行化。它用两把密钥，密钥编排比单密钥模式多一份材料；换来的证明是 tweakable strong PRP，而不是弱 PRP。",
+        "en": "### Wide-block diffusion for disk sectors\n\nDisks read and write sectors, commonly 512 bytes.With per-block ECB, an attacker can reorder, replace or replay blocks."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    },
+    {
+      "id": "cmc-r139-used",
+      "entryId": "cmc-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 从 CMC 到 EME 与 XTS\n\nCMC 是 2003 年 CRYPTO 论文提出的宽块加密模式；Halevi–Rogaway 随后做 EME，把两遍改成可并行，块密码调用仍是 2m+1。磁盘加密标准最终走的是 XTS（IEEE 1619），CMC/EME 更多作为设计谱系和教学对照存在。它们都不是 AEAD。### 适用面\n\nCMC 适合“整段数据必须一起扩散、可以接受两遍延迟”的存储加密原型；不适合需要随机访问、并行吞吐或认证的网络协议。把它放进真实系统前，要确认扇区大小、tweak 唯一性和密钥管理，而不是只比较轮数。",
+        "en": "### From CMC to EME and XTS\n\nCMC was introduced in a 2003 CRYPTO paper.Halevi–Rogaway then built EME, which parallelizes the two passes while keeping 2m+1 block-cipher calls."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    },
+    {
+      "id": "cmc-r139-broken",
+      "entryId": "cmc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 没有认证，tweak 不能重用\n\nCMC 只提供机密性，不产生认证标签；攻击者改一个密文块，解密结果会变成另一段看似随机的明文，接收方无法察觉。tweak 必须唯一：同一 tweak 下重复加密同一明文，密文完全一样，会泄漏相等关系。两遍顺序结构带来延迟，m=1 的单块也不在定义域内。### 边界条件\n\nCMC 要求 m≥2，不能直接加密单个分组；解密端要先验证块数，否则会把不完整扇区送进错误路径。tweak 长度是 n 位，扇区号超过范围就要换密钥或换编码。它不抵抗流量分析，也不隐藏扇区访问模式。",
+        "en": "### No authentication, no tweak reuse\n\nCMC provides confidentiality only; it produces no authentication tag.An attacker who flips a ciphertext block turns the decryption into another seemingly random plaintext, and the receiver cannot tell."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    },
+    {
+      "id": "cmc-r139-history",
+      "entryId": "cmc-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 2003 年的宽块方案\n\nHalevi 与 Rogaway 在 CRYPTO 2003 发表 “A Tweakable Enciphering Mode”，给出 CMC 的定义与 tweakable strong PRP 证明；2004 年的 EME 论文把 CMC 作为顺序基线，提出可并行替代。此后磁盘加密的标准化转向 XTS，CMC 没有成为主流部署模式，但它的“宽块 + tweak”思路仍被后续模式引用。### 名称澄清\n\nCMC 不是“带密文 MAC”，也不提供 MAC；它是 CBC–Mask–CBC 的缩写。把它和 CCM（CBC-MAC + CTR）混淆，会把“只加密”误当成“认证加密”，这是选型中最危险的错误之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CMC 宽块加密模式（CBC–Mask–CBC）的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "### The 2003 wide-block proposal\n\nHalevi and Rogaway published “A Tweakable Enciphering Mode” at CRYPTO 2003, defining CMC and proving it a tweakable strong PRP.The 2004 EME paper used CMC as the sequential baseline and proposed a parallel alternative."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    },
+    {
+      "id": "cmc-r139-refs",
+      "entryId": "cmc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CMC 宽块加密模式（CBC–Mask–CBC）.https://zh.wikipedia.org/w/index.php?search=CMC%20%E5%AE%BD%E5%9D%97%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F%EF%BC%88CBC%E2%80%93Mask%E2%80%93CBC%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for CMC 宽块加密模式（CBC–Mask–CBC）.https://zh.wikipedia.org/w/index.php?search=CMC%20%E5%AE%BD%E5%9D%97%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F%EF%BC%88CBC%E2%80%93Mask%E2%80%93CBC%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cmc-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

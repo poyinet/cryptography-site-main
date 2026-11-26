@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack entry for attack--password-spraying: mechanism, applications, limits and source attribution.",
+  "entries": [
+    {
+      "id": "attack--password-spraying-details",
+      "inventoryIds": [
+        "attack--password-spraying"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释口令喷洒的攻击原理、适用场景、边界和来源；不复制其他密码算法或协议实体。",
+        "en": "A compact explanation of Password Spraying: mechanism, applications, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "口令喷洒",
+        "en": "Password Spraying"
+      },
+      "claimIds": [
+        "attack--password-spraying-r139-principle",
+        "attack--password-spraying-r139-why",
+        "attack--password-spraying-r139-used",
+        "attack--password-spraying-r139-broken",
+        "attack--password-spraying-r139-history",
+        "attack--password-spraying-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--password-spraying-wikipedia",
+        "attack--password-spraying-reference-ref"
+      ],
+      "related": [
+        "attack--dictionary-attack",
+        "credential-stuffing",
+        "attack--brute-force"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：口令喷洒（Password Spraying）。口令喷洒使用一个或少量常见口令，对许多不同账户尝试登录，以获取可用凭据；它与对单个账户尝试许多口令的暴力破解相反。",
+          "why": "这种顺序可以避免对单个账户的多次失败触发锁定；攻击者可能选择符合域复杂度策略的常见口令，以提高命中率。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "常见目标是管理服务、单点登录和联邦认证、云应用以及外部可访问的邮件系统；攻击者可能限速以避开检测阈值，并利用 LDAP/Kerberos 等较少产生高可见性事件的认证方式。",
+          "broken": "防御包括账户锁定/条件访问、阻断匿名代理、要求多因素认证、采用 NIST 风格的口令策略，以及监测`同一口令跨多个账户失败`的模式；严格锁定本身也可能被用来造成拒绝服务。",
+          "history": "MITRE ATT&CK 把口令喷洒列为暴力破解的子技术 T1110.003，用于描述针对多个账户的凭据攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「口令喷洒」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\)。输入：输入：口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。 预期输出：按 口令喷洒 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 估计密钥空间 2. 除以攻击者吞吐 3. 得到期望穷举时间。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 口令喷洒 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 口令喷洒 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。",
+          "refs": "- Wikipedia search entry for 口令喷洒. https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\]\n\n口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。1.估计密钥空间。2.除以攻击者吞吐。3.得到期望穷举时间。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Password Spraying (口令喷洒). Password spraying uses one or a small list of common passwords against many different accounts to obtain valid credentials; it is the opposite of brute-forcing one account with many passwords.",
+          "why": "This order avoids triggering lockouts from repeated failures on one account; attackers may choose common passwords that satisfy the domain complexity policy to improve the hit rate.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "Common targets include management services, single sign-on and federated authentication, cloud applications and externally facing email systems; attackers may throttle attempts to avoid detection thresholds and use LDAP or Kerberos authentication that generates fewer high-visibility events.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Defenses include account lockout or conditional access, blocking anonymizing proxies, requiring multi-factor authentication, using NIST-style password policy, and monitoring failures of one password across many accounts; strict lockout can itself be abused for denial of service.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "MITRE ATT&CK lists password spraying as brute-force sub-technique T1110.003 for credential attacks against multiple accounts.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 口令喷洒. https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%96%B7%E6%B4%92\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\]\n\nPassword Spraying: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "口令喷洒：少量常见口令尝试许多账户。",
+          "账户锁定：多次失败后禁止登录。",
+          "单点登录：一次认证访问多个应用。",
+          "多因素认证：要求两种以上认证因素。",
+          "限速：限制单位时间内的尝试次数。",
+          "凭据：用于认证的用户名和口令。"
+        ],
+        "en": [
+          "Password spraying: trying a few common passwords against many accounts.",
+          "Account lockout: disabling login after repeated failures.",
+          "Single sign-on: one authentication for multiple applications.",
+          "Multi-factor authentication: requiring two or more authentication factors.",
+          "Throttling: limiting attempts per unit time.",
+          "Credential: a username and password used for authentication."
+        ]
+      },
+      "subtopicIds": [
+        "password-spraying"
+      ],
+      "figures": [
+        {
+          "id": "attack--password-spraying-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "口令喷洒：为什么需要 → 核心机制 → 边界。",
+            "en": "Password Spraying: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "口令喷洒 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Password Spraying, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--password-spraying-details-flow.zh.svg",
+            "en": "assets/attack--password-spraying-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a5df97cdc62a39b20ed6968c9ec70f18d15d475f7e22987ed1a871a056251072",
+            "en": "804e08baaa15e8e5e49e6330f3d78fe30b644b3a620cdd3c8db3338cca0401bd"
+          }
+        },
+        {
+          "id": "attack--password-spraying-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "口令喷洒 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Password Spraying: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "口令喷洒 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Password Spraying, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--password-spraying-details-r138-model.zh.svg",
+            "en": "assets/attack--password-spraying-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d3d4f83805785b7b43c8a0ae239ff45fb85390ded5a8c0072ffb900462ce6ed9",
+            "en": "f01c8dc09bc2e984fab36bb87e427235ecad796105dd919e7fd9559ac5104861"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--password-spraying-r139-formal",
+          "entryId": "attack--password-spraying-details",
+          "kind": "formal-model",
+          "formula": "T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}",
+          "inputs": "输入：口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。",
+          "expected": "按 口令喷洒 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "估计密钥空间",
+            "除以攻击者吞吐",
+            "得到期望穷举时间"
+          ],
+          "sourceIds": [
+            "attack--password-spraying-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--password-spraying-r139-formal"
+      ],
+      "sources": [
+        "attack--password-spraying-wikipedia",
+        "attack--password-spraying-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--password-spraying-r139-formal",
+      "entryId": "attack--password-spraying-details",
+      "kind": "formal-model",
+      "formula": "T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}",
+      "inputs": "输入：口令喷洒的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。",
+      "expected": "按 口令喷洒 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "估计密钥空间",
+        "除以攻击者吞吐",
+        "得到期望穷举时间"
+      ],
+      "sourceIds": [
+        "attack--password-spraying-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "present-official-vectors",
+    "entryId": "present-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The four 80-bit-key PRESENT test vectors from the paper/ISO Annex B",
+    "expected": "Encryption matches all four ciphertexts and decryption recovers all four plaintexts",
+    "sourceIds": ["iso29192-2", "present-paper"],
+    "dependencies": ["present-teaching.mjs"],
+    "limitations": "Four fixed 64-bit vectors; not a full key-size or message-length matrix."
+  },
+  {
+    "id": "present-key-schedule",
+    "entryId": "present-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The all-zero 80-bit key and the 128-bit key 00112233445566778899aabbccddeeff",
+    "expected": "The 80-bit schedule yields final round key 6dab31744f41d700; the 128-bit schedule yields first/last keys 0011223344556677 and 091989a5ae8eab21",
+    "sourceIds": ["iso29192-2"],
+    "dependencies": ["present-teaching.mjs"],
+    "limitations": "Two fixed keys; the 128-bit values are checked against the published Sage example, not an independent ciphertext vector."
+  },
+  {
+    "id": "present-inverse-layers",
+    "entryId": "present-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Every 4-bit S-box input and every 64-bit permutation basis",
+    "expected": "The inverse S-box and inverse pLayer recover every input",
+    "sourceIds": ["iso29192-2"],
+    "dependencies": ["present-teaching.mjs"],
+    "limitations": "Structural inverses only; not a security property."
+  },
+  {
+    "id": "present-diffusion",
+    "entryId": "present-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 80-bit key",
+    "expected": "After one S-box/pLayer step the states differ in 2 bits; after the full 31 rounds they differ in 32 bits",
+    "sourceIds": ["iso29192-2"],
+    "dependencies": ["present-teaching.mjs"],
+    "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential attack."
+  }
+]

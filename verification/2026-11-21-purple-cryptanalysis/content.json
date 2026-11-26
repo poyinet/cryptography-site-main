@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R124 formula-level deepening for purple-cryptanalysis-details.",
+  "entries": [
+    {
+      "id": "purple-cryptanalysis-details",
+      "inventoryIds": [
+        "purple-cryptanalysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出 6-20 分割、紫密置换/步进公式、26!×6×25^4 的密钥空间、6!·20! 与 93,750 设置的约化、15,625 周期，以及 Grotjan 1940 年 9 月突破。",
+        "en": "This entry gives the 6-20 split, the Purple permutation/stepping formula, the 26!×6×25^4 key space, the 6!·20! and 93,750-setting reduction, the 15,625 period and the Grotjan break of September 1940."
+      },
+      "title": {
+        "zh": "紫密破译",
+        "en": "Purple Cryptanalysis"
+      },
+      "claimIds": [
+        "purple-cryptanalysis-r139-principle",
+        "purple-cryptanalysis-r139-why",
+        "purple-cryptanalysis-r139-used",
+        "purple-cryptanalysis-r139-broken",
+        "purple-cryptanalysis-r139-history",
+        "purple-cryptanalysis-r139-refs"
+      ],
+      "sourceIds": [
+        "purple-cryptanalysis-wikipedia",
+        "purple-cryptanalysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "purple-cryptanalysis-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "紫密破译：26 字母先分为 6 与 20，分别经过 25 位步进开关，再用重复模式与 crib 恢复设置。",
+            "en": "Purple cryptanalysis: 26 letters split into 6 and 20, pass through 25-position switches, and repeated patterns plus cribs recover the settings."
+          },
+          "alt": {
+            "zh": "四步公式级机制：分离 6 与 20 → 识别 sixes 字母 → 恢复二十组置换 → 重建步进与明文；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: split 6 and 20 → identify the sixes → recover the twenty permutation → rebuild stepping and plaintext; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/purple-cryptanalysis-mechanism.zh.svg",
+            "en": "assets/purple-cryptanalysis-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "258a903ae4dd337bb53c681673574049f049e74df3581fc36d27626b915f7d19",
+            "en": "75a925f3dd5a58a2a1812c3cd4abe38443f9ceed5462f5fee9918a2d01241586"
+          }
+        },
+        {
+          "id": "purple-cryptanalysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "紫密破译 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Purple Cryptanalysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "紫密破译 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Purple Cryptanalysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/purple-cryptanalysis-details-r138-model.zh.svg",
+            "en": "assets/purple-cryptanalysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c7834df300da5a12d4ed952be9d861047005404b360d27471caac620fc75166a",
+            "en": "a03dcc6b1aad3ccdef4eee055bb213810ab6e4e296b93a95ddd511e3625dc8a1"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：紫密破译（Purple Cryptanalysis）。### 6-20 结构\n\n紫密（Purple）是日本 97 式字母打字机，输入插线板把 26 个字母映射到内部字母表，并固定分成 6 个 sixes 与 20 个 twenties。加密写作 E=P_{out}(T_{20}(T_6(P_{in}(p))))：sixes 经过 1 个 25 位步进开关，twenties 经过 3 个 25 位开关，随后输出插线板映回字母。### 破译路径\n\n朴素密钥空间为 26!×6×25^4≈9.45×10^{32}。但 6-20 分割把字母置换限制为 6!·20!；一旦识别出 sixes 字母，设置数从 6×25^4=2,343,750 降到 6×25^3=93,750，开关周期不超过 25^3=15,625。Genevieve Grotjan 在 1940 年 9 月发现 sixes/twenties 的重复模式，使美国团队从 18 个月僵局转入重建紫密模拟机。",
+          "why": "紫密破译说明“密钥空间大”不等于“不可破”：一个固定的 6-20 分割把 26!拆成 6!·20!，并让统计识别成为可能。它不是单纯依赖机器算力，而是先找结构不变量，再重建步进。",
+          "used": "1.收集同一密钥期的外交报文，找可预测的开头或 crib。2.用频率与重复模式区分 sixes 与 twenties 字母。3.固定 sixes 的 25 位位置，恢复 20 字母置换。4.按步进规则展开 3 个 twenties 开关，匹配已知明文。5.用第二段报文验证设置，再重建整段明文。### 不能怎么用\n\n不能把 6-20 结构当作“所有转子密码都适用”；不能只凭一段 crib 宣布唯一密钥；不能忽略插线板与步进规则的版本差异。",
+          "broken": "1.结构改变：若分割不再是 6-20，统计识别与 6!·20!约化不成立。2.已知明文不足：没有 crib 时难以确定步进相位。3.报文异文：转码、缩写或填充会破坏模式。4.设置不唯一：短报文可能留下多个候选，需要第二段验证。5.重建机器误差：开关接线或步进顺序错误会让解密全盘失败。",
+          "history": "1939 年日本升级到紫密，美国 Signal Intelligence Service 在 18 个月内未能破译。1940 年 9 月 Genevieve Grotjan 发现 sixes/twenties 的重复关系；9 月 27 日团队读出首批报文。Leo Rosen 用 uniselector（6 组电话步进开关、25 个触点）重建模拟机。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：紫密破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 紫密破译 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for 紫密破译. https://zh.wikipedia.org/w/index.php?search=%E7%B4%AB%E5%AF%86%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n紫密破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Purple Cryptanalysis (紫密破译). ### The 6-20 structure\n\nPurple, the Japanese Type 97 alphabetical typewriter, maps 26 letters through an input plugboard into an internal alphabet fixed as six “sixes” and twenty “twenties”. Encryption is E=P_{out}(T_{20}(T_6(P_{in}(p)))): the sixes pass through one 25-position stepping switch and the twenties through three 25-position switches, after which the output plugboard maps back to letters. ### The break\n\nThe naive key space is 26!×6×25^4≈9.45×10^{32}. The 6-20 split restricts the alphabet permutation to 6!·20!; once the six letters are identified, settings drop from 6×25^4=2,343,750 to 6×25^3=93,750, and the switch period is at most 25^3=15,625. In September 1940 Genevieve Grotjan found repeated patterns linking the sixes and twenties, moving the US team from an 18-month deadlock to rebuilding a Purple analog.",
+          "why": "The Purple break shows that a large key space is not the same as security: a fixed 6-20 partition splits 26! into 6!·20! and makes statistical identification possible. It relies on finding a structural invariant before rebuilding the stepping, not on raw machine speed.\n\nThis is the break mechanism; the `machine--purple` entry covers the machine structure. The machine entry answers what Purple is made of; this entry answers how the 6-20 split, stepping and known plaintext recover the settings.",
+          "used": "1. Collect diplomatic traffic from one key period and find a predictable opening or crib. 2. Separate sixes from twenties by frequency and repeated patterns. 3. Fix the 25-position sixes and recover the 20-letter permutation. 4. Expand the three twenties switches by the stepping rule and match known plaintext. 5. Verify the settings on a second passage before reconstructing the full text.\n\nDo not generalise the 6-20 structure to all rotor ciphers; do not declare a unique key from one crib; do not ignore plugboard and stepping differences between versions.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Structural change: if the partition is no longer 6-20, the statistical separation and the 6!·20! reduction fail. 2. Insufficient known plaintext: without a crib, the stepping phase is hard to fix. 3. Message variation: transcoding, abbreviations or padding destroy the pattern. 4. Non-unique settings: short messages can leave several candidates and need a second passage. 5. Rebuild error: wrong switch wiring or stepping order makes decryption fail completely.",
+          "history": "Japan upgraded to Purple in 1939, and the US Signal Intelligence Service failed to break it for 18 months. In September 1940 Genevieve Grotjan found the repeated relation between sixes and twenties; on 27 September the team read the first messages. Leo Rosen rebuilt an analog with uniselectors—six telephone stepping switches with 25 contacts.",
+          "refs": "- Wikipedia search entry for 紫密破译. https://zh.wikipedia.org/w/index.php?search=%E7%B4%AB%E5%AF%86%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nPurple Cryptanalysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "purple-cryptanalysis-r139-formal",
+          "entryId": "purple-cryptanalysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：紫密破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 紫密破译 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "purple-cryptanalysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "purple-cryptanalysis-r139-formal"
+      ],
+      "sources": [
+        "purple-cryptanalysis-wikipedia",
+        "purple-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "purple-cryptanalysis-r139-formal",
+      "entryId": "purple-cryptanalysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：紫密破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 紫密破译 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "purple-cryptanalysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

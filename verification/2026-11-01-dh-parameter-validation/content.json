@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for dh-parameter-validation: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "dh-parameter-validation-details",
+      "inventoryIds": [
+        "dh-parameter-validation"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释DH 参数安全校验的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Diffie-Hellman Parameter Validation: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "DH 参数安全校验",
+        "en": "Diffie-Hellman Parameter Validation"
+      },
+      "claimIds": [
+        "dh-parameter-validation-r139-principle",
+        "dh-parameter-validation-r139-why",
+        "dh-parameter-validation-r139-used",
+        "dh-parameter-validation-r139-broken",
+        "dh-parameter-validation-r139-history",
+        "dh-parameter-validation-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "dh-parameter-validation-wikipedia",
+        "dh-parameter-validation-standard-ref"
+      ],
+      "related": [
+        "diffie-hellman-key-exchange",
+        "key-exchange",
+        "constant-time-implementation",
+        "transport-layer-security"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：DH 参数安全校验（DH Parameter Validation）。使用有限域 Diffie-Hellman 之前要先确认域参数可信：SP 800-56A Rev.3 要求「each party shall have assurance of the validity of candidate domain parameters before they are used」。§5.5.2 给出的取得保证途径包括方法 1a 直接使用附录 D 列出的「An approved safe-prime group」，以及方法 3 由可信第三方（例如证书颁发机构）先行取得保证并通过可信渠道传递。",
+          "why": "公钥本身也要验证。§5.6.2.3.1 的完整验证两步：「Verify that 2 ≤ y ≤ p - 2」，再 Verify that 1 = y^q mod p；脚注 22 说明当域参数对应某个 safe-prime 组时，第二步成立当且仅当 y 是模 p 的非零二次剩余（Legendre 符号）。只做第一步、省略子群检查的部分验证「shall only be used with ephemeral FFC public keys generated using the approved safe-prime groups」，而一旦判断部分验证不足，「then full public-key validation shall be performed」。",
+          "used": "RFC 7919 为 TLS 提供命名有限域组 ffdhe2048、ffdhe3072、ffdhe4096、ffdhe6144、ffdhe8192（码点 256 到 260）。附录 A 说明「The primes in these finite field groups are all safe primes; that is, a prime p is a safe prime when q = (p-1)/2 is also prime」。§5.1 要求 Peers MUST validate each other's public key Y ...by ensuring that 1 < Y < p-1，因为这可确保对端「isn't forcing the local system into the 2-element subgroup」；§8.6 建议任何有限域 DH 实现使用常量时间的模指数。",
+          "broken": "部分验证省略子群检查，因此不能用于任意公钥。§5.6.2.3 明确这些例程「assume a prior validation of the domain parameters」，也就是先验证域参数再验证公钥；§5.7.1.1 的 DH 原语在算出共享秘密后立即检查，若 z 落在被排除的取值（包括 p - 1）就销毁所有中间值并输出错误指示；§5.6.3.1 还要求公钥「shall be protected from unauthorized modification and substitution」。",
+          "history": "RFC 7919 由 D.Gillmor 撰写，2016 年 8 月发布，更新 RFC 2246、4346、4492 与 5246。§2 说明组素数取自自然对数的底 e 并把高低 64 位置 1；§8.5 解释未沿用 RFC 3526 的 π 的原因之一是 IKE 组含「weak groups like MODP768 that are unacceptable for secure TLS traffic」这类弱群。NIST SP 800-56A Rev.3 于 2018 年 4 月发布，其附录 D 同时收录 RFC 3526 与 RFC 7919 的组，并在 §5.5.2 把批准的安全素数组列为取得参数保证的第一途径。",
+          "refs": "- Wikipedia search entry for DH 参数安全校验. https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: DH Parameter Validation. It is registered under asymmetric public-key cryptography, key management. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, key management, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for DH 参数安全校验. https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "域参数：有限域 DH 使用的 p、q、g 等公共数值。",
+          "安全素数：满足 (p-1)/2 也是素数的素数 p。",
+          "完整公钥验证：同时检查取值范围与子群归属。",
+          "部分公钥验证：只检查取值范围、省略子群检查。",
+          "2 元素子群：未验证对端值时可能被推入的极小子群。",
+          "命名组：RFC 中固定并编号的 DH 参数集合。"
+        ],
+        "en": [
+          "Domain parameters: the public p, q and g values used by finite-field DH.",
+          "Safe prime: a prime p for which (p-1)/2 is also prime.",
+          "Full public-key validation: range check plus subgroup check.",
+          "Partial public-key validation: range check only, omitting the subgroup test.",
+          "2-element subgroup: the tiny subgroup an unvalidated peer can force.",
+          "Named group: a fixed, numbered DH parameter set published in an RFC."
+        ]
+      },
+      "subtopicIds": [
+        "dh-parameter-validation"
+      ],
+      "figures": [
+        {
+          "id": "dh-parameter-validation-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DH 参数安全校验：为什么需要 → 核心机制 → 边界。",
+            "en": "Diffie-Hellman Parameter Validation: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "DH 参数安全校验 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Diffie-Hellman Parameter Validation, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/dh-parameter-validation-details-flow.zh.svg",
+            "en": "assets/dh-parameter-validation-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "377a4c38000a0cfc70019154e1b352c10c7b26b61ce64e30fbbf88f35d502685",
+            "en": "ffc8950fd27a6766b9c7e4e908cefccec51f83420f19e07e1bb24416d362930f"
+          }
+        }
+      ],
+      "sources": [
+        "dh-parameter-validation-wikipedia",
+        "dh-parameter-validation-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

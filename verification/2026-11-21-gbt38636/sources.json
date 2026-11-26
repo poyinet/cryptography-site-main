@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt38636-details",
+  "sources": [
+    {
+      "id": "gbt38636-wikipedia",
+      "title": "Wikipedia search entry for 传输层密码协议",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 传输层密码协议",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt38636-r139-principle",
+          "entryId": "gbt38636-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：传输层密码协议（TLCP）。TLCP 的密钥计算是 TLS 1.2 风格。先定义 \\(P\\_hash(secret,seed)=HMAC(secret,A_1\\|seed)\\|HMAC(secret,A_2\\|seed)\\|\\cdots\\)，其中 \\(A_0=seed\\)、\\(A_i=HMAC(secret,A_{i-1})\\)；再定义 \\(PRF(secret,label,seed)=P\\_hash(secret,label\\|seed)\\)。主密钥为 \\(PRF(pre\\_master,\\text{“master secret”},client\\_random\\|server\\_random)[0..47]\\)，固定 48 字节。工作密钥由 \\(PRF(master,\\text{“key expansion”},server\\_random\\|client\\_random)\\) 生成 key_block，再按 client MAC、server MAC、client key、server key、client IV、server IV 的顺序切分。Finished 的 \\(verify\\_data\\) 取 \\(PRF(master,label,SM3(handshake\\_messages))[0..11]\\)，固定 12 字节。记录层 MAC 覆盖 \\(seq\\|type\\|version\\|length\\|fragment\\)，AEAD 的附加数据覆盖 \\(seq\\|type\\|version\\|length\\)。",
+            "en": "**Standard**: TLCP (传输层密码协议).TLCP key calculation is TLS 1.2-style."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38636-r139-why",
+          "entryId": "gbt38636-details",
+          "section": "why",
+          "statement": {
+            "zh": "TLCP 常被误当成“国密版 TLS 1.3”。实际标准版本字段是 0x0101，密钥计算是 TLS 1.2 的 PRF/P_hash，不是 HKDF；它用 SM2 做身份鉴别与密钥交换、SM3 做杂凑、SM4 做记录层加密。双证书是另一个关键差异：签名证书只做身份鉴别，加密证书只做密钥交换，二者不能合并成一张证书。把 PRF、key_block、Finished、记录 MAC 写成公式，才能把“国密 TLS”与“TLS 1.3”区分开。",
+            "en": "TLCP is often mistaken for a “Chinese TLS 1.3”.Its version field is 0x0101 and its key schedule is TLS 1.2 PRF/P_hash, not HKDF; it uses SM2 for authentication and key exchange, SM3 for hashing and SM4 for record encryption."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38636-r139-used",
+          "entryId": "gbt38636-details",
+          "section": "used",
+          "statement": {
+            "zh": "读握手时先看版本 0x0101 和套件 ID，再按双证书验证签名证书、用加密证书解出预主密钥。双方各自用 \\(client\\_random\\)、\\(server\\_random\\) 和预主密钥算 48 字节主密钥，再算 key_block；切分顺序不能颠倒。记录层若走 CBC，MAC 覆盖序号到片段；若走 GCM，附加数据只覆盖序号、类型、版本、长度，密文本身由 AEAD 认证。Finished 用 SM3 的握手 transcript，验证 12 字节 \\(verify\\_data\\)。",
+            "en": "When reading a handshake, check version 0x0101 and the suite ID, verify the signature certificate, then use the encryption certificate to recover the pre-master.Both sides compute the 48-byte master from \\(client\\_random\\), \\(server\\_random\\) and the pre-master, then the key_block; the carving order must not be reversed."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38636-r139-broken",
+          "entryId": "gbt38636-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界有四条。第一，TLCP 是 TLS 1.2 风格，不支持 TLS 1.3 的 0-RTT、PSK、KeyUpdate，也不能把 HKDF 的 \\(Extract/Expand\\) 套进来。第二，CBC 套件要正确处理填充与 MAC-then-Encrypt 的顺序，否则会出现填充 oracle 类问题；GCM 套件要保证 nonce 唯一。第三，双证书要求签名私钥与加密私钥分离，若把两张证书混用或让同一密钥承担两种用途，会破坏标准的用途分离。第四，标准规定协议与密钥计算，不替代实现侧信道、证书生命周期和部署审计。",
+            "en": "There are four boundaries.First, TLCP is TLS 1.2-style and does not support TLS 1.3 0-RTT, PSK or KeyUpdate; do not apply HKDF \\(Extract/Expand\\)."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38636-r139-history",
+          "entryId": "gbt38636-details",
+          "section": "history",
+          "statement": {
+            "zh": "GB/T 38636—2020 于 2020-04-28 发布、2020-11-01 实施，规定记录层协议、握手协议族和密钥计算；它把 TLCP 定位为传输层密码协议，适用于 SSL VPN 网关、浏览器等产品。标准中的套件用 SM2/SM3/SM4，并保留 RSA/IBC 等密钥交换分支；这里只重述标准文本，不把厂商实现或 TLS 1.3 的特性写成标准要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：传输层密码协议的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GB/T 38636—2020 was published on 2020-04-28 and took effect on 2020-11-01, specifying the record layer, handshake family and key calculation; it positions TLCP as a transport-layer cryptographic protocol for SSL VPN gateways, browsers and similar products.Its suites use SM2/SM3/SM4 and retain RSA/IBC key-exchange branches; this account restates the standard text, not vendor implementations or TLS 1.3 features."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38636-r139-refs",
+          "entryId": "gbt38636-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 传输层密码协议.https://zh.wikipedia.org/w/index.php?search=%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 传输层密码协议.https://zh.wikipedia.org/w/index.php?search=%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt38636-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt38636-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt38636-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt38636-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt38636-r139-principle",
+      "entryId": "gbt38636-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：传输层密码协议（TLCP）。TLCP 的密钥计算是 TLS 1.2 风格。先定义 \\(P\\_hash(secret,seed)=HMAC(secret,A_1\\|seed)\\|HMAC(secret,A_2\\|seed)\\|\\cdots\\)，其中 \\(A_0=seed\\)、\\(A_i=HMAC(secret,A_{i-1})\\)；再定义 \\(PRF(secret,label,seed)=P\\_hash(secret,label\\|seed)\\)。主密钥为 \\(PRF(pre\\_master,\\text{“master secret”},client\\_random\\|server\\_random)[0..47]\\)，固定 48 字节。工作密钥由 \\(PRF(master,\\text{“key expansion”},server\\_random\\|client\\_random)\\) 生成 key_block，再按 client MAC、server MAC、client key、server key、client IV、server IV 的顺序切分。Finished 的 \\(verify\\_data\\) 取 \\(PRF(master,label,SM3(handshake\\_messages))[0..11]\\)，固定 12 字节。记录层 MAC 覆盖 \\(seq\\|type\\|version\\|length\\|fragment\\)，AEAD 的附加数据覆盖 \\(seq\\|type\\|version\\|length\\)。",
+        "en": "**Standard**: TLCP (传输层密码协议).TLCP key calculation is TLS 1.2-style."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38636-r139-why",
+      "entryId": "gbt38636-details",
+      "section": "why",
+      "statement": {
+        "zh": "TLCP 常被误当成“国密版 TLS 1.3”。实际标准版本字段是 0x0101，密钥计算是 TLS 1.2 的 PRF/P_hash，不是 HKDF；它用 SM2 做身份鉴别与密钥交换、SM3 做杂凑、SM4 做记录层加密。双证书是另一个关键差异：签名证书只做身份鉴别，加密证书只做密钥交换，二者不能合并成一张证书。把 PRF、key_block、Finished、记录 MAC 写成公式，才能把“国密 TLS”与“TLS 1.3”区分开。",
+        "en": "TLCP is often mistaken for a “Chinese TLS 1.3”.Its version field is 0x0101 and its key schedule is TLS 1.2 PRF/P_hash, not HKDF; it uses SM2 for authentication and key exchange, SM3 for hashing and SM4 for record encryption."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38636-r139-used",
+      "entryId": "gbt38636-details",
+      "section": "used",
+      "statement": {
+        "zh": "读握手时先看版本 0x0101 和套件 ID，再按双证书验证签名证书、用加密证书解出预主密钥。双方各自用 \\(client\\_random\\)、\\(server\\_random\\) 和预主密钥算 48 字节主密钥，再算 key_block；切分顺序不能颠倒。记录层若走 CBC，MAC 覆盖序号到片段；若走 GCM，附加数据只覆盖序号、类型、版本、长度，密文本身由 AEAD 认证。Finished 用 SM3 的握手 transcript，验证 12 字节 \\(verify\\_data\\)。",
+        "en": "When reading a handshake, check version 0x0101 and the suite ID, verify the signature certificate, then use the encryption certificate to recover the pre-master.Both sides compute the 48-byte master from \\(client\\_random\\), \\(server\\_random\\) and the pre-master, then the key_block; the carving order must not be reversed."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38636-r139-broken",
+      "entryId": "gbt38636-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界有四条。第一，TLCP 是 TLS 1.2 风格，不支持 TLS 1.3 的 0-RTT、PSK、KeyUpdate，也不能把 HKDF 的 \\(Extract/Expand\\) 套进来。第二，CBC 套件要正确处理填充与 MAC-then-Encrypt 的顺序，否则会出现填充 oracle 类问题；GCM 套件要保证 nonce 唯一。第三，双证书要求签名私钥与加密私钥分离，若把两张证书混用或让同一密钥承担两种用途，会破坏标准的用途分离。第四，标准规定协议与密钥计算，不替代实现侧信道、证书生命周期和部署审计。",
+        "en": "There are four boundaries.First, TLCP is TLS 1.2-style and does not support TLS 1.3 0-RTT, PSK or KeyUpdate; do not apply HKDF \\(Extract/Expand\\)."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38636-r139-history",
+      "entryId": "gbt38636-details",
+      "section": "history",
+      "statement": {
+        "zh": "GB/T 38636—2020 于 2020-04-28 发布、2020-11-01 实施，规定记录层协议、握手协议族和密钥计算；它把 TLCP 定位为传输层密码协议，适用于 SSL VPN 网关、浏览器等产品。标准中的套件用 SM2/SM3/SM4，并保留 RSA/IBC 等密钥交换分支；这里只重述标准文本，不把厂商实现或 TLS 1.3 的特性写成标准要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：传输层密码协议的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GB/T 38636—2020 was published on 2020-04-28 and took effect on 2020-11-01, specifying the record layer, handshake family and key calculation; it positions TLCP as a transport-layer cryptographic protocol for SSL VPN gateways, browsers and similar products.Its suites use SM2/SM3/SM4 and retain RSA/IBC key-exchange branches; this account restates the standard text, not vendor implementations or TLS 1.3 features."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38636-r139-refs",
+      "entryId": "gbt38636-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 传输层密码协议.https://zh.wikipedia.org/w/index.php?search=%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 传输层密码协议.https://zh.wikipedia.org/w/index.php?search=%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt38636-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

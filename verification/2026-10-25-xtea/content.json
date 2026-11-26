@@ -1,0 +1,332 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full XTEA algorithm article only; no completion claim for TEA, Block TEA, XXTEA, DES, AES, RC5 or the whole library.",
+  "entries": [
+    {
+      "id": "xtea-details",
+      "inventoryIds": [
+        "xtea"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 XTEA 这一种 64 位 ARX 分组密码：128 位密钥、按 sum 位选字的密钥调度、32 个推荐循环（64 次字更新，通常称为 64 轮）、参考向量、64 位块边界，以及它与 TEA、Block TEA、XXTEA 的区别；不把 TEA、XXTEA、DES、AES 或工作模式并入本实体。",
+        "en": "Covers the XTEA 64-bit ARX block cipher: 128-bit key, sum-bit key selection, the recommended 32 cycles (64 word updates, commonly called 64 rounds), reference vectors, the 64-bit block bound and the distinction from TEA, Block TEA and XXTEA. It does not absorb TEA, XXTEA, DES, AES or a mode of operation."
+      },
+      "title": {
+        "zh": "XTEA：修复 TEA 弱点的 64 位 ARX 分组密码",
+        "en": "XTEA: a 64-bit ARX block cipher that repairs TEA's weaknesses"
+      },
+      "claimIds": [
+        "xtea-r139-principle",
+        "xtea-r139-why",
+        "xtea-r139-used",
+        "xtea-r139-broken",
+        "xtea-r139-history",
+        "xtea-r139-refs"
+      ],
+      "calculationIds": [
+        "xtea-calc-vector-32",
+        "xtea-calc-vector-64",
+        "xtea-calc-roundtrip",
+        "xtea-calc-diffusion",
+        "xtea-r139-formal"
+      ],
+      "sourceIds": [
+        "xtea-wikipedia",
+        "xtea-reference-ref"
+      ],
+      "related": [
+        "tea",
+        "algorithm--des",
+        "algorithm--aes",
+        "rc5",
+        "present"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：XTEA 扩展 TEA（XTEA）。XTEA 是 Needham 和 Wheeler 对 TEA 的扩展。它保持 64 位块和 128 位密钥，把密钥分成四个 32 位字 k0、k1、k2、k3；循环数 N 是参数，论文推荐 32 个循环。每个循环更新 v0 和 v1 各一次，因此包含 64 次字更新，通常称为 64 轮。```text\nv0 += (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + key[sum & 3])\nsum += delta\nv1 += (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + key[(sum >> 11) & 3])\n```\n\n其中 delta = 0x9e3779b9，sum 从 0 开始；所有加法都是 32 位模 2^32 加法，移位和异或也是 32 位操作。XTEA 没有独立的密钥扩展数组。它用 sum 的低两位选择 key[sum & 3]，第二次更新用 key[(sum >> 11) & 3]；移位 11 使选字序列不规则，并保证四个密钥字在前两个循环都被使用。这是 XTEA 与 TEA 的主要结构差异之一。解密从 sum = delta * N 开始，先逆 v1 更新，再减 delta，最后逆 v0 更新；N 必须与加密相同。轮函数只用加法、移位和异或，没有 S-box 或预计算查找表；密钥字只有四个，按 sum 的位索引访问。",
+          "why": "XTEA 的重要性在于它如何修复 TEA 的两个小弱点。TEA 的混合部分看起来未被破坏，但相关密钥攻击是可能的；TEA 的有效密钥长度是 126 位而非 128 位。XTEA 的密钥调度和密钥引入改动针对这两点。论文称这些改动修复了弱点，同时保留几乎相同的简单性、很少的初始化、较多循环和不复杂分析的设计目标。这是设计声明，不是完整安全证明。32 个循环是论文推荐值；每个循环包含两次更新，所以通常称为 64 轮。XTEA 仍然使用 64 位块，生日碰撞边界约为 2^32 个块，处理大量数据时会限制安全使用量。本文判断它不是现代标准算法，适合作为历史和教学案例，不应默认用于新设计。",
+          "used": "XTEA 面向小初始化、简单、多循环的软件实现；轮函数只用加法、移位和异或，没有 S-box 或预计算查找表，密钥字只有四个，按 sum 的位索引访问。它不定义工作模式；实际使用仍需 CBC、CTR 等模式，并需要独立的完整性保护。```text\nP = af20a390 547571aa\nK = 27f917b1 c1da8993 60e2acaa a6eb923d\nC = d26428af 0a202283\n```\n\n```text\nP = 2e6c1fe7 f5571f9d\nK = 62ee209f 069b7afc 376a8936 cdc9e923\nC = 7a01cbc9 b03d6068\n```\n\n这两组向量来自 Crypto++ 的 XTEA/ECB 测试文件；该文件把来源标为 Keith Lockstone 的 TEA and XTEA 向量页。32 循环对应论文推荐值，64 循环用于验证循环数参数化，不是推荐值。",
+          "broken": "XTEA 的块只有 64 位。HAC 的生日碰撞分析指出，n 位块在约 2^(n/2) 个块后出现匹配；对 64 位块约为 2^32 个块。大量数据下，这限制了 XTEA 的安全使用量。### 相关密钥与设计声明\n\nTEA 的相关密钥攻击和 126 位有效密钥问题促使 XTEA 修改密钥调度和密钥引入。论文说 TEA 的混合部分看起来未被破坏，但相关密钥攻击是可能的（在两个相关密钥下构造 2^32 个文本看起来并不实际）；126 位有效密钥主要影响某些应用，而不是简单加解密。论文称这些改动修复了两个弱点；这是设计目标，不是完整安全证明。本文不复述未引用的缩减轮攻击，也不把修复 TEA 弱点等同于 XTEA 对所有攻击安全。### 无完整性\n\nXTEA 只定义分组密码，不提供完整性或认证。翻转密文会改变对应明文，但 XTEA 本身无法检测；需要认证时应使用 AEAD 或加密后再 MAC。本文的教学实现只演示 XTEA 的固定向量、32/64 循环加解密和一位差异统计。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。没有大 S-box 或预计算表减少了表查找侧信道，但实现仍是 JavaScript 非常量时间，也不等于侧信道安全。",
+          "history": "Needham 和 Wheeler 的 TEA extensions 标注为 1996 年 10 月，1997 年 3 月修订、1997 年 10 月更正；XTEA 由此形成。它保留了 TEA 的 64 位块、128 位密钥和 ARX 风格，但改变了密钥调度和密钥引入。论文还把方法扩展到更大的 Block TEA 块；Block TEA 是另一个算法，不是 XTEA。1998 年的 Correction to xtea 说明对 Block TEA 的攻击有效，但不适用于原始 TEA 或 XTEA；通常称为 XXTEA/Corrected Block TEA 的是 Block TEA 的修正版，不是 XTEA。XTEA 与 TEA、Block TEA、XXTEA 都是各自独立的实体。",
+          "refs": "- Wikipedia search entry for XTEA 扩展 TEA. https://zh.wikipedia.org/w/index.php?search=XTEA%20%E6%89%A9%E5%B1%95%20TEA\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: XTEA (XTEA 扩展 TEA). XTEA is Needham and Wheeler's extension of TEA. It keeps the 64-bit block and 128-bit key, splits the key into four 32-bit words k0, k1, k2 and k3, and makes the cycle count N a parameter; the paper recommends 32 cycles. Each cycle updates v0 and v1 once, so it contains 64 word updates, commonly called 64 rounds. Each cycle has this structure:\n\n```text\nv0 += (((v1 << 4) ^ (v1 >> 5)) + v1) ^ (sum + key[sum & 3])\nsum += delta\nv1 += (((v0 << 4) ^ (v0 >> 5)) + v0) ^ (sum + key[(sum >> 11) & 3])\n```\n\nHere delta = 0x9e3779b9 and sum starts at 0; all additions are modulo 2^32, and the shifts and XORs are 32-bit operations. XTEA has no separate expanded-key array. It selects key[sum & 3] with the low two bits of sum and key[(sum >> 11) & 3] for the second update; the shift of 11 makes the selection sequence irregular and ensures all four key words are used in the first two cycles. This is one of the main structural differences from TEA. Decryption starts at sum = delta * N, inverts the v1 update first, subtracts delta, then inverts the v0 update; N must match encryption. The round function uses only addition, shifts and XOR, with no S-box or precomputed lookup table; there are only four key words, indexed by bits of sum.",
+          "why": "XTEA matters for how it repairs TEA's two minor weaknesses. TEA's mixing appears unbroken, but related-key attacks are possible; TEA's effective key length is 126 bits rather than 128. XTEA's key-schedule and key-introduction changes target these two points. The paper claims the changes repair the weaknesses while retaining almost the same simplicity, little setup, many cycles and avoidance of complicated analysis. This is a design claim, not a complete security proof.\n\nThe paper recommends 32 cycles; each cycle has two updates, so it is commonly called 64 rounds. XTEA still uses a 64-bit block, whose birthday-collision bound is about 2^32 blocks, limiting safe data volume in large deployments. In this article's assessment, it is not a modern standard algorithm; it is best treated as a historical and teaching case, not as a default for new designs.",
+          "used": "XTEA targets simple software implementations with little setup and many cycles; the round function uses only addition, shifts and XOR, with no S-box or precomputed lookup table, and only four key words indexed by bits of sum. It defines no mode of operation; practical use still needs CBC, CTR or another mode, plus independent integrity protection.\n\nThe 32-cycle reference vector is:\n\n```text\nP = af20a390 547571aa\nK = 27f917b1 c1da8993 60e2acaa a6eb923d\nC = d26428af 0a202283\n```\n\nThe 64-cycle extended vector is:\n\n```text\nP = 2e6c1fe7 f5571f9d\nK = 62ee209f 069b7afc 376a8936 cdc9e923\nC = 7a01cbc9 b03d6068\n```\n\nBoth vectors come from the Crypto++ XTEA/ECB test file, which attributes its vectors to Keith Lockstone's TEA and XTEA test-vector page. The 32-cycle vector matches the paper's recommended count; the 64-cycle vector tests parameterization and is not the recommended value.",
+          "broken": "XTEA has only a 64-bit block. HAC's birthday analysis notes that an n-bit block reaches a matching pair after about 2^(n/2) blocks; for 64 bits this is about 2^32 blocks. In large data volumes this limits safe use.\n\nTEA's related-key attacks and 126-bit effective key length motivated XTEA's changes to key scheduling and key introduction. The paper says TEA's mixing appears unbroken, but related-key attacks are possible (constructing 2^32 texts under two related keys seems impractical); the 126-bit effective key mainly affects certain applications, not simple encryption/decryption. The paper claims the changes repair the two weaknesses; this is a design goal, not a complete security proof. This article does not restate unreferenced reduced-round attacks, and it does not equate repairing TEA's weaknesses with XTEA being secure against all attacks.\n\nXTEA defines only a block cipher and provides no integrity or authentication. Flipping ciphertext changes the corresponding plaintext, but XTEA cannot detect it; authentication requires AEAD or encrypt-then-MAC.\n\nThis article's teaching implementation demonstrates only XTEA fixed vectors, 32/64-cycle encryption/decryption and a one-bit difference statistic. It does not generate keys, run in constant time, implement a mode of operation, protocol, key management or side-channel defenses, and must not be used in production. Having no large S-box or precomputed table reduces table-lookup side channels, but the implementation is still JavaScript and not constant-time, so it is not side-channel safe.",
+          "history": "Needham and Wheeler's TEA extensions is dated October 1996, revised March 1997 and corrected October 1997; XTEA emerged from it. It keeps TEA's 64-bit block, 128-bit key and ARX style, but changes the key schedule and key introduction.\n\nThe paper also extends the method to larger Block TEA blocks; Block TEA is a different algorithm, not XTEA. The 1998 Correction to xtea says the attack is effective against Block TEA but not the original TEA or XTEA; what is usually called XXTEA/Corrected Block TEA is the corrected Block TEA, not XTEA. XTEA, TEA, Block TEA and XXTEA are separate entities.",
+          "refs": "- Wikipedia search entry for XTEA 扩展 TEA. https://zh.wikipedia.org/w/index.php?search=XTEA%20%E6%89%A9%E5%B1%95%20TEA\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "XTEA：TEA 的扩展，64 位 ARX 分组密码，推荐 32 个循环。",
+          "TEA：XTEA 的前身，1994 年提出，32 个循环、四个密钥字直接使用。",
+          "64 位块：生日碰撞边界约为 2^32 个块。",
+          "128 位密钥：由四个 32 位字组成的 XTEA 主密钥。",
+          "循环（cycle）：XTEA 的一次 v0 更新和一次 v1 更新，等于两次字更新（通常称为两轮）。",
+          "轮（round）：一次字更新；32 个循环等于 64 次字更新，通常称为 64 轮。",
+          "delta：XTEA 每循环累加的 0x9e3779b9。",
+          "sum：循环计数器，累加 delta，并用其位选择密钥字。",
+          "密钥调度：XTEA 用 sum 的低两位和 (sum >> 11) & 3 选择密钥字，没有独立的扩展数组。",
+          "ARX：加法（Addition）、移位/旋转（Rotation/Shift）、异或（XOR）组成的轮函数风格。",
+          "生日边界：n 位块在约 2^(n/2) 个块后出现碰撞匹配；64 位块约为 2^32。",
+          "Block TEA/XXTEA：面向更大块的变体及其修正版，不是 XTEA。"
+        ],
+        "en": [
+          "XTEA: an extension of TEA, a 64-bit ARX block cipher with 32 recommended cycles.",
+          "TEA: XTEA's predecessor from 1994, with 32 cycles and four key words used directly.",
+          "64-bit block: a birthday-collision bound of about 2^32 blocks.",
+          "128-bit key: the XTEA master key made of four 32-bit words.",
+          "Cycle: one v0 update and one v1 update in XTEA, equal to two word updates (commonly called two rounds).",
+          "Round: one word update; 32 cycles equal 64 word updates, commonly called 64 rounds.",
+          "delta: the 0x9e3779b9 constant added to sum each cycle.",
+          "sum: the cycle counter, increased by delta and used to select key words.",
+          "Key schedule: XTEA selects key words with the low two bits of sum and (sum >> 11) & 3, without a separate expanded array.",
+          "ARX: a round-function style built from Addition, Rotation/Shift and XOR.",
+          "Birthday bound: an n-bit block collides after about 2^(n/2) blocks; about 2^32 for a 64-bit block.",
+          "Block TEA/XXTEA: a larger-block variant and its corrected version, not XTEA."
+        ]
+      },
+      "figures": [
+        {
+          "id": "xtea-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XTEA：修复 TEA 弱点的 64 位 ARX 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "XTEA: a 64-bit ARX block cipher that repairs TEA's weaknesses: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "XTEA：修复 TEA 弱点的 64 位 ARX 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for XTEA: a 64-bit ARX block cipher that repairs TEA's weaknesses, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/xtea-details-flow.zh.svg",
+            "en": "assets/xtea-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1c7b77ea3d1a803b91515344581d2333f7e3d256bcb065bcf2b76a59c5eded58",
+            "en": "7d8aa569631f89e7f152d18270b349bd3d0e8bb6ab5672eea82768f8a19b4180"
+          }
+        },
+        {
+          "id": "xtea-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XTEA：修复 TEA 弱点的 64 位 ARX 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for XTEA: a 64-bit ARX block cipher that repairs TEA's weaknesses: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "XTEA：修复 TEA 弱点的 64 位 ARX 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for XTEA: a 64-bit ARX block cipher that repairs TEA's weaknesses, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/xtea-details-r138-model.zh.svg",
+            "en": "assets/xtea-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3d67679b3efe3072dfb711b290ab2bb5effad62c342bde17f25144b5a49b87f1",
+            "en": "64e6837b4ae253dd0f77cf5912a613b71404ab67ec6c2c3043dec0dcc25ed6c4"
+          }
+        }
+      ],
+      "sources": [
+        "xtea-wikipedia",
+        "xtea-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "xtea-calc-vector-32",
+          "entryId": "xtea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "XTEA/ECB test 32: plaintext af20a390547571aa, key 27f917b1c1da899360e2acaaa6eb923d, 32 cycles",
+          "expected": "Ciphertext d26428af0a202283; decryption returns the plaintext",
+          "sourceIds": [
+            "xtea-wikipedia"
+          ],
+          "dependencies": [
+            "xtea-teaching.mjs"
+          ],
+          "limitations": "One fixed vector for the recommended 32-cycle path; it does not cover every key or cycle count."
+        },
+        {
+          "id": "xtea-calc-vector-64",
+          "entryId": "xtea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "XTEA/ECB test 64: plaintext 2e6c1fe7f5571f9d, key 62ee209f069b7afc376a8936cdc9e923, 64 cycles",
+          "expected": "Ciphertext 7a01cbc9b03d6068; decryption returns the plaintext; the Lockstone 64-cycle six-word row is reproduced",
+          "sourceIds": [
+            "xtea-wikipedia"
+          ],
+          "dependencies": [
+            "xtea-teaching.mjs"
+          ],
+          "limitations": "64 cycles is a parameterization test, not the paper's recommended count; one fixed vector."
+        },
+        {
+          "id": "xtea-calc-roundtrip",
+          "entryId": "xtea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Fixed plaintext and key pairs at 1, 2, 8, 16, 32 and 64 cycles",
+          "expected": "Every ciphertext decrypts back to its plaintext",
+          "sourceIds": [
+            "xtea-wikipedia"
+          ],
+          "dependencies": [
+            "xtea-teaching.mjs"
+          ],
+          "limitations": "Fixed data only; not a random or exhaustive test. Zero cycles is excluded because it performs no encryption."
+        },
+        {
+          "id": "xtea-calc-diffusion",
+          "entryId": "xtea-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 32-cycle reference plaintext af20a390547571aa and the same plaintext with the low bit of its first 32-bit word v0 flipped (af20a391547571aa), under key 27f917b1c1da899360e2acaaa6eb923d",
+          "expected": "The two ciphertexts differ in 36 bits",
+          "sourceIds": [
+            "xtea-wikipedia"
+          ],
+          "dependencies": [
+            "xtea-teaching.mjs"
+          ],
+          "limitations": "One fixed one-bit difference; it is a diffusion observation, not a differential probability or a security proof."
+        },
+        {
+          "id": "xtea-r139-formal",
+          "entryId": "xtea-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "XTEA 扩展 TEA 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "xtea-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "xtea-calc-vector-32",
+      "entryId": "xtea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "XTEA/ECB test 32: plaintext af20a390547571aa, key 27f917b1c1da899360e2acaaa6eb923d, 32 cycles",
+      "expected": "Ciphertext d26428af0a202283; decryption returns the plaintext",
+      "sourceIds": [
+        "xtea-wikipedia"
+      ],
+      "dependencies": [
+        "xtea-teaching.mjs"
+      ],
+      "limitations": "One fixed vector for the recommended 32-cycle path; it does not cover every key or cycle count."
+    },
+    {
+      "id": "xtea-calc-vector-64",
+      "entryId": "xtea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "XTEA/ECB test 64: plaintext 2e6c1fe7f5571f9d, key 62ee209f069b7afc376a8936cdc9e923, 64 cycles",
+      "expected": "Ciphertext 7a01cbc9b03d6068; decryption returns the plaintext; the Lockstone 64-cycle six-word row is reproduced",
+      "sourceIds": [
+        "xtea-wikipedia"
+      ],
+      "dependencies": [
+        "xtea-teaching.mjs"
+      ],
+      "limitations": "64 cycles is a parameterization test, not the paper's recommended count; one fixed vector."
+    },
+    {
+      "id": "xtea-calc-roundtrip",
+      "entryId": "xtea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Fixed plaintext and key pairs at 1, 2, 8, 16, 32 and 64 cycles",
+      "expected": "Every ciphertext decrypts back to its plaintext",
+      "sourceIds": [
+        "xtea-wikipedia"
+      ],
+      "dependencies": [
+        "xtea-teaching.mjs"
+      ],
+      "limitations": "Fixed data only; not a random or exhaustive test. Zero cycles is excluded because it performs no encryption."
+    },
+    {
+      "id": "xtea-calc-diffusion",
+      "entryId": "xtea-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 32-cycle reference plaintext af20a390547571aa and the same plaintext with the low bit of its first 32-bit word v0 flipped (af20a391547571aa), under key 27f917b1c1da899360e2acaaa6eb923d",
+      "expected": "The two ciphertexts differ in 36 bits",
+      "sourceIds": [
+        "xtea-wikipedia"
+      ],
+      "dependencies": [
+        "xtea-teaching.mjs"
+      ],
+      "limitations": "One fixed one-bit difference; it is a diffusion observation, not a differential probability or a security proof."
+    },
+    {
+      "id": "xtea-r139-formal",
+      "entryId": "xtea-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "XTEA 扩展 TEA 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "xtea-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

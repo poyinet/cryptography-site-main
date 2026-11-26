@@ -1,0 +1,422 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for algorithm--hmac: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "algorithm--hmac-details",
+      "inventoryIds": [
+        "algorithm--hmac"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释HMAC 密钥化哈希消息认证码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Hash-based Message Authentication Code (HMAC): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "HMAC 密钥化哈希消息认证码",
+        "en": "Hash-based Message Authentication Code (HMAC)"
+      },
+      "claimIds": [
+        "algorithm--hmac-r139-principle",
+        "algorithm--hmac-r139-why",
+        "algorithm--hmac-r139-used",
+        "algorithm--hmac-r139-broken",
+        "algorithm--hmac-r139-history",
+        "algorithm--hmac-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--hmac-wikipedia",
+        "algorithm--hmac-reference-ref"
+      ],
+      "calculationIds": [
+        "hmac-calc-rfc4231-vectors",
+        "hmac-calc-construction-steps",
+        "hmac-calc-longkey-rule",
+        "hmac-calc-truncation-rule",
+        "hmac-calc-oracle-agreement",
+        "algorithm--hmac-r139-formal"
+      ],
+      "related": [
+        "fips198-1",
+        "term--mac",
+        "algorithm--sha-1"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：HMAC 密钥化哈希认证码（Hash-based Message Authentication Code）。留存 RFC 2104 文本在摘要段给出定义：「This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.」其下一句交代它与密钥和哈希的结合方式：「HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.」两句都在文首 Abstract 段（本副本报为 front）。原理骨架即此：以迭代型哈希函数为构件、配一把共享秘密密钥，产出一个消息认证码；强度归属见同一段的「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」\n\n§2 把构造写成可执行的七步。先定义两个定串：「ipad = the byte 0x36 repeated B times」与「opad = the byte 0x5C repeated B times.」（两行明文各占一行，0x5C 按原文大小写书写），随后一行给出整体式「H(K XOR opad, H(K XOR ipad, text))」。步骤按原文编号为：「(1) append zeros to the end of K to create a B byte string」、「(4) apply H to the stream generated in step (3)」、「(5) XOR (bitwise exclusive-OR) the B byte string computed in」（该行到此为止，「step (1) with opad」在下一行，故只引至此）、「(7) apply H to the stream generated in step (6) and output」。长密钥规则同段印作「Applications that use keys longer…than B bytes will first hash the key using H and then use the…resultant L byte string as the actual key to HMAC.」（该句被硬回车切成三行，此处按行分段引用，省略号即换行处）。逐步算例（Test Case 2，复算记在 hmac-calc-construction-steps）：密钥 4a656665 按步骤 (1) 补零成 64 字节的分组键；步骤 (2) 与 ipad 异或，得到以 7c535053 开头、其后 60 字节全为 36 的串；步骤 (5) 与 opad 异或，得到以 16393a39 开头、其后 60 字节全为 5c 的串；步骤 (4) 的中间摘要长 32 字节；步骤 (7) 的输出为 5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843，与留存件 RFC 4231 §4.3 第 203-204 行所印一致。中间量是本批次按上述步骤算出的，留存件只印最终值。",
+          "why": "§1 说明其构造取向：「This document specifies HMAC using a generic cryptographic hash function (denoted by H).」并紧跟实例化要求：「Specific instantiations of HMAC need to define a particular hash function.」——文件定义的是与具体哈希无关的通用构造，实例化时才选定哈希。这解释了为什么要以`可替换底层哈希`的嵌套结构来做 MAC：既有软件里表现良好、代码随处可得的哈希函数无需改动即可复用。摘要段那句把强度前提也归到底层哈希：「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」（front）。于是动机是复用现成哈希并保留其性能，同时把安全性下推到对 H 的常规假设。",
+          "used": "使用条件散在编号小节，措辞有 must 级也有 recommend 级。§3 对密钥的取法是祈使式陈述：「Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.」——密钥须随机选择并定期刷新。§5 对截断输出给的是 recommend：「We recommend that the output length t be not less than half the length of the hash output (to match the birthday attack bound) and not less than 80 bits」即截断后的长度 t 建议不小于哈希输出的一半且不少于 80 位。用途因此是把 HMAC 套在某一具体哈希上作消息认证，并对密钥管理与输出截断给出上述两级指引；该条目据的是 RFC 2104 文本，而非目录行的首要引用 FIPS 198-1。留存 RFC 4231 §4.1 交代这批测试向量的地位：「The test vectors in this document have been cross-verified by three」接「independent implementations.」——同一句被硬回车切成两行，故分两段引。取值形式由一句说明：「Keys, data, and digests are provided in hex.」§4.2 至 §4.8 的七个用例各自印一行说明其覆盖面：密钥短于输出长度的「Test with a key shorter than the length of the HMAC output.」、密钥与数据合计长度超过 64 字节的「Test with a combined length of key and data that is larger than 64」接「bytes (= block-size of SHA-224 and SHA-256).」、输出截断的「Test with a truncation of output to 128 bits.」、以及密钥超过 128 字节的「Test with a key larger than 128 bytes (= block-size of SHA-384 and」接「SHA-512).」。§3.2 另印一句「element may specify the truncated length of the scheme output.」即截断后的长度由该元素指定。该条目复算的期望值就是这些明文所印的值。七个用例的密钥、数据与四种摘要都是逐值可定位的：本批次把从留存件读取的每个值连同其行号存入 hmac-vectors.json（提取器读的是 build/corpora.json 为源标识 rfc4231 登记的那份文件），并在 artefacts 里记下两处版式事实：Test Case 3 的密钥标签印作 Key 而没有其余六个用例都带的等号；Test Case 5 的四个摘要只印 16 字节，因为该用例把输出截断到 128 位。复算结果记在 calculations 中：28 个明文摘要全部由按 §2 步骤写出的构造复现，另与 Node.js 自带实现逐一对齐。本批次的复算覆盖：7 个用例乘 4 种摘要共 28 个明文摘要，全部由按 §2 步骤写出的实现复现（hmac-calc-rfc4231-vectors）；Test Case 5 的 16 字节输出与截断规则相对（hmac-calc-truncation-rule）；Test Case 6、7 的 131 字节密钥走 H(K) 分支且与以 H(K) 为密钥的结果相等（hmac-calc-longkey-rule）；另有 140 组长度组合与 Node.js 自带实现逐一对齐（hmac-calc-oracle-agreement）。这些一致性与断言的对应关系记在该档案的 calculations 与 verification-results 中。",
+          "broken": "限度写在两处。§1 记底层哈希的现状：「MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].」并限定其影响面：「This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.」——已知的 MD5 碰撞攻击当时尚未危及 HMAC 内的 MD5 使用，但 SHA-1 被评述为更强。§6 给出理论上的最强攻击（该句在原文里紧跟带 ASCII 引号的 birthday attack 一词，此处只引到 H 为止）：「The strongest attack known against HMAC is based on the frequency of collisions for the hash function H」即攻击面被归结为底层 H 的碰撞频率。两条合说：HMAC 的安全性随所选哈希的碰撞抗力而变，MD5 这类构件是其明文点名的弱点来源。",
+          "history": "门面按留存文本连读：标题行印 HMAC: Keyed-Hashing for Message Authentication，作者行 Krawczyk、Bellare、Canetti，头部印 Request for Comments: 2104 与 Category: Informational（头部行复述于引号外）。其 Status of This Memo 段三句为：「This memo provides information for the Internet community.」 「This memo does not specify an Internet standard of any kind.」 「Distribution of this memo is unlimited.」——信息类文档，不规定任何因特网标准。版本口径分歧在此记录：本留存文件的日期行印 February 1997，而目录行把 RFC 2104 记作 `RFC 2104(1999)` 并将 FIPS 198-1(2008) 列为首要引用；该条目所有断言均以留存 RFC 2104 文本为准，日期从文本所印。",
+          "refs": "- Wikipedia search entry for HMAC 密钥化哈希认证码. https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(T=\\mathrm{MAC}_K(M)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Hash-based Message Authentication Code (HMAC 密钥化哈希认证码). The retained RFC 2104 text gives the definition in the Abstract: \"This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.\" The next sentence fixes its relation to a key and a hash: \"HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.\" both sitting in the front Abstract block (reported as front in this copy). The skeleton is exactly this: an iterative hash function used as the building block together with a shared secret key to produce a message authentication code; the strength is attributed by the same paragraph, \"The cryptographic strength of HMAC depends on the properties of the underlying hash function.\"\n\nSection 2 writes the construction out as seven executable steps. It first defines the two fixed strings: \"ipad = the byte 0x36 repeated B times\" and \"opad = the byte 0x5C repeated B times.\" (each on its own printed line, with 0x5C capitalised as the source prints it), then gives the whole expression on one line, \"H(K XOR opad, H(K XOR ipad, text))\". The numbered steps quoted are \"(1) append zeros to the end of K to create a B byte string\", \"(4) apply H to the stream generated in step (3)\", \"(5) XOR (bitwise exclusive-OR) the B byte string computed in\" (the line ends there - \"step (1) with opad\" is on the next line, so it is quoted only to the line end) and \"(7) apply H to the stream generated in step (6) and output\". The long-key rule in the same section reads \"Applications that use keys longer…than B bytes will first hash the key using H and then use the…resultant L byte string as the actual key to HMAC.\" - the sentence is split across three hard-wrapped lines, quoted here segment by segment, each ellipsis marking one of those line breaks. Worked example (Test Case 2, reproduced as hmac-calc-construction-steps): the key 4a656665 is zero-padded to a 64-byte block key by step (1); step (2) XOR with ipad yields a string beginning 7c535053 with the remaining 60 bytes all 36; step (5) XOR with opad yields a string beginning 16393a39 with the remaining 60 bytes all 5c; the step (4) inner digest is 32 bytes long; the step (7) output is 5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843, which is what the retained RFC 4231 prints at §4.3 lines 203-204. The intermediates are computed by this batch from the steps quoted above - the retained source prints only the final value.",
+          "why": "Section 1 states the construction stance: \"This document specifies HMAC using a generic cryptographic hash function (denoted by H).\" followed immediately by the instantiation rule \"Specific instantiations of HMAC need to define a particular hash function.\" the file defining a hash-agnostic generic construction and the choice of hash deferred to instantiation. That is why HMAC is built as a nesting that can swap the underlying hash: hash functions that already run well in software and are widely available can be reused unchanged. The abstract sentence also pushes strength down to the hash: \"The cryptographic strength of HMAC depends on the properties of the underlying hash function.\" (front). The motive is thus to reuse existing hashes and keep their performance while resting security on ordinary assumptions about H.",
+          "used": "The usage conditions sit in the numbered sections, at must level for keys and recommend level for output. Section 3 states the key rule in plain imperatival prose: \"Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.\" keys must be random and refreshed periodically. Section 5 puts truncation at recommend level: \"We recommend that the output length t be not less than half the length of the hash output (to match the birthday attack bound) and not less than 80 bits\" the truncated length t advised to be at least half the hash output and at least 80 bits. So the use is to run HMAC over one chosen hash for message authentication, with these two grades of guidance for key management and output truncation; this dossier quotes the retained RFC 2104 text, not the row's primary citation FIPS 198-1.\n\nSection 4.1 of the retained RFC 4231 states the standing of these vectors: \"The test vectors in this document have been cross-verified by three\" followed by \"independent implementations.\" - one sentence broken by a hard line wrap, so it is quoted in two spans. Their form is stated by \"Keys, data, and digests are provided in hex.\" Test Cases 1 to 7 (§4.2-§4.8) each print one line saying what the case covers: \"Test with a key shorter than the length of the HMAC output.\", a combined key-plus-data length above 64 bytes (\"Test with a combined length of key and data that is larger than 64\" then \"bytes (= block-size of SHA-224 and SHA-256).\"), output truncation (\"Test with a truncation of output to 128 bits.\"), and a key above 128 bytes (\"Test with a key larger than 128 bytes (= block-size of SHA-384 and\" then \"SHA-512).\"). Section 3.2 prints \"element may specify the truncated length of the scheme output.\" - the truncated length is carried by that element. The expected values this entry reproduces are exactly the ones printed there.\n\nEvery key, datum and digest of the seven cases is locatable value by value: this batch stores what was read from the retained text together with its line numbers in hmac-vectors.json - the extractor reads the file that build/corpora.json registers for the source id rfc4231 - and its artefacts record two layout facts: Test Case 3 prints the field label Key without the equals sign the other six cases carry, and Test Case 5 prints 16-byte digests because that case truncates the output to 128 bits. The reproduction is recorded in calculations: all 28 printed digests are reproduced by a construction written from the §2 steps, and each one also agrees with Node.js own implementation.\n\nWhat this batch reproduces: all 28 printed digests - 7 test cases times 4 hash variants - are reproduced by an implementation written from the §2 steps (hmac-calc-rfc4231-vectors); the 16-byte outputs of Test Case 5 are checked against the truncation rule (hmac-calc-truncation-rule); the 131-byte keys of Test Cases 6 and 7 take the H(K) branch and give the same result as using H(K) as the key itself (hmac-calc-longkey-rule); and a further 140 length combinations agree with the implementation Node.js ships (hmac-calc-oracle-agreement). The agreements and what they assert are recorded in this dossier s calculations and verification-results files.",
+          "broken": "The limits are stated in two places. Section 1 records the state of the underlying hash: \"MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].\" and bounds the impact: \"This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.\" the known MD5 collisions did not, at the time of writing, compromise MD5 inside HMAC, yet SHA-1 is described as stronger. Section 6 gives the theoretical strongest attack, in the source followed by the ASCII-quoted term birthday attack, so it is quoted only up to H: \"The strongest attack known against HMAC is based on the frequency of collisions for the hash function H\" the attack surface reduced to the collision frequency of the chosen H. Together: HMAC's security moves with the collision resistance of the selected hash, and MD5 is the named weak component.",
+          "history": "Read as printed, the front matter gives the title line HMAC: Keyed-Hashing for Message Authentication, the author line Krawczyk, Bellare and Canetti, and the header Request for Comments: 2104 with Category: Informational (header lines stated outside the quotes). Its Status of This Memo paragraph reads: \"This memo provides information for the Internet community.\" \"This memo does not specify an Internet standard of any kind.\" \"Distribution of this memo is unlimited.\" an informational document that specifies no Internet standard. The edition disagreement is recorded here: this retained file's date line prints February 1997, while the catalog row prints that citation title as `RFC 2104(1999)` and lists FIPS 198-1 (2008) as its primary source; every assertion in this dossier is bound to the retained RFC 2104 text and takes the date from what it prints.",
+          "refs": "- Wikipedia search entry for HMAC 密钥化哈希认证码. https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "message authentication code (MAC)：以共享秘密密钥对消息生成的认证码，用于校验完整性与来源。",
+          "iterative cryptographic hash function：以压缩函数对数据分块迭代处理的哈希函数，HMAC 的构件。",
+          "inner/outer padding (ipad/opad)：HMAC 嵌套两次异或所用的固定串，原文各占一行，印作 0x36 重复 B 次与 0x5C 重复 B 次；本批次按 §2 的七个步骤复算。",
+          "shared secret key：认证所需、须保密且需随机选取并定期刷新的密钥。",
+          "truncated output (t)：仅输出 HMAC 结果的前 t 位，建议 t 不小于哈希输出的一半且不小于 80 位。",
+          "collision resistance（底层 H）：HMAC 强度所依赖的、对所选哈希抗碰撞性质的假设。",
+          "测试向量（test vector）：官方给出输入与期望输出的样例；RFC 4231 §4 的 7 个用例即 HMAC-SHA-2 族的测试向量。",
+          "分组长度 B（block-size）：底层哈希压缩函数处理的数据分块字节数，SHA-224/256 为 64、SHA-384/512 为 128；密钥长于 B 时先取 H(K)。"
+        ],
+        "en": [
+          "Message authentication code (MAC): an authentication code generated over a message with a shared secret key, checking integrity and origin.",
+          "Iterative cryptographic hash function: a hash computed by iterating a compression function over blocks, HMAC's building block.",
+          "Inner/outer padding (ipad/opad): the two fixed strings XORed in the HMAC nesting, printed one per line as 0x36 repeated B times and 0x5C repeated B times; this batch reproduces the seven steps of §2.",
+          "Shared secret key: the key HMAC needs kept secret, chosen at random and refreshed periodically.",
+          "Truncated output (t): emitting only the first t bits of the HMAC result, advised to be at least half the hash output and at least 80 bits.",
+          "Collision resistance (of H): the assumed property of the chosen hash on which HMAC's strength depends.",
+          "Test vector: an official pair of inputs and expected output; the seven cases of RFC 4231 §4 are the test vectors for the HMAC-SHA-2 family.",
+          "Block size (B): the byte length of the hash compression block - 64 for SHA-224/256 and 128 for SHA-384/512; a key longer than B is first replaced by H(K)."
+        ]
+      },
+      "subtopicIds": [
+        "hmac"
+      ],
+      "figures": [
+        {
+          "id": "algorithm--hmac-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HMAC 密钥化哈希消息认证码：为什么需要 → 核心机制 → 边界。",
+            "en": "Hash-based Message Authentication Code (HMAC): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "HMAC 密钥化哈希消息认证码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Hash-based Message Authentication Code (HMAC), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--hmac-details-flow.zh.svg",
+            "en": "assets/algorithm--hmac-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "bc5ee4a5d941db4dfc00315ec17414e57fb540cfd08b54939dd2f192bc92a5e5",
+            "en": "643d4f070e906d111c7d10b197b1788562a421aa7f56b7146bd87619c62ee0f3"
+          }
+        },
+        {
+          "id": "algorithm--hmac-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HMAC 密钥化哈希消息认证码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Hash-based Message Authentication Code (HMAC): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "HMAC 密钥化哈希消息认证码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Hash-based Message Authentication Code (HMAC), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--hmac-details-r138-model.zh.svg",
+            "en": "assets/algorithm--hmac-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1397f2cd099e4c886be6933bcd2a293f07cb75fbe88551b5faf68839c403f611",
+            "en": "88be0161c30dfabee97fa580fb48994abe55c54e26c6a824b60cc4d1e6ca5831"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--hmac-wikipedia",
+        "algorithm--hmac-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "hmac-calc-rfc4231-vectors",
+          "entryId": "algorithm--hmac-details",
+          "kind": "known-answer-check",
+          "inputs": "all 7 registered RFC 4231 test cases x HMAC-SHA-224/256/384/512 = 28 printed digests; keys and data taken byte-for-byte from hmac-vectors.json, which records the line number each value was read from",
+          "expected": "derivation: the RFC 2104 §2 steps (1)-(7); expectation printed at RFC 4231 §4.2 lines 181-182, 183-184, 185-186-187, 188-189-190-191; RFC 4231 §4.3 lines 201-202, 203-204, 205-206-207, 208-209-210-211; RFC 4231 §4.4 lines 243-244, 245-246, 247-248-249, 250-251-252-253; RFC 4231 §4.5 lines 267-268, 269-270, 271-272-273, 274-275-276-277; RFC 4231 §4.6 lines 296, 297, 298, 299; RFC 4231 §4.7 lines 320-321, 322-323, 324-325-326, 327-328-329-330; RFC 4231 §4.8 lines 368-369, 370-371, 372-373-374, 375-376-377-378. A construction coded from those steps - using only the underlying hash as H and never crypto.createHmac - reproduces every printed digest. Test Case 5 is compared at its printed 16-byte truncated length and the full digest is additionally checked to extend that prefix.",
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "dependencies": [
+            "hmac-teaching.mjs",
+            "hmac-vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Fixed official cases over the SHA-2 family only; they check the construction and the key/truncation rules, not the security of any hash, nor the performance or side-channel behaviour of an implementation."
+        },
+        {
+          "id": "hmac-calc-construction-steps",
+          "entryId": "algorithm--hmac-details",
+          "kind": "step-by-step-example",
+          "inputs": "Test Case 2: key Jefe (4 bytes, hex 4a656665, line 197), data \"what do ya want for nothing?\" (28 bytes, lines 198/199), H = SHA-256, B = 64",
+          "expected": "step (1) zero-pads the key to 64 bytes (4a656665 then 60 zero bytes); step (2) XOR with ipad must yield a block beginning 7c535053 and continuing 36 to the end; step (5) XOR with opad must yield a block beginning 16393a39 and continuing 5c; step (4) yields a 32-byte inner digest; step (7) output must equal the value printed at RFC 4231 §4.3 lines 203-204 (5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843). Only that final value is printed by the sources; the intermediates are derived by applying the numbered steps.",
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "dependencies": [
+            "hmac-teaching.mjs",
+            "hmac-vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One worked case; it demonstrates the padding and the nesting, not the general case for other B or other hashes, which the other calculations in this dossier cover."
+        },
+        {
+          "id": "hmac-calc-longkey-rule",
+          "entryId": "algorithm--hmac-details",
+          "kind": "rule-equivalence-check",
+          "inputs": "Test Cases 6 and 7, both with 131-byte keys (longer than B=64 for SHA-224/256 and longer than B=128 for SHA-384/512)",
+          "expected": "derivation: the RFC 2104 §2 long-key sentence quoted segment by segment in the principle section. The implementation must take the H(key) branch; HMAC under the 131-byte key must equal HMAC under the key H(K) for the same data; and both must still produce the digests printed at RFC 4231 §4.7 and §4.8 (8 values).",
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "dependencies": [
+            "hmac-teaching.mjs",
+            "hmac-vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Checks the key-shortening rule for four SHA-2 hashes on two cases; it does not test keys of every length, and the H(K)-equivalence is an invariant implied by the rule rather than something the sources print."
+        },
+        {
+          "id": "hmac-calc-truncation-rule",
+          "entryId": "algorithm--hmac-details",
+          "kind": "known-answer-check",
+          "inputs": "Test Case 5 (RFC 4231 §4.6, heading line 287), whose four printed digests are 16 bytes because that case truncates output to 128 bits",
+          "expected": "derivation: the §4.6 note line, the §3.2 statement that the output-length element carries the truncated length, and the RFC 2104 §5 truncation recommendation quoted in the used section. The full-length digest of the same key and data must begin with each printed 16-byte value, for all four hashes.",
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "dependencies": [
+            "hmac-teaching.mjs",
+            "hmac-vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "A single truncation length (128 bits); the recommendation about how short is too short is a policy statement, not a computable claim."
+        },
+        {
+          "id": "hmac-calc-oracle-agreement",
+          "entryId": "algorithm--hmac-details",
+          "kind": "independent-implementation-check",
+          "inputs": "the 7 official cases plus every combination of key lengths 0,1,20,63,64,65,128,129,131,200 with data lengths 0,1,55,56,63,64,65,119,120,128,129,223,224,225 (140 cases) across the four hashes",
+          "expected": "the teaching construction and Node.js crypto.createHmac - an independent implementation, deliberately not used as an expected-value source - agree on every one of those cases. Agreement alone is not treated as proof: the printed RFC 4231 digests remain the expected values.",
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "dependencies": [
+            "hmac-teaching.mjs",
+            "hmac-vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "The oracle is one platform implementation on one Node version; it corroborates the hand-built construction, it does not certify it."
+        },
+        {
+          "id": "algorithm--hmac-r139-formal",
+          "entryId": "algorithm--hmac-details",
+          "kind": "formal-model",
+          "formula": "T=\\mathrm{MAC}_K(M)",
+          "inputs": "HMAC 密钥化哈希认证码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--hmac-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "hmac-calc-rfc4231-vectors",
+      "entryId": "algorithm--hmac-details",
+      "kind": "known-answer-check",
+      "inputs": "all 7 registered RFC 4231 test cases x HMAC-SHA-224/256/384/512 = 28 printed digests; keys and data taken byte-for-byte from hmac-vectors.json, which records the line number each value was read from",
+      "expected": "derivation: the RFC 2104 §2 steps (1)-(7); expectation printed at RFC 4231 §4.2 lines 181-182, 183-184, 185-186-187, 188-189-190-191; RFC 4231 §4.3 lines 201-202, 203-204, 205-206-207, 208-209-210-211; RFC 4231 §4.4 lines 243-244, 245-246, 247-248-249, 250-251-252-253; RFC 4231 §4.5 lines 267-268, 269-270, 271-272-273, 274-275-276-277; RFC 4231 §4.6 lines 296, 297, 298, 299; RFC 4231 §4.7 lines 320-321, 322-323, 324-325-326, 327-328-329-330; RFC 4231 §4.8 lines 368-369, 370-371, 372-373-374, 375-376-377-378. A construction coded from those steps - using only the underlying hash as H and never crypto.createHmac - reproduces every printed digest. Test Case 5 is compared at its printed 16-byte truncated length and the full digest is additionally checked to extend that prefix.",
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "dependencies": [
+        "hmac-teaching.mjs",
+        "hmac-vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Fixed official cases over the SHA-2 family only; they check the construction and the key/truncation rules, not the security of any hash, nor the performance or side-channel behaviour of an implementation."
+    },
+    {
+      "id": "hmac-calc-construction-steps",
+      "entryId": "algorithm--hmac-details",
+      "kind": "step-by-step-example",
+      "inputs": "Test Case 2: key Jefe (4 bytes, hex 4a656665, line 197), data \"what do ya want for nothing?\" (28 bytes, lines 198/199), H = SHA-256, B = 64",
+      "expected": "step (1) zero-pads the key to 64 bytes (4a656665 then 60 zero bytes); step (2) XOR with ipad must yield a block beginning 7c535053 and continuing 36 to the end; step (5) XOR with opad must yield a block beginning 16393a39 and continuing 5c; step (4) yields a 32-byte inner digest; step (7) output must equal the value printed at RFC 4231 §4.3 lines 203-204 (5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843). Only that final value is printed by the sources; the intermediates are derived by applying the numbered steps.",
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "dependencies": [
+        "hmac-teaching.mjs",
+        "hmac-vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One worked case; it demonstrates the padding and the nesting, not the general case for other B or other hashes, which the other calculations in this dossier cover."
+    },
+    {
+      "id": "hmac-calc-longkey-rule",
+      "entryId": "algorithm--hmac-details",
+      "kind": "rule-equivalence-check",
+      "inputs": "Test Cases 6 and 7, both with 131-byte keys (longer than B=64 for SHA-224/256 and longer than B=128 for SHA-384/512)",
+      "expected": "derivation: the RFC 2104 §2 long-key sentence quoted segment by segment in the principle section. The implementation must take the H(key) branch; HMAC under the 131-byte key must equal HMAC under the key H(K) for the same data; and both must still produce the digests printed at RFC 4231 §4.7 and §4.8 (8 values).",
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "dependencies": [
+        "hmac-teaching.mjs",
+        "hmac-vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Checks the key-shortening rule for four SHA-2 hashes on two cases; it does not test keys of every length, and the H(K)-equivalence is an invariant implied by the rule rather than something the sources print."
+    },
+    {
+      "id": "hmac-calc-truncation-rule",
+      "entryId": "algorithm--hmac-details",
+      "kind": "known-answer-check",
+      "inputs": "Test Case 5 (RFC 4231 §4.6, heading line 287), whose four printed digests are 16 bytes because that case truncates output to 128 bits",
+      "expected": "derivation: the §4.6 note line, the §3.2 statement that the output-length element carries the truncated length, and the RFC 2104 §5 truncation recommendation quoted in the used section. The full-length digest of the same key and data must begin with each printed 16-byte value, for all four hashes.",
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "dependencies": [
+        "hmac-teaching.mjs",
+        "hmac-vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "A single truncation length (128 bits); the recommendation about how short is too short is a policy statement, not a computable claim."
+    },
+    {
+      "id": "hmac-calc-oracle-agreement",
+      "entryId": "algorithm--hmac-details",
+      "kind": "independent-implementation-check",
+      "inputs": "the 7 official cases plus every combination of key lengths 0,1,20,63,64,65,128,129,131,200 with data lengths 0,1,55,56,63,64,65,119,120,128,129,223,224,225 (140 cases) across the four hashes",
+      "expected": "the teaching construction and Node.js crypto.createHmac - an independent implementation, deliberately not used as an expected-value source - agree on every one of those cases. Agreement alone is not treated as proof: the printed RFC 4231 digests remain the expected values.",
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "dependencies": [
+        "hmac-teaching.mjs",
+        "hmac-vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "The oracle is one platform implementation on one Node version; it corroborates the hand-built construction, it does not certify it."
+    },
+    {
+      "id": "algorithm--hmac-r139-formal",
+      "entryId": "algorithm--hmac-details",
+      "kind": "formal-model",
+      "formula": "T=\\mathrm{MAC}_K(M)",
+      "inputs": "HMAC 密钥化哈希认证码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--hmac-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

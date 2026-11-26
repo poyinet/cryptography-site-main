@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for rsa-signature: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "rsa-signature-details",
+      "inventoryIds": [
+        "rsa-signature"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释RSA 签名方案（PKCS #1 v2.2）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of RSA Signature Schemes (PKCS #1 v2.2): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "RSA 签名方案（PKCS #1 v2.2）",
+        "en": "RSA Signature Schemes (PKCS #1 v2.2)"
+      },
+      "claimIds": [
+        "rsa-signature-r139-principle",
+        "rsa-signature-r139-why",
+        "rsa-signature-r139-used",
+        "rsa-signature-r139-broken",
+        "rsa-signature-r139-history",
+        "rsa-signature-r139-refs"
+      ],
+      "sourceIds": [
+        "rsa-signature-wikipedia",
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ],
+      "related": [
+        "algorithm--rsa",
+        "algorithm--sha2",
+        "standard-rfc8017"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：RSA 签名（RSA Signature）。文件把两套签名方案与它们各自的编码方法并列规定。§8 之后列出用于签名的编码方法：「employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.」也即 RSA 签名不是一件事而是两条路线：v1.5 那条简单确定，PSS 那条把随机盐与掩码生成函数纳入编码，再由同一份文件一并规范。",
+          "why": "为什么要引入 PSS，§9.1 直接给出可参数化的部分：「This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.」盐与掩码的存在使编码是概率性的，同一消息两次签名得到不同结果，安全性论证因此能建立在更明确的假设之上；文件把这一对比写在 PSS 与确定性方案的说明里。",
+          "used": "用法上的分工体现在编码方法与实现要求两处。编码层规定两套方法可选（EMSA-PSS 与 EMSA-PKCS1-v1_5，见 principle 段所引），实现层则在 §7.2 的对策讨论里对 v1.5 的解码提出可执行措施：原文列出的对策包括「rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5」。也即继续用 v1.5 就必须把解码检查与错误信息合并做严。",
+          "broken": "限度写在对策的存在本身：文件需要专章讨论 v1.5 解码的对策，说明该方案在实现层的失败模式是已知的（错误信息若可区分，就被用来试探密文）。其次，PSS 的安全性依赖参数选取——哈希、掩码生成函数与盐长都要定（principle/why 段所引），盐长取零一类的极端配置会把它退化成确定性方案。最后，本文件是 Informational，其规范性来自对 PKCS #1 系列的记述而不是标准机构的强度认定。",
+          "history": "版本事实按留存件印出的行复述（头部信息不进引号）：本文件是 RFC 8017、PKCS #1 v2.2、November 2016，编辑行印作 Moriarty、Kaliski 与 Rusch，类别为 Informational。文件把 v1.5 与 PSS 两条线并列收录，本身即说明这两代方案的共存是历史事实：确定性编码在先、概率性编码在后，而两者都保留在同一份规范里供实现选择。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\)。输入：输入：RSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。 预期输出：按 RSA 签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 选择大素数 p,q，计算 N=pq 与 φ(N) 2. 选 e 与 φ(N) 互素，求 d≡e^{-1} mod φ(N) 3. 加密 C=M^e mod N，解密 M=C^d mod N。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for RSA 签名. https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8017: PKCS #1: RSA Cryptography Specifications v2.2. https://www.rfc-editor.org/rfc/rfc8017",
+          "example": "**形式模型与复算步骤**\n\n\\[C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\]\n\nRSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。1.选择大素数 p,q，计算 N=pq 与 φ(N)。2.选 e 与 φ(N) 互素，求 d≡e^{-1} mod φ(N)。3.加密 C=M^e mod N，解密 M=C^d mod N。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: RSA Signature (RSA 签名). The document specifies two signature schemes with their own encoding methods, listed after §8: \"employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.\" So RSA signing is not one thing but two routes: v1.5, simple and deterministic, and PSS, which folds a random salt and a mask generation function into the encoding - both standardised by the same document.",
+          "why": "Why PSS exists is visible in what §9.1 lets you choose: \"This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.\" Salt and mask make the encoding probabilistic, so the same message signs twice to different results, and the security argument can rest on clearer assumptions - the document draws this contrast against the deterministic schemes.",
+          "used": "Use splits between encoding choice and implementation duty. The encoding layer offers EMSA-PSS and EMSA-PKCS1-v1_5 (cited in the principle claim), while the implementation layer gives concrete countermeasures for v1.5 decoding: \"rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5.\" Keeping v1.5 therefore obliges strict decode checking and merged error reporting.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The limits are legible in the countermeasures themselves: a whole discussion of v1.5 decoding is needed precisely because its implementation-level failure mode is known - distinguishable error messages become an oracle. PSS in turn depends on parameter choices (hash, mask generation function, salt length, as quoted above); extreme settings such as a zero-length salt collapse it back to a deterministic form. Finally this document is Informational: its authority describes PKCS #1 rather than conferring a standards-body strength rating.",
+          "history": "Version facts, restated from the printed lines (header furniture stays outside quotes): this is RFC 8017, PKCS #1 v2.2, November 2016, edited by Moriarty, Kaliski and Rusch, Category: Informational. That the document carries both the v1.5 and PSS lines side by side is itself the historical fact: deterministic encoding came first, probabilistic encoding later, and both remain specified here for implementations to choose between.",
+          "refs": "- Wikipedia search entry for RSA 签名. https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8017: PKCS #1: RSA Cryptography Specifications v2.2. https://www.rfc-editor.org/rfc/rfc8017",
+          "example": "**Formal model and reproduction steps**\n\n\\[C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\]\n\nRSA Signature: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "RSASSA-PKCS1-v1_5：历史悠久的确定性 RSA 签名方案。",
+          "RSASSA-PSS：带随机盐的概率性 RSA 签名方案。",
+          "EMSA-PSS：PSS 方案所用的编码方法，由哈希、掩码生成函数与盐长参数化。",
+          "EMSA-PKCS1-v1_5：v1.5 方案所用的编码方法。",
+          "salt：PSS 里为编码引入的随机值。",
+          "countermeasure：针对 v1.5 解码实现的严格一致性检查等措施。"
+        ],
+        "en": [
+          "RSASSA-PKCS1-v1_5: the older deterministic RSA signature scheme.",
+          "RSASSA-PSS: the probabilistic RSA signature scheme with a random salt.",
+          "EMSA-PSS: the encoding method for PSS, parameterised by hash, mask generation function and salt length.",
+          "EMSA-PKCS1-v1_5: the encoding method for the v1.5 scheme.",
+          "Salt: the random value introduced into the PSS encoding.",
+          "Countermeasure: e.g. rigorous conformance checking of decrypted v1.5 encodings."
+        ]
+      },
+      "figures": [
+        {
+          "id": "rsa-signature-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RSA 签名方案（PKCS #1 v2.2）：为什么需要 → 核心机制 → 边界。",
+            "en": "RSA Signature Schemes (PKCS #1 v2.2): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RSA 签名方案（PKCS #1 v2.2） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RSA Signature Schemes (PKCS #1 v2.2), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rsa-signature-details-flow.zh.svg",
+            "en": "assets/rsa-signature-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fd99878aefbe0efd3ab09b489b70da14dde83bba47fc04aa1ddce70b9b47388a",
+            "en": "35cd976be45725f2f65eb211d6d2f4f853c13300bc45681079f8d9bce36d68d4"
+          }
+        },
+        {
+          "id": "rsa-signature-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RSA 签名方案（PKCS #1 v2.2） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RSA Signature Schemes (PKCS #1 v2.2): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RSA 签名方案（PKCS #1 v2.2） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RSA Signature Schemes (PKCS #1 v2.2), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rsa-signature-details-r138-model.zh.svg",
+            "en": "assets/rsa-signature-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d6408becbf30f859cf5fc0c830df28a499ca0a976897a131a20e888e736337f6",
+            "en": "9db3e9267e4c96da1ce144fc315311222549f8d8b872f132010e4db9501d3c29"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "rsa-signature-r139-formal",
+          "entryId": "rsa-signature-details",
+          "kind": "formal-model",
+          "formula": "C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N",
+          "inputs": "输入：RSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。",
+          "expected": "按 RSA 签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "选择大素数 p,q，计算 N=pq 与 φ(N)",
+            "选 e 与 φ(N) 互素，求 d≡e^{-1} mod φ(N)",
+            "加密 C=M^e mod N，解密 M=C^d mod N"
+          ],
+          "sourceIds": [
+            "rsa-signature-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "rsa-signature-r139-formal"
+      ],
+      "sources": [
+        "rsa-signature-wikipedia",
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rsa-signature-r139-formal",
+      "entryId": "rsa-signature-details",
+      "kind": "formal-model",
+      "formula": "C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N",
+      "inputs": "输入：RSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。",
+      "expected": "按 RSA 签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "选择大素数 p,q，计算 N=pq 与 φ(N)",
+        "选 e 与 φ(N) 互素，求 d≡e^{-1} mod φ(N)",
+        "加密 C=M^e mod N，解密 M=C^d mod N"
+      ],
+      "sourceIds": [
+        "rsa-signature-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

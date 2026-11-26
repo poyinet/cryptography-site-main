@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for rng-failure: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "rng-failure-details",
+      "inventoryIds": [
+        "rng-failure"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释随机数失效的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Random Number Generator Failure: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "随机数失效",
+        "en": "Random Number Generator Failure"
+      },
+      "claimIds": [
+        "rng-failure-r139-principle",
+        "rng-failure-r139-why",
+        "rng-failure-r139-used",
+        "rng-failure-r139-broken",
+        "rng-failure-r139-history",
+        "rng-failure-r139-refs"
+      ],
+      "sourceIds": [
+        "rng-failure-wikipedia",
+        "rng-failure-reference-ref"
+      ],
+      "related": [
+        "entropy",
+        "nonce-reuse",
+        "nist"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：随机数失效（RNG Failure）。Debian DSA-1571-1 的记录是：「Luciano Bello discovered that the random number generator in Debian's openssl package is predictable.This is caused by an incorrect Debian-specific change to the openssl package (CVE-2008-0166).As a result, cryptographic key material may be guessable。」公告头部把漏洞项写作「predictable random number generator」并标注「Debian-specific: yes」，即随机性缺陷可以来自打包改动而非算法本身。",
+          "why": "SP 800-90A Rev.1 把随机性的责任放在种子上：§1 规定「The seed used to instantiate the DRBG must contain sufficient entropy to provide an assurance of randomness」，§8.6.1 要求「Entropy input shall always be used in the construction of a seed」，§8.6.3 要求熵不小于实例化的安全强度，§8.6.5 说明「A DRBG mechanism requires an approved randomness source during instantiation and reseeding」。若种子熵被削掉，确定性发生器就只会输出可预测的位串。",
+          "used": "该公告把后果写成清单：「Affected keys include SSH keys, OpenVPN keys, DNSSEC keys, and key material for use in X.509 certificates and session keys used in SSL/TLS connections.Keys generated with GnuPG or GNUTLS are not affected, though.」并强烈建议「all DSA keys ever used on affected Debian systems for signing or authentication purposes should be considered compromised; the Digital Signature Algorithm relies on a secret random value used during signature generation」。版本表给出受影响起点 0.9.8c-1（2006-09-17 进入 unstable）与修复版本 etch 0.9.8c-4etch3、sid/lenny 0.9.8g-9。",
+          "broken": "标准给出的失效处理是硬性的：§11.3 要求「A DRBG implementation shall perform self-tests to obtain assurance that the DRBG continues to operate as designed and implemented (health testing)」，§11.4.2 规定健康测试错误「shall be perceived as catastrophic DRBG failures」，一旦失败「the DRBG shall enter an error state and output an error indicator」，且「The DRBG shall not perform any instantiate, generate or reseed operations while in the error state, and pseudorandom bits shall not be output when an error state exists」。§10.1 只列 Hash_DRBG 与 HMAC_DRBG（加上 §10.2 的 CTR_DRBG 共三个机制），附录 E 说明「The Dual_EC_DRBG has been removed, and section numbers adjusted accordingly」。",
+          "history": "DSA-1571-1 由 Florian Weimer 于 2008 年 5 月 13 日发布，对应 CVE-2008-0166，缺陷范围为 2006 年 9 月进入 Debian 不稳定分支的打包改动。NIST 侧的对应演进是 Barker 与 Kelsey 的 SP 800-90A Rev.1（2015 年 6 月），该修订版移除了 Dual_EC_DRBG。两件事共同说明随机数失效既可能来自发行版的改动，也可能来自机制本身的取舍。",
+          "refs": "- Wikipedia search entry for 随机数失效. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%A4%B1%E6%95%88\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n随机数失效的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: RNG Failure (随机数失效). Debian DSA-1571-1 records that \"Luciano Bello discovered that the random number generator in Debian's openssl package is predictable. This is caused by an incorrect Debian-specific change to the openssl package (CVE-2008-0166). As a result, cryptographic key material may be guessable.\" The advisory header lists the vulnerability as a \"predictable random number generator\" and marks \"Debian-specific: yes\", showing that a randomness failure can come from packaging changes rather than from the algorithm.",
+          "why": "SP 800-90A Rev.1 puts the responsibility on the seed: §1 requires that \"The seed used to instantiate the DRBG must contain sufficient entropy to provide an assurance of randomness\", §8.6.1 that \"Entropy input shall always be used in the construction of a seed\", §8.6.3 that the entropy input equal or exceed the security strength of the instantiation, and §8.6.5 that \"A DRBG mechanism requires an approved randomness source during instantiation and reseeding\". If seed entropy is removed, a deterministic generator simply outputs predictable bits.",
+          "used": "The advisory states the consequences as a list: \"Affected keys include SSH keys, OpenVPN keys, DNSSEC keys, and key material for use in X.509 certificates and session keys used in SSL/TLS connections. Keys generated with GnuPG or GNUTLS are not affected, though.\" It also strongly recommends that \"all DSA keys ever used on affected Debian systems for signing or authentication purposes should be considered compromised; the Digital Signature Algorithm relies on a secret random value used during signature generation.\" The version table gives the first vulnerable build 0.9.8c-1 (uploaded to unstable on 2006-09-17) and the fixed builds etch 0.9.8c-4etch3 and sid/lenny 0.9.8g-9.",
+          "broken": "The standard's failure handling is mandatory: §11.3 requires that \"A DRBG implementation shall perform self-tests to obtain assurance that the DRBG continues to operate as designed and implemented (health testing)\", and §11.4.2 says errors detected during health testing \"shall be perceived as catastrophic DRBG failures\"; on failure \"the DRBG shall enter an error state and output an error indicator\", and \"The DRBG shall not perform any instantiate, generate or reseed operations while in the error state, and pseudorandom bits shall not be output when an error state exists\". Section 10.1 names Hash_DRBG and HMAC_DRBG, with CTR_DRBG in §10.2 — three mechanisms — and Appendix E records that \"The Dual_EC_DRBG has been removed, and section numbers adjusted accordingly\".",
+          "history": "DSA-1571-1, issued by Florian Weimer on 13 May 2008 for CVE-2008-0166, traces the defect to a packaging change that entered Debian's unstable distribution in September 2006. On the standards side, Barker and Kelsey's SP 800-90A Rev.1 (June 2015) removed the Dual_EC_DRBG. Together they show that generator failure can come from a distribution-level change as well as from the choice of mechanism itself.",
+          "refs": "- Wikipedia search entry for 随机数失效. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%A4%B1%E6%95%88\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nRNG Failure: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "DRBG：确定性随机比特发生器。",
+          "种子：实例化 DRBG 时混入熵的输入。",
+          "熵：衡量种子不可预测性的量。",
+          "健康测试：确认 DRBG 仍按设计运行的自检。",
+          "错误状态：健康测试失败后禁止输出的状态。",
+          "可猜测密钥材料：因随机性缺失而能被穷举复原的密钥。"
+        ],
+        "en": [
+          "DRBG: a deterministic random bit generator.",
+          "Seed: the entropy-bearing input used at instantiation.",
+          "Entropy: the measure of unpredictability in the seed.",
+          "Health test: a self-test confirming the DRBG still behaves as designed.",
+          "Error state: the state after a failed health test, with output forbidden.",
+          "Guessable key material: keys recoverable by search once randomness is lost."
+        ]
+      },
+      "figures": [
+        {
+          "id": "rng-failure-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机数失效：为什么需要 → 核心机制 → 边界。",
+            "en": "Random Number Generator Failure: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "随机数失效 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Random Number Generator Failure, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rng-failure-details-flow.zh.svg",
+            "en": "assets/rng-failure-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6cf66f2756fba46eb60836aa8461ccca1805c678c6b3b5152412b5dbac2e9570",
+            "en": "34cfdcdd16c97366701b262202fc1bf4c04263c4de08f2d61cac68751ad6c2d6"
+          }
+        },
+        {
+          "id": "rng-failure-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机数失效 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Random Number Generator Failure: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "随机数失效 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Random Number Generator Failure, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rng-failure-details-r138-model.zh.svg",
+            "en": "assets/rng-failure-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d2a35b42e44629b38d19791291dd773b0e71b51c76b70193df296acf27c04efe",
+            "en": "94d9dc836a87bc3f79f7fe2ef79c950e48a91163484b9cd9e1691d2a41a0b442"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "rng-failure-r139-formal",
+          "entryId": "rng-failure-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：随机数失效的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 随机数失效 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "rng-failure-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "rng-failure-r139-formal"
+      ],
+      "sources": [
+        "rng-failure-wikipedia",
+        "rng-failure-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rng-failure-r139-formal",
+      "entryId": "rng-failure-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：随机数失效的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 随机数失效 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "rng-failure-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

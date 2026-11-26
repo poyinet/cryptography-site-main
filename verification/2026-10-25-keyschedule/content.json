@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full key-schedule concept article only; no completion claim for AES, DES, PRESENT, TEA, RC5 or the whole library.",
+  "entries": [
+    {
+      "id": "ks-details",
+      "inventoryIds": [
+        "key-schedule"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 key-schedule 这一概念：主密钥到轮密钥的确定性转换、AES 与 DES 的两种结构、弱密钥、熵和侧信道边界，以及它与 KDF 的区别；不把 AES、DES、PRESENT、TEA、RC5 或具体算法并入本实体。",
+        "en": "Covers the key-schedule concept: deterministic master-key-to-round-key conversion, the AES and DES structures, weak keys, entropy and side-channel boundaries, and the distinction from a KDF. It does not absorb AES, DES, PRESENT, TEA, RC5 or a specific algorithm."
+      },
+      "title": {
+        "zh": "密钥扩展：从主密钥到轮密钥",
+        "en": "Key schedules: from a master key to round keys"
+      },
+      "claimIds": [
+        "key-schedule-r139-principle",
+        "key-schedule-r139-why",
+        "key-schedule-r139-used",
+        "key-schedule-r139-broken",
+        "key-schedule-r139-history",
+        "key-schedule-r139-refs"
+      ],
+      "calculationIds": [
+        "ks-calc-aes128",
+        "ks-calc-aes192-256",
+        "ks-calc-sensitivity",
+        "ks-calc-des-counts"
+      ],
+      "sourceIds": [
+        "key-schedule-wikipedia",
+        "key-schedule-standard-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "algorithm--des",
+        "present",
+        "tea",
+        "rc5"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：密钥扩展算法（Key Schedule）。密钥扩展（key schedule）是分组密码内部的一个确定性过程：它把用户提供的主密钥转换成每一轮使用的轮密钥。轮密钥的长度通常等于分组长度或分组的一部分；轮数越多，需要的轮密钥材料越多。密钥扩展不是加密，也不是密钥派生函数：它不增加熵，只把已有的主密钥材料重新排列、混合成多个子密钥。AES 的密钥扩展以 32 位字为单位。主密钥有 Nk 个字（AES-128 为 4，AES-192 为 6，AES-256 为 8），轮数 Nr = Nk + 6，因此需要 4(Nr+1) 个字：AES-128 为 44 个字、11 个轮密钥；AES-192 为 52 个字、13 个轮密钥；AES-256 为 60 个字、15 个轮密钥。每个新字由前一个字与 Nk 个字之前的字异或得到；当索引是 Nk 的倍数时，先对前一个字做 RotWord（循环移位）、SubWord（S-box 代换）并异或轮常数 Rcon。AES-256 在索引模 Nk 等于 4 时还要多做一次 SubWord。DES 的密钥扩展走另一条路线。64 位主密钥先经过 PC-1 置换，去掉 8 个奇偶校验位，留下 56 位；把它分成两个 28 位半区，按固定的移位表逐轮循环左移（每轮移 1 或 2 位），再经过 PC-2 置换，取出 48 位作为该轮子密钥。16 轮共产生 16 个 48 位子密钥，合计 768 位子密钥材料。有些密码没有独立的密钥扩展，或只在轮函数中直接使用主密钥字；它们的细节属于各自实体。不同的密钥扩展结构，决定了轮密钥之间的相关性、弱密钥的存在方式，以及实现中的侧信道暴露面。",
+          "why": "轮密钥的作用是让每一轮使用不同的密钥材料。如果每一轮都用同一个子密钥，轮函数的对称性会更强，攻击者可以利用重复结构；密钥扩展通过引入轮常数、非线性代换或移位，打破这种重复。密钥扩展也是安全边界的一部分。DES 的密钥扩展存在弱密钥和半弱密钥：弱密钥会让所有子密钥相同，半弱密钥对会让加密与对方的解密一致；DES 共有四把弱密钥和六对半弱密钥。AES 的密钥扩展用 SubWord 和 Rcon 降低了这种简单结构，但这并不构成安全证明；它仍然是公开的确定性过程，其安全性依赖主密钥的保密性和算法的整体设计，而不是留存件印出的「expansion」（扩展）一词本身。密钥扩展不是 KDF。KDF 从秘密密钥和其他数据派生一个或多个密钥，可能使用标签、上下文和迭代模式；SP 800-108 也把 KDF 的输出能力称为 key expansion，但这里说的是分组密码内部的轮密钥扩展，两者不是同一概念。分组密码的密钥扩展只是把已经选定的主密钥变成轮密钥，不负责生成主密钥，也不增加熵。把两者混为一谈，会导致错误的密钥管理设计。",
+          "used": "采用独立密钥扩展的分组密码在实现内部完成扩展，使用方通常只提供主密钥。AES 的 11、13 或 15 个轮密钥用于 Nr+1 次 AddRoundKey（初始一次，每轮一次）；DES 的 16 个 48 位子密钥用于 Feistel 轮函数。PRESENT、TEA、RC5 等密码的密钥扩展差异属于各自实体，本文只做边界说明。在实际系统中，主密钥的生成、存储、轮换和销毁属于密钥管理，不在一张分组密码的密钥扩展里。密钥扩展必须与主密钥的生命周期配合：主密钥泄露，轮密钥再复杂也无法挽救；主密钥弱，密钥扩展也不能凭空增加熵。本文用 AES 的 FIPS 197 密钥扩展作为主例，用 DES 的 PC-1/PC-2 结构作为历史对照。PRESENT、TEA、RC5 的密钥扩展差异属于各自实体，本文只做边界说明。",
+          "broken": "DES 的弱密钥会让所有子密钥相同，半弱密钥会让一对密钥互为逆运算；DES 共有四把弱密钥和六对半弱密钥。这些是密钥扩展结构的性质，不是实现错误。相关密钥攻击则利用两个相关主密钥产生的轮密钥之间的关系。密钥扩展越简单、越线性，相关密钥分析通常越容易；但这不是说复杂的密钥扩展就一定安全。### 不增加熵\n\n密钥扩展是确定性函数。主密钥只有 128 位熵，扩展出的 11 个轮密钥仍然只有 128 位总熵；轮密钥材料变多，不等于密钥空间变大。把轮密钥当成独立密钥使用，或把密钥扩展当成 KDF，会高估安全性。### 侧信道\n\n密钥扩展会访问主密钥和轮密钥。软件实现可能因缓存或计算时间产生时序差异；物理实现还可能受到故障注入；AES 软件实现中的缓存访问就是一个例子。常量时间实现、掩码和密钥隔离属于实现层。### 不是完整性保护\n\n密钥扩展不提供完整性或认证。它只把主密钥变成轮密钥；消息是否被修改、密钥是否被替换，需要模式、MAC 或 AEAD 另外处理。本文的教学实现只演示 AES-128/192/256 的密钥扩展、轮密钥计数和单字节密钥差异的扩散统计。它不生成主密钥、不做常量时间处理、不实现完整分组密码、密钥管理、协议或侧信道防护，不能用于生产环境。",
+          "history": "DES 在 1977 年生效时采用 PC-1、循环移位和 PC-2 的密钥扩展；16 轮各取一个 48 位子密钥。AES 在 2001 年标准化时采用基于字、SubWord 和 Rcon 的密钥扩展，轮常数和非线性代换使轮密钥之间的关系更复杂。后来的轻量级密码根据目标重新设计密钥扩展，说明密钥扩展不是附带的实现细节，而是分组密码设计的一部分；PRESENT、TEA、RC5 的具体结构属于各自实体。",
+          "refs": "- Wikipedia search entry for 密钥扩展算法. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E6%89%A9%E5%B1%95%E7%AE%97%E6%B3%95\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "FIPS 197 的 AES-128 示例密钥是 `2b7e151628aed2a6abf7158809cf4f3c`。扩展后：\n\n```text\n第 0 轮密钥 = 2b7e151628aed2a6abf7158809cf4f3c\n第 10 轮密钥 = d014f9a8c9ee2589e13f0cc8b6630ca6\n```\n\n共有 44 个字、11 个轮密钥；第 0 轮密钥就是主密钥本身，最后一个字是 `b6630ca6`。### AES-192 与 AES-256\n\nFIPS 197 Appendix A.2 的 AES-192 示例密钥 `8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b` 产生 52 个字、13 个轮密钥，最后一个是 `e98ba06f448c773c8ecc720401002202`。Appendix A.3 的 AES-256 示例密钥 `603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4` 产生 60 个字、15 个轮密钥，最后一个是 `fe4890d1e6188d0b046df344706c631e`。### 单字节密钥差异\n\n把 AES-128 示例密钥的最后一个字节从 `3c` 改成 `3d`，11 个轮密钥的 176 个字节中有 139 个字节发生变化。这说明密钥扩展把局部差异扩散到多轮密钥，但它不是安全性证明，也不代表差异越大就一定越安全。### DES 的计数\n\nDES 的 16 个 48 位子密钥共 768 位；PC-1 后的有效密钥是 56 位。子密钥材料比主密钥长得多，但有效密钥长度仍只有 56 位。"
+        },
+        "en": {
+          "principle": "**Term**: Key Schedule. It is registered under symmetric block ciphers. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 密钥扩展算法. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E6%89%A9%E5%B1%95%E7%AE%97%E6%B3%95\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "密钥扩展：把主密钥转换成每轮轮密钥的确定性过程。",
+          "轮密钥：每一轮使用的子密钥；AES 中为 16 字节，DES 中为 48 位。",
+          "主密钥：用户提供、由密钥管理负责生成和保护的原始密钥。",
+          "Nk：AES 主密钥包含的 32 位字数（4/6/8）。",
+          "Nr：AES 轮数，等于 Nk + 6。",
+          "RotWord：AES 密钥扩展中的 4 字节循环移位。",
+          "SubWord：AES 密钥扩展中的 S-box 代换。",
+          "Rcon：AES 密钥扩展的轮常数。",
+          "PC-1/PC-2：DES 密钥扩展的两个置换，分别去掉校验位和选出 48 位子密钥。",
+          "弱密钥：使所有子密钥相同或造成其他结构弱点的密钥。",
+          "KDF：密钥派生函数，从秘密材料派生一个或多个密钥。",
+          "熵：密钥空间的不确定性；密钥扩展不增加熵。"
+        ],
+        "en": [
+          "Key schedule: the deterministic process converting a master key into per-round round keys.",
+          "Round key: the subkey used in one round; 16 bytes in AES, 48 bits in DES.",
+          "Master key: the original key supplied by the user and managed by key management.",
+          "Nk: the number of 32-bit words in an AES master key (4/6/8).",
+          "Nr: the AES round count, equal to Nk + 6.",
+          "RotWord: the 4-byte cyclic shift in AES key expansion.",
+          "SubWord: the S-box substitution in AES key expansion.",
+          "Rcon: the AES key-expansion round constant.",
+          "PC-1/PC-2: the two DES key-schedule permutations, removing parity bits and selecting 48-bit subkeys.",
+          "Weak key: a key that makes all subkeys identical or creates another structural weakness.",
+          "KDF: a key-derivation function deriving one or more keys from secret material.",
+          "Entropy: the uncertainty of the key space; key expansion adds none."
+        ]
+      },
+      "subtopicIds": [
+        "key-schedule"
+      ],
+      "figures": [
+        {
+          "id": "ks-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥扩展：从主密钥到轮密钥：为什么需要 → 核心机制 → 边界。",
+            "en": "Key schedules: from a master key to round keys: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密钥扩展：从主密钥到轮密钥 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Key schedules: from a master key to round keys, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ks-details-flow.zh.svg",
+            "en": "assets/ks-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "11719e2727baa3ea943ab3beed6e25305585e8b4044c9689da34d34fd7dfef2f",
+            "en": "c47d98dbb87f46a0b9adafb7ebaca66a01f9485e94092a74720f7b82b627871e"
+          }
+        }
+      ],
+      "sources": [
+        "key-schedule-wikipedia",
+        "key-schedule-standard-ref"
+      ],
+      "calculations": [
+        {
+          "id": "ks-calc-aes128",
+          "entryId": "ks-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "FIPS 197 Appendix A.1 AES-128 example key 2b7e151628aed2a6abf7158809cf4f3c",
+          "expected": "44 words and 11 round keys; round key 0 equals the master key, round key 10 is d014f9a8c9ee2589e13f0cc8b6630ca6 and the last word is b6630ca6",
+          "sourceIds": [
+            "key-schedule-wikipedia"
+          ],
+          "dependencies": [
+            "ks-teaching.mjs"
+          ],
+          "limitations": "One official example key; it does not establish behavior for every 128-bit key."
+        },
+        {
+          "id": "ks-calc-aes192-256",
+          "entryId": "ks-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "FIPS 197 Appendix A.2 key 8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b and Appendix A.3 key 603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4",
+          "expected": "AES-192 produces 52 words and 13 round keys ending in e98ba06f448c773c8ecc720401002202; AES-256 produces 60 words and 15 round keys ending in fe4890d1e6188d0b046df344706c631e",
+          "sourceIds": [
+            "key-schedule-wikipedia"
+          ],
+          "dependencies": [
+            "ks-teaching.mjs"
+          ],
+          "limitations": "Two official example keys; the shared routine is exercised at all three AES key lengths only through these fixed examples."
+        },
+        {
+          "id": "ks-calc-sensitivity",
+          "entryId": "ks-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The AES-128 example key with its last byte changed from 3c to 3d",
+          "expected": "139 of the 176 bytes across the eleven round keys differ from the original schedule",
+          "sourceIds": [
+            "key-schedule-wikipedia"
+          ],
+          "dependencies": [
+            "ks-teaching.mjs"
+          ],
+          "limitations": "One fixed key and a one-byte change; this is a diffusion observation, not a security proof or a differential probability."
+        },
+        {
+          "id": "ks-calc-des-counts",
+          "entryId": "ks-details",
+          "kind": "arithmetic-from-standard-check",
+          "inputs": "FIPS 46-3 key schedule: a 64-bit key, PC-1, sixteen rounds and PC-2",
+          "expected": "PC-1 removes eight parity bits and leaves 56 effective key bits; sixteen 48-bit subkeys total 768 bits",
+          "sourceIds": [
+            "key-schedule-wikipedia"
+          ],
+          "dependencies": [],
+          "limitations": "Arithmetic from the standard only; no DES implementation, weak-key enumeration or subkey-value check is performed in this batch."
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ks-calc-aes128",
+      "entryId": "ks-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "FIPS 197 Appendix A.1 AES-128 example key 2b7e151628aed2a6abf7158809cf4f3c",
+      "expected": "44 words and 11 round keys; round key 0 equals the master key, round key 10 is d014f9a8c9ee2589e13f0cc8b6630ca6 and the last word is b6630ca6",
+      "sourceIds": [
+        "key-schedule-wikipedia"
+      ],
+      "dependencies": [
+        "ks-teaching.mjs"
+      ],
+      "limitations": "One official example key; it does not establish behavior for every 128-bit key."
+    },
+    {
+      "id": "ks-calc-aes192-256",
+      "entryId": "ks-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "FIPS 197 Appendix A.2 key 8e73b0f7da0e6452c810f32b809079e562f8ead2522c6b7b and Appendix A.3 key 603deb1015ca71be2b73aef0857d77811f352c073b6108d72d9810a30914dff4",
+      "expected": "AES-192 produces 52 words and 13 round keys ending in e98ba06f448c773c8ecc720401002202; AES-256 produces 60 words and 15 round keys ending in fe4890d1e6188d0b046df344706c631e",
+      "sourceIds": [
+        "key-schedule-wikipedia"
+      ],
+      "dependencies": [
+        "ks-teaching.mjs"
+      ],
+      "limitations": "Two official example keys; the shared routine is exercised at all three AES key lengths only through these fixed examples."
+    },
+    {
+      "id": "ks-calc-sensitivity",
+      "entryId": "ks-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The AES-128 example key with its last byte changed from 3c to 3d",
+      "expected": "139 of the 176 bytes across the eleven round keys differ from the original schedule",
+      "sourceIds": [
+        "key-schedule-wikipedia"
+      ],
+      "dependencies": [
+        "ks-teaching.mjs"
+      ],
+      "limitations": "One fixed key and a one-byte change; this is a diffusion observation, not a security proof or a differential probability."
+    },
+    {
+      "id": "ks-calc-des-counts",
+      "entryId": "ks-details",
+      "kind": "arithmetic-from-standard-check",
+      "inputs": "FIPS 46-3 key schedule: a 64-bit key, PC-1, sixteen rounds and PC-2",
+      "expected": "PC-1 removes eight parity bits and leaves 56 effective key bits; sixteen 48-bit subkeys total 768 bits",
+      "sourceIds": [
+        "key-schedule-wikipedia"
+      ],
+      "dependencies": [],
+      "limitations": "Arithmetic from the standard only; no DES implementation, weak-key enumeration or subkey-value check is performed in this batch."
+    }
+  ]
+}

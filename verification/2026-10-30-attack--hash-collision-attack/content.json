@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-30",
+  "scope": "Compact attack-model article for attack--hash-collision-attack: definition, role, boundaries and source attribution. It does not duplicate a cipher algorithm or protocol entity.",
+  "entries": [
+    {
+      "id": "attack--hash-collision-attack-details",
+      "inventoryIds": [
+        "attack--hash-collision-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 哈希碰撞攻击 这一攻击模型：定义、作用、边界和来源；不复制具体密码算法或协议实体。",
+        "en": "A compact definition of the attack model Hash Collision Attack: definition, role, boundaries and source attribution; it does not duplicate a cipher algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "哈希碰撞攻击",
+        "en": "Hash Collision Attack"
+      },
+      "claimIds": [
+        "attack--hash-collision-attack-r139-principle",
+        "attack--hash-collision-attack-r139-why",
+        "attack--hash-collision-attack-r139-used",
+        "attack--hash-collision-attack-r139-broken",
+        "attack--hash-collision-attack-r139-history",
+        "attack--hash-collision-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--hash-collision-attack-wikipedia",
+        "attack--hash-collision-attack-reference-ref"
+      ],
+      "related": [
+        "attack--birthday-attack",
+        "cryptographic-hash",
+        "sha1"
+      ],
+      "relatedPolicy": "Related entries are separate concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：哈希碰撞攻击（Hash Collision Attack）。哈希碰撞攻击寻找两个不同输入，使哈希值相同。",
+          "why": "碰撞会破坏签名或完整性绑定，因为同一哈希可对应两个消息。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "碰撞攻击用于评估哈希函数的碰撞阻力。",
+          "broken": "碰撞攻击不等于原像攻击；抗碰撞性不保证原像阻力/单向性。",
+          "history": "HAC 第 9 章讨论生日攻击和碰撞阻力。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「哈希碰撞攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\)。输入：输入：哈希碰撞攻击的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。 预期输出：按 哈希碰撞攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 计算查询对数 2. 代入生日界 3. 与目标碰撞概率比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 哈希碰撞攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 哈希碰撞攻击 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。\n\n**来源、版本与复现**\n\n哈希碰撞攻击的结论必须绑定具体版本：标准号、草案/正式版、实现版本、测试向量来源。复现记录要写运行环境与字节级输出；只写“通过”不写参数，无法复核。\n\n**复杂度与安全目标**\n\n评估 哈希碰撞攻击 时不只看单次运算，还要看密钥/状态规模、轮数、随机数质量、敌手模型与侧信道暴露。算法层的安全目标不能自动变成协议层或实现层的安全结论。\n\n**失败条件**\n\n参数越界、版本混用、错误填充、缺少认证和实现时序差异，都会让 哈希碰撞攻击 的“标准结论”失效。正文只在有来源支持时写具体常量；没有来源的测试值不补写。",
+          "refs": "- Wikipedia search entry for 哈希碰撞攻击. https://zh.wikipedia.org/w/index.php?search=%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\n哈希碰撞攻击的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。1.计算查询对数。2.代入生日界。3.与目标碰撞概率比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Hash Collision Attack (哈希碰撞攻击). A hash collision attack finds two distinct inputs that hash to the same value.",
+          "why": "A collision breaks signature or integrity binding because one hash can correspond to two messages.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "Collision attacks are used to assess a hash function’s collision resistance.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "A collision attack is not the same as a preimage attack; collision resistance does not guarantee preimage resistance/one-wayness.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "HAC Chapter 9 discusses birthday attacks and collision resistance.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 哈希碰撞攻击. https://zh.wikipedia.org/w/index.php?search=%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\nHash Collision Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "哈希碰撞攻击",
+          "碰撞",
+          "抗碰撞性",
+          "原像",
+          "哈希函数",
+          "生日攻击"
+        ],
+        "en": [
+          "Hash collision attack",
+          "Collision",
+          "Collision resistance",
+          "Preimage",
+          "Hash function",
+          "Birthday attack"
+        ]
+      },
+      "subtopicIds": [
+        "hash-collision-attack"
+      ],
+      "figures": [
+        {
+          "id": "attack--hash-collision-attack-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "哈希碰撞攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Hash Collision Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "哈希碰撞攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Hash Collision Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--hash-collision-attack-details-flow.zh.svg",
+            "en": "assets/attack--hash-collision-attack-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "da5c12cee3505a27a97b27077dc206012a7c3fe40bf0b7d41ec424dc7b163032",
+            "en": "1dd37ee13c401fcc41895dd8bcc28a2d304c2b4c2553b6aeb1969a04410f359a"
+          }
+        },
+        {
+          "id": "attack--hash-collision-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "哈希碰撞攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Hash Collision Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "哈希碰撞攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Hash Collision Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--hash-collision-attack-details-r138-model.zh.svg",
+            "en": "assets/attack--hash-collision-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4c2a05886822b83964aeaf30dc76086b0e7a4203a70174884ed27fed98782594",
+            "en": "d416544e0eb768b639b3bf26fec6b3281324d69a2c2a4c08673172b9e4757f70"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--hash-collision-attack-r139-formal",
+          "entryId": "attack--hash-collision-attack-details",
+          "kind": "formal-model",
+          "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+          "inputs": "输入：哈希碰撞攻击的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+          "expected": "按 哈希碰撞攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "计算查询对数",
+            "代入生日界",
+            "与目标碰撞概率比较"
+          ],
+          "sourceIds": [
+            "attack--hash-collision-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--hash-collision-attack-r139-formal"
+      ],
+      "sources": [
+        "attack--hash-collision-attack-wikipedia",
+        "attack--hash-collision-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--hash-collision-attack-r139-formal",
+      "entryId": "attack--hash-collision-attack-details",
+      "kind": "formal-model",
+      "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+      "inputs": "输入：哈希碰撞攻击的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+      "expected": "按 哈希碰撞攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "计算查询对数",
+        "代入生日界",
+        "与目标碰撞概率比较"
+      ],
+      "sourceIds": [
+        "attack--hash-collision-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

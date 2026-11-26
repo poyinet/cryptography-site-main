@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition reviewed dossier for em-analysis-details.",
+  "entries": [
+    {
+      "id": "em-analysis-details",
+      "inventoryIds": [
+        "em-analysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R117 隐写分析、侧信道、流密码、交互证明与签名定义批次：把“电磁分析”从目录深度条目改写为含机制陈述、符号公式、参数/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R117 steganalysis, side-channel, stream-cipher, interactive-proof and signature-definition batch: rewrote \"Electromagnetic Analysis\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, parameters/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "电磁分析",
+        "en": "Electromagnetic Analysis"
+      },
+      "claimIds": [
+        "em-analysis-r139-principle",
+        "em-analysis-r139-why",
+        "em-analysis-r139-used",
+        "em-analysis-r139-broken",
+        "em-analysis-r139-history",
+        "em-analysis-r139-refs"
+      ],
+      "sourceIds": [
+        "em-analysis-wikipedia",
+        "em-analysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "side-channel-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "em-analysis-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "电磁分析机制图：芯片/探头、泄漏轨迹、候选密钥的中间值模型，以及 DPA/CPA 统计与防护边界。",
+            "en": "EM analysis mechanism: chip and probe, leakage trace, intermediate-value model for key guesses, and DPA/CPA statistics with protection limits."
+          },
+          "alt": {
+            "zh": "左侧芯片与近场探头产生轨迹，中间是汉明重量模型与候选密钥表，右侧是差分/相关峰值，底部列出掩码与屏蔽等边界。",
+            "en": "A chip and near-field probe produce a trace on the left, a Hamming-weight model and key-guess table sit in the middle, differential/correlation peaks on the right, and masking/shielding limits below."
+          },
+          "files": {
+            "zh": "assets/em-analysis-details-mechanism.zh.svg",
+            "en": "assets/em-analysis-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "8dedc8683910d7b1160e81861b11bd9b8ae7a28f305978b0de90943411782dce",
+            "en": "ffc1be3d0c160f56927d7fa4c8b6c7acf903c0b67f148ac853c80209b5af08d1"
+          }
+        },
+        {
+          "id": "em-analysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "电磁分析 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Electromagnetic Analysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "电磁分析 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Electromagnetic Analysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/em-analysis-details-r138-model.zh.svg",
+            "en": "assets/em-analysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "14a68cbe3454a1bee44cfb38e3ccd3056e671aa7e5dc523495b54beae5f8109c",
+            "en": "a4b6c288761b11f6c0a67f31128959a0bc5a67afc74794b314fd7016870470e4"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：电磁分析（Electromagnetic Analysis）。### 电磁泄漏的物理入口\n\nCMOS 门在翻转时产生瞬态电流，芯片互连与封装附近形成随运算变化的电磁场。把探头放在解码器、寄存器或总线附近，用示波器采样，就得到一条与时间对齐的电磁轨迹。简化泄漏模型可写成\n\nL(t) = a·HW(v(t)) + b + n(t)，\n\n其中 a 是增益，HW 是中间值的汉明重量，b 是静态偏移，n 是噪声。这个模型不是芯片的完整物理仿真，而是攻击者用来排序密钥假设的近似。### 从轨迹到密钥假设\n\n对每个候选密钥 k，计算目标中间值 v_k(t) 的泄漏模型 H_k(t)，再把它与实际轨迹 L(t) 比较。DPA 比较猜测位为 0/1 的两组轨迹均值差：\n\nΔ(t) = E[L(t) | b=0] - E[L(t) | b=1]。CPA 计算 Pearson 相关系数：\n\nρ(t,k) = Cov(L(t), H_k(t)) / √(Var L(t) · Var H_k(t))。正确密钥在某个时刻给出稳定极值；错误假设的峰值随轨迹数增加而消退。### 为什么叫“分析”而不是“读取”\n\n电磁探头拾取的是多个模块叠加的近场，必须通过时间对齐、触发、降噪和多次平均把目标运算分离出来。它不直接给出密钥比特，而是把物理泄漏转成可检验的统计假设；轨迹数量、信噪比和探头位置决定能否恢复。",
+          "why": "电磁分析和功率分析共享同一类统计核心：选择中间值、建立泄漏模型、按假设分组、比较均值或相关系数。区别在传感器与空间选择性：电磁探头可以靠近局部模块，减少无关电路的叠加，也可能绕开某些封装内的屏蔽。### 为什么防护不能只靠算法\n\n算法层面的掩码、隐藏和常量时间只能降低数据相关泄漏；探头、封装、供电和时钟仍可能把剩余泄漏带出来。评估必须同时看算法实现、物理封装和采集条件。### 对设备设计的含义\n\n智能卡、HSM、TEE、MCU 和硬件钱包都要把侧信道纳入威胁模型。设计者应做泄漏评估，而不只是功能测试；只看“算法是 AES-256”不能推出“设备抗电磁分析”。",
+          "used": "1.确定目标运算与中间值，例如 AES 首轮 S 盒输出、RSA 模幂的中间字或 ECC 标量乘的分支。2.固定探头位置，使用外部触发对齐每一次运算；记录多条轨迹和对应输入。3.做去噪、对齐和异常轨迹剔除；估计信噪比与所需轨迹量级。4.对候选密钥计算 DPA 差分或 CPA 相关系数，按峰值排序；对排序靠前的候选做二次验证。5.用已知密钥的测试芯片校准流程，再对目标设备采集；报告要区分“实验室条件”与“远程/非接触条件”。### 典型目标\n\nAES/DES 的 S 盒、RSA 的模幂、ECC 的标量乘、KEM 的解码和硬件钱包的助记词派生，都是常见的电磁泄漏目标。",
+          "broken": "1.掩码：秘密被拆成随机份额，单点轨迹与中间值的相关性被削弱；高阶分析需要更多轨迹和更复杂的模型。2.隐藏：随机延迟、时钟抖动、双轨逻辑、噪声注入和恒定电流逻辑降低对齐与信噪比。3.物理防护：屏蔽、封装内滤波、探头难以接近、设备距离增加。4.实现差异：异步电路、低功耗工艺和强噪声可能让简化汉明模型失效。5.采集条件：触发不稳、轨迹未对齐、探头位置偏移会直接破坏统计。6.授权与证据：没有实验室设备和合法授权，不能把“理论可行”写成“已在实际设备上复现”。电磁分析可以恢复密钥，但不保证对所有设备、所有实现都成功；一次成功也不等于通用攻击工具。报告必须给出设备、探头、轨迹数、信噪比和验证密钥。",
+          "history": "2001 年，Quisquater 与 Samyde 系统提出电磁分析（EMA）及其对策；同年 Gandolfi、Mourtel 与 Olivier 在三种 CMOS 芯片上对 DES、COMP128 和 RSA 做实验，报告了完整密钥材料的恢复。此后 DEMA、CPA、模板攻击和高阶分析逐步成为侧信道评估的标准工具。现代安全芯片把屏蔽、掩码、随机延迟和传感器放在一起；评估从“能否恢复一个密钥”转向“在给定轨迹预算和泄漏模型下还剩多少优势”。这也是为什么侧信道评估必须和具体设备的物理封装一起报告。",
+          "refs": "- Wikipedia search entry for 电磁分析. https://zh.wikipedia.org/w/index.php?search=%E7%94%B5%E7%A3%81%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n电磁分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Electromagnetic Analysis (电磁分析). ### The physical entry point of EM leakage\n\nA CMOS gate draws a transient current when it switches, and the interconnect and package radiate an electromagnetic field that varies with the operation. Place a probe near a decoder, register or bus and sample it with an oscilloscope; the result is an EM trace aligned to time. A simplified leakage model is\n\nL(t) = a·HW(v(t)) + b + n(t),\n\nwhere a is the gain, HW is the Hamming weight of the intermediate value, b is a static offset and n is noise. This is not a full physical simulation of the chip; it is the approximation an attacker uses to rank key hypotheses. ### From traces to key hypotheses\n\nFor each key guess k, compute the model H_k(t) of the target intermediate value v_k(t), then compare it with the observed trace L(t). DPA compares the mean difference between the groups whose guessed bit is 0 and 1:\n\nΔ(t) = E[L(t) | b=0] - E[L(t) | b=1]. CPA computes the Pearson correlation:\n\nρ(t,k) = Cov(L(t), H_k(t)) / √(Var L(t) · Var H_k(t)). The correct key produces a stable extremum at some time; peaks from wrong hypotheses fade as more traces are added. ### Why it is “analysis”, not “reading”\n\nAn EM probe picks up a near field that superposes several modules, so time alignment, triggering, denoising and averaging are needed to isolate the target operation. It does not directly reveal key bits; it turns physical leakage into a testable statistical hypothesis. Trace count, SNR and probe position determine whether recovery works.",
+          "why": "EM and power analysis share the same statistical core: choose an intermediate value, build a leakage model, partition traces by hypothesis, and compare means or correlations. The difference is the sensor and spatial selectivity: an EM probe can sit near a local module, reduce unrelated circuit contributions, and sometimes bypass shielding inside a package.\n\nAlgorithm-level masking, hiding and constant-time code can reduce data-dependent leakage, but the probe, package, supply and clock can still carry residual leakage. An evaluation must consider the algorithm implementation, the physical package and the acquisition conditions together.\n\nSmart cards, HSMs, TEEs, MCUs and hardware wallets all need side-channel threats in their models. Designers should run leakage evaluations, not just functional tests; “the algorithm is AES-256” does not imply “the device resists EM analysis”.",
+          "used": "1. Choose the target operation and intermediate value, such as the first-round AES S-box output, an RSA modexp word, or an ECC scalar-multiplication branch. 2. Fix the probe position and use an external trigger to align each operation; record many traces with their inputs. 3. Denoise, align and reject outlier traces; estimate SNR and the required trace count. 4. Compute DPA differences or CPA correlations for key guesses, rank the peaks, and re-test the top candidates. 5. Calibrate on a test chip with a known key, then acquire from the target; the report must separate laboratory conditions from remote or non-contact conditions.\n\nAES/DES S-boxes, RSA modexp, ECC scalar multiplication, KEM decoding and hardware-wallet mnemonic derivation are common EM leakage targets.",
+          "broken": "1. Masking: the secret is split into random shares, weakening the correlation between a single trace point and the intermediate value; higher-order analysis needs more traces and a more complex model. 2. Hiding: random delays, clock jitter, dual-rail logic, noise injection and constant-current logic reduce alignment and SNR. 3. Physical protection: shielding, in-package filtering, difficult probe access and increased distance. 4. Implementation differences: asynchronous circuits, low-power processes and strong noise can invalidate a simple Hamming model. 5. Acquisition conditions: unstable triggering, unaligned traces or a shifted probe directly destroy the statistics. 6. Authorisation and evidence: without laboratory equipment and lawful authorisation, “theoretically possible” must not be written as “reproduced on a real device”.\n\nEM analysis can recover keys, but it does not guarantee success on every device or implementation; one success is not a universal attack tool. A report must state the device, probe, trace count, SNR and verification key.",
+          "history": "In 2001 Quisquater and Samyde systematised electromagnetic analysis (EMA) and its countermeasures; in the same year Gandolfi, Mourtel and Olivier experimented on three CMOS chips running DES, COMP128 and RSA, and reported recovery of complete key material. DEMA, CPA, template attacks and higher-order analysis later became standard tools of side-channel evaluation.\n\nModern secure chips combine shielding, masking, random delays and sensors; evaluation has moved from “can one key be recovered” to “how much advantage remains under a given trace budget and leakage model”. This is why a side-channel evaluation must be reported together with the device’s physical package.",
+          "refs": "- Wikipedia search entry for 电磁分析. https://zh.wikipedia.org/w/index.php?search=%E7%94%B5%E7%A3%81%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nElectromagnetic Analysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "em-analysis-r139-formal",
+          "entryId": "em-analysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：电磁分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 电磁分析 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "em-analysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "em-analysis-r139-formal"
+      ],
+      "sources": [
+        "em-analysis-wikipedia",
+        "em-analysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "em-analysis-r139-formal",
+      "entryId": "em-analysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：电磁分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 电磁分析 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "em-analysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

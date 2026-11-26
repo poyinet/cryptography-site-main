@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--forward-inverse-attack-details",
+  "sources": [
+    {
+      "id": "attack--forward-inverse-attack-wikipedia",
+      "title": "Wikipedia search entry for 正反向中间相遇攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 正反向中间相遇攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--forward-inverse-attack-r139-principle",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：正反向中间相遇攻击（Forward–Inverse Meet-in-the-Middle Attack）。### 组合加密与中间状态\n\n设分组密码 E 的密钥空间为 {0,1}^k，双密钥双重加密写作 C=E_{K2}(E_{K1}(P))。正反向攻击不枚举 2^{2k} 个密钥对，而是从明文端和密文端各枚举 2^k 个单密钥，把中间状态当作相遇点。### 正向表与反向扫描\n\n固定一个已知明密文对 (P,C)。正向计算 X=E_{K1}(P)，把 (X,K1) 存入表 T；反向计算 Y=D_{K2}(C)，在 T 中查 Y。若 X=Y，则 (K1,K2) 是候选密钥对；再用第二个明密文对验证，过滤误报。### 复杂度\n\n表大小 M=2^k，正向与反向各约 2^k 次分组运算，总时间 T≈2^{k+1}。对双 DES（k=56）约为 2^57 次运算、2^56 个中间状态。若分组长为 n，误报数约为 2^{2k−n}；第二个明密文对把误报压到可忽略。",
+            "en": "**Attack**: Forward–Inverse Meet-in-the-Middle Attack (正反向中间相遇攻击).### Composition and the middle state\n\nLet a block cipher E have key space {0,1}^k."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--forward-inverse-attack-r139-why",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "单靠双重加密把密钥空间从 2^k 扩到 2^{2k}，但中间相遇把搜索拆成两个 2^k 的表。它说明“密钥长度相加”不等于“安全强度相加”，是评估多重加密、密钥分离和分组长度的重要反例。",
+            "en": "### Why it is separate\n\nDouble encryption alone expands the key space from 2^k to 2^{2k}, but meet-in-the-middle splits the search into two 2^k tables.It shows that adding key lengths is not the same as adding security, and it is a key counterexample for multiple encryption, key separation and block-size choices."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--forward-inverse-attack-r139-used",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.确认适用条件：已知一个明密文对；加密可分解为两个独立密钥的串联；中间状态空间足够小以建表。2.建表：正向枚举 K1，存 X 与 K1。3.扫描：反向枚举 K2，查 Y。4.过滤：用第二个明密文对验证候选。5.评估：记录时间 2^{k+1}、内存 2^k 和误报率 2^{2k−n}。### 不能怎么用\n\n不能把“时间 2^{k+1}”单独当作实际可执行复杂度；不能忽略 2^k 个中间状态的存储与访问成本；不能把双 DES 的结果直接套到三重 DES、AES 或带密钥绑定的组合加密。",
+            "en": "### Correct use\n\n1.Check the conditions: one known plaintext–ciphertext pair; encryption decomposes into two independent-key stages; the middle space is small enough to store."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--forward-inverse-attack-r139-broken",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.内存瓶颈：2^56 个状态在现实设备上仍然巨大；时间-内存权衡（区分点、彩虹表）会改变参数。2.误报与唯一性：仅一个明密文对会产生大量候选；第二个对或冗余位用于过滤。3.密钥独立性：若 K1、K2 由同一主密钥派生或有代数关系，攻击可进一步降复杂度；若三重加密使用三个独立密钥，简单双向相遇不直接适用。4.分组长度：误报率 2^{2k−n} 随 n 变化；短分组更易误报。",
+            "en": "### Failure conditions\n\n1.Memory: 2^56 states remain enormous on real equipment; time–memory trade-offs (distinguished points, rainbow tables) change the parameters."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--forward-inverse-attack-r139-history",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Diffie 与 Hellman 1977 年在评估 DES 密钥搜索时提出时间-内存折衷；Merkle 与 Hellman 1981 年把“中间相遇”明确用于双重加密，指出 112 位双密钥可用约 2^56 次运算和 2^56 个字攻破。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### Historical location\n\nDiffie and Hellman proposed the time–memory trade-off in their 1977 assessment of DES key search.Merkle and Hellman made the meet-in-the-middle attack explicit for double encryption in 1981, showing that a 112-bit two-key double encryption can be broken with about 2^56 operations and 2^56 words."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--forward-inverse-attack-r139-refs",
+          "entryId": "attack--forward-inverse-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 正反向中间相遇攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 正反向中间相遇攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--forward-inverse-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--forward-inverse-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--forward-inverse-attack-r139-principle",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：正反向中间相遇攻击（Forward–Inverse Meet-in-the-Middle Attack）。### 组合加密与中间状态\n\n设分组密码 E 的密钥空间为 {0,1}^k，双密钥双重加密写作 C=E_{K2}(E_{K1}(P))。正反向攻击不枚举 2^{2k} 个密钥对，而是从明文端和密文端各枚举 2^k 个单密钥，把中间状态当作相遇点。### 正向表与反向扫描\n\n固定一个已知明密文对 (P,C)。正向计算 X=E_{K1}(P)，把 (X,K1) 存入表 T；反向计算 Y=D_{K2}(C)，在 T 中查 Y。若 X=Y，则 (K1,K2) 是候选密钥对；再用第二个明密文对验证，过滤误报。### 复杂度\n\n表大小 M=2^k，正向与反向各约 2^k 次分组运算，总时间 T≈2^{k+1}。对双 DES（k=56）约为 2^57 次运算、2^56 个中间状态。若分组长为 n，误报数约为 2^{2k−n}；第二个明密文对把误报压到可忽略。",
+        "en": "**Attack**: Forward–Inverse Meet-in-the-Middle Attack (正反向中间相遇攻击).### Composition and the middle state\n\nLet a block cipher E have key space {0,1}^k."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-r139-why",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "单靠双重加密把密钥空间从 2^k 扩到 2^{2k}，但中间相遇把搜索拆成两个 2^k 的表。它说明“密钥长度相加”不等于“安全强度相加”，是评估多重加密、密钥分离和分组长度的重要反例。",
+        "en": "### Why it is separate\n\nDouble encryption alone expands the key space from 2^k to 2^{2k}, but meet-in-the-middle splits the search into two 2^k tables.It shows that adding key lengths is not the same as adding security, and it is a key counterexample for multiple encryption, key separation and block-size choices."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-r139-used",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.确认适用条件：已知一个明密文对；加密可分解为两个独立密钥的串联；中间状态空间足够小以建表。2.建表：正向枚举 K1，存 X 与 K1。3.扫描：反向枚举 K2，查 Y。4.过滤：用第二个明密文对验证候选。5.评估：记录时间 2^{k+1}、内存 2^k 和误报率 2^{2k−n}。### 不能怎么用\n\n不能把“时间 2^{k+1}”单独当作实际可执行复杂度；不能忽略 2^k 个中间状态的存储与访问成本；不能把双 DES 的结果直接套到三重 DES、AES 或带密钥绑定的组合加密。",
+        "en": "### Correct use\n\n1.Check the conditions: one known plaintext–ciphertext pair; encryption decomposes into two independent-key stages; the middle space is small enough to store."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-r139-broken",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.内存瓶颈：2^56 个状态在现实设备上仍然巨大；时间-内存权衡（区分点、彩虹表）会改变参数。2.误报与唯一性：仅一个明密文对会产生大量候选；第二个对或冗余位用于过滤。3.密钥独立性：若 K1、K2 由同一主密钥派生或有代数关系，攻击可进一步降复杂度；若三重加密使用三个独立密钥，简单双向相遇不直接适用。4.分组长度：误报率 2^{2k−n} 随 n 变化；短分组更易误报。",
+        "en": "### Failure conditions\n\n1.Memory: 2^56 states remain enormous on real equipment; time–memory trade-offs (distinguished points, rainbow tables) change the parameters."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-r139-history",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Diffie 与 Hellman 1977 年在评估 DES 密钥搜索时提出时间-内存折衷；Merkle 与 Hellman 1981 年把“中间相遇”明确用于双重加密，指出 112 位双密钥可用约 2^56 次运算和 2^56 个字攻破。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### Historical location\n\nDiffie and Hellman proposed the time–memory trade-off in their 1977 assessment of DES key search.Merkle and Hellman made the meet-in-the-middle attack explicit for double encryption in 1981, showing that a 112-bit two-key double encryption can be broken with about 2^56 operations and 2^56 words."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--forward-inverse-attack-r139-refs",
+      "entryId": "attack--forward-inverse-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 正反向中间相遇攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 正反向中间相遇攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

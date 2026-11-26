@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "nonce-reuse-details",
+  "sources": [
+    {
+      "id": "nonce-reuse-wikipedia",
+      "title": "Wikipedia search entry for nonce 复用",
+      "url": "https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: nonce 复用",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "nonce-reuse-r139-principle",
+          "entryId": "nonce-reuse-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：nonce 复用（Nonce Reuse）。nonce（初始化向量）是每次加密调用使用的值；在同一密钥下，GCM 要求 IV 唯一，重复概率不得超过 2^-32。nonce 复用指同一密钥和同一 IV 被用于两组不同输入。",
+            "en": "**Attack**: Nonce Reuse (nonce 复用).A nonce (initialization vector) is a value used for an encryption invocation; under one key, GCM requires IV uniqueness with a repetition probability no greater than 2^-32."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        },
+        {
+          "id": "nonce-reuse-r139-why",
+          "entryId": "nonce-reuse-details",
+          "section": "why",
+          "statement": {
+            "zh": "GCM 的机密性和认证都依赖 IV 的唯一性；标准要求同一密钥下重复 IV 的概率不超过 2^-32，并称即使一次重复也可能导致伪造攻击。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "GCM confidentiality and authentication both depend on IV uniqueness.The standard requires the probability of repeating an IV under one key to be no greater than 2^-32, and notes that even one repetition can enable forgery attacks."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        },
+        {
+          "id": "nonce-reuse-r139-used",
+          "entryId": "nonce-reuse-details",
+          "section": "used",
+          "statement": {
+            "zh": "GCM 允许确定性 IV（固定字段加调用字段）或 RBG 构造；96 位以下的 IV 必须使用确定性构造。确定性构造常用计数器，RBG 构造要求随机字段至少 96 位，并对非 96 位确定性 IV 或 RBG 构造限制每密钥调用次数。",
+            "en": "GCM allows either a deterministic IV construction (fixed field plus invocation field) or an RBG-based construction; IVs shorter than 96 bits must use the deterministic construction.Deterministic construction commonly uses a counter, while the RBG construction requires a random field of at least 96 bits and imposes invocation limits for non-96-bit deterministic IVs and RBG-based IVs."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        },
+        {
+          "id": "nonce-reuse-r139-broken",
+          "entryId": "nonce-reuse-details",
+          "section": "broken",
+          "statement": {
+            "zh": "nonce 复用会使 GCM 的认证保证实质失效，并可能让攻击者构造与所选明文等长的伪造密文；防御包括唯一计数器、足够随机的 nonce，以及对非 96 位确定性 IV 或 RBG 构造遵守 2^32 次调用上限。### 形式模型。",
+            "en": "Nonce reuse essentially destroys GCM’s authentication assurance and may let an attacker construct forged ciphertexts for a desired plaintext of the same length.Defenses include unique counters, sufficiently random nonces, and respecting the 2^32 invocation limit for non-96-bit deterministic IVs or RBG-based IVs."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        },
+        {
+          "id": "nonce-reuse-r139-history",
+          "entryId": "nonce-reuse-details",
+          "section": "history",
+          "statement": {
+            "zh": "NIST SP 800-38D 在 2007 年标准化 GCM/GMAC，并指出在确保 IV 唯一性之前不应部署 GCM。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「nonce 复用」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：nonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 nonce 复用 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "NIST SP 800-38D standardized GCM and GMAC in 2007 and states that GCM should not be deployed unless IV uniqueness is ensured.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        },
+        {
+          "id": "nonce-reuse-r139-refs",
+          "entryId": "nonce-reuse-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for nonce 复用.https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for nonce 复用.https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "nonce-reuse-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "nonce-reuse-wikipedia"
+      ]
+    },
+    {
+      "id": "nonce-reuse-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "nonce-reuse-r139-principle",
+      "entryId": "nonce-reuse-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：nonce 复用（Nonce Reuse）。nonce（初始化向量）是每次加密调用使用的值；在同一密钥下，GCM 要求 IV 唯一，重复概率不得超过 2^-32。nonce 复用指同一密钥和同一 IV 被用于两组不同输入。",
+        "en": "**Attack**: Nonce Reuse (nonce 复用).A nonce (initialization vector) is a value used for an encryption invocation; under one key, GCM requires IV uniqueness with a repetition probability no greater than 2^-32."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    },
+    {
+      "id": "nonce-reuse-r139-why",
+      "entryId": "nonce-reuse-details",
+      "section": "why",
+      "statement": {
+        "zh": "GCM 的机密性和认证都依赖 IV 的唯一性；标准要求同一密钥下重复 IV 的概率不超过 2^-32，并称即使一次重复也可能导致伪造攻击。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "GCM confidentiality and authentication both depend on IV uniqueness.The standard requires the probability of repeating an IV under one key to be no greater than 2^-32, and notes that even one repetition can enable forgery attacks."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    },
+    {
+      "id": "nonce-reuse-r139-used",
+      "entryId": "nonce-reuse-details",
+      "section": "used",
+      "statement": {
+        "zh": "GCM 允许确定性 IV（固定字段加调用字段）或 RBG 构造；96 位以下的 IV 必须使用确定性构造。确定性构造常用计数器，RBG 构造要求随机字段至少 96 位，并对非 96 位确定性 IV 或 RBG 构造限制每密钥调用次数。",
+        "en": "GCM allows either a deterministic IV construction (fixed field plus invocation field) or an RBG-based construction; IVs shorter than 96 bits must use the deterministic construction.Deterministic construction commonly uses a counter, while the RBG construction requires a random field of at least 96 bits and imposes invocation limits for non-96-bit deterministic IVs and RBG-based IVs."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    },
+    {
+      "id": "nonce-reuse-r139-broken",
+      "entryId": "nonce-reuse-details",
+      "section": "broken",
+      "statement": {
+        "zh": "nonce 复用会使 GCM 的认证保证实质失效，并可能让攻击者构造与所选明文等长的伪造密文；防御包括唯一计数器、足够随机的 nonce，以及对非 96 位确定性 IV 或 RBG 构造遵守 2^32 次调用上限。### 形式模型。",
+        "en": "Nonce reuse essentially destroys GCM’s authentication assurance and may let an attacker construct forged ciphertexts for a desired plaintext of the same length.Defenses include unique counters, sufficiently random nonces, and respecting the 2^32 invocation limit for non-96-bit deterministic IVs or RBG-based IVs."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    },
+    {
+      "id": "nonce-reuse-r139-history",
+      "entryId": "nonce-reuse-details",
+      "section": "history",
+      "statement": {
+        "zh": "NIST SP 800-38D 在 2007 年标准化 GCM/GMAC，并指出在确保 IV 唯一性之前不应部署 GCM。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「nonce 复用」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：nonce 复用的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 nonce 复用 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "NIST SP 800-38D standardized GCM and GMAC in 2007 and states that GCM should not be deployed unless IV uniqueness is ensured.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    },
+    {
+      "id": "nonce-reuse-r139-refs",
+      "entryId": "nonce-reuse-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for nonce 复用.https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for nonce 复用.https://zh.wikipedia.org/w/index.php?search=nonce%20%E5%A4%8D%E7%94%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "nonce-reuse-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

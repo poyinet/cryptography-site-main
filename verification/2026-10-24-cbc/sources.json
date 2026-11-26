@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cbc-details",
+  "sources": [
+    {
+      "id": "cipher-block-chaining-wikipedia",
+      "title": "Wikipedia search entry for CBC 分组模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CBC%20%E5%88%86%E7%BB%84%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CBC 分组模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cipher-block-chaining-r139-principle",
+          "entryId": "cbc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：CBC 分组模式（Cipher Block Chaining (CBC)）。CBC（Cipher Block Chaining，密文分组链接）把明文切成固定长度的块，并在加密每个块之前，先把前一个密文块与当前明文块异或。第一个块没有前一个密文块，因此使用初始化向量 IV 作为起始链接值：\n\n```text\nC_1 = E_K(P_1 xor IV)\nC_i = E_K(P_i xor C_{i-1})   (i >= 2)\n```\n\n```text\nP_1 = D_K(C_1) xor IV\nP_i = D_K(C_i) xor C_{i-1}   (i >= 2)\n```\n\n加密必须按顺序进行，因为 C_i 依赖 C_{i-1}；解密可以并行，因为每个 P_i 只依赖 C_i、C_{i-1} 和 IV。IV 不需要保密，但必须不可预测。可预测的 IV 会让攻击者判断两个消息的首块是否相同，或进行选择明文区分。CBC 定义在完整的块序列上。SP 800-38A 在 Appendix A 给出填充方法（例如 trailing bit complement），但不强制某一种应用层填充格式；具体选择属于协议或格式层。本文的教学实现采用 CMS 的填充规则：在末尾补 1 到块长个字节，每个字节的值等于补入的字节数。这样，16 字节的整数倍消息也会增加一个完整填充块，解密时才能无歧义地去掉填充。CBC 不改变底层分组密码的块大小或密钥长度。它只是把同一个 E_K 或 D_K 按链接规则重复使用。",
+            "en": "**Term**: Cipher Block Chaining (CBC).It is registered under symmetric block ciphers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        },
+        {
+          "id": "cipher-block-chaining-r139-why",
+          "entryId": "cbc-details",
+          "section": "why",
+          "statement": {
+            "zh": "ECB 对相同明文块产生相同密文块，会泄露重复结构。CBC 通过链接把位置信息混入每个块，使相同明文块在不同位置通常得到不同密文块，从而隐藏这种直接重复。这使 CBC 成为最早被广泛标准化的机密性模式之一。但 CBC 只提供机密性，不提供完整性。它既不能发现密文被修改，也不能发现填充被伪造；这些性质必须由协议层的 MAC 或 AEAD 提供。以为用了 CBC 就等于消息未被篡改，是模式层最常见的误解。CBC 的安全高度依赖两个工程细节：IV 如何产生，以及填充错误如何报告。算法公式正确，但 IV 可预测或错误信息可区分，仍然会导致实际攻击。理解 CBC 的价值，主要在于理解这两个边界。",
+            "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        },
+        {
+          "id": "cipher-block-chaining-r139-used",
+          "entryId": "cbc-details",
+          "section": "used",
+          "statement": {
+            "zh": "CBC 是通用的机密性模式，适用于需要把任意长度数据分成块处理的存储和传输场景。SP 800-38A 面向「Federal agencies and non-government organizations」（联邦机构与非政府组织）的敏感信息保护，CBC 是其中定义的模式之一。CMS（Cryptographic Message Syntax）的内容加密流程使用这种块填充（可用于 CBC 等块模式）：加密前把内容补到块长的整数倍，填充字节的值等于补入字节数。这个规则使接收方可以在解密后检查并去除填充；它也意味着填充有效性本身是一个可被观察的信号。TLS 1.3 只保留 AEAD 套件，因此 CBC 不属于 TLS 1.3 的套件集合。较早的协议是否使用 CBC、如何使用 CBC，必须按各协议自己的版本和配置判断，CBC 是标准模式，推不出某个协议仍应使用 CBC。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        },
+        {
+          "id": "cipher-block-chaining-r139-broken",
+          "entryId": "cbc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 可预测 IV\n\nCBC 的 IV 不需要保密，但必须不可预测。如果攻击者能预测下一个 IV，就可以构造明文，使首块加密结果与目标相等，从而判断目标首块的内容；这类选择明文区分 attack 针对的是 IV 生成，而不是 AES 本身。### 位翻转与可延展性\n\nCBC 解密把 D_K(C_i) 与 C_{i-1} 异或。修改 C_i 会不可预测地破坏 P_i，但会让 P_{i+1} 的同一比特发生可预测翻转；修改 IV 则会可预测地翻转 P_1 的对应比特。攻击者不需要密钥就能对明文做受控修改，因此 CBC 的机密性不等于完整性。### 填充 oracle\n\n如果解密端对填充有效和填充无效给出可区分的行为（不同的错误消息、不同的响应时间或不同的连接状态），攻击者就可以利用这个侧信道，逐字节恢复明文或伪造密文。Vaudenay 在 2002 年系统化了这类 padding oracle 攻击；修复方式不是换一个填充值，而是认证密文并在验证失败时统一拒绝。### 无完整性\n\nCBC 本身没有认证标签。需要完整性时，必须外加 MAC（并正确处理加密与认证的顺序），或直接使用 AEAD。仅依赖 CBC 的协议必须自行定义重放防护、错误处理和密钥分离。CBC 不改变块大小。使用 64 位块的分组密码时，大量数据下密文块碰撞会变得可观：约 2^32 个块（32 GiB）时，生日碰撞概率已接近 39%。这不是 CBC 公式的缺陷，而是 64 位块在高数据量下的固有边界；使用 128 位块的分组密码可以把这个边界推远。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        },
+        {
+          "id": "cipher-block-chaining-r139-history",
+          "entryId": "cbc-details",
+          "section": "history",
+          "statement": {
+            "zh": "1980 年，FIPS 81 为 DES 定义了 CBC 模式，使分组密码可以处理超过一个块的消息。2001 年，NIST SP 800-38A 把 CBC 推广到通用分组密码，并给出 AES 测试向量和 IV 要求。CBC 的长期使用也暴露了模式层的工程问题：IV 可预测、填充错误可区分、密文可延展。这些问题的共同点是，算法公式没有错，错的是模式与协议的交界处。后来的 AEAD 模式把机密性和完整性合并，TLS 1.3 也转向只使用 AEAD 套件。这段历史说明，CBC 不是过时的错误，而是一个边界清晰的基础模式：在正确使用 IV、填充和认证的前提下，它可以提供机密性；把这些前提省略，就会把模式的性质变成攻击面。",
+            "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        },
+        {
+          "id": "cipher-block-chaining-r139-refs",
+          "entryId": "cbc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CBC 分组模式.https://zh.wikipedia.org/w/index.php?search=CBC%20%E5%88%86%E7%BB%84%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+            "en": "- Wikipedia search entry for CBC 分组模式.https://zh.wikipedia.org/w/index.php?search=CBC%20%E5%88%86%E7%BB%84%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cipher-block-chaining-standard-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cipher-block-chaining-wikipedia"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cipher-block-chaining-r139-principle",
+      "entryId": "cbc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：CBC 分组模式（Cipher Block Chaining (CBC)）。CBC（Cipher Block Chaining，密文分组链接）把明文切成固定长度的块，并在加密每个块之前，先把前一个密文块与当前明文块异或。第一个块没有前一个密文块，因此使用初始化向量 IV 作为起始链接值：\n\n```text\nC_1 = E_K(P_1 xor IV)\nC_i = E_K(P_i xor C_{i-1})   (i >= 2)\n```\n\n```text\nP_1 = D_K(C_1) xor IV\nP_i = D_K(C_i) xor C_{i-1}   (i >= 2)\n```\n\n加密必须按顺序进行，因为 C_i 依赖 C_{i-1}；解密可以并行，因为每个 P_i 只依赖 C_i、C_{i-1} 和 IV。IV 不需要保密，但必须不可预测。可预测的 IV 会让攻击者判断两个消息的首块是否相同，或进行选择明文区分。CBC 定义在完整的块序列上。SP 800-38A 在 Appendix A 给出填充方法（例如 trailing bit complement），但不强制某一种应用层填充格式；具体选择属于协议或格式层。本文的教学实现采用 CMS 的填充规则：在末尾补 1 到块长个字节，每个字节的值等于补入的字节数。这样，16 字节的整数倍消息也会增加一个完整填充块，解密时才能无歧义地去掉填充。CBC 不改变底层分组密码的块大小或密钥长度。它只是把同一个 E_K 或 D_K 按链接规则重复使用。",
+        "en": "**Term**: Cipher Block Chaining (CBC).It is registered under symmetric block ciphers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-r139-why",
+      "entryId": "cbc-details",
+      "section": "why",
+      "statement": {
+        "zh": "ECB 对相同明文块产生相同密文块，会泄露重复结构。CBC 通过链接把位置信息混入每个块，使相同明文块在不同位置通常得到不同密文块，从而隐藏这种直接重复。这使 CBC 成为最早被广泛标准化的机密性模式之一。但 CBC 只提供机密性，不提供完整性。它既不能发现密文被修改，也不能发现填充被伪造；这些性质必须由协议层的 MAC 或 AEAD 提供。以为用了 CBC 就等于消息未被篡改，是模式层最常见的误解。CBC 的安全高度依赖两个工程细节：IV 如何产生，以及填充错误如何报告。算法公式正确，但 IV 可预测或错误信息可区分，仍然会导致实际攻击。理解 CBC 的价值，主要在于理解这两个边界。",
+        "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-r139-used",
+      "entryId": "cbc-details",
+      "section": "used",
+      "statement": {
+        "zh": "CBC 是通用的机密性模式，适用于需要把任意长度数据分成块处理的存储和传输场景。SP 800-38A 面向「Federal agencies and non-government organizations」（联邦机构与非政府组织）的敏感信息保护，CBC 是其中定义的模式之一。CMS（Cryptographic Message Syntax）的内容加密流程使用这种块填充（可用于 CBC 等块模式）：加密前把内容补到块长的整数倍，填充字节的值等于补入字节数。这个规则使接收方可以在解密后检查并去除填充；它也意味着填充有效性本身是一个可被观察的信号。TLS 1.3 只保留 AEAD 套件，因此 CBC 不属于 TLS 1.3 的套件集合。较早的协议是否使用 CBC、如何使用 CBC，必须按各协议自己的版本和配置判断，CBC 是标准模式，推不出某个协议仍应使用 CBC。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-r139-broken",
+      "entryId": "cbc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 可预测 IV\n\nCBC 的 IV 不需要保密，但必须不可预测。如果攻击者能预测下一个 IV，就可以构造明文，使首块加密结果与目标相等，从而判断目标首块的内容；这类选择明文区分 attack 针对的是 IV 生成，而不是 AES 本身。### 位翻转与可延展性\n\nCBC 解密把 D_K(C_i) 与 C_{i-1} 异或。修改 C_i 会不可预测地破坏 P_i，但会让 P_{i+1} 的同一比特发生可预测翻转；修改 IV 则会可预测地翻转 P_1 的对应比特。攻击者不需要密钥就能对明文做受控修改，因此 CBC 的机密性不等于完整性。### 填充 oracle\n\n如果解密端对填充有效和填充无效给出可区分的行为（不同的错误消息、不同的响应时间或不同的连接状态），攻击者就可以利用这个侧信道，逐字节恢复明文或伪造密文。Vaudenay 在 2002 年系统化了这类 padding oracle 攻击；修复方式不是换一个填充值，而是认证密文并在验证失败时统一拒绝。### 无完整性\n\nCBC 本身没有认证标签。需要完整性时，必须外加 MAC（并正确处理加密与认证的顺序），或直接使用 AEAD。仅依赖 CBC 的协议必须自行定义重放防护、错误处理和密钥分离。CBC 不改变块大小。使用 64 位块的分组密码时，大量数据下密文块碰撞会变得可观：约 2^32 个块（32 GiB）时，生日碰撞概率已接近 39%。这不是 CBC 公式的缺陷，而是 64 位块在高数据量下的固有边界；使用 128 位块的分组密码可以把这个边界推远。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-r139-history",
+      "entryId": "cbc-details",
+      "section": "history",
+      "statement": {
+        "zh": "1980 年，FIPS 81 为 DES 定义了 CBC 模式，使分组密码可以处理超过一个块的消息。2001 年，NIST SP 800-38A 把 CBC 推广到通用分组密码，并给出 AES 测试向量和 IV 要求。CBC 的长期使用也暴露了模式层的工程问题：IV 可预测、填充错误可区分、密文可延展。这些问题的共同点是，算法公式没有错，错的是模式与协议的交界处。后来的 AEAD 模式把机密性和完整性合并，TLS 1.3 也转向只使用 AEAD 套件。这段历史说明，CBC 不是过时的错误，而是一个边界清晰的基础模式：在正确使用 IV、填充和认证的前提下，它可以提供机密性；把这些前提省略，就会把模式的性质变成攻击面。",
+        "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    },
+    {
+      "id": "cipher-block-chaining-r139-refs",
+      "entryId": "cbc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CBC 分组模式.https://zh.wikipedia.org/w/index.php?search=CBC%20%E5%88%86%E7%BB%84%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+        "en": "- Wikipedia search entry for CBC 分组模式.https://zh.wikipedia.org/w/index.php?search=CBC%20%E5%88%86%E7%BB%84%E6%A8%A1%E5%BC%8F\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cipher-block-chaining-standard-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

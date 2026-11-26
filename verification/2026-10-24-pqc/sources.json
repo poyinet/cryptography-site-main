@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "pqc-details",
+  "sources": [
+    {
+      "id": "post-quantum-cryptography-wikipedia",
+      "title": "Wikipedia search entry for 后量子密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 后量子密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "post-quantum-cryptography-r139-principle",
+          "entryId": "pqc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：后量子密码（Post-Quantum Cryptography）。后量子密码（post-quantum cryptography, PQC）研究能在今天的普通计算机上运行、并以抵抗经典和量子攻击为目标的公钥密码方案。`后量子`描述的是对手能力假设，不表示运行时需要量子计算机，也不是利用量子物理传输密钥的量子密钥分发（QKD）。威胁模型的核心是 Shor 算法：在足够大、容错的量子计算机上，它可以在多项式时间内求解整数分解和离散对数，从而攻击 RSA、有限域 Diffie–Hellman/DSA、椭圆曲线 Diffie–Hellman/ECDSA 等依赖这些问题的公钥系统。Grover 算法对无结构搜索给出平方级加速：经典穷举需要约 N 次查询，量子搜索约需 √N 次。它不会像 Shor 那样多项式时间破解公钥问题，但会降低对称密钥穷举的有效安全级别，因此迁移时也要评估 AES 等对称构件的参数。PQC 不是单一算法，而是若干任务和算法家族的集合。最重要的两类任务是：\n\n- 密钥封装机制（KEM）：双方在公开信道上建立一个共享秘密，之后交给对称密码使用。ML-KEM 是 NIST 标准化的 KEM。- 数字签名：生成和验证签名，提供完整性与来源认证，并可支持不可否认性。ML-DSA 和 SLH-DSA 是 NIST 标准化的签名方案。按数学结构，常见家族包括格基（ML-KEM、ML-DSA）、哈希基（SLH-DSA）、编码基（HQC）等。不同家族的安全假设、密钥和签名大小、实现特征不同，不能用一个`量子加密`名称混在一起。",
+            "en": "**Term**: Post-Quantum Cryptography.It is registered under post-quantum cryptography."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        },
+        {
+          "id": "post-quantum-cryptography-r139-why",
+          "entryId": "pqc-details",
+          "section": "why",
+          "statement": {
+            "zh": "迁移的紧迫性不只来自某天量子计算机出现，还来自数据的保存期限。NIST IR 8547 明确描述“harvest now, decrypt later”（现在收集、以后解密）威胁：对手今天收集加密数据，等量子技术成熟后再解密。长期保密的数据、长期运行的系统和长期信任的根证书，不能等到量子计算机可用时才开始迁移。PQC 也迫使组织重新审视`密码敏捷性`（crypto agility）：密码算法、参数、协议和证书链需要能够替换，而不是把某个算法硬编码进不可升级的设备。NIST IR 8105 在 2016 年就把密码敏捷性列为迁移的关键挑战。标准已经可以使用，但标准发布不等于所有产品已完成迁移。NIST 明确说这三种标准“can and should be put into use now”，同时 NIST IR 8547（最终版，2026 年 10 月）给出分阶段的弃用和移除时间表。组织需要先盘点密码使用位置，再按风险安排迁移。",
+            "en": "It is listed because it connects concrete records, objects or procedures in post-quantum cryptography, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        },
+        {
+          "id": "post-quantum-cryptography-r139-used",
+          "entryId": "pqc-details",
+          "section": "used",
+          "statement": {
+            "zh": "KEM 的典型用途是建立会话密钥：TLS、SSH、VPN 和消息协议需要在公开信道上协商共享秘密。PQC 迁移可以把 ML-KEM 与经典密钥交换组合成混合方案：只要其中一个组件仍然安全，会话密钥就不应被完全攻破。混合方案需要明确的密钥派生、协议编码和身份认证，不能只是把两个共享秘密拼接起来。NCCoE 的迁移项目把 TLS、SSH 等协议的互操作与性能作为独立工作流，说明协议层集成不是换一个算法名称就能完成。数字签名用于软件更新、固件、证书、代码签名和文档签名，并可支持不可否认性。ML-DSA-44 的公钥是 1312 字节、签名是 2420 字节；ML-DSA-87 的公钥是 2592 字节、签名是 4627 字节。SLH-DSA 的签名从 7856 字节到 49856 字节不等，但其公钥只有 32、48 或 64 字节。影响证书链、握手和存储开销的主要是较大的签名和 ML-DSA 密钥；SLH-DSA 的小公钥不能抵消其大签名。SLH-DSA 的`小签名`参数集签名较小但签名慢，`快签名`参数集签名快但签名更大。选择参数集是工程取舍，不是`越大越安全`的单一排序。NIST 还在推进其他方案，而它的 PQC 项目页上有两句话必须分开引用。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        },
+        {
+          "id": "post-quantum-cryptography-r139-broken",
+          "entryId": "pqc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### `后量子`不等于`已证明安全`\n\nPQC 方案的安全性建立在困难问题假设上。ML-KEM 依赖 MLWE，ML-DSA 依赖 MLWE 和 MSIS 变体，SLH-DSA 依赖哈希函数的安全性。FIPS 203/204 使用“believed”而不是proven；FIPS 205 把安全性建立在 SPHINCS+ 的哈希假设上。密码分析可能在未来削弱某个参数集，迁移计划需要保留密码敏捷性和备份方案。即使参数正确，ML-KEM 的解封装仍有极小的失败概率：FIPS 203 表 1 给出约 2⁻¹³⁸·⁸、2⁻¹⁶⁴·⁸、2⁻¹⁷⁴·⁸，分别对应 512、768、1024。它不是零，也不等于可被实际利用，但实现和协议必须按规范处理失败路径。### 实现安全仍是独立问题\n\nFIPS 203 的公告明确说「conformance to this standard does not ensure that a particular implementation is secure」；实现者仍需负责安全设计。侧信道、故障注入、随机数质量、密钥清零、内存访问模式和协议集成都可能失败。标准一致性测试不等于实现认证，更不等于部署安全。### 参数和协议容易出错\n\nML-KEM 的封装密钥、密文和共享秘密有固定长度；输入检查、解封装失败处理和密钥派生都有规范要求。在满足 K′=K、保密等条件时，FIPS 203 允许把 32 字节共享秘密直接作为对称密钥；若需要进一步派生，应按规范使用 KDF。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        },
+        {
+          "id": "post-quantum-cryptography-r139-history",
+          "entryId": "pqc-details",
+          "section": "history",
+          "statement": {
+            "zh": "1994 年，Peter Shor 发表「Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer」，给出量子计算机上的多项式时间算法；1996 年，Lov Grover 提出无结构搜索的平方级加速算法。这两项结果奠定了`量子威胁`和`后量子密码`的问题框架。2016 年，NIST 启动后量子密码标准化征集。经过多轮评估，NIST 在 2022 年宣布首批选定算法，并在 2024 年 8 月 13 日发布 FIPS 203、204、205。2025 年 3 月 11 日的 CSRC 新闻标题是「HQC Announced as a 4th Round Selection」，正文说第四轮评估之后「NIST has selected HQC for standardization」，并且「HQC will be the second PQC key-encapsulation mechanism (KEM), following ML-KEM」——文件写的是 KEM 的先后，没有写 HQC 替 ML-KEM 兜底。",
+            "en": "Registered period: Post-quantum Era.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        },
+        {
+          "id": "post-quantum-cryptography-r139-refs",
+          "entryId": "pqc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 后量子密码.https://zh.wikipedia.org/w/index.php?search=%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+            "en": "- Wikipedia search entry for 后量子密码.https://zh.wikipedia.org/w/index.php?search=%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "post-quantum-cryptography-standard-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "post-quantum-cryptography-wikipedia"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "post-quantum-cryptography-r139-principle",
+      "entryId": "pqc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：后量子密码（Post-Quantum Cryptography）。后量子密码（post-quantum cryptography, PQC）研究能在今天的普通计算机上运行、并以抵抗经典和量子攻击为目标的公钥密码方案。`后量子`描述的是对手能力假设，不表示运行时需要量子计算机，也不是利用量子物理传输密钥的量子密钥分发（QKD）。威胁模型的核心是 Shor 算法：在足够大、容错的量子计算机上，它可以在多项式时间内求解整数分解和离散对数，从而攻击 RSA、有限域 Diffie–Hellman/DSA、椭圆曲线 Diffie–Hellman/ECDSA 等依赖这些问题的公钥系统。Grover 算法对无结构搜索给出平方级加速：经典穷举需要约 N 次查询，量子搜索约需 √N 次。它不会像 Shor 那样多项式时间破解公钥问题，但会降低对称密钥穷举的有效安全级别，因此迁移时也要评估 AES 等对称构件的参数。PQC 不是单一算法，而是若干任务和算法家族的集合。最重要的两类任务是：\n\n- 密钥封装机制（KEM）：双方在公开信道上建立一个共享秘密，之后交给对称密码使用。ML-KEM 是 NIST 标准化的 KEM。- 数字签名：生成和验证签名，提供完整性与来源认证，并可支持不可否认性。ML-DSA 和 SLH-DSA 是 NIST 标准化的签名方案。按数学结构，常见家族包括格基（ML-KEM、ML-DSA）、哈希基（SLH-DSA）、编码基（HQC）等。不同家族的安全假设、密钥和签名大小、实现特征不同，不能用一个`量子加密`名称混在一起。",
+        "en": "**Term**: Post-Quantum Cryptography.It is registered under post-quantum cryptography."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-r139-why",
+      "entryId": "pqc-details",
+      "section": "why",
+      "statement": {
+        "zh": "迁移的紧迫性不只来自某天量子计算机出现，还来自数据的保存期限。NIST IR 8547 明确描述“harvest now, decrypt later”（现在收集、以后解密）威胁：对手今天收集加密数据，等量子技术成熟后再解密。长期保密的数据、长期运行的系统和长期信任的根证书，不能等到量子计算机可用时才开始迁移。PQC 也迫使组织重新审视`密码敏捷性`（crypto agility）：密码算法、参数、协议和证书链需要能够替换，而不是把某个算法硬编码进不可升级的设备。NIST IR 8105 在 2016 年就把密码敏捷性列为迁移的关键挑战。标准已经可以使用，但标准发布不等于所有产品已完成迁移。NIST 明确说这三种标准“can and should be put into use now”，同时 NIST IR 8547（最终版，2026 年 10 月）给出分阶段的弃用和移除时间表。组织需要先盘点密码使用位置，再按风险安排迁移。",
+        "en": "It is listed because it connects concrete records, objects or procedures in post-quantum cryptography, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-r139-used",
+      "entryId": "pqc-details",
+      "section": "used",
+      "statement": {
+        "zh": "KEM 的典型用途是建立会话密钥：TLS、SSH、VPN 和消息协议需要在公开信道上协商共享秘密。PQC 迁移可以把 ML-KEM 与经典密钥交换组合成混合方案：只要其中一个组件仍然安全，会话密钥就不应被完全攻破。混合方案需要明确的密钥派生、协议编码和身份认证，不能只是把两个共享秘密拼接起来。NCCoE 的迁移项目把 TLS、SSH 等协议的互操作与性能作为独立工作流，说明协议层集成不是换一个算法名称就能完成。数字签名用于软件更新、固件、证书、代码签名和文档签名，并可支持不可否认性。ML-DSA-44 的公钥是 1312 字节、签名是 2420 字节；ML-DSA-87 的公钥是 2592 字节、签名是 4627 字节。SLH-DSA 的签名从 7856 字节到 49856 字节不等，但其公钥只有 32、48 或 64 字节。影响证书链、握手和存储开销的主要是较大的签名和 ML-DSA 密钥；SLH-DSA 的小公钥不能抵消其大签名。SLH-DSA 的`小签名`参数集签名较小但签名慢，`快签名`参数集签名快但签名更大。选择参数集是工程取舍，不是`越大越安全`的单一排序。NIST 还在推进其他方案，而它的 PQC 项目页上有两句话必须分开引用。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-r139-broken",
+      "entryId": "pqc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### `后量子`不等于`已证明安全`\n\nPQC 方案的安全性建立在困难问题假设上。ML-KEM 依赖 MLWE，ML-DSA 依赖 MLWE 和 MSIS 变体，SLH-DSA 依赖哈希函数的安全性。FIPS 203/204 使用“believed”而不是proven；FIPS 205 把安全性建立在 SPHINCS+ 的哈希假设上。密码分析可能在未来削弱某个参数集，迁移计划需要保留密码敏捷性和备份方案。即使参数正确，ML-KEM 的解封装仍有极小的失败概率：FIPS 203 表 1 给出约 2⁻¹³⁸·⁸、2⁻¹⁶⁴·⁸、2⁻¹⁷⁴·⁸，分别对应 512、768、1024。它不是零，也不等于可被实际利用，但实现和协议必须按规范处理失败路径。### 实现安全仍是独立问题\n\nFIPS 203 的公告明确说「conformance to this standard does not ensure that a particular implementation is secure」；实现者仍需负责安全设计。侧信道、故障注入、随机数质量、密钥清零、内存访问模式和协议集成都可能失败。标准一致性测试不等于实现认证，更不等于部署安全。### 参数和协议容易出错\n\nML-KEM 的封装密钥、密文和共享秘密有固定长度；输入检查、解封装失败处理和密钥派生都有规范要求。在满足 K′=K、保密等条件时，FIPS 203 允许把 32 字节共享秘密直接作为对称密钥；若需要进一步派生，应按规范使用 KDF。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-r139-history",
+      "entryId": "pqc-details",
+      "section": "history",
+      "statement": {
+        "zh": "1994 年，Peter Shor 发表「Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer」，给出量子计算机上的多项式时间算法；1996 年，Lov Grover 提出无结构搜索的平方级加速算法。这两项结果奠定了`量子威胁`和`后量子密码`的问题框架。2016 年，NIST 启动后量子密码标准化征集。经过多轮评估，NIST 在 2022 年宣布首批选定算法，并在 2024 年 8 月 13 日发布 FIPS 203、204、205。2025 年 3 月 11 日的 CSRC 新闻标题是「HQC Announced as a 4th Round Selection」，正文说第四轮评估之后「NIST has selected HQC for standardization」，并且「HQC will be the second PQC key-encapsulation mechanism (KEM), following ML-KEM」——文件写的是 KEM 的先后，没有写 HQC 替 ML-KEM 兜底。",
+        "en": "Registered period: Post-quantum Era.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    },
+    {
+      "id": "post-quantum-cryptography-r139-refs",
+      "entryId": "pqc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 后量子密码.https://zh.wikipedia.org/w/index.php?search=%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+        "en": "- Wikipedia search entry for 后量子密码.https://zh.wikipedia.org/w/index.php?search=%E5%90%8E%E9%87%8F%E5%AD%90%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "post-quantum-cryptography-standard-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

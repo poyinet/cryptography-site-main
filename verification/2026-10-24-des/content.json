@@ -1,0 +1,415 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "Full DES algorithm article only; no completion claim for TDEA/3DES, Feistel networks, modes of operation, AES, DES events/standards or the whole library.",
+  "entries": [
+    {
+      "id": "des-details",
+      "inventoryIds": [
+        "algorithm--des"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 algorithm--des 这一算法的分组结构、密钥调度、公开标准历史、穷举与密码分析边界；不把 3DES/TDEA、Feistel 网络、工作模式、AES 或相关事件/标准并入本实体。",
+        "en": "Covers the algorithm recorded as algorithm--des: block structure, key schedule, public-standard history, exhaustion and cryptanalysis limits. It does not absorb TDEA/3DES, Feistel networks, modes of operation, AES, or related events and standards."
+      },
+      "title": {
+        "zh": "DES：从公开标准到被穷举的分组密码",
+        "en": "DES: from public standard to an exhaustible block cipher"
+      },
+      "claimIds": [
+        "algorithm--des-r139-principle",
+        "algorithm--des-r139-why",
+        "algorithm--des-r139-used",
+        "algorithm--des-r139-broken",
+        "algorithm--des-r139-history",
+        "algorithm--des-r139-refs"
+      ],
+      "calculationIds": [
+        "des-known-answer",
+        "des-key-schedule",
+        "des-exhaustion-bound",
+        "des-weak-keys",
+        "des-complement",
+        "des-sbox-rows",
+        "des-ip-fp-inverse",
+        "algorithm--des-r139-formal"
+      ],
+      "sourceIds": [
+        "algorithm--des-wikipedia",
+        "algorithm--des-reference-ref"
+      ],
+      "related": [
+        "algorithm--3des",
+        "feistel-network",
+        "event-des-1977",
+        "fips46-3",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：DES 数据加密标准（Data Encryption Standard）。DES（Data Encryption Standard，数据加密标准）是一种对称分组密码。它把 64 位明文块变换成 64 位密文块，使用一个 64 位密钥，其中 56 位参与算法，另外 8 位是奇偶校验位。密钥相同的收发双方可以加密和解密；算法本身公开，保密性取决于密钥——源文的原话是「depends on the secrecy of the」key。DES 的核心是 16 轮 Feistel 结构。先把 64 位输入经过初始置换 IP，分成左右各 32 位，记作 L₀ 和 R₀。第 i 轮的变换是：\n\n`R_i = L_{i−1} ⊕ f(R_{i−1}, K_i)`\n\n其中 K_i 是第 i 轮的 48 位子密钥。16 轮结束后，把左右两半交换，再经过逆初始置换 FP，得到密文。FP 是 IP 的逆置换：先 IP 再 FP 会回到原块。轮函数 f 做四件事：源文说它「expands the 32-bit right half to 48 bits」（把 32 位右半块扩展成 48 位），用的正是扩展置换 E；与 48 位子密钥异或；把结果切成 8 个 6 位组，分别送入 8 个 S 盒，每个 S 盒输出 4 位，共 32 位；最后用置换 P 重排这 32 位。S 盒是 DES 唯一的非线性部分，也是差分和线性密码分析的主要研究对象。子密钥由密钥调度生成。64 位密钥先经过 PC-1 置换，去掉 8 个校验位，留下 56 位；分成两个 28 位半区，按固定的移位表逐轮循环左移，再经过 PC-2 置换，每次取出 48 位作为该轮子密钥。16 轮共产生 16 个 48 位子密钥，合计 768 位子密钥材料。解密使用同一套硬件或代码：把 16 个子密钥按相反顺序使用即可。Feistel 结构保证每一轮都可逆，即使轮函数 f 本身不是一一映射；这是它相对 SPN 的一个工程特点。",
+          "why": "DES 是美国联邦政府早期公开发布的对称加密标准，面向非机密政府与商业数据。在它之前，强密码学主要属于军事和情报机构；DES 把算法细节、测试向量和实现要求放到公开标准中，使银行、厂商和大学可以共同实现和评估。它因此成为现代分组密码工程和公开密码分析的起点之一。DES 也把`标准生命周期`具体化：一个算法可以被广泛部署、反复确认，仍然会因为密钥空间和计算能力的变化而退出。NIST 的历史回顾指出，DES 原本预计的使用寿命约为 15 年，实际却在联邦遗留系统中使用了数十年，直到 2005 年才退出。它带动了配套生态：工作模式标准、消息认证、密钥管理、硬件加速和测试验证都围绕 DES 发展。FIPS 81 定义了 ECB、CBC、CFB、OFB 四种工作模式；这些模式后来被其他分组密码继承。理解 DES 也是理解 AES 设计取舍、3DES 过渡，以及分组长度与密钥长度这两类安全问题的基础。",
+          "used": "DES 的典型部署包括政府敏感但非机密的数据、金融交易和较早的网络协议。NIST 历史记载，DES 被 ANSI 采纳为 X3.92 数据加密算法，用于保护金融信息；在零售银行中，DES 保护银行卡交易的个人识别码（PIN）。它也被 ISO 采纳为 DEA-1，并广泛出现在当时的软硬件密码产品中。DES 通常不单独使用，而是放在工作模式里。ECB 模式对每个 64 位块独立加密，相同的明文块产生相同的密文块；CBC 模式把前一个密文块与当前明文块异或，隐藏重复模式，但需要初始向量和正确的填充处理；CFB 和 OFB 把分组密码变成流式生成器。模式解决的是`如何使用分组密码`，不能弥补 56 位密钥或 64 位分组长度的根本限制。3DES/TDEA 是 DES 的延伸：用三个 DES 密钥做加密—解密—加密（EDE）。TDEA 的密钥束配置和现代使用限制属于 3DES 实体，本文不展开。FIPS 46-3 在 1999 年把 TDEA 列为联邦认可的算法，同时把单 DES 降为仅限遗留系统。",
+          "broken": "DES 的标称密钥空间是 2⁵⁶，即 72,057,594,037,927,936 个密钥。这个数字在 1970 年代看似很大，但随专用硬件和分布式计算普及而变得可搜索。1998 年，EFF 的 Deep Crack 机器在不到三天内完成了公开的 DES 挑战，打破了此前由大量联网计算机保持的 39 天纪录。对今天的攻击者，56 位密钥不构成可接受的安全边界。以 10⁹ 个密钥/秒估算，穷举 2⁵⁶ 个密钥约需 7.21×10⁷ 秒，约 834 天或 2.2834 年；以 10¹² 个密钥/秒估算，约需 20.02 小时。这只是算术下界，不含候选筛选、密钥验证和现实并行开销。它说明 DES 的问题不是`实现不够快`，而是源文所写的「is the size of the key space」（问题在于密钥空间的规模）。### 差分与线性密码分析\n\nS 盒是 DES 的非线性核心。1990 年代的差分和线性密码分析显著削弱了它的理论安全边际。差分密码分析利用明文差与密文差之间的高概率关系；对完整的 16 轮 DES，公开结果需要约 2⁴⁷ 个选择明文组成的池，以取得约 2³⁶ 个可用密文。线性密码分析利用明文、密文和密钥位之间的线性近似；1994 年的实验对完整 DES 使用约 2⁴³ 个已知明文，并在 50 天内恢复全部 56 位密钥。这些数据量本身已不现实；它们说明分组密码的安全性不能只靠密钥长度解释，也提醒数据复杂度不等于完整攻击成本。### 弱密钥、半弱密钥与互补性\n\nDES 的密钥调度存在结构性问题：4 个弱密钥会使所有子密钥相同，因而加密两次回到明文；12 个半弱密钥（6 对）会使一对密钥互为逆运算；此外还有互补性：如果用密钥 K 加密明文 P 得到 C，那么用 K 的按位取反加密 P 的按位取反，会得到 C 的按位取反。这些都是算法结构的性质，不是实现错误。它们不会单独破解 DES，也不改变随机密钥下的穷举成本，但实现者必须拒绝这些特定密钥。DES 的块只有 64 位。在 CBC 等模式中，随机选择明文时，约 2³² 个块后出现相同密文块的概率变得显著；这对应约 32 GiB 的数据量。Sweet32 类攻击利用这一生日碰撞，在长连接中恢复部分明文。分组长度因此和密钥长度一样是安全参数：即使密钥足够长，64 位块也不适合现代高吞吐协议。FIPS 46-3 于 2005 年撤销（留存件只支持到年份，具体撤销日期本档无留存正文可证）。NIST SP 800-67 Revision 2 于 2024 年 1 月 1 日撤销，TDEA 不再作为批准的块密码；撤销说明允许它在已有保护数据的解密、密钥解包和 MAC 验证中继续使用，但不再用于新的加密保护。DES 本身只应出现在遗留系统、历史教学和兼容性测试中；新系统应使用 AES 或其他现代算法。",
+          "history": "1970 年代初，美国国家标准局（NBS）启动一个面向联邦机构和商业部门的对称密钥算法标准项目，并公开征集候选算法。1974 年，NBS 收到 IBM 提交的算法；IBM「had recently developed a family of cryptographic algorithms」（此前刚开发出一族密码算法），用于金融交易保护（例如 ATM）。NBS 把 IBM 的算法用作「algorithm as the basis for its proposed」DES（以它作为拟议 DES 的基础），并在 1976 年举办公开研讨会分析其安全性和实用性。1977 年，NBS 发布 FIPS 46，DES 正式成为美国联邦标准。DES 的标准化过程伴随争议。NIST 历史回顾记载，NSA 参与了算法评估并建议修改，IBM 据此调整了算法；一些批评者怀疑 NSA 故意削弱算法或植入陷门。另一项争议是密钥长度：批评者认为 56 位有效密钥「too short for long-term security」（对长期安全而言太短），Diffie 和 Hellman 在 1977 年发表了对 DES 穷举成本的经典分析。NBS 当时的回应是，DES 足以抵御「practical attack for the anticipated life of the standard」（标准预期寿命内可能发生的实际攻击），并将每五年复审一次。DES 随后被反复确认：FIPS 46 在 1983、1988、1993 和 1999 年获得重申，最终修订为 FIPS 46-3。1998 年，EFF 的专用机器在不到三天内完成公开的 DES 挑战，把此前 39 天的纪录大幅缩短。2005 年 FIPS 46-3 撤销，DES 的时代正式结束。TDEA 作为过渡方案继续存在，直到 2024 年也被撤销。",
+          "refs": "- Wikipedia search entry for DES 数据加密标准. https://zh.wikipedia.org/w/index.php?search=DES%20%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Data Encryption Standard (DES 数据加密标准). DES (Data Encryption Standard) is a symmetric block cipher. It transforms a 64-bit plaintext block into a 64-bit ciphertext block using a 64-bit key, of which 56 bits participate in the algorithm and 8 bits are parity bits. Two parties with the same key can encrypt and decrypt; the algorithm is public and confidentiality \"depends on the secrecy of the\" key. DES is a 16-round Feistel structure. The 64-bit input first passes through the Initial Permutation (IP) and is split into 32-bit halves L₀ and R₀. Round i computes:\n\n`R_i = L_{i−1} ⊕ f(R_{i−1}, K_i)`\n\nwhere K_i is the 48-bit round subkey. After 16 rounds the halves are swapped and the result passes through the Final Permutation (FP). FP is the inverse of IP: applying IP and then FP returns the original block. The round function f does four things: it \"expands the 32-bit right half to 48 bits\" with the expansion permutation E; XORs the result with the 48-bit subkey; splits it into eight 6-bit groups, each passed through an S-box that outputs 4 bits (32 bits total); and permutes those 32 bits with P. The S-boxes are the only nonlinear part of DES and the main object of differential and linear cryptanalysis. Subkeys come from the key schedule. The 64-bit key first passes through PC-1, which discards the eight parity bits and leaves 56 bits. The result is split into two 28-bit halves, rotated left according to a fixed schedule, and passed through PC-2, which selects 48 bits for that round. Sixteen rounds therefore produce sixteen 48-bit subkeys, 768 bits of subkey material in total. Decryption uses the same hardware or code with the sixteen subkeys in reverse order. The Feistel structure makes every round invertible even though f itself is not one-to-one; this is an engineering property that distinguishes it from a substitution-permutation network.",
+          "why": "DES was an early publicly published U.S. federal symmetric encryption standard for unclassified government and commercial data. Before it, strong cryptography was largely the concern of military and intelligence organizations; DES put algorithm details, test vectors and implementation requirements into a public standard that banks, vendors and universities could implement and evaluate together. It became one of the starting points for modern block-cipher engineering and public cryptanalysis.\n\nDES also makes the life cycle of a standard concrete. An algorithm can be widely deployed and repeatedly reaffirmed, yet still be retired when key space and computing power change. NIST's historical review notes that DES was expected to serve for about 15 years, but remained in federal legacy systems for decades and was only retired in 2005.\n\nIt created an ecosystem: modes of operation, message authentication, key management, hardware acceleration and validation testing all grew around DES. FIPS 81 defined ECB, CBC, CFB and OFB modes, which later block ciphers inherited. DES is also the background for understanding AES design trade-offs, the 3DES transition and the distinction between block size and key size as security parameters.",
+          "used": "Typical DES deployments included sensitive but unclassified government data, financial transactions and older network protocols. NIST's history records that DES was adopted by ANSI as X3.92, the Data Encryption Algorithm, for protecting financial information; in retail banking it protected the personal identification numbers (PINs) used in bankcard transactions. It was also adopted by ISO as DEA-1 and appeared widely in cryptographic products of the period.\n\nDES is normally used inside a mode of operation, not by itself. ECB encrypts each 64-bit block independently, so identical plaintext blocks produce identical ciphertext blocks. CBC XORs the previous ciphertext block with the current plaintext block, hiding repetition, but it needs an initialization vector and correct padding. CFB and OFB turn the block cipher into a stream-like generator. A mode defines how the block cipher is used; it cannot repair a 56-bit key or a 64-bit block.\n\n3DES/TDEA extends DES by using three DES keys in an encrypt-decrypt-encrypt (EDE) construction. TDEA key-bundle options and modern usage limits belong to the 3DES entity and are not detailed here. FIPS 46-3 recognized TDEA as a federal algorithm in 1999 while demoting single DES to legacy systems only.",
+          "broken": "The nominal DES key space is 2⁵⁶, or 72,057,594,037,927,936 keys. That number looked large in the 1970s, but became searchable as dedicated hardware and distributed computing spread. In 1998 the EFF's Deep Crack machine completed a public DES challenge in less than three days, breaking the previous 39-day record held by a large network of computers. A 56-bit key is not an acceptable security boundary today.\n\nAt 10⁹ keys per second, exhausting 2⁵⁶ keys takes about 7.21×10⁷ seconds, roughly 834 days or 2.2834 years; at 10¹² keys per second it takes about 20.02 hours. These are arithmetic lower bounds, not measurements that include candidate filtering, key verification or practical parallelism. They show that the problem \"is the size of the key space\", not the speed of a single implementation.\n\nThe S-boxes are the nonlinear core of DES. Differential and linear cryptanalysis in the 1990s significantly reduced its theoretical margin. Differential cryptanalysis exploits high-probability relations between plaintext and ciphertext differences; published results for the full 16-round DES require a pool of about 2⁴⁷ chosen plaintexts to obtain about 2³⁶ usable ciphertexts. Linear cryptanalysis exploits linear approximations involving plaintext, ciphertext and key bits; a 1994 experiment used about 2⁴³ known plaintexts against full DES and recovered all 56 key bits in fifty days. These data volumes are already impractical; they show that block-cipher security cannot be explained by key length alone, and that data complexity is not the same as total attack cost.\n\nThe DES key schedule has structural problems. Four weak keys make all subkeys identical, so encrypting twice returns the plaintext. Twelve semi-weak keys (six pairs) make one key the inverse operation of another. There is also a complementation property: if key K encrypts plaintext P to ciphertext C, then the bitwise complement of K encrypts the bitwise complement of P to the bitwise complement of C. These are properties of the algorithm, not implementation bugs. They do not break DES by themselves and do not change the exhaustion cost for random keys, but implementations must reject these specific keys.\n\nA DES block is only 64 bits. In CBC and similar modes, when plaintexts are drawn from a large space, the probability of a repeated ciphertext block becomes significant after about 2³² blocks, roughly 32 GiB of data. The Sweet32 family of attacks exploits such birthday collisions to recover parts of plaintext from long connections. Block size is therefore a security parameter alongside key size: even a longer key would not make a 64-bit block suitable for modern high-volume protocols.\n\nFIPS 46-3 was withdrawn in 2005 (the retained texts attest the year; the precise date is unattested in this dossier). NIST SP 800-67 Revision 2 was withdrawn on January 1, 2024, and TDEA is no longer an approved block cipher; the withdrawal notice allows it for decryption, key unwrapping and MAC verification of already-protected data, but not for new encryption protection. DES itself belongs only in legacy systems, historical teaching and compatibility tests; new systems should use AES or another modern algorithm.",
+          "history": "In the early 1970s the U.S. National Bureau of Standards (NBS) began a symmetric-key algorithm standard for federal agencies and commercial organizations and issued a public call for candidates. It received an algorithm from IBM in 1974; IBM \"had recently developed a family of cryptographic algorithms\" for financial transaction protection, such as ATMs. NBS used the IBM \"algorithm as the basis for its proposed\" DES and held public workshops in 1976 to analyze its utility and security. In 1977 NBS issued FIPS 46, making DES a U.S. federal standard.\n\nThe standardization was controversial. NIST's historical review records that NSA participated in the evaluation and recommended changes, which IBM made; some critics suspected that NSA had deliberately weakened the algorithm or introduced a trapdoor. A second controversy concerned key length: critics argued that 56 effective bits were \"too short for long-term security\", and Diffie and Hellman published their classic 1977 analysis of DES exhaustion costs. NBS replied that DES was adequate against \"practical attack for the anticipated life of the standard\" and would be reviewed every five years.\n\nDES was reaffirmed in 1983, 1988, 1993 and 1999, and finalized as FIPS 46-3. In 1998 the EFF's dedicated machine completed a public DES challenge in less than three days, sharply reducing the previous 39-day record. FIPS 46-3 was withdrawn in 2005, and the DES era ended. TDEA survived as a transition scheme until it too was withdrawn in 2024.",
+          "refs": "- Wikipedia search entry for DES 数据加密标准. https://zh.wikipedia.org/w/index.php?search=DES%20%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "分组密码：把固定长度的数据块映射为同长度密文块的密码。",
+          "Feistel 网络：把块分成两半，每轮用轮函数更新一半、再与另一半异或的结构。",
+          "轮函数：每轮中由右半块和子密钥计算、再与左半块异或的函数。",
+          "子密钥：由主密钥经密钥调度得到的每轮 48 位密钥。",
+          "S 盒：把 6 位输入映射为 4 位输出的非线性替代表。",
+          "初始置换：DES 在轮运算前对 64 位块执行的固定位置重排。",
+          "密钥调度：从 64 位主密钥生成 16 个 48 位子密钥的算法。",
+          "弱密钥：使所有子密钥相同、从而 E(E(P))=P 的密钥。",
+          "互补性：若 E_K(P)=C，则 E 的按位取反密钥与明文得到 C 的按位取反。",
+          "生日碰撞：块空间有限时，随机块重复概率随块数平方增长的现象。"
+        ],
+        "en": [
+          "Block cipher: a cipher that maps fixed-length data blocks to ciphertext blocks of the same length.",
+          "Feistel network: a structure that splits the block into halves and updates one half with a round function before XORing it with the other.",
+          "Round function: the per-round function computed from the right half and a subkey, then XORed with the left half.",
+          "Subkey: the 48-bit per-round key produced by the key schedule from the master key.",
+          "S-box: a nonlinear substitution table mapping six input bits to four output bits.",
+          "Initial permutation: the fixed positional rearrangement DES applies to the 64-bit block before the rounds.",
+          "Key schedule: the algorithm that derives sixteen 48-bit subkeys from the 64-bit master key.",
+          "Weak key: a key that makes all subkeys identical, so that E(E(P))=P.",
+          "Complementation property: if E_K(P)=C, then the bitwise-complemented key and plaintext produce the bitwise complement of C.",
+          "Birthday collision: the rapid growth of repeat probability when random blocks are drawn from a finite block space."
+        ]
+      },
+      "figures": [
+        {
+          "id": "des-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DES：从公开标准到被穷举的分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "DES: from public standard to an exhaustible block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "DES：从公开标准到被穷举的分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for DES: from public standard to an exhaustible block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/des-details-flow.zh.svg",
+            "en": "assets/des-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "220226886e4f4f9719dc2ad232f23e25cdd8b429ea5fbeff66cb1deb1858ac99",
+            "en": "6f516efec1d8c5b1bb57b2206e591cf94ce9e44b2d839a8fd94ceeb380d99545"
+          }
+        },
+        {
+          "id": "des-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DES：从公开标准到被穷举的分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for DES: from public standard to an exhaustible block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "DES：从公开标准到被穷举的分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for DES: from public standard to an exhaustible block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/des-details-r138-model.zh.svg",
+            "en": "assets/des-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d257d973a18f031c439a9def886b63df576a52be249d35e11d94107873ead286",
+            "en": "265af73f3f7810f64a6b1f2ab4990ee88aff0872ec76e3675a145f58008594a3"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--des-wikipedia",
+        "algorithm--des-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "des-known-answer",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "NIST SP 800-17 Appendix B Table 1 (commonly cited as Table B.1) variable-plaintext KAT #0 and the FIPS 81 Table B1 ECB example; encryption and decryption in the teaching implementation and OpenSSL 3DES equal-key mode",
+          "expected": "Both vectors match, decryption restores the plaintext, and the two independent implementations agree",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Two fixed known-answer cases; they check algorithm correctness, not implementation security or protocol use."
+        },
+        {
+          "id": "des-key-schedule",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The standard PC-1, shift and PC-2 tables applied to the fixed key 0101010101010101 and a deterministic sample",
+          "expected": "PC-1 excludes all eight parity positions and yields 56 bits; sixteen subkeys of 48 bits are produced; the halves return to their starting state after 16 rounds",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Checks structural counts and table use, not the cryptographic quality of the key schedule."
+        },
+        {
+          "id": "des-exhaustion-bound",
+          "entryId": "des-details",
+          "kind": "executable-arithmetic-check",
+          "inputs": "2^56 and assumed search rates of 10^9 and 10^12 keys per second",
+          "expected": "2^56 = 72,057,594,037,927,936; about 834 days (2.2834 years) at 10^9/s and about 20.02 hours at 10^12/s",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Pure arithmetic estimate; real searches add candidate filtering, key verification and parallel overhead."
+        },
+        {
+          "id": "des-weak-keys",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The four published DES weak keys and 65,536 fixed 64-bit blocks built from repeating a 16-bit counter",
+          "expected": "Each weak key satisfies E(E(P))=P for every tested block, and the four keys are distinct",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "A finite sample over structured blocks; the involution property follows from identical subkeys, not from the sample alone."
+        },
+        {
+          "id": "des-complement",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "128 deterministic keys, each applied to 128 deterministic blocks (16,384 cases)",
+          "expected": "E with the bitwise-complemented key maps the bitwise-complemented plaintext to the bitwise complement of E(K,P)",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Verifies the structural complementation identity on a finite sample; it is not an attack."
+        },
+        {
+          "id": "des-sbox-rows",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "All eight S-boxes and their four rows",
+          "expected": "Each of the 32 rows is a permutation of 0…15; each S-box has 64 entries",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Checks the published table shape, not differential or linear resistance."
+        },
+        {
+          "id": "des-ip-fp-inverse",
+          "entryId": "des-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "4,096 deterministic 64-bit blocks",
+          "expected": "FP(IP(x))=x and IP(FP(x))=x for every tested block",
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "dependencies": [
+            "des-teaching.mjs"
+          ],
+          "limitations": "Positional-permutation identity only; it does not test the rounds."
+        },
+        {
+          "id": "algorithm--des-r139-formal",
+          "entryId": "des-details",
+          "kind": "formal-model",
+          "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64",
+          "inputs": "DES 数据加密标准 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--des-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "des-known-answer",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "NIST SP 800-17 Appendix B Table 1 (commonly cited as Table B.1) variable-plaintext KAT #0 and the FIPS 81 Table B1 ECB example; encryption and decryption in the teaching implementation and OpenSSL 3DES equal-key mode",
+      "expected": "Both vectors match, decryption restores the plaintext, and the two independent implementations agree",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Two fixed known-answer cases; they check algorithm correctness, not implementation security or protocol use."
+    },
+    {
+      "id": "des-key-schedule",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The standard PC-1, shift and PC-2 tables applied to the fixed key 0101010101010101 and a deterministic sample",
+      "expected": "PC-1 excludes all eight parity positions and yields 56 bits; sixteen subkeys of 48 bits are produced; the halves return to their starting state after 16 rounds",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Checks structural counts and table use, not the cryptographic quality of the key schedule."
+    },
+    {
+      "id": "des-exhaustion-bound",
+      "entryId": "des-details",
+      "kind": "executable-arithmetic-check",
+      "inputs": "2^56 and assumed search rates of 10^9 and 10^12 keys per second",
+      "expected": "2^56 = 72,057,594,037,927,936; about 834 days (2.2834 years) at 10^9/s and about 20.02 hours at 10^12/s",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Pure arithmetic estimate; real searches add candidate filtering, key verification and parallel overhead."
+    },
+    {
+      "id": "des-weak-keys",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The four published DES weak keys and 65,536 fixed 64-bit blocks built from repeating a 16-bit counter",
+      "expected": "Each weak key satisfies E(E(P))=P for every tested block, and the four keys are distinct",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "A finite sample over structured blocks; the involution property follows from identical subkeys, not from the sample alone."
+    },
+    {
+      "id": "des-complement",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "128 deterministic keys, each applied to 128 deterministic blocks (16,384 cases)",
+      "expected": "E with the bitwise-complemented key maps the bitwise-complemented plaintext to the bitwise complement of E(K,P)",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Verifies the structural complementation identity on a finite sample; it is not an attack."
+    },
+    {
+      "id": "des-sbox-rows",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "All eight S-boxes and their four rows",
+      "expected": "Each of the 32 rows is a permutation of 0…15; each S-box has 64 entries",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Checks the published table shape, not differential or linear resistance."
+    },
+    {
+      "id": "des-ip-fp-inverse",
+      "entryId": "des-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "4,096 deterministic 64-bit blocks",
+      "expected": "FP(IP(x))=x and IP(FP(x))=x for every tested block",
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "dependencies": [
+        "des-teaching.mjs"
+      ],
+      "limitations": "Positional-permutation identity only; it does not test the rounds."
+    },
+    {
+      "id": "algorithm--des-r139-formal",
+      "entryId": "des-details",
+      "kind": "formal-model",
+      "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64",
+      "inputs": "DES 数据加密标准 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--des-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

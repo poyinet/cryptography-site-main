@@ -1,0 +1,143 @@
+{
+  "results": [
+    {
+      "id": "xts-cavp-vector",
+      "entryId": "xts-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "6e9f5bdde874cdbc6779b7af90f6cae2b89b104d6791e5d449065b6c13f3f4f0",
+      "dependencyHashes": {
+        "xts-teaching.mjs": "c2105f4e6319558bf03ee14252697b498661fffb4823eb118bd96dab409304c0",
+        "article.zh.md": "4e897d2a6bf826c4ef6718c274fba286597a5bfd733a13ef75dc3ea54b7f023c",
+        "article.en.md": "83278dc5abe8913d20ed2b6926c1ebe7bf75a2e479d1524db2f429bcd601fd7e",
+        "meta.json": "253e1cd5a2e4f55926b812da537af08ad235b472c37855a95c3496e9b80a0881",
+        "glossary.json": "225cf9f16d5c37b2a037dbbbf6464bd19792180f01df4b0aa2b83070dd4df567",
+        "calculations.json": "335356b0a8642849a21e4eff1bc4c44f0fce90884e2f382342d3d2d13f7aefab"
+      },
+      "inputs": "NIST CAVP XTSGenAES128.rsp COUNT 101: XTS-AES-128, 256-bit data unit, 128-bit tweak",
+      "expected": "Ciphertext matches 22e6a3c6...2e19; decryption recovers the original plaintext",
+      "observed": {
+        "id": "xts-cavp-vector",
+        "passed": true,
+        "dataUnitBits": 256,
+        "ciphertext": "22e6a3c6379dcf7599b052b5a749c7f78ad8a11b9f1aa9430cf3aef445682e19",
+        "limit": "One official full-block data-unit case; not the CAVP 130-bit or 200-bit ciphertext-stealing cases."
+      },
+      "contentSha256": "e3511230f263ae3bfb5fa3227263c6f988114d0495dec1ffecadd531bf2a419a",
+      "sourcesSha256": "ce07786d76934c81771fd8150bc276cf55d54caf9c03ae00101dcbcd06240d46",
+      "executedOn": "2026-11-25T07:04:18.375Z"
+    },
+    {
+      "id": "xts-tweak-sensitivity",
+      "entryId": "xts-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "6e9f5bdde874cdbc6779b7af90f6cae2b89b104d6791e5d449065b6c13f3f4f0",
+      "dependencyHashes": {
+        "xts-teaching.mjs": "c2105f4e6319558bf03ee14252697b498661fffb4823eb118bd96dab409304c0",
+        "article.zh.md": "4e897d2a6bf826c4ef6718c274fba286597a5bfd733a13ef75dc3ea54b7f023c",
+        "article.en.md": "83278dc5abe8913d20ed2b6926c1ebe7bf75a2e479d1524db2f429bcd601fd7e",
+        "meta.json": "253e1cd5a2e4f55926b812da537af08ad235b472c37855a95c3496e9b80a0881",
+        "glossary.json": "225cf9f16d5c37b2a037dbbbf6464bd19792180f01df4b0aa2b83070dd4df567",
+        "calculations.json": "335356b0a8642849a21e4eff1bc4c44f0fce90884e2f382342d3d2d13f7aefab"
+      },
+      "inputs": "The CAVP key and plaintext with the original tweak and a different fixed tweak",
+      "expected": "The two ciphertexts differ and each decrypts correctly under its own tweak",
+      "observed": {
+        "id": "xts-tweak-sensitivity",
+        "passed": true,
+        "originalTweak": "873edea653b643bd8bcf51403197ed14",
+        "otherTweak": "000102030405060708090a0b0c0d0e0f",
+        "first": "22e6a3c6379dcf7599b052b5a749c7f7",
+        "second": "78af8bcb2f1b2c971b65906b351bc30a",
+        "limit": "One fixed pair of tweaks; it demonstrates dependence, not a key-scope policy."
+      },
+      "contentSha256": "e3511230f263ae3bfb5fa3227263c6f988114d0495dec1ffecadd531bf2a419a",
+      "sourcesSha256": "ce07786d76934c81771fd8150bc276cf55d54caf9c03ae00101dcbcd06240d46",
+      "executedOn": "2026-11-25T07:04:18.375Z"
+    },
+    {
+      "id": "xts-cts-roundtrip",
+      "entryId": "xts-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "6e9f5bdde874cdbc6779b7af90f6cae2b89b104d6791e5d449065b6c13f3f4f0",
+      "dependencyHashes": {
+        "xts-teaching.mjs": "c2105f4e6319558bf03ee14252697b498661fffb4823eb118bd96dab409304c0",
+        "article.zh.md": "4e897d2a6bf826c4ef6718c274fba286597a5bfd733a13ef75dc3ea54b7f023c",
+        "article.en.md": "83278dc5abe8913d20ed2b6926c1ebe7bf75a2e479d1524db2f429bcd601fd7e",
+        "meta.json": "253e1cd5a2e4f55926b812da537af08ad235b472c37855a95c3496e9b80a0881",
+        "glossary.json": "225cf9f16d5c37b2a037dbbbf6464bd19792180f01df4b0aa2b83070dd4df567",
+        "calculations.json": "335356b0a8642849a21e4eff1bc4c44f0fce90884e2f382342d3d2d13f7aefab"
+      },
+      "inputs": "A 39-byte data unit (two complete blocks plus a 7-byte partial block) and a 17-byte data unit",
+      "expected": "Ciphertext length equals plaintext length in both cases and decryption recovers the original bytes",
+      "observed": {
+        "id": "xts-cts-roundtrip",
+        "passed": true,
+        "plaintextBytes39": 39,
+        "ciphertextBytes39": 39,
+        "plaintextBytes17": 17,
+        "ciphertextBytes17": 17,
+        "limit": "Byte-aligned partial blocks only; not the CAVP bit-level ciphertext-stealing vectors."
+      },
+      "contentSha256": "e3511230f263ae3bfb5fa3227263c6f988114d0495dec1ffecadd531bf2a419a",
+      "sourcesSha256": "ce07786d76934c81771fd8150bc276cf55d54caf9c03ae00101dcbcd06240d46",
+      "executedOn": "2026-11-25T07:04:18.375Z"
+    },
+    {
+      "id": "xts-tamper-no-auth",
+      "entryId": "xts-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "6e9f5bdde874cdbc6779b7af90f6cae2b89b104d6791e5d449065b6c13f3f4f0",
+      "dependencyHashes": {
+        "xts-teaching.mjs": "c2105f4e6319558bf03ee14252697b498661fffb4823eb118bd96dab409304c0",
+        "article.zh.md": "4e897d2a6bf826c4ef6718c274fba286597a5bfd733a13ef75dc3ea54b7f023c",
+        "article.en.md": "83278dc5abe8913d20ed2b6926c1ebe7bf75a2e479d1524db2f429bcd601fd7e",
+        "meta.json": "253e1cd5a2e4f55926b812da537af08ad235b472c37855a95c3496e9b80a0881",
+        "glossary.json": "225cf9f16d5c37b2a037dbbbf6464bd19792180f01df4b0aa2b83070dd4df567",
+        "calculations.json": "335356b0a8642849a21e4eff1bc4c44f0fce90884e2f382342d3d2d13f7aefab"
+      },
+      "inputs": "The CAVP vector ciphertext with the first byte changed",
+      "expected": "Decryption returns a different plaintext without raising an authentication error",
+      "observed": {
+        "id": "xts-tamper-no-auth",
+        "passed": true,
+        "changedByte": 0,
+        "original": "236f8a5b58dd55f6194ed70c4ac1a17f",
+        "tamperedPlaintext": "4eaa51309c4f476bbf9427913d7a5b88",
+        "limit": "One flipped byte; it demonstrates the absence of a tag, not a complete manipulation attack."
+      },
+      "contentSha256": "e3511230f263ae3bfb5fa3227263c6f988114d0495dec1ffecadd531bf2a419a",
+      "sourcesSha256": "ce07786d76934c81771fd8150bc276cf55d54caf9c03ae00101dcbcd06240d46",
+      "executedOn": "2026-11-25T07:04:18.375Z"
+    },
+    {
+      "id": "xts-r139-formal",
+      "entryId": "xts-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "6e9f5bdde874cdbc6779b7af90f6cae2b89b104d6791e5d449065b6c13f3f4f0",
+      "dependencyHashes": {
+        "xts-teaching.mjs": "c2105f4e6319558bf03ee14252697b498661fffb4823eb118bd96dab409304c0",
+        "article.zh.md": "4e897d2a6bf826c4ef6718c274fba286597a5bfd733a13ef75dc3ea54b7f023c",
+        "article.en.md": "83278dc5abe8913d20ed2b6926c1ebe7bf75a2e479d1524db2f429bcd601fd7e",
+        "meta.json": "253e1cd5a2e4f55926b812da537af08ad235b472c37855a95c3496e9b80a0881",
+        "glossary.json": "225cf9f16d5c37b2a037dbbbf6464bd19792180f01df4b0aa2b83070dd4df567",
+        "calculations.json": "335356b0a8642849a21e4eff1bc4c44f0fce90884e2f382342d3d2d13f7aefab"
+      },
+      "inputs": "XTS 磁盘加密模式 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "xts-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "e3511230f263ae3bfb5fa3227263c6f988114d0495dec1ffecadd531bf2a419a",
+      "sourcesSha256": "ce07786d76934c81771fd8150bc276cf55d54caf9c03ae00101dcbcd06240d46",
+      "executedOn": "2026-11-25T07:29:59.433Z"
+    }
+  ]
+}

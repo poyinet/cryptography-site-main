@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R104 China commercial cryptography and AEAD deepening batch for eax-details.",
+  "entries": [
+    {
+      "id": "eax-details",
+      "inventoryIds": [
+        "eax"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R104 中国商用密码与 AEAD 深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R104 China commercial cryptography and AEAD deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "EAX 认证加密",
+        "en": "EAX Authenticated Encryption Mode"
+      },
+      "claimIds": [
+        "eax-r139-principle",
+        "eax-r139-why",
+        "eax-r139-used",
+        "eax-r139-broken",
+        "eax-r139-history",
+        "eax-r139-refs"
+      ],
+      "sourceIds": [
+        "eax-wikipedia",
+        "eax-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "ctr"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "eax-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAX 认证加密：为什么需要 → 核心机制 → 边界。",
+            "en": "EAX Authenticated Encryption Mode: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EAX 认证加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for EAX Authenticated Encryption Mode, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eax-details-flow.zh.svg",
+            "en": "assets/eax-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "290f50f304c730212d41fbcd076f17e9879a5b623e1cc796142f972d3a6a2dd5",
+            "en": "a431222006deee4e804777b2de523f271df91f644c3800aea937f941cb02dc2a"
+          }
+        },
+        {
+          "id": "eax-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAX 认证加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for EAX Authenticated Encryption Mode: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EAX 认证加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for EAX Authenticated Encryption Mode, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eax-details-r138-model.zh.svg",
+            "en": "assets/eax-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "04eaf64991716b874b7e046b1dee101eebf67ab3d090b87a9faedc8fdeca19d4",
+            "en": "cbde8aed4f5ffeb8055e45c95e411914262aafe35944421b59de83ba3bcbc008"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：EAX 认证加密（EAX）。### 两次通过的 AEAD\n\nEAX 用 CTR 模式加密，再用 OMAC 对 nonce、header 和密文认证，标签为三者 XOR 后截断；它是两次通过的 AEAD。先把 M 加密成 C，再分别对 N、H、C 计算三个值，最后把三者 XOR 并截断成标签。### 标签构造\n\n记 N* = OMAC_K(0||N)，H* = OMAC_K(1||H)，C* = OMAC_K(2||C)，则 T = N*⊕H*⊕C*，取前 τ 位。解密先重算标签，验证通过后才用 CTR 解密。前缀 0/1/2 是域分离，防止三类输入互相替代。### 特点\n\nEAX 支持任意长度的 nonce、header 和消息，标签长度可调；只需要分组密码的加密方向；固定 header 可以预计算。它是两遍方案，不能像 OCB 那样边读边算完标签。",
+          "why": "EAX 的定位是简单、可证明、无专利的两遍 AEAD：它避开 CCM 的复杂长度编码，支持任意长度的 nonce、header 和消息，标签可截断。对开发者来说，API 就是 encrypt/decrypt，减少把加密和 MAC 拼错的机会。它用两次通过换取简单和可证明安全。在一次性认证加密仍受专利顾虑影响的年代，这是一个有吸引力的常规 AEAD 方案。",
+          "used": "EAX 可用于磁盘/文件加密、消息认证、VPN 和嵌入式协议；ISO/IEC 19772:2020 把 EAX 列为认证加密机制 4。它不是 TLS 1.3 的强制套件，TLS 1.3 用 AES-GCM/ChaCha20-Poly1305；EAX 更多出现在需要任意 nonce/header 或专利-free 的场合。工程上必须保证 nonce 不重复；同一密钥下 nonce 复用会同时破坏机密性和认证。标签长度不要截得太短，通常 128 位或至少 64 位。",
+          "broken": "EAX 的安全性依赖 nonce 唯一和底层分组密码是 PRP。nonce 复用是最直接的攻击面：CTR 密钥流重复，标签也可能被伪造。它不提供 nonce 隐藏，nonce 本身要经过认证但不保密。它是两遍方案，加密需要先完成整段消息才能算标签，不能用于极低延迟的流式场景；实现还要防标签比较的时序侧信道、截断标签的伪造概率和 header 解析歧义。",
+          "history": "EAX 由 Mihir Bellare、Phillip Rogaway 和 David Wagner 在 2003 年提出，2004 年发表于 FSE 2004，LNCS 3017, pp.389–407。论文把 EAX 描述为 EAX2 的单密钥化：用 CTR 加密、OMAC 认证，再合并两把密钥。它后来进入 ISO/IEC 19772:2020 的认证加密机制列表，并出现在一些协议和库中；但它没有成为 TLS 的主流套件，TLS 1.3 选择了 GCM 和 ChaCha20-Poly1305。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：EAX 认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 EAX 认证加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for EAX 认证加密. https://zh.wikipedia.org/w/index.php?search=EAX%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nEAX 认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: EAX (EAX 认证加密). ### A two-pass AEAD mode\n\nEAX encrypts with CTR mode, then authenticates the nonce, header and ciphertext with OMAC; the tag is the XOR of the three values, truncated. It is a two-pass AEAD: first M becomes C, then three values over N, H and C are XORed and truncated into the tag. ### Tag construction\n\nLet N* = OMAC_K(0 || N), H* = OMAC_K(1 || H) and C* = OMAC_K(2 || C). Then T = N* ⊕ H* ⊕ C*, truncated to τ bits. Decryption recomputes the tag and only decrypts with CTR after verification. The 0/1/2 prefixes are domain separation, so the three input classes cannot be substituted for one another. ### Properties\n\nEAX accepts arbitrary-length nonces, headers and messages, supports configurable tag lengths, needs only the encryption direction of the block cipher, and can pre-process a fixed header. It is a two-pass scheme: it cannot finish the tag while still reading the message the way OCB can.",
+          "why": "EAX’s niche is simple, provable, patent-free two-pass AEAD: it avoids CCM’s elaborate length encoding and supports arbitrary-length nonces, headers and messages, with truncatable tags. For developers the API is just encrypt/decrypt, which reduces the chance of miscombining encryption and a MAC.\n\nIt trades two passes for simplicity and a security proof. That made it an attractive conventional AEAD when one-pass designs were still encumbered by patent concerns.",
+          "used": "EAX can be used for disk/file encryption, message authentication, VPNs and embedded protocols; ISO/IEC 19772:2020 lists EAX as authenticated-encryption mechanism 4. It is not a mandatory TLS 1.3 suite—TLS 1.3 uses AES-GCM and ChaCha20-Poly1305—so EAX appears more often where arbitrary nonces/headers or patent-free operation matter.\n\nEngineering rules: never repeat a nonce under one key; nonce reuse breaks both confidentiality and authenticity. Do not truncate tags too aggressively; 128 bits, or at least 64 bits, is common.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "EAX security depends on nonce uniqueness and on the block cipher being a PRP. Nonce reuse is the direct attack surface: CTR keystreams repeat and tags can become forgeable. EAX does not hide the nonce; the nonce is authenticated but not secret.\n\nIt is two-pass, so encryption must finish the message before the tag is known, which rules out very low-latency streaming. Implementations must also compare tags in constant time, account for truncated-tag forgery probabilities and parse headers unambiguously.",
+          "history": "EAX was proposed by Mihir Bellare, Phillip Rogaway and David Wagner in 2003 and published at FSE 2004, LNCS 3017, pp. 389–407. The paper presents EAX as a one-key version of EAX2: CTR for encryption, OMAC for authentication, then the two keys collapsed into one.\n\nIt later entered ISO/IEC 19772:2020 as mechanism 4 and appeared in protocols and libraries, but it did not become a mainstream TLS suite; TLS 1.3 chose GCM and ChaCha20-Poly1305.",
+          "refs": "- Wikipedia search entry for EAX 认证加密. https://zh.wikipedia.org/w/index.php?search=EAX%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nEAX: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "eax-r139-formal",
+          "entryId": "eax-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：EAX 认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 EAX 认证加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "eax-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eax-r139-formal"
+      ],
+      "sources": [
+        "eax-wikipedia",
+        "eax-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eax-r139-formal",
+      "entryId": "eax-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：EAX 认证加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 EAX 认证加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "eax-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

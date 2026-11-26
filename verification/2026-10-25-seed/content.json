@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full SEED algorithm article only; no completion claim for AES, Camellia, ARIA, CMS, TLS, ISO/IEC 18033-3 as a whole, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "seed-details",
+      "inventoryIds": [
+        "seed"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 SEED 这一种 128 位分组密码：128 位块和密钥、16 轮 Feistel、F/G 函数、S0/S1 与 SS-box、Key0..Key3 与 KC 密钥调度、RFC 4269 附录 B 的四组向量和轮中间值、CMS/TLS 使用及其现行限制；不把 AES、Camellia、ARIA、CMS/TLS 协议或工作模式并入本实体。",
+        "en": "Covers the SEED 128-bit block cipher: 128-bit block and key, 16-round Feistel, F/G functions, S0/S1 and SS-boxes, the Key0..Key3 and KC key schedule, the four Appendix B vectors and per-round values, CMS/TLS use and current limitations. It does not absorb AES, Camellia, ARIA, the CMS/TLS protocols, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "SEED：128 位 16 轮 Feistel 分组密码",
+        "en": "SEED: a 128-bit 16-round Feistel block cipher"
+      },
+      "claimIds": [
+        "seed-r139-principle",
+        "seed-r139-why",
+        "seed-r139-used",
+        "seed-r139-broken",
+        "seed-r139-history",
+        "seed-r139-refs"
+      ],
+      "calculationIds": [
+        "seed-calc-rfc-vectors",
+        "seed-calc-key-schedule",
+        "seed-calc-sboxes-g",
+        "seed-calc-roundtrip",
+        "seed-r139-formal"
+      ],
+      "sourceIds": [
+        "seed-wikipedia",
+        "seed-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "algorithm--camellia",
+        "aria"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SEED 韩国内对称加密（SEED）。SEED 是 128 位分组密码，密钥长度也是 128 位，采用 16 轮 Feistel 结构。128 位输入分成左右各 64 位的 L、R，右半 R 送入带 64 位子密钥的轮函数 F。第 1 到第 15 轮做交换和混合，第 16 轮只更新 L、不再交换：\n\n```text\nfor i = 1..15:\n  T = R\n  R = L XOR F(Ki, R)\n  L = T\nL = L XOR F(K16, R)\nC = L || R\n```\n\n解密是加密的逆过程：使用同一轮结构，但按 K16、K15、…、K1 的顺序使用子密钥。轮函数 F 把 64 位输入 R 分成高 32 位 R0 和低 32 位 R1，子密钥 Ki 分成 Ki0、Ki1：\n\n```text\nt0 = R0 XOR Ki0\nt1 = R1 XOR Ki1\nG1 = G(t0 XOR t1)\nG2 = G(G1 + t0)\nG3 = G(G2 + G1)\nR0' = G3 + G2\nR1' = G3\n```\n\n所有加法都是模 2^32 的无符号加法。RFC 4269 第 2.1 节把 F 写成一行嵌套公式，上面的分步形式与它等价，并由附录 B 的轮中间值验证。G 函数把四个输入字节 `X3||X2||X1||X0` 映射为四个输出字节 `Z3||Z2||Z1||Z0`，其中 X3 是最高字节：\n\n```text\nm0 = FC, m1 = F3, m2 = CF, m3 = 3F\nZ0 = (S0(X0) & m0) XOR (S1(X1) & m1) XOR (S0(X2) & m2) XOR (S1(X3) & m3)\nZ1 = (S0(X0) & m1) XOR (S1(X1) & m2) XOR (S0(X2) & m3) XOR (S1(X3) & m0)\nZ2 = (S0(X0) & m2) XOR (S1(X1) & m3) XOR (S0(X2) & m0) XOR (S1(X3) & m1)\nZ3 = (S0(X0) & m3) XOR (S1(X1) & m0) XOR (S0(X2) & m1) XOR (S1(X3) & m2)\nZ = Z3 || Z2 || Z1 || Z0\n```\n\nSEED 有两个 8x8 S-box S0、S1，各 256 项。为了加快实现，规范还定义了四个扩展 SS-box，它们是按字节拼接的 32 位表：\n\n```text\nSS0(X0) = (S0&m3) || (S0&m2) || (S0&m1) || (S0&m0)\nSS1(X1) = (S1&m0) || (S1&m3) || (S1&m2) || (S1&m1)\nSS2(X2) = (S0&m1) || (S0&m0) || (S0&m3) || (S0&m2)\nSS3(X3) = (S1&m2) || (S1&m1) || (S1&m0) || (S1&m3)\nZ = SS0(X0) XOR SS1(X1) XOR SS2(X2) XOR SS3(X3)\n```\n\n附录 A 给出 S0、S1 和 SS0..SS3 的全部值；本文逐项核对，四个 SS-box 都能由 S0/S1 和掩码完整导出。密钥调度把 128 位密钥分成 Key0、Key1、Key2、Key3，每轮生成 64 位子密钥 Ki=Ki0||Ki1：\n\n```text\nfor i = 1..16:\n  Ki0 = G(Key0 + Key2 - KCi)\n  Ki1 = G(Key1 - Key3 + KCi)\n  if i is odd:\n    Key0 || Key1 = (Key0 || Key1) >> 8\n  else:\n    Key2 || Key3 = (Key2 || Key3) << 8\n```\n\n这里的 `>> 8` 和 `<< 8` 是 64 位循环移位。奇数轮把 Key0||Key1 循环右移 8 位，偶数轮把 Key2||Key3 循环左移 8 位。16 个 KC 常数是：\n\n```text\nKC1  = 9E3779B9   KC2  = 3C6EF373   KC3  = 78DDE6E6   KC4  = F1BBCDCC\nKC5  = E3779B99   KC6  = C6EF3733   KC7  = 8DDE6E67   KC8  = 1BBCDCCF\nKC9  = 3779B99E   KC10 = 6EF3733C   KC11 = DDE6E678   KC12 = BBCDCCF1\nKC13 = 779B99E3   KC14 = EF3733C6   KC15 = DE6E678D   KC16 = BCDCCF1B\n```",
+          "why": "RFC 4269 说 SEED 由韩国信息安全局（KISA）自 1998 年起开发，是韩国国家标准算法，规范性引用为 TTAS.KO-12.0004（1998 年 9 月）。它使用与当时计算技术相称的 S-box 和置换，采用 16 轮 Feistel 结构，并声称能抵抗差分分析、线性分析和相关密钥分析。RFC 4010 补充了实现层面的设计目标：SEED 在软件和硬件中都容易实现，内存占用比一些算法小，密钥生成不降低安全性，适合「such as mobile devices and smart cards」（移动设备与智能卡）等资源受限环境。它还称 SEED 是韩国国家工业协会标准，经过公开评审，被 ISO/IEC JTC 1/SC 27 和日本 CRYPTREC 认为密码学上是安全的，并广泛用于韩国电子商务和金融服务。RFC 4269 第 3 节的实质性安全表述只有一句「No security problem has been found on SEED.」（没有发现 SEED 的安全问题），随后引用 ISO/IEC JTC 1/SC 27 与 CRYPTREC 的文件。本文把它当作 2005 年 RFC 的评估，而不是对全部攻击的形式化证明。",
+          "used": "CMS：RFC 4010（2005 年 2 月，Standards Track）规定 SEED 在 CMS 中的内容加密和密钥包装用法。内容加密 OID 是 `id-seedCBC`，使用 CBC 模式和 16 字节 IV，AlgorithmIdentifier 的 parameters 必须包含 IV，明文按 CMS 第 6.3 节填充。密钥包装 OID 是 `id-npki-app-cmsSeed-wrap`，其 parameters 必须省略；包装算法与 RFC 3394 的 AES 密钥包装相同，只把 AES 换成 SEED。TLS：RFC 4162（2005 年 8 月，Standards Track）为 TLS 定义 6 个 SEED CBC SHA 套件，分别是 `TLS_RSA`、`TLS_DH_DSS`、`TLS_DH_RSA`、`TLS_DHE_DSS`、`TLS_DHE_RSA` 和 `TLS_DH_anon` 各一个，编号从 0x0096 到 0x009B。RFC 8996（2021 年 3 月，BCP 195）废止对 TLS 1.0 和 TLS 1.1 的使用并禁止回退，把 RFC 4162 等文档中对最低协议版本 TLS 1.0/1.1 的引用替换为 TLS 1.2；SEED 套件本身没有被废止，仍可在 TLS 1.2 中使用。RFC 8446（TLS 1.3）附录 B.4 只定义 5 个基于 AEAD 的套件（AES-128-GCM、AES-256-GCM、ChaCha20-Poly1305、AES-128-CCM、AES-128-CCM-8），没有 SEED 套件；本文不声称 SEED 可用于 TLS 1.3。测试向量：RFC 4269 附录 B 给出四组单块向量：\n\n```text\nB.1  K = 00000000000000000000000000000000\n     M = 000102030405060708090A0B0C0D0E0F\n     C = 5EBAC6E0054E166819AFF1CC6D346CDB\n\nB.2  K = 000102030405060708090A0B0C0D0E0F\n     M = 00000000000000000000000000000000\n     C = C11F22F20140505084483597E4370F43\n\nB.3  K = 4706480851E61BE85D74BFB3FD956185\n     M = 83A2F8A288641FB9A4E9A5CC2F131C7D\n     C = EE54D13EBCAE706D226BC3142CD40D4A\n\nB.4  K = 28DBC3BC49FFD87DCFA509B11D422BE7\n     M = B41E6BE2EBA84A148E2EED84593C5EC7\n     C = 9B9B7BFCD1813CB95D0B3618F40F5122\n```\n\n其中 B.1 和 B.2 是互补形式：一组密钥全零、明文递增，另一组密钥递增、明文全零。本文的教学实现完整复现四组向量，并验证解密返回原明文。附录 B.1 还列出全部 16 轮的 Ki0、Ki1 以及每轮输入状态的 L0、L1、R0、R1：第 1 轮的输入就是明文，第 i 轮的输入等于第 i-1 轮后的状态。因此它同时校验密钥调度和轮函数，而不只是最终密文。本文的实现逐轮核对这张表，例如第 1 轮 Ki0=7C8F8C7E、Ki1=C737A22C，第 16 轮 Ki0=71891150、Ki1=98B255B0；第 1 行输入 L=0001020304050607、R=08090A0B0C0D0E0F，第 16 行输入 L=1A415792A02B8C54、R=19AFF1CC6D346CDB，第 16 轮后 L=5EBAC6E0054E1668、R=19AFF1CC6D346CDB。",
+          "broken": "RFC 4269 第 3 节的实质性安全表述只有「No security problem has been found on SEED.」这一句（没有发现 SEED 的安全问题）；RFC 4010 则说 SEED 能抵抗差分、线性和相关密钥分析，并被 ISO/IEC JTC 1/SC 27 和 CRYPTREC 认为安全。这些都是 2005 年文档中的评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它们扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 SEED 已被攻破。RFC 4269 废止 RFC 4009 的原因是 RFC 4009 的 F 函数和 SS-box 定义有歧义，而不是算法被攻破；算法本身没有改变。实现者应以 RFC 4269 的清晰定义为准，避免照抄旧伪代码。SEED 在协议中的位置需要区分：它是韩国国家标准算法，2005 年的 RFC 文件称其广泛用于韩国电子商务和金融服务；CMS 的 `id-seedCBC` 和密钥包装 OID 仍是 Standards Track 规范的一部分；BCP 195 废止 TLS 1.0/1.1 的使用并把 RFC 4162 的最低版本引用更新为 TLS 1.2，SEED 套件本身仍可使用，而 TLS 1.3 没有 SEED 套件。把`曾被标准化`当成`在最新协议中默认可用`是不准确的。实现层面，本文的教学实现按字节查 S0/S1 和 SS-box，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。SEED 只定义分组密码，协议层必须自己处理这些事项。",
+          "history": "SEED 由 KISA 自 1998 年起开发。RFC 4269 把 TTAS.KO-12.0004（1998 年 9 月）列为规范性引用，并称 SEED 是韩国国家标准算法，广泛用于韩国有线和无线通信中的电子商务和金融服务。RFC 4009 是较早的 IETF 描述；RFC 4269 由 H.J.Lee、S.J.Lee、J.H.Yoon、D.H.Cheon 和 J.I.Lee 在 2005 年 12 月发表，类别是 Informational，并废止 RFC 4009，以修正其 F 函数和 SS-box 定义的歧义，算法本身不变。RFC 4010 在 2005 年 2 月以 Standards Track 规定 CMS 用法；RFC 4162 在 2005 年 8 月以 Standards Track 定义 6 个 TLS 套件；RFC 8996 在 2021 年弃用 TLS 1.0/1.1 并更新 RFC 4162。ISO/IEC 18033-3:2010 第二版把 SEED 与 AES、Camellia 一起列为 128 位分组密码，该版本在 2025 年 9 月仍被确认有效。本文的 SEED 实体只指这一种分组密码；AES、Camellia 是其他实体，CMS、TLS 是使用 SEED 的协议，ISO/IEC 18033-3 是标准化文件，不是算法本身。",
+          "refs": "- Wikipedia search entry for SEED 韩国内对称加密. https://zh.wikipedia.org/w/index.php?search=SEED%20%E9%9F%A9%E5%9B%BD%E5%86%85%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: SEED (SEED 韩国内对称加密). SEED is a 128-bit block cipher with a 128-bit key and a 16-round Feistel structure. The 128-bit input is split into 64-bit L and R halves, and the right half R is fed to the round function F with a 64-bit subkey. Rounds 1 to 15 swap and mix the halves, while round 16 only updates L and performs no final swap:\n\n```text\nfor i = 1..15:\n  T = R\n  R = L XOR F(Ki, R)\n  L = T\nL = L XOR F(K16, R)\nC = L || R\n```\n\nDecryption is the inverse of encryption: it uses the same round structure with the subkeys in the order K16, K15, ..., K1. The F function splits the 64-bit input R into a high 32-bit half R0 and a low 32-bit half R1, and the subkey Ki into Ki0 and Ki1:\n\n```text\nt0 = R0 XOR Ki0\nt1 = R1 XOR Ki1\nG1 = G(t0 XOR t1)\nG2 = G(G1 + t0)\nG3 = G(G2 + G1)\nR0' = G3 + G2\nR1' = G3\n```\n\nAll additions are unsigned additions modulo 2^32. RFC 4269 Section 2.1 writes F as one nested formula; the step form above is equivalent and is verified by the Appendix B round intermediates. G maps four input bytes `X3||X2||X1||X0` to four output bytes `Z3||Z2||Z1||Z0`, where X3 is the most significant byte:\n\n```text\nm0 = FC, m1 = F3, m2 = CF, m3 = 3F\nZ0 = (S0(X0) & m0) XOR (S1(X1) & m1) XOR (S0(X2) & m2) XOR (S1(X3) & m3)\nZ1 = (S0(X0) & m1) XOR (S1(X1) & m2) XOR (S0(X2) & m3) XOR (S1(X3) & m0)\nZ2 = (S0(X0) & m2) XOR (S1(X1) & m3) XOR (S0(X2) & m0) XOR (S1(X3) & m1)\nZ3 = (S0(X0) & m3) XOR (S1(X1) & m0) XOR (S0(X2) & m1) XOR (S1(X3) & m2)\nZ = Z3 || Z2 || Z1 || Z0\n```\n\nSEED has two 8x8 S-boxes, S0 and S1, with 256 entries each. For faster implementations the specification also defines four extended SS-boxes as 32-bit byte-concatenation tables:\n\n```text\nSS0(X0) = (S0&m3) || (S0&m2) || (S0&m1) || (S0&m0)\nSS1(X1) = (S1&m0) || (S1&m3) || (S1&m2) || (S1&m1)\nSS2(X2) = (S0&m1) || (S0&m0) || (S0&m3) || (S0&m2)\nSS3(X3) = (S1&m2) || (S1&m1) || (S1&m0) || (S1&m3)\nZ = SS0(X0) XOR SS1(X1) XOR SS2(X2) XOR SS3(X3)\n```\n\nAppendix A lists all values of S0, S1 and SS0..SS3; this article checks them entry by entry, and all four SS-boxes are fully derived from S0/S1 and the masks. The key schedule splits the 128-bit key into Key0, Key1, Key2 and Key3 and produces a 64-bit subkey Ki=Ki0||Ki1 for every round:\n\n```text\nfor i = 1..16:\n  Ki0 = G(Key0 + Key2 - KCi)\n  Ki1 = G(Key1 - Key3 + KCi)\n  if i is odd:\n    Key0 || Key1 = (Key0 || Key1) >> 8\n  else:\n    Key2 || Key3 = (Key2 || Key3) << 8\n```\n\nHere `>> 8` and `<< 8` are 64-bit rotations. Odd rounds rotate Key0||Key1 right by 8 bits, and even rounds rotate Key2||Key3 left by 8 bits. The sixteen KC constants are:\n\n```text\nKC1  = 9E3779B9   KC2  = 3C6EF373   KC3  = 78DDE6E6   KC4  = F1BBCDCC\nKC5  = E3779B99   KC6  = C6EF3733   KC7  = 8DDE6E67   KC8  = 1BBCDCCF\nKC9  = 3779B99E   KC10 = 6EF3733C   KC11 = DDE6E678   KC12 = BBCDCCF1\nKC13 = 779B99E3   KC14 = EF3733C6   KC15 = DE6E678D   KC16 = BCDCCF1B\n```",
+          "why": "RFC 4269 says SEED was developed by the Korea Information Security Agency (KISA) from 1998 and is a national standard algorithm of the Republic of Korea, with TTAS.KO-12.0004 (September 1998) as its normative reference. It uses S-boxes and permutations balanced with contemporary computing technology, has a 16-round Feistel structure, and is claimed to resist differential analysis, linear analysis and related-key analysis.\n\nRFC 4010 adds implementation-level design goals: SEED is easy to implement in software and hardware, uses less memory than some algorithms, generates keys without degrading security, and suits resource-constrained environments \"such as mobile devices and smart cards\". It also calls SEED a national industrial association standard, says it underwent public scrutiny, is considered cryptographically secure by ISO/IEC JTC 1/SC 27 and Japan's CRYPTREC, and is widely used for electronic commerce and financial services in Korea.\n\nRFC 4269 Section 3's substantive security statement is only the sentence \"No security problem has been found on SEED.\", followed by references to ISO/IEC JTC 1/SC 27 and CRYPTREC documents. This article treats that as a 2005 RFC assessment, not as a formal proof against every attack.",
+          "used": "CMS: RFC 4010 (February 2005, Standards Track) specifies SEED for CMS content encryption and key wrapping. The content-encryption OID is `id-seedCBC`, using CBC with a 16-byte IV; the AlgorithmIdentifier parameters MUST contain the IV, and the plaintext is padded according to CMS Section 6.3. The key-wrap OID is `id-npki-app-cmsSeed-wrap`, whose parameters MUST be absent; wrapping is identical to RFC 3394 AES key wrap with AES replaced by SEED.\n\nTLS: RFC 4162 (August 2005, Standards Track) defines six SEED CBC SHA cipher suites for TLS: one each for `TLS_RSA`, `TLS_DH_DSS`, `TLS_DH_RSA`, `TLS_DHE_DSS`, `TLS_DHE_RSA` and `TLS_DH_anon`, with code points 0x0096 through 0x009B. RFC 8996 (March 2021, BCP 195) obsoletes the use of TLS 1.0 and TLS 1.1 and prohibits fallback, replacing mandatory minimum protocol version references to TLS 1.0/1.1 in RFC 4162 and other documents with TLS 1.2; the SEED suites themselves are not deprecated and remain usable with TLS 1.2. RFC 8446 (TLS 1.3) Appendix B.4 defines only five AEAD-based cipher suites (AES-128-GCM, AES-256-GCM, ChaCha20-Poly1305, AES-128-CCM and AES-128-CCM-8), with no SEED suite; this article does not claim SEED support in TLS 1.3.\n\nTest vectors: RFC 4269 Appendix B gives four single-block vectors:\n\n```text\nB.1  K = 00000000000000000000000000000000\n     M = 000102030405060708090A0B0C0D0E0F\n     C = 5EBAC6E0054E166819AFF1CC6D346CDB\n\nB.2  K = 000102030405060708090A0B0C0D0E0F\n     M = 00000000000000000000000000000000\n     C = C11F22F20140505084483597E4370F43\n\nB.3  K = 4706480851E61BE85D74BFB3FD956185\n     M = 83A2F8A288641FB9A4E9A5CC2F131C7D\n     C = EE54D13EBCAE706D226BC3142CD40D4A\n\nB.4  K = 28DBC3BC49FFD87DCFA509B11D422BE7\n     M = B41E6BE2EBA84A148E2EED84593C5EC7\n     C = 9B9B7BFCD1813CB95D0B3618F40F5122\n```\n\nB.1 and B.2 are complementary: one has an all-zero key and an increasing plaintext, while the other has an increasing key and an all-zero plaintext. This article's teaching implementation reproduces all four vectors and verifies that decryption returns the original plaintext.\n\nAppendix B.1 also lists Ki0, Ki1 and the per-round input-state L0, L1, R0 and R1 for all sixteen rounds: the round-1 input is the plaintext, and the round-i input is the state after round i-1. It therefore checks the key schedule and round function rather than only the final ciphertext. The implementation checks that table round by round; for example round 1 has Ki0=7C8F8C7E and Ki1=C737A22C, and round 16 has Ki0=71891150 and Ki1=98B255B0. Row 1 has input L=0001020304050607 and R=08090A0B0C0D0E0F, row 16 has input L=1A415792A02B8C54 and R=19AFF1CC6D346CDB, and after round 16 the state is L=5EBAC6E0054E1668 and R=19AFF1CC6D346CDB.",
+          "broken": "RFC 4269 Section 3's substantive security statement is only the sentence \"No security problem has been found on SEED.\"; RFC 4010 says SEED resists differential, linear and related-key analysis and is considered secure by ISO/IEC JTC 1/SC 27 and CRYPTREC. These are assessments in 2005 documents, not formal proofs against every attack model, and they do not guarantee that no better analysis will appear. This article does not expand them into an absolute security claim, and it does not cite unverified attack papers to claim that SEED has been broken.\n\nRFC 4269 obsoletes RFC 4009 because RFC 4009's F-function and SS-box definitions were ambiguous, not because the algorithm was broken; the algorithm itself did not change. Implementers should follow RFC 4269's clearer definitions rather than copying the older pseudo-code.\n\nSEED's protocol position needs to be stated carefully: it is a Korean national standard, and the 2005 RFC documents describe it as widely used for Korean electronic commerce and financial services; the CMS `id-seedCBC` and key-wrap OIDs remain part of a Standards Track specification; BCP 195 obsoletes the use of TLS 1.0/1.1 and updates RFC 4162's minimum version reference to TLS 1.2, so the SEED suites themselves remain usable, while TLS 1.3 has no SEED suite. That SEED was once standardized does not make it available by default in the latest protocol.\n\nAt the implementation level, this article's teaching code performs byte-indexed lookups in S0/S1 and the SS-boxes and is not constant-time; caches and timing may leak key-dependent access patterns. It does not generate keys and implements no mode of operation, IV management, padding, integrity protection or side-channel defence, so it must not be used to protect real data. SEED defines only a block cipher; the protocol layer must handle those matters.",
+          "history": "SEED was developed by KISA from 1998. RFC 4269 cites TTAS.KO-12.0004 (September 1998) as a normative reference and describes SEED as a national standard algorithm of the Republic of Korea, widely used for electronic commerce and financial services in wired and wireless communications.\n\nRFC 4009 was the earlier IETF description; RFC 4269 was published by H.J. Lee, S.J. Lee, J.H. Yoon, D.H. Cheon and J.I. Lee in December 2005 with Informational category and obsoletes RFC 4009 to correct its ambiguous F-function and SS-box definitions, without changing the algorithm. RFC 4010 specified CMS usage as Standards Track in February 2005; RFC 4162 defined six TLS suites as Standards Track in August 2005; RFC 8996 deprecated TLS 1.0/1.1 and updated RFC 4162 in 2021.\n\nISO/IEC 18033-3:2010 Edition 2 lists SEED with AES and Camellia as 128-bit block ciphers, and that edition was still confirmed as current in September 2025. This article's SEED entity is the block cipher only; AES and Camellia are separate entities, CMS and TLS are protocols that use SEED, and ISO/IEC 18033-3 is a standardization document rather than the algorithm.",
+          "refs": "- Wikipedia search entry for SEED 韩国内对称加密. https://zh.wikipedia.org/w/index.php?search=SEED%20%E9%9F%A9%E5%9B%BD%E5%86%85%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "SEED：KISA 自 1998 年起开发的 128 位 Feistel 分组密码，韩国国家标准算法。",
+          "128 位块和密钥：SEED 的明文、密文和密钥都固定为 128 位。",
+          "16 轮 Feistel：SEED 的迭代结构，左右各 64 位，每轮用 64 位子密钥。",
+          "轮函数 F：由 R0/R1、Ki0/Ki1 和三次 G 调用组成的 64 位函数。",
+          "G 函数：把四个字节经 S0/S1 和掩码混合成四个输出字节的函数。",
+          "S0/S1：两个 256 项的 8x8 S-box。",
+          "SS-box：由 S0/S1 与掩码 m0..m3 拼接出的四个 32 位扩展表。",
+          "掩码 m0..m3：FC、F3、CF、3F，用于从 S-box 输出中选择字节片段。",
+          "轮子密钥 Ki：第 i 轮的 64 位子密钥，由 Ki0 和 Ki1 组成。",
+          "密钥调度：从 Key0..Key3 出发，用 G、KC 和 8 位循环移位生成 16 个 Ki。",
+          "KC 常数：16 个 32 位密钥调度常数，KC1=9E3779B9 起。",
+          "模 2^32 加法：F 和密钥调度中的 32 位无符号加法。",
+          "循环移位：奇数轮把 Key0||Key1 右移 8 位，偶数轮把 Key2||Key3 左移 8 位。",
+          "解密反转：使用同一轮结构按 K16..K1 的顺序恢复明文。",
+          "CMS：RFC 4010 规定的 id-seedCBC 和 id-npki-app-cmsSeed-wrap 用法。",
+          "TLS：RFC 4162 定义的 6 个 SEED_CBC_SHA 套件；RFC 8996 把最低版本引用更新为 TLS 1.2，TLS 1.3 没有 SEED。",
+          "ISO/IEC 18033-3：把 SEED 与 AES、Camellia 并列为 128 位分组密码的标准文件。",
+          "轮中间值：RFC 4269 附录 B.1 列出的 16 轮 Ki 和 L/R 状态，可用于校验实现。"
+        ],
+        "en": [
+          "SEED: the 128-bit Feistel block cipher developed by KISA from 1998 and a Korean national standard.",
+          "128-bit block and key: SEED's plaintext, ciphertext and key are all fixed at 128 bits.",
+          "16-round Feistel: SEED's iterated structure with 64-bit halves and a 64-bit subkey per round.",
+          "F function: the 64-bit round function built from R0/R1, Ki0/Ki1 and three G calls.",
+          "G function: a function that mixes four bytes through S0/S1 and masks into four output bytes.",
+          "S0/S1: two 256-entry 8x8 S-boxes.",
+          "SS-box: one of four 32-bit extended tables built by concatenating masked S0/S1 outputs.",
+          "Masks m0..m3: FC, F3, CF and 3F, used to select byte fragments from S-box outputs.",
+          "Round subkey Ki: the 64-bit subkey of round i, formed from Ki0 and Ki1.",
+          "Key schedule: the derivation of sixteen Ki values from Key0..Key3 using G, KC and 8-bit rotations.",
+          "KC constants: sixteen 32-bit key-schedule constants starting with KC1=9E3779B9.",
+          "Modulo 2^32 addition: the 32-bit unsigned addition used in F and the key schedule.",
+          "Rotation: odd rounds rotate Key0||Key1 right by 8 bits, even rounds rotate Key2||Key3 left by 8 bits.",
+          "Decryption by reversal: the same round structure with K16..K1 recovers the plaintext.",
+          "CMS: the id-seedCBC and id-npki-app-cmsSeed-wrap usage specified by RFC 4010.",
+          "TLS: the six SEED_CBC_SHA suites defined by RFC 4162; RFC 8996 updates the minimum version reference to TLS 1.2, and TLS 1.3 has no SEED.",
+          "ISO/IEC 18033-3: the standard document that lists SEED with AES and Camellia as 128-bit block ciphers.",
+          "Round intermediates: the sixteen Ki values and L/R states in RFC 4269 Appendix B.1, usable to check an implementation."
+        ]
+      },
+      "figures": [
+        {
+          "id": "seed-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SEED：128 位 16 轮 Feistel 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "SEED: a 128-bit 16-round Feistel block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SEED：128 位 16 轮 Feistel 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SEED: a 128-bit 16-round Feistel block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/seed-details-flow.zh.svg",
+            "en": "assets/seed-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b2d9ba2cc54467dc49edd0276a99efcb45c1784c3649f5f540a2c0be4c2d7f41",
+            "en": "f1740d5b1e0a77ed7080737aa4d0050ef1447919f1ebe3c12671e441ddf0eec4"
+          }
+        },
+        {
+          "id": "seed-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SEED：128 位 16 轮 Feistel 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SEED: a 128-bit 16-round Feistel block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SEED：128 位 16 轮 Feistel 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SEED: a 128-bit 16-round Feistel block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/seed-details-r138-model.zh.svg",
+            "en": "assets/seed-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cab185a6cee9c3971f0fa7c0d75bbdec2f6d304a79be6d357e411268a83564f5",
+            "en": "2528da4dc18c7614240f7669be0b20833b004d76542922344222bdcea6999ecc"
+          }
+        }
+      ],
+      "sources": [
+        "seed-wikipedia",
+        "seed-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "seed-calc-rfc-vectors",
+          "entryId": "seed-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The four RFC 4269 Appendix B vectors B.1-B.4, each with a 128-bit key and a 128-bit plaintext",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the original plaintext; the B.1 table also matches all sixteen round subkeys and per-round input states, the state after round i equals the input state of round i+1, and the state after round 16 equals the ciphertext halves",
+          "sourceIds": [
+            "seed-wikipedia"
+          ],
+          "dependencies": [
+            "seed-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Four fixed vectors; they cover different keys and plaintexts but do not prove resistance to cryptanalysis."
+        },
+        {
+          "id": "seed-calc-key-schedule",
+          "entryId": "seed-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The all-zero B.1 key and the RFC 4269 KC constants, compared with the sixteen Ki0/Ki1 pairs listed in Appendix B.1",
+          "expected": "K1=7C8F8C7EC737A22C, K2=FF276CDBA7CA684A and K16=7189115098B255B0; all sixteen Ki match the RFC table; the decryption schedule is the reverse of the encryption schedule",
+          "sourceIds": [
+            "seed-wikipedia"
+          ],
+          "dependencies": [
+            "seed-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Only the all-zero key has published per-round subkeys; the other three vectors validate the schedule indirectly through their ciphertexts."
+        },
+        {
+          "id": "seed-calc-sboxes-g",
+          "entryId": "seed-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 4269 Appendix A S0, S1 and SS0-SS3, the mask definitions m0=FC, m1=F3, m2=CF, m3=3F, and deterministic G/F samples",
+          "expected": "S0 and S1 each have 256 entries; all four SS-boxes are reproduced from S0/S1 and the masks for all 256 inputs; S0[0]=A9, S1[0]=38, S0[255]=9A, S1[255]=B7; G(00000000)=B829B829, G(01234567)=27E4246B and F(K1,08090A0B0C0D0E0F)=8080BE54C0EF8C18",
+          "sourceIds": [
+            "seed-wikipedia"
+          ],
+          "dependencies": [
+            "seed-teaching.mjs",
+            "sboxes.json",
+            "vectors.json"
+          ],
+          "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+        },
+        {
+          "id": "seed-calc-roundtrip",
+          "entryId": "seed-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Three fixed keys (B.1 zero key, B.3 key and B.4 key) times eight deterministic plaintext patterns, including the B.1 and B.2 official plaintexts",
+          "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three keys produce three pairwise distinct schedules",
+          "sourceIds": [
+            "seed-wikipedia"
+          ],
+          "dependencies": [
+            "seed-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "seed-r139-formal",
+          "entryId": "seed-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "SEED 韩国内对称加密 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "seed-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "seed-calc-rfc-vectors",
+      "entryId": "seed-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The four RFC 4269 Appendix B vectors B.1-B.4, each with a 128-bit key and a 128-bit plaintext",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the original plaintext; the B.1 table also matches all sixteen round subkeys and per-round input states, the state after round i equals the input state of round i+1, and the state after round 16 equals the ciphertext halves",
+      "sourceIds": [
+        "seed-wikipedia"
+      ],
+      "dependencies": [
+        "seed-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Four fixed vectors; they cover different keys and plaintexts but do not prove resistance to cryptanalysis."
+    },
+    {
+      "id": "seed-calc-key-schedule",
+      "entryId": "seed-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The all-zero B.1 key and the RFC 4269 KC constants, compared with the sixteen Ki0/Ki1 pairs listed in Appendix B.1",
+      "expected": "K1=7C8F8C7EC737A22C, K2=FF276CDBA7CA684A and K16=7189115098B255B0; all sixteen Ki match the RFC table; the decryption schedule is the reverse of the encryption schedule",
+      "sourceIds": [
+        "seed-wikipedia"
+      ],
+      "dependencies": [
+        "seed-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Only the all-zero key has published per-round subkeys; the other three vectors validate the schedule indirectly through their ciphertexts."
+    },
+    {
+      "id": "seed-calc-sboxes-g",
+      "entryId": "seed-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 4269 Appendix A S0, S1 and SS0-SS3, the mask definitions m0=FC, m1=F3, m2=CF, m3=3F, and deterministic G/F samples",
+      "expected": "S0 and S1 each have 256 entries; all four SS-boxes are reproduced from S0/S1 and the masks for all 256 inputs; S0[0]=A9, S1[0]=38, S0[255]=9A, S1[255]=B7; G(00000000)=B829B829, G(01234567)=27E4246B and F(K1,08090A0B0C0D0E0F)=8080BE54C0EF8C18",
+      "sourceIds": [
+        "seed-wikipedia"
+      ],
+      "dependencies": [
+        "seed-teaching.mjs",
+        "sboxes.json",
+        "vectors.json"
+      ],
+      "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+    },
+    {
+      "id": "seed-calc-roundtrip",
+      "entryId": "seed-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Three fixed keys (B.1 zero key, B.3 key and B.4 key) times eight deterministic plaintext patterns, including the B.1 and B.2 official plaintexts",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three keys produce three pairwise distinct schedules",
+      "sourceIds": [
+        "seed-wikipedia"
+      ],
+      "dependencies": [
+        "seed-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "seed-r139-formal",
+      "entryId": "seed-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "SEED 韩国内对称加密 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "seed-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

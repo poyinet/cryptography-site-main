@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "goldwasser-micali-details",
+  "sources": [
+    {
+      "id": "goldwasser-micali-wikipedia",
+      "title": "Wikipedia search entry for Goldwasser-Micali 概率加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Goldwasser-Micali%20%E6%A6%82%E7%8E%87%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Goldwasser-Micali 概率加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "goldwasser-micali-r139-principle",
+          "entryId": "goldwasser-micali-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Goldwasser-Micali 概率加密（Goldwasser-Micali Probabilistic Encryption）。### 逐位加密\n\nGoldwasser–Micali（GM）每次只加密一个比特。公钥是 `(N,x)`，其中 `N=pq`，`x` 是模 `N` 的二次非剩余；私钥是 `p,q`。加密比特 `m_i` 时选随机 `y`，计算 `c_i=y²·x^{m_i} mod N`：比特 0 得到二次剩余，比特 1 得到非剩余。### 解密与同态\n\n持有 `p,q` 的一方可判断 `c_i` 是否为模 `N` 的二次剩余，从而恢复比特。两个密文相乘对应两个比特的异或：`E(b1)·E(b2)=E(b1⊕b2)`。它因此是 XOR 同态的，但不是加法同态。### 安全定义\n\nGM 的划时代意义不是效率，而是首次给出“概率公钥加密”和“语义安全”的可证明定义：在二次剩余假设下，密文不泄露明文的任何多项式可计算信息。",
+            "en": "**Theorem**: Goldwasser-Micali Probabilistic Encryption (Goldwasser-Micali 概率加密).### One bit at a time\n\nGoldwasser–Micali (GM) encrypts a single bit per operation."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        },
+        {
+          "id": "goldwasser-micali-r139-why",
+          "entryId": "goldwasser-micali-details",
+          "section": "why",
+          "statement": {
+            "zh": "GM 回答了“公钥加密到底应该安全到什么程度”。在它之前，人们常以“不能恢复明文”作为标准；GM 提出语义安全：给定密文，攻击者猜不出明文的任何函数，优于直接猜。它的第二个贡献是概率加密：同一比特每次加密都不同，避免攻击者用候选明文重新加密来比对。现代 IND-CPA 定义就沿着这条线发展。",
+            "en": "GM answered the question “how secure should public-key encryption be?” Before it, “the attacker cannot recover the plaintext” was often the standard.GM introduced semantic security: given a ciphertext, the adversary cannot guess any function of the plaintext better than guessing without the ciphertext."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        },
+        {
+          "id": "goldwasser-micali-r139-used",
+          "entryId": "goldwasser-micali-details",
+          "section": "used",
+          "statement": {
+            "zh": "GM 因为膨胀过大，很少直接用于批量数据；它的价值在理论构造和协议子程序：零知识证明、多方计算、隐私信息检索、同态 XOR 的小型电路。读这条时应把它当作“语义安全的里程碑”，而不是推荐实际部署的加密方案。",
+            "en": "Because of its expansion, GM is rarely used for bulk data.Its value is in theoretical constructions and protocol subroutines: zero-knowledge proofs, secure multiparty computation, private information retrieval and small XOR-homomorphic circuits."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        },
+        {
+          "id": "goldwasser-micali-r139-broken",
+          "entryId": "goldwasser-micali-details",
+          "section": "broken",
+          "statement": {
+            "zh": "GM 每加密一个比特，密文约 `|N|` 位；加密一段消息会产生数百倍膨胀，速度也慢。它只支持 XOR 同态，不能做普通加法或乘法。原方案不是 IND-CCA2 安全的；工程实现还要保证 `x` 确实是二次非剩余、`N` 是两个大素数之积，并且随机数 `y` 与 `N` 互素。实际系统不会用它替代 AES 或 RSA-OAEP。",
+            "en": "GM encrypts one bit into roughly `|N|` bits; a message expands by hundreds of times and encryption is slow.It supports XOR homomorphism only, not ordinary addition or multiplication."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        },
+        {
+          "id": "goldwasser-micali-r139-history",
+          "entryId": "goldwasser-micali-details",
+          "section": "history",
+          "statement": {
+            "zh": "Goldwasser 与 Micali 在 STOC 1982 发表 “Probabilistic Encryption & How to Play Mental Poker, Keeping Secret All Partial Information”，1984 年在 `Journal of Computer and System Sciences` 28(2):270–299 发表期刊版 “Probabilistic Encryption”。这篇论文奠定了语义安全、概率加密和多项式时间不可区分性的语言；后来的 IND-CPA、IND-CCA 定义都在这条传统上扩展。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Goldwasser-Micali 概率加密的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "Goldwasser and Micali presented “Probabilistic Encryption & How to Play Mental Poker, Keeping Secret All Partial Information” at STOC 1982 and published the journal version “Probabilistic Encryption” in `Journal of Computer and System Sciences` 28(2):270–299 in 1984.The paper established the language of semantic security, probabilistic encryption and polynomial-time indistinguishability."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        },
+        {
+          "id": "goldwasser-micali-r139-refs",
+          "entryId": "goldwasser-micali-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Goldwasser-Micali 概率加密.https://zh.wikipedia.org/w/index.php?search=Goldwasser-Micali%20%E6%A6%82%E7%8E%87%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Goldwasser-Micali 概率加密.https://zh.wikipedia.org/w/index.php?search=Goldwasser-Micali%20%E6%A6%82%E7%8E%87%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "goldwasser-micali-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "goldwasser-micali-wikipedia"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "goldwasser-micali-r139-principle",
+      "entryId": "goldwasser-micali-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Goldwasser-Micali 概率加密（Goldwasser-Micali Probabilistic Encryption）。### 逐位加密\n\nGoldwasser–Micali（GM）每次只加密一个比特。公钥是 `(N,x)`，其中 `N=pq`，`x` 是模 `N` 的二次非剩余；私钥是 `p,q`。加密比特 `m_i` 时选随机 `y`，计算 `c_i=y²·x^{m_i} mod N`：比特 0 得到二次剩余，比特 1 得到非剩余。### 解密与同态\n\n持有 `p,q` 的一方可判断 `c_i` 是否为模 `N` 的二次剩余，从而恢复比特。两个密文相乘对应两个比特的异或：`E(b1)·E(b2)=E(b1⊕b2)`。它因此是 XOR 同态的，但不是加法同态。### 安全定义\n\nGM 的划时代意义不是效率，而是首次给出“概率公钥加密”和“语义安全”的可证明定义：在二次剩余假设下，密文不泄露明文的任何多项式可计算信息。",
+        "en": "**Theorem**: Goldwasser-Micali Probabilistic Encryption (Goldwasser-Micali 概率加密).### One bit at a time\n\nGoldwasser–Micali (GM) encrypts a single bit per operation."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-r139-why",
+      "entryId": "goldwasser-micali-details",
+      "section": "why",
+      "statement": {
+        "zh": "GM 回答了“公钥加密到底应该安全到什么程度”。在它之前，人们常以“不能恢复明文”作为标准；GM 提出语义安全：给定密文，攻击者猜不出明文的任何函数，优于直接猜。它的第二个贡献是概率加密：同一比特每次加密都不同，避免攻击者用候选明文重新加密来比对。现代 IND-CPA 定义就沿着这条线发展。",
+        "en": "GM answered the question “how secure should public-key encryption be?” Before it, “the attacker cannot recover the plaintext” was often the standard.GM introduced semantic security: given a ciphertext, the adversary cannot guess any function of the plaintext better than guessing without the ciphertext."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-r139-used",
+      "entryId": "goldwasser-micali-details",
+      "section": "used",
+      "statement": {
+        "zh": "GM 因为膨胀过大，很少直接用于批量数据；它的价值在理论构造和协议子程序：零知识证明、多方计算、隐私信息检索、同态 XOR 的小型电路。读这条时应把它当作“语义安全的里程碑”，而不是推荐实际部署的加密方案。",
+        "en": "Because of its expansion, GM is rarely used for bulk data.Its value is in theoretical constructions and protocol subroutines: zero-knowledge proofs, secure multiparty computation, private information retrieval and small XOR-homomorphic circuits."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-r139-broken",
+      "entryId": "goldwasser-micali-details",
+      "section": "broken",
+      "statement": {
+        "zh": "GM 每加密一个比特，密文约 `|N|` 位；加密一段消息会产生数百倍膨胀，速度也慢。它只支持 XOR 同态，不能做普通加法或乘法。原方案不是 IND-CCA2 安全的；工程实现还要保证 `x` 确实是二次非剩余、`N` 是两个大素数之积，并且随机数 `y` 与 `N` 互素。实际系统不会用它替代 AES 或 RSA-OAEP。",
+        "en": "GM encrypts one bit into roughly `|N|` bits; a message expands by hundreds of times and encryption is slow.It supports XOR homomorphism only, not ordinary addition or multiplication."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-r139-history",
+      "entryId": "goldwasser-micali-details",
+      "section": "history",
+      "statement": {
+        "zh": "Goldwasser 与 Micali 在 STOC 1982 发表 “Probabilistic Encryption & How to Play Mental Poker, Keeping Secret All Partial Information”，1984 年在 `Journal of Computer and System Sciences` 28(2):270–299 发表期刊版 “Probabilistic Encryption”。这篇论文奠定了语义安全、概率加密和多项式时间不可区分性的语言；后来的 IND-CPA、IND-CCA 定义都在这条传统上扩展。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Goldwasser-Micali 概率加密的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "Goldwasser and Micali presented “Probabilistic Encryption & How to Play Mental Poker, Keeping Secret All Partial Information” at STOC 1982 and published the journal version “Probabilistic Encryption” in `Journal of Computer and System Sciences` 28(2):270–299 in 1984.The paper established the language of semantic security, probabilistic encryption and polynomial-time indistinguishability."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    },
+    {
+      "id": "goldwasser-micali-r139-refs",
+      "entryId": "goldwasser-micali-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Goldwasser-Micali 概率加密.https://zh.wikipedia.org/w/index.php?search=Goldwasser-Micali%20%E6%A6%82%E7%8E%87%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Goldwasser-Micali 概率加密.https://zh.wikipedia.org/w/index.php?search=Goldwasser-Micali%20%E6%A6%82%E7%8E%87%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "goldwasser-micali-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

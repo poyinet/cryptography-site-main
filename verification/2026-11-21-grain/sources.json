@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "grain-details",
+  "sources": [
+    {
+      "id": "grain-wikipedia",
+      "title": "Wikipedia search entry for GRAIN 流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: GRAIN 流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "grain-r139-principle",
+          "entryId": "grain-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：GRAIN 流密码（GRAIN）。### 80 位密钥加 64 位 IV 的硬件流密码\n\nGRAIN 把 80 位密钥 K 装入 80 位非线性反馈移位寄存器（NFSR）B，把 64 位 IV 与 16 位全 1 常量装入 80 位线性反馈移位寄存器（LFSR）S。LFSR 的线性递推保证长周期，NFSR 的二次、三次项提供非线性，输出函数再把两边抽头混合成一位密钥流。### 160 拍初始化\n\n装载后先空转 160 拍：每拍照常更新 B 和 S，但把输出位异或回两个反馈端，使 K 与 IV 的每一位扩散到整个 160 位状态。160 拍后才开始输出：\n\nz_t = ⊕_{i∈A} b_{t+i} ⊕ h(s_{t+3}, s_{t+25}, s_{t+46}, s_{t+64}, b_{t+63})，A={1,2,4,10,31,43,56}。### 家族与标准\n\nGrain-128 把密钥/IV 扩到 128/96 位、初始化 256 拍；Grain-128a 增加可选认证，进入 ISO/IEC 29167-13 的 RFID 密码套件；Grain-128AEAD v2 参加 NIST 轻量密码竞赛，是决赛中唯一的流密码。",
+            "en": "**Algorithm**: GRAIN (GRAIN 流密码).### A hardware stream cipher with an 80-bit key and 64-bit IV\n\nGRAIN loads an 80-bit key K into an 80-bit nonlinear feedback shift register (NFSR) B, and a 64-bit IV plus a 16-bit all-ones constant into an 80-bit linear feedback shift register (LFSR) S."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        },
+        {
+          "id": "grain-r139-why",
+          "entryId": "grain-details",
+          "section": "why",
+          "statement": {
+            "zh": "GRAIN 的设计目标不是软件吞吐，而是门数、功耗和存储的极小化。一个 80 位 LFSR、一个 80 位 NFSR 和组合滤波函数就能产生密钥流，不需要 AES 的 S 盒或大块查找表；最简实现每拍只输出 1 位，也可以通过展开到 16 位/拍换取速度。这使它适合 RFID 标签、无线传感器和功耗预算极紧的嵌入式安全启动。Grain v1 入选 eSTREAM 硬件 portfolio，Grain-128a 被 ISO/IEC 29167-13 采纳，说明它的定位是“约束环境中的专用流密码”，而不是通用服务器加密。",
+            "en": "GRAIN targets gate count, power and memory, not software throughput.One 80-bit LFSR, one 80-bit NFSR and a combinational filter produce the keystream without AES S-boxes or large lookup tables."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        },
+        {
+          "id": "grain-r139-used",
+          "entryId": "grain-details",
+          "section": "used",
+          "statement": {
+            "zh": "Grain-128A 在 ISO/IEC 18000 系列空中接口上提供 RFID 标签与读写器之间的认证和加密，认证服务是可选项；Grain-128AEAD 面向需要同时保护机密性与完整性的轻量物联网链路。Grain v1 更多出现在硬件加密核、传感器节点和密码学教学/分析中。它也可以作为伪随机位发生器，但一旦用于加密，就必须把密钥流与明文异或并严格遵守 IV 规则。",
+            "en": "Grain-128A provides authentication and encryption between RFID tags and interrogators over ISO/IEC 18000 air interfaces, with authentication as an optional service.Grain-128AEAD targets lightweight IoT links that need confidentiality and integrity together."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        },
+        {
+          "id": "grain-r139-broken",
+          "entryId": "grain-details",
+          "section": "broken",
+          "statement": {
+            "zh": "GRAIN 是同步流密码：同一密钥与同一 IV 重复使用，两条密钥流相同，密文的异或就是明文的异或。Grain v1 本身不提供认证；Grain-128a 的认证是协议可选能力，部署时必须真正启用并校验标签，否则攻击者可以篡改密文而不被发现。初始化轮数是安全边界的一部分。Grain v1 用 160 拍、Grain-128 用 256 拍，都是为了充分扩散；把初始化缩减到几十拍会暴露立方攻击、猜测确定攻击和近碰撞分析。公开结果主要针对缩减轮或弱化初始化，完整 Grain v1 还没有实用破译，但这不等于可以削减轮数。位串行硬件实现的功耗和电磁泄漏还会泄露状态；在物理对手面前，需要掩码、双轨或恒定功耗设计。算法安全与实现安全要分开验收。",
+            "en": "GRAIN is a synchronous stream cipher: reusing the same key and IV reproduces the same keystream, and the XOR of two ciphertexts reveals the XOR of the plaintexts.Grain v1 has no built-in authentication."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        },
+        {
+          "id": "grain-r139-history",
+          "entryId": "grain-details",
+          "section": "history",
+          "statement": {
+            "zh": "Hell、Johansson 与 Meier 在 2005 年提交 eSTREAM，Grain v1 进入硬件 portfolio。Grain-128 在 2006 年把密钥扩到 128 位；Grain-128a 在 2011 年加入可选认证，随后成为 ISO/IEC 29167-13 的 RFID 密码套件。Grain-128AEAD v2 进入 NIST 轻量密码标准化决赛，是最后一轮唯一的流密码。这条线展示了“极小硬件”设计的演进：先解决门数，再补密钥长度，最后补认证与 AEAD。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：GRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Hell, Johansson and Meier submitted Grain to eSTREAM in 2005, and Grain v1 entered the hardware portfolio.Grain-128 moved to a 128-bit key in 2006; Grain-128a added optional authentication in 2011 and later became the ISO/IEC 29167-13 RFID crypto suite."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        },
+        {
+          "id": "grain-r139-refs",
+          "entryId": "grain-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for GRAIN 流密码.https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for GRAIN 流密码.https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "grain-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "grain-wikipedia"
+      ]
+    },
+    {
+      "id": "grain-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "grain-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "grain-r139-principle",
+      "entryId": "grain-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：GRAIN 流密码（GRAIN）。### 80 位密钥加 64 位 IV 的硬件流密码\n\nGRAIN 把 80 位密钥 K 装入 80 位非线性反馈移位寄存器（NFSR）B，把 64 位 IV 与 16 位全 1 常量装入 80 位线性反馈移位寄存器（LFSR）S。LFSR 的线性递推保证长周期，NFSR 的二次、三次项提供非线性，输出函数再把两边抽头混合成一位密钥流。### 160 拍初始化\n\n装载后先空转 160 拍：每拍照常更新 B 和 S，但把输出位异或回两个反馈端，使 K 与 IV 的每一位扩散到整个 160 位状态。160 拍后才开始输出：\n\nz_t = ⊕_{i∈A} b_{t+i} ⊕ h(s_{t+3}, s_{t+25}, s_{t+46}, s_{t+64}, b_{t+63})，A={1,2,4,10,31,43,56}。### 家族与标准\n\nGrain-128 把密钥/IV 扩到 128/96 位、初始化 256 拍；Grain-128a 增加可选认证，进入 ISO/IEC 29167-13 的 RFID 密码套件；Grain-128AEAD v2 参加 NIST 轻量密码竞赛，是决赛中唯一的流密码。",
+        "en": "**Algorithm**: GRAIN (GRAIN 流密码).### A hardware stream cipher with an 80-bit key and 64-bit IV\n\nGRAIN loads an 80-bit key K into an 80-bit nonlinear feedback shift register (NFSR) B, and a 64-bit IV plus a 16-bit all-ones constant into an 80-bit linear feedback shift register (LFSR) S."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    },
+    {
+      "id": "grain-r139-why",
+      "entryId": "grain-details",
+      "section": "why",
+      "statement": {
+        "zh": "GRAIN 的设计目标不是软件吞吐，而是门数、功耗和存储的极小化。一个 80 位 LFSR、一个 80 位 NFSR 和组合滤波函数就能产生密钥流，不需要 AES 的 S 盒或大块查找表；最简实现每拍只输出 1 位，也可以通过展开到 16 位/拍换取速度。这使它适合 RFID 标签、无线传感器和功耗预算极紧的嵌入式安全启动。Grain v1 入选 eSTREAM 硬件 portfolio，Grain-128a 被 ISO/IEC 29167-13 采纳，说明它的定位是“约束环境中的专用流密码”，而不是通用服务器加密。",
+        "en": "GRAIN targets gate count, power and memory, not software throughput.One 80-bit LFSR, one 80-bit NFSR and a combinational filter produce the keystream without AES S-boxes or large lookup tables."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    },
+    {
+      "id": "grain-r139-used",
+      "entryId": "grain-details",
+      "section": "used",
+      "statement": {
+        "zh": "Grain-128A 在 ISO/IEC 18000 系列空中接口上提供 RFID 标签与读写器之间的认证和加密，认证服务是可选项；Grain-128AEAD 面向需要同时保护机密性与完整性的轻量物联网链路。Grain v1 更多出现在硬件加密核、传感器节点和密码学教学/分析中。它也可以作为伪随机位发生器，但一旦用于加密，就必须把密钥流与明文异或并严格遵守 IV 规则。",
+        "en": "Grain-128A provides authentication and encryption between RFID tags and interrogators over ISO/IEC 18000 air interfaces, with authentication as an optional service.Grain-128AEAD targets lightweight IoT links that need confidentiality and integrity together."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    },
+    {
+      "id": "grain-r139-broken",
+      "entryId": "grain-details",
+      "section": "broken",
+      "statement": {
+        "zh": "GRAIN 是同步流密码：同一密钥与同一 IV 重复使用，两条密钥流相同，密文的异或就是明文的异或。Grain v1 本身不提供认证；Grain-128a 的认证是协议可选能力，部署时必须真正启用并校验标签，否则攻击者可以篡改密文而不被发现。初始化轮数是安全边界的一部分。Grain v1 用 160 拍、Grain-128 用 256 拍，都是为了充分扩散；把初始化缩减到几十拍会暴露立方攻击、猜测确定攻击和近碰撞分析。公开结果主要针对缩减轮或弱化初始化，完整 Grain v1 还没有实用破译，但这不等于可以削减轮数。位串行硬件实现的功耗和电磁泄漏还会泄露状态；在物理对手面前，需要掩码、双轨或恒定功耗设计。算法安全与实现安全要分开验收。",
+        "en": "GRAIN is a synchronous stream cipher: reusing the same key and IV reproduces the same keystream, and the XOR of two ciphertexts reveals the XOR of the plaintexts.Grain v1 has no built-in authentication."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    },
+    {
+      "id": "grain-r139-history",
+      "entryId": "grain-details",
+      "section": "history",
+      "statement": {
+        "zh": "Hell、Johansson 与 Meier 在 2005 年提交 eSTREAM，Grain v1 进入硬件 portfolio。Grain-128 在 2006 年把密钥扩到 128 位；Grain-128a 在 2011 年加入可选认证，随后成为 ISO/IEC 29167-13 的 RFID 密码套件。Grain-128AEAD v2 进入 NIST 轻量密码标准化决赛，是最后一轮唯一的流密码。这条线展示了“极小硬件”设计的演进：先解决门数，再补密钥长度，最后补认证与 AEAD。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：GRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Hell, Johansson and Meier submitted Grain to eSTREAM in 2005, and Grain v1 entered the hardware portfolio.Grain-128 moved to a 128-bit key in 2006; Grain-128a added optional authentication in 2011 and later became the ISO/IEC 29167-13 RFID crypto suite."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    },
+    {
+      "id": "grain-r139-refs",
+      "entryId": "grain-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for GRAIN 流密码.https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for GRAIN 流密码.https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "grain-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

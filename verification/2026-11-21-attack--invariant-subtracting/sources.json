@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--invariant-subtracting-details",
+  "sources": [
+    {
+      "id": "attack--invariant-subtracting-wikipedia",
+      "title": "Wikipedia search entry for 不变量子空间攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 不变量子空间攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--invariant-subtracting-r139-principle",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：不变量子空间攻击（Invariant Subspace Attack）。### 仿射子空间与轮函数\n\n设分组长度为 n，轮函数 F_K(x)=F(x⊕K)。取仿射子空间 u⊕A（A 为线性子空间）。若 F 把 u⊕A 整体映到 v⊕A：\n\n当轮密钥 K 落在 u⊕v⊕A 时，F_K(v⊕A)=F((v⊕A)⊕K)=F(u⊕A)=v⊕A，即该子空间在该轮被保持。### 多轮保持与弱密钥\n\n若每一轮的轮密钥都属于相应的 coset，则整个加密满足 E_K(v⊕A)=v⊕A。弱密钥个数为 |A|。PRINTcipher-48 的 80 位密钥中有 2^52 个弱密钥，PRINTcipher-96 的 160 位密钥中有 2^102 个；对弱密钥只需极少选择明文即可把 E_K 与随机置换区分开。",
+            "en": "**Attack**: Invariant Subspace Attack (不变量子空间攻击).### Affine subspaces and the round function\n\nLet the block size be n and the round function be F_K(x)=F(x⊕K)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--invariant-subtracting-r139-why",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "why",
+          "statement": {
+            "zh": "不变量子空间攻击利用的是结构性不变量，不依赖概率近似，也不要求恢复每一轮密钥。它说明分组密码的安全不仅取决于 S 盒的非线性，还取决于轮常数、密钥调度和线性层的组合是否让某个子空间在弱密钥下闭合。差分和线性分析追踪概率偏差；不变量子空间追踪概率为 1 的轨道。目录旧译“不变量相减”指的就是这条路线，规范名称是 invariant subspace attack；该条目不把不存在的 “invariant subtract” 论文当作来源。",
+            "en": "### Why it is separate\n\nAn invariant-subspace attack uses a structural invariant, not a probabilistic approximation, and does not require recovering each round key.It shows that block-cipher security depends not only on S-box nonlinearity but also on whether round constants, key schedule and linear layer leave a subspace closed for weak keys."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--invariant-subtracting-r139-used",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.选候选仿射子空间 u⊕A，检查线性层是否保持 A。2.计算一轮 F 在 u⊕A 上的像，若为 v⊕A 则得到条件。3.解出弱密钥 coset u⊕v⊕A。4.检查密钥调度是否让所有轮密钥落入对应 coset。5.用选择明文验证 E_K(v⊕A)=v⊕A，并估计弱密钥比例。### 不能怎么用\n\n不能把弱密钥区分器说成“破解全部密钥”；不能忽略轮常数和密钥调度；不能把 PRINTcipher 的参数直接套到其他轻量级密码。",
+            "en": "### Correct use\n\n1.Choose a candidate affine subspace u⊕A and check that the linear layer preserves A."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--invariant-subtracting-r139-broken",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.弱密钥限制：只对满足 coset 条件的密钥成立，比例 |A|/2^k 可能很小。2.轮常数与密钥调度：只要某轮常数或轮密钥把状态移出子空间，多轮不变量即断裂。3.区分器不等于密钥恢复：它证明弱密钥存在，但不自动给出主密钥。4.设计修复：增加非线性轮常数、让轮密钥跨 coset、或在线性层引入扩散；修复后必须重新搜索不变量。",
+            "en": "### Failure conditions\n\n1.Weak-key restriction: the property holds only for keys in the coset, and the fraction |A|/2^k may be tiny."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--invariant-subtracting-r139-history",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "history",
+          "statement": {
+            "zh": "2011 年 Leander、Abdelraheem、AlKhzaimi 与 Zenner 在 CRYPTO 2011 上用不变量子空间攻击分析 PRINTcipher，给出 2^52/2^80 与 2^102/2^160 的弱密钥集。### 后续版本\n\n2015 年 Leander、Minaud 与 Rønjom 把不变量子空间的搜索做成通用算法，应用到 Robin、iSCREAM 与 Zorro，弱密钥密度可达 2^-32。该条目以 2011 年 PRINTcipher 论文为主，2015 年论文只用于说明方法的一般化。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### Historical location\n\nIn 2011 Leander, Abdelraheem, AlKhzaimi and Zenner analyzed PRINTcipher with the invariant-subspace attack at CRYPTO 2011, giving weak-key sets of 2^52/2^80 and 2^102/2^160.### Later version\n\nIn 2015 Leander, Minaud and Rønjom turned invariant-subspace detection into a generic algorithm and applied it to Robin, iSCREAM and Zorro, with weak-key density up to 2^-32."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--invariant-subtracting-r139-refs",
+          "entryId": "attack--invariant-subtracting-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 不变量子空间攻击.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 不变量子空间攻击.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--invariant-subtracting-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--invariant-subtracting-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--invariant-subtracting-r139-principle",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：不变量子空间攻击（Invariant Subspace Attack）。### 仿射子空间与轮函数\n\n设分组长度为 n，轮函数 F_K(x)=F(x⊕K)。取仿射子空间 u⊕A（A 为线性子空间）。若 F 把 u⊕A 整体映到 v⊕A：\n\n当轮密钥 K 落在 u⊕v⊕A 时，F_K(v⊕A)=F((v⊕A)⊕K)=F(u⊕A)=v⊕A，即该子空间在该轮被保持。### 多轮保持与弱密钥\n\n若每一轮的轮密钥都属于相应的 coset，则整个加密满足 E_K(v⊕A)=v⊕A。弱密钥个数为 |A|。PRINTcipher-48 的 80 位密钥中有 2^52 个弱密钥，PRINTcipher-96 的 160 位密钥中有 2^102 个；对弱密钥只需极少选择明文即可把 E_K 与随机置换区分开。",
+        "en": "**Attack**: Invariant Subspace Attack (不变量子空间攻击).### Affine subspaces and the round function\n\nLet the block size be n and the round function be F_K(x)=F(x⊕K)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-r139-why",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "why",
+      "statement": {
+        "zh": "不变量子空间攻击利用的是结构性不变量，不依赖概率近似，也不要求恢复每一轮密钥。它说明分组密码的安全不仅取决于 S 盒的非线性，还取决于轮常数、密钥调度和线性层的组合是否让某个子空间在弱密钥下闭合。差分和线性分析追踪概率偏差；不变量子空间追踪概率为 1 的轨道。目录旧译“不变量相减”指的就是这条路线，规范名称是 invariant subspace attack；该条目不把不存在的 “invariant subtract” 论文当作来源。",
+        "en": "### Why it is separate\n\nAn invariant-subspace attack uses a structural invariant, not a probabilistic approximation, and does not require recovering each round key.It shows that block-cipher security depends not only on S-box nonlinearity but also on whether round constants, key schedule and linear layer leave a subspace closed for weak keys."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-r139-used",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.选候选仿射子空间 u⊕A，检查线性层是否保持 A。2.计算一轮 F 在 u⊕A 上的像，若为 v⊕A 则得到条件。3.解出弱密钥 coset u⊕v⊕A。4.检查密钥调度是否让所有轮密钥落入对应 coset。5.用选择明文验证 E_K(v⊕A)=v⊕A，并估计弱密钥比例。### 不能怎么用\n\n不能把弱密钥区分器说成“破解全部密钥”；不能忽略轮常数和密钥调度；不能把 PRINTcipher 的参数直接套到其他轻量级密码。",
+        "en": "### Correct use\n\n1.Choose a candidate affine subspace u⊕A and check that the linear layer preserves A."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-r139-broken",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.弱密钥限制：只对满足 coset 条件的密钥成立，比例 |A|/2^k 可能很小。2.轮常数与密钥调度：只要某轮常数或轮密钥把状态移出子空间，多轮不变量即断裂。3.区分器不等于密钥恢复：它证明弱密钥存在，但不自动给出主密钥。4.设计修复：增加非线性轮常数、让轮密钥跨 coset、或在线性层引入扩散；修复后必须重新搜索不变量。",
+        "en": "### Failure conditions\n\n1.Weak-key restriction: the property holds only for keys in the coset, and the fraction |A|/2^k may be tiny."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-r139-history",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "history",
+      "statement": {
+        "zh": "2011 年 Leander、Abdelraheem、AlKhzaimi 与 Zenner 在 CRYPTO 2011 上用不变量子空间攻击分析 PRINTcipher，给出 2^52/2^80 与 2^102/2^160 的弱密钥集。### 后续版本\n\n2015 年 Leander、Minaud 与 Rønjom 把不变量子空间的搜索做成通用算法，应用到 Robin、iSCREAM 与 Zorro，弱密钥密度可达 2^-32。该条目以 2011 年 PRINTcipher 论文为主，2015 年论文只用于说明方法的一般化。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### Historical location\n\nIn 2011 Leander, Abdelraheem, AlKhzaimi and Zenner analyzed PRINTcipher with the invariant-subspace attack at CRYPTO 2011, giving weak-key sets of 2^52/2^80 and 2^102/2^160.### Later version\n\nIn 2015 Leander, Minaud and Rønjom turned invariant-subspace detection into a generic algorithm and applied it to Robin, iSCREAM and Zorro, with weak-key density up to 2^-32."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--invariant-subtracting-r139-refs",
+      "entryId": "attack--invariant-subtracting-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 不变量子空间攻击.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 不变量子空间攻击.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

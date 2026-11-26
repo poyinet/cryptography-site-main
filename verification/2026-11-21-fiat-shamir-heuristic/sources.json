@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "fiat-shamir-heuristic-details",
+  "sources": [
+    {
+      "id": "fiat-shamir-heuristic-wikipedia",
+      "title": "Wikipedia search entry for Fiat-Shamir 启发式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Fiat-Shamir 启发式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "fiat-shamir-heuristic-r139-principle",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Fiat-Shamir 启发式（Fiat-Shamir Heuristic）。### 三次交互压缩成一次哈希\n\nSigma 协议由承诺 a、挑战 c、响应 z 三步组成。Fiat–Shamir 变换把验证者的随机挑战改成 c=H(x,a)，证明者只发送 (a,z)；验证者重算 c，并检查 (x,a,c,z) 是否被原协议接受。### Schnorr 实例\n\n在 Schnorr 中，证明者取随机 r，计算 R=g^r；令 c=H(x||R)、s=r+c·x，输出 (R,s)。验证者检查 g^s=R·y^c。哈希把交互挑战变成可验证的伪随机挑战，同时把陈述或消息绑定进来。### 强变换与知识可靠性\n\n只哈希承诺 a 的弱变换不绑定陈述 x 与公共参数，攻击者可搜索对虚假陈述有利的挑战；强变换把 x、a 和所有公共输入都放进哈希。随机预言机模型下，FS 保持特殊可靠性与知识提取；对格签名还要用拒绝采样（Fiat–Shamir with aborts）。",
+            "en": "**Theorem**: Fiat-Shamir Heuristic (Fiat-Shamir 启发式).### Three moves compressed into one hash\n\nA sigma protocol has a commitment a, a challenge c and a response z."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-heuristic-r139-why",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "why",
+          "statement": {
+            "zh": "FS 把交互证明变成一条消息的 NIZK 或签名，消除在线验证者，适合区块链、凭证、TLS 和嵌入式设备。它让 Schnorr/EdDSA 这类签名只需一次哈希和一次群运算；在 zkSNARK 中，FS 把多项式恒等式检查压成链上可验证的单一证明。成本优势来自哈希，而不是额外可信设置。",
+            "en": "FS turns an interactive proof into a one-message NIZK or signature, removing the online verifier and suiting blockchains, credentials, TLS and embedded devices.It lets Schnorr/EdDSA signatures use one hash and one group operation; in zkSNARKs FS compresses a polynomial identity check into one proof verifiable on chain."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-heuristic-r139-used",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "used",
+          "statement": {
+            "zh": "Schnorr、EdDSA、Bulletproofs、PLONK、Groth16、Spartan 与 STARK 的验证器都用 FS 派生挑战；Dilithium 使用带拒绝采样的 FS 变体。FROST 门限签名也以 FS 绑定 nonce 承诺与消息。它也用于身份认证与可验证随机函数：验证者只需重算挑战，无需保留交互会话。IRTF CFRG 的 Fiat–Shamir 草案正在统一哈希输入编码、域分离与序列化。",
+            "en": "Schnorr, EdDSA, Bulletproofs, PLONK, Groth16, Spartan and STARK verifiers derive challenges with FS; Dilithium uses a rejection-sampling FS variant.FROST threshold signatures also bind nonce commitments and the message through FS."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-heuristic-r139-broken",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "broken",
+          "statement": {
+            "zh": "弱 FS 是真实事故来源：Bulletproofs、Plonk 和 Girault 证明曾因挑战未绑定全部公共值而可伪造（Frozen Heart，CVE-2022-29566）。挑战空间过小可被暴力搜索；遗漏“最后挑战”同样会破坏 KZG SNARK 的知识可靠性。",
+            "en": "Weak FS has caused real incidents: Bulletproofs, Plonk and Girault proofs were forgeable when the challenge omitted public values (Frozen Heart, CVE-2022-29566).A small challenge space can be brute-forced; omitting the “last challenge” also breaks knowledge soundness of KZG SNARKs."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-heuristic-r139-history",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "history",
+          "statement": {
+            "zh": "Fiat 与 Shamir 1986 年提出把 identification 协议转成签名；Pointcheval–Stern 2000 年给出签名与盲签名的随机预言机安全论证；2016 年“How not to Prove Yourself”区分弱/强变换并指出 Helios 问题；2022 年 Frozen Heart 披露多个生产证明系统；2026 年 CFRG 开始标准化变换。它从智能卡身份认证出发，最终成为 zkSNARK 和现代签名的基础编译器。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Fiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "Fiat and Shamir introduced the identification-to-signature transform in 1986; Pointcheval and Stern gave random-oracle security arguments for signatures and blind signatures in 2000; “How not to Prove Yourself” distinguished weak and strong transforms in 2016 and exposed Helios; Frozen Heart disclosed several production proof systems in 2022; CFRG began standardizing the transform in 2026.It started in smart-card identification and became a foundational compiler for zkSNARKs and modern signatures."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        },
+        {
+          "id": "fiat-shamir-heuristic-r139-refs",
+          "entryId": "fiat-shamir-heuristic-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "fiat-shamir-heuristic-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "fiat-shamir-heuristic-wikipedia"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "fiat-shamir-heuristic-r139-principle",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Fiat-Shamir 启发式（Fiat-Shamir Heuristic）。### 三次交互压缩成一次哈希\n\nSigma 协议由承诺 a、挑战 c、响应 z 三步组成。Fiat–Shamir 变换把验证者的随机挑战改成 c=H(x,a)，证明者只发送 (a,z)；验证者重算 c，并检查 (x,a,c,z) 是否被原协议接受。### Schnorr 实例\n\n在 Schnorr 中，证明者取随机 r，计算 R=g^r；令 c=H(x||R)、s=r+c·x，输出 (R,s)。验证者检查 g^s=R·y^c。哈希把交互挑战变成可验证的伪随机挑战，同时把陈述或消息绑定进来。### 强变换与知识可靠性\n\n只哈希承诺 a 的弱变换不绑定陈述 x 与公共参数，攻击者可搜索对虚假陈述有利的挑战；强变换把 x、a 和所有公共输入都放进哈希。随机预言机模型下，FS 保持特殊可靠性与知识提取；对格签名还要用拒绝采样（Fiat–Shamir with aborts）。",
+        "en": "**Theorem**: Fiat-Shamir Heuristic (Fiat-Shamir 启发式).### Three moves compressed into one hash\n\nA sigma protocol has a commitment a, a challenge c and a response z."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-r139-why",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "why",
+      "statement": {
+        "zh": "FS 把交互证明变成一条消息的 NIZK 或签名，消除在线验证者，适合区块链、凭证、TLS 和嵌入式设备。它让 Schnorr/EdDSA 这类签名只需一次哈希和一次群运算；在 zkSNARK 中，FS 把多项式恒等式检查压成链上可验证的单一证明。成本优势来自哈希，而不是额外可信设置。",
+        "en": "FS turns an interactive proof into a one-message NIZK or signature, removing the online verifier and suiting blockchains, credentials, TLS and embedded devices.It lets Schnorr/EdDSA signatures use one hash and one group operation; in zkSNARKs FS compresses a polynomial identity check into one proof verifiable on chain."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-r139-used",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "used",
+      "statement": {
+        "zh": "Schnorr、EdDSA、Bulletproofs、PLONK、Groth16、Spartan 与 STARK 的验证器都用 FS 派生挑战；Dilithium 使用带拒绝采样的 FS 变体。FROST 门限签名也以 FS 绑定 nonce 承诺与消息。它也用于身份认证与可验证随机函数：验证者只需重算挑战，无需保留交互会话。IRTF CFRG 的 Fiat–Shamir 草案正在统一哈希输入编码、域分离与序列化。",
+        "en": "Schnorr, EdDSA, Bulletproofs, PLONK, Groth16, Spartan and STARK verifiers derive challenges with FS; Dilithium uses a rejection-sampling FS variant.FROST threshold signatures also bind nonce commitments and the message through FS."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-r139-broken",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "broken",
+      "statement": {
+        "zh": "弱 FS 是真实事故来源：Bulletproofs、Plonk 和 Girault 证明曾因挑战未绑定全部公共值而可伪造（Frozen Heart，CVE-2022-29566）。挑战空间过小可被暴力搜索；遗漏“最后挑战”同样会破坏 KZG SNARK 的知识可靠性。",
+        "en": "Weak FS has caused real incidents: Bulletproofs, Plonk and Girault proofs were forgeable when the challenge omitted public values (Frozen Heart, CVE-2022-29566).A small challenge space can be brute-forced; omitting the “last challenge” also breaks knowledge soundness of KZG SNARKs."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-r139-history",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "history",
+      "statement": {
+        "zh": "Fiat 与 Shamir 1986 年提出把 identification 协议转成签名；Pointcheval–Stern 2000 年给出签名与盲签名的随机预言机安全论证；2016 年“How not to Prove Yourself”区分弱/强变换并指出 Helios 问题；2022 年 Frozen Heart 披露多个生产证明系统；2026 年 CFRG 开始标准化变换。它从智能卡身份认证出发，最终成为 zkSNARK 和现代签名的基础编译器。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Fiat-Shamir 启发式的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "Fiat and Shamir introduced the identification-to-signature transform in 1986; Pointcheval and Stern gave random-oracle security arguments for signatures and blind signatures in 2000; “How not to Prove Yourself” distinguished weak and strong transforms in 2016 and exposed Helios; Frozen Heart disclosed several production proof systems in 2022; CFRG began standardizing the transform in 2026.It started in smart-card identification and became a foundational compiler for zkSNARKs and modern signatures."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    },
+    {
+      "id": "fiat-shamir-heuristic-r139-refs",
+      "entryId": "fiat-shamir-heuristic-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Fiat-Shamir 启发式.https://zh.wikipedia.org/w/index.php?search=Fiat-Shamir%20%E5%90%AF%E5%8F%91%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "fiat-shamir-heuristic-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

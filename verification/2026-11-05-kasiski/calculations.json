@@ -1,0 +1,82 @@
+[
+  {
+    "id": "kasiski-calc-printed-observation",
+    "entryId": "kasiski-details",
+    "kind": "known-answer-check",
+    "inputs": "a 20-letter phrase repeated at a distance of 30 under the keyword LEMON, and the same phrase at a distance of 29",
+    "expected": "the source prints that repeated portions of plaintext encrypted with the same portion of the keyword give identical ciphertext segments; at distance 30 (a multiple of 5) the two segments must be identical and at distance 29 they must differ",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "kasiski-calc.mjs"
+    ],
+    "limitations": "A constructed short case designed to isolate the stated condition."
+  },
+  {
+    "id": "kasiski-calc-period-from-distances",
+    "entryId": "kasiski-details",
+    "kind": "method-check",
+    "inputs": "the 1603 repeated 4-letter windows in the Vigenere ciphertext of the 4598-letter sample under LEMON, their distances, and the factors of those distances",
+    "expected": "the source expects the distances to be multiples of the keyword length, acknowledges coincidental repeats, and states that the largest factor occurring most commonly is the most likely length; the ranking must therefore put 5 on top, which is the period planted without telling the analysis",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "kasiski-calc.mjs"
+    ],
+    "limitations": "One planted period on one sample. 9 of 1603 distances were coincidental, which is the caveat the same paragraph prints."
+  },
+  {
+    "id": "kasiski-calc-autocorrelation-route",
+    "entryId": "kasiski-details",
+    "kind": "method-check",
+    "inputs": "the same ciphertext auto-correlated at lags 1..10, counting the positions where the letters agree",
+    "expected": "Example 7.77 prints that lags that are multiples of the period show noticeably higher counts; the multiples of the planted 5 must stand out above the mean of the others",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "kasiski-calc.mjs"
+    ],
+    "limitations": "A second route to the same planted period on the same sample; it agrees with the distance analysis rather than replacing it."
+  },
+  {
+    "id": "kasiski-calc-running-key-defeat",
+    "entryId": "kasiski-details",
+    "kind": "countermeasure-check",
+    "inputs": "the same segment-and-factor analysis applied to a ciphertext whose key is as long as the message and does not repeat, set against the repeating-keyword case",
+    "expected": "the source prints that running-key ciphers prevent cryptanalysis by the Kasiski method; the measure is the number of repeated 4-letter windows against what randomness alone would give, C(W,2)/26^4 = 2.45 for 1500 letters. Measured: the repeating-keyword ciphertext yields 164 windows (66.9 times chance) with 5 on top of the factor ranking; the drawn running key yields 2; twenty further key streams with no period yield 0 to 7 each, mean 2.7, i.e. chance level, and their top factors are coincidences among a couple of distances rather than a keyword length",
+    "sourceIds": [
+      "hac-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "kasiski-calc.mjs"
+    ],
+    "limitations": "The key streams here are generated rather than taken from a book; each is verified to have no period, which is the property the claim rests on, and single-window counts of 0 to 7 are small samples where a factor ranking would be meaningless anyway. The source also warns that a redundant key can still fall to statistical attack."
+  }
+]

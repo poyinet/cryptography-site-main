@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--power-analysis-details",
+  "sources": [
+    {
+      "id": "attack--power-analysis-wikipedia",
+      "title": "Wikipedia search entry for 功耗分析",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8A%9F%E8%80%97%E5%88%86%E6%9E%90",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 功耗分析",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--power-analysis-r139-principle",
+          "entryId": "attack--power-analysis-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：功耗分析（Power Analysis）。功耗分析通过测量密码设备在执行运算时的功耗推断密钥或中间值。简单功耗分析（SPA）直接解读功耗轨迹，差分功耗分析（DPA）则用统计方法把猜测的中间值与大量轨迹相关联。",
+            "en": "**Attack**: Power Analysis (功耗分析).Power analysis infers keys or intermediate values from the power consumption of a cryptographic device during computation."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--power-analysis-r139-why",
+          "entryId": "attack--power-analysis-details",
+          "section": "why",
+          "statement": {
+            "zh": "半导体逻辑门在充放电时消耗功率并产生电磁辐射，功耗因此与执行的指令和处理的数据相关。即使代码走固定执行路径，某些微处理器的微码仍可能带来严重的功耗泄漏，而 DPA 能利用统计方法从噪声中恢复密钥。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Semiconductor logic gates consume power and emit electromagnetic radiation as charge is applied or removed, so power consumption depends on the instructions executed and the data processed.Even constant-execution-path code can have serious power leakage on some microprocessors, and DPA can recover keys from noisy measurements using statistical methods."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--power-analysis-r139-used",
+          "entryId": "attack--power-analysis-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文以智能卡等防篡改设备为主要对象，并指出 DPA 可用于几乎所有对称和非对称算法，甚至可用来逆向分析未知算法和协议。作者还强调这些攻击并不限于实验室中的智能卡，他们从近 50 种不同产品中提取过密钥。",
+            "en": "The paper focuses on tamper-resistant devices such as smart cards and notes that DPA can break implementations of almost any symmetric or asymmetric algorithm, and can even reverse-engineer unknown algorithms and protocols.The authors also stress that the attacks were not limited to smart cards in their lab: they extracted keys from almost 50 different products."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--power-analysis-r139-broken",
+          "entryId": "attack--power-analysis-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御大致分为三类：降低信号（固定执行路径、平衡汉明重量、屏蔽）、加入噪声与随机化时序、以及采用容忍泄漏的设计（如密钥更新和使用计数）。论文指出降低信号大小的做法通常无法把信号降为零；噪声与随机化时序能增加所需样本量，但可能被绕过或补偿；容忍泄漏的设计才是更可靠的方案，高阶 DPA 仍能击败许多对策。### 形式模型。",
+            "en": "Countermeasures fall into three categories: reducing signal size (constant execution path, balanced Hamming weights, shielding), adding noise and randomizing timing, and leak-tolerant design such as key updates and key-use counters.The paper notes that signal-size reduction generally cannot reduce the signal to zero; noise and timing randomization raise the number of required samples but can be bypassed or compensated; leak-tolerant design is the more reliable approach, and high-order DPA can still defeat many countermeasures."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--power-analysis-r139-history",
+          "entryId": "attack--power-analysis-details",
+          "section": "history",
+          "statement": {
+            "zh": "Kocher、Jaffe 和 Jun 在 1999 年的 CRYPTO 论文中系统提出差分功耗分析，并给出 SPA/DPA 的实验结果与防御分类。该工作推动了智能卡等设备的侧信道评估。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：功耗分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "Kocher, Jaffe and Jun introduced differential power analysis systematically in their 1999 CRYPTO paper, presenting experimental SPA/DPA results and a taxonomy of countermeasures.The work helped establish side-channel evaluation for devices such as smart cards."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--power-analysis-r139-refs",
+          "entryId": "attack--power-analysis-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 功耗分析.https://zh.wikipedia.org/w/index.php?search=%E5%8A%9F%E8%80%97%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 功耗分析.https://zh.wikipedia.org/w/index.php?search=%E5%8A%9F%E8%80%97%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--power-analysis-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--power-analysis-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--power-analysis-r139-principle",
+      "entryId": "attack--power-analysis-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：功耗分析（Power Analysis）。功耗分析通过测量密码设备在执行运算时的功耗推断密钥或中间值。简单功耗分析（SPA）直接解读功耗轨迹，差分功耗分析（DPA）则用统计方法把猜测的中间值与大量轨迹相关联。",
+        "en": "**Attack**: Power Analysis (功耗分析).Power analysis infers keys or intermediate values from the power consumption of a cryptographic device during computation."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-r139-why",
+      "entryId": "attack--power-analysis-details",
+      "section": "why",
+      "statement": {
+        "zh": "半导体逻辑门在充放电时消耗功率并产生电磁辐射，功耗因此与执行的指令和处理的数据相关。即使代码走固定执行路径，某些微处理器的微码仍可能带来严重的功耗泄漏，而 DPA 能利用统计方法从噪声中恢复密钥。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Semiconductor logic gates consume power and emit electromagnetic radiation as charge is applied or removed, so power consumption depends on the instructions executed and the data processed.Even constant-execution-path code can have serious power leakage on some microprocessors, and DPA can recover keys from noisy measurements using statistical methods."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-r139-used",
+      "entryId": "attack--power-analysis-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文以智能卡等防篡改设备为主要对象，并指出 DPA 可用于几乎所有对称和非对称算法，甚至可用来逆向分析未知算法和协议。作者还强调这些攻击并不限于实验室中的智能卡，他们从近 50 种不同产品中提取过密钥。",
+        "en": "The paper focuses on tamper-resistant devices such as smart cards and notes that DPA can break implementations of almost any symmetric or asymmetric algorithm, and can even reverse-engineer unknown algorithms and protocols.The authors also stress that the attacks were not limited to smart cards in their lab: they extracted keys from almost 50 different products."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-r139-broken",
+      "entryId": "attack--power-analysis-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御大致分为三类：降低信号（固定执行路径、平衡汉明重量、屏蔽）、加入噪声与随机化时序、以及采用容忍泄漏的设计（如密钥更新和使用计数）。论文指出降低信号大小的做法通常无法把信号降为零；噪声与随机化时序能增加所需样本量，但可能被绕过或补偿；容忍泄漏的设计才是更可靠的方案，高阶 DPA 仍能击败许多对策。### 形式模型。",
+        "en": "Countermeasures fall into three categories: reducing signal size (constant execution path, balanced Hamming weights, shielding), adding noise and randomizing timing, and leak-tolerant design such as key updates and key-use counters.The paper notes that signal-size reduction generally cannot reduce the signal to zero; noise and timing randomization raise the number of required samples but can be bypassed or compensated; leak-tolerant design is the more reliable approach, and high-order DPA can still defeat many countermeasures."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-r139-history",
+      "entryId": "attack--power-analysis-details",
+      "section": "history",
+      "statement": {
+        "zh": "Kocher、Jaffe 和 Jun 在 1999 年的 CRYPTO 论文中系统提出差分功耗分析，并给出 SPA/DPA 的实验结果与防御分类。该工作推动了智能卡等设备的侧信道评估。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：功耗分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "Kocher, Jaffe and Jun introduced differential power analysis systematically in their 1999 CRYPTO paper, presenting experimental SPA/DPA results and a taxonomy of countermeasures.The work helped establish side-channel evaluation for devices such as smart cards."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--power-analysis-r139-refs",
+      "entryId": "attack--power-analysis-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 功耗分析.https://zh.wikipedia.org/w/index.php?search=%E5%8A%9F%E8%80%97%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 功耗分析.https://zh.wikipedia.org/w/index.php?search=%E5%8A%9F%E8%80%97%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--power-analysis-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

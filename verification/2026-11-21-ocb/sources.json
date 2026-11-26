@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ocb-details",
+  "sources": [
+    {
+      "id": "ocb-wikipedia",
+      "title": "Wikipedia search entry for OCB 偏移密码块模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: OCB 偏移密码块模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ocb-r139-principle",
+          "entryId": "ocb-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：OCB 偏移密码块模式（Offset Codebook）。### 偏移与一次通过\n\nOCB3 用 nonce N 派生一串偏移 Δ[i]，每个明文块先 XOR 偏移，再过分组密码，得到密文块；同时把明文块累加进校验和。最后一个块用特殊偏移和长度处理，最终标签由校验和再加密并 XOR 偏移得到。### 关联数据\n\nAD 不加密，但会被带偏移的 MAC 结构压成一个值，最后并入标签。OCB 只需要分组密码的加密方向，所有块可以并行；一个密钥、一次通过，密文只增加标签长度。### 参数\n\nRFC 7253 要求 128 位分组，nonce 最长为 120 位（实际推荐 96 位），标签长度可配；AES-OCB 常用 128 位标签，TLS 草案用 96 位。nonce 必须在同一密钥下唯一。",
+            "en": "**Algorithm**: Offset Codebook (OCB 偏移密码块模式).### Offsets and one pass\n\nOCB3 derives a sequence of offsets Δ[i] from nonce N."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        },
+        {
+          "id": "ocb-r139-why",
+          "entryId": "ocb-details",
+          "section": "why",
+          "statement": {
+            "zh": "OCB 的卖点是一次通过、单密钥、可并行：认证嵌进加密，避免 Encrypt-then-MAC 的两次遍历和两把密钥。在支持 AES 指令的 CPU 上，OCB 的吞吐接近 CTR，适合低延迟网络和嵌入式设备。它也是 AEAD 历史上的关键方案：OCB1 2001，OCB3 2011，RFC 7253 2014；OCB2 在 2019 年被证明完全不安全，说明“版本”必须写清楚，不能把 OCB2 当 OCB3 用。",
+            "en": "OCB’s selling point is one pass, one key and parallelism: authentication is woven into encryption, avoiding the two passes and two keys of Encrypt-then-MAC.On CPUs with AES instructions, OCB throughput approaches CTR, which suits low-latency networks and embedded devices."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        },
+        {
+          "id": "ocb-r139-used",
+          "entryId": "ocb-details",
+          "section": "used",
+          "statement": {
+            "zh": "OCB 用于低延迟网络、磁盘/文件加密、嵌入式协议和部分 TLS 1.2 草案；OCB1 曾是 IEEE 802.11i 的可选 WRAP，OCB2 进入 ISO/IEC 19772:2009，OCB3 是 RFC 7253。工程要点：nonce 唯一；单密钥最多加密 2^48 个块；标签至少 96/128 位；不要把 OCB2 当 OCB3；解密必须先验标签再释放明文。",
+            "en": "OCB is used in low-latency networking, disk/file encryption, embedded protocols and some TLS 1.2 drafts; OCB1 was an optional WRAP in IEEE 802.11i, OCB2 entered ISO/IEC 19772:2009, and OCB3 is RFC 7253.Requirements: unique nonces; at most 2^48 blocks under one key; tags of at least 96/128 bits; never treat OCB2 as OCB3; verify the tag before releasing plaintext."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        },
+        {
+          "id": "ocb-r139-broken",
+          "entryId": "ocb-details",
+          "section": "broken",
+          "statement": {
+            "zh": "OCB 是 nonce-respecting AEAD：同一 key/nonce 加密两条不同消息会同时破坏机密性和认证，攻击者可恢复认证密钥并伪造后续消息。RFC 7253 明确说这种场景应改用 SIV。实现边界：nonce 计数器分区；标签长度绑定；密钥用量上限 2^48 块；解密先验标签；OCB2 的 2019 攻击说明版本和实现必须锁定 OCB3。",
+            "en": "OCB is a nonce-respecting AEAD: encrypting two different messages with the same key and nonce breaks both confidentiality and authenticity, and an attacker can recover authentication secrets and forge later messages.RFC 7253 explicitly points such settings to SIV."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        },
+        {
+          "id": "ocb-r139-history",
+          "entryId": "ocb-details",
+          "section": "history",
+          "statement": {
+            "zh": "OCB1 由 Rogaway、Bellare、Black、Krovetz 在 2001 年提出；OCB2 2004；OCB3 由 Krovetz 与 Rogaway 在 2011 年提出；RFC 7253 于 2014 年发布。OCB2 曾进入 ISO/IEC 19772:2009，但 2019 年被 Inoue–Iwata–Minematsu–Poettering 的论文证明可伪造、可恢复明文。专利：Rogaway 曾持有四项美国专利，后主动让专利失效并把相关 IP 放入公共领域；但其他 AE 专利是否适用仍难以判断，商用前应做 IP 审查。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：OCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "OCB1 was proposed by Rogaway, Bellare, Black and Krovetz in 2001; OCB2 followed in 2004; OCB3 was proposed by Krovetz and Rogaway in 2011; RFC 7253 appeared in 2014.OCB2 entered ISO/IEC 19772:2009 but was shown forgeable and decryptable by Inoue–Iwata–Minematsu–Poettering in 2019."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        },
+        {
+          "id": "ocb-r139-refs",
+          "entryId": "ocb-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for OCB 偏移密码块模式.https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for OCB 偏移密码块模式.https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ocb-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ocb-wikipedia"
+      ]
+    },
+    {
+      "id": "ocb-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ocb-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ocb-r139-principle",
+      "entryId": "ocb-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：OCB 偏移密码块模式（Offset Codebook）。### 偏移与一次通过\n\nOCB3 用 nonce N 派生一串偏移 Δ[i]，每个明文块先 XOR 偏移，再过分组密码，得到密文块；同时把明文块累加进校验和。最后一个块用特殊偏移和长度处理，最终标签由校验和再加密并 XOR 偏移得到。### 关联数据\n\nAD 不加密，但会被带偏移的 MAC 结构压成一个值，最后并入标签。OCB 只需要分组密码的加密方向，所有块可以并行；一个密钥、一次通过，密文只增加标签长度。### 参数\n\nRFC 7253 要求 128 位分组，nonce 最长为 120 位（实际推荐 96 位），标签长度可配；AES-OCB 常用 128 位标签，TLS 草案用 96 位。nonce 必须在同一密钥下唯一。",
+        "en": "**Algorithm**: Offset Codebook (OCB 偏移密码块模式).### Offsets and one pass\n\nOCB3 derives a sequence of offsets Δ[i] from nonce N."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    },
+    {
+      "id": "ocb-r139-why",
+      "entryId": "ocb-details",
+      "section": "why",
+      "statement": {
+        "zh": "OCB 的卖点是一次通过、单密钥、可并行：认证嵌进加密，避免 Encrypt-then-MAC 的两次遍历和两把密钥。在支持 AES 指令的 CPU 上，OCB 的吞吐接近 CTR，适合低延迟网络和嵌入式设备。它也是 AEAD 历史上的关键方案：OCB1 2001，OCB3 2011，RFC 7253 2014；OCB2 在 2019 年被证明完全不安全，说明“版本”必须写清楚，不能把 OCB2 当 OCB3 用。",
+        "en": "OCB’s selling point is one pass, one key and parallelism: authentication is woven into encryption, avoiding the two passes and two keys of Encrypt-then-MAC.On CPUs with AES instructions, OCB throughput approaches CTR, which suits low-latency networks and embedded devices."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    },
+    {
+      "id": "ocb-r139-used",
+      "entryId": "ocb-details",
+      "section": "used",
+      "statement": {
+        "zh": "OCB 用于低延迟网络、磁盘/文件加密、嵌入式协议和部分 TLS 1.2 草案；OCB1 曾是 IEEE 802.11i 的可选 WRAP，OCB2 进入 ISO/IEC 19772:2009，OCB3 是 RFC 7253。工程要点：nonce 唯一；单密钥最多加密 2^48 个块；标签至少 96/128 位；不要把 OCB2 当 OCB3；解密必须先验标签再释放明文。",
+        "en": "OCB is used in low-latency networking, disk/file encryption, embedded protocols and some TLS 1.2 drafts; OCB1 was an optional WRAP in IEEE 802.11i, OCB2 entered ISO/IEC 19772:2009, and OCB3 is RFC 7253.Requirements: unique nonces; at most 2^48 blocks under one key; tags of at least 96/128 bits; never treat OCB2 as OCB3; verify the tag before releasing plaintext."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    },
+    {
+      "id": "ocb-r139-broken",
+      "entryId": "ocb-details",
+      "section": "broken",
+      "statement": {
+        "zh": "OCB 是 nonce-respecting AEAD：同一 key/nonce 加密两条不同消息会同时破坏机密性和认证，攻击者可恢复认证密钥并伪造后续消息。RFC 7253 明确说这种场景应改用 SIV。实现边界：nonce 计数器分区；标签长度绑定；密钥用量上限 2^48 块；解密先验标签；OCB2 的 2019 攻击说明版本和实现必须锁定 OCB3。",
+        "en": "OCB is a nonce-respecting AEAD: encrypting two different messages with the same key and nonce breaks both confidentiality and authenticity, and an attacker can recover authentication secrets and forge later messages.RFC 7253 explicitly points such settings to SIV."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    },
+    {
+      "id": "ocb-r139-history",
+      "entryId": "ocb-details",
+      "section": "history",
+      "statement": {
+        "zh": "OCB1 由 Rogaway、Bellare、Black、Krovetz 在 2001 年提出；OCB2 2004；OCB3 由 Krovetz 与 Rogaway 在 2011 年提出；RFC 7253 于 2014 年发布。OCB2 曾进入 ISO/IEC 19772:2009，但 2019 年被 Inoue–Iwata–Minematsu–Poettering 的论文证明可伪造、可恢复明文。专利：Rogaway 曾持有四项美国专利，后主动让专利失效并把相关 IP 放入公共领域；但其他 AE 专利是否适用仍难以判断，商用前应做 IP 审查。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：OCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "OCB1 was proposed by Rogaway, Bellare, Black and Krovetz in 2001; OCB2 followed in 2004; OCB3 was proposed by Krovetz and Rogaway in 2011; RFC 7253 appeared in 2014.OCB2 entered ISO/IEC 19772:2009 but was shown forgeable and decryptable by Inoue–Iwata–Minematsu–Poettering in 2019."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    },
+    {
+      "id": "ocb-r139-refs",
+      "entryId": "ocb-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for OCB 偏移密码块模式.https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for OCB 偏移密码块模式.https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ocb-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

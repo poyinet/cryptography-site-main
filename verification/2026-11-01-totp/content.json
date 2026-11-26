@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for totp: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "totp-details",
+      "inventoryIds": [
+        "totp"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释时间型一次性密码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Time-Based One-Time Password (TOTP): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "时间型一次性密码",
+        "en": "Time-Based One-Time Password (TOTP)"
+      },
+      "claimIds": [
+        "totp-r139-principle",
+        "totp-r139-why",
+        "totp-r139-used",
+        "totp-r139-broken",
+        "totp-r139-history",
+        "totp-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "totp-wikipedia",
+        "totp-standard-ref"
+      ],
+      "related": [
+        "two-factor-authentication",
+        "message-authentication-code",
+        "key-derivation-function"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：时间型一次性密码（TOTP）。RFC 6238 把 TOTP 定义为「extension of the… HMAC-based One-Time Password (HOTP) algorithm, as defined in [RFC4226], to support the time-based moving factor」，并要求「The algorithm MUST use HOTP [RFC4226] as a key building block」。核心关系是「TOTP = HOTP(K, T)」，其中「T = (Current Unix time - T0) / X, where the default floor function is used」；X 是以秒为单位的时间步（默认 30 秒），T0 是开始计步的 Unix 时间（默认 0，即纪元）。",
+          "why": "把移动因子换成时间，双方无需同步计数器，但代价是必须容忍时钟偏差。§5.2 建议「at most one time step is allowed as the network delay」，并推荐 30 秒的时间步作为「a balance between security and usability」。§1.2 说明默认构造基于 HMAC-SHA-1（RFC 2104），同时允许「MAY use HMAC-SHA-256 or HMAC-SHA-512 functions … instead of the HMAC-SHA-1 function」。",
+          "used": "实现要求为每个证明者使用唯一密钥：「There MUST be a unique secret (key) for each prover」，密钥「SHOULD be randomly generated or derived using key derivation algorithms」，密钥库「The key store MUST be in a secure area」，通信「SHOULD take place over a secure channel, e.g., … (SSL/TLS)」。§4.2 还要求实现「MUST support a time value T larger than a 32-bit integer when it is beyond the year 2038」。",
+          "broken": "强度来自底层 HOTP：§5.1 说「The security and strength of this algorithm depend on the properties of the underlying building block HOTP」，而 HOTP 的构造基于 HMAC 与 SHA-1；同一节也认为「the best possible attack against the HOTP function is the brute force attack」。时间窗口带来额外暴露：§5.2 警告「When an OTP is generated and exposed to a third party before it is consumed, the third party can consume the OTP within the time-step window」，因此要求「The verifier MUST NOT accept the second attempt of the OTP after the successful validation」以保证一次性使用。§6 给出偏差上限：接受两个时间步回退时，最大时间漂移约 89 秒。",
+          "history": "RFC 6238「TOTP: Time-Based One-Time Password Algorithm」由 M’Raihi、Machani、Pei 与 Rydell 撰写，2011 年 5 月发布，类别为 Informational，并自我说明「not an Internet Standards Track specification」；它构建在 2005 年标准化的 HOTP（RFC 4226）之上，把计数器替换为时间。",
+          "refs": "- Wikipedia search entry for 时间型一次性密码. https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: TOTP. It is registered under protocols and PKI, applied security engineering. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, applied security engineering, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Web & Protocol Era, The Frontier. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 时间型一次性密码. https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "HOTP：以计数器为移动因子的 HMAC 一次性口令算法。",
+          "TOTP：以时间步为移动因子的一次性口令算法。",
+          "时间步 X：把一个时间区间折算为一个计数值的秒数。",
+          "起始时间 T0：开始计算时间步的 Unix 时间。",
+          "验证窗口：允许偏差的时间步数。",
+          "共享密钥 K：证明者与验证者共有的秘密。"
+        ],
+        "en": [
+          "HOTP: the HMAC one-time password algorithm using a counter.",
+          "TOTP: the HMAC one-time password algorithm using a time step.",
+          "Time step X: the seconds folded into one counter value.",
+          "Epoch T0: the Unix time from which steps are counted.",
+          "Validation window: the tolerated number of steps.",
+          "Shared secret K: the key held by both prover and verifier."
+        ]
+      },
+      "subtopicIds": [
+        "totp"
+      ],
+      "figures": [
+        {
+          "id": "totp-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "时间型一次性密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Time-Based One-Time Password (TOTP): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "时间型一次性密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Time-Based One-Time Password (TOTP), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/totp-details-flow.zh.svg",
+            "en": "assets/totp-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4413ee19ff18e4f4881c1886952612a3bdb088076c32a9c96894eb1d61999f20",
+            "en": "8da7f3406929a37faef5465ddedb461984ada5fe438e8cfd128cd421b7c7e575"
+          }
+        }
+      ],
+      "sources": [
+        "totp-wikipedia",
+        "totp-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

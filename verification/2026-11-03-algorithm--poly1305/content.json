@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for algorithm--poly1305: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "algorithm--poly1305-details",
+      "inventoryIds": [
+        "algorithm--poly1305"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释Poly1305 一次性认证器的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Poly1305 One-Time Authenticator: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "Poly1305 一次性认证器",
+        "en": "Poly1305 One-Time Authenticator"
+      },
+      "claimIds": [
+        "algorithm--poly1305-r139-principle",
+        "algorithm--poly1305-r139-why",
+        "algorithm--poly1305-r139-used",
+        "algorithm--poly1305-r139-broken",
+        "algorithm--poly1305-r139-history",
+        "algorithm--poly1305-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--poly1305-wikipedia",
+        "algorithm--poly1305-reference-ref"
+      ],
+      "related": [
+        "algorithm--chacha20",
+        "algorithm--hmac",
+        "term--mac"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Poly1305 通用 MAC（Poly1305）。§2.5 一语道破输入输出：「Poly1305 is a one-time authenticator designed by D.J.Bernstein.Poly1305 takes a 32-byte one-time key and a message and produces a 16-byte tag.This tag is used to authenticate the message.」关键限定词是 one-time：它不是可反复使用的 MAC 密钥，而是每条消息一个新的 32 字节输入。",
+          "why": "为什么要改写原作者的构造，§2.5 交代了原型的成本：那版 MAC 需要一把 AES 密钥、一把附加密钥与一个非秘密的 128 位 nonce（`附加密钥`一词在留存件里带 ASCII 引号，故此处不逐字引用），并解释 AES 的角色：「AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string」。RFC 8439 的目标正是去掉对 AES 的依赖，把一次性密钥的生成交给 ChaCha20，让没有硬件 AES 的平台也能安全使用。",
+          "used": "用法与 ChaCha20 绑定（§2.6 与其小节 §2.6.2）：AEAD 构造里先跑一遍块函数，「And that output is also the 32-byte one-time key used for Poly1305.」同一节给出会话密钥的取法：「The 256-bit session integrity key is used as the ChaCha20 key.」也即部署时的正确姿势是密钥分层——协议提供 256 位完整性密钥，ChaCha20 用它派生每条消息的一次性 Poly1305 密钥。",
+          "broken": "限度写在 §2.6.2 里，直白得很：「Poly1305 is not a suitable choice for a PRF.Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key.Additionally, unlike HMAC, Poly1305 is biased, so using it for key derivation would reduce the security of the symmetric encryption.」两条后果清楚：密钥重用即失守；它不能当伪随机函数或密钥派生用。",
+          "history": "沿革在 §2.5 以对照方式印出：原文标题指向 Poly1305-AES 论文（标题在留存件里带 ASCII 引号，故不逐字引用），并说明那版需要 AES 与两份 128 位密钥材料；RFC 8439 把它改写成不依赖 AES 的一次性认证器，并纳入 ChaCha20 的 AEAD 构造。头部印作 Request for Comments: 8439、Category: Informational、August 2018，作者 Nir 与 Woodbury（头部信息复述于引号外）。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\)。输入：输入：Poly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。 预期输出：按 Poly1305 通用 MAC 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for Poly1305 通用 MAC. https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\]\n\nPoly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。1.密钥派生或分组处理。2.按构造压缩消息与密钥。3.输出固定长度标签并验证。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Poly1305 (Poly1305 通用 MAC). Section 2.5 states the interface outright: \"Poly1305 is a one-time authenticator designed by D. Bernstein. Poly1305 takes a 32-byte one-time key and a message and produces a 16-byte tag. This tag is used to authenticate the message.\" The operative word is one-time: this is not a reusable MAC key but a fresh 32-byte input per message.",
+          "why": "Why the IETF rewrote the original: §2.5 records what the prototype cost - it lists an AES key, an additional key and a non-secret 128-bit nonce (the phrase for the additional key carries ASCII quotes in the retained file, so it is not quoted verbatim here) - and explains the AES role: \"AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string\". RFC 8439 removes that AES dependence by deriving the one-time key from ChaCha20, so platforms without hardware AES can still use it safely.",
+          "used": "Usage is bound to ChaCha20: in the AEAD construction of §2.6 and its subsection §2.6.2 the first block-function output is reused, \"And that output is also the 32-byte one-time key used for Poly1305.\", and the same section fixes the keying: \"The 256-bit session integrity key is used as the ChaCha20 key.\" So a deployment layers its keys - the protocol supplies a 256-bit integrity key and ChaCha20 derives a per-message Poly1305 key from it.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The limit is stated plainly in §2.6.2: \"Poly1305 is not a suitable choice for a PRF. Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key. Additionally, unlike HMAC, Poly1305 is biased, so using it for key derivation would reduce the security of the symmetric encryption.\" Two consequences: key reuse breaks it, and it must not serve as a PRF or for key derivation.",
+          "history": "The lineage is printed alongside the definition in §2.5: the original article title (which carries ASCII quotes in the source and is therefore not quoted here) names Poly1305-AES and needs AES plus two 128-bit key materials; RFC 8439 recast it as an AES-free one-time authenticator inside the ChaCha20 AEAD construction. The header prints Request for Comments: 8439, Category: Informational, August 2018, by Nir and Woodbury (header furniture stays outside the quotes).",
+          "refs": "- Wikipedia search entry for Poly1305 通用 MAC. https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\]\n\nPoly1305: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Poly1305：输入一次性 32 字节密钥与消息、输出 16 字节标签的认证器。",
+          "一次性密钥：每条消息只能用一遍的 Poly1305 密钥。",
+          "标签：16 字节的认证输出。",
+          "Poly1305-AES：原论文里用 AES 加密 nonce 取得唯一秘密串的版本。",
+          "AEAD：把 ChaCha20 加密与 Poly1305 认证合起来的构造。",
+          "偏差：原文用来说明 Poly1305 不宜做密钥派生的不均匀性。"
+        ],
+        "en": [
+          "Poly1305: an authenticator taking a 32-byte one-time key and a message and producing a 16-byte tag.",
+          "One-time key: the Poly1305 key that must be used for a single message only.",
+          "Tag: the 16-byte authentication output.",
+          "Poly1305-AES: the original construction that used AES on the nonce to obtain a unique secret string.",
+          "AEAD: the ChaCha20-Poly1305 construction combining encryption and authentication.",
+          "Bias: the non-uniformity the document cites against using Poly1305 for key derivation."
+        ]
+      },
+      "figures": [
+        {
+          "id": "algorithm--poly1305-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Poly1305 一次性认证器：为什么需要 → 核心机制 → 边界。",
+            "en": "Poly1305 One-Time Authenticator: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Poly1305 一次性认证器 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Poly1305 One-Time Authenticator, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--poly1305-details-flow.zh.svg",
+            "en": "assets/algorithm--poly1305-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0fec7cb432a6e176cd5884a56b2cf4fed0d68f2326381cf443b9146e2b65f841",
+            "en": "3ab6b74018d1fe5b1e1c531a54343a23658ee0c1ff7d6b3c82f124196914d602"
+          }
+        },
+        {
+          "id": "algorithm--poly1305-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Poly1305 一次性认证器 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Poly1305 One-Time Authenticator: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Poly1305 一次性认证器 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Poly1305 One-Time Authenticator, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--poly1305-details-r138-model.zh.svg",
+            "en": "assets/algorithm--poly1305-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7af41d9f77103ed5119828c106393a8512913e03b2423fe381601d03d908d29c",
+            "en": "394cb7988edf1a319846e9d3c34b3a88e83ff14e358213616f7a85d3d503b261"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "algorithm--poly1305-r139-formal",
+          "entryId": "algorithm--poly1305-details",
+          "kind": "formal-model",
+          "formula": "T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)",
+          "inputs": "输入：Poly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+          "expected": "按 Poly1305 通用 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "密钥派生或分组处理",
+            "按构造压缩消息与密钥",
+            "输出固定长度标签并验证"
+          ],
+          "sourceIds": [
+            "algorithm--poly1305-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--poly1305-r139-formal"
+      ],
+      "sources": [
+        "algorithm--poly1305-wikipedia",
+        "algorithm--poly1305-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--poly1305-r139-formal",
+      "entryId": "algorithm--poly1305-details",
+      "kind": "formal-model",
+      "formula": "T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)",
+      "inputs": "输入：Poly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+      "expected": "按 Poly1305 通用 MAC 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "密钥派生或分组处理",
+        "按构造压缩消息与密钥",
+        "输出固定长度标签并验证"
+      ],
+      "sourceIds": [
+        "algorithm--poly1305-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

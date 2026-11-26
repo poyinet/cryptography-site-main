@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "searchable-encryption-details",
+  "sources": [
+    {
+      "id": "searchable-encryption-wikipedia",
+      "title": "Wikipedia search entry for 可搜索加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 可搜索加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "searchable-encryption-r139-principle",
+          "entryId": "searchable-encryption-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：可搜索加密（Searchable Encryption）。### 对称可搜索加密\n\n数据拥有者加密文档并建立密文索引；查询词 w 的 trapdoor T_w 由 PRF 和密钥派生；服务器用 T_w 定位包含 w 的密文文档，返回给拥有者解密。服务器不需要解密文档或知道 w。### 公钥 PEKS\n\nPEKS 让任何持有公钥的人生成关键词密文；接收者给网关一个 trapdoor，网关用配对等式测试关键词，不能解密正文。适合多发送者邮件和日志。### 泄漏画像\n\nSSE 的安全性用泄漏函数描述：访问模式（哪些文档命中）、搜索模式（两次查询是否同一词）、结果数量、更新模式。自适应安全允许敌手按先前结果选择查询；forward privacy 防止新插入被旧查询关联。",
+            "en": "**Algorithm**: Searchable Encryption (可搜索加密).### Symmetric searchable encryption\n\nThe owner encrypts documents and builds an encrypted index."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        },
+        {
+          "id": "searchable-encryption-r139-why",
+          "entryId": "searchable-encryption-details",
+          "section": "why",
+          "statement": {
+            "zh": "云上搜索不能先下载全部密文再解密；SSE 把搜索成本降到与命中数相关，同时不让云看到明文关键词。PEKS 让网关按关键词路由加密邮件，而不拿到解密密钥；这是可搜索加密最早的应用，也是“给服务器有限能力”的典型设计。",
+            "en": "Searching in the cloud cannot mean downloading every ciphertext and decrypting it locally; SSE reduces search cost to roughly the number of hits while keeping plaintext keywords from the cloud.PEKS lets a gateway route encrypted mail by keyword without receiving the decryption key; it is one of the earliest searchable-encryption applications and a canonical example of giving a server limited capability."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        },
+        {
+          "id": "searchable-encryption-r139-used",
+          "entryId": "searchable-encryption-details",
+          "section": "used",
+          "statement": {
+            "zh": "SSE 用于加密云盘、邮件归档、医疗记录检索、DLP 和备份；PEKS 用于加密邮件网关和多发送者日志。动态 SSE 支持插入/删除；布尔、范围和排序查询需要 OXT 等结构；高隐私场景叠加 ORAM 隐藏访问模式。",
+            "en": "SSE is used in encrypted cloud drives, mail archives, medical-record retrieval, DLP and backups; PEKS is used in encrypted mail gateways and multi-sender logs.Dynamic SSE supports insert/delete; Boolean, range and ordered queries need structures such as OXT; high-privacy settings add ORAM to hide access patterns."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        },
+        {
+          "id": "searchable-encryption-r139-broken",
+          "entryId": "searchable-encryption-details",
+          "section": "broken",
+          "statement": {
+            "zh": "泄漏滥用攻击可用访问模式、搜索模式和结果大小恢复关键词：频率匹配、查询恢复、文件注入。只加密关键词不够，必须定义并接受泄漏。动态方案的删除/插入可能破坏 forward privacy；恶意服务器可省略或篡改结果，需可验证结果或完整性；访问模式隐藏要靠 ORAM，成本高。### 形式模型。",
+            "en": "Leakage-abuse attacks recover keywords from access patterns, search patterns and result volumes: frequency matching, query recovery and file injection.Encrypting keywords alone is insufficient; the leakage must be defined and accepted."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        },
+        {
+          "id": "searchable-encryption-r139-history",
+          "entryId": "searchable-encryption-details",
+          "section": "history",
+          "statement": {
+            "zh": "Song、Wagner 与 Perrig 2000 年提出加密搜索；Boneh 等 2004 年提出 PEKS；Curtmola 等 2006 年给出自适应安全的 SSE 定义和倒排索引；Kamara 等 2012 年推动动态 SSE；forward privacy 随后成为标准要求。现代 encrypted database 把 SSE 与 ORAM、可信硬件或结构化加密结合。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Song, Wagner and Perrig introduced encrypted search in 2000; Boneh et al.introduced PEKS in 2004; Curtmola et al."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        },
+        {
+          "id": "searchable-encryption-r139-refs",
+          "entryId": "searchable-encryption-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 可搜索加密.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 可搜索加密.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "searchable-encryption-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "searchable-encryption-wikipedia"
+      ]
+    },
+    {
+      "id": "searchable-encryption-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "searchable-encryption-r139-principle",
+      "entryId": "searchable-encryption-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：可搜索加密（Searchable Encryption）。### 对称可搜索加密\n\n数据拥有者加密文档并建立密文索引；查询词 w 的 trapdoor T_w 由 PRF 和密钥派生；服务器用 T_w 定位包含 w 的密文文档，返回给拥有者解密。服务器不需要解密文档或知道 w。### 公钥 PEKS\n\nPEKS 让任何持有公钥的人生成关键词密文；接收者给网关一个 trapdoor，网关用配对等式测试关键词，不能解密正文。适合多发送者邮件和日志。### 泄漏画像\n\nSSE 的安全性用泄漏函数描述：访问模式（哪些文档命中）、搜索模式（两次查询是否同一词）、结果数量、更新模式。自适应安全允许敌手按先前结果选择查询；forward privacy 防止新插入被旧查询关联。",
+        "en": "**Algorithm**: Searchable Encryption (可搜索加密).### Symmetric searchable encryption\n\nThe owner encrypts documents and builds an encrypted index."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    },
+    {
+      "id": "searchable-encryption-r139-why",
+      "entryId": "searchable-encryption-details",
+      "section": "why",
+      "statement": {
+        "zh": "云上搜索不能先下载全部密文再解密；SSE 把搜索成本降到与命中数相关，同时不让云看到明文关键词。PEKS 让网关按关键词路由加密邮件，而不拿到解密密钥；这是可搜索加密最早的应用，也是“给服务器有限能力”的典型设计。",
+        "en": "Searching in the cloud cannot mean downloading every ciphertext and decrypting it locally; SSE reduces search cost to roughly the number of hits while keeping plaintext keywords from the cloud.PEKS lets a gateway route encrypted mail by keyword without receiving the decryption key; it is one of the earliest searchable-encryption applications and a canonical example of giving a server limited capability."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    },
+    {
+      "id": "searchable-encryption-r139-used",
+      "entryId": "searchable-encryption-details",
+      "section": "used",
+      "statement": {
+        "zh": "SSE 用于加密云盘、邮件归档、医疗记录检索、DLP 和备份；PEKS 用于加密邮件网关和多发送者日志。动态 SSE 支持插入/删除；布尔、范围和排序查询需要 OXT 等结构；高隐私场景叠加 ORAM 隐藏访问模式。",
+        "en": "SSE is used in encrypted cloud drives, mail archives, medical-record retrieval, DLP and backups; PEKS is used in encrypted mail gateways and multi-sender logs.Dynamic SSE supports insert/delete; Boolean, range and ordered queries need structures such as OXT; high-privacy settings add ORAM to hide access patterns."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    },
+    {
+      "id": "searchable-encryption-r139-broken",
+      "entryId": "searchable-encryption-details",
+      "section": "broken",
+      "statement": {
+        "zh": "泄漏滥用攻击可用访问模式、搜索模式和结果大小恢复关键词：频率匹配、查询恢复、文件注入。只加密关键词不够，必须定义并接受泄漏。动态方案的删除/插入可能破坏 forward privacy；恶意服务器可省略或篡改结果，需可验证结果或完整性；访问模式隐藏要靠 ORAM，成本高。### 形式模型。",
+        "en": "Leakage-abuse attacks recover keywords from access patterns, search patterns and result volumes: frequency matching, query recovery and file injection.Encrypting keywords alone is insufficient; the leakage must be defined and accepted."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    },
+    {
+      "id": "searchable-encryption-r139-history",
+      "entryId": "searchable-encryption-details",
+      "section": "history",
+      "statement": {
+        "zh": "Song、Wagner 与 Perrig 2000 年提出加密搜索；Boneh 等 2004 年提出 PEKS；Curtmola 等 2006 年给出自适应安全的 SSE 定义和倒排索引；Kamara 等 2012 年推动动态 SSE；forward privacy 随后成为标准要求。现代 encrypted database 把 SSE 与 ORAM、可信硬件或结构化加密结合。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Song, Wagner and Perrig introduced encrypted search in 2000; Boneh et al.introduced PEKS in 2004; Curtmola et al."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    },
+    {
+      "id": "searchable-encryption-r139-refs",
+      "entryId": "searchable-encryption-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 可搜索加密.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 可搜索加密.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "searchable-encryption-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

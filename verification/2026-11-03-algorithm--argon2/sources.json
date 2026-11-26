@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--argon2-details",
+  "sources": [
+    {
+      "id": "algorithm--argon2-wikipedia",
+      "title": "Wikipedia search entry for Argon2 口令派生",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Argon2%20%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Argon2 口令派生",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--argon2-r139-principle",
+          "entryId": "algorithm--argon2-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Argon2 口令派生（Argon2）。§1 给出定性：「Argon2 is a memory-hard function [HARD].It is a streamlined design.」变体结构同段印明：「Argon2 has one primary variant, Argon2id, and two supplementary variants, Argon2d and Argon2i.」也即它不是单一函数而是一个家族，且主变体只有一个。",
+            "en": "**Algorithm**: Argon2 (Argon2 口令派生).Section 1 gives the character: \"Argon2 is a memory-hard function [HARD]."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--argon2-r139-why",
+          "entryId": "algorithm--argon2-details",
+          "section": "why",
+          "statement": {
+            "zh": "设计目标写在成本模型上：「It aims at the highest memory-filling rate and effective use of multiple computing units, while still providing defense against trade-off attacks.」衡量它的不是单次哈希的算力，而是能否把可用内存真正填满、并用多核抬高攻击者成本，同时不让时间-内存折抵占便宜。硬件取向也一并交代：「Argon2 is optimized for the x86 architecture and exploits the cache and memory organization of the recent Intel and AMD processors.」。",
+            "en": "The goal is stated in cost-model terms: \"It aims at the highest memory-filling rate and effective use of multiple computing units, while still providing defense against trade-off attacks.\" The metric is not hashes per second but how completely memory is filled and how many compute units are used, without letting time-memory trade-offs win.The hardware posture follows: \"Argon2 is optimized for the x86 architecture and exploits the cache and memory organization of the recent Intel and AMD processors.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--argon2-r139-used",
+          "entryId": "algorithm--argon2-details",
+          "section": "used",
+          "statement": {
+            "zh": "选型与实现义务都在原文里。用途分工是「Argon2i uses data-independent memory access, which is preferred for password hashing and password-based key derivation.」实现层面的底线是规范性一句：「Argon2id MUST be supported by any implementation of this document, whereas Argon2d and Argon2i MAY be supported.」也即任何声称符合本文件的实现都必须支持主变体，另外两支是可选。",
+            "en": "Selection and implementation duty are both in the text.The division of labour: \"Argon2i uses data-independent memory access, which is preferred for password hashing and password-based key derivation.\" The normative floor: \"Argon2id MUST be supported by any implementation of this document, whereas Argon2d and Argon2i MAY be supported.\" So any implementation claiming conformance must support the primary variant; the other two are optional."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--argon2-r139-broken",
+          "entryId": "algorithm--argon2-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度由变体分工反出：Argon2d 的数据相关内存访问正是侧信道计时攻击的面，所以原文把它的适用场景限定为「with no threats from side-channel timing attacks」。文本另在一处给出彻底阻止的条件：要完全阻止所引工作的时空间折抵，趟数必须大于内存容量以 2 为底的对数减 26（这是有条件的防御，不是普遍消除），文本的说法是「providing defense against trade-off attacks」——防御而非证明不存在；Argon2i 还「makes more passes over the memory to protect from trade-off attacks」，用额外的趟数换安全性，成本因此上升。",
+            "en": "The limits fall out of the same division: Argon2d's data-dependent access is precisely the side-channel timing surface, which is why the text confines it to scenarios \"with no threats from side-channel timing attacks\"."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--argon2-r139-history",
+          "entryId": "algorithm--argon2-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本事实：摘要段印明本文件对应哪一个算法版本 -「corresponds to version 1.3 of the Argon2 hash function.」头部信息为 Request for Comments: 9106、Category: Informational、March 2021，作者行是 Bassham 与 Liu（头部按项目口径复述于引号外）。也即 RFC 9106 标准化的是 Argon2 的 1.3 版，而不是它的原始竞赛提交版。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Argon2 口令派生的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Version facts: the abstract pins the algorithm release - \"corresponds to version 1.3 of the Argon2 hash function.\" The header prints Request for Comments: 9106, Category: Informational, March 2021, by Bassham and Liu (restated outside quotes per house rule).So RFC 9106 standardises version 1.3 of the Password-Hashing Competition winner, not its original submission."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--argon2-r139-refs",
+          "entryId": "algorithm--argon2-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Argon2 口令派生.https://zh.wikipedia.org/w/index.php?search=Argon2%20%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Argon2 口令派生.https://zh.wikipedia.org/w/index.php?search=Argon2%20%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--argon2-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--argon2-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--argon2-r139-principle",
+      "entryId": "algorithm--argon2-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Argon2 口令派生（Argon2）。§1 给出定性：「Argon2 is a memory-hard function [HARD].It is a streamlined design.」变体结构同段印明：「Argon2 has one primary variant, Argon2id, and two supplementary variants, Argon2d and Argon2i.」也即它不是单一函数而是一个家族，且主变体只有一个。",
+        "en": "**Algorithm**: Argon2 (Argon2 口令派生).Section 1 gives the character: \"Argon2 is a memory-hard function [HARD]."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-r139-why",
+      "entryId": "algorithm--argon2-details",
+      "section": "why",
+      "statement": {
+        "zh": "设计目标写在成本模型上：「It aims at the highest memory-filling rate and effective use of multiple computing units, while still providing defense against trade-off attacks.」衡量它的不是单次哈希的算力，而是能否把可用内存真正填满、并用多核抬高攻击者成本，同时不让时间-内存折抵占便宜。硬件取向也一并交代：「Argon2 is optimized for the x86 architecture and exploits the cache and memory organization of the recent Intel and AMD processors.」。",
+        "en": "The goal is stated in cost-model terms: \"It aims at the highest memory-filling rate and effective use of multiple computing units, while still providing defense against trade-off attacks.\" The metric is not hashes per second but how completely memory is filled and how many compute units are used, without letting time-memory trade-offs win.The hardware posture follows: \"Argon2 is optimized for the x86 architecture and exploits the cache and memory organization of the recent Intel and AMD processors.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-r139-used",
+      "entryId": "algorithm--argon2-details",
+      "section": "used",
+      "statement": {
+        "zh": "选型与实现义务都在原文里。用途分工是「Argon2i uses data-independent memory access, which is preferred for password hashing and password-based key derivation.」实现层面的底线是规范性一句：「Argon2id MUST be supported by any implementation of this document, whereas Argon2d and Argon2i MAY be supported.」也即任何声称符合本文件的实现都必须支持主变体，另外两支是可选。",
+        "en": "Selection and implementation duty are both in the text.The division of labour: \"Argon2i uses data-independent memory access, which is preferred for password hashing and password-based key derivation.\" The normative floor: \"Argon2id MUST be supported by any implementation of this document, whereas Argon2d and Argon2i MAY be supported.\" So any implementation claiming conformance must support the primary variant; the other two are optional."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-r139-broken",
+      "entryId": "algorithm--argon2-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度由变体分工反出：Argon2d 的数据相关内存访问正是侧信道计时攻击的面，所以原文把它的适用场景限定为「with no threats from side-channel timing attacks」。文本另在一处给出彻底阻止的条件：要完全阻止所引工作的时空间折抵，趟数必须大于内存容量以 2 为底的对数减 26（这是有条件的防御，不是普遍消除），文本的说法是「providing defense against trade-off attacks」——防御而非证明不存在；Argon2i 还「makes more passes over the memory to protect from trade-off attacks」，用额外的趟数换安全性，成本因此上升。",
+        "en": "The limits fall out of the same division: Argon2d's data-dependent access is precisely the side-channel timing surface, which is why the text confines it to scenarios \"with no threats from side-channel timing attacks\"."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-r139-history",
+      "entryId": "algorithm--argon2-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本事实：摘要段印明本文件对应哪一个算法版本 -「corresponds to version 1.3 of the Argon2 hash function.」头部信息为 Request for Comments: 9106、Category: Informational、March 2021，作者行是 Bassham 与 Liu（头部按项目口径复述于引号外）。也即 RFC 9106 标准化的是 Argon2 的 1.3 版，而不是它的原始竞赛提交版。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Argon2 口令派生的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Version facts: the abstract pins the algorithm release - \"corresponds to version 1.3 of the Argon2 hash function.\" The header prints Request for Comments: 9106, Category: Informational, March 2021, by Bassham and Liu (restated outside quotes per house rule).So RFC 9106 standardises version 1.3 of the Password-Hashing Competition winner, not its original submission."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--argon2-r139-refs",
+      "entryId": "algorithm--argon2-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Argon2 口令派生.https://zh.wikipedia.org/w/index.php?search=Argon2%20%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Argon2 口令派生.https://zh.wikipedia.org/w/index.php?search=Argon2%20%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--argon2-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "dwork-cpa-details",
+  "sources": [
+    {
+      "id": "dwork-cpa-wikipedia",
+      "title": "Wikipedia search entry for 语义安全与 CPA 等价",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E8%AF%AD%E4%B9%89%E5%AE%89%E5%85%A8%E4%B8%8E%20CPA%20%E7%AD%89%E4%BB%B7",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 语义安全与 CPA 等价",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "dwork-cpa-r139-principle",
+          "entryId": "dwork-cpa-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：语义安全与 CPA 等价（Semantic Security ≡ IND-CPA）。**这条定理说：语义安全和 IND-CPA 这两种看起来完全不同的安全定义，刻画的是同一件事。**\n\n**语义安全（semantic security）**：光有密文不够——攻击者能\"算出\"明文的什么，得看他不用密文时能算出什么。形式上：加密方案 E 是语义安全的，当且仅当对每一个概率多项式时间攻击者 A，都**存在**一个模拟器 S（不看密文），使得 A 在真实世界（拿着密文）里对明文计算出的任意函数 f 的成功率，不比 S 在\"假装有密文\"的情况下的成功率高出可忽略的量。**注意量词里的\"存在 S\"：安全的含义不是\"没人算得出来\"，而是\"算得出来的和算不出来的看不出差别\"。**\n\n**IND-CPA（选择明文攻击下的不可区分性）**：这是一个游戏。挑战者生成密钥，攻击者提交两条等长明文 `m0`、`m1`；挑战者随机选一位 `b ∈ {0,1}`，把 `Enc(m_b)` 交给攻击者；攻击者输出 `b'`。优势定义为 `Adv = |Pr[b' = b] - 1/2|`。方案是 IND-CPA 安全的，当且仅当对每一个概率多项式时间攻击者 A，这个优势都是可忽略的。**定理（等价性）**：对任何加密方案 E，下面两条等价：\n\n1.E 是语义安全的；\n2.E 是 IND-CPA 安全的。**为什么这个定理值得单独说？** 因为两个定义的形状完全不同。",
+            "en": "**Theorem**: Semantic Security ≡ IND-CPA (语义安全与 CPA 等价).**The theorem says this: semantic security and IND-CPA look like completely different definitions, but they mean exactly the same thing.**\n\nStart with the two definitions."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        },
+        {
+          "id": "dwork-cpa-r139-why",
+          "entryId": "dwork-cpa-details",
+          "section": "why",
+          "statement": {
+            "zh": "**因为它把\"安全\"从一句形容词变成了一道可以证明的题。这是现代密码学的起点，也是它区别于古典密码学的分水岭。**\n\n在 Goldwasser 与 Micali 之前，问\"这个方案安全吗\"没有可证伪的答案。你可以举出攻击，也可以说\"我没找到攻击\"。1982 年之后，问题变成：\"在 XX 假设下，本方案是 IND-CPA 安全的\"——**这句话可以被证明，也可以被推翻。**\n\n1.**它让\"证明\"成为可能。** 定义给了一把尺子，\"归约到困难假设\"就成了目标。今天几乎每一篇密码学论文的第一句和最后一句都是这个句式：先声明定义，再声明假设，再给归约。**这是从手艺到科学的转变。**\n2.**它让攻击模型可以分层。** 因为有了 IND-CPA 这个中间刻度，人们才能清楚地讨论\"再给他一个解密预言机会会怎样\"——于是有了 IND-CCA2；才能讨论\"他能不能把密文改成另一个有关系的密文\"——于是有了非可延拓性。Dolev、Dwork 与 Naor 1991 年那篇《Non-Malleable Cryptography》举的例子很形象：三个玩抛硬币游戏的玩家，公钥加密本身语义安全，但其中一个玩家照样能操纵结果。**语义安全只防被动窃听，不防主动参与者——这是 Dwork 这条线补上的洞。**\n3.**它定义了什么叫\"够安全\"。** 现代密码学不追求\"绝对安全\"，只追求\"在某个明确的攻击模型下，对某类资源有限的攻击者，给出一个可量化的优势上界\"。这套语言是从这里来的。还要说清这个定理**没有**做什么：它没有证明任何方案是安全的，它只是把\"安全\"重新表述了一遍。",
+            "en": "**Because it turned \"secure\" from an adjective into a problem you can prove.This is where modern cryptography starts, and the line it draws separates it from the cryptography that came before.**\n\nBefore Goldwasser and Micali, the question \"is this scheme secure?\" had no falsifiable answer."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        },
+        {
+          "id": "dwork-cpa-r139-used",
+          "entryId": "dwork-cpa-details",
+          "section": "used",
+          "statement": {
+            "zh": "**IND-CPA 已经是今天几乎所有真实方案的入场券，写在每一份安全声明里。**\n\n- **对称加密：几乎自动满足。** 理由要说准：现代对称加密（AEAD：GCM、CCM、ChaCha20-Poly1305）用的是\"每次加密配一个全新随机 nonce\"。对固定密钥而言，加密函数是一个置换——每条明文恰好对应一个密文。攻击者拿到密文，除了\"猜\"没有别的办法，而\"能猜出明文\"恰恰等价于\"能区分置换和随机函数\"，那就是分组密码 PRP 安全性的定义本身。**所以：底座是安全 PRP + 每次用新 nonce ⇒ IND-CPA 成立，几乎白送。** 反过来，**确定性的加密不满足 IND-CPA**：ECB 模式下两条相同明文产生相同密文，攻击者只要提交 `m0 = m1`，密文一比就赢了。所以\"对称加密都安全\"这句话必须补上\"随机化\"这个前提。- **公钥密码**：RSA-OAEP（Bellare 与 Rogaway 在随机预言机模型下给出 IND-CPA 证明）、ElGamal（DDH 假设下）、ECIES、Cramer–Shoup（IND-CCA2 的教科书方案）。- **协议层的硬规矩**：TLS 1.3 只允许 AEAD 套件，禁止 ECB 与静态 IV 的 RSA 密钥交换；几乎所有 TLS 库都把\"nonce 唯一\"做成 API 级约束或计数器。这些规矩的源头就是 IND-CPA——**没有随机化就没有 IND-CPA。",
+            "en": "**IND-CPA is now the entry ticket for essentially every real scheme, and it shows up in every security claim.**\n\n- **Symmetric encryption: it comes almost for free.** The reason deserves precision: modern symmetric encryption (AEAD: GCM, CCM, ChaCha20-Poly1305) uses a fresh random nonce for every message.For a fixed key, encryption is a permutation — each plaintext maps to exactly one ciphertext."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        },
+        {
+          "id": "dwork-cpa-r139-broken",
+          "entryId": "dwork-cpa-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**这条定理的\"边界\"比它的\"结论\"更值得记住。**\n\n- **IND-CPA 只管机密性，不管完整性。** 定义里没有\"密文被改了会怎样\"这一栏。现实后果就是 90 年代 CBC 模式的连环惨案：IV 可控、padding 可验证的加密让攻击者能构造\"合法密文\"，再用 padding oracle 一点点把明文抠出来。**必须补上 INT-CTXT（认证加密），或者老老实实 Encrypt-then-MAC。**\n- **为什么 CCA 不满足？** 因为一旦给了解密预言机，攻击者可以把密文改一改再送去解密。三个经典例子：ElGamal 是可延拓的——密文 `(g^r, m·g^r)` 乘一个 `t` 就变成 `m·t` 的密文；CBC 改 IV 就改了第一个明文块；OAEP 同样能被可延拓地改造。**IND-CPA 的\"密文不泄露信息\"在有解密器的情况下立刻失效**——这就是 IND-CCA2 和 AEAD 存在的理由。- **等价性本身有前提。** 1984 年的原始等价性要求明文分布满足最小熵条件；单条消息与多条消息需要混合论证才能划等号；CCA 模型下的等价是 2003 年才补上的。**\"等价\"不是天上掉下来的，是一代人收拾出来的。**\n- **归约有损失。** 从 IND-CPA 归约到某个困难假设时，代价往往写成 `Adv_E(A) ≤ 2 × Adv_assumption(B)`。那个系数 2、或者多项式因子，就是\"证明里丢掉的比特\"：论文说\"128 位安全\"，归约一算可能只剩 126 位。**归约紧不紧，是密码学里实打实的攻防。",
+            "en": "**The boundaries of this theorem matter more than its conclusion.**\n\n- **IND-CPA covers confidentiality and nothing else.** The definition has no column for \"what if the ciphertext was modified\".The real-world consequence is the parade of 1990s CBC disasters: with a controllable IV and verifiable padding, an attacker can manufacture a *valid-looking* ciphertext and then use a padding oracle to peel the plaintext out one byte at a time."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        },
+        {
+          "id": "dwork-cpa-r139-history",
+          "entryId": "dwork-cpa-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1982 年**：Goldwasser 与 Micali 在 FOCS 发表《Probabilistic Encryption》（1984 年在《Journal of Computer and System Sciences》第 28 卷第 2 期正式刊出，270–299 页）。论文里有两个东西：一个是\"语义安全\"（一切能算出来的，不用密文也算得出来），一个是后来被叫作 IND-CPA 的\"多项式安全\"（两条明文猜一条）。**两者等价，是这篇论文里最早的一次 game hop——按今天的标准看，它就是整个密码学史上第一次游戏跳。**\n- **1984 年**：Rivest 发表《Semantic Security for Encryption Functions》，把语义安全搬到私钥加密上，给出更精确的形式和一个反例。**\"语义安全\"这个词从此固定下来。**\n- **1986 年**：Goldreich、Micali 与 Wigderson 发表《How to Prove Cryptographic Protocols Secure》——零知识证明，定义的威力被展示到协议层。- **1988 年**：Goldwasser、Micali 与 Rivest 的签名方案定义了 EUF-CMA，签名安全也有了\"游戏\"。- **1991 年**：Dolev、Dwork 与 Naor 发表《Non-Malleable Cryptography》。他们用一个\"三人抛硬币\"的玩具协议说明：**语义安全只防被动窃听，对付不了主动参与者。",
+            "en": "- **1982**: Goldwasser and Micali present *Probabilistic Encryption* at FOCS (published in the *Journal of Computer and System Sciences*, vol.28, no."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        },
+        {
+          "id": "dwork-cpa-r139-refs",
+          "entryId": "dwork-cpa-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 语义安全与 CPA 等价.https://zh.wikipedia.org/w/index.php?search=%E8%AF%AD%E4%B9%89%E5%AE%89%E5%85%A8%E4%B8%8E%20CPA%20%E7%AD%89%E4%BB%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 语义安全与 CPA 等价.https://zh.wikipedia.org/w/index.php?search=%E8%AF%AD%E4%B9%89%E5%AE%89%E5%85%A8%E4%B8%8E%20CPA%20%E7%AD%89%E4%BB%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "dwork-cpa-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "dwork-cpa-wikipedia"
+      ]
+    },
+    {
+      "id": "dwork-cpa-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "dwork-cpa-r139-principle",
+      "entryId": "dwork-cpa-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：语义安全与 CPA 等价（Semantic Security ≡ IND-CPA）。**这条定理说：语义安全和 IND-CPA 这两种看起来完全不同的安全定义，刻画的是同一件事。**\n\n**语义安全（semantic security）**：光有密文不够——攻击者能\"算出\"明文的什么，得看他不用密文时能算出什么。形式上：加密方案 E 是语义安全的，当且仅当对每一个概率多项式时间攻击者 A，都**存在**一个模拟器 S（不看密文），使得 A 在真实世界（拿着密文）里对明文计算出的任意函数 f 的成功率，不比 S 在\"假装有密文\"的情况下的成功率高出可忽略的量。**注意量词里的\"存在 S\"：安全的含义不是\"没人算得出来\"，而是\"算得出来的和算不出来的看不出差别\"。**\n\n**IND-CPA（选择明文攻击下的不可区分性）**：这是一个游戏。挑战者生成密钥，攻击者提交两条等长明文 `m0`、`m1`；挑战者随机选一位 `b ∈ {0,1}`，把 `Enc(m_b)` 交给攻击者；攻击者输出 `b'`。优势定义为 `Adv = |Pr[b' = b] - 1/2|`。方案是 IND-CPA 安全的，当且仅当对每一个概率多项式时间攻击者 A，这个优势都是可忽略的。**定理（等价性）**：对任何加密方案 E，下面两条等价：\n\n1.E 是语义安全的；\n2.E 是 IND-CPA 安全的。**为什么这个定理值得单独说？** 因为两个定义的形状完全不同。",
+        "en": "**Theorem**: Semantic Security ≡ IND-CPA (语义安全与 CPA 等价).**The theorem says this: semantic security and IND-CPA look like completely different definitions, but they mean exactly the same thing.**\n\nStart with the two definitions."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    },
+    {
+      "id": "dwork-cpa-r139-why",
+      "entryId": "dwork-cpa-details",
+      "section": "why",
+      "statement": {
+        "zh": "**因为它把\"安全\"从一句形容词变成了一道可以证明的题。这是现代密码学的起点，也是它区别于古典密码学的分水岭。**\n\n在 Goldwasser 与 Micali 之前，问\"这个方案安全吗\"没有可证伪的答案。你可以举出攻击，也可以说\"我没找到攻击\"。1982 年之后，问题变成：\"在 XX 假设下，本方案是 IND-CPA 安全的\"——**这句话可以被证明，也可以被推翻。**\n\n1.**它让\"证明\"成为可能。** 定义给了一把尺子，\"归约到困难假设\"就成了目标。今天几乎每一篇密码学论文的第一句和最后一句都是这个句式：先声明定义，再声明假设，再给归约。**这是从手艺到科学的转变。**\n2.**它让攻击模型可以分层。** 因为有了 IND-CPA 这个中间刻度，人们才能清楚地讨论\"再给他一个解密预言机会会怎样\"——于是有了 IND-CCA2；才能讨论\"他能不能把密文改成另一个有关系的密文\"——于是有了非可延拓性。Dolev、Dwork 与 Naor 1991 年那篇《Non-Malleable Cryptography》举的例子很形象：三个玩抛硬币游戏的玩家，公钥加密本身语义安全，但其中一个玩家照样能操纵结果。**语义安全只防被动窃听，不防主动参与者——这是 Dwork 这条线补上的洞。**\n3.**它定义了什么叫\"够安全\"。** 现代密码学不追求\"绝对安全\"，只追求\"在某个明确的攻击模型下，对某类资源有限的攻击者，给出一个可量化的优势上界\"。这套语言是从这里来的。还要说清这个定理**没有**做什么：它没有证明任何方案是安全的，它只是把\"安全\"重新表述了一遍。",
+        "en": "**Because it turned \"secure\" from an adjective into a problem you can prove.This is where modern cryptography starts, and the line it draws separates it from the cryptography that came before.**\n\nBefore Goldwasser and Micali, the question \"is this scheme secure?\" had no falsifiable answer."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    },
+    {
+      "id": "dwork-cpa-r139-used",
+      "entryId": "dwork-cpa-details",
+      "section": "used",
+      "statement": {
+        "zh": "**IND-CPA 已经是今天几乎所有真实方案的入场券，写在每一份安全声明里。**\n\n- **对称加密：几乎自动满足。** 理由要说准：现代对称加密（AEAD：GCM、CCM、ChaCha20-Poly1305）用的是\"每次加密配一个全新随机 nonce\"。对固定密钥而言，加密函数是一个置换——每条明文恰好对应一个密文。攻击者拿到密文，除了\"猜\"没有别的办法，而\"能猜出明文\"恰恰等价于\"能区分置换和随机函数\"，那就是分组密码 PRP 安全性的定义本身。**所以：底座是安全 PRP + 每次用新 nonce ⇒ IND-CPA 成立，几乎白送。** 反过来，**确定性的加密不满足 IND-CPA**：ECB 模式下两条相同明文产生相同密文，攻击者只要提交 `m0 = m1`，密文一比就赢了。所以\"对称加密都安全\"这句话必须补上\"随机化\"这个前提。- **公钥密码**：RSA-OAEP（Bellare 与 Rogaway 在随机预言机模型下给出 IND-CPA 证明）、ElGamal（DDH 假设下）、ECIES、Cramer–Shoup（IND-CCA2 的教科书方案）。- **协议层的硬规矩**：TLS 1.3 只允许 AEAD 套件，禁止 ECB 与静态 IV 的 RSA 密钥交换；几乎所有 TLS 库都把\"nonce 唯一\"做成 API 级约束或计数器。这些规矩的源头就是 IND-CPA——**没有随机化就没有 IND-CPA。",
+        "en": "**IND-CPA is now the entry ticket for essentially every real scheme, and it shows up in every security claim.**\n\n- **Symmetric encryption: it comes almost for free.** The reason deserves precision: modern symmetric encryption (AEAD: GCM, CCM, ChaCha20-Poly1305) uses a fresh random nonce for every message.For a fixed key, encryption is a permutation — each plaintext maps to exactly one ciphertext."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    },
+    {
+      "id": "dwork-cpa-r139-broken",
+      "entryId": "dwork-cpa-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**这条定理的\"边界\"比它的\"结论\"更值得记住。**\n\n- **IND-CPA 只管机密性，不管完整性。** 定义里没有\"密文被改了会怎样\"这一栏。现实后果就是 90 年代 CBC 模式的连环惨案：IV 可控、padding 可验证的加密让攻击者能构造\"合法密文\"，再用 padding oracle 一点点把明文抠出来。**必须补上 INT-CTXT（认证加密），或者老老实实 Encrypt-then-MAC。**\n- **为什么 CCA 不满足？** 因为一旦给了解密预言机，攻击者可以把密文改一改再送去解密。三个经典例子：ElGamal 是可延拓的——密文 `(g^r, m·g^r)` 乘一个 `t` 就变成 `m·t` 的密文；CBC 改 IV 就改了第一个明文块；OAEP 同样能被可延拓地改造。**IND-CPA 的\"密文不泄露信息\"在有解密器的情况下立刻失效**——这就是 IND-CCA2 和 AEAD 存在的理由。- **等价性本身有前提。** 1984 年的原始等价性要求明文分布满足最小熵条件；单条消息与多条消息需要混合论证才能划等号；CCA 模型下的等价是 2003 年才补上的。**\"等价\"不是天上掉下来的，是一代人收拾出来的。**\n- **归约有损失。** 从 IND-CPA 归约到某个困难假设时，代价往往写成 `Adv_E(A) ≤ 2 × Adv_assumption(B)`。那个系数 2、或者多项式因子，就是\"证明里丢掉的比特\"：论文说\"128 位安全\"，归约一算可能只剩 126 位。**归约紧不紧，是密码学里实打实的攻防。",
+        "en": "**The boundaries of this theorem matter more than its conclusion.**\n\n- **IND-CPA covers confidentiality and nothing else.** The definition has no column for \"what if the ciphertext was modified\".The real-world consequence is the parade of 1990s CBC disasters: with a controllable IV and verifiable padding, an attacker can manufacture a *valid-looking* ciphertext and then use a padding oracle to peel the plaintext out one byte at a time."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    },
+    {
+      "id": "dwork-cpa-r139-history",
+      "entryId": "dwork-cpa-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1982 年**：Goldwasser 与 Micali 在 FOCS 发表《Probabilistic Encryption》（1984 年在《Journal of Computer and System Sciences》第 28 卷第 2 期正式刊出，270–299 页）。论文里有两个东西：一个是\"语义安全\"（一切能算出来的，不用密文也算得出来），一个是后来被叫作 IND-CPA 的\"多项式安全\"（两条明文猜一条）。**两者等价，是这篇论文里最早的一次 game hop——按今天的标准看，它就是整个密码学史上第一次游戏跳。**\n- **1984 年**：Rivest 发表《Semantic Security for Encryption Functions》，把语义安全搬到私钥加密上，给出更精确的形式和一个反例。**\"语义安全\"这个词从此固定下来。**\n- **1986 年**：Goldreich、Micali 与 Wigderson 发表《How to Prove Cryptographic Protocols Secure》——零知识证明，定义的威力被展示到协议层。- **1988 年**：Goldwasser、Micali 与 Rivest 的签名方案定义了 EUF-CMA，签名安全也有了\"游戏\"。- **1991 年**：Dolev、Dwork 与 Naor 发表《Non-Malleable Cryptography》。他们用一个\"三人抛硬币\"的玩具协议说明：**语义安全只防被动窃听，对付不了主动参与者。",
+        "en": "- **1982**: Goldwasser and Micali present *Probabilistic Encryption* at FOCS (published in the *Journal of Computer and System Sciences*, vol.28, no."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    },
+    {
+      "id": "dwork-cpa-r139-refs",
+      "entryId": "dwork-cpa-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 语义安全与 CPA 等价.https://zh.wikipedia.org/w/index.php?search=%E8%AF%AD%E4%B9%89%E5%AE%89%E5%85%A8%E4%B8%8E%20CPA%20%E7%AD%89%E4%BB%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 语义安全与 CPA 等价.https://zh.wikipedia.org/w/index.php?search=%E8%AF%AD%E4%B9%89%E5%AE%89%E5%85%A8%E4%B8%8E%20CPA%20%E7%AD%89%E4%BB%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "dwork-cpa-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

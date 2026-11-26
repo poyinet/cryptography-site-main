@@ -1,0 +1,84 @@
+[
+  {
+    "id": "fips202-calc-cavp",
+    "entryId": "fips202-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 24 CAVP short-message byte vectors selected from SHA3_224ShortMsg.rsp, SHA3_256ShortMsg.rsp, SHA3_384ShortMsg.rsp and SHA3_512ShortMsg.rsp (six per variant), each with its message bytes and digest",
+    "expected": "Both the teaching implementation and Node/OpenSSL reproduce all 24 digests, including the four empty-message values and the 56/64/96/128-hex-character digest lengths for SHA3-224/256/384/512",
+    "sourceIds": [
+      "fips202",
+      "cavp-sha3"
+    ],
+    "dependencies": [
+      "fips202-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "CAVP byte vectors only; they check conformance, not implementation security or side-channel behaviour. CAVP lists the Len=0 cases with Msg=00 as a placeholder; the stored digest is for the empty message, as the Len field indicates."
+  },
+  {
+    "id": "fips202-calc-shake",
+    "entryId": "fips202-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The SHAKE128 and SHAKE256 empty-message and abc examples at 16- and 32-byte output lengths, plus the 16-to-32-byte prefix relation",
+    "expected": "The teaching implementation and Node/OpenSSL reproduce every stored output, the 16-byte output is a prefix of the 32-byte output, and SHAKE128/SHAKE256 differ from each other and from the SHA3 hashes",
+    "sourceIds": [
+      "fips202",
+      "cavp-sha3"
+    ],
+    "dependencies": [
+      "fips202-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Eight short SHAKE examples only; they do not exhaust all output lengths or messages."
+  },
+  {
+    "id": "fips202-calc-padding",
+    "entryId": "fips202-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The Table 6 byte-aligned padding forms for SHA3-256 and SHAKE128 at q=1, q=2 and q=3, the h2b(0xA32E,14) example, and wrong-domain and no-padding negative controls",
+    "expected": "The padding bytes are 86/0680/060080 for SHA3-256 and 9f/1f80/1f0080 for SHAKE128, h2b gives 11000101011101 and b2h returns a32e, and the wrong-domain and no-padding outputs differ from the official SHA3-256 empty digest",
+    "sourceIds": [
+      "fips202"
+    ],
+    "dependencies": [
+      "fips202-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Padding examples cover two variants and three padding lengths only; the negative controls are structural, not security tests."
+  },
+  {
+    "id": "fips202-calc-parameters",
+    "entryId": "fips202-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 1600-bit state and 24 rounds, the six variants' rates, capacities, digest lengths and domain bytes, the HMAC block sizes in Table 3, and the security strengths in Table 4",
+    "expected": "The teaching implementation's variant table matches the standard's rates 144/136/104/72/168/136 bytes, capacities 448/512/768/1024/256/512 bits, domains 0x06/0x1F and digest lengths; HMAC block sizes are 144/136/104/72; SHA3 collision/preimage/second-preimage values are 112/224/224, 128/256/256, 192/384/384 and 256/512/512",
+    "sourceIds": [
+      "fips202"
+    ],
+    "dependencies": [
+      "fips202-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Parameter and table checks only; they do not prove the security strengths independently."
+  }
+]

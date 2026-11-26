@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R109 stream-cipher batch for trivium-details.",
+  "entries": [
+    {
+      "id": "trivium-details",
+      "inventoryIds": [
+        "trivium"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R109 流密码批次：把 GRAIN、HC-128、Rabbit、Trivium 与 XSalsa20 的目录身份卡改写为来源可核的机制、参数、标准、用途与边界正文；保留目录坐标、前置关系与子主题链接。",
+        "en": "R109 stream-cipher batch: replaced the catalog identity cards for GRAIN, HC-128, Rabbit, Trivium and XSalsa20 with source-backed mechanism, parameters, standards, use and boundary text while retaining catalog position, prerequisites and subtopic links."
+      },
+      "title": {
+        "zh": "Trivium 流密码",
+        "en": "Trivium Stream Cipher"
+      },
+      "claimIds": [
+        "trivium-r139-principle",
+        "trivium-r139-why",
+        "trivium-r139-used",
+        "trivium-r139-broken",
+        "trivium-r139-history",
+        "trivium-r139-refs"
+      ],
+      "sourceIds": [
+        "trivium-wikipedia",
+        "trivium-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "salsa20"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "trivium-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Trivium：三个 NLFSR 首尾相接：密钥/IV 路径、核心状态与输出。",
+            "en": "Trivium: three NLFSRs in a ring: key/IV path, core state and output."
+          },
+          "alt": {
+            "zh": "Trivium：三个 NLFSR 首尾相接 的机制示意图，含参数、用途与边界。",
+            "en": "Mechanism schematic for Trivium: three NLFSRs in a ring, with parameters, use and boundaries."
+          },
+          "files": {
+            "zh": "assets/trivium-details-mechanism.zh.svg",
+            "en": "assets/trivium-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据规格与正文绘制）",
+            "en": "Original mechanism diagram (drawn from the specification and article)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "34ff73a21fa8bc4e4e0d6198002b45ebf581e6e71ca0d6c3b8528cd1e3feed60",
+            "en": "08e64b15fd863d6657a656518fa949a122d3827c27881ad57d697eace4d4ee5a"
+          }
+        },
+        {
+          "id": "trivium-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Trivium 流密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Trivium Stream Cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Trivium 流密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Trivium Stream Cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/trivium-details-r138-model.zh.svg",
+            "en": "assets/trivium-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "109ab8fcf70bc659190ed7f5aa43a0a82361b31d8e37663c65c562b1dff30d0d",
+            "en": "f3f901f06473c6bc9aaf7ec02c699269638072c40f1a1f523f09969fd2b5afe9"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Trivium 流密码（Trivium）。### 三个 NLFSR 组成的 288 位状态\n\nTrivium 的状态是 288 位，分成三个非线性反馈移位寄存器 A、B、C，长度分别为 93、84、111。80 位密钥装入 A 的前 80 位，80 位 IV 装入 B 的前 80 位，C 的最后三位预置为 1，其余位补 0。### 每拍只更新三个位\n\nt1 = s66 ⊕ s93 ⊕ s91·s92 ⊕ s171\n\nt2 = s162 ⊕ s177 ⊕ s175·s176 ⊕ s264\n\nt3 = s243 ⊕ s288 ⊕ s286·s287 ⊕ s69\n\n三个新位分别移入 A、B、C 的头部，其余位右移；输出位 z = t1 ⊕ t2 ⊕ t3。三个寄存器首尾相接，使一个寄存器的输出成为另一个的输入。### 1152 拍初始化\n\n装载后先跑 4×288 = 1152 拍，丢弃输出，让密钥与 IV 扩散到全部 288 位；之后才输出密钥流，单对密钥/IV 最多产生 2^64 位。",
+          "why": "Trivium 的设计目标是极小的硬件面积：288 个触发器、少量与门和异或门，没有 S 盒、查找表或大块存储。它入选 eSTREAM 硬件 portfolio，并被 ISO/IEC 29192-3 收为轻量流密码标准，适合 RFID、传感器和门数极紧的嵌入式芯片。软件实现也能通过位切片或 64 路并行获得可观吞吐，但它的主战场是硬件。与 AES-CTR 相比，Trivium 在面积和功耗上更紧凑，代价是每拍只产生 1 位、需要较长的初始化。",
+          "used": "Trivium 用于轻量物联网链路、RFID/传感器硬件加密核和资源受限设备的数据流加密；ISO/IEC 29192-3 给出了标准化的密钥流生成器定义。它只提供机密性，协议必须另加 MAC 或 AEAD 才能抵抗篡改。在软件侧，它常被用作密码分析基准：立方攻击、猜测确定攻击、代数侧信道分析都以 Trivium 为试验场，因为它的结构简单、轮数可裁、状态可完全建模。",
+          "broken": "Trivium 的安全性依赖完整的 1152 拍初始化。公开攻击大多针对缩减轮：例如 784/799 轮的立方攻击、缩减初始化的猜测确定攻击；完整 1152 轮没有公开的实用密钥恢复，但不能把“缩减轮分析”误读成“可以少跑初始化”。同步流密码的 IV 必须唯一；同一密钥/IV 重用会直接暴露明文异或。Trivium 没有内置认证，2^64 位密钥流上限也是硬边界。物理实现还要防侧信道：IET 2024 的代数侧信道分析表明，在 8/16/32 位微控制器上，单条功耗轨迹即可在很短时间内恢复完整 288 位状态；ASIC 在其实验模型下没有被打穿，但这不意味着硬件天然安全。掩码、双轨和功耗平衡仍是必需项。",
+          "history": "De Cannière 与 Preneel 在 2005 年设计 Trivium，提交 eSTREAM 并进入硬件 portfolio；2008 年成为 eSTREAM 最终组合成员；2012 年 ISO/IEC 29192-3 把它与 Enocoro 一起标准化。此后它成为轻量流密码和立方攻击的标准研究对象。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Trivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Trivium 流密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for Trivium 流密码. https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nTrivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Trivium (Trivium 流密码). ### A 288-bit state in three NLFSRs\n\nTrivium has a 288-bit state split into three nonlinear feedback shift registers A, B and C of lengths 93, 84 and 111. The 80-bit key is loaded into the first 80 bits of A, the 80-bit IV into the first 80 bits of B, the last three bits of C are set to 1, and the remaining bits are zero. ### Three bits updated per clock\n\nEach clock computes\n\nt1 = s66 ⊕ s93 ⊕ s91·s92 ⊕ s171\n\nt2 = s162 ⊕ s177 ⊕ s175·s176 ⊕ s264\n\nt3 = s243 ⊕ s288 ⊕ s286·s287 ⊕ s69\n\nThe three new bits shift into the heads of A, B and C while the other bits shift right; the output bit is z = t1 ⊕ t2 ⊕ t3. The registers are connected end to end, so each register feeds another. ### 1152 initialization clocks\n\nAfter loading, the cipher runs 4×288 = 1152 blank clocks and discards the output, diffusing the key and IV through all 288 bits. Only then does it produce keystream, up to 2^64 bits for one key/IV pair.",
+          "why": "Trivium targets minimal hardware area: 288 flip-flops, a few AND and XOR gates, no S-box, lookup table or large memory. It is an eSTREAM hardware-portfolio member and an ISO/IEC 29192-3 lightweight stream-cipher standard, suitable for RFID, sensors and gate-count-limited embedded chips.\n\nSoftware can use bitslicing or 64-way parallelism for respectable throughput, but hardware is its main home. Compared with AES-CTR, Trivium is far smaller and lower-power, at the cost of one output bit per clock and a long initialization.",
+          "used": "Trivium serves lightweight IoT links, RFID and sensor hardware crypto cores, and data-stream encryption on constrained devices; ISO/IEC 29192-3 standardizes its keystream generator. It provides confidentiality only, so a MAC or AEAD layer is required for integrity.\n\nOn the software side it is a standard cryptanalysis benchmark: cube attacks, guess-and-determine attacks and algebraic side-channel analysis all use Trivium because its structure is simple, its rounds are adjustable and its state can be fully modeled.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Trivium security depends on the full 1152-clock initialization. Published attacks mostly target reduced rounds, such as cube attacks on 784 or 799 rounds and guess-and-determine attacks on reduced initialization; no practical key recovery is public for the full 1152 rounds, but reduced-round analysis is not permission to cut initialization.\n\nA synchronous stream cipher requires a unique IV; reusing the same key/IV directly exposes plaintext XOR. Trivium has no built-in authentication, and the 2^64-bit keystream limit is a hard boundary.\n\nPhysical implementations also need side-channel defense: IET 2024 algebraic side-channel analysis recovers the full 288-bit state from a single power trace on 8/16/32-bit microcontrollers in a short time; ASIC implementations were not broken in that leakage model, but hardware is not automatically safe. Masking, dual-rail logic and power balancing remain necessary.",
+          "history": "De Cannière and Preneel designed Trivium in 2005, submitted it to eSTREAM and reached the hardware portfolio; it became a member of the final eSTREAM portfolio in 2008. ISO/IEC 29192-3 standardized it alongside Enocoro in 2012. It has since become a standard object of study for lightweight stream ciphers and cube attacks.",
+          "refs": "- Wikipedia search entry for Trivium 流密码. https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nTrivium: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "trivium-r139-formal",
+          "entryId": "trivium-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Trivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Trivium 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "trivium-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "trivium-r139-formal"
+      ],
+      "sources": [
+        "trivium-wikipedia",
+        "trivium-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "trivium-r139-formal",
+      "entryId": "trivium-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Trivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Trivium 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "trivium-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

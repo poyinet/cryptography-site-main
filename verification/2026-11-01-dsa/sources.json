@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "dsa-details",
+  "sources": [
+    {
+      "id": "dsa-wikipedia",
+      "title": "Wikipedia search entry for DSA 数字签名算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: DSA 数字签名算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "dsa-r139-principle",
+          "entryId": "dsa-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：DSA 数字签名算法（Digital Signature Algorithm）。数字签名用于检测数据是否被未授权修改并认证签署者身份，即所谓不可否认性。数字签名算法（DSA）由 FIPS 186 系列的早期版本批准用于签名生成；FIPS 186-5 写明「This standard no longer approves the DSA for digital signature generation」，但「the DSA may be used to verify signatures generated prior to the implementation date of this standard」，并把 DSA 的完整规范指回 FIPS 186-4。",
+            "en": "**Algorithm**: Digital Signature Algorithm (DSA 数字签名算法).Digital signatures are used to detect unauthorised modification of data and to authenticate the signatory, which is the non-repudiation property."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        },
+        {
+          "id": "dsa-r139-why",
+          "entryId": "dsa-details",
+          "section": "why",
+          "statement": {
+            "zh": "FIPS 186-5 批准三种签名技术：RSA（按 IETF RFC 8017）、ECDSA（含 RFC 6979 的确定性 ECDSA）以及 RFC 8032 的 EdDSA 与 HashEdDSA。标准把 ECDSA 描述为「the elliptic curve analog of DSA」，即同一思路的椭圆曲线版本，并把签名生成集中到这些方案，同时在 §4 保留 DSA 的验证用途。",
+            "en": "FIPS 186-5 approves three techniques: RSA (through IETF RFC 8017), ECDSA (including deterministic ECDSA from RFC 6979) and the EdDSA of RFC 8032 together with HashEdDSA.The standard describes ECDSA as \"the elliptic curve analog of DSA\" and concentrates signature generation on those schemes, while §4 retains the verification-only role for the DSA."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        },
+        {
+          "id": "dsa-r139-used",
+          "entryId": "dsa-details",
+          "section": "used",
+          "statement": {
+            "zh": "现行用途是验证在标准实施日之前已经生成的 DSA 签名；新的签名生成按标准批准的方案进行，其中 ECDSA 的生成与验证流程写在 §6.4.1 与 §6.4.2，RSA 签名则交由 RFC 8017。标准在 §3 规定用于签名生成与验证的密钥对「shall not be used for any other purpose」，并在 §5 与 §6 分别对 RSA 与 ECDSA 重复了同一限制。",
+            "en": "Its current role is verifying DSA signatures generated before the implementation date of the standard, while new signing uses an approved scheme: ECDSA generation and verification are given in §6.4.1 and §6.4.2, and RSA signing is delegated to RFC 8017.Section 3 states that a key pair used for signature generation and verification \"shall not be used for any other purpose\", a restriction repeated for RSA in §5 and for ECDSA in §6."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        },
+        {
+          "id": "dsa-r139-broken",
+          "entryId": "dsa-details",
+          "section": "broken",
+          "statement": {
+            "zh": "FIPS 186-5 直接声明「the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer」，这是签名生成方案更换、DSA 退出生成的原因；DSA 原先的有限域参数与离散对数设定属于 FIPS 186-4，本标准只在 §4 保留其验证角色。标准另在 §6 提示椭圆曲线方案的实现须防范「side-channel attacks or fault attacks」。",
+            "en": "FIPS 186-5 states plainly that \"the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer\", which is why signature generation moved on and the DSA left it.The finite-field parameters and discrete-logarithm setting of the DSA belong to FIPS 186-4, of which this standard keeps only the verification role in §4."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        },
+        {
+          "id": "dsa-r139-history",
+          "entryId": "dsa-details",
+          "section": "history",
+          "statement": {
+            "zh": "FIPS 186-5 于 2023 年 2 月 3 日发布并即时生效，取代 FIPS 186-4；附录 E 记录 DSA 不再批准用于签名生成，发布公告还说明 FIPS 186-4 在标准发布后一年内继续有效、随后撤回。DSA 由此从生成算法转为只保留验证旧签名的角色。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：DSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "FIPS 186-5 was published and became effective on 3 February 2023, superseding FIPS 186-4.Appendix E records that the DSA is no longer approved for signature generation, and the announcement adds that FIPS 186-4 stays in effect for one year after publication and is then withdrawn."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        },
+        {
+          "id": "dsa-r139-refs",
+          "entryId": "dsa-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for DSA 数字签名算法.https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for DSA 数字签名算法.https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "dsa-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "dsa-wikipedia"
+      ]
+    },
+    {
+      "id": "dsa-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "dsa-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "dsa-r139-principle",
+      "entryId": "dsa-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：DSA 数字签名算法（Digital Signature Algorithm）。数字签名用于检测数据是否被未授权修改并认证签署者身份，即所谓不可否认性。数字签名算法（DSA）由 FIPS 186 系列的早期版本批准用于签名生成；FIPS 186-5 写明「This standard no longer approves the DSA for digital signature generation」，但「the DSA may be used to verify signatures generated prior to the implementation date of this standard」，并把 DSA 的完整规范指回 FIPS 186-4。",
+        "en": "**Algorithm**: Digital Signature Algorithm (DSA 数字签名算法).Digital signatures are used to detect unauthorised modification of data and to authenticate the signatory, which is the non-repudiation property."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    },
+    {
+      "id": "dsa-r139-why",
+      "entryId": "dsa-details",
+      "section": "why",
+      "statement": {
+        "zh": "FIPS 186-5 批准三种签名技术：RSA（按 IETF RFC 8017）、ECDSA（含 RFC 6979 的确定性 ECDSA）以及 RFC 8032 的 EdDSA 与 HashEdDSA。标准把 ECDSA 描述为「the elliptic curve analog of DSA」，即同一思路的椭圆曲线版本，并把签名生成集中到这些方案，同时在 §4 保留 DSA 的验证用途。",
+        "en": "FIPS 186-5 approves three techniques: RSA (through IETF RFC 8017), ECDSA (including deterministic ECDSA from RFC 6979) and the EdDSA of RFC 8032 together with HashEdDSA.The standard describes ECDSA as \"the elliptic curve analog of DSA\" and concentrates signature generation on those schemes, while §4 retains the verification-only role for the DSA."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    },
+    {
+      "id": "dsa-r139-used",
+      "entryId": "dsa-details",
+      "section": "used",
+      "statement": {
+        "zh": "现行用途是验证在标准实施日之前已经生成的 DSA 签名；新的签名生成按标准批准的方案进行，其中 ECDSA 的生成与验证流程写在 §6.4.1 与 §6.4.2，RSA 签名则交由 RFC 8017。标准在 §3 规定用于签名生成与验证的密钥对「shall not be used for any other purpose」，并在 §5 与 §6 分别对 RSA 与 ECDSA 重复了同一限制。",
+        "en": "Its current role is verifying DSA signatures generated before the implementation date of the standard, while new signing uses an approved scheme: ECDSA generation and verification are given in §6.4.1 and §6.4.2, and RSA signing is delegated to RFC 8017.Section 3 states that a key pair used for signature generation and verification \"shall not be used for any other purpose\", a restriction repeated for RSA in §5 and for ECDSA in §6."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    },
+    {
+      "id": "dsa-r139-broken",
+      "entryId": "dsa-details",
+      "section": "broken",
+      "statement": {
+        "zh": "FIPS 186-5 直接声明「the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer」，这是签名生成方案更换、DSA 退出生成的原因；DSA 原先的有限域参数与离散对数设定属于 FIPS 186-4，本标准只在 §4 保留其验证角色。标准另在 §6 提示椭圆曲线方案的实现须防范「side-channel attacks or fault attacks」。",
+        "en": "FIPS 186-5 states plainly that \"the algorithms in this standard are not expected to provide resistance to attacks from a large-scale quantum computer\", which is why signature generation moved on and the DSA left it.The finite-field parameters and discrete-logarithm setting of the DSA belong to FIPS 186-4, of which this standard keeps only the verification role in §4."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    },
+    {
+      "id": "dsa-r139-history",
+      "entryId": "dsa-details",
+      "section": "history",
+      "statement": {
+        "zh": "FIPS 186-5 于 2023 年 2 月 3 日发布并即时生效，取代 FIPS 186-4；附录 E 记录 DSA 不再批准用于签名生成，发布公告还说明 FIPS 186-4 在标准发布后一年内继续有效、随后撤回。DSA 由此从生成算法转为只保留验证旧签名的角色。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：DSA 数字签名算法的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "FIPS 186-5 was published and became effective on 3 February 2023, superseding FIPS 186-4.Appendix E records that the DSA is no longer approved for signature generation, and the announcement adds that FIPS 186-4 stays in effect for one year after publication and is then withdrawn."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    },
+    {
+      "id": "dsa-r139-refs",
+      "entryId": "dsa-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for DSA 数字签名算法.https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for DSA 数字签名算法.https://zh.wikipedia.org/w/index.php?search=DSA%20%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "dsa-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

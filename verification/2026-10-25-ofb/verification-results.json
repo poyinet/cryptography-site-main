@@ -1,0 +1,141 @@
+{
+  "results": [
+    {
+      "id": "ofb-official-vector",
+      "entryId": "ofb-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "467a427c3721c7a59b90de05f32f1d5dd1c553692104119f2e33f9b2f7946756",
+      "dependencyHashes": {
+        "ofb-teaching.mjs": "0b8398ccad72dd772add500a9ad4cc68b30b7cb2d7a0b2c6c2c4c6c533aff118",
+        "article.zh.md": "aaf0f1314ef9bd072d0516c45fa1a0188b52fb4a807360f1bbd615c06793daff",
+        "article.en.md": "b9205ba08a72eff6c8dd9fcfce03d8f3bbd815b35de710232e60c65417b9fbb0",
+        "meta.json": "acf4a12ffa5fd5704d3d99be40b4e51b9398f940c62c85ddb78e95acab0bf885",
+        "glossary.json": "0abcee41b468c5a580f3ba5f2275ec45970cb2479550a1c5fa54583d3fbc5aad",
+        "calculations.json": "2fca52c3b340399bafd0ef45d79980c6e7daee5fa248705507772de8af4686cd"
+      },
+      "inputs": "SP 800-38A Appendix F.4.1 AES-128-OFB four-block vector",
+      "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+      "observed": {
+        "id": "ofb-official-vector",
+        "passed": true,
+        "blocks": 4,
+        "ciphertext": "3b3fd92eb72dad20333449f8e83cfb4a7789508d16918f03f53c52dac54ed8259740051e9c5fecf64344f7a82260edcc304c6528f659c77866a510d9c1d6ae5e",
+        "limit": "One official four-block case; not protocol validation."
+      },
+      "contentSha256": "832721594e85b377c7a42e8f05a3a0ac22b1b23ee499ff1827b948101f85da25",
+      "sourcesSha256": "541b93d6c262884aae585bc6f5956d318c2896de9c28ec4536a66fa9877b9143",
+      "executedOn": "2026-11-25T07:04:17.539Z"
+    },
+    {
+      "id": "ofb-reuse",
+      "entryId": "ofb-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "467a427c3721c7a59b90de05f32f1d5dd1c553692104119f2e33f9b2f7946756",
+      "dependencyHashes": {
+        "ofb-teaching.mjs": "0b8398ccad72dd772add500a9ad4cc68b30b7cb2d7a0b2c6c2c4c6c533aff118",
+        "article.zh.md": "aaf0f1314ef9bd072d0516c45fa1a0188b52fb4a807360f1bbd615c06793daff",
+        "article.en.md": "b9205ba08a72eff6c8dd9fcfce03d8f3bbd815b35de710232e60c65417b9fbb0",
+        "meta.json": "acf4a12ffa5fd5704d3d99be40b4e51b9398f940c62c85ddb78e95acab0bf885",
+        "glossary.json": "0abcee41b468c5a580f3ba5f2275ec45970cb2479550a1c5fa54583d3fbc5aad",
+        "calculations.json": "2fca52c3b340399bafd0ef45d79980c6e7daee5fa248705507772de8af4686cd"
+      },
+      "inputs": "Two fixed plaintexts under the same AES-128 key and IV, then under a different IV",
+      "expected": "Same-IV ciphertext XOR equals plaintext XOR; a different IV breaks the relation",
+      "observed": {
+        "id": "ofb-reuse",
+        "passed": true,
+        "sameIvXor": "ffffffffffffffffffffffffffffffff",
+        "plaintextXor": "ffffffffffffffffffffffffffffffff",
+        "differentIvCipher": "af218e4e87e393aada314be47bf7a35f",
+        "limit": "Keystream-reuse arithmetic; not a complete protocol attack."
+      },
+      "contentSha256": "832721594e85b377c7a42e8f05a3a0ac22b1b23ee499ff1827b948101f85da25",
+      "sourcesSha256": "541b93d6c262884aae585bc6f5956d318c2896de9c28ec4536a66fa9877b9143",
+      "executedOn": "2026-11-25T07:04:17.539Z"
+    },
+    {
+      "id": "ofb-partial-block",
+      "entryId": "ofb-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "467a427c3721c7a59b90de05f32f1d5dd1c553692104119f2e33f9b2f7946756",
+      "dependencyHashes": {
+        "ofb-teaching.mjs": "0b8398ccad72dd772add500a9ad4cc68b30b7cb2d7a0b2c6c2c4c6c533aff118",
+        "article.zh.md": "aaf0f1314ef9bd072d0516c45fa1a0188b52fb4a807360f1bbd615c06793daff",
+        "article.en.md": "b9205ba08a72eff6c8dd9fcfce03d8f3bbd815b35de710232e60c65417b9fbb0",
+        "meta.json": "acf4a12ffa5fd5704d3d99be40b4e51b9398f940c62c85ddb78e95acab0bf885",
+        "glossary.json": "0abcee41b468c5a580f3ba5f2275ec45970cb2479550a1c5fa54583d3fbc5aad",
+        "calculations.json": "2fca52c3b340399bafd0ef45d79980c6e7daee5fa248705507772de8af4686cd"
+      },
+      "inputs": "20-byte and 21-byte plaintexts encrypted with AES-128-OFB",
+      "expected": "Ciphertext length equals plaintext length in both cases; no padding block is added",
+      "observed": {
+        "id": "ofb-partial-block",
+        "passed": true,
+        "plaintextBytes": 20,
+        "ciphertextBytes": 20,
+        "plaintextBytes21": 21,
+        "ciphertextBytes21": 21,
+        "limit": "Length and round-trip behavior only; not every partial length."
+      },
+      "contentSha256": "832721594e85b377c7a42e8f05a3a0ac22b1b23ee499ff1827b948101f85da25",
+      "sourcesSha256": "541b93d6c262884aae585bc6f5956d318c2896de9c28ec4536a66fa9877b9143",
+      "executedOn": "2026-11-25T07:04:17.539Z"
+    },
+    {
+      "id": "ofb-precompute",
+      "entryId": "ofb-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "467a427c3721c7a59b90de05f32f1d5dd1c553692104119f2e33f9b2f7946756",
+      "dependencyHashes": {
+        "ofb-teaching.mjs": "0b8398ccad72dd772add500a9ad4cc68b30b7cb2d7a0b2c6c2c4c6c533aff118",
+        "article.zh.md": "aaf0f1314ef9bd072d0516c45fa1a0188b52fb4a807360f1bbd615c06793daff",
+        "article.en.md": "b9205ba08a72eff6c8dd9fcfce03d8f3bbd815b35de710232e60c65417b9fbb0",
+        "meta.json": "acf4a12ffa5fd5704d3d99be40b4e51b9398f940c62c85ddb78e95acab0bf885",
+        "glossary.json": "0abcee41b468c5a580f3ba5f2275ec45970cb2479550a1c5fa54583d3fbc5aad",
+        "calculations.json": "2fca52c3b340399bafd0ef45d79980c6e7daee5fa248705507772de8af4686cd"
+      },
+      "inputs": "Keystream generated from a zero plaintext, then used to decrypt a fixed ciphertext",
+      "expected": "The precomputed keystream recovers the same plaintext as direct OFB decryption",
+      "observed": {
+        "id": "ofb-precompute",
+        "passed": true,
+        "keystream": "50fe67cc996d32b6da0937e99bafec60d9a4dada0892239f6b8b3d7680e15674",
+        "recovered": "6bc1bee22e409f96e93d7e117393172aae2d8a571e03ac9c9eb76fac45af8e5130c81c46a35ce411e5fbc1191a0a52eff69f2445df4f9b17ad2b417be66c3710",
+        "limit": "Keystream independence on fixed data; not a timing benchmark."
+      },
+      "contentSha256": "832721594e85b377c7a42e8f05a3a0ac22b1b23ee499ff1827b948101f85da25",
+      "sourcesSha256": "541b93d6c262884aae585bc6f5956d318c2896de9c28ec4536a66fa9877b9143",
+      "executedOn": "2026-11-25T07:04:17.539Z"
+    },
+    {
+      "id": "ofb-r139-formal",
+      "entryId": "ofb-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "467a427c3721c7a59b90de05f32f1d5dd1c553692104119f2e33f9b2f7946756",
+      "dependencyHashes": {
+        "ofb-teaching.mjs": "0b8398ccad72dd772add500a9ad4cc68b30b7cb2d7a0b2c6c2c4c6c533aff118",
+        "article.zh.md": "aaf0f1314ef9bd072d0516c45fa1a0188b52fb4a807360f1bbd615c06793daff",
+        "article.en.md": "b9205ba08a72eff6c8dd9fcfce03d8f3bbd815b35de710232e60c65417b9fbb0",
+        "meta.json": "acf4a12ffa5fd5704d3d99be40b4e51b9398f940c62c85ddb78e95acab0bf885",
+        "glossary.json": "0abcee41b468c5a580f3ba5f2275ec45970cb2479550a1c5fa54583d3fbc5aad",
+        "calculations.json": "2fca52c3b340399bafd0ef45d79980c6e7daee5fa248705507772de8af4686cd"
+      },
+      "inputs": "OFB 输出反馈模式 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "ofb-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "832721594e85b377c7a42e8f05a3a0ac22b1b23ee499ff1827b948101f85da25",
+      "sourcesSha256": "541b93d6c262884aae585bc6f5956d318c2896de9c28ec4536a66fa9877b9143",
+      "executedOn": "2026-11-25T07:29:58.537Z"
+    }
+  ]
+}

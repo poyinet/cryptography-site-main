@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension batch for garbled-circuit-details.",
+  "entries": [
+    {
+      "id": "garbled-circuit-details",
+      "inventoryIds": [
+        "garbled-circuit"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R108 证明变换、混淆电路、硬件根信任、编码型 KEM 与哈希长度扩展深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "混淆电路",
+        "en": "Garbled Circuits"
+      },
+      "claimIds": [
+        "garbled-circuit-r139-principle",
+        "garbled-circuit-r139-why",
+        "garbled-circuit-r139-used",
+        "garbled-circuit-r139-broken",
+        "garbled-circuit-r139-history",
+        "garbled-circuit-r139-refs"
+      ],
+      "sourceIds": [
+        "garbled-circuit-wikipedia",
+        "garbled-circuit-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "shamir-secret-sharing"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "garbled-circuit-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "混淆电路：为什么需要 → 核心机制 → 边界。",
+            "en": "Garbled Circuits: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "混淆电路 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Garbled Circuits, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/garbled-circuit-details-flow.zh.svg",
+            "en": "assets/garbled-circuit-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "33fda681d4325b4d6a6b39640d7cb540182c7ae05205afac8c1034857c2e5c8f",
+            "en": "3c50629a4267dcaa9e48358790bfa8304f7b0c52ac4257a3b1fad36eb970934b"
+          }
+        },
+        {
+          "id": "garbled-circuit-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "混淆电路 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Garbled Circuits: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "混淆电路 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Garbled Circuits, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/garbled-circuit-details-r138-model.zh.svg",
+            "en": "assets/garbled-circuit-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d2c4cfadcd58fe99c991c3659e1f90c9e16ed8c1f63ed54c10fe39f1bcb6472d",
+            "en": "8ab5d19451bcdc9a0ac76add5cc2de3c5e7fcbbe18c582598eb1842b03fe01a6"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：混淆电路（Garbled Circuit）。### 标签、门表与求值\n\n混淆电路给每条线两个标签 L_i^0、L_i^1，门表用输入标签加密输出标签；求值者经 OT 取得自己的输入标签，逐门解密。FREE-XOR 令 XOR 门免费，半门把 AND 降到两个密文。### 点置换与正确性\n\n点置换给标签附一个选择位，使求值者直接定位门表中的一行；XOR 门用全局偏移 R 令 L_i^1=L_i^0⊕R，AND 门分解为两个各有一个已知输入的门。门表用 H(L_a||L_b||tweak) 加密，解密失败即拒绝。半门安全性依赖相关稳健性（CCR）哈希；默认协议只保证半诚实安全，恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。",
+          "why": "Yao 协议只需对称加密和 OT，就能对任意布尔电路做两方计算；比全同态加密快几个数量级，适合中等规模电路。它把“计算”变成“加密查表”，让双方在不暴露输入的情况下得到同一输出；这是隐私集合求交、隐私推理和 MPC 的工程基础。",
+          "used": "PSI、隐私保护机器学习推理、私有拍卖、基因组比较、区块链暗拍和密钥管理都用 GC；EMP-toolkit、MP-SPDZ 与 Fresco 提供实现。半门是当前主流：每个 AND 门两个 AES 调用、两段密文，XOR 免费；固定密钥 AES 可进一步加速，但需要 concrete-security 参数。",
+          "broken": "默认 GC 只保证半诚实安全；恶意混淆者可构造错误门表，需要 cut-and-choose、认证混淆或零知识证明。求值者可能泄漏中间标签，输出隐私也要额外处理。侧信道、电路规模、OT 带宽和固定密钥 AES 的联合安全界都是边界；不要把“加密门表”误当成全同态加密。### 形式模型",
+          "history": "Yao 1982/1986 提出；Lindell–Pinkas 2004/2009 给出半诚实安全证明；Kolesnikov–Schneier 2008 的 FREE-XOR、Zahur–Rosulek–Evans 2015 的半门把通信降到每 AND 两密文；后续工作处理恶意安全与标准模型实例化。从理论协议到 EMP/MP-SPDZ 工程，GC 是安全计算最成熟的实用路线之一。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 混淆电路 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 混淆电路 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 混淆电路. https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Garbled Circuit (混淆电路). ### Labels, gate tables and evaluation\n\nA garbled circuit gives every wire two labels L_i^0 and L_i^1; gate tables encrypt output labels under input labels, and the evaluator obtains its input labels by OT and decrypts gate by gate. FREE-XOR makes XOR gates free, while half-gates reduce an AND gate to two ciphertexts. ### Point-and-permute and correctness\n\nPoint-and-permute attaches a select bit to each label so the evaluator indexes one row directly; XOR gates use a global offset R with L_i^1=L_i^0⊕R, and AND gates split into two gates with one known input each. Gate tables are encrypted with H(L_a||L_b||tweak), and a failed decryption is rejected. ### Security boundary\n\nHalf-gate security relies on circular-correlation-robust (CCR) hashing. The default protocol is only semi-honest; a malicious garbler can build wrong tables, requiring cut-and-choose, authenticated garbling or zero-knowledge proofs. The evaluator may leak intermediate labels, and output privacy needs separate handling.",
+          "why": "Yao’s protocol needs only symmetric encryption and OT to evaluate any Boolean circuit between two parties; it is orders of magnitude faster than fully homomorphic encryption for medium-size circuits.\n\nIt turns computation into encrypted table lookup, letting both parties learn the same output without revealing their inputs. That makes it an engineering foundation for private set intersection, private inference and MPC.",
+          "used": "PSI, privacy-preserving machine-learning inference, private auctions, genomic comparison, blockchain sealed-bid auctions and key management use GC; EMP-toolkit, MP-SPDZ and Fresco provide implementations.\n\nHalf-gates are the mainstream choice: two AES calls and two ciphertext segments per AND gate, with XOR free. Fixed-key AES speeds this further but needs concrete-security parameters.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Default GC gives only semi-honest security; a malicious garbler can build wrong gate tables, requiring cut-and-choose, authenticated garbling or zero-knowledge proofs. The evaluator may leak intermediate labels, and output privacy needs separate handling.\n\nSide channels, circuit size, OT bandwidth and the joint security bound of fixed-key AES are boundaries; encrypted gate tables are not fully homomorphic encryption.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Yao introduced the protocol in 1982/1986; Lindell and Pinkas gave a semi-honest security proof in 2004/2009; Kolesnikov–Schneier’s FREE-XOR in 2008 and Zahur–Rosulek–Evans’s half-gates in 2015 cut communication to two ciphertexts per AND gate; later work addressed malicious security and standard-model instantiation.\n\nFrom a theoretical protocol to EMP and MP-SPDZ, GC is one of the most mature practical routes to secure computation.",
+          "refs": "- Wikipedia search entry for 混淆电路. https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E6%B7%86%E7%94%B5%E8%B7%AF\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nGarbled Circuit: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "garbled-circuit-r139-formal",
+          "entryId": "garbled-circuit-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 混淆电路 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "garbled-circuit-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "garbled-circuit-r139-formal"
+      ],
+      "sources": [
+        "garbled-circuit-wikipedia",
+        "garbled-circuit-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "garbled-circuit-r139-formal",
+      "entryId": "garbled-circuit-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：混淆电路的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 混淆电路 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "garbled-circuit-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

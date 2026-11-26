@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "totp-details",
+  "sources": [
+    {
+      "id": "totp-wikipedia",
+      "title": "Wikipedia search entry for 时间型一次性密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 时间型一次性密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "totp-r139-principle",
+          "entryId": "totp-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：时间型一次性密码（TOTP）。RFC 6238 把 TOTP 定义为「extension of the… HMAC-based One-Time Password (HOTP) algorithm, as defined in [RFC4226], to support the time-based moving factor」，并要求「The algorithm MUST use HOTP [RFC4226] as a key building block」。核心关系是「TOTP = HOTP(K, T)」，其中「T = (Current Unix time - T0) / X, where the default floor function is used」；X 是以秒为单位的时间步（默认 30 秒），T0 是开始计步的 Unix 时间（默认 0，即纪元）。",
+            "en": "**Term**: TOTP.It is registered under protocols and PKI, applied security engineering."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        },
+        {
+          "id": "totp-r139-why",
+          "entryId": "totp-details",
+          "section": "why",
+          "statement": {
+            "zh": "把移动因子换成时间，双方无需同步计数器，但代价是必须容忍时钟偏差。§5.2 建议「at most one time step is allowed as the network delay」，并推荐 30 秒的时间步作为「a balance between security and usability」。§1.2 说明默认构造基于 HMAC-SHA-1（RFC 2104），同时允许「MAY use HMAC-SHA-256 or HMAC-SHA-512 functions … instead of the HMAC-SHA-1 function」。",
+            "en": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, applied security engineering, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        },
+        {
+          "id": "totp-r139-used",
+          "entryId": "totp-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现要求为每个证明者使用唯一密钥：「There MUST be a unique secret (key) for each prover」，密钥「SHOULD be randomly generated or derived using key derivation algorithms」，密钥库「The key store MUST be in a secure area」，通信「SHOULD take place over a secure channel, e.g., … (SSL/TLS)」。§4.2 还要求实现「MUST support a time value T larger than a 32-bit integer when it is beyond the year 2038」。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        },
+        {
+          "id": "totp-r139-broken",
+          "entryId": "totp-details",
+          "section": "broken",
+          "statement": {
+            "zh": "强度来自底层 HOTP：§5.1 说「The security and strength of this algorithm depend on the properties of the underlying building block HOTP」，而 HOTP 的构造基于 HMAC 与 SHA-1；同一节也认为「the best possible attack against the HOTP function is the brute force attack」。时间窗口带来额外暴露：§5.2 警告「When an OTP is generated and exposed to a third party before it is consumed, the third party can consume the OTP within the time-step window」，因此要求「The verifier MUST NOT accept the second attempt of the OTP after the successful validation」以保证一次性使用。§6 给出偏差上限：接受两个时间步回退时，最大时间漂移约 89 秒。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        },
+        {
+          "id": "totp-r139-history",
+          "entryId": "totp-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 6238「TOTP: Time-Based One-Time Password Algorithm」由 M’Raihi、Machani、Pei 与 Rydell 撰写，2011 年 5 月发布，类别为 Informational，并自我说明「not an Internet Standards Track specification」；它构建在 2005 年标准化的 HOTP（RFC 4226）之上，把计数器替换为时间。",
+            "en": "Registered period: Web & Protocol Era, The Frontier.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        },
+        {
+          "id": "totp-r139-refs",
+          "entryId": "totp-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 时间型一次性密码.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+            "en": "- Wikipedia search entry for 时间型一次性密码.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "totp-standard-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "totp-wikipedia"
+      ]
+    },
+    {
+      "id": "totp-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "totp-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "totp-r139-principle",
+      "entryId": "totp-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：时间型一次性密码（TOTP）。RFC 6238 把 TOTP 定义为「extension of the… HMAC-based One-Time Password (HOTP) algorithm, as defined in [RFC4226], to support the time-based moving factor」，并要求「The algorithm MUST use HOTP [RFC4226] as a key building block」。核心关系是「TOTP = HOTP(K, T)」，其中「T = (Current Unix time - T0) / X, where the default floor function is used」；X 是以秒为单位的时间步（默认 30 秒），T0 是开始计步的 Unix 时间（默认 0，即纪元）。",
+        "en": "**Term**: TOTP.It is registered under protocols and PKI, applied security engineering."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    },
+    {
+      "id": "totp-r139-why",
+      "entryId": "totp-details",
+      "section": "why",
+      "statement": {
+        "zh": "把移动因子换成时间，双方无需同步计数器，但代价是必须容忍时钟偏差。§5.2 建议「at most one time step is allowed as the network delay」，并推荐 30 秒的时间步作为「a balance between security and usability」。§1.2 说明默认构造基于 HMAC-SHA-1（RFC 2104），同时允许「MAY use HMAC-SHA-256 or HMAC-SHA-512 functions … instead of the HMAC-SHA-1 function」。",
+        "en": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, applied security engineering, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    },
+    {
+      "id": "totp-r139-used",
+      "entryId": "totp-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现要求为每个证明者使用唯一密钥：「There MUST be a unique secret (key) for each prover」，密钥「SHOULD be randomly generated or derived using key derivation algorithms」，密钥库「The key store MUST be in a secure area」，通信「SHOULD take place over a secure channel, e.g., … (SSL/TLS)」。§4.2 还要求实现「MUST support a time value T larger than a 32-bit integer when it is beyond the year 2038」。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    },
+    {
+      "id": "totp-r139-broken",
+      "entryId": "totp-details",
+      "section": "broken",
+      "statement": {
+        "zh": "强度来自底层 HOTP：§5.1 说「The security and strength of this algorithm depend on the properties of the underlying building block HOTP」，而 HOTP 的构造基于 HMAC 与 SHA-1；同一节也认为「the best possible attack against the HOTP function is the brute force attack」。时间窗口带来额外暴露：§5.2 警告「When an OTP is generated and exposed to a third party before it is consumed, the third party can consume the OTP within the time-step window」，因此要求「The verifier MUST NOT accept the second attempt of the OTP after the successful validation」以保证一次性使用。§6 给出偏差上限：接受两个时间步回退时，最大时间漂移约 89 秒。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    },
+    {
+      "id": "totp-r139-history",
+      "entryId": "totp-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 6238「TOTP: Time-Based One-Time Password Algorithm」由 M’Raihi、Machani、Pei 与 Rydell 撰写，2011 年 5 月发布，类别为 Informational，并自我说明「not an Internet Standards Track specification」；它构建在 2005 年标准化的 HOTP（RFC 4226）之上，把计数器替换为时间。",
+        "en": "Registered period: Web & Protocol Era, The Frontier.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    },
+    {
+      "id": "totp-r139-refs",
+      "entryId": "totp-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 时间型一次性密码.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+        "en": "- Wikipedia search entry for 时间型一次性密码.https://zh.wikipedia.org/w/index.php?search=%E6%97%B6%E9%97%B4%E5%9E%8B%E4%B8%80%E6%AC%A1%E6%80%A7%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "totp-standard-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

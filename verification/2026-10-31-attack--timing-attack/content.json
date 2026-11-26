@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack-model article for attack--timing-attack: definition, role, boundaries and source attribution. It does not duplicate a cipher algorithm or protocol entity.",
+  "entries": [
+    {
+      "id": "attack--timing-attack-details",
+      "inventoryIds": [
+        "attack--timing-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 计时攻击 这一实现攻击：定义、作用、边界和来源；不复制具体密码算法或协议实体。",
+        "en": "A compact definition of the implementation attack Timing Attack: definition, role, boundaries and source attribution; it does not duplicate a cipher algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "计时攻击",
+        "en": "Timing Attack"
+      },
+      "claimIds": [
+        "attack--timing-attack-r139-principle",
+        "attack--timing-attack-r139-why",
+        "attack--timing-attack-r139-used",
+        "attack--timing-attack-r139-broken",
+        "attack--timing-attack-r139-history",
+        "attack--timing-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--timing-attack-wikipedia",
+        "attack--timing-attack-reference-ref"
+      ],
+      "related": [
+        "attack--power-analysis",
+        "attack--cold-boot-attack",
+        "attack--side-channel-attack"
+      ],
+      "relatedPolicy": "Related entries are separate concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：计时攻击（Timing Attack）。计时攻击通过精确测量私钥操作的执行时间推断秘密。Kocher 表明，对易受攻击的实现，攻击者可以恢复固定的 Diffie-Hellman 指数、分解 RSA 密钥并攻破其他密码系统；攻击计算代价低，通常只需已知密文。",
+          "why": "密码系统的处理时间会因输入而异：性能优化、分支和条件语句、缓存命中以及非固定时间的处理器指令都会产生影响，而且耗时通常同时依赖密钥和输入数据。Kocher 指出，这些无意的时序特征可能泄露整个密钥，而不只是密钥的汉明重量。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文把密码令牌、网络密码系统以及攻击者能进行较精确时间测量的其他应用列为潜在风险，并以 Diffie-Hellman、RSA 和 DSS 的私钥操作为例。攻击者可以通过被动监听交互协议记录消息并测量响应时间。",
+          "broken": "防御包括固定时间实现、随机延迟和盲化。Kocher 认为固定时间实现难以做到且往往很慢；随机延迟可以让测量噪声大到攻击不可行，但攻击者可以增加样本补偿；盲化是更好的方案，不过它也不能可证明地阻止所有计时攻击，一些系统需要修改。### 形式模型",
+          "history": "Kocher 在 1996 年 CRYPTO 论文中提出计时攻击，并给出针对 RSA 与 Diffie-Hellman 的防御技术。论文结论指出，时间通道有时可能危及密钥，新的协议和算法可能需要纳入防御措施。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 计时攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 计时攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 计时攻击. https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Timing Attack (计时攻击). A timing attack infers secrets by carefully measuring the execution time of private-key operations. Kocher showed that, against a vulnerable implementation, an attacker can recover fixed Diffie-Hellman exponents, factor RSA keys and break other cryptosystems; the attack is computationally inexpensive and often needs only known ciphertext.",
+          "why": "Cryptosystems take slightly different amounts of time for different inputs because of performance optimizations, branches and conditional statements, cache hits and processor instructions with non-fixed timing, and the time typically depends on both the key and the input data. Kocher argued that such unintentional timing characteristics can leak the entire key, not merely its Hamming weight.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper identifies cryptographic tokens, network-based cryptosystems and other applications where an attacker can make reasonably accurate timing measurements as potentially at risk, using Diffie-Hellman, RSA and DSS private-key operations as examples. An attacker can passively eavesdrop on an interactive protocol, record the messages and measure response times.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Defenses include fixed-time implementations, random delays and blinding. Kocher notes that fixed-time implementations are difficult and often slow; random delays can make measurements noisy enough to render an attack infeasible, though attackers can compensate with more samples; blinding is the better solution, but it does not provably prevent all timing attacks, and some systems need to be revised.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Kocher introduced timing attacks in his 1996 CRYPTO paper, which also presented prevention techniques for RSA and Diffie-Hellman. The conclusion notes that timing channels can sometimes compromise keys and that new protocols and algorithms may need to incorporate countermeasures.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 计时攻击. https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nTiming Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "计时攻击：通过执行时间差异推断密钥或秘密。",
+          "执行时间：一次运算或协议响应所耗费的时间。",
+          "密钥：密码变换使用的秘密参数。",
+          "固定时间：执行时间不随秘密数据变化。",
+          "实现：算法在具体软硬件中的编码与运行方式。",
+          "侧信道：密码实现泄露信息的物理通道，例如时间、功耗或电磁。"
+        ],
+        "en": [
+          "Timing attack: inferring keys or secrets from execution-time differences.",
+          "Execution time: the time consumed by an operation or protocol response.",
+          "Key: a secret parameter used by a cryptographic transformation.",
+          "Fixed time: execution time independent of secret data.",
+          "Implementation: how an algorithm is coded and run on concrete hardware and software.",
+          "Side channel: a physical channel such as timing, power or electromagnetic leakage from an implementation."
+        ]
+      },
+      "subtopicIds": [
+        "timing-attack"
+      ],
+      "figures": [
+        {
+          "id": "attack--timing-attack-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "计时攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Timing Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "计时攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Timing Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--timing-attack-details-flow.zh.svg",
+            "en": "assets/attack--timing-attack-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6321c789735a6522636b4dad748f0b9d94cd11e4ab5c1f1b36f8aa1ebf594b05",
+            "en": "403977528fd36a4fc8df10f3f20a86dacc8d6e9c930d88a519c957c99b1a6fb1"
+          }
+        },
+        {
+          "id": "attack--timing-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "计时攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Timing Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "计时攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Timing Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--timing-attack-details-r138-model.zh.svg",
+            "en": "assets/attack--timing-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8c5bb7f88386e1570664271a67fdfab184738f08a56e503e10b3f67228c28dcd",
+            "en": "01c34d68fd744805782cc03c4796977bec8ebc2c06fa5a439bb79889a4131c0f"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--timing-attack-r139-formal",
+          "entryId": "attack--timing-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 计时攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--timing-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--timing-attack-r139-formal"
+      ],
+      "sources": [
+        "attack--timing-attack-wikipedia",
+        "attack--timing-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--timing-attack-r139-formal",
+      "entryId": "attack--timing-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 计时攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--timing-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

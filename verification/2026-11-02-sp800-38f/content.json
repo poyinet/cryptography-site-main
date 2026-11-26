@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for sp800-38f: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-38f-details",
+      "inventoryIds": [
+        "sp800-38f"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密钥包装方法的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Methods for Key Wrapping: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "密钥包装方法",
+        "en": "Methods for Key Wrapping"
+      },
+      "claimIds": [
+        "sp800-38f-r139-principle",
+        "sp800-38f-r139-why",
+        "sp800-38f-r139-used",
+        "sp800-38f-r139-broken",
+        "sp800-38f-r139-history",
+        "sp800-38f-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-38f-wikipedia",
+        "sp800-38f-reference-ref"
+      ],
+      "related": [
+        "kw",
+        "algorithm--aes",
+        "sp800-57"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：密钥包装方法（Methods for Key Wrapping）。摘要第一句给出主题与两面服务：「This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.」第二句列出新增的模式：「this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode.」第三句为遗留用途保留一项：「An analogous mode with the Triple Data Encryption Algorithm (TDEA) as the underlying block cipher, called TKW, is also specified, to support legacy applications.」§1 把目的压缩为一句：「The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.」三个名字就是本文件的产出：两支 AES 模式与一支 TDEA 变体，被保护对象写作密钥本身；这些密钥如何生成并不在文件之内。",
+          "why": "§3.1 先给设计目标：「KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.」再给出理由本身：「Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.」与「Segregating keys from general data can provide an extra layer of protection.」但同一节立刻取消必要性：「there is no requirement to protect cryptographic keys with a distinct cryptographic method.」鲁棒性的代价也写在这里：「each bit of output can be expected to depend in a nontrivial fashion on each bit of input」，其下一句指出这是以吞吐率为代价换得。故本文件补足的是可分离保护密钥的批准方法，不是把密钥保护变成单独方法的义务。",
+          "used": "§5.1 把底层密码与密钥写成 shall：「For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.」与「The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.」§5.3.1 给出长度上限：「the plaintext for KW-AE shall be limited to fewer than 254 semiblocks」（此处 254 为 2 的 54 次方丢上标所得）。符合性按函数申报，共六项：§8「An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD.」验证路径写在 §2：「Conformance testing for implementations of this Recommendation will be conducted within the framework of the Cryptographic Algorithm Validation Program (CAVP) and the Cryptographic Module Validation Program (CMVP).」同节把措辞层级钉死：「The requirements of this Recommendation are indicated by the word “shall.”」五句的层级因此一致：算法须批准且分组长度为 128 比特，KEK 须保密，明文长度封顶，符合性按六个函数分别申报，验证走 CAVP 与 CMVP 两条路径。",
+          "broken": "限度一是遗留算法的现在时态：§8「TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.」同段还排除内部构件单独使用：「The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.」限度二是密钥管理不在范围内：§5.1「The management of KEKs is outside the scope of this publication.」验证也有覆盖不到处：§2「Some of these requirements may be out-of-scope for CMVP or CAVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.」限度三是确定性带来的信息泄露：附录 A.1「Each key-wrap algorithm in this Recommendation is deterministic: for a given designated cipher function and KEK, any invocation of the authenticated-encryption function on a given plaintext produces the same ciphertext.」其结论一句为「any pair of ciphertexts reveals whether the corresponding plaintexts are equal」。附录 A.5 另记外部分析的批评：「the authors emphasize the lack of a proof that the underlying structure of KW meets the goal of deterministic authenticated encryption」。",
+          "history": "页眉首行为「NIST Special Publication 800-38F December 2012」，扉页日期同为 December 2012，作者 Morris Dworkin；引用行「Natl.Inst.Stand.Technol.Spec.Publ.800-38F, 30 pages (December 2012) CODEN: NSPUE2」，本份文本无 DOI 行，分册标题作 Methods for Key Wrapping。致谢页列出评审同事与早期草稿的参与者：「The author wishes to thank his colleagues who reviewed drafts of this publication and contributed to its development, especially Elaine Barker, Meltem Turan, Allen Roginsky, Lily Chen, Donghoon Chang, Sharon Keller, Tim Polk, John Kelsey, Ray Perlner, Tim Hall, and Souradyuti Paul.」以及「Heather Pearce worked extensively on early drafts of this publication.」§3.2 交代标准化前的四个时间点：「In 2001, NIST posted a document entitled “AES Key Wrap Specification”」、「In 2002, two industry groups published specifications of key-wrap algorithms」与「In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].」",
+          "refs": "- Wikipedia search entry for 密钥包装方法. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n密钥包装方法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Methods for Key Wrapping (密钥包装方法). The abstract opens with the subject and both services: \"This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.\" The second sentence names what is new: \"this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode.\" The third keeps one for older systems: \"An analogous mode with the Triple Data Encryption Algorithm (TDEA) as the underlying block cipher, called TKW, is also specified, to support legacy applications.\" Clause 1 compresses the purpose: \"The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.\" The three names are the output of this part, two AES modes plus one TDEA analogue, with the protected object stated as the keys themselves; how those keys are generated is not addressed here.",
+          "why": "Section 3.1 gives the design aim first: \"KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.\" Then the reasoning: \"Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.\" and \"Segregating keys from general data can provide an extra layer of protection.\" The same subsection immediately withdraws any necessity: \"there is no requirement to protect cryptographic keys with a distinct cryptographic method.\" The robustness claim is stated as \"each bit of output can be expected to depend in a nontrivial fashion on each bit of input\", with the next sentence pricing it in throughput. What the document supplies is an approved way to keep keys in a separate protection regime, not an obligation to do so.",
+          "used": "Section 5.1 sets the cipher and the key at shall level: \"For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.\" and \"The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.\" Section 5.3.1 sets the length ceiling: \"the plaintext for KW-AE shall be limited to fewer than 254 semiblocks\" (254 here is 2 to the power 54, superscript lost). Conformance is claimed per function, six in all: §8 lists \"An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD.\" The validation route is in §2: \"Conformance testing for implementations of this Recommendation will be conducted within the framework of the Cryptographic Algorithm Validation Program (CAVP) and the Cryptographic Module Validation Program (CMVP).\" and the same clause fixes the wording level: \"The requirements of this Recommendation are indicated by the word “shall.”\" The levels run consistently: an approved cipher with a 128-bit block, a secret KEK, a capped plaintext length, conformance claimed function by function, and testing through the CAVP and the CMVP.",
+          "broken": "The first limit is the standing of the legacy variant: §8 states \"TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.\" and excludes the internals on their own: \"The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.\" The second is scope: §5.1 says \"The management of KEKs is outside the scope of this publication.\" and §2 concedes a validation gap: \"Some of these requirements may be out-of-scope for CMVP or CAVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.\" The third is what determinism leaks: Appendix A.1 states \"Each key-wrap algorithm in this Recommendation is deterministic: for a given designated cipher function and KEK, any invocation of the authenticated-encryption function on a given plaintext produces the same ciphertext.\" with the consequence \"any pair of ciphertexts reveals whether the corresponding plaintexts are equal\". Appendix A.5 records an external criticism: \"the authors emphasize the lack of a proof that the underlying structure of KW meets the goal of deterministic authenticated encryption\".",
+          "history": "The running head reads \"NIST Special Publication 800-38F December 2012\", the title block carries the same December 2012 date with Morris Dworkin as author, and the citation line is \"Natl. Inst. Stand. Technol. Spec. Publ. 800-38F, 30 pages (December 2012) CODEN: NSPUE2\"; this copy contains no DOI line, and the part title is Methods for Key Wrapping. The acknowledgements list the reviewers and an early contributor: \"The author wishes to thank his colleagues who reviewed drafts of this publication and contributed to its development, especially Elaine Barker, Meltem Turan, Allen Roginsky, Lily Chen, Donghoon Chang, Sharon Keller, Tim Polk, John Kelsey, Ray Perlner, Tim Hall, and Souradyuti Paul.\" plus \"Heather Pearce worked extensively on early drafts of this publication.\" Section 3.2 gives the pre-standardisation timeline: \"In 2001, NIST posted a document entitled “AES Key Wrap Specification”\", \"In 2002, two industry groups published specifications of key-wrap algorithms\" and \"In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].\"",
+          "refs": "- Wikipedia search entry for 密钥包装方法. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nMethods for Key Wrapping: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "key wrapping：对密钥的机密性与完整性加以保护，本文件的主题。",
+          "key-wrap algorithm：面向密钥保护的确定性对称认证加密算法。",
+          "KEK：底层分组密码的密钥，亦称密钥加密密钥。",
+          "KW / KWP：AES 密钥包装模式与带内部填充的变体。",
+          "TKW：以 TDEA 为底层密码的对应算法，为遗留系统保留。",
+          "semiblock：长度为分组一半的比特串，长度限制的计量单位。"
+        ],
+        "en": [
+          "Key wrapping: protecting the confidentiality and integrity of cryptographic keys, the subject of this file.",
+          "Key-wrap algorithm: a deterministic symmetric authenticated-encryption algorithm intended for protecting keys.",
+          "KEK: the key of the underlying block cipher, also called a key-wrapping key elsewhere.",
+          "KW / KWP: the AES Key Wrap mode and its variant with internal padding.",
+          "TKW: the TDEA-based analogue, specified to support legacy applications.",
+          "Semiblock: a bit string half the block length, the unit in which lengths are bounded."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-38f-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥包装方法：为什么需要 → 核心机制 → 边界。",
+            "en": "Methods for Key Wrapping: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密钥包装方法 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Methods for Key Wrapping, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-38f-details-flow.zh.svg",
+            "en": "assets/sp800-38f-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "893dee2bf3cc5b402b68d620c4912fe38c512a7e673059f0cf0928b1089a3cca",
+            "en": "ea32107b3c48653f4cc90faee8ccb9315b930e2d280075714d3c4e0ae70f5b17"
+          }
+        },
+        {
+          "id": "sp800-38f-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密钥包装方法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Methods for Key Wrapping: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "密钥包装方法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Methods for Key Wrapping, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-38f-details-r138-model.zh.svg",
+            "en": "assets/sp800-38f-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "dd942623dfe309844e31a97810bcee0e380c3d92d0df994fa63f6b864f577785",
+            "en": "77d1b0c33cba9020f97d39b38bbbbd2754a240eb32ae81176b88964a22594ff0"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-38f-r139-formal",
+          "entryId": "sp800-38f-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：密钥包装方法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 密钥包装方法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-38f-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-38f-r139-formal"
+      ],
+      "sources": [
+        "sp800-38f-wikipedia",
+        "sp800-38f-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-38f-r139-formal",
+      "entryId": "sp800-38f-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：密钥包装方法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 密钥包装方法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-38f-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

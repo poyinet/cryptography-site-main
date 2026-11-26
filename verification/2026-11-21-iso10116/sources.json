@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "iso10116-details",
+  "sources": [
+    {
+      "id": "iso10116-wikipedia",
+      "title": "Wikipedia search entry for ISO/IEC 10116 分组密码工作模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%2010116%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ISO/IEC 10116 分组密码工作模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "iso10116-r139-principle",
+          "entryId": "iso10116-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：ISO/IEC 10116 分组密码工作模式（ISO/IEC 10116 modes of operation for an n-bit block cipher）。### 五种模式\n\nISO/IEC 10116:2017 规定五种以 n 位分组密码为基础的工作模式：ECB、CBC、CFB、OFB、CTR。ECB 逐块独立加密；CBC 把前一块密文异或进下一块明文；CFB 用密文反馈产生密钥流；OFB 用输出反馈产生密钥流；CTR 对计数器加密后与明文异或。### 关键公式\n\nCBC 加密为 C_i = E_K(P_i ⊕ C_{i-1})，C_0 = IV；CFB 为 C_i = P_i ⊕ E_K(C_{i-1})（按 s 位段实施）；OFB 为 O_i = E_K(O_{i-1})，C_i = P_i ⊕ O_i；CTR 为 C_i = P_i ⊕ E_K(T_i)，计数器每块递增。ECB 没有 IV，CBC/CFB/OFB 需要初始向量，CTR 需要唯一计数器。",
+            "en": "**Standard**: ISO/IEC 10116 modes of operation for an n-bit block cipher (ISO/IEC 10116 分组密码工作模式).### Five modes\n\nISO/IEC 10116:2017 defines five modes for an n-bit block cipher: ECB, CBC, CFB, OFB and CTR."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        },
+        {
+          "id": "iso10116-r139-why",
+          "entryId": "iso10116-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么不是“一个模式走天下”\n\nECB 确定、可并行，但相同明文块产生相同密文块，泄露结构；CBC 隐藏结构但串行、对 IV 可预测性敏感；CFB 适合按段处理且能自同步；OFB 生成与明文无关的密钥流，适合噪声信道；CTR 可并行、可随机访问，但计数器重用会灾难性泄密。### 2017 版的工程修正\n\n第四版把 padding 纳入规范范围，并为 CBC/CFB/OFB/CTR 增加避免密文扩张的方法；CBC 还给出三种 ciphertext stealing 变体。这样，标准不再假设“明文长度一定是分组的整数倍”，更贴近存储和网络实现。",
+            "en": "### Why one mode does not fit all\n\nECB is deterministic and parallel but equal plaintext blocks produce equal ciphertext blocks, leaking structure; CBC hides structure but is serial and sensitive to IV predictability; CFB handles segments and can self-synchronize; OFB produces a plaintext-independent key stream for noisy channels; CTR is parallel and randomly accessible, but counter reuse is catastrophic.### The 2017 engineering correction\n\nThe fourth edition brought padding into the normative scope and added methods for avoiding ciphertext expansion for CBC/CFB/OFB/CTR; CBC also gained three ciphertext-stealing variants."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        },
+        {
+          "id": "iso10116-r139-used",
+          "entryId": "iso10116-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 标准位置\n\nISO/IEC 10116 是分组密码模式的基础标准，Annex A 给出对象标识符，Annex B 给出安全指导，Annex C 是图，Annex D 是数值例子。它常与 ISO/IEC 9797-1（MAC）和 ISO/IEC 18033-3（分组密码）配套使用。### 实现选择\n\n磁盘/文件加密常用 CBC + ESSIV 或 XTS（XTS 在 IEEE 1619，不在 10116）；网络协议常用 CTR + 认证；数据库可用 CBC 或 CTR，但必须另加 MAC/AEAD。选择模式时先确定长度处理、并行性、随机访问和错误传播，再谈算法。",
+            "en": "### Place in the standards stack\n\nISO/IEC 10116 is a foundational mode standard: Annex A gives object identifiers, Annex B security guidance, Annex C figures and Annex D numerical examples.It is often used with ISO/IEC 9797-1 (MACs) and ISO/IEC 18033-3 (block ciphers)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        },
+        {
+          "id": "iso10116-r139-broken",
+          "entryId": "iso10116-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 只保密，不认证\n\n标准明确：这些模式只提供机密性，完整性不在范围内；多数模式也不隐藏消息长度。ECB 的结构泄漏、CBC 的 padding oracle、CTR 的计数器重用都能直接破坏安全。不要把 10116 的模式当成认证加密。### 参数错误比算法更致命\n\nCBC 的 IV 必须不可预测（通常随机），不能复用；CTR 的计数器在同一密钥下不能重复，否则两条密钥流异或即泄露明文；OFB/CFB 的 IV 也要唯一。实现还要处理短块、末块、长度扩张和密钥轮换，否则标准条文正确也可能被误用。",
+            "en": "### Confidentiality only\n\nThe standard states that these modes provide confidentiality only; integrity is out of scope, and most modes do not hide message length.ECB structure leakage, CBC padding oracles and CTR counter reuse can break security directly."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        },
+        {
+          "id": "iso10116-r139-history",
+          "entryId": "iso10116-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 从 1991 到 2017\n\nISO/IEC 10116 首版在 1991 年，1997、2006 年修订，2017 年第四版把 padding 与避免扩张方法纳入规范。2021 年 Amendment 1 增加 CTR-ACPKM 模式，用于密钥定期更新的场景。### 与 NIST SP 800-38 系列并行\n\nNIST 的 SP 800-38A 定义 ECB/CBC/CFB/OFB/CTR，SP 800-38B 定义 CMAC，SP 800-38D 定义 GCM，SP 800-38E 定义 XTS。ISO 10116 与它们在模式集合上高度重叠，但条款、OID 与附录不同；工程实现常同时满足两套标准。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：ISO/IEC 10116 分组密码工作模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "### From 1991 to 2017\n\nISO/IEC 10116 first appeared in 1991, was revised in 1997 and 2006, and its 2017 fourth edition brought padding and expansion-avoidance methods into the norm.Amendment 1 in 2021 added CTR-ACPKM for regular key updates."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        },
+        {
+          "id": "iso10116-r139-refs",
+          "entryId": "iso10116-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ISO/IEC 10116 分组密码工作模式.https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%2010116%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ISO/IEC 10116 分组密码工作模式.https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%2010116%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "iso10116-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "iso10116-wikipedia"
+      ]
+    },
+    {
+      "id": "iso10116-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "iso10116-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "iso10116-r139-principle",
+      "entryId": "iso10116-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：ISO/IEC 10116 分组密码工作模式（ISO/IEC 10116 modes of operation for an n-bit block cipher）。### 五种模式\n\nISO/IEC 10116:2017 规定五种以 n 位分组密码为基础的工作模式：ECB、CBC、CFB、OFB、CTR。ECB 逐块独立加密；CBC 把前一块密文异或进下一块明文；CFB 用密文反馈产生密钥流；OFB 用输出反馈产生密钥流；CTR 对计数器加密后与明文异或。### 关键公式\n\nCBC 加密为 C_i = E_K(P_i ⊕ C_{i-1})，C_0 = IV；CFB 为 C_i = P_i ⊕ E_K(C_{i-1})（按 s 位段实施）；OFB 为 O_i = E_K(O_{i-1})，C_i = P_i ⊕ O_i；CTR 为 C_i = P_i ⊕ E_K(T_i)，计数器每块递增。ECB 没有 IV，CBC/CFB/OFB 需要初始向量，CTR 需要唯一计数器。",
+        "en": "**Standard**: ISO/IEC 10116 modes of operation for an n-bit block cipher (ISO/IEC 10116 分组密码工作模式).### Five modes\n\nISO/IEC 10116:2017 defines five modes for an n-bit block cipher: ECB, CBC, CFB, OFB and CTR."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    },
+    {
+      "id": "iso10116-r139-why",
+      "entryId": "iso10116-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么不是“一个模式走天下”\n\nECB 确定、可并行，但相同明文块产生相同密文块，泄露结构；CBC 隐藏结构但串行、对 IV 可预测性敏感；CFB 适合按段处理且能自同步；OFB 生成与明文无关的密钥流，适合噪声信道；CTR 可并行、可随机访问，但计数器重用会灾难性泄密。### 2017 版的工程修正\n\n第四版把 padding 纳入规范范围，并为 CBC/CFB/OFB/CTR 增加避免密文扩张的方法；CBC 还给出三种 ciphertext stealing 变体。这样，标准不再假设“明文长度一定是分组的整数倍”，更贴近存储和网络实现。",
+        "en": "### Why one mode does not fit all\n\nECB is deterministic and parallel but equal plaintext blocks produce equal ciphertext blocks, leaking structure; CBC hides structure but is serial and sensitive to IV predictability; CFB handles segments and can self-synchronize; OFB produces a plaintext-independent key stream for noisy channels; CTR is parallel and randomly accessible, but counter reuse is catastrophic.### The 2017 engineering correction\n\nThe fourth edition brought padding into the normative scope and added methods for avoiding ciphertext expansion for CBC/CFB/OFB/CTR; CBC also gained three ciphertext-stealing variants."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    },
+    {
+      "id": "iso10116-r139-used",
+      "entryId": "iso10116-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 标准位置\n\nISO/IEC 10116 是分组密码模式的基础标准，Annex A 给出对象标识符，Annex B 给出安全指导，Annex C 是图，Annex D 是数值例子。它常与 ISO/IEC 9797-1（MAC）和 ISO/IEC 18033-3（分组密码）配套使用。### 实现选择\n\n磁盘/文件加密常用 CBC + ESSIV 或 XTS（XTS 在 IEEE 1619，不在 10116）；网络协议常用 CTR + 认证；数据库可用 CBC 或 CTR，但必须另加 MAC/AEAD。选择模式时先确定长度处理、并行性、随机访问和错误传播，再谈算法。",
+        "en": "### Place in the standards stack\n\nISO/IEC 10116 is a foundational mode standard: Annex A gives object identifiers, Annex B security guidance, Annex C figures and Annex D numerical examples.It is often used with ISO/IEC 9797-1 (MACs) and ISO/IEC 18033-3 (block ciphers)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    },
+    {
+      "id": "iso10116-r139-broken",
+      "entryId": "iso10116-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 只保密，不认证\n\n标准明确：这些模式只提供机密性，完整性不在范围内；多数模式也不隐藏消息长度。ECB 的结构泄漏、CBC 的 padding oracle、CTR 的计数器重用都能直接破坏安全。不要把 10116 的模式当成认证加密。### 参数错误比算法更致命\n\nCBC 的 IV 必须不可预测（通常随机），不能复用；CTR 的计数器在同一密钥下不能重复，否则两条密钥流异或即泄露明文；OFB/CFB 的 IV 也要唯一。实现还要处理短块、末块、长度扩张和密钥轮换，否则标准条文正确也可能被误用。",
+        "en": "### Confidentiality only\n\nThe standard states that these modes provide confidentiality only; integrity is out of scope, and most modes do not hide message length.ECB structure leakage, CBC padding oracles and CTR counter reuse can break security directly."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    },
+    {
+      "id": "iso10116-r139-history",
+      "entryId": "iso10116-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 从 1991 到 2017\n\nISO/IEC 10116 首版在 1991 年，1997、2006 年修订，2017 年第四版把 padding 与避免扩张方法纳入规范。2021 年 Amendment 1 增加 CTR-ACPKM 模式，用于密钥定期更新的场景。### 与 NIST SP 800-38 系列并行\n\nNIST 的 SP 800-38A 定义 ECB/CBC/CFB/OFB/CTR，SP 800-38B 定义 CMAC，SP 800-38D 定义 GCM，SP 800-38E 定义 XTS。ISO 10116 与它们在模式集合上高度重叠，但条款、OID 与附录不同；工程实现常同时满足两套标准。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：ISO/IEC 10116 分组密码工作模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "### From 1991 to 2017\n\nISO/IEC 10116 first appeared in 1991, was revised in 1997 and 2006, and its 2017 fourth edition brought padding and expansion-avoidance methods into the norm.Amendment 1 in 2021 added CTR-ACPKM for regular key updates."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    },
+    {
+      "id": "iso10116-r139-refs",
+      "entryId": "iso10116-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ISO/IEC 10116 分组密码工作模式.https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%2010116%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ISO/IEC 10116 分组密码工作模式.https://zh.wikipedia.org/w/index.php?search=ISO%2FIEC%2010116%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "iso10116-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

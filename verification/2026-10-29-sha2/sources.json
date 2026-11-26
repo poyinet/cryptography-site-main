@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sha2-details",
+  "sources": [
+    {
+      "id": "sha2-wikipedia",
+      "title": "Wikipedia search entry for SHA-2 散列家族",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SHA-2 散列家族",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sha2-r139-principle",
+          "entryId": "sha2-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：SHA-2 散列家族（SHA-2）。SHA-2 不是单个算法，而是 FIPS 180-4 中的六个安全哈希算法：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224 与 SHA-512/256。它们的摘要长度分别是 224、256、384、512、224 与 256 位。家族分成两条线：SHA-224/256 使用 32 位字、512 位消息块和 64 轮；SHA-384/512 及两个 SHA-512/t 变体使用 64 位字、1024 位消息块和 80 轮。| 算法 | 摘要 | 块 | 字 | 轮数 |\n| --- | --- | --- | --- | --- |\n| SHA-224 | 224 | 512 | 32 | 64 |\n| SHA-256 | 256 | 512 | 32 | 64 |\n| SHA-384 | 384 | 1024 | 64 | 80 |\n| SHA-512 | 512 | 1024 | 64 | 80 |\n| SHA-512/224 | 224 | 1024 | 64 | 80 |\n| SHA-512/256 | 256 | 1024 | 64 | 80 |\n\n填充规则与 SHA-1 的结构相同，但长度字段更长：先追加一个 1 位（实现上是 0x80 字节），再补 0 位，使长度对 512 同余于 448（SHA-224/256）或对 1024 同余于 896（SHA-384/512 家族），最后追加 64 位或 128 位的大端消息长度。",
+            "en": "**Algorithm**: SHA-2 (SHA-2 散列家族).SHA-2 is not one algorithm but six secure hash algorithms in FIPS 180-4: SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224 and SHA-512/256."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        },
+        {
+          "id": "sha2-r139-why",
+          "entryId": "sha2-details",
+          "section": "why",
+          "statement": {
+            "zh": "SHA-2 的谱系是在 SHA-1 之外提供更大的摘要。FIPS 180-2 于 2002 年 8 月 1 日发布，取代 FIPS 180-1，新增 SHA-256、SHA-384 与 SHA-512 三个「capable of producing larger message digests」（能产生更大摘要）的算法；SHA-1 的算法本身不变，只调整了记号。2004 年 2 月 25 日的 Change Notice 1 加入 SHA-224；2015 年 8 月的 FIPS 180-4 又新增 SHA-512/224 与 SHA-512/256。SHA-2 不是 SHA-1 的简单截断：它使用更大的状态、不同的字长和不同的轮数。家族刻意分成 32 位与 64 位两条线：SHA-224/256 面向 32 位运算，SHA-384/512 家族面向 64 位运算。这使同一家族能覆盖不同平台与摘要长度：需要 256 位摘要时可用 SHA-256，需要更长摘要或 64 位运算优势时可用 SHA-512 家族；截断变体则在保持 SHA-256/512 压缩函数的同时提供 224/384 位输出。IV 与轮常量来自素数平方根/立方根的小数部分。这种公开、可复算的来源减少了隐藏后门的空间，但标准本身不把这当作安全性证明。FIPS 180-2 把算法称为安全，是因为计算上难以找原像或碰撞——这是当时的安全假设，不是数学定理。",
+            "en": "SHA-2's lineage is larger digests alongside SHA-1.FIPS 180-2, published on 1 August 2002, supersedes FIPS 180-1 and adds SHA-256, SHA-384 and SHA-512, three algorithms \"capable of producing larger message digests\"; SHA-1 itself is unchanged as an algorithm, with notation adjustments."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        },
+        {
+          "id": "sha2-r139-used",
+          "entryId": "sha2-details",
+          "section": "used",
+          "statement": {
+            "zh": "SHA-2 的典型用途包括数字签名、证书、HMAC 和基于哈希的密钥派生。SP 800-107 把数字签名列为 SHA-2 的典型用途，并指出数字签名的安全强度取哈希的碰撞抗性强度；它也专门讨论 HMAC，说明 HMAC 的安全性取决于底层哈希、密钥强度和 MacTag 长度，并把 SHA-2 用于两步提取-扩展的密钥派生结构。HMAC-SHA-2 有公开的一致性向量。RFC 4231 的 Jefe 向量使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，HMAC-SHA-256 为 `5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843`，HMAC-SHA-512 为 `164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737`。RFC 6234 则提供 SHA-224/256/384/512 的 C 参考代码、测试向量以及 HMAC/HKDF 实现。NIST 的当前政策把 SHA-2 家族（六个成员）列为可用于所有哈希函数应用。SP 800-131A Rev.2 的表 8 明确写出这一点。需要强调：这里说的是标准层面的可接受性，不是任何 SHA-2 用法都自动安全；具体协议仍要选对属性（碰撞、原像、第二原像）和密钥管理。",
+            "en": "SHA-2's typical uses include digital signatures, certificates, HMAC and hash-based key derivation.SP 800-107 lists digital signatures as a typical use of SHA-2 and notes that a digital signature's security strength is the hash function's collision resistance strength; it also devotes a section to HMAC, stating that HMAC security depends on the underlying hash, the key strength and the MacTag length, and uses SHA-2 in a two-step extract-then-expand key derivation structure."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        },
+        {
+          "id": "sha2-r139-broken",
+          "entryId": "sha2-details",
+          "section": "broken",
+          "statement": {
+            "zh": "SHA-2 目前是 NIST 批准的标准哈希家族；SP 800-131A Rev.2 的表 8 把六个成员都列为可用于所有哈希函数应用。但「acceptable」（可接受）不等于没有攻击面，至少有三条边界需要理解。**长度扩展**：SHA-2 采用 Merkle-Damgård 迭代，每块处理后的链接值就是下一块的输入，最终输出也是链接值。因此，给定 H(M) 与 M 的长度，攻击者可以在不知道 M 的情况下计算 H(M || pad(M) || X)。这不是碰撞，但会破坏把哈希直接当 MAC 的朴素构造。本批次用 \"abc\" 做了演示：已知 SHA-256(\"abc\") 与 64 字节填充长度，不重新读取原消息就能算出 `f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4`，与直接哈希 `abc || pad(abc) || \"extra\"` 的结果一致。**不要把 H(K||M) 当 MAC**：由于长度扩展，直接用 SHA-2 拼接密钥和消息的 MAC 是不安全的。应使用 HMAC；SP 800-107 对 HMAC 的使用给出指导，HMAC 通过 ipad/opad 两层把密钥处理与消息哈希分开。RFC 4231 的向量可以用来核对 HMAC-SHA-2 实现。**截断会降低强度**：截断到 t 位的摘要最多提供约 t/2 位碰撞抗性；SHA-224、SHA-384、SHA-512/224、SHA-512/256 的碰撞抗性分别约为 112、192、112、128 位。",
+            "en": "SHA-2 is currently a NIST-approved standard hash family; Table 8 of SP 800-131A Rev.2 marks all six members acceptable for all hash function applications."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        },
+        {
+          "id": "sha2-r139-history",
+          "entryId": "sha2-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **2002 年 8 月 1 日**：FIPS 180-2 发布，包含 SHA-1、SHA-256、SHA-384 与 SHA-512；它取代 FIPS 180-1，新增三个能产生更大摘要的算法。- **2004 年 2 月 25 日**：FIPS 180-2 的 Change Notice 1 加入 SHA-224。- **2008 年 10 月 17 日**：FIPS 180-2 被后续版本取代；FIPS 180-4 的附录 C 以 FIPS 180-3 为基线描述技术变更。- **2011 年 5 月**：RFC 6234 发布，取代 RFC 4634，提供 SHA-224/256/384/512、HMAC 与 HKDF 的开源实现和测试向量。- **2015 年 8 月**：FIPS 180-4 发布，在 FIPS 180-3 的基础上新增 SHA-512/224 与 SHA-512/256。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 把 SHA-2 家族列为可用于所有哈希函数应用。",
+            "en": "- **1 August 2002**: FIPS 180-2 is published with SHA-1, SHA-256, SHA-384 and SHA-512; it supersedes FIPS 180-1 and adds three algorithms capable of producing larger digests.- **25 February 2004**: Change Notice 1 to FIPS 180-2 adds SHA-224."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        },
+        {
+          "id": "sha2-r139-refs",
+          "entryId": "sha2-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SHA-2 散列家族.https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SHA-2 散列家族.https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sha2-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sha2-wikipedia"
+      ]
+    },
+    {
+      "id": "sha2-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sha2-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sha2-r139-principle",
+      "entryId": "sha2-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：SHA-2 散列家族（SHA-2）。SHA-2 不是单个算法，而是 FIPS 180-4 中的六个安全哈希算法：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224 与 SHA-512/256。它们的摘要长度分别是 224、256、384、512、224 与 256 位。家族分成两条线：SHA-224/256 使用 32 位字、512 位消息块和 64 轮；SHA-384/512 及两个 SHA-512/t 变体使用 64 位字、1024 位消息块和 80 轮。| 算法 | 摘要 | 块 | 字 | 轮数 |\n| --- | --- | --- | --- | --- |\n| SHA-224 | 224 | 512 | 32 | 64 |\n| SHA-256 | 256 | 512 | 32 | 64 |\n| SHA-384 | 384 | 1024 | 64 | 80 |\n| SHA-512 | 512 | 1024 | 64 | 80 |\n| SHA-512/224 | 224 | 1024 | 64 | 80 |\n| SHA-512/256 | 256 | 1024 | 64 | 80 |\n\n填充规则与 SHA-1 的结构相同，但长度字段更长：先追加一个 1 位（实现上是 0x80 字节），再补 0 位，使长度对 512 同余于 448（SHA-224/256）或对 1024 同余于 896（SHA-384/512 家族），最后追加 64 位或 128 位的大端消息长度。",
+        "en": "**Algorithm**: SHA-2 (SHA-2 散列家族).SHA-2 is not one algorithm but six secure hash algorithms in FIPS 180-4: SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224 and SHA-512/256."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    },
+    {
+      "id": "sha2-r139-why",
+      "entryId": "sha2-details",
+      "section": "why",
+      "statement": {
+        "zh": "SHA-2 的谱系是在 SHA-1 之外提供更大的摘要。FIPS 180-2 于 2002 年 8 月 1 日发布，取代 FIPS 180-1，新增 SHA-256、SHA-384 与 SHA-512 三个「capable of producing larger message digests」（能产生更大摘要）的算法；SHA-1 的算法本身不变，只调整了记号。2004 年 2 月 25 日的 Change Notice 1 加入 SHA-224；2015 年 8 月的 FIPS 180-4 又新增 SHA-512/224 与 SHA-512/256。SHA-2 不是 SHA-1 的简单截断：它使用更大的状态、不同的字长和不同的轮数。家族刻意分成 32 位与 64 位两条线：SHA-224/256 面向 32 位运算，SHA-384/512 家族面向 64 位运算。这使同一家族能覆盖不同平台与摘要长度：需要 256 位摘要时可用 SHA-256，需要更长摘要或 64 位运算优势时可用 SHA-512 家族；截断变体则在保持 SHA-256/512 压缩函数的同时提供 224/384 位输出。IV 与轮常量来自素数平方根/立方根的小数部分。这种公开、可复算的来源减少了隐藏后门的空间，但标准本身不把这当作安全性证明。FIPS 180-2 把算法称为安全，是因为计算上难以找原像或碰撞——这是当时的安全假设，不是数学定理。",
+        "en": "SHA-2's lineage is larger digests alongside SHA-1.FIPS 180-2, published on 1 August 2002, supersedes FIPS 180-1 and adds SHA-256, SHA-384 and SHA-512, three algorithms \"capable of producing larger message digests\"; SHA-1 itself is unchanged as an algorithm, with notation adjustments."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    },
+    {
+      "id": "sha2-r139-used",
+      "entryId": "sha2-details",
+      "section": "used",
+      "statement": {
+        "zh": "SHA-2 的典型用途包括数字签名、证书、HMAC 和基于哈希的密钥派生。SP 800-107 把数字签名列为 SHA-2 的典型用途，并指出数字签名的安全强度取哈希的碰撞抗性强度；它也专门讨论 HMAC，说明 HMAC 的安全性取决于底层哈希、密钥强度和 MacTag 长度，并把 SHA-2 用于两步提取-扩展的密钥派生结构。HMAC-SHA-2 有公开的一致性向量。RFC 4231 的 Jefe 向量使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，HMAC-SHA-256 为 `5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843`，HMAC-SHA-512 为 `164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737`。RFC 6234 则提供 SHA-224/256/384/512 的 C 参考代码、测试向量以及 HMAC/HKDF 实现。NIST 的当前政策把 SHA-2 家族（六个成员）列为可用于所有哈希函数应用。SP 800-131A Rev.2 的表 8 明确写出这一点。需要强调：这里说的是标准层面的可接受性，不是任何 SHA-2 用法都自动安全；具体协议仍要选对属性（碰撞、原像、第二原像）和密钥管理。",
+        "en": "SHA-2's typical uses include digital signatures, certificates, HMAC and hash-based key derivation.SP 800-107 lists digital signatures as a typical use of SHA-2 and notes that a digital signature's security strength is the hash function's collision resistance strength; it also devotes a section to HMAC, stating that HMAC security depends on the underlying hash, the key strength and the MacTag length, and uses SHA-2 in a two-step extract-then-expand key derivation structure."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    },
+    {
+      "id": "sha2-r139-broken",
+      "entryId": "sha2-details",
+      "section": "broken",
+      "statement": {
+        "zh": "SHA-2 目前是 NIST 批准的标准哈希家族；SP 800-131A Rev.2 的表 8 把六个成员都列为可用于所有哈希函数应用。但「acceptable」（可接受）不等于没有攻击面，至少有三条边界需要理解。**长度扩展**：SHA-2 采用 Merkle-Damgård 迭代，每块处理后的链接值就是下一块的输入，最终输出也是链接值。因此，给定 H(M) 与 M 的长度，攻击者可以在不知道 M 的情况下计算 H(M || pad(M) || X)。这不是碰撞，但会破坏把哈希直接当 MAC 的朴素构造。本批次用 \"abc\" 做了演示：已知 SHA-256(\"abc\") 与 64 字节填充长度，不重新读取原消息就能算出 `f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4`，与直接哈希 `abc || pad(abc) || \"extra\"` 的结果一致。**不要把 H(K||M) 当 MAC**：由于长度扩展，直接用 SHA-2 拼接密钥和消息的 MAC 是不安全的。应使用 HMAC；SP 800-107 对 HMAC 的使用给出指导，HMAC 通过 ipad/opad 两层把密钥处理与消息哈希分开。RFC 4231 的向量可以用来核对 HMAC-SHA-2 实现。**截断会降低强度**：截断到 t 位的摘要最多提供约 t/2 位碰撞抗性；SHA-224、SHA-384、SHA-512/224、SHA-512/256 的碰撞抗性分别约为 112、192、112、128 位。",
+        "en": "SHA-2 is currently a NIST-approved standard hash family; Table 8 of SP 800-131A Rev.2 marks all six members acceptable for all hash function applications."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    },
+    {
+      "id": "sha2-r139-history",
+      "entryId": "sha2-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **2002 年 8 月 1 日**：FIPS 180-2 发布，包含 SHA-1、SHA-256、SHA-384 与 SHA-512；它取代 FIPS 180-1，新增三个能产生更大摘要的算法。- **2004 年 2 月 25 日**：FIPS 180-2 的 Change Notice 1 加入 SHA-224。- **2008 年 10 月 17 日**：FIPS 180-2 被后续版本取代；FIPS 180-4 的附录 C 以 FIPS 180-3 为基线描述技术变更。- **2011 年 5 月**：RFC 6234 发布，取代 RFC 4634，提供 SHA-224/256/384/512、HMAC 与 HKDF 的开源实现和测试向量。- **2015 年 8 月**：FIPS 180-4 发布，在 FIPS 180-3 的基础上新增 SHA-512/224 与 SHA-512/256。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 把 SHA-2 家族列为可用于所有哈希函数应用。",
+        "en": "- **1 August 2002**: FIPS 180-2 is published with SHA-1, SHA-256, SHA-384 and SHA-512; it supersedes FIPS 180-1 and adds three algorithms capable of producing larger digests.- **25 February 2004**: Change Notice 1 to FIPS 180-2 adds SHA-224."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    },
+    {
+      "id": "sha2-r139-refs",
+      "entryId": "sha2-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SHA-2 散列家族.https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SHA-2 散列家族.https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sha2-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for dtls10: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "dtls10-details",
+      "inventoryIds": [
+        "dtls10"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「DTLS 1.0」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of DTLS 1.0: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "DTLS 1.0",
+        "en": "DTLS 1.0"
+      },
+      "claimIds": [
+        "dtls10-r139-principle",
+        "dtls10-r139-why",
+        "dtls10-r139-used",
+        "dtls10-r139-broken",
+        "dtls10-r139-history",
+        "dtls10-r139-refs"
+      ],
+      "sourceIds": [
+        "dtls10-wikipedia",
+        "dtls10-reference-ref"
+      ],
+      "related": [
+        "transport-layer-security",
+        "dtls12",
+        "attack--replay-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：DTLS 1.0（DTLS 1.0）。摘要界定版本与对象：「This document specifies Version 1.0 of the Datagram Transport Layer Security (DTLS) protocol.The DTLS protocol provides communications privacy for datagram protocols.」即在不保证顺序与交付的传输上提供 TLS 级保护，并保留数据报语义。",
+          "why": "设计取向是最小改动：§1 写明「DTLS is deliberately designed to be as similar to TLS as possible, both to minimize new security invention and to maximize the amount of code and infrastructure reuse.」§4 说明写法：「instead of presenting DTLS as a new protocol, we present it as a series of deltas from TLS 1.1 [TLS11].」",
+          "used": "§4.2 列出相对 TLS 的三处改动，第一条是「A stateless cookie exchange has been added to prevent denial of service attacks.」，随后是握手头的分片与乱序处理和重传计时器。§4.1.1 另给出一条硬性约束：「Each DTLS record MUST fit within a single datagram.」",
+          "broken": "重放检测是可选的：§3.3 说明「The replay detection feature is optional, since packet duplication is not always malicious, but can also occur due to routing errors.」§4.1.2.2 直接禁掉流密码：「RC4 MUST NOT be used with DTLS.」cookie 只解决伪造源地址，§4.2.1 自陈「This mechanism does not provide any defense against DoS attacks mounted from valid IP addresses.」",
+          "history": "RFC 4347 头部为 E.Rescorla（RTFM, Inc.）与 N.Modadugu（Stanford University），类别 Standards Track，2006 年 4 月，没有 Obsoletes 或 Updates 行；标题行只写「Datagram Transport Layer Security」，Version 1.0 出现在摘要里。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：DTLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 DTLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 把协议消息序列写成状态机 2. 用混合论证逐个替换原语 3. 把剩余优势归约到 PRF/AEAD 安全。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for DTLS 1.0. https://zh.wikipedia.org/w/index.php?search=DTLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nDTLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: DTLS 1.0 (DTLS 1.0). The abstract fixes version and object: \"This document specifies Version 1.0 of the Datagram Transport Layer Security (DTLS) protocol. The DTLS protocol provides communications privacy for datagram protocols.\" — TLS-level protection over a transport that guarantees neither order nor delivery, preserving datagram semantics.",
+          "why": "The design aims at minimal change: §1 says \"DTLS is deliberately designed to be as similar to TLS as possible, both to minimize new security invention and to maximize the amount of code and infrastructure reuse.\" Section 4 explains the presentation: \"instead of presenting DTLS as a new protocol, we present it as a series of deltas from TLS 1.1 [TLS11].\"",
+          "used": "Section 4.2 lists the three departures from TLS, first \"A stateless cookie exchange has been added to prevent denial of service attacks.\", then handshake-header changes for loss, reordering and fragmentation, plus retransmission timers. Section 4.1.1 adds a hard rule: \"Each DTLS record MUST fit within a single datagram.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Replay detection is optional: §3.3 explains \"The replay detection feature is optional, since packet duplication is not always malicious, but can also occur due to routing errors.\" Section 4.1.2.2 bans stream ciphers outright: \"RC4 MUST NOT be used with DTLS.\" And the cookie answers only forged source addresses — §4.2.1 concedes \"This mechanism does not provide any defense against DoS attacks mounted from valid IP addresses.\"",
+          "history": "The RFC 4347 header lists E. Rescorla (RTFM, Inc.) and N. Modadugu (Stanford University), Category: Standards Track, April 2006, with no Obsoletes or Updates line; the title line reads only \"Datagram Transport Layer Security\" and the version number appears in the abstract.",
+          "refs": "- Wikipedia search entry for DTLS 1.0. https://zh.wikipedia.org/w/index.php?search=DTLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nDTLS 1.0: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "cookie 交换：无状态的源地址可达性验证。",
+          "HelloVerifyRequest：承载 cookie 的握手消息。",
+          "显式序号：记录头里的序号以便正确验证 MAC。",
+          "epoch：区分多次握手的记录。",
+          "重传计时器：处理握手丢包的机制。",
+          "RC4 禁用：§4.1.2.2 的 MUST NOT。"
+        ],
+        "en": [
+          "Cookie exchange: a stateless return-routability check.",
+          "HelloVerifyRequest: the handshake message carrying the cookie.",
+          "Explicit sequence number: in the record header so the MAC verifies under reordering.",
+          "Epoch: separates records of successive handshakes.",
+          "Retransmission timers: the handshake answer to packet loss.",
+          "RC4 banned: the §4.1.2.2 MUST NOT."
+        ]
+      },
+      "figures": [
+        {
+          "id": "dtls10-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DTLS 1.0：为什么需要 → 核心机制 → 边界。",
+            "en": "DTLS 1.0: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "DTLS 1.0 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for DTLS 1.0, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/dtls10-details-flow.zh.svg",
+            "en": "assets/dtls10-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b24c4dc5f78489ec5afce4e9fcff7c82e06838acd46c43025744a980bc783b7e",
+            "en": "9bf354b966a8beea27580d4626f36f95f688799962f912ee18a53d5500bb1028"
+          }
+        },
+        {
+          "id": "dtls10-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DTLS 1.0 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for DTLS 1.0: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "DTLS 1.0 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for DTLS 1.0, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/dtls10-details-r138-model.zh.svg",
+            "en": "assets/dtls10-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4d643585398abf6f24e8d576c3a891823cc771e96f213aadc1ea2e0d5e44d1b3",
+            "en": "709edbcfbe4e9a3c592573bab20291534c408f4466c63b60a6cb131e1fc4fa0f"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "dtls10-r139-formal",
+          "entryId": "dtls10-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：DTLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 DTLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "dtls10-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "dtls10-r139-formal"
+      ],
+      "sources": [
+        "dtls10-wikipedia",
+        "dtls10-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "dtls10-r139-formal",
+      "entryId": "dtls10-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：DTLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 DTLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "dtls10-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

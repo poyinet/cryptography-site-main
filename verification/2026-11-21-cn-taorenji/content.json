@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R119 full-library mechanism-structure closure for cn-taorenji-details.",
+  "entries": [
+    {
+      "id": "cn-taorenji-details",
+      "inventoryIds": [
+        "cn-taorenji"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出有限自动机状态转移、复合公钥、弱逆延迟 τ、密钥生成递推与 FAPKC 的线性检验和失效条件。",
+        "en": "This entry gives finite-automaton state transitions, compound public key, weak-inverse delay τ, key-generation recurrence, and FAPKC’s linear check and failure conditions."
+      },
+      "title": {
+        "zh": "陶仁骥与有限自动机密码",
+        "en": "Tao Renji and Finite Automata Cryptography"
+      },
+      "claimIds": [
+        "cn-taorenji-r139-principle",
+        "cn-taorenji-r139-why",
+        "cn-taorenji-r139-used",
+        "cn-taorenji-r139-broken",
+        "cn-taorenji-r139-history",
+        "cn-taorenji-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按原始论文或来源重算。",
+        "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the papers or sources."
+      },
+      "sourceIds": [
+        "cn-taorenji-wikipedia",
+        "cn-taorenji-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "cn-zengkexian"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-taorenji-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "陶仁骥有限自动机密码：状态转移、复合公钥、弱逆延迟与线性检验。",
+            "en": "Tao Renji and finite-automata cryptography: state transitions, compound public key, weak-inverse delay and linear check."
+          },
+          "alt": {
+            "zh": "陶仁骥有限自动机密码：状态转移、复合公钥、弱逆延迟与线性检验。",
+            "en": "Tao Renji and finite-automata cryptography: state transitions, compound public key, weak-inverse delay and linear check."
+          },
+          "files": {
+            "zh": "assets/cn-taorenji-mechanism.zh.svg",
+            "en": "assets/cn-taorenji-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据 1999 TCS、2000 JCST 论文与 2008 专著绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the 1999 TCS paper, 2000 JCST paper and 2008 book)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "0e7e0a2a07951a4eae3f8ec9d79a4194374b78c569dcce7e0979b92a127b4adc",
+            "en": "a75e4e3e999a6303b21adefd470185085d06226b9e335205a530aca296739678"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：陶仁骥与有限自动机密码（Tao Renji and Finite Automata Cryptography）。### 自动机与弱逆\n\n有限自动机 \\(M=(X,Y,S,\\delta,\\lambda)\\) 的状态转移与输出是 \\(s(t+1)=\\delta(s(t),x(t))\\)、\\(y(t)=\\lambda(s(t),x(t))\\)。FAPKC 的公钥不是单个自动机，而是复合自动机 \\(C'(M_n,\\ldots,M_0)\\)；私钥是各分量的弱逆 \\(M_i^*\\)。### 延迟为什么是结构参数\n\n弱逆不要求逐字立即还原，而允许先输出一个已知前缀：\\(\\lambda'(s',\\lambda(s,\\alpha))=\\alpha_0\\alpha\\)，其中 \\(|\\alpha_0|=\\tau\\)。总延迟按 \\(\\tau=\\sum\\tau_i\\) 累加，密钥生成还要满足 \\(b_i=b_{i-1}+r_i-\\tau_i\\)。这使“解密”变成一个带前缀延迟的状态恢复问题，而不是普通置换。",
+          "why": "FAPKC 把有限自动机的可逆性理论变成公钥密码：公钥是复合自动机，私钥是弱逆，安全性取决于复合结构、延迟与线性检验。它是中国学者在公钥密码早期的一条独立路线，和 RSA、椭圆曲线、格密码的代数假设不同，读法也必须不同。",
+          "used": "1.先标出字母表、状态集、阶 r_i 与延迟 τ_i；这些是模型参数，不是实现细节。2.检查公钥是否只含复合机与初始状态，私钥是否保留弱逆。3.用弱逆条件验证解密只差一个已知前缀，且总延迟与密钥生成公式一致。4.检查 R_aR_b 线性检验是否排除了线性/准线性弱密钥。5.记录密钥生成器版本与攻击假设；不能只拿一个复合层数当作安全强度。### 不能怎么用\n\n不能把“弱逆存在”说成“任何人都不能求逆”；不能忽略零延迟与线性分量；不能把 1999 年的统一体制当成所有 FAPKC 变体的安全证明；不能把模型公式当成具体实现的安全审计。",
+          "broken": "1.线性或准线性分量：若一个分量线性且延迟为 0，体制可被线性 R_aR_b 攻击。2.密钥生成：弱密钥未被检验排除时，公钥可被分解或求弱逆。3.延迟参数：τ_i 与 r_i 不匹配会破坏解密的前缀条件。4.复合结构：n+1 个自动机的组合不是简单串联，初始状态与总延迟必须同步。5.攻击演进：1999 论文列出的线性攻击与 2000 论文的输入树搜索只是当时已知面，不覆盖后来所有密码分析。",
+          "history": "陶仁骥与陈世华 1985 年在《计算机学报》第 8 卷提出有限自动机公钥密码与数字签名；1999 年 Theoretical Computer Science 226:143–172 把 FAPKC0、FAPKC1、FAPKC3、FAPKC4 统一为 n+1 个自动机的复合体制；2000 年 JCST 15(4) 用输入树估计穷举与随机搜索；2008 年清华大学出版社与 Springer 出版《Finite Automata and Application to Cryptography》。",
+          "refs": "- Wikipedia search entry for 陶仁骥与有限自动机密码. https://zh.wikipedia.org/w/index.php?search=%E9%99%B6%E4%BB%81%E9%AA%A5%E4%B8%8E%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Tao Renji and Finite Automata Cryptography. It is registered under theoretical foundations. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in theoretical foundations, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: China's Parallel Line. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 陶仁骥与有限自动机密码. https://zh.wikipedia.org/w/index.php?search=%E9%99%B6%E4%BB%81%E9%AA%A5%E4%B8%8E%E6%9C%89%E9%99%90%E8%87%AA%E5%8A%A8%E6%9C%BA%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "calculationIds": [],
+      "sources": [
+        "cn-taorenji-wikipedia",
+        "cn-taorenji-reference-ref"
+      ],
+      "calculations": []
+    }
+  ],
+  "calculations": []
+}

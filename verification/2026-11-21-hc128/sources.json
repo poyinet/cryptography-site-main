@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "hc128-details",
+  "sources": [
+    {
+      "id": "hc128-wikipedia",
+      "title": "Wikipedia search entry for HC-128 流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=HC-128%20%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: HC-128 流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "hc128-r139-principle",
+          "entryId": "hc128-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：HC-128 流密码（HC-128）。### 两张 512 字的秘密表\n\nHC-128 接受 128 位密钥和 128 位 IV，内部维护两张各 512 个 32 位字的表 P 和 Q，共 32,768 位，即 4 KiB。每一步只更新一张表的一个元素，同时从另一张表取字做非线性过滤，输出一个 32 位密钥流字。### 密钥扩展与 1024 步热身\n\nK 与 IV 先按 SHA-256 消息扩展的方式生成 W[0..1279]：\n\nW_i = f2(W_{i−2}) + W_{i−7} + f1(W_{i−15}) + W_{i−16} + i。P 取 W[256..767]，Q 取 W[768..1279]；随后运行 1024 步，把输出反馈进 P、Q，完成初始化。### 更新与输出\n\nP 步更新 P[i] ← (P[i] + g1(P[i−3], P[i−10], P[i−511])) ⊕ h1(P[i−12])，Q 步对称；g 由旋转、异或和 32 位加法组成，h 用另一张表做查表。每一步输出 32 位，密钥流总长上限为 2^64 位。",
+            "en": "**Algorithm**: HC-128 (HC-128 流密码).### Two secret tables of 512 words\n\nHC-128 takes a 128-bit key and a 128-bit IV and keeps two tables P and Q, each of 512 32-bit words: 32,768 bits, or 4 KiB."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        },
+        {
+          "id": "hc128-r139-why",
+          "entryId": "hc128-details",
+          "section": "why",
+          "statement": {
+            "zh": "HC-128 是为软件批量加密设计的：没有 AES 指令也能用标量 32 位运算实现，作者报告在 Pentium M 上约 3.05 周期/字节，明显快于同期的表驱动软件密码。它入选 eSTREAM 软件 portfolio，且没有专利限制。代价是 4 KiB 的内部状态和 1024 步初始化。它适合长连接、磁盘/网络批量数据或伪随机数生成，不适合大量短消息；短包场景里初始化成本会吞掉吞吐优势。",
+            "en": "HC-128 is built for bulk software encryption: it runs on scalar 32-bit operations without AES instructions.The designer reports about 3.05 cycles per byte on a Pentium M, well ahead of table-driven software ciphers of its time."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        },
+        {
+          "id": "hc128-r139-used",
+          "entryId": "hc128-details",
+          "section": "used",
+          "statement": {
+            "zh": "HC-128 主要出现在软件流密码实现、伪随机数发生器（例如 Rust 的 rand_hc）和密码分析基线中。它只提供机密性，必须与 MAC 或 AEAD 组合才能抵抗篡改。在协议层，HC-128 没有像 AES-GCM 或 ChaCha20-Poly1305 那样的广泛标准套件；它的价值更多是“无硬件加速时的高吞吐软件流密码”和 eSTREAM 的设计样本。",
+            "en": "HC-128 appears in software stream-cipher implementations, pseudorandom generators such as Rust rand_hc, and cryptanalysis baselines.It provides confidentiality only, so protocols must add a MAC or use an AEAD construction."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        },
+        {
+          "id": "hc128-r139-broken",
+          "entryId": "hc128-details",
+          "section": "broken",
+          "statement": {
+            "zh": "密钥/IV 重用是致命错误：同一对 K、IV 产生同一密钥流，两条密文异或就消掉密钥流。HC-128 没有内置认证，协议必须另加完整性保护。它的 h1/h2 用秘密下标访问 P/Q 表，软件实现会出现与密钥相关的缓存访问模式；SPACE 2012 的工作证明，缓存分析可以恢复 HC-128 约一半状态，再与差分故障分析级联可走向全状态/密钥恢复。共享 CPU、云多租户和可观测缓存的环境必须把这一点计入风险。另外，2^64 位的密钥流上限和 1024 步初始化都是硬边界；超过上限或复用 IV 都不是“实现细节”，而是直接破坏安全目标。",
+            "en": "Key/IV reuse is fatal: the same K and IV produce the same keystream, and two ciphertexts XOR to the XOR of the plaintexts.HC-128 has no built-in authentication, so the protocol must add integrity protection."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        },
+        {
+          "id": "hc128-r139-history",
+          "entryId": "hc128-details",
+          "section": "history",
+          "statement": {
+            "zh": "Hongjun Wu 在 2004 年提出 HC-256，2008 年给出面向 128 位安全的简化版 HC-128；HC-128 入选 eSTREAM 软件 portfolio，论文收于 LNCS 4986。此后它成为软件流密码、PRNG 和侧信道研究的标准样本，缓存分析、差分故障分析和结构分析都围绕它展开。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：HC-128 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Hongjun Wu proposed HC-256 in 2004 and the 128-bit-security simplification HC-128 in 2008.HC-128 entered the eSTREAM software portfolio, and the paper appeared in LNCS 4986."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        },
+        {
+          "id": "hc128-r139-refs",
+          "entryId": "hc128-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for HC-128 流密码.https://zh.wikipedia.org/w/index.php?search=HC-128%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for HC-128 流密码.https://zh.wikipedia.org/w/index.php?search=HC-128%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "hc128-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "hc128-wikipedia"
+      ]
+    },
+    {
+      "id": "hc128-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hc128-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "hc128-r139-principle",
+      "entryId": "hc128-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：HC-128 流密码（HC-128）。### 两张 512 字的秘密表\n\nHC-128 接受 128 位密钥和 128 位 IV，内部维护两张各 512 个 32 位字的表 P 和 Q，共 32,768 位，即 4 KiB。每一步只更新一张表的一个元素，同时从另一张表取字做非线性过滤，输出一个 32 位密钥流字。### 密钥扩展与 1024 步热身\n\nK 与 IV 先按 SHA-256 消息扩展的方式生成 W[0..1279]：\n\nW_i = f2(W_{i−2}) + W_{i−7} + f1(W_{i−15}) + W_{i−16} + i。P 取 W[256..767]，Q 取 W[768..1279]；随后运行 1024 步，把输出反馈进 P、Q，完成初始化。### 更新与输出\n\nP 步更新 P[i] ← (P[i] + g1(P[i−3], P[i−10], P[i−511])) ⊕ h1(P[i−12])，Q 步对称；g 由旋转、异或和 32 位加法组成，h 用另一张表做查表。每一步输出 32 位，密钥流总长上限为 2^64 位。",
+        "en": "**Algorithm**: HC-128 (HC-128 流密码).### Two secret tables of 512 words\n\nHC-128 takes a 128-bit key and a 128-bit IV and keeps two tables P and Q, each of 512 32-bit words: 32,768 bits, or 4 KiB."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    },
+    {
+      "id": "hc128-r139-why",
+      "entryId": "hc128-details",
+      "section": "why",
+      "statement": {
+        "zh": "HC-128 是为软件批量加密设计的：没有 AES 指令也能用标量 32 位运算实现，作者报告在 Pentium M 上约 3.05 周期/字节，明显快于同期的表驱动软件密码。它入选 eSTREAM 软件 portfolio，且没有专利限制。代价是 4 KiB 的内部状态和 1024 步初始化。它适合长连接、磁盘/网络批量数据或伪随机数生成，不适合大量短消息；短包场景里初始化成本会吞掉吞吐优势。",
+        "en": "HC-128 is built for bulk software encryption: it runs on scalar 32-bit operations without AES instructions.The designer reports about 3.05 cycles per byte on a Pentium M, well ahead of table-driven software ciphers of its time."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    },
+    {
+      "id": "hc128-r139-used",
+      "entryId": "hc128-details",
+      "section": "used",
+      "statement": {
+        "zh": "HC-128 主要出现在软件流密码实现、伪随机数发生器（例如 Rust 的 rand_hc）和密码分析基线中。它只提供机密性，必须与 MAC 或 AEAD 组合才能抵抗篡改。在协议层，HC-128 没有像 AES-GCM 或 ChaCha20-Poly1305 那样的广泛标准套件；它的价值更多是“无硬件加速时的高吞吐软件流密码”和 eSTREAM 的设计样本。",
+        "en": "HC-128 appears in software stream-cipher implementations, pseudorandom generators such as Rust rand_hc, and cryptanalysis baselines.It provides confidentiality only, so protocols must add a MAC or use an AEAD construction."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    },
+    {
+      "id": "hc128-r139-broken",
+      "entryId": "hc128-details",
+      "section": "broken",
+      "statement": {
+        "zh": "密钥/IV 重用是致命错误：同一对 K、IV 产生同一密钥流，两条密文异或就消掉密钥流。HC-128 没有内置认证，协议必须另加完整性保护。它的 h1/h2 用秘密下标访问 P/Q 表，软件实现会出现与密钥相关的缓存访问模式；SPACE 2012 的工作证明，缓存分析可以恢复 HC-128 约一半状态，再与差分故障分析级联可走向全状态/密钥恢复。共享 CPU、云多租户和可观测缓存的环境必须把这一点计入风险。另外，2^64 位的密钥流上限和 1024 步初始化都是硬边界；超过上限或复用 IV 都不是“实现细节”，而是直接破坏安全目标。",
+        "en": "Key/IV reuse is fatal: the same K and IV produce the same keystream, and two ciphertexts XOR to the XOR of the plaintexts.HC-128 has no built-in authentication, so the protocol must add integrity protection."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    },
+    {
+      "id": "hc128-r139-history",
+      "entryId": "hc128-details",
+      "section": "history",
+      "statement": {
+        "zh": "Hongjun Wu 在 2004 年提出 HC-256，2008 年给出面向 128 位安全的简化版 HC-128；HC-128 入选 eSTREAM 软件 portfolio，论文收于 LNCS 4986。此后它成为软件流密码、PRNG 和侧信道研究的标准样本，缓存分析、差分故障分析和结构分析都围绕它展开。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：HC-128 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Hongjun Wu proposed HC-256 in 2004 and the 128-bit-security simplification HC-128 in 2008.HC-128 entered the eSTREAM software portfolio, and the paper appeared in LNCS 4986."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    },
+    {
+      "id": "hc128-r139-refs",
+      "entryId": "hc128-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for HC-128 流密码.https://zh.wikipedia.org/w/index.php?search=HC-128%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for HC-128 流密码.https://zh.wikipedia.org/w/index.php?search=HC-128%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "hc128-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

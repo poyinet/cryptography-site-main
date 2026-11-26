@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "groth16-details",
+  "sources": [
+    {
+      "id": "groth16-wikipedia",
+      "title": "Wikipedia search entry for Groth16 证明系统",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Groth16 证明系统",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "groth16-r139-principle",
+          "entryId": "groth16-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Groth16 证明系统（Groth16 zk-SNARK）。### 从 R1CS 到三个群元素\n\nGroth16 是面向算术电路的可预处理 zk-SNARK。电路先被写成 R1CS（每行一个乘法约束），再通过二次算术程序（QAP）变成多项式方程。证明者用公共参考串（CRS）承诺 witness 对应的多项式，输出三个双线性群元素 `A、B、C`。验证者只检查一个 pairing product 方程，外加对公开输入的线性组合。证明不泄露 witness，验证时间与电路规模基本无关，这是它在 2016 年最突出的效率优势。",
+            "en": "**Algorithm**: Groth16 zk-SNARK (Groth16 证明系统).### From R1CS to three group elements\n\nGroth16 is a preprocessing zk-SNARK for arithmetic circuits."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        },
+        {
+          "id": "groth16-r139-why",
+          "entryId": "groth16-details",
+          "section": "why",
+          "statement": {
+            "zh": "Groth16 把“证明一个计算正确”压缩到数百字节和几次 pairing。与早期 Pinocchio 等方案相比，它的证明从多个群元素降到三个，验证也从多次 pairing 降到一次方程，特别适合递归证明和链上验证。代价是每个电路都要一套独立的 CRS。电路一改，参数就要重做；因此它适合固定电路，而不适合频繁变化的通用虚拟机。",
+            "en": "Groth16 compresses “this computation is correct” into a few hundred bytes and a handful of pairings.Compared with earlier Pinocchio-style systems, it reduced the proof to three group elements and verification to a single equation, making it attractive for recursive proofs and on-chain verification."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        },
+        {
+          "id": "groth16-r139-used",
+          "entryId": "groth16-details",
+          "section": "used",
+          "statement": {
+            "zh": "Groth16 是隐私交易和 zk-Rollup 早期最常用的证明后端之一；Zcash Sapling 使用基于 Groth16 的证明系统。它也常被用作递归证明的内层证明，因为验证成本低、证明小。在工程中，Groth16 通常与 Circom、snarkjs、bellman 等工具链一起出现；证明生成仍然是重计算，验证则很轻。",
+            "en": "Groth16 became one of the most common backends for privacy transactions and early zk-Rollups; Zcash Sapling uses a Groth16-based proving system.It is also used as an inner proof in recursive constructions because proofs are small and verification is cheap."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        },
+        {
+          "id": "groth16-r139-broken",
+          "entryId": "groth16-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Groth16 的主要风险是电路相关的可信设置。CRS 中的“有毒废料”若未被销毁，持有者可以伪造任意证明；每次改电路都要重新做 ceremony。它还需要 R1CS 编码、双线性配对曲线和随机预言机/通用群模型等假设；不是后量子安全的。证明者计算量随电路规模增长，超大电路需要并行化。### 形式模型。",
+            "en": "The main risk is the circuit-specific trusted setup.If the “toxic waste” in the CRS is not destroyed, its holder can forge proofs; every circuit change needs a new ceremony."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        },
+        {
+          "id": "groth16-r139-history",
+          "entryId": "groth16-details",
+          "section": "history",
+          "statement": {
+            "zh": "Jens Groth 在 EUROCRYPT 2016 发表 “On the Size of Pairing-based Non-interactive Arguments”，给出三元素证明与单方程验证，并证明在通用非对称双线性群中一个群元素的 SNARG 不可能。论文没有证明三元素是绝对最小；它明确留下“能否排除两元素”的开放问题。Groth16 后来成为 zk-SNARK 工程化的基准。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Groth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Jens Groth published “On the Size of Pairing-based Non-interactive Arguments” at EUROCRYPT 2016, giving a three-element proof, a single verification equation, and a lower bound ruling out one-element SNARGs in the generic asymmetric bilinear-group model.The paper does not prove that three elements are the absolute minimum; it explicitly leaves open whether two-element proofs can be ruled out."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        },
+        {
+          "id": "groth16-r139-refs",
+          "entryId": "groth16-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Groth16 证明系统.https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Groth16 证明系统.https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "groth16-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "groth16-wikipedia"
+      ]
+    },
+    {
+      "id": "groth16-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "groth16-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "groth16-r139-principle",
+      "entryId": "groth16-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Groth16 证明系统（Groth16 zk-SNARK）。### 从 R1CS 到三个群元素\n\nGroth16 是面向算术电路的可预处理 zk-SNARK。电路先被写成 R1CS（每行一个乘法约束），再通过二次算术程序（QAP）变成多项式方程。证明者用公共参考串（CRS）承诺 witness 对应的多项式，输出三个双线性群元素 `A、B、C`。验证者只检查一个 pairing product 方程，外加对公开输入的线性组合。证明不泄露 witness，验证时间与电路规模基本无关，这是它在 2016 年最突出的效率优势。",
+        "en": "**Algorithm**: Groth16 zk-SNARK (Groth16 证明系统).### From R1CS to three group elements\n\nGroth16 is a preprocessing zk-SNARK for arithmetic circuits."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    },
+    {
+      "id": "groth16-r139-why",
+      "entryId": "groth16-details",
+      "section": "why",
+      "statement": {
+        "zh": "Groth16 把“证明一个计算正确”压缩到数百字节和几次 pairing。与早期 Pinocchio 等方案相比，它的证明从多个群元素降到三个，验证也从多次 pairing 降到一次方程，特别适合递归证明和链上验证。代价是每个电路都要一套独立的 CRS。电路一改，参数就要重做；因此它适合固定电路，而不适合频繁变化的通用虚拟机。",
+        "en": "Groth16 compresses “this computation is correct” into a few hundred bytes and a handful of pairings.Compared with earlier Pinocchio-style systems, it reduced the proof to three group elements and verification to a single equation, making it attractive for recursive proofs and on-chain verification."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    },
+    {
+      "id": "groth16-r139-used",
+      "entryId": "groth16-details",
+      "section": "used",
+      "statement": {
+        "zh": "Groth16 是隐私交易和 zk-Rollup 早期最常用的证明后端之一；Zcash Sapling 使用基于 Groth16 的证明系统。它也常被用作递归证明的内层证明，因为验证成本低、证明小。在工程中，Groth16 通常与 Circom、snarkjs、bellman 等工具链一起出现；证明生成仍然是重计算，验证则很轻。",
+        "en": "Groth16 became one of the most common backends for privacy transactions and early zk-Rollups; Zcash Sapling uses a Groth16-based proving system.It is also used as an inner proof in recursive constructions because proofs are small and verification is cheap."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    },
+    {
+      "id": "groth16-r139-broken",
+      "entryId": "groth16-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Groth16 的主要风险是电路相关的可信设置。CRS 中的“有毒废料”若未被销毁，持有者可以伪造任意证明；每次改电路都要重新做 ceremony。它还需要 R1CS 编码、双线性配对曲线和随机预言机/通用群模型等假设；不是后量子安全的。证明者计算量随电路规模增长，超大电路需要并行化。### 形式模型。",
+        "en": "The main risk is the circuit-specific trusted setup.If the “toxic waste” in the CRS is not destroyed, its holder can forge proofs; every circuit change needs a new ceremony."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    },
+    {
+      "id": "groth16-r139-history",
+      "entryId": "groth16-details",
+      "section": "history",
+      "statement": {
+        "zh": "Jens Groth 在 EUROCRYPT 2016 发表 “On the Size of Pairing-based Non-interactive Arguments”，给出三元素证明与单方程验证，并证明在通用非对称双线性群中一个群元素的 SNARG 不可能。论文没有证明三元素是绝对最小；它明确留下“能否排除两元素”的开放问题。Groth16 后来成为 zk-SNARK 工程化的基准。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Groth16 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Jens Groth published “On the Size of Pairing-based Non-interactive Arguments” at EUROCRYPT 2016, giving a three-element proof, a single verification equation, and a lower bound ruling out one-element SNARGs in the generic asymmetric bilinear-group model.The paper does not prove that three elements are the absolute minimum; it explicitly leaves open whether two-element proofs can be ruled out."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    },
+    {
+      "id": "groth16-r139-refs",
+      "entryId": "groth16-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Groth16 证明系统.https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Groth16 证明系统.https://zh.wikipedia.org/w/index.php?search=Groth16%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "groth16-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

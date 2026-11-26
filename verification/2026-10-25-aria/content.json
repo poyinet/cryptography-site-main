@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full ARIA algorithm article only; no completion claim for AES, Camellia, SEED, TLS, PKCS #11, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "aria-details",
+      "inventoryIds": [
+        "aria"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 ARIA 这一种 128 位分组密码：128/192/256 位密钥、12/14/16 轮、FO/FE 轮函数、SL1/SL2 与 SB1..SB4、A 扩散层、KL/KR 与 CK 密钥调度、W0..W3、ek/dk、RFC 5794 附录 A 的三组向量和 128 位中间值、TLS 与 OID 使用；不把 AES、Camellia、SEED、TLS 协议或工作模式并入本实体。",
+        "en": "Covers the ARIA 128-bit block cipher: 128/192/256-bit keys, 12/14/16 rounds, FO/FE round functions, SL1/SL2 and SB1..SB4, the A diffusion layer, the KL/KR and CK key schedule, W0..W3, ek/dk, the three Appendix A vectors and 128-bit intermediates, TLS and OID use. It does not absorb AES, Camellia, SEED, the TLS protocol, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "ARIA：12/14/16 轮 SPN 分组密码",
+        "en": "ARIA: a 12/14/16-round SPN block cipher"
+      },
+      "claimIds": [
+        "aria-r139-principle",
+        "aria-r139-why",
+        "aria-r139-used",
+        "aria-r139-broken",
+        "aria-r139-history",
+        "aria-r139-refs"
+      ],
+      "calculationIds": [
+        "aria-calc-rfc-vectors",
+        "aria-calc-key-schedule",
+        "aria-calc-components",
+        "aria-calc-roundtrip",
+        "aria-r139-formal"
+      ],
+      "sourceIds": [
+        "aria-wikipedia",
+        "aria-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "algorithm--camellia",
+        "seed"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：ARIA 韩国分组密码（ARIA）。ARIA 是 128 位分组密码，密钥长度为 128、192 或 256 位；三种密钥分别使用 12、14、16 轮。它是 SPN（替换-置换网络）结构：奇数轮使用 FO，偶数轮使用 FE，最后一轮只做 SL2 替换和两次密钥异或。以 128 位密钥（12 轮）为例，加密过程是：\n\n```text\nP1  = FO(P,  ek1)\nP2  = FE(P1, ek2)\nP3  = FO(P2, ek3)\nP4  = FE(P3, ek4)\nP5  = FO(P4, ek5)\nP6  = FE(P5, ek6)\nP7  = FO(P6, ek7)\nP8  = FE(P7, ek8)\nP9  = FO(P8, ek9)\nP10 = FE(P9, ek10)\nP11 = FO(P10, ek11)\nC   = SL2(P11 XOR ek12) XOR ek13\n```\n\n192 位密钥用 14 轮：第 1 到第 13 轮交替 FO/FE，最后一轮是 `C = SL2(P13 XOR ek14) XOR ek15`。256 位密钥用 16 轮：第 1 到第 15 轮交替 FO/FE，最后一轮是 `C = SL2(P15 XOR ek16) XOR ek17`。解密使用同一过程，只把加密轮密钥 ek 换成解密轮密钥 dk。```text\nFO(D, RK) = A(SL1(D XOR RK))\nFE(D, RK) = A(SL2(D XOR RK))\n```\n\nSL1 对 16 个字节循环使用 SB1、SB2、SB3、SB4；SL2 循环使用 SB3、SB4、SB1、SB2：\n\n```text\nSL1: y0=SB1(x0) y1=SB2(x1) y2=SB3(x2) y3=SB4(x3) ...y15=SB4(x15)\nSL2: y0=SB3(x0) y1=SB4(x1) y2=SB1(x2) y3=SB2(x3) ...y15=SB2(x15)\n```\n\nSB1、SB2、SB3、SB4 是四个 8 位 S-box，各 256 项。SB3 和 SB4 分别是 SB1 和 SB2 的逆函数，因此 SL2 是 SL1 的逆。规范给出的样例是 `SB1(0x23)=0x26`、`SB4(0xEF)=0xD3`。扩散层 A 对 16 个字节做固定异或组合：\n\n```text\ny0  = x3 ^ x4 ^ x6 ^ x8  ^ x9  ^ x13 ^ x14\ny1  = x2 ^ x5 ^ x7 ^ x8  ^ x9  ^ x12 ^ x15\ny2  = x1 ^ x4 ^ x6 ^ x10 ^ x11 ^ x12 ^ x15\ny3  = x0 ^ x5 ^ x7 ^ x10 ^ x11 ^ x13 ^ x14\ny4  = x0 ^ x2 ^ x5 ^ x8  ^ x11 ^ x14 ^ x15\ny5  = x1 ^ x3 ^ x4 ^ x9  ^ x10 ^ x14 ^ x15\ny6  = x0 ^ x2 ^ x7 ^ x9  ^ x10 ^ x12 ^ x13\ny7  = x1 ^ x3 ^ x6 ^ x8  ^ x11 ^ x12 ^ x13\ny8  = x0 ^ x1 ^ x4 ^ x7  ^ x10 ^ x13 ^ x15\ny9  = x0 ^ x1 ^ x5 ^ x6  ^ x11 ^ x12 ^ x14\ny10 = x2 ^ x3 ^ x5 ^ x6  ^ x8  ^ x13 ^ x15\ny11 = x2 ^ x3 ^ x4 ^ x7  ^ x9  ^ x12 ^ x14\ny12 = x1 ^ x2 ^ x6 ^ x7  ^ x9  ^ x11 ^ x12\ny13 = x0 ^ x3 ^ x6 ^ x7  ^ x8  ^ x10 ^ x13\ny14 = x0 ^ x3 ^ x4 ^ x5  ^ x9  ^ x11 ^ x14\ny15 = x1 ^ x2 ^ x4 ^ x5  ^ x8  ^ x10 ^ x15\n```\n\nA 是对合，即 `A(A(x))=x`。例如 A 把 `000102030405060708090A0B0C0D0E0F` 映射为 `03020100050407060A0B08090C0D0E0F`。密钥调度把主密钥 K 写成 `KL||KR`：KL 是最左 128 位，KR 是剩余位右侧补零到 128 位。128 位密钥时 KR 为 0，192 位密钥时 KR 的低 64 位为 0，256 位密钥时 KR 是完整的右 128 位。然后定义四个 128 位中间值：\n\n```text\nW0 = KL\nW1 = FO(W0, CK1) XOR KR\nW2 = FE(W1, CK2) XOR W0\nW3 = FO(W2, CK3) XOR W1\n```\n\nCK1、CK2、CK3 从三个常数中按密钥长度选取：\n\n```text\nC1 = 517CC1B727220A94FE13ABE8FA9A6EE0\nC2 = 6DB14ACC9E21C820FF28B1D5EF5DE2B0\nC3 = DB92371D2126E9700324977504E8C90E\n\n128 位：CK1=C1, CK2=C2, CK3=C3\n192 位：CK1=C2, CK2=C3, CK3=C1\n256 位：CK1=C3, CK2=C1, CK3=C2\n```\n\n加密轮密钥 ek1..ek17 由 W0..W3 的 128 位左右循环移位与异或得到：\n\n```text\nek1  = W0 ^ (W1 >>> 19)      ek2  = W1 ^ (W2 >>> 19)\nek3  = W2 ^ (W3 >>> 19)      ek4  = (W0 >>> 19) ^ W3\nek5  = W0 ^ (W1 >>> 31)      ek6  = W1 ^ (W2 >>> 31)\nek7  = W2 ^ (W3 >>> 31)      ek8  = (W0 >>> 31) ^ W3\nek9  = W0 ^ (W1 <<< 61)      ek10 = W1 ^ (W2 <<< 61)\nek11 = W2 ^ (W3 <<< 61)      ek12 = (W0 <<< 61) ^ W3\nek13 = W0 ^ (W1 <<< 31)      ek14 = W1 ^ (W2 <<< 31)\nek15 = W2 ^ (W3 <<< 31)      ek16 = (W0 <<< 31) ^ W3\nek17 = W0 ^ (W1 <<< 19)\n```\n\n12、14、16 轮分别需要 13、15、17 个轮密钥，因为最后一轮多一次密钥异或。解密轮密钥由 ek 反序得到，中间项再应用 A：\n\n```text\ndk1 = ek(n+1)\ndk2 = A(ek n)\ndk3 = A(ek n-1)\n...dk n = A(ek2)\ndk(n+1) = ek1\n```",
+          "why": "RFC 5794 说 ARIA 是 2003 年由韩国密码学家开发的通用分组密码，适合大多数 32 位和 8 位处理器上的软件和硬件实现；它 2004 年成为韩国标准分组密码（KS X 1213:2004），在韩国广泛使用，尤其是政府面向公众的服务，并在 2007 年被纳入 PKCS #11。韩国电子政务标准框架的开发指南在`标准化动向`一节也写明，ARIA 于 2004 年依据国家标准基本法被指定为国家标准，标准编号是 KS X 1213:2004。这与 RFC 5794 的叙述一致。RFC 5794 第 3 节说 ARIA 设计上能抵抗所有已知的分组密码攻击，并称比利时 K.U.Leuven 的 COSIC 组分析后没有发现安全缺陷。这是 2010 年 RFC 的评估，不是对全部攻击模型的形式化证明。",
+          "used": "TLS：RFC 6209（2011 年 4 月，Informational）为 TLS 1.2（RFC 5246）定义 ARIA 密码套件，包括 CBC/SHA-2、GCM、椭圆曲线和 PSK 套件；它明确不包含 SHA-1 套件。RFC 8446（TLS 1.3）附录 B.4 只定义 5 个基于 AEAD 的套件（AES-128-GCM、AES-256-GCM、ChaCha20-Poly1305、AES-128-CCM、AES-128-CCM-8），没有 ARIA 套件；本文不声称 ARIA 可用于 TLS 1.3。OID：RFC 5794 附录 B 给出 ARIA 的 ASN.1 OID 模块，包括 `id-sea` 以及 128/192/256 位密钥的 ECB、CBC、CFB、OFB、CTR、CMAC、OCB2、GCM、CCM 和密钥包装等模式标识。这些标识说明 ARIA 不只是一种论文算法，也有可引用的模式级对象标识。测试向量：RFC 5794 附录 A 给出三组向量，明文都是 `00112233445566778899AABBCCDDEEFF`：\n\n```text\n128 位密钥 = 000102030405060708090A0B0C0D0E0F\n密文       = D718FBD6AB644C739DA95F3BE6451778\n\n192 位密钥 = 000102030405060708090A0B0C0D0E0F1011121314151617\n密文       = 26449C1805DBE7AA25A468CE263A9E79\n\n256 位密钥 = 000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F\n密文       = F92BD7C79FB72E2F2B8F80C1972D24FC\n```\n\n128 位密钥的附录 A.1 还列出 W0..W3、ek1..ek13 和 P1..P11，因此它同时校验密钥调度和轮函数，而不只是最终密文。本文的实现逐项核对这组中间值：例如 W0=`000102030405060708090A0B0C0D0E0F`、W1=`2AFBEA741E1746DD55C63BA1AFCEA0A5`、ek1=`D415A75C794B85C5E0D2A0B3CB793BF6`、P1=`7FC7F12BEFD0A0791DE87FA96B469F52`、P11=`E7E0D2457ED73D23D481424095AFDCA0`。",
+          "broken": "RFC 5794 的「resistant to all known attacks on block ciphers」（抵抗所有已知的分组密码攻击）和「no security flaw has been found」（未发现安全缺陷）是 2010 年文档中的设计者评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它们扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 ARIA 已被攻破。ARIA 的部署位置需要区分：它是韩国国家标准算法，在韩国政府面向公众的服务中有明确使用记录，并在 2007 年被纳入 PKCS #11；RFC 6209 为 TLS 1.2 定义 ARIA 套件，但该 RFC 是 Informational，TLS 1.3 没有 ARIA 套件。那是韩国的国家标准和 2007 年一次纳入 PKCS #11 的记录，不等于在所有最新协议中默认可用。实现层面，本文的教学实现按字节查 SB1..SB4 并做 16 字节异或，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。ARIA 只定义分组密码，协议层必须自己处理这些事项。",
+          "history": "ARIA 由韩国密码学家在 2003 年开发，2004 年成为韩国标准分组密码算法 KS X 1213:2004，并在韩国广泛用于政府面向公众的服务；2007 年它被纳入 PKCS #11。RFC 5794 在 2010 年 3 月以 Informational 类别发表，属于 Independent Submission，作者是 J.Lee、J.Lee、J.Kim、D.Kwon 和 C.Kim（NSRI）。RFC 6209 在 2011 年 4 月以 Informational 类别为 TLS 1.2 增加 ARIA 套件，包括 CBC/SHA-2、GCM、椭圆曲线和 PSK 类；RFC 8446 在 2018 年定义 TLS 1.3 时只保留 5 个 AEAD 套件，没有 ARIA。本文的 ARIA 实体只指这一种 128 位分组密码；AES、Camellia、SEED 是其他实体，TLS 和 PKCS #11 是使用 ARIA 的协议或接口，RFC 5794 是算法规范，不是整个协议栈。",
+          "refs": "- Wikipedia search entry for ARIA 韩国分组密码. https://zh.wikipedia.org/w/index.php?search=ARIA%20%E9%9F%A9%E5%9B%BD%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: ARIA (ARIA 韩国分组密码). ARIA is a 128-bit block cipher with 128-, 192- or 256-bit keys; the three key sizes use 12, 14 or 16 rounds. It is an SPN (substitution-permutation network): odd rounds use FO, even rounds use FE, and the final round performs only SL2 and two key XORs. For a 128-bit key (12 rounds), encryption is:\n\n```text\nP1  = FO(P,  ek1)\nP2  = FE(P1, ek2)\nP3  = FO(P2, ek3)\nP4  = FE(P3, ek4)\nP5  = FO(P4, ek5)\nP6  = FE(P5, ek6)\nP7  = FO(P6, ek7)\nP8  = FE(P7, ek8)\nP9  = FO(P8, ek9)\nP10 = FE(P9, ek10)\nP11 = FO(P10, ek11)\nC   = SL2(P11 XOR ek12) XOR ek13\n```\n\nA 192-bit key uses 14 rounds: rounds 1 to 13 alternate FO/FE, and the final round is `C = SL2(P13 XOR ek14) XOR ek15`. A 256-bit key uses 16 rounds: rounds 1 to 15 alternate FO/FE, and the final round is `C = SL2(P15 XOR ek16) XOR ek17`. Decryption uses the same process with the encryption round keys ek replaced by the decryption round keys dk. The two round functions are:\n\n```text\nFO(D, RK) = A(SL1(D XOR RK))\nFE(D, RK) = A(SL2(D XOR RK))\n```\n\nSL1 applies SB1, SB2, SB3 and SB4 cyclically to the sixteen bytes; SL2 applies SB3, SB4, SB1 and SB2:\n\n```text\nSL1: y0=SB1(x0) y1=SB2(x1) y2=SB3(x2) y3=SB4(x3) ... y15=SB4(x15)\nSL2: y0=SB3(x0) y1=SB4(x1) y2=SB1(x2) y3=SB2(x3) ... y15=SB2(x15)\n```\n\nSB1, SB2, SB3 and SB4 are four 8-bit S-boxes with 256 entries each. SB3 and SB4 are the inverses of SB1 and SB2, so SL2 is the inverse of SL1. The specification's examples are `SB1(0x23)=0x26` and `SB4(0xEF)=0xD3`. The diffusion layer A applies fixed XOR combinations to the sixteen bytes:\n\n```text\ny0  = x3 ^ x4 ^ x6 ^ x8  ^ x9  ^ x13 ^ x14\ny1  = x2 ^ x5 ^ x7 ^ x8  ^ x9  ^ x12 ^ x15\ny2  = x1 ^ x4 ^ x6 ^ x10 ^ x11 ^ x12 ^ x15\ny3  = x0 ^ x5 ^ x7 ^ x10 ^ x11 ^ x13 ^ x14\ny4  = x0 ^ x2 ^ x5 ^ x8  ^ x11 ^ x14 ^ x15\ny5  = x1 ^ x3 ^ x4 ^ x9  ^ x10 ^ x14 ^ x15\ny6  = x0 ^ x2 ^ x7 ^ x9  ^ x10 ^ x12 ^ x13\ny7  = x1 ^ x3 ^ x6 ^ x8  ^ x11 ^ x12 ^ x13\ny8  = x0 ^ x1 ^ x4 ^ x7  ^ x10 ^ x13 ^ x15\ny9  = x0 ^ x1 ^ x5 ^ x6  ^ x11 ^ x12 ^ x14\ny10 = x2 ^ x3 ^ x5 ^ x6  ^ x8  ^ x13 ^ x15\ny11 = x2 ^ x3 ^ x4 ^ x7  ^ x9  ^ x12 ^ x14\ny12 = x1 ^ x2 ^ x6 ^ x7  ^ x9  ^ x11 ^ x12\ny13 = x0 ^ x3 ^ x6 ^ x7  ^ x8  ^ x10 ^ x13\ny14 = x0 ^ x3 ^ x4 ^ x5  ^ x9  ^ x11 ^ x14\ny15 = x1 ^ x2 ^ x4 ^ x5  ^ x8  ^ x10 ^ x15\n```\n\nA is an involution, so `A(A(x))=x`. For example, A maps `000102030405060708090A0B0C0D0E0F` to `03020100050407060A0B08090C0D0E0F`. The key schedule writes the master key K as `KL||KR`: KL is the leftmost 128 bits, and KR is the remaining bits right-padded with zeros to 128 bits. For a 128-bit key KR is zero; for a 192-bit key the low 64 bits of KR are zero; for a 256-bit key KR is the full right 128 bits. It then defines four 128-bit intermediates:\n\n```text\nW0 = KL\nW1 = FO(W0, CK1) XOR KR\nW2 = FE(W1, CK2) XOR W0\nW3 = FO(W2, CK3) XOR W1\n```\n\nCK1, CK2 and CK3 are selected from three constants according to key size:\n\n```text\nC1 = 517CC1B727220A94FE13ABE8FA9A6EE0\nC2 = 6DB14ACC9E21C820FF28B1D5EF5DE2B0\nC3 = DB92371D2126E9700324977504E8C90E\n\n128-bit: CK1=C1, CK2=C2, CK3=C3\n192-bit: CK1=C2, CK2=C3, CK3=C1\n256-bit: CK1=C3, CK2=C1, CK3=C2\n```\n\nThe encryption round keys ek1..ek17 are built from 128-bit left and right rotations of W0..W3 combined by XOR:\n\n```text\nek1  = W0 ^ (W1 >>> 19)      ek2  = W1 ^ (W2 >>> 19)\nek3  = W2 ^ (W3 >>> 19)      ek4  = (W0 >>> 19) ^ W3\nek5  = W0 ^ (W1 >>> 31)      ek6  = W1 ^ (W2 >>> 31)\nek7  = W2 ^ (W3 >>> 31)      ek8  = (W0 >>> 31) ^ W3\nek9  = W0 ^ (W1 <<< 61)      ek10 = W1 ^ (W2 <<< 61)\nek11 = W2 ^ (W3 <<< 61)      ek12 = (W0 <<< 61) ^ W3\nek13 = W0 ^ (W1 <<< 31)      ek14 = W1 ^ (W2 <<< 31)\nek15 = W2 ^ (W3 <<< 31)      ek16 = (W0 <<< 31) ^ W3\nek17 = W0 ^ (W1 <<< 19)\n```\n\nThe 12-, 14- and 16-round variants need 13, 15 and 17 round keys because the final round adds an extra key XOR. The decryption round keys are derived by reversing ek and applying A to the middle values:\n\n```text\ndk1 = ek(n+1)\ndk2 = A(ek n)\ndk3 = A(ek n-1)\n... dk n = A(ek2)\ndk(n+1) = ek1\n```",
+          "why": "RFC 5794 says ARIA is a general-purpose block cipher developed by Korean cryptographers in 2003, suitable for most software and hardware implementations on 32-bit and 8-bit processors; it became the Korean standard block cipher (KS X 1213:2004) in 2004, is widely used in Korea especially for government-to-public services, and was included in PKCS #11 in 2007.\n\nThe Korean e-Government Standard Framework developer guide's standardization-trends section also states that ARIA was designated a national standard in 2004 under the national standards framework act, with standard number KS X 1213:2004. This agrees with RFC 5794's account.\n\nRFC 5794 Section 3 says ARIA is designed to resist \"all known attacks on block ciphers\" and that analysis by the COSIC group at K.U.Leuven, Belgium found no security flaw. This is a 2010 RFC assessment, not a formal proof against every attack model.",
+          "used": "TLS: RFC 6209 (April 2011, Informational) defines ARIA cipher suites for TLS 1.2 (RFC 5246), including CBC/SHA-2, GCM, elliptic-curve and PSK suites; it explicitly excludes SHA-1 suites. RFC 8446 (TLS 1.3) Appendix B.4 defines only five AEAD-based cipher suites (AES-128-GCM, AES-256-GCM, ChaCha20-Poly1305, AES-128-CCM and AES-128-CCM-8), with no ARIA suite; this article does not claim ARIA support in TLS 1.3.\n\nOIDs: RFC 5794 Appendix B gives an ASN.1 OID module for ARIA, including `id-sea` and mode identifiers for ECB, CBC, CFB, OFB, CTR, CMAC, OCB2, GCM, CCM and key wrap with 128/192/256-bit keys. These identifiers show that ARIA is not only a paper algorithm but also has citable mode-level object identifiers.\n\nTest vectors: RFC 5794 Appendix A gives three vectors, all with plaintext `00112233445566778899AABBCCDDEEFF`:\n\n```text\n128-bit key = 000102030405060708090A0B0C0D0E0F\nciphertext  = D718FBD6AB644C739DA95F3BE6451778\n\n192-bit key = 000102030405060708090A0B0C0D0E0F1011121314151617\nciphertext  = 26449C1805DBE7AA25A468CE263A9E79\n\n256-bit key = 000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F\nciphertext  = F92BD7C79FB72E2F2B8F80C1972D24FC\n```\n\nFor the 128-bit key, Appendix A.1 also lists W0..W3, ek1..ek13 and P1..P11, so it checks the key schedule and round functions rather than only the final ciphertext. The implementation checks these intermediates entry by entry: for example W0=`000102030405060708090A0B0C0D0E0F`, W1=`2AFBEA741E1746DD55C63BA1AFCEA0A5`, ek1=`D415A75C794B85C5E0D2A0B3CB793BF6`, P1=`7FC7F12BEFD0A0791DE87FA96B469F52` and P11=`E7E0D2457ED73D23D481424095AFDCA0`.",
+          "broken": "RFC 5794's \"resistant to all known attacks on block ciphers\" and \"no security flaw has been found\" are designer assessments in a 2010 document, not formal proofs against every attack model, and they do not guarantee that no better analysis will appear. This article does not expand them into an absolute security claim, and it does not cite unverified attack papers to claim that ARIA has been broken.\n\nARIA's deployment position needs to be stated carefully: it is a Korean national standard with a clear record of use in Korean government-to-public services and was included in PKCS #11 in 2007; RFC 6209 defines ARIA suites for TLS 1.2, but that RFC is Informational and TLS 1.3 has no ARIA suite. That is a national standard and one inclusion in PKCS #11 in 2007, not availability by default in every latest protocol.\n\nAt the implementation level, this article's teaching code performs byte-indexed lookups in SB1..SB4 and sixteen-byte XORs and is not constant-time; caches and timing may leak key-dependent access patterns. It does not generate keys and implements no mode of operation, IV management, padding, integrity protection or side-channel defence, so it must not be used to protect real data. ARIA defines only a block cipher; the protocol layer must handle those matters.",
+          "history": "ARIA was developed by Korean cryptographers in 2003, became the Korean standard block cipher KS X 1213:2004 in 2004, and is widely used in Korea especially for government-to-public services; it was included in PKCS #11 in 2007. RFC 5794 was published in March 2010 with Informational category as an Independent Submission by J. Lee, J. Lee, J. Kim, D. Kwon and C. Kim (NSRI).\n\nRFC 6209 added ARIA suites for TLS 1.2 in April 2011 with Informational category, including CBC/SHA-2, GCM, elliptic-curve and PSK families; RFC 8446 defined TLS 1.3 in 2018 with only five AEAD suites and no ARIA.\n\nThis article's ARIA entity is the 128-bit block cipher only; AES, Camellia and SEED are separate entities, TLS and PKCS #11 are protocols or interfaces that use ARIA, and RFC 5794 is an algorithm specification rather than the whole protocol stack.",
+          "refs": "- Wikipedia search entry for ARIA 韩国分组密码. https://zh.wikipedia.org/w/index.php?search=ARIA%20%E9%9F%A9%E5%9B%BD%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "ARIA：韩国密码学家 2003 年开发的 128 位 SPN 分组密码，韩国标准 KS X 1213:2004。",
+          "128 位块：ARIA 的明文和密文单位。",
+          "128/192/256 位密钥：ARIA 的三种密钥长度。",
+          "12/14/16 轮：三种密钥长度对应的轮数。",
+          "SPN 结构：替换层与扩散层交替的迭代结构。",
+          "FO/FE：奇数轮和偶数轮的轮函数，分别为 A(SL1(D XOR RK)) 和 A(SL2(D XOR RK))。",
+          "SL1/SL2：两种替换层，分别按 SB1..SB4 和 SB3,SB4,SB1,SB2 的次序替换字节。",
+          "SB1..SB4：四个 8 位 S-box；SB3 和 SB4 是 SB1 和 SB2 的逆。",
+          "A 扩散层：对 16 个字节做固定异或组合的对合函数。",
+          "KL/KR：由主密钥得到的最左 128 位和右侧补零的剩余位。",
+          "W0..W3：由 KL/KR 经 FO/FE 和 CK 常数导出的四个 128 位中间值。",
+          "CK1..CK3：从 C1、C2、C3 按密钥长度选出的三个 128 位常数。",
+          "ek：加密轮密钥 ek1..ek17；12/14/16 轮分别使用 13/15/17 个。",
+          "dk：解密轮密钥，由 ek 反序并对中间项应用 A 得到。",
+          "PKCS #11：ARIA 于 2007 年被纳入的密码令牌接口标准。",
+          "TLS：RFC 6209 为 TLS 1.2 定义的 ARIA 套件；TLS 1.3 没有 ARIA 套件。",
+          "KS X 1213:2004：ARIA 的韩国国家标准编号。",
+          "OID：RFC 5794 附录 B 为 ARIA 各模式定义的 ASN.1 对象标识符。"
+        ],
+        "en": [
+          "ARIA: the 128-bit SPN block cipher developed by Korean cryptographers in 2003 and standardized as KS X 1213:2004.",
+          "128-bit block: ARIA's plaintext and ciphertext unit.",
+          "128/192/256-bit keys: ARIA's three key lengths.",
+          "12/14/16 rounds: the round counts for the three key lengths.",
+          "SPN structure: an iterated structure alternating substitution and diffusion layers.",
+          "FO/FE: the odd- and even-round functions, A(SL1(D XOR RK)) and A(SL2(D XOR RK)).",
+          "SL1/SL2: the two substitution layers, applying SB1..SB4 and SB3,SB4,SB1,SB2 bytewise.",
+          "SB1..SB4: four 8-bit S-boxes; SB3 and SB4 are the inverses of SB1 and SB2.",
+          "A diffusion layer: an involution applying fixed XOR combinations to the sixteen bytes.",
+          "KL/KR: the leftmost 128 bits and the zero-padded remaining bits of the master key.",
+          "W0..W3: four 128-bit intermediates derived from KL/KR with FO/FE and the CK constants.",
+          "CK1..CK3: the three 128-bit constants selected from C1, C2 and C3 by key size.",
+          "ek: encryption round keys ek1..ek17; the 12/14/16-round variants use 13/15/17 of them.",
+          "dk: decryption round keys derived by reversing ek and applying A to the middle values.",
+          "PKCS #11: the cryptographic token interface standard that included ARIA in 2007.",
+          "TLS: the ARIA suites defined for TLS 1.2 by RFC 6209; TLS 1.3 has no ARIA suite.",
+          "KS X 1213:2004: the Korean national standard number for ARIA.",
+          "OID: an ASN.1 object identifier defined for an ARIA mode in RFC 5794 Appendix B."
+        ]
+      },
+      "figures": [
+        {
+          "id": "aria-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ARIA：12/14/16 轮 SPN 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "ARIA: a 12/14/16-round SPN block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ARIA：12/14/16 轮 SPN 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ARIA: a 12/14/16-round SPN block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/aria-details-flow.zh.svg",
+            "en": "assets/aria-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "13502a9feae86d8ce338d45899eb2f64d7c5e73ff32fa0e961e70d36e9448dcd",
+            "en": "76be5e77c9d9dfb7616e18bcfccaea152b25174a22c875899eec413836180321"
+          }
+        },
+        {
+          "id": "aria-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ARIA：12/14/16 轮 SPN 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ARIA: a 12/14/16-round SPN block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ARIA：12/14/16 轮 SPN 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ARIA: a 12/14/16-round SPN block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/aria-details-r138-model.zh.svg",
+            "en": "assets/aria-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5c1bf62f707a1cce8c4ffe20cca6d64be1b486b6c5216297c3f6e4d4c461eeec",
+            "en": "a5c232b022b95b8d9c33b1c976143b214afe8cf5c3d62a7726fa8394ba15f3a8"
+          }
+        }
+      ],
+      "sources": [
+        "aria-wikipedia",
+        "aria-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "aria-calc-rfc-vectors",
+          "entryId": "aria-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The three RFC 5794 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 00112233445566778899aabbccddeeff",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix A.1 W0..W3, ek1..ek13 and P1..P11 intermediates also match",
+          "sourceIds": [
+            "aria-wikipedia"
+          ],
+          "dependencies": [
+            "aria-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Three fixed vectors; they cover all key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+        },
+        {
+          "id": "aria-calc-key-schedule",
+          "entryId": "aria-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 128-bit test key, the CK1..CK3 selection, the W0..W3 intermediates, the ek1..ek17 formulas and the dk derivation",
+          "expected": "W0=000102030405060708090a0b0c0d0e0f, W1=2afbea741e1746dd55c63ba1afcea0a5, W2=7c8578018bb127e02dfe4e78c288e33c and W3=6785b52b74da46bf181054082763ff6d; ek1..ek13 match Appendix A.1; the three key sizes need 13/15/17 round keys; dk1=ek(n+1), dk(n+1)=ek1 and the middle dk values are A(ek) in reverse",
+          "sourceIds": [
+            "aria-wikipedia"
+          ],
+          "dependencies": [
+            "aria-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Only the 128-bit key has published W/ek/P intermediates; the 192/256-bit schedules are checked indirectly through their vectors."
+        },
+        {
+          "id": "aria-calc-components",
+          "entryId": "aria-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 5794 SB1/SB2 tables, the inverse SB3/SB4 tables, the diffusion layer A and a deterministic set of 256 diffusion samples",
+          "expected": "SB1 and SB2 each have 256 entries; SB3 and SB4 are the exact inverses of SB1 and SB2; SB1(0x23)=0x26 and SB4(0xEF)=0xD3; A maps 000102030405060708090a0b0c0d0e0f to 03020100050407060a0b08090c0d0e0f and is an involution on all 256 samples",
+          "sourceIds": [
+            "aria-wikipedia"
+          ],
+          "dependencies": [
+            "aria-teaching.mjs",
+            "sboxes.json",
+            "vectors.json"
+          ],
+          "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+        },
+        {
+          "id": "aria-calc-roundtrip",
+          "entryId": "aria-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+          "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+          "sourceIds": [
+            "aria-wikipedia"
+          ],
+          "dependencies": [
+            "aria-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "aria-r139-formal",
+          "entryId": "aria-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "ARIA 韩国分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "aria-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "aria-calc-rfc-vectors",
+      "entryId": "aria-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The three RFC 5794 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 00112233445566778899aabbccddeeff",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix A.1 W0..W3, ek1..ek13 and P1..P11 intermediates also match",
+      "sourceIds": [
+        "aria-wikipedia"
+      ],
+      "dependencies": [
+        "aria-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Three fixed vectors; they cover all key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+    },
+    {
+      "id": "aria-calc-key-schedule",
+      "entryId": "aria-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 128-bit test key, the CK1..CK3 selection, the W0..W3 intermediates, the ek1..ek17 formulas and the dk derivation",
+      "expected": "W0=000102030405060708090a0b0c0d0e0f, W1=2afbea741e1746dd55c63ba1afcea0a5, W2=7c8578018bb127e02dfe4e78c288e33c and W3=6785b52b74da46bf181054082763ff6d; ek1..ek13 match Appendix A.1; the three key sizes need 13/15/17 round keys; dk1=ek(n+1), dk(n+1)=ek1 and the middle dk values are A(ek) in reverse",
+      "sourceIds": [
+        "aria-wikipedia"
+      ],
+      "dependencies": [
+        "aria-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Only the 128-bit key has published W/ek/P intermediates; the 192/256-bit schedules are checked indirectly through their vectors."
+    },
+    {
+      "id": "aria-calc-components",
+      "entryId": "aria-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 5794 SB1/SB2 tables, the inverse SB3/SB4 tables, the diffusion layer A and a deterministic set of 256 diffusion samples",
+      "expected": "SB1 and SB2 each have 256 entries; SB3 and SB4 are the exact inverses of SB1 and SB2; SB1(0x23)=0x26 and SB4(0xEF)=0xD3; A maps 000102030405060708090a0b0c0d0e0f to 03020100050407060a0b08090c0d0e0f and is an involution on all 256 samples",
+      "sourceIds": [
+        "aria-wikipedia"
+      ],
+      "dependencies": [
+        "aria-teaching.mjs",
+        "sboxes.json",
+        "vectors.json"
+      ],
+      "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+    },
+    {
+      "id": "aria-calc-roundtrip",
+      "entryId": "aria-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+      "sourceIds": [
+        "aria-wikipedia"
+      ],
+      "dependencies": [
+        "aria-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "aria-r139-formal",
+      "entryId": "aria-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "ARIA 韩国分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "aria-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

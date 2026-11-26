@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for csprng: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "csprng-details",
+      "inventoryIds": [
+        "csprng"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密码安全伪随机数发生器（DRBG）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Cryptographically Secure Pseudorandom Number Generator (DRBG): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "密码安全伪随机数发生器（DRBG）",
+        "en": "Cryptographically Secure Pseudorandom Number Generator (DRBG)"
+      },
+      "claimIds": [
+        "csprng-r139-principle",
+        "csprng-r139-why",
+        "csprng-r139-used",
+        "csprng-r139-broken",
+        "csprng-r139-history",
+        "csprng-r139-refs"
+      ],
+      "sourceIds": [
+        "csprng-wikipedia",
+        "csprng-reference-ref"
+      ],
+      "related": [
+        "standard-sp800-90a",
+        "algorithm--trng",
+        "term--entropy"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：密码学安全伪随机数发生器（Cryptographically Secure PRNG）。§1 开篇给出这类机制的定性：「This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.」即它规定的是比特生成技术，随机数只是其下游转换物。同文档的脚注把命名口径写明：「DRBGs have also been called Pseudorandom Number (or Bit) Generators」，即密码学意义上的 CSPRNG 在这份建议里以 DRBG 之名规范。",
+          "why": "该条目单列，是因为它把随机数与 CSPRNG中的算法落到可核证据：有可指认的参与者、可复算的步骤，或有馆藏、档案、标准编号支撑的实物与文本。相邻条目只用于定位，不并入该条目，也不替别条作证明。",
+          "used": "用法边界写在 §4 的定义里：Approved entropy source要求熵源「validated as conforming to [SP 800-90B]」，因此部署时的义务是把熵源送检而非自行宣称；同节还把随机比特发生器的组成说明为包含实例化、解除实例化、生成伪随机比特、可选地重播种以及健康检测等功能，即密钥生成、nonce 生成等应用都经由这几类接口使用它。",
+          "broken": "限度写在 §1 的系统性说明里：「The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.」也即机制本身合格并不等于整个发生器合格，上游随机源必须一并评估。§4 又给出判定口径：「In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly.」可预测性是按优势是否可忽略来判定的，一旦熵输入缺失或未按期重播种，这个条件便不再成立。",
+          "history": "版本事实：本留存件标题行印为「Recommendation for Random Number Generation Using Deterministic RBGs」，即 SP 800-90A Rev.1（2015 年 6 月），关键词行为「Deterministic random bit generator (DRBG); entropy; hash function; random number generator.」。§4 的术语说明指出「NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources」，即 2015 年这份只管确定性发生器，熵源核证另交 90B。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 密码学安全伪随机数发生器 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for 密码学安全伪随机数发生器. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Cryptographically Secure PRNG (密码学安全伪随机数发生器). Section 1 opens with the characterisation: \"This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.\" It specifies bit generation; numbers are a downstream conversion. The document's own footnote fixes the naming: \"DRBGs have also been called Pseudorandom Number (or Bit) Generators\", so what is loosely called a CSPRNG is normalised here under the name DRBG.",
+          "why": "The rationale is legible in the definitions. Live Entropy Source is defined as \"A bitstring output from an entropy source, an NRBG or a DRBG that has access to a Live Entropy Source that is being used to provide prediction resistance\", so prediction resistance is what forces a live entropy input. Approved entropy source is defined as \"An entropy source that has been validated as conforming to [SP 800-90B]\". A DRBG exists to expand a validated entropy stream into bits on demand, not to manufacture entropy.",
+          "used": "The usage boundary is printed in §4. Approved entropy source requires an entropy source \"validated as conforming to [SP 800-90B]\", so a deployment's duty is to have the source validated rather than to assert it. The same section describes the generator as comprising instantiation, uninstantiation, pseudorandom-bit generation, optional reseeding and health testing, which is the interface through which key and nonce generation consume it.",
+          "broken": "The limit is printed in §1 as a systems statement: \"The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.\" A conforming mechanism is not by itself a conforming generator; the upstream randomness source must be assessed with it. §4 supplies the yardstick: \"In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly.\" Once entropy input is missing or reseeding lapses, that condition no longer holds.",
+          "history": "Version facts: the retained title line reads \"Recommendation for Random Number Generation Using Deterministic RBGs\" — SP 800-90A Rev. 1 (June 2015) — with keyword line \"Deterministic random bit generator (DRBG); entropy; hash function; random number generator.\" The text then notes that \"NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources\", so the 2015 document governs deterministic generators while entropy-source validation moved to SP 800-90B.",
+          "refs": "- Wikipedia search entry for 密码学安全伪随机数发生器. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nCryptographically Secure PRNG: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "DRBG：由种子确定内部状态、按需产出伪随机比特的机制，亦称伪随机数发生器。",
+          "NRBG：依赖非确定性熵源的发生器，亦称真随机或硬件随机数发生器。",
+          "seed：决定 DRBG 部分内部状态的输入比特串，其熵须支撑安全强度。",
+          "reseed：取得新熵并与现有状态合成新种子与新内部状态的函数。",
+          "security strength：与本建议对应的强度口径，度量采用 min-entropy。",
+          "prediction resistance：仅在能访问活熵源时才谈得上提供的抗预测性质。"
+        ],
+        "en": [
+          "DRBG: the mechanism whose internal state is fixed by a seed and which emits pseudorandom bits on request, also called a pseudorandom number generator.",
+          "NRBG: a generator backed by a non-deterministic entropy source, also called a true or hardware random number generator.",
+          "Seed: the input bit string that determines part of the internal state, whose entropy must support the security strength.",
+          "Reseed: the function that gathers fresh entropy and combines it with the current state to form a new seed and state.",
+          "Security strength: the strength measure this Recommendation aligns requirements to, quantified with min-entropy.",
+          "Prediction resistance: the property available only when output can reach a live entropy source."
+        ]
+      },
+      "subtopicIds": [
+        "csprng"
+      ],
+      "figures": [
+        {
+          "id": "csprng-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密码安全伪随机数发生器（DRBG）：为什么需要 → 核心机制 → 边界。",
+            "en": "Cryptographically Secure Pseudorandom Number Generator (DRBG): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密码安全伪随机数发生器（DRBG） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Cryptographically Secure Pseudorandom Number Generator (DRBG), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/csprng-details-flow.zh.svg",
+            "en": "assets/csprng-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2c1fc5070e02c4b6b97267b3e9a6213c82e5a783a99561a8b5770761eb1d46a9",
+            "en": "6330678fa76d1f90690c9fa62ae92b7a46b1719a8f12acbcfa631d038623a2e3"
+          }
+        },
+        {
+          "id": "csprng-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密码安全伪随机数发生器（DRBG） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Cryptographically Secure Pseudorandom Number Generator (DRBG): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "密码安全伪随机数发生器（DRBG） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Cryptographically Secure Pseudorandom Number Generator (DRBG), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/csprng-details-r138-model.zh.svg",
+            "en": "assets/csprng-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f65b8103434bb8dcc403560996b1273b9f351c8b069420bfb7f42ff5cb71ec3a",
+            "en": "4d14fd0b8d82fc099dbe94761d29ce704242bcda7ed1620b96edffd83e754960"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "csprng-r139-formal",
+          "entryId": "csprng-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 密码学安全伪随机数发生器 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "csprng-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "csprng-r139-formal"
+      ],
+      "sources": [
+        "csprng-wikipedia",
+        "csprng-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "csprng-r139-formal",
+      "entryId": "csprng-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 密码学安全伪随机数发生器 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "csprng-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

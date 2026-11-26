@@ -1,0 +1,197 @@
+{
+  "results": [
+    {
+      "id": "camellia-calc-spec-vectors",
+      "entryId": "camellia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "4268bd8dd1d943d7c6fd5b2f9cd91280efcfe457805f13990923c004f186e823",
+      "dependencyHashes": {
+        "camellia-teaching.mjs": "e5b7200279a4082116a65db03edcd966c88900ca4ed9dc618dcc57ac912f6547",
+        "sboxes.json": "208e1565fab82c03019347decf02821a99a4718809241367cf5ed94dcbc94a77",
+        "vectors.json": "f52f67e3e86533052517c73a87ce7e54c4190b942b2efd621544e6f2b39d275a",
+        "article.zh.md": "bf7cc8aaf408001fdcff602463701633677306712fb83f0f967fa99fc60c2281",
+        "article.en.md": "85167b7e272d8f03125c9f3a5f3426040d0a6ccd6480cf68dfc81c84c1ae5cfc",
+        "meta.json": "a90b81d6c2e22ca799001e2eb627ef0d9421ab8b72b1a55d6e0f2206a6c7b2c1",
+        "glossary.json": "b3cd928d32af2200ee3b238e774a9d8e83a39334830e44b7b78dbee6d032c68c",
+        "calculations.json": "a4472c890b2a467459d774b367a6849cf7f53b73ca730c745c7f005de24f89e4"
+      },
+      "inputs": "The three Appendix B vectors of the 2000 Camellia specification with 128-, 192- and 256-bit keys and the common plaintext 0123456789abcdeffedcba9876543210",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns 0123456789abcdeffedcba9876543210; the 128-bit key uses 18 rounds with 4 kw, 18 k and 4 ke subkeys, and the 192/256-bit keys use 24 rounds with 4 kw, 24 k and 6 ke subkeys",
+      "observed": {
+        "id": "camellia-calc-spec-vectors",
+        "passed": true,
+        "vectors": 3,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "rounds": [
+          18,
+          24,
+          24
+        ],
+        "ciphertexts": [
+          "67673138549669730857065648eabe43",
+          "b4993401b3e996f84ee5cee7d79b09b9",
+          "9acc237dff16d76c20ef7c919e3a7509"
+        ],
+        "limit": "Three fixed vectors with one plaintext each; a match does not establish security against cryptanalysis."
+      },
+      "contentSha256": "c75e2849c619b3039818b9769ad2159567160d1cbc8be33949243ff952222a4b",
+      "sourcesSha256": "f105f71dee0561b1953d0f4e89110d5165fbf3b994ba2e13df589c99403b2d30",
+      "executedOn": "2026-11-25T07:04:11.766Z"
+    },
+    {
+      "id": "camellia-calc-key-schedule",
+      "entryId": "camellia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "4268bd8dd1d943d7c6fd5b2f9cd91280efcfe457805f13990923c004f186e823",
+      "dependencyHashes": {
+        "camellia-teaching.mjs": "e5b7200279a4082116a65db03edcd966c88900ca4ed9dc618dcc57ac912f6547",
+        "sboxes.json": "208e1565fab82c03019347decf02821a99a4718809241367cf5ed94dcbc94a77",
+        "vectors.json": "f52f67e3e86533052517c73a87ce7e54c4190b942b2efd621544e6f2b39d275a",
+        "article.zh.md": "bf7cc8aaf408001fdcff602463701633677306712fb83f0f967fa99fc60c2281",
+        "article.en.md": "85167b7e272d8f03125c9f3a5f3426040d0a6ccd6480cf68dfc81c84c1ae5cfc",
+        "meta.json": "a90b81d6c2e22ca799001e2eb627ef0d9421ab8b72b1a55d6e0f2206a6c7b2c1",
+        "glossary.json": "b3cd928d32af2200ee3b238e774a9d8e83a39334830e44b7b78dbee6d032c68c",
+        "calculations.json": "a4472c890b2a467459d774b367a6849cf7f53b73ca730c745c7f005de24f89e4"
+      },
+      "inputs": "The KL/KR definitions for the three key lengths, the 192-bit complement construction, and the KA/KB, kw, k and ke values computed for the 128-bit test key",
+      "expected": "128-bit KL=0123456789abcdeffedcba9876543210 and KR=0; 192-bit KR=0011223344556677ffeeddccbbaa9988; 256-bit KR=00112233445566778899aabbccddeeff; 128-bit KA=ae71c3d55ba6bf1d169240a795f89256 and KB=6408e232ac24708fcc3a213a704bd393; sample kw1..kw4, k1..k4, k17, k18 and ke1..ke4 as recorded in vectors.json; the decryption schedule reverses kw, k and ke",
+      "observed": {
+        "id": "camellia-calc-key-schedule",
+        "passed": true,
+        "key128": {
+          "KL": "0123456789abcdeffedcba9876543210",
+          "KR": "00000000000000000000000000000000",
+          "KA": "ae71c3d55ba6bf1d169240a795f89256",
+          "KB": "6408e232ac24708fcc3a213a704bd393",
+          "subkeys": 26
+        },
+        "key192": {
+          "KL": "0123456789abcdeffedcba9876543210",
+          "KR": "0011223344556677ffeeddccbbaa9988",
+          "subkeys": 34
+        },
+        "key256": {
+          "KL": "0123456789abcdeffedcba9876543210",
+          "KR": "00112233445566778899aabbccddeeff",
+          "subkeys": 34
+        },
+        "limit": "The 128-bit intermediate values are computed, not published; the 192/256-bit schedules are checked by vectors and structure, not by published intermediate subkeys."
+      },
+      "contentSha256": "c75e2849c619b3039818b9769ad2159567160d1cbc8be33949243ff952222a4b",
+      "sourcesSha256": "f105f71dee0561b1953d0f4e89110d5165fbf3b994ba2e13df589c99403b2d30",
+      "executedOn": "2026-11-25T07:04:11.766Z"
+    },
+    {
+      "id": "camellia-calc-sboxes-fl",
+      "entryId": "camellia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "4268bd8dd1d943d7c6fd5b2f9cd91280efcfe457805f13990923c004f186e823",
+      "dependencyHashes": {
+        "camellia-teaching.mjs": "e5b7200279a4082116a65db03edcd966c88900ca4ed9dc618dcc57ac912f6547",
+        "sboxes.json": "208e1565fab82c03019347decf02821a99a4718809241367cf5ed94dcbc94a77",
+        "vectors.json": "f52f67e3e86533052517c73a87ce7e54c4190b942b2efd621544e6f2b39d275a",
+        "article.zh.md": "bf7cc8aaf408001fdcff602463701633677306712fb83f0f967fa99fc60c2281",
+        "article.en.md": "85167b7e272d8f03125c9f3a5f3426040d0a6ccd6480cf68dfc81c84c1ae5cfc",
+        "meta.json": "a90b81d6c2e22ca799001e2eb627ef0d9421ab8b72b1a55d6e0f2206a6c7b2c1",
+        "glossary.json": "b3cd928d32af2200ee3b238e774a9d8e83a39334830e44b7b78dbee6d032c68c",
+        "calculations.json": "a4472c890b2a467459d774b367a6849cf7f53b73ca730c745c7f005de24f89e4"
+      },
+      "inputs": "Tables 4-7 of the 2000 specification, the derived s2/s3/s4 definitions, and deterministic samples for S, P, F, FL and FL^-1",
+      "expected": "All four tables have 256 entries; s2(x)=s1(x)<<<1, s3(x)=s1(x)<<<7 and s4(x)=s1(x<<<1) reproduce all 256 entries of Tables 5-7; s1[0x3d]=86; S(0123456789abcdef)=821f66b4b6f9daa4, P(0123456789abcdef)=aaeeaaeeabcdef89 and F(0123456789abcdef,0)=d7e110581ab139a3; FL(0123456789abcdef,fedcba9876543210)=fedcba9889abcdef and FL^-1 returns the input for all 256 deterministic samples",
+      "observed": {
+        "id": "camellia-calc-sboxes-fl",
+        "passed": true,
+        "sboxes": 4,
+        "entriesPerBox": 256,
+        "s1At3d": "56",
+        "S": "821f66b4b6f9daa4",
+        "P": "aaeeaaeeabcdef89",
+        "F": "d7e110581ab139a3",
+        "FL": "fedcba9889abcdef",
+        "inverseSamples": 256,
+        "limit": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+      },
+      "contentSha256": "c75e2849c619b3039818b9769ad2159567160d1cbc8be33949243ff952222a4b",
+      "sourcesSha256": "f105f71dee0561b1953d0f4e89110d5165fbf3b994ba2e13df589c99403b2d30",
+      "executedOn": "2026-11-25T07:04:11.766Z"
+    },
+    {
+      "id": "camellia-calc-roundtrip",
+      "entryId": "camellia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "4268bd8dd1d943d7c6fd5b2f9cd91280efcfe457805f13990923c004f186e823",
+      "dependencyHashes": {
+        "camellia-teaching.mjs": "e5b7200279a4082116a65db03edcd966c88900ca4ed9dc618dcc57ac912f6547",
+        "sboxes.json": "208e1565fab82c03019347decf02821a99a4718809241367cf5ed94dcbc94a77",
+        "vectors.json": "f52f67e3e86533052517c73a87ce7e54c4190b942b2efd621544e6f2b39d275a",
+        "article.zh.md": "bf7cc8aaf408001fdcff602463701633677306712fb83f0f967fa99fc60c2281",
+        "article.en.md": "85167b7e272d8f03125c9f3a5f3426040d0a6ccd6480cf68dfc81c84c1ae5cfc",
+        "meta.json": "a90b81d6c2e22ca799001e2eb627ef0d9421ab8b72b1a55d6e0f2206a6c7b2c1",
+        "glossary.json": "b3cd928d32af2200ee3b238e774a9d8e83a39334830e44b7b78dbee6d032c68c",
+        "calculations.json": "a4472c890b2a467459d774b367a6849cf7f53b73ca730c745c7f005de24f89e4"
+      },
+      "inputs": "Three key lengths times eight deterministic plaintext patterns, including the official plaintext, with fixed test keys",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the 128-, 192- and 256-bit keys produce distinct schedules; and the 192- and 256-bit test keys, which share the left 128 bits, produce different KA and KB values",
+      "observed": {
+        "id": "camellia-calc-roundtrip",
+        "passed": true,
+        "roundTrips": 24,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "first": {
+          "keyBits": 128,
+          "plaintext": "00000000000000000000000000000000",
+          "ciphertext": "a66b04401ed5f1aa85dd78ef5a31aeb8"
+        },
+        "last": {
+          "keyBits": 256,
+          "plaintext": "ffeeddccbbaa99887766554433221100",
+          "ciphertext": "d9619a82ed868f4de01a5ccfd1987a99"
+        },
+        "limit": "Deterministic round trips only; no modes, protocols, key management, side channels or randomness are tested."
+      },
+      "contentSha256": "c75e2849c619b3039818b9769ad2159567160d1cbc8be33949243ff952222a4b",
+      "sourcesSha256": "f105f71dee0561b1953d0f4e89110d5165fbf3b994ba2e13df589c99403b2d30",
+      "executedOn": "2026-11-25T07:04:11.766Z"
+    },
+    {
+      "id": "algorithm--camellia-r139-formal",
+      "entryId": "camellia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "4268bd8dd1d943d7c6fd5b2f9cd91280efcfe457805f13990923c004f186e823",
+      "dependencyHashes": {
+        "camellia-teaching.mjs": "e5b7200279a4082116a65db03edcd966c88900ca4ed9dc618dcc57ac912f6547",
+        "sboxes.json": "208e1565fab82c03019347decf02821a99a4718809241367cf5ed94dcbc94a77",
+        "vectors.json": "f52f67e3e86533052517c73a87ce7e54c4190b942b2efd621544e6f2b39d275a",
+        "article.zh.md": "bf7cc8aaf408001fdcff602463701633677306712fb83f0f967fa99fc60c2281",
+        "article.en.md": "85167b7e272d8f03125c9f3a5f3426040d0a6ccd6480cf68dfc81c84c1ae5cfc",
+        "meta.json": "a90b81d6c2e22ca799001e2eb627ef0d9421ab8b72b1a55d6e0f2206a6c7b2c1",
+        "glossary.json": "b3cd928d32af2200ee3b238e774a9d8e83a39334830e44b7b78dbee6d032c68c",
+        "calculations.json": "a4472c890b2a467459d774b367a6849cf7f53b73ca730c745c7f005de24f89e4"
+      },
+      "inputs": "Camellia 加密算法 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "algorithm--camellia-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "c75e2849c619b3039818b9769ad2159567160d1cbc8be33949243ff952222a4b",
+      "sourcesSha256": "f105f71dee0561b1953d0f4e89110d5165fbf3b994ba2e13df589c99403b2d30",
+      "executedOn": "2026-11-25T07:29:52.918Z"
+    }
+  ]
+}

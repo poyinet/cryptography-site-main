@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R111 standards/modes/theory batch for ieee1619-details.",
+  "entries": [
+    {
+      "id": "ieee1619-details",
+      "inventoryIds": [
+        "ieee1619"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R111 存储加密标准批次：把 IEEE 1619 的目录身份卡改写为 XEX 公式、双密钥、地址 tweak、ciphertext stealing、2^20 块数据单元、key scope、无认证边界与 2007–2025 版本史。",
+        "en": "R111 storage-encryption standard batch: replaced IEEE 1619's catalog identity card with source-backed text on the XEX formula, two-key split, address tweak, ciphertext stealing, the 2^20-block data unit, key scopes, the no-authentication boundary and the 2007–2025 version history."
+      },
+      "title": {
+        "zh": "IEEE 1619 XTS-AES 存储加密",
+        "en": "IEEE 1619 XTS-AES storage encryption"
+      },
+      "claimIds": [
+        "ieee1619-r139-principle",
+        "ieee1619-r139-why",
+        "ieee1619-r139-used",
+        "ieee1619-r139-broken",
+        "ieee1619-r139-history",
+        "ieee1619-r139-refs"
+      ],
+      "sourceIds": [
+        "ieee1619-wikipedia",
+        "ieee1619-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "xts"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "ieee1619-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XTS 机制图：扇区号 i 经 K2 加密并在 GF(2¹²⁸) 乘 α^j 得到 tweak，明文先异或 tweak、经 K1 加密、再异或 tweak 得到密文。",
+            "en": "XTS mechanism: sector number i is encrypted under K2 and multiplied by α^j in GF(2¹²⁸) to form the tweak; plaintext is XORed with the tweak, encrypted under K1 and XORed again."
+          },
+          "alt": {
+            "zh": "图中上方为扇区号、K2、AES 与 GF 乘法生成 T_j；下方为 P_j 与 T_j 异或、AES K1 加密、再异或 T_j 得到 C_j。",
+            "en": "Diagram shows sector number, K2, AES and GF multiplication forming T_j above; below, P_j is XORed with T_j, encrypted under K1 and XORed again to form C_j."
+          },
+          "files": {
+            "zh": "assets/ieee1619-details-mechanism.zh.svg",
+            "en": "assets/ieee1619-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "2fdf97286bd27731aa096f5999b0b9a3976eb61629b118fe157e22f93c883010",
+            "en": "916bbeaa379140ca39d9940b789f04178d2bc04689a9de5fa7284afc4b94816a"
+          }
+        },
+        {
+          "id": "ieee1619-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "IEEE 1619 XTS-AES 存储加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for IEEE 1619 XTS-AES storage encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "IEEE 1619 XTS-AES 存储加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for IEEE 1619 XTS-AES storage encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ieee1619-details-r138-model.zh.svg",
+            "en": "assets/ieee1619-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2b3741b982319dad0bbcb575dd64787873b514cc9a1b4935bd2ee241cf19efd2",
+            "en": "878bc5807508d9e47b524556cb108440b72cc9c21cb859a54473519e940ee948"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：IEEE 1619 XTS-AES 存储加密（IEEE 1619 XTS-AES storage encryption）。### XEX：先异或 tweak，再 AES，再异或\n\nXTS-AES 是 XEX（XOR–Encrypt–XOR）的实例。对数据单元 i 内的第 j 个块 P_j，令 T_j = E_{K2}(i) ⊗ α^j，其中乘法在 GF(2^128)、α 是本原元；加密为 C_j = E_{K1}(P_j ⊕ T_j) ⊕ T_j，解密反过来。相同的明文在不同扇区或不同块位置会得到不同密文；同一位置重写则得到相同密文。### 两个密钥\n\nXTS 的密钥是 K1 || K2，K1 加密数据，K2 只生成 tweak。AES-128 对应 256 位 XTS 密钥，AES-256 对应 512 位。两个子密钥必须不同；若 K1 = K2，存在选择密文攻击可破坏 XTS 的主要保密性保证。### 密文偷取\n\n数据单元长度不必是 128 位的整数倍。最后两个块用 ciphertext stealing：先加密倒数第二块得到 CC，取前 b 位作为最后一块密文，剩余 128−b 位与最后一块明文拼成 PP 再加密，输出时交换最后两个密文块的位置。密文长度等于明文，不需要 padding，适合固定大小扇区。",
+          "why": "存储设备按扇区随机读写，不能像 CBC 那样依赖整个文件的链式状态。XTS 的每个块可以独立解密，tweak 由扇区号/LBA 和块号隐式算出，不需要把 IV 或 nonce 存进磁盘；密文不扩张，适合原地加密。### 比 ECB 强在哪\n\nECB 下相同明文块产生相同密文，泄露扇区结构；XTS 用地址相关的 tweak 打散相同块。它不是认证加密，不能防篡改，但比纯 ECB/CBC 更适合磁盘的随机访问模型。",
+          "used": "IEEE Std 1619-2007 定义 XTS-AES；NIST SP 800-38E（2010）批准它用于存储设备，并要求单个数据单元不超过 2^20 个 AES 块（16 MiB）。IEEE 1619-2018 把该限制写进标准，并限制总块数为 2^64；IEEE 1619-2025 又引入 key scope，把同一对密钥的块数限制在 2^36 到 2^44。### 部署\n\ndm-crypt/LUKS、BitLocker、FileVault 2、OpenSSL、NetBSD cgd 等使用 XTS 衍生实现。典型扇区是 512 B 或 4 KiB，远低于 16 MiB 的数据单元上限；但整块磁盘累计的数据量会接近 key scope 的边界。",
+          "broken": "XTS 没有认证标签，攻击者可以重放、重排、篡改密文块；若攻击者能观察到明文–密文对并改写，可能操控解密结果。必须在文件系统或应用层加完整性（AEAD、HMAC、Merkle 树），或把 XTS 当作“防离线窃取”而不是“防主动篡改”。K1/K2 必须独立；同一 key scope 的块数要受限。2025 标准把 key scope 限到 2^36–2^44 块，按 2^128 生日界估算，碰撞概率约 2^-56 到 2^-40。扇区号必须唯一且不可重用；克隆、快照、磁盘重映射都要保证 tweak 不复用。### 不是传输加密\n\nXTS 面向块存储，不适合 TLS 或网络传输；传输层应使用 AEAD。",
+          "history": "IEEE 1619-2007 在 2007 年发布，定义 XTS-AES；NIST SP 800-38E 在 2010 年 1 月发布，把它批准为存储设备的保密模式。IEEE 1619-2018 修订了数据单元和总块数限制；IEEE 1619-2025 在 2025 年 6 月发布，加入 key scope 要求。### 前身与命名\n\nXTS 源自 Rogaway 的 XEX；更早的 LRW 也是 tweakable 磁盘加密，但因安全性和实现问题被 XTS 取代。XTS 是 “XEX Tweakable Block Cipher with Ciphertext Stealing” 的缩写，名字直接说明了三个部件。",
+          "refs": "- Wikipedia search entry for IEEE 1619 XTS-AES 存储加密. https://zh.wikipedia.org/w/index.php?search=IEEE%201619%20XTS-AES%20%E5%AD%98%E5%82%A8%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nIEEE 1619 XTS-AES 存储加密的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: IEEE 1619 XTS-AES storage encryption (IEEE 1619 XTS-AES 存储加密). ### XEX: XOR tweak, AES, XOR again\n\nXTS-AES is an instance of XEX (XOR–Encrypt–XOR). For block P_j inside data unit i, let T_j = E_{K2}(i) ⊗ α^j, with multiplication in GF(2^128) and α a primitive element; encryption is C_j = E_{K1}(P_j ⊕ T_j) ⊕ T_j, and decryption reverses it. The same plaintext in a different sector or block position gives a different ciphertext; rewriting the same position gives the same ciphertext. ### Two keys\n\nThe XTS key is K1 || K2: K1 encrypts data, K2 only generates tweaks. AES-128 corresponds to a 256-bit XTS key and AES-256 to 512 bits. The two subkeys must differ; if K1 = K2, a chosen-ciphertext attack defeats XTS's main confidentiality assurance. ### Ciphertext stealing\n\nA data unit need not be a multiple of 128 bits. The last two blocks use ciphertext stealing: encrypt the penultimate block to CC, take its first b bits as the final ciphertext block, concatenate the remaining 128−b bits with the last plaintext block into PP and encrypt it, then swap the last two ciphertext pieces on output. The ciphertext length equals the plaintext length, with no padding, which suits fixed-size sectors.",
+          "why": "Storage devices read and write sectors randomly and cannot depend on a whole-file CBC chain. XTS decrypts each block independently; the tweak is derived implicitly from the sector/LBA and block index, so no IV or nonce is stored on disk. The ciphertext does not expand, which suits in-place encryption.\n\nUnder ECB, equal plaintext blocks produce equal ciphertext and leak sector structure; XTS uses an address-dependent tweak to break up equal blocks. It is not authenticated encryption and does not prevent tampering, but it fits the random-access model of disks better than plain ECB or CBC.",
+          "used": "IEEE Std 1619-2007 defines XTS-AES; NIST SP 800-38E (2010) approves it for storage devices and requires each data unit to contain at most 2^20 AES blocks (16 MiB). IEEE 1619-2018 wrote that limit into the standard and capped the total number of blocks at 2^64; IEEE 1619-2025 added a key scope limiting blocks per key pair to 2^36 through 2^44.\n\ndm-crypt/LUKS, BitLocker, FileVault 2, OpenSSL and NetBSD cgd use XTS-derived implementations. A typical sector is 512 B or 4 KiB, far below the 16 MiB data-unit limit; but the total data volume written under one key approaches the key-scope boundary.",
+          "broken": "XTS has no authentication tag; an attacker can replay, reorder or modify ciphertext blocks. If the attacker can observe plaintext–ciphertext pairs and overwrite data, decryption can be manipulated. Integrity must be added at the file-system or application layer (AEAD, HMAC, a Merkle tree), or XTS must be treated as “protection against offline theft”, not “protection against active tampering”.\n\nK1 and K2 must be independent, and blocks under one key scope must be capped. The 2025 standard limits a key scope to 2^36–2^44 blocks; under the 2^128 birthday bound the collision probability is roughly 2^-56 to 2^-40. Sector numbers must be unique and never reused: cloning, snapshots and disk remapping must preserve tweak uniqueness.\n\nXTS targets block storage, not TLS or network transport; transport should use AEAD.",
+          "history": "IEEE 1619-2007 was published in 2007 and defined XTS-AES; NIST SP 800-38E followed in January 2010, approving it as a storage confidentiality mode. IEEE 1619-2018 revised the data-unit and total-block limits; IEEE 1619-2025 appeared in June 2025 with key-scope requirements.\n\nXTS derives from Rogaway's XEX; the earlier LRW was also a tweakable disk-encryption mode but was replaced by XTS because of security and implementation issues. XTS stands for “XEX Tweakable Block Cipher with Ciphertext Stealing”, naming its three components.",
+          "refs": "- Wikipedia search entry for IEEE 1619 XTS-AES 存储加密. https://zh.wikipedia.org/w/index.php?search=IEEE%201619%20XTS-AES%20%E5%AD%98%E5%82%A8%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nIEEE 1619 XTS-AES storage encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "ieee1619-r139-formal",
+          "entryId": "ieee1619-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：IEEE 1619 XTS-AES 存储加密的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 IEEE 1619 XTS-AES 存储加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "ieee1619-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ieee1619-r139-formal"
+      ],
+      "sources": [
+        "ieee1619-wikipedia",
+        "ieee1619-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ieee1619-r139-formal",
+      "entryId": "ieee1619-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：IEEE 1619 XTS-AES 存储加密的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 IEEE 1619 XTS-AES 存储加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "ieee1619-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

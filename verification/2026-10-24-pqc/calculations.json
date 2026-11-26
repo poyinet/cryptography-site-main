@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pqc-mlkem-sizes",
+    "entryId": "pqc-details",
+    "kind": "executable-parameter-check",
+    "inputs": "FIPS 203 Table 2 parameter sets and Table 3 key/ciphertext sizes",
+    "expected": "384k+32, 768k+96 and 32(du·k+dv) reproduce 800/1632/768, 1184/2400/1088 and 1568/3168/1568",
+    "sourceIds": ["fips203"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "Checks published parameter arithmetic only; it does not implement ML-KEM or validate conformance vectors."
+  },
+  {
+    "id": "pqc-mldsa-sizes",
+    "entryId": "pqc-details",
+    "kind": "executable-parameter-check",
+    "inputs": "FIPS 204 Table 2 ML-DSA-44/65/87 key and signature sizes",
+    "expected": "Public key 32+320k matches 1312/1952/2592; private key and signature sizes match 2560/2420, 4032/3309 and 4896/4627",
+    "sourceIds": ["fips204"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "Checks the published table and one public-key formula; it does not implement ML-DSA."
+  },
+  {
+    "id": "pqc-slhdsa-pk",
+    "entryId": "pqc-details",
+    "kind": "executable-parameter-check",
+    "inputs": "FIPS 205 Table 2 SHA-2 parameter sets",
+    "expected": "Public key is 2n (32/48/64 bytes); signature sizes for the six SHA-2 sets match the published values",
+    "sourceIds": ["fips205"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "Checks public-key and signature size values, not the SLH-DSA signing algorithm."
+  },
+  {
+    "id": "pqc-toy-lwe",
+    "entryId": "pqc-details",
+    "kind": "executable-toy-check",
+    "inputs": "q=97, n=4, fixed A, s=(1,0,2,3), e=(1,−1,0,1), r=(1,0,1,1), messages 0 and 1",
+    "expected": "Ciphertext u=(83,0,14,20); v=76 for m=0 and 27 for m=1; both decrypt correctly",
+    "sourceIds": ["fips203"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "A toy LWE illustration, not ML-KEM, not a security test and not deployable."
+  },
+  {
+    "id": "pqc-shor-reduction",
+    "entryId": "pqc-details",
+    "kind": "executable-classical-reduction-check",
+    "inputs": "N=15 with a=7, N=21 with a=2, N=35 with a=3; classical order finding",
+    "expected": "Orders 4/6/12 and non-trivial factor pairs (3,5), (3,7), (5,7)",
+    "sourceIds": ["shor-arxiv"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "Demonstrates the order-to-factor reduction classically; it does not simulate a quantum computer or quantum speedup."
+  },
+  {
+    "id": "pqc-grover-exponent",
+    "entryId": "pqc-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "Search spaces 2^128, 2^192 and 2^256",
+    "expected": "Square-root exponents 64/96/128 satisfy (2^64)^2=2^128, (2^96)^2=2^192 and (2^128)^2=2^256",
+    "sourceIds": ["grover-arxiv"],
+    "dependencies": ["pqc-teaching.mjs"],
+    "limitations": "Arithmetic on query exponents only; it does not model quantum memory, depth or practical attack cost."
+  }
+]

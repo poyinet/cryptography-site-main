@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack-model entry for attack--fault-attack: definition, mechanism, applications, limits and source attribution.",
+  "entries": [
+    {
+      "id": "attack--fault-attack-details",
+      "inventoryIds": [
+        "attack--fault-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释故障注入攻击的攻击原理、适用场景、边界和来源；不复制其他密码算法或协议实体。",
+        "en": "A compact explanation of Fault Injection Attack: mechanism, applications, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "故障注入攻击",
+        "en": "Fault Injection Attack"
+      },
+      "claimIds": [
+        "attack--fault-attack-r139-principle",
+        "attack--fault-attack-r139-why",
+        "attack--fault-attack-r139-used",
+        "attack--fault-attack-r139-broken",
+        "attack--fault-attack-r139-history",
+        "attack--fault-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--fault-attack-wikipedia",
+        "attack--fault-attack-reference-ref"
+      ],
+      "related": [
+        "attack--side-channel-attack",
+        "algorithm--rsa",
+        "constant-time-implementation"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：故障注入攻击（Fault Attack）。故障攻击利用硬件在计算中产生的错误。对使用中国剩余定理的 RSA 签名，若故障只发生在一个 CRT 素因子的计算中，则同一消息的正确签名和错误签名各有一个，或只有一个已知消息的错误签名，就可以通过最大公约数分解模数 N；非 CRT 实现通常需要多得多的故障。",
+          "why": "硬件故障虽少但确实会发生，拥有物理访问的攻击者还可以主动诱发故障；错误输出使攻击者绕过直接分解模数的困难。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文攻击 CRT-RSA 和 Rabin 签名的特定实现，利用的是单素数计算故障，也攻破 Fiat-Shamir 与 Schnorr 身份识别协议；证书颁发机构生成错误证书是一个现实场景。",
+          "broken": "防御包括在输出签名前验证结果、使用错误检测位或 CRC、以及随机填充；论文强调不应把未经验证的计算结果直接发送给外部，并指出验证本身不能修复 Fiat-Shamir/Schnorr 的寄存器故障。### 形式模型",
+          "history": "Boneh、DeMillo 和 Lipton 在 1997 年 EUROCRYPT 论文中提出故障攻击，并把它扩展到多种签名和身份识别协议。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「故障注入攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 故障注入攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 故障注入攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 故障注入攻击. https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Fault Attack (故障注入攻击). A fault attack exploits errors produced by hardware during computation. For CRT-based RSA signatures, if the fault occurs in the computation for only one CRT prime, a correct and a faulty signature of the same message, or a single faulty signature on a known message, can reveal the factorization of N through a greatest common divisor; non-CRT implementations generally require many more faults.",
+          "why": "Hardware faults are rare but do occur, and an attacker with physical access can also induce them; faulty outputs let the attacker bypass the difficulty of directly factoring the modulus.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper attacks specific CRT-RSA and Rabin signature implementations using single-prime computation faults, and also breaks the Fiat-Shamir and Schnorr identification protocols; a certification authority issuing faulty certificates is a realistic scenario.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Defenses include verifying the result before releasing a signature, using error-detection bits or CRCs, and random padding; the paper stresses that unverified results should not be sent out, and notes that verification alone does not fix register faults in Fiat-Shamir or Schnorr.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Boneh, DeMillo and Lipton introduced fault attacks in their 1997 EUROCRYPT paper and extended them to several signature and identification protocols.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 故障注入攻击. https://zh.wikipedia.org/w/index.php?search=%E6%95%85%E9%9A%9C%E6%B3%A8%E5%85%A5%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nFault Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "故障攻击：利用计算错误恢复密钥或伪造签名。",
+          "CRT-RSA：使用中国剩余定理加速的 RSA 实现。",
+          "最大公约数：用于从错误签名中提取因子。",
+          "错误签名：含故障的签名结果。",
+          "冗余计算：重复计算以检测错误。",
+          "验证：在输出前检查签名是否正确。"
+        ],
+        "en": [
+          "Fault attack: using computation errors to recover keys or forge signatures.",
+          "CRT-RSA: an RSA implementation accelerated with the Chinese remainder theorem.",
+          "Greatest common divisor: used to extract a factor from a faulty signature.",
+          "Faulty signature: a signature computed with a fault.",
+          "Redundant computation: repeating computation to detect errors.",
+          "Verification: checking a signature before releasing it."
+        ]
+      },
+      "subtopicIds": [
+        "fault-attack"
+      ],
+      "figures": [
+        {
+          "id": "attack--fault-attack-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "故障注入攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Fault Injection Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "故障注入攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Fault Injection Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--fault-attack-details-flow.zh.svg",
+            "en": "assets/attack--fault-attack-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "89a7bc93aeb6ed08d16ba583e04547d8a5af394f6f64daf5ed63fd06215bdd04",
+            "en": "8111267915de4eee898cbc596900cc3b30c2004ae97ac8697b855a5af14b4015"
+          }
+        },
+        {
+          "id": "attack--fault-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "故障注入攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Fault Injection Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "故障注入攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Fault Injection Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--fault-attack-details-r138-model.zh.svg",
+            "en": "assets/attack--fault-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4e7e718d2cb87baff5e91c5452eb9cee276044c95ad5f8489d7caddbf4badde7",
+            "en": "4e064ad165dc8c8d36b4cdbfd00258906c3ded9b2a6c1c7777bcb7abc71f2f7a"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--fault-attack-r139-formal",
+          "entryId": "attack--fault-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 故障注入攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--fault-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--fault-attack-r139-formal"
+      ],
+      "sources": [
+        "attack--fault-attack-wikipedia",
+        "attack--fault-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--fault-attack-r139-formal",
+      "entryId": "attack--fault-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：故障注入攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 故障注入攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--fault-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

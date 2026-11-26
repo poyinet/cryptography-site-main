@@ -1,0 +1,486 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full SHA-2 family article: FIPS 180-4's six algorithms, the 32-bit and 64-bit word sizes, IV and constant derivations, padding, message schedules, 64/80-round compression, truncation and SHA-512/t IV generation, the FIPS 180-2 history, NIST approval and security-strength guidance, HMAC-SHA-2 test vectors, and the length-extension limitation. No completion claim for SHA-1, SHA-3, MD5, HMAC as a standalone entity, HKDF, TLS, any protocol, or any implementation.",
+  "entries": [
+    {
+      "id": "sha2-details",
+      "inventoryIds": [
+        "sha2"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 FIPS 180-4 的 SHA-2 家族：六个成员的摘要/块/字/轮数参数、填充与 64/128 位大端长度、素数平方根/立方根产生的 IV 与轮常量、Ch/Maj/Σ/σ 函数、64/80 字消息表、64/80 轮压缩、回加与截断、SHA-512/t IV 生成函数；覆盖 FIPS 180-2 的 2002/2004 历史、RFC 6234 的代码与测试向量、RFC 4231 的 HMAC-SHA-2 向量、SP 800-107 的安全强度与截断规则、SP 800-131A 的批准状态，以及长度扩展边界。不把 SHA-1、SHA-3、HMAC、HKDF 或整个哈希家族并入本实体。",
+        "en": "Covers FIPS 180-4's SHA-2 family: the six members' digest/block/word/round parameters, padding and the 64/128-bit big-endian length, IVs and round constants derived from square and cube roots of primes, the Ch/Maj/Σ/σ functions, the 64/80-word schedule, the 64/80-round compression, feed-forward and truncation, and the SHA-512/t IV generation function; the FIPS 180-2 2002/2004 history, RFC 6234 code and test vectors, RFC 4231 HMAC-SHA-2 vectors, SP 800-107 security strengths and truncation rules, SP 800-131A approval, and the length-extension boundary. It does not absorb SHA-1, SHA-3, HMAC, HKDF or the whole hash family."
+      },
+      "title": {
+        "zh": "SHA-2：FIPS 180-4 的 256/512 位哈希家族",
+        "en": "SHA-2: the FIPS 180-4 256/512-bit hash family"
+      },
+      "claimIds": [
+        "sha2-r139-principle",
+        "sha2-r139-why",
+        "sha2-r139-used",
+        "sha2-r139-broken",
+        "sha2-r139-history",
+        "sha2-r139-refs"
+      ],
+      "calculationIds": [
+        "sha2-calc-rfc-suite",
+        "sha2-calc-abc-trace",
+        "sha2-calc-crosscheck",
+        "sha2-calc-structure",
+        "sha2-calc-hmac",
+        "sha2-calc-length-extension",
+        "sha2-r139-formal"
+      ],
+      "sourceIds": [
+        "sha2-wikipedia",
+        "sha2-reference-ref"
+      ],
+      "related": [
+        "sha1",
+        "algorithm--md5",
+        "sha3",
+        "fips180-4",
+        "algorithm--hmac"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. SHA-1 is the predecessor family; MD5 is the earlier MD-family design; SHA-3 is a separate sponge-based family; FIPS 180-4 is the standard document; HMAC is the construction whose SHA-2 instantiation is discussed here. The term--sha-2 record was merged into sha2 in this round.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SHA-2 散列家族（SHA-2）。SHA-2 不是单个算法，而是 FIPS 180-4 中的六个安全哈希算法：SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224 与 SHA-512/256。它们的摘要长度分别是 224、256、384、512、224 与 256 位。家族分成两条线：SHA-224/256 使用 32 位字、512 位消息块和 64 轮；SHA-384/512 及两个 SHA-512/t 变体使用 64 位字、1024 位消息块和 80 轮。| 算法 | 摘要 | 块 | 字 | 轮数 |\n| --- | --- | --- | --- | --- |\n| SHA-224 | 224 | 512 | 32 | 64 |\n| SHA-256 | 256 | 512 | 32 | 64 |\n| SHA-384 | 384 | 1024 | 64 | 80 |\n| SHA-512 | 512 | 1024 | 64 | 80 |\n| SHA-512/224 | 224 | 1024 | 64 | 80 |\n| SHA-512/256 | 256 | 1024 | 64 | 80 |\n\n填充规则与 SHA-1 的结构相同，但长度字段更长：先追加一个 1 位（实现上是 0x80 字节），再补 0 位，使长度对 512 同余于 448（SHA-224/256）或对 1024 同余于 896（SHA-384/512 家族），最后追加 64 位或 128 位的大端消息长度。SHA-224/256 接受的输入小于 2^64 位，SHA-384/512 家族接受小于 2^128 位。填充后的消息被解析为「512-bit or 1024-bit blocks」（512 位或 1024 位块）；每块分成十六个「32-bit or 64-bit words」（32 位或 64 位字），按高位在前书写。以 \"abc\" 为例，SHA-224/256 的填充块是 `61 62 63 80` 后跟 52 个 `00`，最后 8 字节是 `00 00 00 00 00 00 00 18`。SHA-256/384/512 的初始值来自素数平方根的小数部分；SHA-224 与 SHA-512/t 使用各自规定的派生值：\n\n- SHA-256：前八个素数平方根小数部分的前 32 位，即 6a09e667、bb67ae85、3c6ef372、a54ff53a、510e527f、9b05688c、1f83d9ab、5be0cd19。- SHA-224：使用与 SHA-256 相同的算法，但初始值不同，即 c1059ed8、367cd507、3070dd17、f70e5939、ffc00b31、68581511、64f98fa7、befa4fa4；这些值与 SHA-384 的 64 位初始值的低 32 位相同。- SHA-512：前八个素数平方根小数部分的前 64 位，即 6a09e667f3bcc908、bb67ae8584caa73b、3c6ef372fe94f82b、a54ff53a5f1d36f1、510e527fade682d1、9b05688c2b3e6c1f、1f83d9abfb41bd6b、5be0cd19137e2179。- SHA-384：「square roots of the ninth through sixteenth」（第九至第十六个素数的）平方根小数部分的前 64 位，即 cbbb9d5dc1059ed8、629a292a367cd507、9159015a3070dd17、152fecd8f70e5939、67332667ffc00b31、8eb44a8768581511、db0c2e0d64f98fa7、47b5481dbefa4fa4。SHA-512/224 与 SHA-512/256 使用 SHA-512/t IV 生成函数：把 SHA-512 的八个初始字与 a5a5a5a5a5a5a5a5 异或，再用这个 IV 对字符串 `\"SHA-512/224\"` 或 `\"SHA-512/256\"` 计算 SHA-512（把 t 替换为 224 或 256），得到的八个字就是对应的 IV。FIPS 180-4 明确批准 t=224 与 t=256 两种截断。轮常量同样来自素数：SHA-224/256 使用 64 个 32 位常量，即前 64 个素数立方根小数部分的前 32 位，从 428a2f98 到 c67178f2；SHA-384/512 家族使用 80 个 64 位常量，即前 80 个素数立方根小数部分的前 64 位，从 428a2f98d728ae22 到 6c44198c4a475817。32 位变体使用 `Ch(x,y,z) = (x and y) xor (not x and z)`、`Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)`，以及四个旋转/右移函数：`Σ0 = ROTR2 xor ROTR13 xor ROTR22`、`Σ1 = ROTR6 xor ROTR11 xor ROTR25`、`σ0 = ROTR7 xor ROTR18 xor SHR3`、`σ1 = ROTR17 xor ROTR19 xor SHR10`。64 位变体结构相同，旋转量换成 28/34/39、14/18/41、1/8/7 与 19/61/6。消息表：前 16 个字是块字，之后 `W(t) = σ1(W(t−2)) + W(t−7) + σ0(W(t−15)) + W(t−16)`；SHA-256 扩展到 64 个字，SHA-512 扩展到 80 个字。每轮计算\n\n```\nT1 = h + Σ1(e) + Ch(e,f,g) + K(t) + W(t)\nT2 = Σ0(a) + Maj(a,b,c)\nh←g  g←f  f←e  e←d+T1  d←c  c←b  b←a  a←T1+T2\n```\n\n所有加法在 32 位变体上模 2^32、在 64 位变体上模 2^64。每块 64 或 80 轮后，把八个工作变量加回进入该块的八个哈希字；所有块处理完后，输出就是这八个字，或按变体截断为 224/384/256 位。",
+          "why": "SHA-2 的谱系是在 SHA-1 之外提供更大的摘要。FIPS 180-2 于 2002 年 8 月 1 日发布，取代 FIPS 180-1，新增 SHA-256、SHA-384 与 SHA-512 三个「capable of producing larger message digests」（能产生更大摘要）的算法；SHA-1 的算法本身不变，只调整了记号。2004 年 2 月 25 日的 Change Notice 1 加入 SHA-224；2015 年 8 月的 FIPS 180-4 又新增 SHA-512/224 与 SHA-512/256。SHA-2 不是 SHA-1 的简单截断：它使用更大的状态、不同的字长和不同的轮数。家族刻意分成 32 位与 64 位两条线：SHA-224/256 面向 32 位运算，SHA-384/512 家族面向 64 位运算。这使同一家族能覆盖不同平台与摘要长度：需要 256 位摘要时可用 SHA-256，需要更长摘要或 64 位运算优势时可用 SHA-512 家族；截断变体则在保持 SHA-256/512 压缩函数的同时提供 224/384 位输出。IV 与轮常量来自素数平方根/立方根的小数部分。这种公开、可复算的来源减少了隐藏后门的空间，但标准本身不把这当作安全性证明。FIPS 180-2 把算法称为安全，是因为计算上难以找原像或碰撞——这是当时的安全假设，不是数学定理。NIST SP 800-107 的表 1 给出了各成员的安全强度：SHA-224 的碰撞/原像抗性为 112/224 位，SHA-256 为 128/256 位，SHA-384 为 192/384 位，SHA-512 为 256/512 位，SHA-512/224 为 112/224 位，SHA-512/256 为 128/256 位。",
+          "used": "SHA-2 的典型用途包括数字签名、证书、HMAC 和基于哈希的密钥派生。SP 800-107 把数字签名列为 SHA-2 的典型用途，并指出数字签名的安全强度取哈希的碰撞抗性强度；它也专门讨论 HMAC，说明 HMAC 的安全性取决于底层哈希、密钥强度和 MacTag 长度，并把 SHA-2 用于两步提取-扩展的密钥派生结构。HMAC-SHA-2 有公开的一致性向量。RFC 4231 的 Jefe 向量使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，HMAC-SHA-256 为 `5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843`，HMAC-SHA-512 为 `164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737`。RFC 6234 则提供 SHA-224/256/384/512 的 C 参考代码、测试向量以及 HMAC/HKDF 实现。NIST 的当前政策把 SHA-2 家族（六个成员）列为可用于所有哈希函数应用。SP 800-131A Rev.2 的表 8 明确写出这一点。需要强调：这里说的是标准层面的可接受性，不是任何 SHA-2 用法都自动安全；具体协议仍要选对属性（碰撞、原像、第二原像）和密钥管理。截断变体适合输出长度受限的场景，但代价是碰撞抗性随输出长度下降。SP 800-107 允许截断消息摘要，但要求按截断长度的一半计算碰撞抗性；例如 96 位截断的 SHA-256 只有 48 位碰撞抗性。不要把 SHA-256 的 256 位输出直接等同于 256 位碰撞安全。",
+          "broken": "SHA-2 目前是 NIST 批准的标准哈希家族；SP 800-131A Rev.2 的表 8 把六个成员都列为可用于所有哈希函数应用。但「acceptable」（可接受）不等于没有攻击面，至少有三条边界需要理解。**长度扩展**：SHA-2 采用 Merkle-Damgård 迭代，每块处理后的链接值就是下一块的输入，最终输出也是链接值。因此，给定 H(M) 与 M 的长度，攻击者可以在不知道 M 的情况下计算 H(M || pad(M) || X)。这不是碰撞，但会破坏把哈希直接当 MAC 的朴素构造。本批次用 \"abc\" 做了演示：已知 SHA-256(\"abc\") 与 64 字节填充长度，不重新读取原消息就能算出 `f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4`，与直接哈希 `abc || pad(abc) || \"extra\"` 的结果一致。**不要把 H(K||M) 当 MAC**：由于长度扩展，直接用 SHA-2 拼接密钥和消息的 MAC 是不安全的。应使用 HMAC；SP 800-107 对 HMAC 的使用给出指导，HMAC 通过 ipad/opad 两层把密钥处理与消息哈希分开。RFC 4231 的向量可以用来核对 HMAC-SHA-2 实现。**截断会降低强度**：截断到 t 位的摘要最多提供约 t/2 位碰撞抗性；SHA-224、SHA-384、SHA-512/224、SHA-512/256 的碰撞抗性分别约为 112、192、112、128 位。选择截断变体时，必须按目标安全强度估算，而不是按父变体名义上的输出位数估算。此外，NIST 的批准是政策判断，不是数学证明；SHA-2 的压缩函数仍可能在未来出现更好的密码分析。工程上应把 SHA-2 当作当前可用的标准哈希，而不是永远安全的保证；需要不同结构假设时，SHA-3 是另一个 NIST 批准的家族。",
+          "history": "- **2002 年 8 月 1 日**：FIPS 180-2 发布，包含 SHA-1、SHA-256、SHA-384 与 SHA-512；它取代 FIPS 180-1，新增三个能产生更大摘要的算法。- **2004 年 2 月 25 日**：FIPS 180-2 的 Change Notice 1 加入 SHA-224。- **2008 年 10 月 17 日**：FIPS 180-2 被后续版本取代；FIPS 180-4 的附录 C 以 FIPS 180-3 为基线描述技术变更。- **2011 年 5 月**：RFC 6234 发布，取代 RFC 4634，提供 SHA-224/256/384/512、HMAC 与 HKDF 的开源实现和测试向量。- **2015 年 8 月**：FIPS 180-4 发布，在 FIPS 180-3 的基础上新增 SHA-512/224 与 SHA-512/256。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 把 SHA-2 家族列为可用于所有哈希函数应用。",
+          "refs": "- Wikipedia search entry for SHA-2 散列家族. https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: SHA-2 (SHA-2 散列家族). SHA-2 is not one algorithm but six secure hash algorithms in FIPS 180-4: SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224 and SHA-512/256. Their digest lengths are 224, 256, 384, 512, 224 and 256 bits respectively. The family has two lines: SHA-224/256 use 32-bit words, 512-bit message blocks and 64 rounds; SHA-384/512 and the two SHA-512/t variants use 64-bit words, 1024-bit message blocks and 80 rounds. | Algorithm | Digest | Block | Word | Rounds |\n| --- | --- | --- | --- | --- |\n| SHA-224 | 224 | 512 | 32 | 64 |\n| SHA-256 | 256 | 512 | 32 | 64 |\n| SHA-384 | 384 | 1024 | 64 | 80 |\n| SHA-512 | 512 | 1024 | 64 | 80 |\n| SHA-512/224 | 224 | 1024 | 64 | 80 |\n| SHA-512/256 | 256 | 1024 | 64 | 80 |\n\nPadding has the same structure as SHA-1's but a longer length field: append a single 1 bit (an 0x80 byte in implementations), then enough 0 bits to make the length congruent to 448 modulo 512 (SHA-224/256) or 896 modulo 1024 (SHA-384/512 family), and finally the 64-bit or 128-bit big-endian message length. SHA-224/256 accept input shorter than 2^64 bits; the SHA-384/512 family accepts input shorter than 2^128 bits. The padded message is parsed into \"512-bit or 1024-bit blocks\"; each block is split into sixteen \"32-bit or 64-bit words\", written most significant byte first. For \"abc\", the SHA-224/256 padded block is `61 62 63 80` followed by 52 `00` bytes and the 8-byte length `00 00 00 00 00 00 00 18`. The initial values of SHA-256/384/512 come from fractional parts of square roots of primes; SHA-224 and SHA-512/t use their own specified derived values:\n\n- SHA-256: the first 32 bits of the fractional square roots of the first eight primes, namely 6a09e667, bb67ae85, 3c6ef372, a54ff53a, 510e527f, 9b05688c, 1f83d9ab and 5be0cd19. - SHA-224: uses the same algorithm as SHA-256 but a different initial value, namely c1059ed8, 367cd507, 3070dd17, f70e5939, ffc00b31, 68581511, 64f98fa7 and befa4fa4; these are the low 32 bits of SHA-384's eight 64-bit initial values. - SHA-512: the first 64 bits of the fractional square roots of the first eight primes, namely 6a09e667f3bcc908, bb67ae8584caa73b, 3c6ef372fe94f82b, a54ff53a5f1d36f1, 510e527fade682d1, 9b05688c2b3e6c1f, 1f83d9abfb41bd6b and 5be0cd19137e2179. - SHA-384: the first 64 bits of the fractional \"square roots of the ninth through sixteenth\" primes, namely cbbb9d5dc1059ed8, 629a292a367cd507, 9159015a3070dd17, 152fecd8f70e5939, 67332667ffc00b31, 8eb44a8768581511, db0c2e0d64f98fa7 and 47b5481dbefa4fa4. SHA-512/224 and SHA-512/256 use the SHA-512/t IV generation function: XOR the eight SHA-512 initial words with a5a5a5a5a5a5a5a5, then compute SHA-512 over the string `\"SHA-512/224\"` or `\"SHA-512/256\"` (t replaced by 224 or 256) with that IV; the resulting eight words are the IV. FIPS 180-4 explicitly approves the t=224 and t=256 truncations. The round constants also come from primes: SHA-224/256 use 64 32-bit constants, the first 32 bits of the fractional cube roots of the first 64 primes, from 428a2f98 through c67178f2; the SHA-384/512 family uses 80 64-bit constants, the first 64 bits of the fractional cube roots of the first 80 primes, from 428a2f98d728ae22 through 6c44198c4a475817. The 32-bit variants use `Ch(x,y,z) = (x and y) xor (not x and z)`, `Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)`, and four rotate/shift functions: `Σ0 = ROTR2 xor ROTR13 xor ROTR22`, `Σ1 = ROTR6 xor ROTR11 xor ROTR25`, `σ0 = ROTR7 xor ROTR18 xor SHR3`, and `σ1 = ROTR17 xor ROTR19 xor SHR10`. The 64-bit variants have the same structure with rotations 28/34/39, 14/18/41, 1/8/7 and 19/61/6. The message schedule starts with the sixteen block words and then computes `W(t) = σ1(W(t−2)) + W(t−7) + σ0(W(t−15)) + W(t−16)`; SHA-256 expands to 64 words and SHA-512 to 80. Each round computes\n\n```\nT1 = h + Σ1(e) + Ch(e,f,g) + K(t) + W(t)\nT2 = Σ0(a) + Maj(a,b,c)\nh←g  g←f  f←e  e←d+T1  d←c  c←b  b←a  a←T1+T2\n```\n\nAll additions are modulo 2^32 in the 32-bit variants and modulo 2^64 in the 64-bit variants. After the 64 or 80 rounds of a block, the eight working variables are added back to the incoming eight hash words; after all blocks, the output is those eight words, or a 224/384/256-bit truncation for the relevant variant.",
+          "why": "SHA-2's lineage is larger digests alongside SHA-1. FIPS 180-2, published on 1 August 2002, supersedes FIPS 180-1 and adds SHA-256, SHA-384 and SHA-512, three algorithms \"capable of producing larger message digests\"; SHA-1 itself is unchanged as an algorithm, with notation adjustments. Change Notice 1 of 25 February 2004 adds SHA-224; FIPS 180-4 of August 2015 adds SHA-512/224 and SHA-512/256. SHA-2 is not a simple truncation of SHA-1: it uses larger states, different word sizes and different round counts.\n\nThe family deliberately has two lines: SHA-224/256 target 32-bit operations, while the SHA-384/512 family targets 64-bit operations. This lets one family cover different platforms and digest lengths: SHA-256 when a 256-bit digest is needed, the SHA-512 family when a longer digest or 64-bit arithmetic is advantageous, and the truncated variants when the SHA-256/512 compression function must be kept but a 224/384-bit output is required.\n\nThe IVs and round constants come from fractional parts of square and cube roots of primes. This public, reproducible derivation reduces the room for hidden structure, but the standard does not treat it as a security proof. FIPS 180-2 calls the algorithms secure because it is computationally infeasible to find a preimage or a collision - the security assumption of its time, not a mathematical theorem. NIST SP 800-107 Table 1 gives the security strengths: SHA-224 has 112/224 bits of collision/preimage resistance, SHA-256 128/256, SHA-384 192/384, SHA-512 256/512, SHA-512/224 112/224 and SHA-512/256 128/256.",
+          "used": "SHA-2's typical uses include digital signatures, certificates, HMAC and hash-based key derivation. SP 800-107 lists digital signatures as a typical use of SHA-2 and notes that a digital signature's security strength is the hash function's collision resistance strength; it also devotes a section to HMAC, stating that HMAC security depends on the underlying hash, the key strength and the MacTag length, and uses SHA-2 in a two-step extract-then-expand key derivation structure.\n\nHMAC-SHA-2 has public conformance vectors. RFC 4231's Jefe case uses key \"Jefe\" and message \"what do ya want for nothing?\", with HMAC-SHA-256 `5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843` and HMAC-SHA-512 `164b7a7bfcf819e2e395fbe73b56e0a387bd64222e831fd610270cd7ea2505549758bf75c05a994a6d034f65f8f0e6fdcaeab1a34d4a6b4b636e070a38bce737`. RFC 6234 provides C reference code, test vectors and HMAC/HKDF implementations for SHA-224/256/384/512.\n\nNIST's current policy marks all six SHA-2 members acceptable for all hash function applications. Table 8 of SP 800-131A Rev. 2 states this explicitly. This is a standards-level statement, not a claim that every SHA-2 use is automatically secure; a protocol still has to choose the right property (collision, preimage, second preimage) and manage keys correctly.\n\nTruncated variants suit output-length-constrained settings, at the cost of collision resistance. SP 800-107 permits truncated message digests but requires collision resistance to be counted as half the truncated length; for example, a 96-bit truncated SHA-256 has only 48-bit collision resistance. SHA-256's 256-bit output must not be equated with 256-bit collision security.",
+          "broken": "SHA-2 is currently a NIST-approved standard hash family; Table 8 of SP 800-131A Rev. 2 marks all six members acceptable for all hash function applications. But \"acceptable\" does not mean no attack surface; at least three boundaries matter.\n\n**Length extension**: SHA-2 uses Merkle-Damgård iteration, where the chaining value after each block is the input to the next and the final output is the chaining value. Given H(M) and the length of M, an attacker can compute H(M || pad(M) || X) without knowing M. This is not a collision, but it breaks the naive construction that uses the hash directly as a MAC. This batch demonstrates it with \"abc\": knowing SHA-256(\"abc\") and the 64-byte padded length, it computes `f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4` without rereading the original message, matching the direct hash of `abc || pad(abc) || \"extra\"`.\n\n**Do not use H(K||M) as a MAC**: because of length extension, a MAC built by concatenating a key and a message with SHA-2 is insecure. Use HMAC; SP 800-107 gives guidance on HMAC use, and HMAC separates key processing from message hashing with its ipad/opad layers. The RFC 4231 vectors can be used to check an HMAC-SHA-2 implementation.\n\n**Truncation lowers strength**: a digest truncated to t bits provides at most about t/2 bits of collision resistance; SHA-224, SHA-384, SHA-512/224 and SHA-512/256 provide about 112, 192, 112 and 128 bits of collision resistance respectively. When choosing a truncated variant, estimate by the target security strength, not by the nominal output length of the parent variant.\n\nNIST approval is a policy judgement, not a mathematical proof; better cryptanalysis of the SHA-2 compression function may appear in the future. Engineering practice should treat SHA-2 as a currently usable standard hash, not a guarantee of permanent security; when a different structural assumption is needed, SHA-3 is another NIST-approved family.",
+          "history": "- **1 August 2002**: FIPS 180-2 is published with SHA-1, SHA-256, SHA-384 and SHA-512; it supersedes FIPS 180-1 and adds three algorithms capable of producing larger digests. - **25 February 2004**: Change Notice 1 to FIPS 180-2 adds SHA-224. - **17 October 2008**: FIPS 180-2 is superseded by a later edition; FIPS 180-4 Appendix C describes technical changes from FIPS 180-3. - **May 2011**: RFC 6234 is published, obsoleting RFC 4634 and providing open-source implementations and test vectors for SHA-224/256/384/512, HMAC and HKDF. - **August 2015**: FIPS 180-4 is published, adding SHA-512/224 and SHA-512/256 to FIPS 180-3. - **March 2019**: NIST SP 800-131A Rev. 2 is published; Table 8 marks the SHA-2 family acceptable for all hash function applications.",
+          "refs": "- Wikipedia search entry for SHA-2 散列家族. https://zh.wikipedia.org/w/index.php?search=SHA-2%20%E6%95%A3%E5%88%97%E5%AE%B6%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "消息摘要：把任意长消息压缩成固定长度指纹的函数值；SHA-256 输出 256 位摘要。",
+          "SHA-2 家族：FIPS 180-4 的六个哈希算法 SHA-224、SHA-256、SHA-384、SHA-512、SHA-512/224 与 SHA-512/256。",
+          "32 位变体：SHA-224 与 SHA-256，使用 32 位字、512 位块和 64 轮。",
+          "64 位变体：SHA-384、SHA-512、SHA-512/224 与 SHA-512/256，使用 64 位字、1024 位块和 80 轮。",
+          "块：SHA-2 处理消息的固定单位；32 位变体为 512 位，64 位变体为 1024 位。",
+          "字：SHA-2 的基本运算单位；32 位变体用 32 位字，64 位变体用 64 位字。",
+          "大端序：高位字节在前；SHA-2 的块字、长度字段和摘要都按大端表示。",
+          "填充：追加一个 1 位和若干 0 位，使长度对 512/1024 同余于 448/896，再追加 64 位或 128 位大端长度。",
+          "初始值（IV）：每个 SHA-2 变体的八个起始字，取自素数平方根的小数部分。",
+          "轮常量：SHA-224/256 的 64 个 32 位常量与 SHA-384/512 家族的 80 个 64 位常量，取自素数立方根的小数部分。",
+          "消息表：由 16 个块字扩展出的 64/80 个字；W(t) = σ1(W(t−2)) + W(t−7) + σ0(W(t−15)) + W(t−16)。",
+          "Ch：条件选择函数 Ch(x,y,z) = (x and y) xor (not x and z)，SHA-2 每轮使用。",
+          "Maj：多数函数 Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)，SHA-2 每轮使用。",
+          "Σ0/Σ1：大写 Sigma 函数，由三个不同旋转量的 ROTR 异或组成；32 位与 64 位变体的旋转量不同。",
+          "σ0/σ1：小写 sigma 函数，由两个 ROTR 与一个 SHR 异或组成，用于消息表扩展。",
+          "ROTR：32 位或 64 位循环右移；SHA-2 同时使用 ROTR 与 SHR。",
+          "压缩函数：把当前八个字的状态与一个消息块混合成新状态的核心迭代。",
+          "回加（feed-forward）：每块 64/80 轮后把八个工作变量加回进入该块的状态。",
+          "截断：把 SHA-256/512 的输出截短为 224/384/256 位；截断变体使用各自的 IV。",
+          "SHA-512/t：基于 SHA-512 的 t 位截断变体；FIPS 180-4 批准 t=224 与 t=256。",
+          "HMAC-SHA-2：以 SHA-2 为底层哈希的 HMAC；用 ipad/opad 两层结构避免长度扩展直接作用在 MAC 上。",
+          "HKDF：基于 HMAC 的提取-扩展密钥派生函数；RFC 6234 与 SP 800-107 都给出实现或指导。",
+          "长度扩展：已知 H(M) 与 M 的长度时，可在不知道 M 的情况下计算 H(M || pad(M) || X)；这是 Merkle-Damgård 结构导致的，不是碰撞。",
+          "碰撞抗性：使攻击者难以找到两条同摘要消息的性质；截断到 t 位的摘要最多提供约 t/2 位碰撞抗性。"
+        ],
+        "en": [
+          "Message digest: the fixed-length fingerprint of an arbitrary-length message; SHA-256 outputs a 256-bit digest.",
+          "SHA-2 family: the six FIPS 180-4 hash algorithms SHA-224, SHA-256, SHA-384, SHA-512, SHA-512/224 and SHA-512/256.",
+          "32-bit variants: SHA-224 and SHA-256, using 32-bit words, 512-bit blocks and 64 rounds.",
+          "64-bit variants: SHA-384, SHA-512, SHA-512/224 and SHA-512/256, using 64-bit words, 1024-bit blocks and 80 rounds.",
+          "Block: the fixed processing unit of SHA-2; 512 bits for the 32-bit variants and 1024 bits for the 64-bit variants.",
+          "Word: the basic arithmetic unit of SHA-2; 32-bit words for the 32-bit variants, 64-bit words for the 64-bit variants.",
+          "Big-endian: most significant byte first; SHA-2's block words, length field and digest are big-endian.",
+          "Padding: append one 1 bit and enough 0 bits to make the length congruent to 448/896 modulo 512/1024, then append the 64-bit or 128-bit big-endian length.",
+          "Initial value (IV): the eight starting words of each SHA-2 variant, taken from fractional parts of square roots of primes.",
+          "Round constants: the 64 32-bit constants of SHA-224/256 and the 80 64-bit constants of the SHA-384/512 family, taken from fractional parts of cube roots of primes.",
+          "Message schedule: the 64/80 words expanded from the 16 block words; W(t) = σ1(W(t−2)) + W(t−7) + σ0(W(t−15)) + W(t−16).",
+          "Ch: the conditional-select function Ch(x,y,z) = (x and y) xor (not x and z), used in every SHA-2 round.",
+          "Maj: the majority function Maj(x,y,z) = (x and y) xor (x and z) xor (y and z), used in every SHA-2 round.",
+          "Σ0/Σ1: the big-Sigma functions, XORs of three ROTRs with different amounts; the 32-bit and 64-bit variants use different amounts.",
+          "σ0/σ1: the small-sigma functions, XORs of two ROTRs and one SHR, used in message-schedule expansion.",
+          "ROTR: 32-bit or 64-bit circular right rotation; SHA-2 uses both ROTR and SHR.",
+          "Compression function: the core iteration mixing the current eight-word state with one message block.",
+          "Feed-forward: after a block's 64/80 rounds, add the eight working variables back to the incoming state.",
+          "Truncation: shortening the SHA-256/512 output to 224/384/256 bits; truncated variants use their own IVs.",
+          "SHA-512/t: a t-bit truncated variant based on SHA-512; FIPS 180-4 approves t=224 and t=256.",
+          "HMAC-SHA-2: HMAC with SHA-2 as the underlying hash; the ipad/opad two-layer structure keeps length extension from applying directly to the MAC.",
+          "HKDF: an HMAC-based extract-then-expand key derivation function; RFC 6234 and SP 800-107 give implementations or guidance.",
+          "Length extension: given H(M) and the length of M, compute H(M || pad(M) || X) without knowing M; this follows from Merkle-Damgård and is not a collision.",
+          "Collision resistance: the property that makes it hard to find two messages with the same digest; a digest truncated to t bits provides at most about t/2 bits of collision resistance."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sha2-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-2：FIPS 180-4 的 256/512 位哈希家族：为什么需要 → 核心机制 → 边界。",
+            "en": "SHA-2: the FIPS 180-4 256/512-bit hash family: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SHA-2：FIPS 180-4 的 256/512 位哈希家族 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SHA-2: the FIPS 180-4 256/512-bit hash family, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sha2-details-flow.zh.svg",
+            "en": "assets/sha2-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "86d4101b1805ada0de9b412fb8317f7f5fe1294c48094ce9c0d4cabe775a67a5",
+            "en": "0d6bd5392dc4c6b8b080b303067a78f27df78f01185a1c782022cf8183314718"
+          }
+        },
+        {
+          "id": "sha2-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-2：FIPS 180-4 的 256/512 位哈希家族 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SHA-2: the FIPS 180-4 256/512-bit hash family: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SHA-2：FIPS 180-4 的 256/512 位哈希家族 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SHA-2: the FIPS 180-4 256/512-bit hash family, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sha2-details-r138-model.zh.svg",
+            "en": "assets/sha2-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "13ab44e927478782d6df5b5b7db5c85094154926ab6cea63907046c71f9f626a",
+            "en": "6dad72ec1113ed8bfc5015760968a3c17d57f2f5191cbb4379bc4e6eb7485334"
+          }
+        }
+      ],
+      "sources": [
+        "sha2-wikipedia",
+        "sha2-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "sha2-calc-rfc-suite",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 6234's SHA-224, SHA-256, SHA-384 and SHA-512 test vectors (abc, the 56-/112-byte strings and one million 'a'), plus the SHA-512/224 and SHA-512/256 abc vectors generated with the FIPS 180-4 IVs, stored in vectors.json",
+          "expected": "The teaching implementation reproduces every stored digest exactly, including SHA-256(abc)=ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad, SHA-512(abc)=ddaf35a1…, SHA-512/224(abc)=4634270f… and SHA-512/256(abc)=53048e26…",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "The RFC vectors are conformance checks, not security tests. The SHA-512/224 and SHA-512/256 abc values are implementation checks generated from the FIPS IVs, not RFC-published vectors."
+        },
+        {
+          "id": "sha2-calc-abc-trace",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The SHA-256 single-block computation of abc: block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first four round traces, the registers after rounds 16/32/48/64, the feed-forward values and the final digest stored in vectors.json",
+          "expected": "The block words are derived from pad(abc); W16=0x61626380, W17=0x000f0000, W18=0x7da86405, W19=0x600003c6; the first step has T1=0x54da50e8, T2=0x08909ae5 and a=0x5d6aebcd; the group registers and feed-forward values match the implementation; the digest is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+        },
+        {
+          "id": "sha2-calc-crosscheck",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "70 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA-224/256/384/512/512-224/512-256): empty and abc for each variant, 32-bit boundary lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, and 64-bit boundary lengths 111, 112, 113, 127, 128, 129, 239, 240 and 241",
+          "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all block-boundary lengths",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-2 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+        },
+        {
+          "id": "sha2-calc-structure",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The six IVs; the 64 32-bit and 80 64-bit constants; the message schedule; padding boundaries for 512/1024-bit blocks; the SHA-512/t IV generation; negative controls for little-endian parsing, missing feed-forward and a rotated constant table; the published code block; and the article hex vectors",
+          "expected": "The IVs and constants match the FIPS values generated from square/cube roots of primes; the SHA-512/t IVs match the FIPS 180-4 values; padding boundaries map correctly; the negative controls fail to reproduce the RFC digest; the article's js code block is a substring of sha2-teaching.mjs; the Chinese and English articles expose the same 100 hex-token set",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The negative-control digests are batch-generated; the calculation asserts only that they differ from the official digest."
+        },
+        {
+          "id": "sha2-calc-hmac",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Four RFC 4231 HMAC-SHA-2 test cases: the Hi There and Jefe cases for HMAC-SHA-256 and HMAC-SHA-512, stored in vectors.json",
+          "expected": "The teaching hmacSha2 reproduces all four RFC 4231 digests, including HMAC-SHA-256(Jefe)=5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843 and HMAC-SHA-512(Jefe)=164b7a7b…",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Four HMAC-SHA-2 conformance vectors only; they do not establish the security of HMAC-SHA-2 in any particular protocol or key-management setting."
+        },
+        {
+          "id": "sha2-calc-length-extension",
+          "entryId": "sha2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The SHA-256 digest of abc, the 64-byte padded length, and the suffix \"extra\"; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+          "expected": "The state-based extension equals the direct SHA-256 of the 69-byte extended message: f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4; the demo shows length extension, not a collision",
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "dependencies": [
+            "sha2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One structural demonstration on SHA-256; it does not claim a collision, a key recovery or a break of HMAC-SHA-2."
+        },
+        {
+          "id": "sha2-r139-formal",
+          "entryId": "sha2-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "SHA-2 散列家族 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "sha2-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sha2-calc-rfc-suite",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 6234's SHA-224, SHA-256, SHA-384 and SHA-512 test vectors (abc, the 56-/112-byte strings and one million 'a'), plus the SHA-512/224 and SHA-512/256 abc vectors generated with the FIPS 180-4 IVs, stored in vectors.json",
+      "expected": "The teaching implementation reproduces every stored digest exactly, including SHA-256(abc)=ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad, SHA-512(abc)=ddaf35a1…, SHA-512/224(abc)=4634270f… and SHA-512/256(abc)=53048e26…",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "The RFC vectors are conformance checks, not security tests. The SHA-512/224 and SHA-512/256 abc values are implementation checks generated from the FIPS IVs, not RFC-published vectors."
+    },
+    {
+      "id": "sha2-calc-abc-trace",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The SHA-256 single-block computation of abc: block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first four round traces, the registers after rounds 16/32/48/64, the feed-forward values and the final digest stored in vectors.json",
+      "expected": "The block words are derived from pad(abc); W16=0x61626380, W17=0x000f0000, W18=0x7da86405, W19=0x600003c6; the first step has T1=0x54da50e8, T2=0x08909ae5 and a=0x5d6aebcd; the group registers and feed-forward values match the implementation; the digest is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+    },
+    {
+      "id": "sha2-calc-crosscheck",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "70 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA-224/256/384/512/512-224/512-256): empty and abc for each variant, 32-bit boundary lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, and 64-bit boundary lengths 111, 112, 113, 127, 128, 129, 239, 240 and 241",
+      "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all block-boundary lengths",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-2 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+    },
+    {
+      "id": "sha2-calc-structure",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The six IVs; the 64 32-bit and 80 64-bit constants; the message schedule; padding boundaries for 512/1024-bit blocks; the SHA-512/t IV generation; negative controls for little-endian parsing, missing feed-forward and a rotated constant table; the published code block; and the article hex vectors",
+      "expected": "The IVs and constants match the FIPS values generated from square/cube roots of primes; the SHA-512/t IVs match the FIPS 180-4 values; padding boundaries map correctly; the negative controls fail to reproduce the RFC digest; the article's js code block is a substring of sha2-teaching.mjs; the Chinese and English articles expose the same 100 hex-token set",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The negative-control digests are batch-generated; the calculation asserts only that they differ from the official digest."
+    },
+    {
+      "id": "sha2-calc-hmac",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Four RFC 4231 HMAC-SHA-2 test cases: the Hi There and Jefe cases for HMAC-SHA-256 and HMAC-SHA-512, stored in vectors.json",
+      "expected": "The teaching hmacSha2 reproduces all four RFC 4231 digests, including HMAC-SHA-256(Jefe)=5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843 and HMAC-SHA-512(Jefe)=164b7a7b…",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Four HMAC-SHA-2 conformance vectors only; they do not establish the security of HMAC-SHA-2 in any particular protocol or key-management setting."
+    },
+    {
+      "id": "sha2-calc-length-extension",
+      "entryId": "sha2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The SHA-256 digest of abc, the 64-byte padded length, and the suffix \"extra\"; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+      "expected": "The state-based extension equals the direct SHA-256 of the 69-byte extended message: f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4; the demo shows length extension, not a collision",
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "dependencies": [
+        "sha2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One structural demonstration on SHA-256; it does not claim a collision, a key recovery or a break of HMAC-SHA-2."
+    },
+    {
+      "id": "sha2-r139-formal",
+      "entryId": "sha2-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "SHA-2 散列家族 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "sha2-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

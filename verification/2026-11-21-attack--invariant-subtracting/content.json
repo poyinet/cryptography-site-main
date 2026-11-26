@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R123 formula-level deepening for attack--invariant-subtracting-details.",
+  "entries": [
+    {
+      "id": "attack--invariant-subtracting-details",
+      "inventoryIds": [
+        "attack--invariant-subtracting"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条从仿射子空间、coset 弱密钥、|A| 计数与少于 5 个选择明文的区分器给出完整链条，并纠正“invariant subtract”这一不存在的名称。",
+        "en": "This entry gives the complete affine-subspace chain: coset weak keys, |A| counting and a distinguisher with fewer than five chosen plaintexts; it also corrects the nonexistent “invariant subtract” name."
+      },
+      "title": {
+        "zh": "不变量子空间攻击",
+        "en": "Invariant Subspace Attack"
+      },
+      "claimIds": [
+        "attack--invariant-subtracting-r139-principle",
+        "attack--invariant-subtracting-r139-why",
+        "attack--invariant-subtracting-r139-used",
+        "attack--invariant-subtracting-r139-broken",
+        "attack--invariant-subtracting-r139-history",
+        "attack--invariant-subtracting-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--invariant-subtracting-wikipedia",
+        "attack--invariant-subtracting-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "differential-cryptanalysis"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "attack--invariant-subtracting-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "不变量子空间攻击：u⊕A 经一轮映到 v⊕A，弱密钥 K∈u⊕v⊕A 使整个子空间闭合。",
+            "en": "Invariant subspace attack: u⊕A maps to v⊕A in one round, and weak keys K∈u⊕v⊕A keep the whole subspace closed."
+          },
+          "alt": {
+            "zh": "四步公式级机制：选仿射子空间 → 验证轮映射 → 解弱密钥 coset → 选择明文区分；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: choose affine subspace → verify round map → solve weak-key coset → chosen-plaintext test; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/attack--invariant-subtracting-mechanism.zh.svg",
+            "en": "assets/attack--invariant-subtracting-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "c4082a9440dba32015eaf9c0a53e60b6f11fb75b92cc8fc12a555b27742d9b22",
+            "en": "2563722501b45a1943ace31888ba3a3a7c3467e0e55a92df7df099ae683cc35c"
+          }
+        },
+        {
+          "id": "attack--invariant-subtracting-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "不变量子空间攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Invariant Subspace Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "不变量子空间攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Invariant Subspace Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--invariant-subtracting-details-r138-model.zh.svg",
+            "en": "assets/attack--invariant-subtracting-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c3b84b9c3eeab4114b2e911e17221f36a1ed86d370dd466e54b520c9473adb7f",
+            "en": "c19f25c1054fb0f4309f82871ea793f6cc6a718f776ae28a1dd8db7697669df5"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：不变量子空间攻击（Invariant Subspace Attack）。### 仿射子空间与轮函数\n\n设分组长度为 n，轮函数 F_K(x)=F(x⊕K)。取仿射子空间 u⊕A（A 为线性子空间）。若 F 把 u⊕A 整体映到 v⊕A：\n\n当轮密钥 K 落在 u⊕v⊕A 时，F_K(v⊕A)=F((v⊕A)⊕K)=F(u⊕A)=v⊕A，即该子空间在该轮被保持。### 多轮保持与弱密钥\n\n若每一轮的轮密钥都属于相应的 coset，则整个加密满足 E_K(v⊕A)=v⊕A。弱密钥个数为 |A|。PRINTcipher-48 的 80 位密钥中有 2^52 个弱密钥，PRINTcipher-96 的 160 位密钥中有 2^102 个；对弱密钥只需极少选择明文即可把 E_K 与随机置换区分开。",
+          "why": "不变量子空间攻击利用的是结构性不变量，不依赖概率近似，也不要求恢复每一轮密钥。它说明分组密码的安全不仅取决于 S 盒的非线性，还取决于轮常数、密钥调度和线性层的组合是否让某个子空间在弱密钥下闭合。差分和线性分析追踪概率偏差；不变量子空间追踪概率为 1 的轨道。目录旧译“不变量相减”指的就是这条路线，规范名称是 invariant subspace attack；该条目不把不存在的 “invariant subtract” 论文当作来源。",
+          "used": "1.选候选仿射子空间 u⊕A，检查线性层是否保持 A。2.计算一轮 F 在 u⊕A 上的像，若为 v⊕A 则得到条件。3.解出弱密钥 coset u⊕v⊕A。4.检查密钥调度是否让所有轮密钥落入对应 coset。5.用选择明文验证 E_K(v⊕A)=v⊕A，并估计弱密钥比例。### 不能怎么用\n\n不能把弱密钥区分器说成“破解全部密钥”；不能忽略轮常数和密钥调度；不能把 PRINTcipher 的参数直接套到其他轻量级密码。",
+          "broken": "1.弱密钥限制：只对满足 coset 条件的密钥成立，比例 |A|/2^k 可能很小。2.轮常数与密钥调度：只要某轮常数或轮密钥把状态移出子空间，多轮不变量即断裂。3.区分器不等于密钥恢复：它证明弱密钥存在，但不自动给出主密钥。4.设计修复：增加非线性轮常数、让轮密钥跨 coset、或在线性层引入扩散；修复后必须重新搜索不变量。",
+          "history": "2011 年 Leander、Abdelraheem、AlKhzaimi 与 Zenner 在 CRYPTO 2011 上用不变量子空间攻击分析 PRINTcipher，给出 2^52/2^80 与 2^102/2^160 的弱密钥集。### 后续版本\n\n2015 年 Leander、Minaud 与 Rønjom 把不变量子空间的搜索做成通用算法，应用到 Robin、iSCREAM 与 Zorro，弱密钥密度可达 2^-32。该条目以 2011 年 PRINTcipher 论文为主，2015 年论文只用于说明方法的一般化。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 不变量子空间攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 不变量子空间攻击. https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Invariant Subspace Attack (不变量子空间攻击). ### Affine subspaces and the round function\n\nLet the block size be n and the round function be F_K(x)=F(x⊕K). Take an affine subspace u⊕A, where A is a linear subspace. If F maps u⊕A as a whole to v⊕A:\n\nWhen the round key K lies in u⊕v⊕A, F_K(v⊕A)=F((v⊕A)⊕K)=F(u⊕A)=v⊕A, so the subspace is preserved in that round. ### Multi-round preservation and weak keys\n\nIf every round key lies in the corresponding coset, the full encryption satisfies E_K(v⊕A)=v⊕A. The number of weak keys is |A|. PRINTcipher-48 has 2^52 weak keys out of 2^80, and PRINTcipher-96 has 2^102 out of 2^160; for those keys, very few chosen plaintexts distinguish E_K from a random permutation.",
+          "why": "An invariant-subspace attack uses a structural invariant, not a probabilistic approximation, and does not require recovering each round key. It shows that block-cipher security depends not only on S-box nonlinearity but also on whether round constants, key schedule and linear layer leave a subspace closed for weak keys.\n\nThe old catalog translation “invariant subtract” refers to this line of work; the standard name is invariant subspace attack. This entry does not treat a nonexistent “invariant subtract” paper as a source. Differential and linear attacks track probabilistic bias; invariant subspaces track probability-one orbits.",
+          "used": "1. Choose a candidate affine subspace u⊕A and check that the linear layer preserves A. 2. Compute the image of u⊕A under one round F; obtain v⊕A. 3. Solve the weak-key coset u⊕v⊕A. 4. Check whether the key schedule places every round key in the required coset. 5. Verify E_K(v⊕A)=v⊕A with chosen plaintexts and estimate the weak-key fraction.\n\nDo not call a weak-key distinguisher a break of all keys; do not ignore round constants and key schedule; do not transplant the PRINTcipher parameters to other lightweight ciphers.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Weak-key restriction: the property holds only for keys in the coset, and the fraction |A|/2^k may be tiny. 2. Round constants and key schedule: one constant or round key outside the subspace breaks the multi-round invariant. 3. A distinguisher is not key recovery: it proves that weak keys exist but does not automatically yield the master key. 4. Design fixes: add nonlinear round constants, move round keys across cosets, or add diffusion in the linear layer; after a fix, the invariant search must be rerun.",
+          "history": "In 2011 Leander, Abdelraheem, AlKhzaimi and Zenner analyzed PRINTcipher with the invariant-subspace attack at CRYPTO 2011, giving weak-key sets of 2^52/2^80 and 2^102/2^160.\n\nIn 2015 Leander, Minaud and Rønjom turned invariant-subspace detection into a generic algorithm and applied it to Robin, iSCREAM and Zorro, with weak-key density up to 2^-32. This entry follows the 2011 PRINTcipher paper; the 2015 paper is used only for the generalization.",
+          "refs": "- Wikipedia search entry for 不变量子空间攻击. https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%98%E9%87%8F%E5%AD%90%E7%A9%BA%E9%97%B4%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nInvariant Subspace Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "attack--invariant-subtracting-r139-formal",
+          "entryId": "attack--invariant-subtracting-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 不变量子空间攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--invariant-subtracting-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--invariant-subtracting-r139-formal"
+      ],
+      "sources": [
+        "attack--invariant-subtracting-wikipedia",
+        "attack--invariant-subtracting-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--invariant-subtracting-r139-formal",
+      "entryId": "attack--invariant-subtracting-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：不变量子空间攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 不变量子空间攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--invariant-subtracting-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

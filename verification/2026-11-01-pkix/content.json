@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for pkix: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "pkix-details",
+      "inventoryIds": [
+        "pkix"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释PKIX 证书框架的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Internet X.509 Public Key Infrastructure: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "PKIX 证书框架",
+        "en": "Internet X.509 Public Key Infrastructure"
+      },
+      "claimIds": [
+        "pkix-r139-principle",
+        "pkix-r139-why",
+        "pkix-r139-used",
+        "pkix-r139-broken",
+        "pkix-r139-history",
+        "pkix-r139-refs"
+      ],
+      "sourceIds": [
+        "pkix-wikipedia",
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ],
+      "related": [
+        "crl",
+        "certificate-authority",
+        "online-certificate-status-protocol",
+        "protocol--certificate-transparency"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：PKIX 证书框架（Internet X.509 Public Key Infrastructure）。RFC 5280 自述定位：§1「This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.」并说明「This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.」§4 把证书侧的目标写成「This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.」——它规定证书字段与扩展怎么填，并对签发方施加合规义务，但不描述 CA 的运营流程与信任策略。",
+          "why": "之所以要 profile，是因为自由解释会破坏互操作与信任判定。有效期字段被硬性规定编码：§4.1.2.5「CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.」基本约束则被强制标注：§4.2.1.9「Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.」",
+          "used": "§4.1.2.5 还给出无限期证书的写法：「To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.」§4.2.1.9 用 pathLenConstraint 限制链深：「A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.」§6.1 规定实现义务：「A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.」",
+          "broken": "校验算法的边界写在 §6.1：它「only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.」并且明确不建议补上这类检查（「this profile RECOMMENDS against including such checks.」）；同时未知关键扩展是硬失败：「Note that clients MUST reject the certificate if it contains an unsupported critical extension.」——也就是说合规性与有效性是两件事，而 §6.1 的算法只管后者。",
+          "history": "RFC 5280 由 D.Cooper、S.Santesson、S.Farrell、S.Boeyen、R.Housley 与 W.Polk 署名，2008 年 5 月发布，Standards Track，头部标「Obsoletes: 3280, 4325, 4630」。§1 的差异清单记录了与 RFC 3280 的偏离，其中一条涉及路径校验：「The path validation algorithm specified in Section 6 no longer tracks the criticality of the certificate policies extensions in a chain of certificates.」另一条是扩展关键性要求的调整：「Section 4.2.1.11 requires marking the policy constraints extension as critical.」",
+          "refs": "- Wikipedia search entry for PKIX 证书框架. https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5280: Internet X.509 Public Key Infrastructure. https://www.rfc-editor.org/rfc/rfc5280\n- Published standard/RFC for PKIX 证书框架. https://www.rfc-editor.org/rfc/rfc5280",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nPKIX 证书框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Internet X.509 Public Key Infrastructure (PKIX 证书框架). RFC 5280 states its own place: §1 \"This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.\" and \"This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.\" §4 puts the certificate side plainly — \"This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.\" — it fixes how fields and extensions are filled in and binds issuers to conformance duties, without describing CA operations or trust policy.",
+          "why": "A profile exists because free interpretation breaks both interoperability and trust decisions. Validity encoding is fixed: §4.1.2.5 \"CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.\" Basic constraints are mandatory and critical: §4.2.1.9 \"Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.\"",
+          "used": "§4.1.2.5 also gives the no-expiry convention: \"To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.\" §4.2.1.9 uses pathLenConstraint to bound chain depth: \"A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.\" §6.1 sets the implementation duty: \"A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.\"",
+          "broken": "§6.1 draws the boundary: the algorithm \"only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.\" and it \"RECOMMENDS against including such checks.\" Unknown critical extensions are a hard failure — \"Note that clients MUST reject the certificate if it contains an unsupported critical extension.\" Conformance and validity are therefore separate matters, and the §6.1 algorithm governs only the latter.",
+          "history": "RFC 5280 is signed by D. Cooper, S. Santesson, S. Farrell, S. Boeyen, R. Housley and W. Polk, published May 2008 as a Standards Track document with \"Obsoletes: 3280, 4325, 4630\" in the header. §1 lists the departures from RFC 3280, one of them about path validation: \"The path validation algorithm specified in Section 6 no longer tracks the criticality of the certificate policies extensions in a chain of certificates.\" and another about extension criticality: \"Section 4.2.1.11 requires marking the policy constraints extension as critical.\"",
+          "refs": "- Wikipedia search entry for PKIX 证书框架. https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5280: Internet X.509 Public Key Infrastructure. https://www.rfc-editor.org/rfc/rfc5280\n- Published standard/RFC for PKIX 证书框架. https://www.rfc-editor.org/rfc/rfc5280",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nInternet X.509 Public Key Infrastructure: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "profile：对既有 X.509 格式的互联网化约束。",
+          "notBefore/notAfter：有效期区间的两端。",
+          "UTCTime：2049 年及以前使用的日期编码。",
+          "GeneralizedTime：2050 年及以后使用的日期编码。",
+          "basicConstraints：声明是否为 CA 与链深上限。",
+          "critical extension：无法处理即须拒绝的扩展。"
+        ],
+        "en": [
+          "Profile: Internet-specific constraints on the X.509 format.",
+          "notBefore/notAfter: the two ends of the validity interval.",
+          "UTCTime: date encoding used through 2049.",
+          "GeneralizedTime: date encoding used from 2050.",
+          "basicConstraints: CA identity and chain-depth limit.",
+          "Critical extension: unhandled means the certificate is rejected."
+        ]
+      },
+      "figures": [
+        {
+          "id": "pkix-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PKIX 证书框架：为什么需要 → 核心机制 → 边界。",
+            "en": "Internet X.509 Public Key Infrastructure: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "PKIX 证书框架 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Internet X.509 Public Key Infrastructure, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/pkix-details-flow.zh.svg",
+            "en": "assets/pkix-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "44345ecc0c2ee437461ce187e7ca9b2164e18d330016beef483263e3193035f6",
+            "en": "a0a321b65c753dcde5b116f001b1fe1cc83a5c0738b0c89143cd828a295d076c"
+          }
+        },
+        {
+          "id": "pkix-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PKIX 证书框架 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Internet X.509 Public Key Infrastructure: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "PKIX 证书框架 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Internet X.509 Public Key Infrastructure, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/pkix-details-r138-model.zh.svg",
+            "en": "assets/pkix-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "da914d35fcbc54a71e8cdcc9ab80623a3bcea85112c038553cf33f789df87679",
+            "en": "3f0e4c016dc784976fbb26610154112108a1ea37ec2ca43ad47a1a8696b0e1e0"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "pkix-r139-formal",
+          "entryId": "pkix-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：PKIX 证书框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 PKIX 证书框架 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "pkix-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "pkix-r139-formal"
+      ],
+      "sources": [
+        "pkix-wikipedia",
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "pkix-r139-formal",
+      "entryId": "pkix-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：PKIX 证书框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 PKIX 证书框架 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "pkix-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

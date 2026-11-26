@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R121 formula-level deepening for gbt33133-details.",
+  "entries": [
+    {
+      "id": "gbt33133-details",
+      "inventoryIds": [
+        "gbt33133"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R121 公式级深化：把“ZUC 算法”从机制结构条提升为公式级条目，给出轮函数/签名/密钥流/配对方程、参数、用途与失效边界；具体数值算例仍不冒充标准测试向量。",
+        "en": "R121 formula-level deepening: upgrades “ZUC Algorithm” from a mechanism-structure card to a formula-level entry with round/signature/keystream/pairing equations, parameters, use and failure boundary; numeric examples are not claimed as standard test vectors."
+      },
+      "title": {
+        "zh": "ZUC 算法",
+        "en": "ZUC Algorithm"
+      },
+      "claimIds": [
+        "gbt33133-r139-principle",
+        "gbt33133-r139-why",
+        "gbt33133-r139-used",
+        "gbt33133-r139-broken",
+        "gbt33133-r139-history",
+        "gbt33133-r139-refs"
+      ],
+      "sourceIds": [
+        "gbt33133-wikipedia",
+        "gbt33133-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "rc4"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gbt33133-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ZUC 公式级机制图：16 级 LFSR、比特重组、F 函数、32 位密钥流与 EIA3 认证。",
+            "en": "ZUC formula-level mechanism: 16-stage LFSR, bit reorganisation, F function, 32-bit keystream and EIA3 authentication."
+          },
+          "alt": {
+            "zh": "四步公式级机制：128 位密钥与 IV → 32 轮初始化 → 32 位密钥流字 → 128-EIA3 认证；核心公式与参数边界。",
+            "en": "Four formula-level steps: 128-bit key and IV → 32 initialization rounds → 32-bit keystream words → 128-EIA3 authentication; core formulas and parameter boundary."
+          },
+          "files": {
+            "zh": "assets/gbt33133-mechanism.zh.svg",
+            "en": "assets/gbt33133-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引标准绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited standard)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d462fd1721b9bb06807fa8cc4f6d70e4656219eaeb618d45859dc8a26aef80b5",
+            "en": "515caefac0d43d31a4d9fc16b5ef20016857282ded027072e9c102894193f52d"
+          }
+        },
+        {
+          "id": "gbt33133-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ZUC 算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ZUC Algorithm: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ZUC 算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ZUC Algorithm, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gbt33133-details-r138-model.zh.svg",
+            "en": "assets/gbt33133-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "001257b9dec912e0bcf0ef70a03339855798119de9ec83b1b466f0fb2a526470",
+            "en": "918dbfc997c691e53dc10d77edc11b27e14e67ab01e20a2f8a2db88855a1153b"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：ZUC 算法（ZUC Algorithm）。### LFSR 与状态\n\nZUC 的 LFSR 有 16 个 31 位单元 s0…s15，单元取值在 1…2^31−1，运算模 2^31−1。工作模式下的反馈为\n\ns16=2^15 s15+2^17 s13+2^21 s10+2^20 s4+(1+2^8)s0 mod (2^31−1)，\n\n若结果为 0 则置为 2^31−1。### 比特重组与密钥流\n\n每拍从 s15/s14、s11/s9、s7/s5、s2/s0 取高/低 16 位，拼成 X0…X3：\n\nX0=s15H‖s14L；X1=s11L‖s9H；X2=s7L‖s5H；X3=s2L‖s0H。密钥流字为 Z=X3⊕F(X0,X1,X2)；F 使用两个 8 位 S 盒 S0/S1 与线性变换 L1/L2，并维护 32 位寄存器 R1/R2。### 初始化与认证\n\n密钥 128 位、IV 128 位进入初始化，运行 32 轮后再进入密钥流生成。128-EEA3 用密钥流加密，128-EIA3 用 ZUC 字与消息累加产生 32 位 MAC。",
+          "why": "ZUC 以 31 位 LFSR 与非线性 F 的组合在硬件上保持低延迟与低面积，适合 LTE 的加密与完整性算法。它的 128 位密钥与 IV 直接映射 3GPP 的承载上下文。ZUC 是流密码；SM4 是分组密码，SM3 是杂凑。ZUC 本身不提供认证，认证由 128-EIA3 或上层协议完成。",
+          "used": "1.初始化：密钥与 IV 按 3GPP 承载标识、计数器和方向绑定，不能跨上下文复用。2.加密：128-EEA3 按位/字流加密，计数器不得回绕。3.认证：128-EIA3 计算 MAC，先加密后认证或按协议规定顺序。4.验向量：实现跑 ZUC 与 EEA3/EIA3 标准测试向量。### 不能怎么用\n\n不能固定 IV 重用密钥流；不能只用 ZUC 加密而不做完整性；不能把 32 位 MAC 截得更短。",
+          "broken": "1.IV/计数器重用：同一密钥流会异或到多条消息，直接泄露明文关系。2.初始化与状态：初始化轮数、LFSR 模运算或比特重组实现错误会破坏互操作与安全。3.侧信道与故障：状态更新和 S 盒访问可被时序/缓存/故障攻击。4.认证不足：裸流无完整性，32 位 MAC 的伪造界有限；协议必须规定重放与方向。",
+          "history": "ZUC 由 3GPP SAGE 任务组设计，成为 128-EEA3 与 128-EIA3 的核心，规格文档为 SAGE ZUC Specification v1.6；3GPP TS 35.222 与 ETSI TS 135 222 引用该规格。ZUC v1.5 到 v1.6 的初始化与文档有差异；实现以所声明版本和测试向量为准。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：ZUC 算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 ZUC 算法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for ZUC 算法. https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nZUC 算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: ZUC Algorithm (ZUC 算法). ### LFSR and state\n\nZUC’s LFSR has 16 31-bit cells s0…s15, each in 1…2^31−1 and operating modulo 2^31−1. In working mode the feedback is\n\ns16=2^15 s15+2^17 s13+2^21 s10+2^20 s4+(1+2^8)s0 mod (2^31−1),\n\nwith 0 replaced by 2^31−1. ### Bit reorganisation and keystream\n\nEach clock takes high/low 16-bit halves of s15/s14, s11/s9, s7/s5 and s2/s0 into X0…X3:\n\nX0=s15H‖s14L; X1=s11L‖s9H; X2=s7L‖s5H; X3=s2L‖s0H. The keystream word is Z=X3⊕F(X0,X1,X2); F uses two 8-bit S-boxes S0/S1, linear transforms L1/L2 and 32-bit registers R1/R2. ### Initialization and authentication\n\nA 128-bit key and 128-bit IV enter 32 initialization rounds before keystream generation. 128-EEA3 encrypts with the keystream; 128-EIA3 accumulates ZUC words with the message into a 32-bit MAC.",
+          "why": "ZUC combines a 31-bit LFSR with a nonlinear F for low latency and small area in hardware, fitting LTE confidentiality and integrity. Its 128-bit key and IV map directly to 3GPP bearer context.\n\nZUC is a stream cipher; SM4 is a block cipher and SM3 a hash. ZUC alone does not authenticate; 128-EIA3 or the upper protocol does.",
+          "used": "1. Initialization: bind key and IV to the 3GPP bearer, counter and direction; never reuse across contexts. 2. Encryption: 128-EEA3 encrypts the bit/word stream, and counters must not wrap. 3. Authentication: compute the 128-EIA3 MAC and follow the protocol’s encrypt-then-MAC order. 4. Verify vectors: run the ZUC and EEA3/EIA3 standard test vectors.\n\nDo not reuse a fixed IV and keystream; do not encrypt with ZUC alone without integrity; do not truncate the 32-bit MAC further.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. IV/counter reuse: the same keystream XORs into multiple messages and leaks plaintext relations. 2. Initialization and state: wrong round count, LFSR modulus or bit reorganisation breaks interoperability and security. 3. Side channels and faults: state updates and S-box access are timing/cache/fault targets. 4. Weak authentication: a raw stream has no integrity and a 32-bit MAC has a limited forgery bound; the protocol must specify replay and direction.",
+          "history": "ZUC was designed by the 3GPP SAGE task force and became the core of 128-EEA3 and 128-EIA3, specified in SAGE ZUC Specification v1.6; 3GPP TS 35.222 and ETSI TS 135 222 reference it.\n\nInitialization and documentation differ between ZUC v1.5 and v1.6; implementations follow the claimed version and test vectors.",
+          "refs": "- Wikipedia search entry for ZUC 算法. https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nZUC Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "gbt33133-r139-formal",
+          "entryId": "gbt33133-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：ZUC 算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 ZUC 算法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gbt33133-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "gbt33133-r139-formal"
+      ],
+      "sources": [
+        "gbt33133-wikipedia",
+        "gbt33133-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gbt33133-r139-formal",
+      "entryId": "gbt33133-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：ZUC 算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 ZUC 算法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gbt33133-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

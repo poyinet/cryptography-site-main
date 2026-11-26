@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cabf-br-details",
+  "sources": [
+    {
+      "id": "cabf-br-wikipedia",
+      "title": "Wikipedia search entry for CA/Browser Forum TLS 基线要求",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CA%2FBrowser%20Forum%20TLS%20%E5%9F%BA%E7%BA%BF%E8%A6%81%E6%B1%82",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CA/Browser Forum TLS 基线要求",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cabf-br-r139-principle",
+          "entryId": "cabf-br-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：CA/Browser Forum TLS 基线要求（CA/Browser Forum TLS Baseline Requirements）。### 一个“基线 CP”，不是浏览器代码\n\nCA/Browser Forum 是 CA 与浏览器/软件厂商的自愿组织。TLS Baseline Requirements 用 RFC 3647 框架写公开信任 TLS 服务器证书的最低要求：身份验证、域名/IP 控制验证、证书 profile、有效期、审计、吊销与事件响应。它本身不自动强制；只有根程序采纳并写入合同/政策后才生效。### 证书 profile 的硬约束\n\nBR 第 7 节定义证书内容：serial 必须大于 0，且至少含 64 位 CSPRNG 输出；RSA 公钥至少 2048 位，或使用 P-256/P-384/P-521；禁止 SHA-1；终端实体证书必须带 CA/B 保留 policy OID（DV 2.23.140.1.2.1、OV 2.23.140.1.2.2、IV 2.23.140.1.2.3）。这些字段让依赖方判断证书类型和策略。",
+            "en": "**Standard**: CA/Browser Forum TLS Baseline Requirements (CA/Browser Forum TLS 基线要求).### A baseline CP, not browser code\n\nThe CA/Browser Forum is a voluntary organization of CAs and browser/software suppliers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        },
+        {
+          "id": "cabf-br-r139-why",
+          "entryId": "cabf-br-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么需要统一基线\n\n2011 年以前，各家 CA 的验证、有效期、字段和审计口径不一，导致误签发和浏览器信任差异。统一基线让根程序用同一套审计证据评估所有 CA，也让依赖方有可预测的最低安全线。### 为什么仍然不够\n\n基线是最低要求，不是完整安全证明；CA 被入侵、验证逻辑漏洞、域名劫持仍可能发生。根程序还会叠加自己的要求，例如 CT、CAA、多视角验证和吊销 SLA。",
+            "en": "### Why a common baseline\n\nBefore 2011, CAs differed in validation, validity, fields and audit scope, producing misissuance and inconsistent browser trust.A common baseline lets root programs evaluate every CA against the same audit evidence and gives relying parties a predictable minimum security line."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        },
+        {
+          "id": "cabf-br-r139-used",
+          "entryId": "cabf-br-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 版本与生效\n\nv1.0 于 2011-11-22 通过、2012-07-01 生效；v2.0.0（SC62 证书 profile 重写）于 2023-04-22 通过、2023-09-15 生效。当前 2.3.1（2026-10-04）已排到 2029 的合规日期：2026-03-15 起订阅者证书最长 200 天，2027-03-15 起 100 天，2029-03-15 起 47 天；域名/IP 验证数据复用期同步从 200 天缩到 100 天、再缩到 10 天。### 根程序执行\n\nMozilla、Microsoft、Apple、Chrome 等根程序要求 CA 符合 TLS BR 并通过 WebTrust/ETSI 审计；严重违规会导致不信任或移除。Microsoft 根计划还要求 DV/OV/EV/IV 的 policy OID、年度审计和 CCADB 披露。",
+            "en": "### Versions and effective dates\n\nv1.0 was adopted on 2011-11-22 and became effective on 2012-07-01; v2.0.0 (the SC62 certificate-profile rewrite) was adopted on 2023-04-22 and effective on 2023-09-15.The current 2.3.1 (2026-10-04) schedules compliance dates through 2029: from 2026-03-15 subscriber certificates may live at most 200 days, from 2027-03-15 at most 100 days, and from 2029-03-15 at most 47 days; domain/IP validation data reuse shrinks from 200 days to 100 and then 10 days."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        },
+        {
+          "id": "cabf-br-r139-broken",
+          "entryId": "cabf-br-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 基线不能替代运行安全\n\nBR 管证书签发与 profile，不管 CA 的内部网络、HSM 和人员；这些由 Network and Certificate System Security Requirements 与根程序要求覆盖。CA 泄露私钥或误签发仍可能造成中间人。### 域名验证与吊销\n\n域名控制验证只能证明申请时控制，不能阻止后续劫持；复用期和 CAA 降低风险但不消除。吊销依赖依赖方检查 OCSP/CRL，软失败和延迟仍是现实问题。### 生态争议\n\n有效期缩短、key scope、CT 强制等会增加 CA 和客户的运维成本；小 CA 或私有 PKI 可能被边缘化。BR 是多方投票产物，不是密码学最优解。",
+            "en": "### A baseline is not operational security\n\nThe BR governs certificate issuance and profiles, not a CA's internal network, HSMs and staff; those are covered by the Network and Certificate System Security Requirements and root-program rules.A leaked CA private key or misissuance can still enable interception."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        },
+        {
+          "id": "cabf-br-r139-history",
+          "entryId": "cabf-br-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 2011 基线，2023 profile 重写\n\nCA/Browser Forum 在 2000 年代中期由 CA 与浏览器厂商组成。2011-11-22 通过 v1.0，2012-07-01 生效；2023 年 SC62 把证书 profile 重写为 v2.0.0，2023-09-15 生效。2026 年的 2.3.1 继续缩短有效期和验证复用期。### 命名\n\n“Baseline” 不是“低标准”，而是所有公开信任 TLS 证书必须满足的地板；EV Guidelines 是在此之上叠加的更高身份验证要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：CA/Browser Forum TLS 基线要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "### Baseline in 2011, profile rewrite in 2023\n\nThe CA/Browser Forum formed in the mid-2000s from CAs and browser vendors.v1.0 was adopted on 2011-11-22 and took effect on 2012-07-01; SC62 rewrote the certificate profiles as v2.0.0 in 2023, effective 2023-09-15."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        },
+        {
+          "id": "cabf-br-r139-refs",
+          "entryId": "cabf-br-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CA/Browser Forum TLS 基线要求.https://zh.wikipedia.org/w/index.php?search=CA%2FBrowser%20Forum%20TLS%20%E5%9F%BA%E7%BA%BF%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for CA/Browser Forum TLS 基线要求.https://zh.wikipedia.org/w/index.php?search=CA%2FBrowser%20Forum%20TLS%20%E5%9F%BA%E7%BA%BF%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cabf-br-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cabf-br-wikipedia"
+      ]
+    },
+    {
+      "id": "cabf-br-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cabf-br-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cabf-br-r139-principle",
+      "entryId": "cabf-br-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：CA/Browser Forum TLS 基线要求（CA/Browser Forum TLS Baseline Requirements）。### 一个“基线 CP”，不是浏览器代码\n\nCA/Browser Forum 是 CA 与浏览器/软件厂商的自愿组织。TLS Baseline Requirements 用 RFC 3647 框架写公开信任 TLS 服务器证书的最低要求：身份验证、域名/IP 控制验证、证书 profile、有效期、审计、吊销与事件响应。它本身不自动强制；只有根程序采纳并写入合同/政策后才生效。### 证书 profile 的硬约束\n\nBR 第 7 节定义证书内容：serial 必须大于 0，且至少含 64 位 CSPRNG 输出；RSA 公钥至少 2048 位，或使用 P-256/P-384/P-521；禁止 SHA-1；终端实体证书必须带 CA/B 保留 policy OID（DV 2.23.140.1.2.1、OV 2.23.140.1.2.2、IV 2.23.140.1.2.3）。这些字段让依赖方判断证书类型和策略。",
+        "en": "**Standard**: CA/Browser Forum TLS Baseline Requirements (CA/Browser Forum TLS 基线要求).### A baseline CP, not browser code\n\nThe CA/Browser Forum is a voluntary organization of CAs and browser/software suppliers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    },
+    {
+      "id": "cabf-br-r139-why",
+      "entryId": "cabf-br-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么需要统一基线\n\n2011 年以前，各家 CA 的验证、有效期、字段和审计口径不一，导致误签发和浏览器信任差异。统一基线让根程序用同一套审计证据评估所有 CA，也让依赖方有可预测的最低安全线。### 为什么仍然不够\n\n基线是最低要求，不是完整安全证明；CA 被入侵、验证逻辑漏洞、域名劫持仍可能发生。根程序还会叠加自己的要求，例如 CT、CAA、多视角验证和吊销 SLA。",
+        "en": "### Why a common baseline\n\nBefore 2011, CAs differed in validation, validity, fields and audit scope, producing misissuance and inconsistent browser trust.A common baseline lets root programs evaluate every CA against the same audit evidence and gives relying parties a predictable minimum security line."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    },
+    {
+      "id": "cabf-br-r139-used",
+      "entryId": "cabf-br-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 版本与生效\n\nv1.0 于 2011-11-22 通过、2012-07-01 生效；v2.0.0（SC62 证书 profile 重写）于 2023-04-22 通过、2023-09-15 生效。当前 2.3.1（2026-10-04）已排到 2029 的合规日期：2026-03-15 起订阅者证书最长 200 天，2027-03-15 起 100 天，2029-03-15 起 47 天；域名/IP 验证数据复用期同步从 200 天缩到 100 天、再缩到 10 天。### 根程序执行\n\nMozilla、Microsoft、Apple、Chrome 等根程序要求 CA 符合 TLS BR 并通过 WebTrust/ETSI 审计；严重违规会导致不信任或移除。Microsoft 根计划还要求 DV/OV/EV/IV 的 policy OID、年度审计和 CCADB 披露。",
+        "en": "### Versions and effective dates\n\nv1.0 was adopted on 2011-11-22 and became effective on 2012-07-01; v2.0.0 (the SC62 certificate-profile rewrite) was adopted on 2023-04-22 and effective on 2023-09-15.The current 2.3.1 (2026-10-04) schedules compliance dates through 2029: from 2026-03-15 subscriber certificates may live at most 200 days, from 2027-03-15 at most 100 days, and from 2029-03-15 at most 47 days; domain/IP validation data reuse shrinks from 200 days to 100 and then 10 days."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    },
+    {
+      "id": "cabf-br-r139-broken",
+      "entryId": "cabf-br-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 基线不能替代运行安全\n\nBR 管证书签发与 profile，不管 CA 的内部网络、HSM 和人员；这些由 Network and Certificate System Security Requirements 与根程序要求覆盖。CA 泄露私钥或误签发仍可能造成中间人。### 域名验证与吊销\n\n域名控制验证只能证明申请时控制，不能阻止后续劫持；复用期和 CAA 降低风险但不消除。吊销依赖依赖方检查 OCSP/CRL，软失败和延迟仍是现实问题。### 生态争议\n\n有效期缩短、key scope、CT 强制等会增加 CA 和客户的运维成本；小 CA 或私有 PKI 可能被边缘化。BR 是多方投票产物，不是密码学最优解。",
+        "en": "### A baseline is not operational security\n\nThe BR governs certificate issuance and profiles, not a CA's internal network, HSMs and staff; those are covered by the Network and Certificate System Security Requirements and root-program rules.A leaked CA private key or misissuance can still enable interception."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    },
+    {
+      "id": "cabf-br-r139-history",
+      "entryId": "cabf-br-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 2011 基线，2023 profile 重写\n\nCA/Browser Forum 在 2000 年代中期由 CA 与浏览器厂商组成。2011-11-22 通过 v1.0，2012-07-01 生效；2023 年 SC62 把证书 profile 重写为 v2.0.0，2023-09-15 生效。2026 年的 2.3.1 继续缩短有效期和验证复用期。### 命名\n\n“Baseline” 不是“低标准”，而是所有公开信任 TLS 证书必须满足的地板；EV Guidelines 是在此之上叠加的更高身份验证要求。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：CA/Browser Forum TLS 基线要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "### Baseline in 2011, profile rewrite in 2023\n\nThe CA/Browser Forum formed in the mid-2000s from CAs and browser vendors.v1.0 was adopted on 2011-11-22 and took effect on 2012-07-01; SC62 rewrote the certificate profiles as v2.0.0 in 2023, effective 2023-09-15."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    },
+    {
+      "id": "cabf-br-r139-refs",
+      "entryId": "cabf-br-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CA/Browser Forum TLS 基线要求.https://zh.wikipedia.org/w/index.php?search=CA%2FBrowser%20Forum%20TLS%20%E5%9F%BA%E7%BA%BF%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for CA/Browser Forum TLS 基线要求.https://zh.wikipedia.org/w/index.php?search=CA%2FBrowser%20Forum%20TLS%20%E5%9F%BA%E7%BA%BF%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cabf-br-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

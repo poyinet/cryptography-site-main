@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "glitch-attack-details",
+  "sources": [
+    {
+      "id": "glitch-attack-wikipedia",
+      "title": "Wikipedia search entry for 毛刺攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%AF%9B%E5%88%BA%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 毛刺攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "glitch-attack-r139-principle",
+          "entryId": "glitch-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：毛刺攻击（Glitch Attack）。CRT-RSA 先把 \\(S_p=m^d\\bmod p\\)、\\(S_q=m^d\\bmod q\\) 分别计算，再用中国剩余定理合成 \\(S=S_q+q\\,(i_q(S_p-S_q)\\bmod p)\\)。若毛刺只打坏其中一个半模幂，例如 \\(\\hat S_p\\neq S_p\\)，合成签名 \\(\\hat S\\) 仍会输出，但它与正确签名 \\(S\\) 的差是 \\(q\\) 的倍数。于是 \\(\\gcd(N,S-\\hat S)=q\\)（或 \\(p\\)），一次故障就把 \\(N\\) 分解。即使没有正确签名，用 \\(\\gcd(N,\\hat S^e-m)=q\\) 也能分解，其中 \\(e\\) 是公钥指数。",
+            "en": "**Attack**: Glitch Attack (毛刺攻击).CRT-RSA first computes \\(S_p=m^d\\bmod p\\) and \\(S_q=m^d\\bmod q\\), then combines them by the Chinese remainder theorem: \\(S=S_q+q\\,(i_q(S_p-S_q)\\bmod p)\\)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "glitch-attack-r139-why",
+          "entryId": "glitch-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "毛刺攻击把“实现错误”变成“因子泄漏”：RSA 的数学安全性假设 \\(N\\) 难分解，但 CRT 实现只要一个半模幂出错，故障签名就泄露 \\(p\\) 或 \\(q\\)。这比穷举因式分解便宜得多，也不需要私钥；它利用的是计算过程的可观测错误，不是算法本身的数学漏洞。因此智能卡、TPM、安全元件把“签名输出前验签”和“冗余计算”当作必选项。",
+            "en": "A glitch turns an implementation error into a factor leak: RSA assumes \\(N\\) is hard to factor, but a CRT implementation with one bad half exponentiation leaks \\(p\\) or \\(q\\).This is far cheaper than trial factoring and needs no private key; it exploits an observable computation error, not a mathematical flaw in the algorithm."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "glitch-attack-r139-used",
+          "entryId": "glitch-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "典型步骤是：选定一条已知消息 \\(m\\)，让设备做 CRT-RSA 签名；在其中一个半模幂执行时注入时钟/电压毛刺，使寄存器或指令出错；收集错误签名 \\(\\hat S\\)，再与正确签名 \\(S\\) 或消息 \\(m\\) 计算 \\(\\gcd(N,S-\\hat S)\\) 或 \\(\\gcd(N,\\hat S^e-m)\\)。若得到 nontrivial 因子，就恢复 \\(p,q\\) 和私钥。实验上要定位毛刺窗口、保证只坏一个半模幂，并避免设备复位或输出被校验拦住。",
+            "en": "A typical run fixes a known message \\(m\\), asks the device for a CRT-RSA signature, injects a clock/voltage glitch during one half exponentiation to corrupt a register or skip an instruction, and collects the faulty \\(\\hat S\\).Then it computes \\(\\gcd(N,S-\\hat S)\\) or \\(\\gcd(N,\\hat S^e-m)\\)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "glitch-attack-r139-broken",
+          "entryId": "glitch-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界在于故障模型和计数器。若设备在输出前验证 \\(S^e\\equiv m\\pmod N\\)，一次错误签名会被拒绝；但毛刺也可能跳过这条验证，所以“有验签”不等于安全，验证本身要抗故障。冗余计算、感染式 countermeasure 和高阶故障模型能提高门槛，但不能证明对所有毛刺免疫。另一个边界是：必须拿到可用输出；如果故障导致崩溃、复位或恒定时间检查失败，攻击链就断了。该条目讲的是 CRT-RSA 的经典模型，不覆盖所有 RSA 实现或所有故障类型。",
+            "en": "Dates, counts and device parameters without a source are left blank; primary material outranks secondary summaries."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "glitch-attack-r139-history",
+          "entryId": "glitch-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Boneh、DeMillo 与 Lipton 在 1997 年把这类攻击系统化，Lenstra 随后给出只需一条错误签名和消息的变体；此后文献把 CRT-RSA 的故障模型称为 BellCoRe，并发展出验签、冗余和感染式 countermeasure。Rauzy 与 Guilley 在 2014 年把现有 countermeasure 统一分类，并讨论指令跳过故障。毛刺攻击因此成为安全元件认证中必须声明的攻击面，而不是实验室趣闻。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：毛刺攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "Boneh, DeMillo and Lipton systematized this attack in 1997; Lenstra then gave a variant needing only one faulty signature and the message.Later literature calls the CRT-RSA fault model BellCoRe and develops verification, redundancy and infective countermeasures."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "glitch-attack-r139-refs",
+          "entryId": "glitch-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 毛刺攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AF%9B%E5%88%BA%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 毛刺攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AF%9B%E5%88%BA%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "glitch-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "glitch-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "glitch-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "glitch-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "glitch-attack-r139-principle",
+      "entryId": "glitch-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：毛刺攻击（Glitch Attack）。CRT-RSA 先把 \\(S_p=m^d\\bmod p\\)、\\(S_q=m^d\\bmod q\\) 分别计算，再用中国剩余定理合成 \\(S=S_q+q\\,(i_q(S_p-S_q)\\bmod p)\\)。若毛刺只打坏其中一个半模幂，例如 \\(\\hat S_p\\neq S_p\\)，合成签名 \\(\\hat S\\) 仍会输出，但它与正确签名 \\(S\\) 的差是 \\(q\\) 的倍数。于是 \\(\\gcd(N,S-\\hat S)=q\\)（或 \\(p\\)），一次故障就把 \\(N\\) 分解。即使没有正确签名，用 \\(\\gcd(N,\\hat S^e-m)=q\\) 也能分解，其中 \\(e\\) 是公钥指数。",
+        "en": "**Attack**: Glitch Attack (毛刺攻击).CRT-RSA first computes \\(S_p=m^d\\bmod p\\) and \\(S_q=m^d\\bmod q\\), then combines them by the Chinese remainder theorem: \\(S=S_q+q\\,(i_q(S_p-S_q)\\bmod p)\\)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "glitch-attack-r139-why",
+      "entryId": "glitch-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "毛刺攻击把“实现错误”变成“因子泄漏”：RSA 的数学安全性假设 \\(N\\) 难分解，但 CRT 实现只要一个半模幂出错，故障签名就泄露 \\(p\\) 或 \\(q\\)。这比穷举因式分解便宜得多，也不需要私钥；它利用的是计算过程的可观测错误，不是算法本身的数学漏洞。因此智能卡、TPM、安全元件把“签名输出前验签”和“冗余计算”当作必选项。",
+        "en": "A glitch turns an implementation error into a factor leak: RSA assumes \\(N\\) is hard to factor, but a CRT implementation with one bad half exponentiation leaks \\(p\\) or \\(q\\).This is far cheaper than trial factoring and needs no private key; it exploits an observable computation error, not a mathematical flaw in the algorithm."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "glitch-attack-r139-used",
+      "entryId": "glitch-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "典型步骤是：选定一条已知消息 \\(m\\)，让设备做 CRT-RSA 签名；在其中一个半模幂执行时注入时钟/电压毛刺，使寄存器或指令出错；收集错误签名 \\(\\hat S\\)，再与正确签名 \\(S\\) 或消息 \\(m\\) 计算 \\(\\gcd(N,S-\\hat S)\\) 或 \\(\\gcd(N,\\hat S^e-m)\\)。若得到 nontrivial 因子，就恢复 \\(p,q\\) 和私钥。实验上要定位毛刺窗口、保证只坏一个半模幂，并避免设备复位或输出被校验拦住。",
+        "en": "A typical run fixes a known message \\(m\\), asks the device for a CRT-RSA signature, injects a clock/voltage glitch during one half exponentiation to corrupt a register or skip an instruction, and collects the faulty \\(\\hat S\\).Then it computes \\(\\gcd(N,S-\\hat S)\\) or \\(\\gcd(N,\\hat S^e-m)\\)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "glitch-attack-r139-broken",
+      "entryId": "glitch-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界在于故障模型和计数器。若设备在输出前验证 \\(S^e\\equiv m\\pmod N\\)，一次错误签名会被拒绝；但毛刺也可能跳过这条验证，所以“有验签”不等于安全，验证本身要抗故障。冗余计算、感染式 countermeasure 和高阶故障模型能提高门槛，但不能证明对所有毛刺免疫。另一个边界是：必须拿到可用输出；如果故障导致崩溃、复位或恒定时间检查失败，攻击链就断了。该条目讲的是 CRT-RSA 的经典模型，不覆盖所有 RSA 实现或所有故障类型。",
+        "en": "Dates, counts and device parameters without a source are left blank; primary material outranks secondary summaries."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "glitch-attack-r139-history",
+      "entryId": "glitch-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Boneh、DeMillo 与 Lipton 在 1997 年把这类攻击系统化，Lenstra 随后给出只需一条错误签名和消息的变体；此后文献把 CRT-RSA 的故障模型称为 BellCoRe，并发展出验签、冗余和感染式 countermeasure。Rauzy 与 Guilley 在 2014 年把现有 countermeasure 统一分类，并讨论指令跳过故障。毛刺攻击因此成为安全元件认证中必须声明的攻击面，而不是实验室趣闻。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：毛刺攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "Boneh, DeMillo and Lipton systematized this attack in 1997; Lenstra then gave a variant needing only one faulty signature and the message.Later literature calls the CRT-RSA fault model BellCoRe and develops verification, redundancy and infective countermeasures."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "glitch-attack-r139-refs",
+      "entryId": "glitch-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 毛刺攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AF%9B%E5%88%BA%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 毛刺攻击.https://zh.wikipedia.org/w/index.php?search=%E6%AF%9B%E5%88%BA%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "glitch-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

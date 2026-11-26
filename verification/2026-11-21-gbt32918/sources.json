@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt32918-details",
+  "sources": [
+    {
+      "id": "gbt32918-wikipedia",
+      "title": "Wikipedia search entry for SM2 公钥密码算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SM2%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SM2 公钥密码算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt32918-r139-principle",
+          "entryId": "gbt32918-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：SM2 公钥密码算法（SM2 Public Key Cryptography Algorithm）。### 曲线与密钥\n\nSM2 在 256 位素数域椭圆曲线上实现签名、加密和密钥交换，签名把 SM3、用户 ID 与曲线参数绑定。基点 G 的阶为 n，私钥 d 在 [1, n−1]，公钥 P = [d]G。标准分五部分：总则、数字签名、密钥交换、公钥加密、参数定义。### 签名\n\n签名先计算 ZA = SM3(ENTL||ID||a||b||xG||yG||xA||yA)，再计算 e = SM3(ZA||M)。选随机 k，计算 (x1,y1) = [k]G，r = (e+x1) mod n；若 r = 0 或 r+k = n 重选。s = ((1+d)^−1)(k−r d) mod n。验证计算 t = (r+s) mod n、[s]G+[t]P，再用 x1 恢复 R 并比较 r。### 加密与密钥交换\n\n加密用接收方公钥：C1 = [k]G，共享点 [k]P = (x2,y2)，t = KDF(x2||y2,klen)，C2 = M⊕t，C3 = SM3(x2||M||y2)，密文为 C1||C3||C2。密钥交换用双方私钥与对方公钥计算共享点，再把 xA||yA||ZA||ZB 等输入 KDF 导出会话密钥。",
+            "en": "**Standard**: SM2 Public Key Cryptography Algorithm (SM2 公钥密码算法).### Curve and keys\n\nSM2 implements signatures, encryption and key exchange over a 256-bit prime-field elliptic curve; signing binds SM3, the user ID and the curve parameters."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32918-r139-why",
+          "entryId": "gbt32918-details",
+          "section": "why",
+          "statement": {
+            "zh": "SM2 是中国商用密码体系的公钥底座。它用一条 256 位曲线同时承载签名、加密和密钥交换，并用 SM3 把用户身份、曲线参数和消息绑定进签名，形成可互操作的国密公钥基础设施。与 RSA 相比，SM2 的密钥和签名更短，签名速度更快；代价是曲线参数、用户 ID 和随机数 k 的管理更复杂。它的价值不是“替代某一个算法”，而是把证书、电子签章、TLCP 和金融终端拉到同一套公钥标准上。",
+            "en": "SM2 is the public-key base of China’s commercial cryptography system.One 256-bit curve carries signatures, encryption and key exchange, and SM3 binds the user identity, curve parameters and message into the signature, creating an interoperable national public-key infrastructure."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32918-r139-used",
+          "entryId": "gbt32918-details",
+          "section": "used",
+          "statement": {
+            "zh": "SM2 签名用于证书、电子签章、代码签名、身份认证和区块链；SM2 加密用于会话密钥封装和敏感数据加密；SM2 密钥交换用于 TLCP、VPN、政务专网。TLCP 采用双证书：签名证书证明身份，加密证书参与密钥交换。工程要点：签名和验签必须使用相同的用户 ID 与曲线参数；不要把 SM2 签名直接当 ECDSA 的 DER 签名使用；私钥应存放在密码模块/智能卡中，随机数 k 必须每次新鲜。",
+            "en": "SM2 signatures are used in certificates, electronic seals, code signing, identity authentication and blockchains; SM2 encryption wraps session keys and protects sensitive data; SM2 key exchange serves TLCP, VPNs and government networks.TLCP uses dual certificates: a signing certificate proves identity and an encryption certificate participates in key exchange."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32918-r139-broken",
+          "entryId": "gbt32918-details",
+          "section": "broken",
+          "statement": {
+            "zh": "SM2 的安全性依赖椭圆曲线离散对数、SM3 和随机数 k。k 重用、偏置或故障注入会泄露私钥；曲线参数替换、无效点攻击、侧信道和错误处理也是现实风险。",
+            "en": "SM2 security rests on the elliptic-curve discrete logarithm, SM3 and the random k.Reused, biased or fault-injected k can leak the private key; curve-parameter substitution, invalid-point attacks, side channels and error handling are also real risks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32918-r139-history",
+          "entryId": "gbt32918-details",
+          "section": "history",
+          "statement": {
+            "zh": "SM2 由国家密码管理局组织制定，2010 年 12 月公开发布；2012 年发布 GM/T 0003 系列行业标准；2016 年 8 月发布 GB/T 32918 系列国家标准，2017 年 3 月实施，2017 年 5 月发布参数定义部分。2018 年 11 月，SM2 数字签名进入 ISO/IEC 14888-3:2018。它的历史意义不只是“国产 ECC”，而是把签名、加密、密钥交换和曲线参数放进同一套标准，形成可互操作的商用密码公钥体系。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM2 公钥密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "OSCCA published SM2 in December 2010, issued the GM/T 0003 series in 2012, and published the GB/T 32918 series in August 2016, effective March 2017; the parameter-definition part followed in May 2017.In November 2018, the SM2 signature mechanism entered ISO/IEC 14888-3:2018."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt32918-r139-refs",
+          "entryId": "gbt32918-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SM2 公钥密码算法.https://zh.wikipedia.org/w/index.php?search=SM2%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SM2 公钥密码算法.https://zh.wikipedia.org/w/index.php?search=SM2%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt32918-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt32918-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt32918-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt32918-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt32918-r139-principle",
+      "entryId": "gbt32918-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：SM2 公钥密码算法（SM2 Public Key Cryptography Algorithm）。### 曲线与密钥\n\nSM2 在 256 位素数域椭圆曲线上实现签名、加密和密钥交换，签名把 SM3、用户 ID 与曲线参数绑定。基点 G 的阶为 n，私钥 d 在 [1, n−1]，公钥 P = [d]G。标准分五部分：总则、数字签名、密钥交换、公钥加密、参数定义。### 签名\n\n签名先计算 ZA = SM3(ENTL||ID||a||b||xG||yG||xA||yA)，再计算 e = SM3(ZA||M)。选随机 k，计算 (x1,y1) = [k]G，r = (e+x1) mod n；若 r = 0 或 r+k = n 重选。s = ((1+d)^−1)(k−r d) mod n。验证计算 t = (r+s) mod n、[s]G+[t]P，再用 x1 恢复 R 并比较 r。### 加密与密钥交换\n\n加密用接收方公钥：C1 = [k]G，共享点 [k]P = (x2,y2)，t = KDF(x2||y2,klen)，C2 = M⊕t，C3 = SM3(x2||M||y2)，密文为 C1||C3||C2。密钥交换用双方私钥与对方公钥计算共享点，再把 xA||yA||ZA||ZB 等输入 KDF 导出会话密钥。",
+        "en": "**Standard**: SM2 Public Key Cryptography Algorithm (SM2 公钥密码算法).### Curve and keys\n\nSM2 implements signatures, encryption and key exchange over a 256-bit prime-field elliptic curve; signing binds SM3, the user ID and the curve parameters."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32918-r139-why",
+      "entryId": "gbt32918-details",
+      "section": "why",
+      "statement": {
+        "zh": "SM2 是中国商用密码体系的公钥底座。它用一条 256 位曲线同时承载签名、加密和密钥交换，并用 SM3 把用户身份、曲线参数和消息绑定进签名，形成可互操作的国密公钥基础设施。与 RSA 相比，SM2 的密钥和签名更短，签名速度更快；代价是曲线参数、用户 ID 和随机数 k 的管理更复杂。它的价值不是“替代某一个算法”，而是把证书、电子签章、TLCP 和金融终端拉到同一套公钥标准上。",
+        "en": "SM2 is the public-key base of China’s commercial cryptography system.One 256-bit curve carries signatures, encryption and key exchange, and SM3 binds the user identity, curve parameters and message into the signature, creating an interoperable national public-key infrastructure."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32918-r139-used",
+      "entryId": "gbt32918-details",
+      "section": "used",
+      "statement": {
+        "zh": "SM2 签名用于证书、电子签章、代码签名、身份认证和区块链；SM2 加密用于会话密钥封装和敏感数据加密；SM2 密钥交换用于 TLCP、VPN、政务专网。TLCP 采用双证书：签名证书证明身份，加密证书参与密钥交换。工程要点：签名和验签必须使用相同的用户 ID 与曲线参数；不要把 SM2 签名直接当 ECDSA 的 DER 签名使用；私钥应存放在密码模块/智能卡中，随机数 k 必须每次新鲜。",
+        "en": "SM2 signatures are used in certificates, electronic seals, code signing, identity authentication and blockchains; SM2 encryption wraps session keys and protects sensitive data; SM2 key exchange serves TLCP, VPNs and government networks.TLCP uses dual certificates: a signing certificate proves identity and an encryption certificate participates in key exchange."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32918-r139-broken",
+      "entryId": "gbt32918-details",
+      "section": "broken",
+      "statement": {
+        "zh": "SM2 的安全性依赖椭圆曲线离散对数、SM3 和随机数 k。k 重用、偏置或故障注入会泄露私钥；曲线参数替换、无效点攻击、侧信道和错误处理也是现实风险。",
+        "en": "SM2 security rests on the elliptic-curve discrete logarithm, SM3 and the random k.Reused, biased or fault-injected k can leak the private key; curve-parameter substitution, invalid-point attacks, side channels and error handling are also real risks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32918-r139-history",
+      "entryId": "gbt32918-details",
+      "section": "history",
+      "statement": {
+        "zh": "SM2 由国家密码管理局组织制定，2010 年 12 月公开发布；2012 年发布 GM/T 0003 系列行业标准；2016 年 8 月发布 GB/T 32918 系列国家标准，2017 年 3 月实施，2017 年 5 月发布参数定义部分。2018 年 11 月，SM2 数字签名进入 ISO/IEC 14888-3:2018。它的历史意义不只是“国产 ECC”，而是把签名、加密、密钥交换和曲线参数放进同一套标准，形成可互操作的商用密码公钥体系。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM2 公钥密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "OSCCA published SM2 in December 2010, issued the GM/T 0003 series in 2012, and published the GB/T 32918 series in August 2016, effective March 2017; the parameter-definition part followed in May 2017.In November 2018, the SM2 signature mechanism entered ISO/IEC 14888-3:2018."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt32918-r139-refs",
+      "entryId": "gbt32918-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SM2 公钥密码算法.https://zh.wikipedia.org/w/index.php?search=SM2%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SM2 公钥密码算法.https://zh.wikipedia.org/w/index.php?search=SM2%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt32918-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

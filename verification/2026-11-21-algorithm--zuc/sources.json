@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--zuc-details",
+  "sources": [
+    {
+      "id": "algorithm--zuc-wikipedia",
+      "title": "Wikipedia search entry for ZUC 祖冲之流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%A5%96%E5%86%B2%E4%B9%8B%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ZUC 祖冲之流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--zuc-r139-principle",
+          "entryId": "algorithm--zuc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ZUC 祖冲之流密码（ZUC）。### 三层结构\n\nZUC 是 128 位密钥/IV 的面向字流密码，由 16 级 31 位 LFSR、比特重组和非线性函数 F 产生 32 位密钥字；初始化 32 拍不输出，工作阶段每拍输出一个字。LFSR 单元取值限制在 1…2^31−1；Bit Reorganization 从 LFSR 抽取 128 位组成 4 个 32 位字；F 用两个 32 位记忆单元 R1/R2、S 盒 S0/S1 和线性变换 L1/L2 产生输出。### 初始化与工作\n\n密钥装入把 128 位 key/IV 扩展成 16 个 31 位状态；初始化阶段运行 32 拍，把 F 的输出反馈进 LFSR，不产生密钥流；工作阶段每拍产生一个 32 位字，同时更新 LFSR。### 长度与版本\n\nZUC-128 用于 LTE 的 128-EEA3/128-EIA3；ZUC-256 为 5G 提供 256 位密钥，IV 可达 184 位，初始化与 MAC 生成阶段与 ZUC-128 不同。",
+            "en": "**Algorithm**: ZUC (ZUC 祖冲之流密码).### Three layers\n\nZUC is a word-oriented stream cipher: a 128-bit key, a 128-bit IV and 32-bit keystream words."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--zuc-r139-why",
+          "entryId": "algorithm--zuc-details",
+          "section": "why",
+          "statement": {
+            "zh": "ZUC 是中国自主设计并进入 3GPP LTE 的流密码，同时提供 128-EEA3 机密性和 128-EIA3 完整性保护。它是少数由中国团队设计、被国际移动通信标准采用的密码算法。流密码不需要分组填充，适合按帧、按比特流加密的无线链路；LFSR 加非线性 F 的结构在硬件上面积小、吞吐高，适合基带芯片。",
+            "en": "ZUC is a stream cipher designed in China and adopted by 3GPP LTE, providing both 128-EEA3 confidentiality and 128-EIA3 integrity.It is one of the few Chinese-designed algorithms adopted by an international mobile standard."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--zuc-r139-used",
+          "entryId": "algorithm--zuc-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于 LTE/5G 空口加密和完整性保护；3GPP 128-EEA3/128-EIA3 以 ZUC 为核心，5G 的 256-NEA3/256-NIA3 使用 ZUC-256。也可用于其他需要 128/256 位密钥的流式加密场景。工程要点：每个密钥/IV 组合只能产生有限长度的密钥流；IV 必须唯一；MAC 要与加密上下文绑定；不要把 ZUC 直接当通用哈希或认证码，完整性算法要按 128-EIA3 的 MAC 流程实现。",
+            "en": "It protects LTE/5G air-interface confidentiality and integrity: 3GPP 128-EEA3/128-EIA3 are built on ZUC, and 5G 256-NEA3/256-NIA3 use ZUC-256.It can also serve other streaming settings that need 128/256-bit keys."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--zuc-r139-broken",
+          "entryId": "algorithm--zuc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "ZUC 1.4 的初始化不是单射，2010–2011 年的差分分析可让不同 IV 产生相同密钥流，直接导致密钥恢复；这促成 ZUC 1.5/1.6 的修改。最终版 ZUC-128 没有公开的实用全轮攻击，但侧信道、IV 复用、密钥流长度超限仍是现实风险。",
+            "en": "ZUC 1.4’s initialization was not injective: differential analysis in 2010–2011 could make different IVs produce identical keystreams and recover keys, which led to ZUC 1.5/1.6.Final ZUC-128 has no publicly practical full-round attack, but side channels, IV reuse and over-long keystreams remain real risks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--zuc-r139-history",
+          "entryId": "algorithm--zuc-details",
+          "section": "history",
+          "statement": {
+            "zh": "ZUC 由中国科学院数据与通信保护研究教育中心设计，2010 年 7 月公开 ZUC 1.4 供评估；2011 年 1 月修订为 1.5，6 月发布 1.6；2011 年 9 月被 3GPP 采纳为 LTE 的 128-EEA3/128-EIA3 核心。2012 年发布 GM/T 0001 系列，2016 年 10 月发布 GB/T 33133.1-2016，2017 年 5 月实施；2020 年进入 ISO/IEC 18033-4 Amendment 1。ZUC-256 在 2018 年提出，用于 5G 256 位套件。它的命名来自南北朝数学家祖冲之，标准文本把算法、机密性算法和完整性算法分成三个部分。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ZUC 祖冲之流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "ZUC was designed by the Chinese Academy of Sciences’ Data Assurance and Communication Security Research Center.ZUC 1.4 was published for evaluation in July 2010; 1.5 followed in January 2011 and 1.6 in June 2011; 3GPP adopted it for LTE 128-EEA3/128-EIA3 in September 2011."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--zuc-r139-refs",
+          "entryId": "algorithm--zuc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ZUC 祖冲之流密码.https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%A5%96%E5%86%B2%E4%B9%8B%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ZUC 祖冲之流密码.https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%A5%96%E5%86%B2%E4%B9%8B%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--zuc-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--zuc-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--zuc-r139-principle",
+      "entryId": "algorithm--zuc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ZUC 祖冲之流密码（ZUC）。### 三层结构\n\nZUC 是 128 位密钥/IV 的面向字流密码，由 16 级 31 位 LFSR、比特重组和非线性函数 F 产生 32 位密钥字；初始化 32 拍不输出，工作阶段每拍输出一个字。LFSR 单元取值限制在 1…2^31−1；Bit Reorganization 从 LFSR 抽取 128 位组成 4 个 32 位字；F 用两个 32 位记忆单元 R1/R2、S 盒 S0/S1 和线性变换 L1/L2 产生输出。### 初始化与工作\n\n密钥装入把 128 位 key/IV 扩展成 16 个 31 位状态；初始化阶段运行 32 拍，把 F 的输出反馈进 LFSR，不产生密钥流；工作阶段每拍产生一个 32 位字，同时更新 LFSR。### 长度与版本\n\nZUC-128 用于 LTE 的 128-EEA3/128-EIA3；ZUC-256 为 5G 提供 256 位密钥，IV 可达 184 位，初始化与 MAC 生成阶段与 ZUC-128 不同。",
+        "en": "**Algorithm**: ZUC (ZUC 祖冲之流密码).### Three layers\n\nZUC is a word-oriented stream cipher: a 128-bit key, a 128-bit IV and 32-bit keystream words."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-r139-why",
+      "entryId": "algorithm--zuc-details",
+      "section": "why",
+      "statement": {
+        "zh": "ZUC 是中国自主设计并进入 3GPP LTE 的流密码，同时提供 128-EEA3 机密性和 128-EIA3 完整性保护。它是少数由中国团队设计、被国际移动通信标准采用的密码算法。流密码不需要分组填充，适合按帧、按比特流加密的无线链路；LFSR 加非线性 F 的结构在硬件上面积小、吞吐高，适合基带芯片。",
+        "en": "ZUC is a stream cipher designed in China and adopted by 3GPP LTE, providing both 128-EEA3 confidentiality and 128-EIA3 integrity.It is one of the few Chinese-designed algorithms adopted by an international mobile standard."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-r139-used",
+      "entryId": "algorithm--zuc-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于 LTE/5G 空口加密和完整性保护；3GPP 128-EEA3/128-EIA3 以 ZUC 为核心，5G 的 256-NEA3/256-NIA3 使用 ZUC-256。也可用于其他需要 128/256 位密钥的流式加密场景。工程要点：每个密钥/IV 组合只能产生有限长度的密钥流；IV 必须唯一；MAC 要与加密上下文绑定；不要把 ZUC 直接当通用哈希或认证码，完整性算法要按 128-EIA3 的 MAC 流程实现。",
+        "en": "It protects LTE/5G air-interface confidentiality and integrity: 3GPP 128-EEA3/128-EIA3 are built on ZUC, and 5G 256-NEA3/256-NIA3 use ZUC-256.It can also serve other streaming settings that need 128/256-bit keys."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-r139-broken",
+      "entryId": "algorithm--zuc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "ZUC 1.4 的初始化不是单射，2010–2011 年的差分分析可让不同 IV 产生相同密钥流，直接导致密钥恢复；这促成 ZUC 1.5/1.6 的修改。最终版 ZUC-128 没有公开的实用全轮攻击，但侧信道、IV 复用、密钥流长度超限仍是现实风险。",
+        "en": "ZUC 1.4’s initialization was not injective: differential analysis in 2010–2011 could make different IVs produce identical keystreams and recover keys, which led to ZUC 1.5/1.6.Final ZUC-128 has no publicly practical full-round attack, but side channels, IV reuse and over-long keystreams remain real risks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-r139-history",
+      "entryId": "algorithm--zuc-details",
+      "section": "history",
+      "statement": {
+        "zh": "ZUC 由中国科学院数据与通信保护研究教育中心设计，2010 年 7 月公开 ZUC 1.4 供评估；2011 年 1 月修订为 1.5，6 月发布 1.6；2011 年 9 月被 3GPP 采纳为 LTE 的 128-EEA3/128-EIA3 核心。2012 年发布 GM/T 0001 系列，2016 年 10 月发布 GB/T 33133.1-2016，2017 年 5 月实施；2020 年进入 ISO/IEC 18033-4 Amendment 1。ZUC-256 在 2018 年提出，用于 5G 256 位套件。它的命名来自南北朝数学家祖冲之，标准文本把算法、机密性算法和完整性算法分成三个部分。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ZUC 祖冲之流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "ZUC was designed by the Chinese Academy of Sciences’ Data Assurance and Communication Security Research Center.ZUC 1.4 was published for evaluation in July 2010; 1.5 followed in January 2011 and 1.6 in June 2011; 3GPP adopted it for LTE 128-EEA3/128-EIA3 in September 2011."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--zuc-r139-refs",
+      "entryId": "algorithm--zuc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ZUC 祖冲之流密码.https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%A5%96%E5%86%B2%E4%B9%8B%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ZUC 祖冲之流密码.https://zh.wikipedia.org/w/index.php?search=ZUC%20%E7%A5%96%E5%86%B2%E4%B9%8B%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--zuc-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

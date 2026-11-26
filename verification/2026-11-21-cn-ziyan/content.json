@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R125 formula-level deepening for cn-ziyan-details.",
+  "entries": [
+    {
+      "id": "cn-ziyan-details",
+      "inventoryIds": [
+        "cn-ziyan"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出字验的约 40 条军务/40 字诗码本、f:I→C 一一映射、5.32 bit 上界、书信藏字与印记用法，以及码本泄露、重字、印记可见与表目不足的边界。",
+        "en": "This entry gives the Zi Yan codebook of about forty orders and forty poem characters, the f:I→C bijection, the 5.32-bit bound, hidden marked characters in a letter, and failure boundaries: codebook leak, repeated characters, visible marks and table limits."
+      },
+      "title": {
+        "zh": "字验",
+        "en": "Zi Yan (Character Verification)"
+      },
+      "claimIds": [
+        "cn-ziyan-r139-principle",
+        "cn-ziyan-r139-why",
+        "cn-ziyan-r139-used",
+        "cn-ziyan-r139-broken",
+        "cn-ziyan-r139-history",
+        "cn-ziyan-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出符号公式、码本模型、参数与失效边界，不含逐步数值算例；原文释义、历史统计与版本差异以所引来源为准。",
+        "en": "This entry gives symbolic formulas, a codebook model, parameters and failure boundaries, not a step-by-step numeric example; textual interpretation, historical counts and version differences follow the cited sources."
+      },
+      "sourceIds": [
+        "cn-ziyan-wikipedia",
+        "cn-ziyan-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-ziyan-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "字验：一首四十字诗提供四十个位置，约四十条军务各配一字；书信中藏字加印，收方按诗查表。",
+            "en": "Zi Yan: a forty-character poem supplies forty positions, about forty orders map to characters, and a marked character in a letter is resolved by the poem and table."
+          },
+          "alt": {
+            "zh": "四步公式级机制：选定四十字诗 → 军务逐条配字 → 书信中藏字加印 → 按诗定位查表；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: choose a 40-character poem → map each order to a character → hide marked characters in a letter → locate by poem and look up; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/cn-ziyan-mechanism.zh.svg",
+            "en": "assets/cn-ziyan-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引《六韬》《武经总要》、党史文献绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited Liu Tao, Wujing Zongyao and Party-history sources)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "eac6440091ed331e0fa32cdffc24a2188ce1e71b0ec35a47b3377a5f3ae47dfe",
+            "en": "c4bc9b46725f02898ddfd68669ccc9ba577a23ee606ef5b2dc628db3dfa80328"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：字验（Zi Yan (Character Verification)）。### 诗与表\n\n《武经总要》前集卷十五记载：军中之事约四十余条，以一字为暗号；出征前以一首四十字旧诗，不得有重复字，每字依次配一条军务，主将与将领各收一本。若把军务集记为 I、诗字集记为 C，则映射 f:I→C 在表内是一一对应；发信时 encode(m)=π(i)，收信时 decode(c)=π⁻¹(c)。### 藏于书信\n\n发信人不必把军务写成明文，只需在一封普通书信中写入对应的字，并在字旁加印记；收信人按诗找到第几位，再查军务表。诗提供 40 个位置，每个位置约承载 log2 40≈5.32 bit 上界；普通书信则提供掩护文本。",
+          "why": "字验把“密码本”拆成两层：诗负责位置索引，军务表负责语义。它不需要复杂计算，却要求两本共享码本完全同步；这说明古典密码的安全性可以来自码本管理，而不是算法复杂度。字验与阴符都用预置码本，但阴符只发一个长度符号，字验可在一封信中组合多个字位；字验与反切码都用“表”，但反切码编码的是字音，字验编码的是军务条目。",
+          "used": "1.选定一首 40 字、无重字的诗，抄成两份。2.把约 40 条军务逐条配到诗字，形成军务表。3.发信时在普通书信中写入对应字并加约定印记。4.收信人按诗定位字位，再查表恢复命令。5.回信可用同一套诗与表，或用空印表示不允。### 不能怎么用\n\n不能用它发送表外长文本；不能忽略诗字重复造成的歧义；不能把印记当成加密；不能在两本码本不一致时强行解读。",
+          "broken": "1.诗或表泄露：两本码本任一被缴获，字验即被读出。2.诗中重字：同一字对应多个位置，收信人无法唯一解码。3.印记明显：敌人可识别“哪个字被标记”，再据诗缩小含义。4.表目不足：约 40 条军务之外无法表达。5.本子不同步：主将与将领使用不同诗或不同配表，命令误读。",
+          "history": "《武经总要》为北宋曾公亮等编纂，通常记为 1044 年成书；卷十五“字验”是现存较早的“诗歌码本+军务表”文本。后世叙述常以《春望》为例，把第 21 字“烽”配“贼多”、第 14 字“溅”配“请添兵”，说明操作方法；这类故事属于二手叙述，不应当作已证实的一次实战档案。\n\n**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是隐写与信息隐藏中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 字验；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。\n\n不要把“发生过”写成“已证明”，也不要把事件标题扩写成机制结论；没有日期的节点只作逻辑位置。\n\n**同名概念的分界**\n\n字验只对自身登记对象负责。与相邻条目的名称可能重叠，该条目不把别条的事实并入，也不用一个版本来覆盖另一个版本。\n\n遇到同名对象时先查三项：类型（人物/事件/器物/术语）、时间、来源机构；三项不能同时对上，就当作不同条目处理。\n\n**来源等级与未核项**\n\n该条目来源账本包括：Wikipedia search entry for 字验（Tier 3）；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）（Tier 2）。\n\nTier 1/2 只说明来源类型，不等于每条断言都逐页核过；正文中没有来源支持的日期、数量、角色和参数保持空白。二手概述与一手材料冲突时，以一手材料为准；争议不静默覆盖，保留在边界节。",
+          "refs": "- Wikipedia search entry for 字验. https://zh.wikipedia.org/w/index.php?search=%E5%AD%97%E9%AA%8C\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Zi Yan (Character Verification). It is registered under steganography. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in steganography, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Ancient Origins. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 字验. https://zh.wikipedia.org/w/index.php?search=%E5%AD%97%E9%AA%8C\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "sources": [
+        "cn-ziyan-wikipedia",
+        "cn-ziyan-reference-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

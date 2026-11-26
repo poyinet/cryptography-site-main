@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "scrypt-details",
+  "sources": [
+    {
+      "id": "scrypt-wikipedia",
+      "title": "Wikipedia search entry for scrypt 内存硬口令派生",
+      "url": "https://zh.wikipedia.org/w/index.php?search=scrypt%20%E5%86%85%E5%AD%98%E7%A1%AC%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: scrypt 内存硬口令派生",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "scrypt-r139-principle",
+          "entryId": "scrypt-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：scrypt 内存硬口令派生（scrypt）。scrypt 干的事和 PBKDF2 一样：**把口令变成密钥**。区别在于它逼你**先占一大块内存**。三步（RFC 7914 第 6 节）：\n\n```\n1.B[0..p-1] = PBKDF2-HMAC-SHA256(P, S, 1, p * 128 * r)\n2.for i = 0..p-1:  B[i] = scryptROMix(r, B[i], N)\n3.DK = PBKDF2-HMAC-SHA256(P, B[0] || ...|| B[p-1], 1, dkLen)\n```\n\n**scryptROMix** 是核心，两轮循环：\n\n- **填表**：X = B；重复 N 次，每次把 X 存进 `V[i]`，再令 X = scryptBlockMix(X)。于是内存里躺着 N 份状态。- **乱跳**：重复 N 次，`j = Integerify(X) mod N`，然后 `X = scryptBlockMix(X xor V[j])`。**j 是由数据决定的**——攻击者必须真的把那块内存读出来才能继续。**scryptBlockMix** 是 Salsa20/8 核（64 字节输入输出，8 轮 Salsa20）加上一次「偶数位在前、奇数位在后」的交错重排，把 2r 个 64 字节块重组成 r 个 128 字节块。- **N**（必须是大于 1 的 2 的幂）：**同时决定时间和内存**。内存占用恰好是 `128 × N × r` 字节。- **r**（块大小）：主要影响内存布局。",
+            "en": "**Algorithm**: scrypt (scrypt 内存硬口令派生).scrypt does what PBKDF2 does — turn a passphrase into a key — but it makes you **occupy a large block of memory first**."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        },
+        {
+          "id": "scrypt-r139-why",
+          "entryId": "scrypt-details",
+          "section": "why",
+          "statement": {
+            "zh": "**scrypt 存在的理由只有一句话：GPU 和 ASIC 变便宜的速度，远远快过内存变便宜的速度。**\n\nRFC 7914 第 1 节把这件事讲得非常直白。传统的口令派生（DES crypt、MD5 crypt、SHA-crypt、PBKDF2、bcrypt）都是「迭代 + 加盐」。这类方案的迭代次数可以跟着硬件一起涨：只要把 c 调大，**用户**每次登录的计算时间就保持恒定，**看起来**没吃亏。但这只是账面上的平局。真正的问题是：暴力搜索口令这件事**天生是完美并行的**。你的服务器一次算一个口令，攻击者的 GPU 同时算几万个。迭代次数涨 10 倍，攻击者的时钟也慢 10 倍——可他手里的芯片数量没变。于是「按美元算的算力」这个真正的度量单位，一直在往攻击者那边倾斜。半导体技术的进步让电路不只更快，还更小，于是同样的钱能买到更多并行度。**每年都在恶化。**\n\nscrypt 的对策不是「再迭代多几次」，而是**把战场从算力挪到内存带宽**。这招很聪明，因为：\n\n- 显卡的核心之间**不共享高速缓存**。每增加一个并行实例，就得独立拥有一大块内存。GPU 的成本结构（海量大算力、小缓存）被彻底打乱。- 专用 ASIC 造出来之后，从「算力瓶颈」变成「内存带宽瓶颈」。而**内存带宽是比算力更贵、更难堆的东西**。RFC 7914 还给了一个很实际的观察：SMix 的各个实例互相独立，所以**可以靠加大 p 来提高计算成本而不增加内存占用**——将来 CPU 算力和内存容量增长速率不一致时，scrypt 依然能调得动。",
+            "en": "**scrypt exists for one reason: GPUs and ASICs get cheaper much faster than memory does.**\n\nSection 1 of RFC 7914 says this bluntly.Every classic password KDF — DES crypt, MD5 crypt, SHA-crypt, PBKDF2, bcrypt — is \"iterate plus salt\"."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        },
+        {
+          "id": "scrypt-r139-used",
+          "entryId": "scrypt-details",
+          "section": "used",
+          "statement": {
+            "zh": "- **Tarsnap**：Colin Percival 自己的备份服务用它保护主密钥，这是 scrypt 的第一个大规模真实部署。- **Debian / Ubuntu 的系统口令**：`libxcrypt` 的默认口令哈希是 **yescrypt**——一套基于 scrypt 的变体，2018 年起取代了传统的 SHA-512crypt。全球发行版 Linux 的大部分机器上都在跑 scrypt 的近亲。- **OpenSSL**：1.1.1 起提供 `EVP_KDF` 的 **SCRYPT** 实现，可用于 TLS 的 `PSK` 身份密钥派生和 PKCS #8 私钥加密。- **Python**：`hashlib.scrypt()`（底层是 OpenSSL）。**Go**：`golang.org/x/crypto/scrypt`。**Rust**：RustCrypto 的 `scrypt` crate。**Java**：Bouncy Castle。几乎所有语言都有现成实现。- **RFC 7914 的 ASN.1 定义**：`id-scrypt` 的 OID 是 `1.3.6.1.4.1.11591.4.11`，可以直接用在 PKCS #8 的加密私钥里；RFC 原文给了一个 `N = 2^20, r = 8, p = 1` 的完整 PKCS #8 测试样例。- **嵌入式与合规场景**：内存受限设备用它做密钥派生，FIPS 140-3 验证库里也有它的位置（不像 Argon2 那样需要额外的验证覆盖）。",
+            "en": "- **Tarsnap**: Colin Percival's own backup service uses it to protect the master key — scrypt's first real production deployment.- **System passwords on Debian / Ubuntu**: `libxcrypt`'s default password hash is **yescrypt**, a scrypt-based variant that displaced SHA-512crypt."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        },
+        {
+          "id": "scrypt-r139-broken",
+          "entryId": "scrypt-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**scrypt 没有被「攻破」，但它有几个必须知道的失效模式。**\n\n- **内存是它的攻击面，也是它的 DoS 面**。RFC 7914 第 14 节专门警告：参数不该由不可信方决定，否则攻击者可以给出荒谬大的 N，让服务器分配几 GB 内存。**凡是把口令哈希参数放进客户端可控数据里的系统（token、配置、粘贴的哈希串），就是一个内存耗尽漏洞。**\n- **它有已发表的侧信道攻击**。Forler、Lucks 与 Wenzel 在 ASIACRYPT 2014 的《Memory-Demanding Password Scrambling》里指出：scrypt 的内存访问模式**依赖口令**（因为 j 由状态决定），因此可以用**缓存计时攻击**在受害者机器上恢复口令；他们还演示了**垃圾回收攻击**，并为此提出了替代方案 Catena。这是 scrypt 相对 PBKDF2 的真实退步：**你换来的是内存成本，付出的是访问模式泄露。**\n- **内存硬性依赖于「DRAM 慢」这个物理假设**。Choe 等人在 MEMSYS 2019 指出：随着近存计算、计算型内存这类把算力搬进内存的技术出现，内存访问的延迟和能耗大幅下降，**依赖内存访问成本来买时间的整套安全论证都会被削弱**。- **参数调错，内存硬性就没了**。RFC 7914 明确警告：如果为了省内存把参数调得太小，算法性质就变了。想省内存又不想丢内存硬性，唯一的办法是调 p（并行度），不是调 N。而 OWASP 自己也提醒：把 N 换 p 时，攻击者模型不同，等价性并不严格成立。- **口令全程躺在内存里**。",
+            "en": "**scrypt has not been \"broken\", but it has failure modes you need to know.**\n\n- **Memory is both its defence and its denial-of-service surface.** RFC 7914 §14 warns explicitly that parameters must not come from an untrusted party, or an attacker can specify an absurdly large N and make the server allocate gigabytes.**Any system that lets the client influence password-hash parameters — tokens, config blobs, pasted hash strings — has a memory-exhaustion vulnerability.**\n- **There are published side-channel attacks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        },
+        {
+          "id": "scrypt-r139-history",
+          "entryId": "scrypt-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **2009 年 5 月**：Colin Percival 在 **BSDCan 2009** 上发表《Stronger Key Derivation via Sequential Memory-Hard Functions》，scrypt 正式登场。论文的核心命题就写在标题里：**顺序**内存硬函数比「单纯内存硬」更强，因为它连「并行度」一起管住了。- **2009–2010 年**：scrypt 进入 Tarsnap 的生产环境；Perl 的 `Crypt::Scrypt` 等实现出现。**密码学界开始注意到它**。- **2014 年**：Forler、Lucks 与 Wenzel 发表《Memory-Demanding Password Scrambling》，公开了 scrypt 的缓存计时攻击与垃圾回收攻击，并提出 Catena 作为替代。- **2015 年**：密码哈希竞赛（Password Hashing Competition）选出 Argon2。scrypt 从此从「唯一可选的现代方案」变成「稳妥的第二选择」。- **2015 年**：`draft-josefsson-scrypt-kdf` 进入 IETF。- **2016 年**：**RFC 7914** 把 scrypt 标准化，给出了 ASN.1 语法、OID（`1.3.6.1.4.1.11591.4.同年之后，Debian / Ubuntu 的 `libxcrypt` 把默认口令哈希换成基于 scrypt 的 yescrypt。",
+            "en": "- **May 2009**: Colin Percival presents *Stronger Key Derivation via Sequential Memory-Hard Functions* at **BSDCan 2009**, and scrypt arrives.The thesis is in the title: a *sequential* memory-hard function is stronger than merely memory-hard, because it also pins down parallelism."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        },
+        {
+          "id": "scrypt-r139-refs",
+          "entryId": "scrypt-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for scrypt 内存硬口令派生.https://zh.wikipedia.org/w/index.php?search=scrypt%20%E5%86%85%E5%AD%98%E7%A1%AC%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for scrypt 内存硬口令派生.https://zh.wikipedia.org/w/index.php?search=scrypt%20%E5%86%85%E5%AD%98%E7%A1%AC%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "scrypt-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "scrypt-wikipedia"
+      ]
+    },
+    {
+      "id": "scrypt-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "scrypt-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "scrypt-r139-principle",
+      "entryId": "scrypt-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：scrypt 内存硬口令派生（scrypt）。scrypt 干的事和 PBKDF2 一样：**把口令变成密钥**。区别在于它逼你**先占一大块内存**。三步（RFC 7914 第 6 节）：\n\n```\n1.B[0..p-1] = PBKDF2-HMAC-SHA256(P, S, 1, p * 128 * r)\n2.for i = 0..p-1:  B[i] = scryptROMix(r, B[i], N)\n3.DK = PBKDF2-HMAC-SHA256(P, B[0] || ...|| B[p-1], 1, dkLen)\n```\n\n**scryptROMix** 是核心，两轮循环：\n\n- **填表**：X = B；重复 N 次，每次把 X 存进 `V[i]`，再令 X = scryptBlockMix(X)。于是内存里躺着 N 份状态。- **乱跳**：重复 N 次，`j = Integerify(X) mod N`，然后 `X = scryptBlockMix(X xor V[j])`。**j 是由数据决定的**——攻击者必须真的把那块内存读出来才能继续。**scryptBlockMix** 是 Salsa20/8 核（64 字节输入输出，8 轮 Salsa20）加上一次「偶数位在前、奇数位在后」的交错重排，把 2r 个 64 字节块重组成 r 个 128 字节块。- **N**（必须是大于 1 的 2 的幂）：**同时决定时间和内存**。内存占用恰好是 `128 × N × r` 字节。- **r**（块大小）：主要影响内存布局。",
+        "en": "**Algorithm**: scrypt (scrypt 内存硬口令派生).scrypt does what PBKDF2 does — turn a passphrase into a key — but it makes you **occupy a large block of memory first**."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    },
+    {
+      "id": "scrypt-r139-why",
+      "entryId": "scrypt-details",
+      "section": "why",
+      "statement": {
+        "zh": "**scrypt 存在的理由只有一句话：GPU 和 ASIC 变便宜的速度，远远快过内存变便宜的速度。**\n\nRFC 7914 第 1 节把这件事讲得非常直白。传统的口令派生（DES crypt、MD5 crypt、SHA-crypt、PBKDF2、bcrypt）都是「迭代 + 加盐」。这类方案的迭代次数可以跟着硬件一起涨：只要把 c 调大，**用户**每次登录的计算时间就保持恒定，**看起来**没吃亏。但这只是账面上的平局。真正的问题是：暴力搜索口令这件事**天生是完美并行的**。你的服务器一次算一个口令，攻击者的 GPU 同时算几万个。迭代次数涨 10 倍，攻击者的时钟也慢 10 倍——可他手里的芯片数量没变。于是「按美元算的算力」这个真正的度量单位，一直在往攻击者那边倾斜。半导体技术的进步让电路不只更快，还更小，于是同样的钱能买到更多并行度。**每年都在恶化。**\n\nscrypt 的对策不是「再迭代多几次」，而是**把战场从算力挪到内存带宽**。这招很聪明，因为：\n\n- 显卡的核心之间**不共享高速缓存**。每增加一个并行实例，就得独立拥有一大块内存。GPU 的成本结构（海量大算力、小缓存）被彻底打乱。- 专用 ASIC 造出来之后，从「算力瓶颈」变成「内存带宽瓶颈」。而**内存带宽是比算力更贵、更难堆的东西**。RFC 7914 还给了一个很实际的观察：SMix 的各个实例互相独立，所以**可以靠加大 p 来提高计算成本而不增加内存占用**——将来 CPU 算力和内存容量增长速率不一致时，scrypt 依然能调得动。",
+        "en": "**scrypt exists for one reason: GPUs and ASICs get cheaper much faster than memory does.**\n\nSection 1 of RFC 7914 says this bluntly.Every classic password KDF — DES crypt, MD5 crypt, SHA-crypt, PBKDF2, bcrypt — is \"iterate plus salt\"."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    },
+    {
+      "id": "scrypt-r139-used",
+      "entryId": "scrypt-details",
+      "section": "used",
+      "statement": {
+        "zh": "- **Tarsnap**：Colin Percival 自己的备份服务用它保护主密钥，这是 scrypt 的第一个大规模真实部署。- **Debian / Ubuntu 的系统口令**：`libxcrypt` 的默认口令哈希是 **yescrypt**——一套基于 scrypt 的变体，2018 年起取代了传统的 SHA-512crypt。全球发行版 Linux 的大部分机器上都在跑 scrypt 的近亲。- **OpenSSL**：1.1.1 起提供 `EVP_KDF` 的 **SCRYPT** 实现，可用于 TLS 的 `PSK` 身份密钥派生和 PKCS #8 私钥加密。- **Python**：`hashlib.scrypt()`（底层是 OpenSSL）。**Go**：`golang.org/x/crypto/scrypt`。**Rust**：RustCrypto 的 `scrypt` crate。**Java**：Bouncy Castle。几乎所有语言都有现成实现。- **RFC 7914 的 ASN.1 定义**：`id-scrypt` 的 OID 是 `1.3.6.1.4.1.11591.4.11`，可以直接用在 PKCS #8 的加密私钥里；RFC 原文给了一个 `N = 2^20, r = 8, p = 1` 的完整 PKCS #8 测试样例。- **嵌入式与合规场景**：内存受限设备用它做密钥派生，FIPS 140-3 验证库里也有它的位置（不像 Argon2 那样需要额外的验证覆盖）。",
+        "en": "- **Tarsnap**: Colin Percival's own backup service uses it to protect the master key — scrypt's first real production deployment.- **System passwords on Debian / Ubuntu**: `libxcrypt`'s default password hash is **yescrypt**, a scrypt-based variant that displaced SHA-512crypt."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    },
+    {
+      "id": "scrypt-r139-broken",
+      "entryId": "scrypt-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**scrypt 没有被「攻破」，但它有几个必须知道的失效模式。**\n\n- **内存是它的攻击面，也是它的 DoS 面**。RFC 7914 第 14 节专门警告：参数不该由不可信方决定，否则攻击者可以给出荒谬大的 N，让服务器分配几 GB 内存。**凡是把口令哈希参数放进客户端可控数据里的系统（token、配置、粘贴的哈希串），就是一个内存耗尽漏洞。**\n- **它有已发表的侧信道攻击**。Forler、Lucks 与 Wenzel 在 ASIACRYPT 2014 的《Memory-Demanding Password Scrambling》里指出：scrypt 的内存访问模式**依赖口令**（因为 j 由状态决定），因此可以用**缓存计时攻击**在受害者机器上恢复口令；他们还演示了**垃圾回收攻击**，并为此提出了替代方案 Catena。这是 scrypt 相对 PBKDF2 的真实退步：**你换来的是内存成本，付出的是访问模式泄露。**\n- **内存硬性依赖于「DRAM 慢」这个物理假设**。Choe 等人在 MEMSYS 2019 指出：随着近存计算、计算型内存这类把算力搬进内存的技术出现，内存访问的延迟和能耗大幅下降，**依赖内存访问成本来买时间的整套安全论证都会被削弱**。- **参数调错，内存硬性就没了**。RFC 7914 明确警告：如果为了省内存把参数调得太小，算法性质就变了。想省内存又不想丢内存硬性，唯一的办法是调 p（并行度），不是调 N。而 OWASP 自己也提醒：把 N 换 p 时，攻击者模型不同，等价性并不严格成立。- **口令全程躺在内存里**。",
+        "en": "**scrypt has not been \"broken\", but it has failure modes you need to know.**\n\n- **Memory is both its defence and its denial-of-service surface.** RFC 7914 §14 warns explicitly that parameters must not come from an untrusted party, or an attacker can specify an absurdly large N and make the server allocate gigabytes.**Any system that lets the client influence password-hash parameters — tokens, config blobs, pasted hash strings — has a memory-exhaustion vulnerability.**\n- **There are published side-channel attacks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    },
+    {
+      "id": "scrypt-r139-history",
+      "entryId": "scrypt-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **2009 年 5 月**：Colin Percival 在 **BSDCan 2009** 上发表《Stronger Key Derivation via Sequential Memory-Hard Functions》，scrypt 正式登场。论文的核心命题就写在标题里：**顺序**内存硬函数比「单纯内存硬」更强，因为它连「并行度」一起管住了。- **2009–2010 年**：scrypt 进入 Tarsnap 的生产环境；Perl 的 `Crypt::Scrypt` 等实现出现。**密码学界开始注意到它**。- **2014 年**：Forler、Lucks 与 Wenzel 发表《Memory-Demanding Password Scrambling》，公开了 scrypt 的缓存计时攻击与垃圾回收攻击，并提出 Catena 作为替代。- **2015 年**：密码哈希竞赛（Password Hashing Competition）选出 Argon2。scrypt 从此从「唯一可选的现代方案」变成「稳妥的第二选择」。- **2015 年**：`draft-josefsson-scrypt-kdf` 进入 IETF。- **2016 年**：**RFC 7914** 把 scrypt 标准化，给出了 ASN.1 语法、OID（`1.3.6.1.4.1.11591.4.同年之后，Debian / Ubuntu 的 `libxcrypt` 把默认口令哈希换成基于 scrypt 的 yescrypt。",
+        "en": "- **May 2009**: Colin Percival presents *Stronger Key Derivation via Sequential Memory-Hard Functions* at **BSDCan 2009**, and scrypt arrives.The thesis is in the title: a *sequential* memory-hard function is stronger than merely memory-hard, because it also pins down parallelism."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    },
+    {
+      "id": "scrypt-r139-refs",
+      "entryId": "scrypt-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for scrypt 内存硬口令派生.https://zh.wikipedia.org/w/index.php?search=scrypt%20%E5%86%85%E5%AD%98%E7%A1%AC%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for scrypt 内存硬口令派生.https://zh.wikipedia.org/w/index.php?search=scrypt%20%E5%86%85%E5%AD%98%E7%A1%AC%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "scrypt-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

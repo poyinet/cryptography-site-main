@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "rsa-signature-details",
+  "sources": [
+    {
+      "id": "rsa-signature-wikipedia",
+      "title": "Wikipedia search entry for RSA 签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: RSA 签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "rsa-signature-r139-principle",
+          "entryId": "rsa-signature-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：RSA 签名（RSA Signature）。文件把两套签名方案与它们各自的编码方法并列规定。§8 之后列出用于签名的编码方法：「employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.」也即 RSA 签名不是一件事而是两条路线：v1.5 那条简单确定，PSS 那条把随机盐与掩码生成函数纳入编码，再由同一份文件一并规范。",
+            "en": "**Algorithm**: RSA Signature (RSA 签名).The document specifies two signature schemes with their own encoding methods, listed after §8: \"employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.\" So RSA signing is not one thing but two routes: v1.5, simple and deterministic, and PSS, which folds a random salt and a mask generation function into the encoding - both standardised by the same document."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        },
+        {
+          "id": "rsa-signature-r139-why",
+          "entryId": "rsa-signature-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么要引入 PSS，§9.1 直接给出可参数化的部分：「This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.」盐与掩码的存在使编码是概率性的，同一消息两次签名得到不同结果，安全性论证因此能建立在更明确的假设之上；文件把这一对比写在 PSS 与确定性方案的说明里。",
+            "en": "Why PSS exists is visible in what §9.1 lets you choose: \"This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.\" Salt and mask make the encoding probabilistic, so the same message signs twice to different results, and the security argument can rest on clearer assumptions - the document draws this contrast against the deterministic schemes."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        },
+        {
+          "id": "rsa-signature-r139-used",
+          "entryId": "rsa-signature-details",
+          "section": "used",
+          "statement": {
+            "zh": "用法上的分工体现在编码方法与实现要求两处。编码层规定两套方法可选（EMSA-PSS 与 EMSA-PKCS1-v1_5，见 principle 段所引），实现层则在 §7.2 的对策讨论里对 v1.5 的解码提出可执行措施：原文列出的对策包括「rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5」。也即继续用 v1.5 就必须把解码检查与错误信息合并做严。",
+            "en": "Use splits between encoding choice and implementation duty.The encoding layer offers EMSA-PSS and EMSA-PKCS1-v1_5 (cited in the principle claim), while the implementation layer gives concrete countermeasures for v1.5 decoding: \"rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5.\" Keeping v1.5 therefore obliges strict decode checking and merged error reporting."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        },
+        {
+          "id": "rsa-signature-r139-broken",
+          "entryId": "rsa-signature-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在对策的存在本身：文件需要专章讨论 v1.5 解码的对策，说明该方案在实现层的失败模式是已知的（错误信息若可区分，就被用来试探密文）。其次，PSS 的安全性依赖参数选取——哈希、掩码生成函数与盐长都要定（principle/why 段所引），盐长取零一类的极端配置会把它退化成确定性方案。最后，本文件是 Informational，其规范性来自对 PKCS #1 系列的记述而不是标准机构的强度认定。",
+            "en": "The limits are legible in the countermeasures themselves: a whole discussion of v1.5 decoding is needed precisely because its implementation-level failure mode is known - distinguishable error messages become an oracle.PSS in turn depends on parameter choices (hash, mask generation function, salt length, as quoted above); extreme settings such as a zero-length salt collapse it back to a deterministic form."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        },
+        {
+          "id": "rsa-signature-r139-history",
+          "entryId": "rsa-signature-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本事实按留存件印出的行复述（头部信息不进引号）：本文件是 RFC 8017、PKCS #1 v2.2、November 2016，编辑行印作 Moriarty、Kaliski 与 Rusch，类别为 Informational。文件把 v1.5 与 PSS 两条线并列收录，本身即说明这两代方案的共存是历史事实：确定性编码在先、概率性编码在后，而两者都保留在同一份规范里供实现选择。**技术参数与复算边界**\n\n本条的形式模型是 \\(C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\)。输入：输入：RSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。",
+            "en": "Version facts, restated from the printed lines (header furniture stays outside quotes): this is RFC 8017, PKCS #1 v2.2, November 2016, edited by Moriarty, Kaliski and Rusch, Category: Informational.That the document carries both the v1.5 and PSS lines side by side is itself the historical fact: deterministic encoding came first, probabilistic encoding later, and both remain specified here for implementations to choose between."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        },
+        {
+          "id": "rsa-signature-r139-refs",
+          "entryId": "rsa-signature-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for RSA 签名.https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8017: PKCS #1: RSA Cryptography Specifications v2.2.https://www.rfc-editor.org/rfc/rfc8017。",
+            "en": "- Wikipedia search entry for RSA 签名.https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "rsa-signature-reference-ref",
+            "rsa-signature-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "rsa-signature-wikipedia"
+      ]
+    },
+    {
+      "id": "rsa-signature-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "rsa-signature-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "rsa-signature-specific",
+      "title": "RFC 8017: PKCS #1: RSA Cryptography Specifications v2.2",
+      "url": "https://www.rfc-editor.org/rfc/rfc8017",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "rsa-signature-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "rsa-signature-r139-principle",
+      "entryId": "rsa-signature-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：RSA 签名（RSA Signature）。文件把两套签名方案与它们各自的编码方法并列规定。§8 之后列出用于签名的编码方法：「employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.」也即 RSA 签名不是一件事而是两条路线：v1.5 那条简单确定，PSS 那条把随机盐与掩码生成函数纳入编码，再由同一份文件一并规范。",
+        "en": "**Algorithm**: RSA Signature (RSA 签名).The document specifies two signature schemes with their own encoding methods, listed after §8: \"employed in the signature schemes and are specified here: EMSA-PSS and EMSA-PKCS1-v1_5.\" So RSA signing is not one thing but two routes: v1.5, simple and deterministic, and PSS, which folds a random salt and a mask generation function into the encoding - both standardised by the same document."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    },
+    {
+      "id": "rsa-signature-r139-why",
+      "entryId": "rsa-signature-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么要引入 PSS，§9.1 直接给出可参数化的部分：「This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.」盐与掩码的存在使编码是概率性的，同一消息两次签名得到不同结果，安全性论证因此能建立在更明确的假设之上；文件把这一对比写在 PSS 与确定性方案的说明里。",
+        "en": "Why PSS exists is visible in what §9.1 lets you choose: \"This encoding method is parameterized by the choice of hash function, mask generation function, and salt length.\" Salt and mask make the encoding probabilistic, so the same message signs twice to different results, and the security argument can rest on clearer assumptions - the document draws this contrast against the deterministic schemes."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    },
+    {
+      "id": "rsa-signature-r139-used",
+      "entryId": "rsa-signature-details",
+      "section": "used",
+      "statement": {
+        "zh": "用法上的分工体现在编码方法与实现要求两处。编码层规定两套方法可选（EMSA-PSS 与 EMSA-PKCS1-v1_5，见 principle 段所引），实现层则在 §7.2 的对策讨论里对 v1.5 的解码提出可执行措施：原文列出的对策包括「rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5」。也即继续用 v1.5 就必须把解码检查与错误信息合并做严。",
+        "en": "Use splits between encoding choice and implementation duty.The encoding layer offers EMSA-PSS and EMSA-PKCS1-v1_5 (cited in the principle claim), while the implementation layer gives concrete countermeasures for v1.5 decoding: \"rigorous checking of PKCS #1 v1.5 conformance (and other redundancy) in decrypted messages, and the consolidation of error messages in a client-server protocol based on PKCS #1 v1.5.\" Keeping v1.5 therefore obliges strict decode checking and merged error reporting."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    },
+    {
+      "id": "rsa-signature-r139-broken",
+      "entryId": "rsa-signature-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在对策的存在本身：文件需要专章讨论 v1.5 解码的对策，说明该方案在实现层的失败模式是已知的（错误信息若可区分，就被用来试探密文）。其次，PSS 的安全性依赖参数选取——哈希、掩码生成函数与盐长都要定（principle/why 段所引），盐长取零一类的极端配置会把它退化成确定性方案。最后，本文件是 Informational，其规范性来自对 PKCS #1 系列的记述而不是标准机构的强度认定。",
+        "en": "The limits are legible in the countermeasures themselves: a whole discussion of v1.5 decoding is needed precisely because its implementation-level failure mode is known - distinguishable error messages become an oracle.PSS in turn depends on parameter choices (hash, mask generation function, salt length, as quoted above); extreme settings such as a zero-length salt collapse it back to a deterministic form."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    },
+    {
+      "id": "rsa-signature-r139-history",
+      "entryId": "rsa-signature-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本事实按留存件印出的行复述（头部信息不进引号）：本文件是 RFC 8017、PKCS #1 v2.2、November 2016，编辑行印作 Moriarty、Kaliski 与 Rusch，类别为 Informational。文件把 v1.5 与 PSS 两条线并列收录，本身即说明这两代方案的共存是历史事实：确定性编码在先、概率性编码在后，而两者都保留在同一份规范里供实现选择。**技术参数与复算边界**\n\n本条的形式模型是 \\(C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\)。输入：输入：RSA 签名的公开参数、密钥/随机数与消息；变量说明：M 明文整数，C 密文整数，N 模数，e 公钥指数，d 私钥指数。",
+        "en": "Version facts, restated from the printed lines (header furniture stays outside quotes): this is RFC 8017, PKCS #1 v2.2, November 2016, edited by Moriarty, Kaliski and Rusch, Category: Informational.That the document carries both the v1.5 and PSS lines side by side is itself the historical fact: deterministic encoding came first, probabilistic encoding later, and both remain specified here for implementations to choose between."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    },
+    {
+      "id": "rsa-signature-r139-refs",
+      "entryId": "rsa-signature-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for RSA 签名.https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8017: PKCS #1: RSA Cryptography Specifications v2.2.https://www.rfc-editor.org/rfc/rfc8017。",
+        "en": "- Wikipedia search entry for RSA 签名.https://zh.wikipedia.org/w/index.php?search=RSA%20%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "rsa-signature-reference-ref",
+        "rsa-signature-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

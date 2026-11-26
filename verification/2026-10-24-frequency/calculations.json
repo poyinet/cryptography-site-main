@@ -1,0 +1,79 @@
+[
+  {
+    "id": "frequency-corpus-counts",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "Fixed 20,000-letter public-domain English corpus; letters-only preprocessing",
+    "expected": "Total length 20000 and the recorded 26 exact counts; BANANA hand count 3/2/1",
+    "corpusSha256": "72cbb3c219effe0e3c0c31fb511dbb1ce4ac3d62101ba2506286dd27cd2c0256",
+    "expectedCounts": [1542, 377, 435, 888, 2503, 421, 417, 1257, 1445, 24, 137, 808, 570, 1495, 1494, 251, 29, 1141, 1221, 1704, 590, 201, 465, 26, 534, 25],
+    "sourceIds": ["gutenberg-1342", "hac-ch7"],
+    "dependencies": ["frequency-teaching.mjs", "corpus-en.txt"],
+    "limitations": "One fixed English corpus; counts describe this fixture, not a universal language distribution."
+  },
+  {
+    "id": "frequency-ioc",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "BANANA; the fixed corpus; the uniform 26-letter value 1/26",
+    "expected": "BANANA IC=8/30; corpus IC≈0.0646968; uniform value≈0.0384615",
+    "bananaIc": 0.26666666666666666,
+    "corpusIc": 0.06469675483774188,
+    "uniformIc": 0.038461538461538464,
+    "sourceIds": ["hac-ch7", "gutenberg-1342"],
+    "dependencies": ["frequency-teaching.mjs", "corpus-en.txt"],
+    "limitations": "The corpus value is an estimate for one text, not a language constant."
+  },
+  {
+    "id": "frequency-chi-square-recovery",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "20,000-letter corpus encrypted with Caesar k=17; all 26 candidate decryptions; HAC Figure 7.5 expected percentages",
+    "expected": "Correct k=17 ranks first with χ²≈333.4502; runner-up k=23 has χ²≈67698.2203",
+    "correctKey": 17,
+    "correctChi": 333.4502409799538,
+    "runnerUpKey": 23,
+    "runnerUpChi": 67698.22025113195,
+    "sourceIds": ["hac-ch7", "nist-chi", "gutenberg-1342"],
+    "dependencies": ["frequency-teaching.mjs", "corpus-en.txt"],
+    "limitations": "One fixed text and one expected table; ranking success is empirical, not a general proof."
+  },
+  {
+    "id": "frequency-chi-square-failure",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "ZEBRAZEBRAZEBRA encrypted with k=17; all 26 candidate decryptions",
+    "expected": "Correct k=17 ranks 22nd with χ²≈712.6890; winner k=4 has χ²≈39.6714 and decryption MROENMROENMROEN",
+    "correctKey": 17,
+    "correctRank": 22,
+    "winnerKey": 4,
+    "winnerChi": 39.67135991329805,
+    "sourceIds": ["hac-ch7", "nist-chi"],
+    "dependencies": ["frequency-teaching.mjs"],
+    "limitations": "A deliberately atypical short text; it demonstrates a failure mode, not a refutation of chi-square on all texts."
+  },
+  {
+    "id": "frequency-digrams",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "Adjacent digram counts in the fixed 20,000-letter corpus",
+    "expected": "Top five digrams are TH=531, HE=519, ER=397, IN=361, AN=352",
+    "topDigrams": [["TH", 531], ["HE", 519], ["ER", 397], ["IN", 361], ["AN", 352]],
+    "sourceIds": ["gutenberg-1342", "hac-ch7"],
+    "dependencies": ["frequency-teaching.mjs", "corpus-en.txt"],
+    "limitations": "Counts are specific to this corpus; the ordering is compared with HAC's broad English discussion, not treated as a universal constant."
+  },
+  {
+    "id": "frequency-vigenere-boundary",
+    "entryId": "frequency-details",
+    "kind": "executable-statistical-check",
+    "inputs": "Fixed corpus encrypted with the period-5 Vigenère key LEMON; global and five column ICs",
+    "expected": "Global IC≈0.0415134; the five column ICs are approximately 0.06436–0.06567",
+    "globalIc": 0.04151337566878344,
+    "columnIcs": [0.0643624656164041, 0.06434196049012253, 0.06436409102275568, 0.06488472118029508, 0.06567079269817454],
+    "period": 5,
+    "sourceIds": ["hac-ch7", "gutenberg-1342", "rutgers-classical"],
+    "dependencies": ["frequency-teaching.mjs", "corpus-en.txt"],
+    "limitations": "A demonstration of the period-splitting boundary; it is not a complete Vigenère solver."
+  }
+]

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "iso18033-4-details",
+  "sources": [
+    {
+      "id": "iso18033-4-wikipedia",
+      "title": "Wikipedia search entry for 流密码算法标准",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E6%A0%87%E5%87%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 流密码算法标准",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "iso18033-4-r139-principle",
+          "entryId": "iso18033-4-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：流密码算法标准（Encryption algorithms — Part 4: Stream ciphers）。流密码的通用接口写成 \\(KS=G(K,IV,state)\\)，状态按 \\(state_{t+1}=Next(state_t)\\) 推进；二元加法输出为 \\(C_t=P_t\\oplus KS_t\\)，解密为 \\(P_t=C_t\\oplus KS_t\\)。ISO/IEC 18033-4:2011 把输出函数和生成器分开：输出函数有二元加法与 MULTI-S01 两种；生成器有 MUGI、SNOW 2.0、Rabbit、Decimv2、KCipher-2 五种。2020 年的补篇 1 加入 ZUC，使生成器清单变为六种；ZUC 的密钥 \\(K\\) 和初始向量 \\(IV\\) 都是 128 位。同步流密码的密钥流只由 \\(K,IV\\) 决定；自同步流密码还会使用过去的密文。",
+            "en": "**Standard**: Encryption algorithms — Part 4: Stream ciphers (流密码算法标准).The generic stream-cipher interface is \\(KS=G(K,IV,state)\\), with state advanced by \\(state_{t+1}=Next(state_t)\\); binary-additive output is \\(C_t=P_t\\oplus KS_t\\) and decryption is \\(P_t=C_t\\oplus KS_t\\)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-4-r139-why",
+          "entryId": "iso18033-4-details",
+          "section": "why",
+          "statement": {
+            "zh": "这条卡首先纠错：旧目录把 ISO/IEC 18033-4 标成“专用散列函数标准”、domain 写成 `d09-hash`，与实际的 stream ciphers 完全不符。Part 3 是分组密码，Part 4 是流密码，Part 5 是标识密码，这三部分的标题和领域不能对调。公式化的价值在于把“生成器”和“输出函数”拆开：同一个生成器可以配二元加法，也可以配 MULTI-S01；ZUC 是补篇，不应被算进 2011 年正文的五种。",
+            "en": "In the 一次性密码本与流密码 reading path, Encryption algorithms — Part 4: Stream ciphers connects to government contexts; the main risks are protocol, implementation."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-4-r139-used",
+          "entryId": "iso18033-4-details",
+          "section": "used",
+          "statement": {
+            "zh": "使用时先选生成器与输出函数，再检查 \\(K\\)、\\(IV\\) 长度和唯一性。二元加法只需逐位异或，适合流式加密；MULTI-S01 需要按标准的多块组合处理，不能把它的输出当成简单异或。密钥流一旦重复，明文异或会直接泄露；因此每次会话必须换 IV，且不能在同一密钥下重复 IV。若需要完整性，必须在密文外另加 MAC 或使用 AEAD，不能只依赖流密码。",
+            "en": "Choose a generator and output function, then check \\(K\\), \\(IV\\) lengths and uniqueness.Binary-additive output is a bitwise XOR and suits streaming; MULTI-S01 needs the standard multi-block combiner and must not be treated as plain XOR."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-4-r139-broken",
+          "entryId": "iso18033-4-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界有四条。第一，二元加法输出是可延展的：攻击者翻转密文位就能翻转对应明文位，标准本身不提供认证。第二，IV 重用会复用密钥流，是灾难性错误；标准规定 IV 接口，但不替应用管理 IV。第三，标准列出算法与接口，不提供安全性证明；MUGI、SNOW 2.0、Rabbit、Decimv2、KCipher-2、ZUC 的安全性主张要回到各自的设计分析和后续密码分析。第四，ZUC 作为 2020 补篇加入，不能把 2011 年正文的“五种”写成“六种”而不注明版本。",
+            "en": "There are four boundaries.First, binary-additive output is malleable: flipping a ciphertext bit flips the corresponding plaintext bit, and the standard supplies no authentication."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-4-r139-history",
+          "entryId": "iso18033-4-details",
+          "section": "history",
+          "statement": {
+            "zh": "ISO/IEC 18033-4:2005 首版只列 MUGI 与 SNOW 2.0，并给出 OFB、CTR、CFB 等基于分组密码的密钥流方式；2011 年第二版扩展为五种专用生成器，并保留二元加法与 MULTI-S01 两种输出函数。2020 年 8 月，ZUC 作为补篇 1 正式发布，成为第六种生成器。这里的版本差异按 ISO 官方页与补篇页并列保留，不把补篇内容追写进 2011 年正文。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：流密码算法标准的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "ISO/IEC 18033-4:2005 first listed MUGI and SNOW 2.0 and gave OFB, CTR and CFB keystream constructions from block ciphers; the 2011 second edition expanded to five dedicated generators and kept the binary-additive and MULTI-S01 output functions.In August 2020, ZUC was published as Amendment 1, becoming the sixth generator."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-4-r139-refs",
+          "entryId": "iso18033-4-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 流密码算法标准.https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 流密码算法标准.https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "iso18033-4-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "iso18033-4-wikipedia"
+      ]
+    },
+    {
+      "id": "iso18033-4-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "iso18033-4-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "iso18033-4-r139-principle",
+      "entryId": "iso18033-4-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：流密码算法标准（Encryption algorithms — Part 4: Stream ciphers）。流密码的通用接口写成 \\(KS=G(K,IV,state)\\)，状态按 \\(state_{t+1}=Next(state_t)\\) 推进；二元加法输出为 \\(C_t=P_t\\oplus KS_t\\)，解密为 \\(P_t=C_t\\oplus KS_t\\)。ISO/IEC 18033-4:2011 把输出函数和生成器分开：输出函数有二元加法与 MULTI-S01 两种；生成器有 MUGI、SNOW 2.0、Rabbit、Decimv2、KCipher-2 五种。2020 年的补篇 1 加入 ZUC，使生成器清单变为六种；ZUC 的密钥 \\(K\\) 和初始向量 \\(IV\\) 都是 128 位。同步流密码的密钥流只由 \\(K,IV\\) 决定；自同步流密码还会使用过去的密文。",
+        "en": "**Standard**: Encryption algorithms — Part 4: Stream ciphers (流密码算法标准).The generic stream-cipher interface is \\(KS=G(K,IV,state)\\), with state advanced by \\(state_{t+1}=Next(state_t)\\); binary-additive output is \\(C_t=P_t\\oplus KS_t\\) and decryption is \\(P_t=C_t\\oplus KS_t\\)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-4-r139-why",
+      "entryId": "iso18033-4-details",
+      "section": "why",
+      "statement": {
+        "zh": "这条卡首先纠错：旧目录把 ISO/IEC 18033-4 标成“专用散列函数标准”、domain 写成 `d09-hash`，与实际的 stream ciphers 完全不符。Part 3 是分组密码，Part 4 是流密码，Part 5 是标识密码，这三部分的标题和领域不能对调。公式化的价值在于把“生成器”和“输出函数”拆开：同一个生成器可以配二元加法，也可以配 MULTI-S01；ZUC 是补篇，不应被算进 2011 年正文的五种。",
+        "en": "In the 一次性密码本与流密码 reading path, Encryption algorithms — Part 4: Stream ciphers connects to government contexts; the main risks are protocol, implementation."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-4-r139-used",
+      "entryId": "iso18033-4-details",
+      "section": "used",
+      "statement": {
+        "zh": "使用时先选生成器与输出函数，再检查 \\(K\\)、\\(IV\\) 长度和唯一性。二元加法只需逐位异或，适合流式加密；MULTI-S01 需要按标准的多块组合处理，不能把它的输出当成简单异或。密钥流一旦重复，明文异或会直接泄露；因此每次会话必须换 IV，且不能在同一密钥下重复 IV。若需要完整性，必须在密文外另加 MAC 或使用 AEAD，不能只依赖流密码。",
+        "en": "Choose a generator and output function, then check \\(K\\), \\(IV\\) lengths and uniqueness.Binary-additive output is a bitwise XOR and suits streaming; MULTI-S01 needs the standard multi-block combiner and must not be treated as plain XOR."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-4-r139-broken",
+      "entryId": "iso18033-4-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界有四条。第一，二元加法输出是可延展的：攻击者翻转密文位就能翻转对应明文位，标准本身不提供认证。第二，IV 重用会复用密钥流，是灾难性错误；标准规定 IV 接口，但不替应用管理 IV。第三，标准列出算法与接口，不提供安全性证明；MUGI、SNOW 2.0、Rabbit、Decimv2、KCipher-2、ZUC 的安全性主张要回到各自的设计分析和后续密码分析。第四，ZUC 作为 2020 补篇加入，不能把 2011 年正文的“五种”写成“六种”而不注明版本。",
+        "en": "There are four boundaries.First, binary-additive output is malleable: flipping a ciphertext bit flips the corresponding plaintext bit, and the standard supplies no authentication."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-4-r139-history",
+      "entryId": "iso18033-4-details",
+      "section": "history",
+      "statement": {
+        "zh": "ISO/IEC 18033-4:2005 首版只列 MUGI 与 SNOW 2.0，并给出 OFB、CTR、CFB 等基于分组密码的密钥流方式；2011 年第二版扩展为五种专用生成器，并保留二元加法与 MULTI-S01 两种输出函数。2020 年 8 月，ZUC 作为补篇 1 正式发布，成为第六种生成器。这里的版本差异按 ISO 官方页与补篇页并列保留，不把补篇内容追写进 2011 年正文。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：流密码算法标准的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "ISO/IEC 18033-4:2005 first listed MUGI and SNOW 2.0 and gave OFB, CTR and CFB keystream constructions from block ciphers; the 2011 second edition expanded to five dedicated generators and kept the binary-additive and MULTI-S01 output functions.In August 2020, ZUC was published as Amendment 1, becoming the sixth generator."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-4-r139-refs",
+      "entryId": "iso18033-4-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 流密码算法标准.https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 流密码算法标准.https://zh.wikipedia.org/w/index.php?search=%E6%B5%81%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "iso18033-4-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

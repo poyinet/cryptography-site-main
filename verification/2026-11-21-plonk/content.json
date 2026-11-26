@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for plonk.",
+  "entries": [
+    {
+      "id": "plonk-details",
+      "inventoryIds": [
+        "plonk"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R103 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R103 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "PLONK 通用证明系统",
+        "en": "PLONK"
+      },
+      "claimIds": [
+        "plonk-r139-principle",
+        "plonk-r139-why",
+        "plonk-r139-used",
+        "plonk-r139-broken",
+        "plonk-r139-history",
+        "plonk-r139-refs"
+      ],
+      "sourceIds": [
+        "plonk-wikipedia",
+        "plonk-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sigma-protocol"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "plonk-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PLONK 通用证明系统：为什么需要 → 核心机制 → 边界。",
+            "en": "PLONK: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "PLONK 通用证明系统 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for PLONK, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/plonk-details-flow.zh.svg",
+            "en": "assets/plonk-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7b3eb3436323389924e63e8615e12d3041b1492c57a73038fb4c44eecfde5397",
+            "en": "d3683fd64b08aec65ac4ce5b15cff319c05a46b8cf21544cd51f65c9d7423c16"
+          }
+        },
+        {
+          "id": "plonk-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "PLONK 通用证明系统 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for PLONK: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "PLONK 通用证明系统 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for PLONK, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/plonk-details-r138-model.zh.svg",
+            "en": "assets/plonk-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "92c45495fd859701da3194d5bc7406b41a17490ef9401e7751163e03f7054714",
+            "en": "2ef48cd83dbe94b13f5dd856bce0bcfaf667dbf5eb23c91348d14c740bfabaf2"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：PLONK 通用证明系统（PLONK）。### 通用 SRS 上的电路证明\n\nPLONK 把算术电路写成门约束加复制约束：每个门是加法和乘法，复制约束用置换论证保证同一根线在不同位置取相同值。证明者用多项式承诺（通常 KZG）承诺线值、置换多项式和商多项式，验证者检查若干 opening。它使用**通用且可更新的结构化参考串（SRS）**：同一套参数可证明任意不超过容量上限的电路，不再为每个电路单独做 ceremony。",
+          "why": "PLONK 解决了 Groth16 的“每电路一次设置”问题。通用 SRS 可以由多方 ceremony 更新，只要有一个参与者诚实，参数就安全；这让开发者可以复用参数、快速迭代电路。它的证明仍是常数大小，验证是亚线性的；与 Sonic 相比，prover 的群指数运算显著减少，适合实际部署。",
+          "used": "PLONK 及其变体（TurboPLONK、UltraPLONK、PlonKup）被 Aztec、zkSync 等隐私/扩容项目使用；自定义门和 lookup 表让哈希、范围检查等操作更便宜。它也是“通用 zk-SNARK”教学与工程化的主流入口：Circom、Halo2、snarkjs 等工具链都提供 PLONK 风格后端。",
+          "broken": "PLONK 的通用 SRS 仍是可信设置：KZG 依赖配对群和 q-SDH 类假设，不是后量子安全。证明大小虽为常数，但通常比 Groth16 大，验证也更重。原始 PLONK 的零知识性曾被指出论述不完整，后续版本修补了模拟器问题；实现时必须使用修补后的规范，并严格做域分离、挑战生成和多项式承诺校验。### 形式模型",
+          "history": "Ariel Gabizon、Zac Williamson 与 Oana Ciobotaru 在 2019 年发布 ePrint 2019/953，提出 PLONK。论文强调“在乘法子群上取值”而非单项式系数，简化了置换论证和算术化。TurboPLONK、UltraPLONK 与 PlonKup 随后扩展了自定义门、lookup 和更高效的证明生成；PLONK 成为通用 SNARK 的重要家族名。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：PLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 PLONK 通用证明系统 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 PLONK 通用证明系统 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for PLONK 通用证明系统. https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nPLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: PLONK (PLONK 通用证明系统). ### Circuit proofs over a universal SRS\n\nPLONK encodes an arithmetic circuit as gate constraints plus copy constraints: each gate is addition or multiplication, and a permutation argument enforces that the same wire carries the same value at different positions. The prover commits to wire values, permutation polynomials and quotient polynomials using a polynomial commitment (usually KZG); the verifier checks several openings. It uses a **universal, updatable structured reference string (SRS)**: one parameter set can prove any circuit up to a size bound, instead of a fresh ceremony per circuit.",
+          "why": "PLONK removes Groth16’s “one setup per circuit” problem. A universal SRS can be updated by a multi-party ceremony; security holds if at least one participant is honest, so developers can reuse parameters and iterate on circuits quickly.\n\nProofs remain constant-size and verification sublinear. Compared with Sonic, the prover performs far fewer group exponentiations, making PLONK practical to deploy.",
+          "used": "PLONK and its variants (TurboPLONK, UltraPLONK, PlonKup) are used by Aztec, zkSync and other privacy/scaling projects; custom gates and lookup tables make hashes and range checks cheaper.\n\nIt is also the main entry point for engineering universal zk-SNARKs: Circom, Halo2 and snarkjs offer PLONK-style backends.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "PLONK’s universal SRS is still a trusted setup: KZG relies on pairing groups and q-SDH-style assumptions, so it is not post-quantum. Proofs are constant-size but usually larger than Groth16, and verification is heavier.\n\nThe zero-knowledge argument of the original PLONK specification was later found incomplete; subsequent versions patched the simulator. Implementations must use the patched specification and enforce domain separation, challenge derivation and polynomial-commitment checks.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Ariel Gabizon, Zac Williamson and Oana Ciobotaru released PLONK as ePrint 2019/953 in 2019. The paper emphasizes “evaluations on a multiplicative subgroup rather than coefficients of monomials”, simplifying both the permutation argument and arithmetization.\n\nTurboPLONK, UltraPLONK and PlonKup later added custom gates, lookups and faster proving; PLONK became the name of a broad family of universal SNARKs.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for PLONK 通用证明系统. https://zh.wikipedia.org/w/index.php?search=PLONK%20%E9%80%9A%E7%94%A8%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nPLONK: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "plonk-r139-formal",
+          "entryId": "plonk-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：PLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 PLONK 通用证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "plonk-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "plonk-r139-formal"
+      ],
+      "sources": [
+        "plonk-wikipedia",
+        "plonk-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "plonk-r139-formal",
+      "entryId": "plonk-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：PLONK 通用证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 PLONK 通用证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "plonk-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

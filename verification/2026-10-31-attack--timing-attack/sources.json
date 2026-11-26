@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--timing-attack-details",
+  "sources": [
+    {
+      "id": "attack--timing-attack-wikipedia",
+      "title": "Wikipedia search entry for 计时攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 计时攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--timing-attack-r139-principle",
+          "entryId": "attack--timing-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：计时攻击（Timing Attack）。计时攻击通过精确测量私钥操作的执行时间推断秘密。Kocher 表明，对易受攻击的实现，攻击者可以恢复固定的 Diffie-Hellman 指数、分解 RSA 密钥并攻破其他密码系统；攻击计算代价低，通常只需已知密文。",
+            "en": "**Attack**: Timing Attack (计时攻击).A timing attack infers secrets by carefully measuring the execution time of private-key operations."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--timing-attack-r139-why",
+          "entryId": "attack--timing-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "密码系统的处理时间会因输入而异：性能优化、分支和条件语句、缓存命中以及非固定时间的处理器指令都会产生影响，而且耗时通常同时依赖密钥和输入数据。Kocher 指出，这些无意的时序特征可能泄露整个密钥，而不只是密钥的汉明重量。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Cryptosystems take slightly different amounts of time for different inputs because of performance optimizations, branches and conditional statements, cache hits and processor instructions with non-fixed timing, and the time typically depends on both the key and the input data.Kocher argued that such unintentional timing characteristics can leak the entire key, not merely its Hamming weight."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--timing-attack-r139-used",
+          "entryId": "attack--timing-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文把密码令牌、网络密码系统以及攻击者能进行较精确时间测量的其他应用列为潜在风险，并以 Diffie-Hellman、RSA 和 DSS 的私钥操作为例。攻击者可以通过被动监听交互协议记录消息并测量响应时间。",
+            "en": "The paper identifies cryptographic tokens, network-based cryptosystems and other applications where an attacker can make reasonably accurate timing measurements as potentially at risk, using Diffie-Hellman, RSA and DSS private-key operations as examples.An attacker can passively eavesdrop on an interactive protocol, record the messages and measure response times."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--timing-attack-r139-broken",
+          "entryId": "attack--timing-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御包括固定时间实现、随机延迟和盲化。Kocher 认为固定时间实现难以做到且往往很慢；随机延迟可以让测量噪声大到攻击不可行，但攻击者可以增加样本补偿；盲化是更好的方案，不过它也不能可证明地阻止所有计时攻击，一些系统需要修改。### 形式模型。",
+            "en": "Defenses include fixed-time implementations, random delays and blinding.Kocher notes that fixed-time implementations are difficult and often slow; random delays can make measurements noisy enough to render an attack infeasible, though attackers can compensate with more samples; blinding is the better solution, but it does not provably prevent all timing attacks, and some systems need to be revised."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--timing-attack-r139-history",
+          "entryId": "attack--timing-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Kocher 在 1996 年 CRYPTO 论文中提出计时攻击，并给出针对 RSA 与 Diffie-Hellman 的防御技术。论文结论指出，时间通道有时可能危及密钥，新的协议和算法可能需要纳入防御措施。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "Kocher introduced timing attacks in his 1996 CRYPTO paper, which also presented prevention techniques for RSA and Diffie-Hellman.The conclusion notes that timing channels can sometimes compromise keys and that new protocols and algorithms may need to incorporate countermeasures."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--timing-attack-r139-refs",
+          "entryId": "attack--timing-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 计时攻击.https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 计时攻击.https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--timing-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--timing-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--timing-attack-r139-principle",
+      "entryId": "attack--timing-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：计时攻击（Timing Attack）。计时攻击通过精确测量私钥操作的执行时间推断秘密。Kocher 表明，对易受攻击的实现，攻击者可以恢复固定的 Diffie-Hellman 指数、分解 RSA 密钥并攻破其他密码系统；攻击计算代价低，通常只需已知密文。",
+        "en": "**Attack**: Timing Attack (计时攻击).A timing attack infers secrets by carefully measuring the execution time of private-key operations."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-r139-why",
+      "entryId": "attack--timing-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "密码系统的处理时间会因输入而异：性能优化、分支和条件语句、缓存命中以及非固定时间的处理器指令都会产生影响，而且耗时通常同时依赖密钥和输入数据。Kocher 指出，这些无意的时序特征可能泄露整个密钥，而不只是密钥的汉明重量。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Cryptosystems take slightly different amounts of time for different inputs because of performance optimizations, branches and conditional statements, cache hits and processor instructions with non-fixed timing, and the time typically depends on both the key and the input data.Kocher argued that such unintentional timing characteristics can leak the entire key, not merely its Hamming weight."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-r139-used",
+      "entryId": "attack--timing-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文把密码令牌、网络密码系统以及攻击者能进行较精确时间测量的其他应用列为潜在风险，并以 Diffie-Hellman、RSA 和 DSS 的私钥操作为例。攻击者可以通过被动监听交互协议记录消息并测量响应时间。",
+        "en": "The paper identifies cryptographic tokens, network-based cryptosystems and other applications where an attacker can make reasonably accurate timing measurements as potentially at risk, using Diffie-Hellman, RSA and DSS private-key operations as examples.An attacker can passively eavesdrop on an interactive protocol, record the messages and measure response times."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-r139-broken",
+      "entryId": "attack--timing-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御包括固定时间实现、随机延迟和盲化。Kocher 认为固定时间实现难以做到且往往很慢；随机延迟可以让测量噪声大到攻击不可行，但攻击者可以增加样本补偿；盲化是更好的方案，不过它也不能可证明地阻止所有计时攻击，一些系统需要修改。### 形式模型。",
+        "en": "Defenses include fixed-time implementations, random delays and blinding.Kocher notes that fixed-time implementations are difficult and often slow; random delays can make measurements noisy enough to render an attack infeasible, though attackers can compensate with more samples; blinding is the better solution, but it does not provably prevent all timing attacks, and some systems need to be revised."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-r139-history",
+      "entryId": "attack--timing-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Kocher 在 1996 年 CRYPTO 论文中提出计时攻击，并给出针对 RSA 与 Diffie-Hellman 的防御技术。论文结论指出，时间通道有时可能危及密钥，新的协议和算法可能需要纳入防御措施。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "Kocher introduced timing attacks in his 1996 CRYPTO paper, which also presented prevention techniques for RSA and Diffie-Hellman.The conclusion notes that timing channels can sometimes compromise keys and that new protocols and algorithms may need to incorporate countermeasures."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--timing-attack-r139-refs",
+      "entryId": "attack--timing-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 计时攻击.https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 计时攻击.https://zh.wikipedia.org/w/index.php?search=%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--timing-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

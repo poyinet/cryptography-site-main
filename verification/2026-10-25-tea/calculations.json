@@ -1,0 +1,42 @@
+[
+  {
+    "id": "tea-reference-vector",
+    "entryId": "tea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Zero 64-bit plaintext and zero 128-bit key, 32 TEA cycles",
+    "expected": "Ciphertext 41ea3a0a94baa940; decryption returns the zero plaintext",
+    "sourceIds": ["tea-vectors"],
+    "dependencies": ["tea-teaching.mjs"],
+    "limitations": "One author-published reference vector; not a key or message matrix."
+  },
+  {
+    "id": "tea-equivalent-keys",
+    "entryId": "tea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Key 00112233445566778899aabbccddeeff and plaintext 0123456789abcdef, plus three keys with top-bit flips",
+    "expected": "All four keys produce ciphertext 126c6b92c0653a3e",
+    "sourceIds": ["tea-extensions", "tea-vectors"],
+    "dependencies": ["tea-teaching.mjs"],
+    "limitations": "One fixed key and plaintext; it demonstrates one equivalence class, not every class."
+  },
+  {
+    "id": "tea-roundtrip",
+    "entryId": "tea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Several fixed 64-bit plaintexts and 128-bit keys",
+    "expected": "Every 32-cycle encryption decrypts back to the original plaintext",
+    "sourceIds": ["tea-vectors"],
+    "dependencies": ["tea-teaching.mjs"],
+    "limitations": "Fixed data only; not a random or exhaustive test."
+  },
+  {
+    "id": "tea-avalanche",
+    "entryId": "tea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under the all-zero 128-bit key",
+    "expected": "The ciphertexts differ in 30 bits after 32 cycles",
+    "sourceIds": ["tea-paper", "tea-vectors"],
+    "dependencies": ["tea-teaching.mjs"],
+    "limitations": "One fixed one-bit difference; it demonstrates diffusion, not an avalanche probability."
+  }
+]

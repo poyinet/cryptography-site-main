@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--crib-dragging-details",
+  "sources": [
+    {
+      "id": "attack--crib-dragging-wikipedia",
+      "title": "Wikipedia search entry for 拖crib法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%8B%96crib%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 拖crib法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--crib-dragging-r139-principle",
+          "entryId": "attack--crib-dragging-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：拖crib法（Crib Dragging）。### 密钥流重用的代数事实\n\n设两条消息 P1、P2 使用同一条密钥流 K：\n\nC1 = P1 ⊕ K，C2 = P2 ⊕ K。C1 ⊕ C2 = (P1 ⊕ K) ⊕ (P2 ⊕ K) = P1 ⊕ P2。密钥流 K 被完全消去，攻击者得到两条明文的异或。它仍然不是明文，但已经把“两条独立的加密消息”变成一个密切相关的问题。### 拖 crib 的基本操作\n\n若攻击者猜 P1 在偏移 i 处含有已知词 w（长度为 ℓ），就把 w 与 (C1⊕C2)[i…i+ℓ-1] 异或，得到 P2 在对应位置的候选片段：\n\nP2[i…i+ℓ-1] = (C1⊕C2)[i…i+ℓ-1] ⊕ w。如果候选片段可读，说明 w 很可能在 P1 中，同时 P2 的这一段也被恢复。把 w 滑过所有偏移，收集可读候选；再用语言模型、词表和更多密文交叉验证。### 从手工猜测到语言模型\n\n手工拖 crib 依赖攻击者对明文的猜测。自动化方法把候选文本按语言模型打分：对候选字符序列计算 Σ log Pr(c_j | 上下文)，保留高分路径；再用动态规划或束搜索扩展。Mason 等的论文正是把这一过程系统化，报告在真实数据上可达到很高的字符准确率。",
+            "en": "**Attack**: Crib Dragging (拖crib法).### The algebraic fact of keystream reuse\n\nLet two messages P1 and P2 use the same keystream K:\n\nC1 = P1 ⊕ K, C2 = P2 ⊕ K."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--crib-dragging-r139-why",
+          "entryId": "attack--crib-dragging-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么一次重用就致命\n\n一次性密码本的安全性依赖密钥只使用一次。两条消息共用 K 后，K 不再是未知量，而是被异或消去的公共项。攻击者不需要恢复 K，只需要利用两条明文的语言结构。### 为什么 crib 不必很长\n\n一段常见问候、HTML 标签、协议头或固定字段就足以作为锚点。候选片段可读性把“猜测是否正确”变成可检验的信号；一旦锚定，明文的两侧可以用语言模型继续扩展。### 对协议设计的含义\n\nnonce/IV 的唯一性是流密码的生命线。SIV、GCM 的 nonce 管理、随机数生成和密钥轮换都必须保证同一密钥下不重复使用同一 nonce；否则 confidentiality 和 authenticity 可能一起失效。",
+            "en": "### Why one reuse is fatal\n\nThe one-time pad relies on the key being used once.Once two messages share K, K is no longer an unknown; it is a common term cancelled by XOR."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--crib-dragging-r139-used",
+          "entryId": "attack--crib-dragging-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 分析流程\n\n1.确认两条或多条密文使用同一密钥流：检查 nonce、IV、计数器或协议实现。2.计算任意两条密文的异或，得到 P1⊕P2。3.选择可能的 crib：语言词、HTML 标签、协议头、已知文件名或固定错误消息。4.把 crib 滑过所有偏移，收集另一侧可读的候选；用词表、n-gram 或语言模型排序。5.用恢复的片段扩展相邻明文，并用第三条密文交叉验证；最后用重新加密验证假设。6.报告只能写“在假设同一密钥流下恢复的候选明文”，不能把候选当成已验证的原文。### 典型场景\n\n一次性密码本的 nonce 重用、WEP 的 IV 重用、流密码实现错误、CTF 中的 many-time pad、以及任何把计数器/随机数误用为固定值的协议。",
+            "en": "### An analysis workflow\n\n1.Confirm that two or more ciphertexts use the same keystream: inspect the nonce, IV, counter or protocol implementation."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--crib-dragging-r139-broken",
+          "entryId": "attack--crib-dragging-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.密钥流从未重用：每条消息使用独立随机密钥或唯一 nonce，异或不出 P1⊕P2。2.使用认证加密且 nonce 管理正确：密文被篡改会被拒绝，重用也会被协议检测。3.明文语言未知或高度随机：crib 无法锚定，语言模型评分失效。4.消息太短或 crib 不在任何消息中：滑动窗口没有可读候选。5.明文经过压缩/加密/编码：候选片段不呈现自然语言结构。6.只恢复片段不等于恢复全文：需要更多密文、语言模型和外部约束。拖 crib 法是已知明文/猜测明文攻击，不是万能解密器；它利用的是密钥流重用，而不是算法本身的代数弱点。报告必须说明重用证据、crib 来源和候选验证方法。",
+            "en": "### Failure conditions\n\n1.The keystream is never reused: each message uses an independent random key or a unique nonce, so XOR does not yield P1⊕P2."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--crib-dragging-r139-history",
+          "entryId": "attack--crib-dragging-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 从一次性密码本到自动化分析\n\n密钥流重用的危险在一次性密码本的理论中早已明确：同一密钥加密两条消息，异或就消去密钥。传统密码分析依赖分析者猜测常见词或协议字段，再手工滑动比对。2006 年，Mason、Watkins、Eisner 与 Stubblefield 在 CCS 上发表自动化方法：把两条密文的异或当作约束，用统计语言模型和动态规划恢复最可能的明文对，并在真实数据上报告高准确率。这把“拖 crib”从手工技巧推进为可重复的语言模型攻击。### 今天的教训\n\nWEP 的 IV 重用、流密码 nonce 管理错误和 CTF 的 many-time pad 反复说明：密钥流唯一性不是实现细节，而是安全定义的一部分。",
+            "en": "### From the one-time pad to automated analysis\n\nThe danger of keystream reuse was clear in the theory of the one-time pad: encrypt two messages under one key and XOR cancels the key.Traditional cryptanalysis relied on the analyst guessing common words or protocol fields and sliding them by hand."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--crib-dragging-r139-refs",
+          "entryId": "attack--crib-dragging-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 拖crib法.https://zh.wikipedia.org/w/index.php?search=%E6%8B%96crib%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 拖crib法.https://zh.wikipedia.org/w/index.php?search=%E6%8B%96crib%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--crib-dragging-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--crib-dragging-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--crib-dragging-r139-principle",
+      "entryId": "attack--crib-dragging-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：拖crib法（Crib Dragging）。### 密钥流重用的代数事实\n\n设两条消息 P1、P2 使用同一条密钥流 K：\n\nC1 = P1 ⊕ K，C2 = P2 ⊕ K。C1 ⊕ C2 = (P1 ⊕ K) ⊕ (P2 ⊕ K) = P1 ⊕ P2。密钥流 K 被完全消去，攻击者得到两条明文的异或。它仍然不是明文，但已经把“两条独立的加密消息”变成一个密切相关的问题。### 拖 crib 的基本操作\n\n若攻击者猜 P1 在偏移 i 处含有已知词 w（长度为 ℓ），就把 w 与 (C1⊕C2)[i…i+ℓ-1] 异或，得到 P2 在对应位置的候选片段：\n\nP2[i…i+ℓ-1] = (C1⊕C2)[i…i+ℓ-1] ⊕ w。如果候选片段可读，说明 w 很可能在 P1 中，同时 P2 的这一段也被恢复。把 w 滑过所有偏移，收集可读候选；再用语言模型、词表和更多密文交叉验证。### 从手工猜测到语言模型\n\n手工拖 crib 依赖攻击者对明文的猜测。自动化方法把候选文本按语言模型打分：对候选字符序列计算 Σ log Pr(c_j | 上下文)，保留高分路径；再用动态规划或束搜索扩展。Mason 等的论文正是把这一过程系统化，报告在真实数据上可达到很高的字符准确率。",
+        "en": "**Attack**: Crib Dragging (拖crib法).### The algebraic fact of keystream reuse\n\nLet two messages P1 and P2 use the same keystream K:\n\nC1 = P1 ⊕ K, C2 = P2 ⊕ K."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-r139-why",
+      "entryId": "attack--crib-dragging-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么一次重用就致命\n\n一次性密码本的安全性依赖密钥只使用一次。两条消息共用 K 后，K 不再是未知量，而是被异或消去的公共项。攻击者不需要恢复 K，只需要利用两条明文的语言结构。### 为什么 crib 不必很长\n\n一段常见问候、HTML 标签、协议头或固定字段就足以作为锚点。候选片段可读性把“猜测是否正确”变成可检验的信号；一旦锚定，明文的两侧可以用语言模型继续扩展。### 对协议设计的含义\n\nnonce/IV 的唯一性是流密码的生命线。SIV、GCM 的 nonce 管理、随机数生成和密钥轮换都必须保证同一密钥下不重复使用同一 nonce；否则 confidentiality 和 authenticity 可能一起失效。",
+        "en": "### Why one reuse is fatal\n\nThe one-time pad relies on the key being used once.Once two messages share K, K is no longer an unknown; it is a common term cancelled by XOR."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-r139-used",
+      "entryId": "attack--crib-dragging-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 分析流程\n\n1.确认两条或多条密文使用同一密钥流：检查 nonce、IV、计数器或协议实现。2.计算任意两条密文的异或，得到 P1⊕P2。3.选择可能的 crib：语言词、HTML 标签、协议头、已知文件名或固定错误消息。4.把 crib 滑过所有偏移，收集另一侧可读的候选；用词表、n-gram 或语言模型排序。5.用恢复的片段扩展相邻明文，并用第三条密文交叉验证；最后用重新加密验证假设。6.报告只能写“在假设同一密钥流下恢复的候选明文”，不能把候选当成已验证的原文。### 典型场景\n\n一次性密码本的 nonce 重用、WEP 的 IV 重用、流密码实现错误、CTF 中的 many-time pad、以及任何把计数器/随机数误用为固定值的协议。",
+        "en": "### An analysis workflow\n\n1.Confirm that two or more ciphertexts use the same keystream: inspect the nonce, IV, counter or protocol implementation."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-r139-broken",
+      "entryId": "attack--crib-dragging-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.密钥流从未重用：每条消息使用独立随机密钥或唯一 nonce，异或不出 P1⊕P2。2.使用认证加密且 nonce 管理正确：密文被篡改会被拒绝，重用也会被协议检测。3.明文语言未知或高度随机：crib 无法锚定，语言模型评分失效。4.消息太短或 crib 不在任何消息中：滑动窗口没有可读候选。5.明文经过压缩/加密/编码：候选片段不呈现自然语言结构。6.只恢复片段不等于恢复全文：需要更多密文、语言模型和外部约束。拖 crib 法是已知明文/猜测明文攻击，不是万能解密器；它利用的是密钥流重用，而不是算法本身的代数弱点。报告必须说明重用证据、crib 来源和候选验证方法。",
+        "en": "### Failure conditions\n\n1.The keystream is never reused: each message uses an independent random key or a unique nonce, so XOR does not yield P1⊕P2."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-r139-history",
+      "entryId": "attack--crib-dragging-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 从一次性密码本到自动化分析\n\n密钥流重用的危险在一次性密码本的理论中早已明确：同一密钥加密两条消息，异或就消去密钥。传统密码分析依赖分析者猜测常见词或协议字段，再手工滑动比对。2006 年，Mason、Watkins、Eisner 与 Stubblefield 在 CCS 上发表自动化方法：把两条密文的异或当作约束，用统计语言模型和动态规划恢复最可能的明文对，并在真实数据上报告高准确率。这把“拖 crib”从手工技巧推进为可重复的语言模型攻击。### 今天的教训\n\nWEP 的 IV 重用、流密码 nonce 管理错误和 CTF 的 many-time pad 反复说明：密钥流唯一性不是实现细节，而是安全定义的一部分。",
+        "en": "### From the one-time pad to automated analysis\n\nThe danger of keystream reuse was clear in the theory of the one-time pad: encrypt two messages under one key and XOR cancels the key.Traditional cryptanalysis relied on the analyst guessing common words or protocol fields and sliding them by hand."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--crib-dragging-r139-refs",
+      "entryId": "attack--crib-dragging-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 拖crib法.https://zh.wikipedia.org/w/index.php?search=%E6%8B%96crib%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 拖crib法.https://zh.wikipedia.org/w/index.php?search=%E6%8B%96crib%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--crib-dragging-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

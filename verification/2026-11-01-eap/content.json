@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for eap: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "eap-details",
+      "inventoryIds": [
+        "eap"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释EAP 认证框架的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Extensible Authentication Protocol: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "EAP 认证框架",
+        "en": "Extensible Authentication Protocol"
+      },
+      "claimIds": [
+        "eap-r139-principle",
+        "eap-r139-why",
+        "eap-r139-used",
+        "eap-r139-broken",
+        "eap-r139-history",
+        "eap-r139-refs"
+      ],
+      "sourceIds": [
+        "eap-wikipedia",
+        "eap-reference-ref",
+        "eap-specific"
+      ],
+      "related": [
+        "radius",
+        "eap-tls",
+        "tls12"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：EAP 认证框架（Extensible Authentication Protocol）。EAP 是框架而非某一机制：RFC 3748 §1 定义「This document defines the Extensible Authentication Protocol (EAP), an authentication framework which supports multiple authentication methods.」",
+          "why": "可扩展性来自`认证器不必认识方法`：§1 说明「Rather than requiring the authenticator to be updated to support each new authentication method, EAP permits the use of a backend authentication server, which may implement some or all authentication methods, with the authenticator acting as a pass-through for some or all methods and peers.」",
+          "used": "透传认证器只做有限的检查与转发：§2.3 规定「Compliant pass-through authenticator implementations MUST by default forward EAP packets of any Type.」而 §2.1 要求一次会话中「the peer and authenticator MUST utilize only one authentication method (Type 4 or greater) within an EAP conversation, after which the authenticator MUST send a Success or Failure packet.」",
+          "broken": "框架不承担下层协商与消息承载的安全：§7.11 指出「if the lower layer performs ciphersuite negotiation, it should be understood that EAP does not provide by itself integrity protection of that negotiation.」§2.2 另外禁止把结果与通知消息用于他途：「the Success, Failure, Nak Response(s), and Notification Request/Response messages MUST NOT be used to carry data destined for delivery to other EAP methods.」",
+          "history": "RFC 3748 于 2004 年 6 月发布为 Standards Track 并标注「Obsoletes: 2284」；§6.2 说明方法类型空间的稀缺：「The original EAP method Type space has a range from 1 to 255, and is the scarcest resource in EAP, and thus must be allocated with care.Method Types 1-45 have been allocated, with 20 available for re-use.」\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：EAP 认证框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 EAP 认证框架 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for EAP 认证框架. https://zh.wikipedia.org/w/index.php?search=EAP%20%E8%AE%A4%E8%AF%81%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3748: Extensible Authentication Protocol. https://www.rfc-editor.org/rfc/rfc3748",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP 认证框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Extensible Authentication Protocol (EAP 认证框架). EAP is a framework rather than a mechanism: §1 defines it as \"This document defines the Extensible Authentication Protocol (EAP), an authentication framework which supports multiple authentication methods.\"",
+          "why": "Extensibility comes from the authenticator not needing to know the methods: §1 explains \"Rather than requiring the authenticator to be updated to support each new authentication method, EAP permits the use of a backend authentication server, which may implement some or all authentication methods, with the authenticator acting as a pass-through for some or all methods and peers.\"",
+          "used": "A pass-through authenticator checks little and forwards: §2.3 states \"Compliant pass-through authenticator implementations MUST by default forward EAP packets of any Type.\" while §2.1 requires that \"the peer and authenticator MUST utilize only one authentication method (Type 4 or greater) within an EAP conversation, after which the authenticator MUST send a Success or Failure packet.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The framework does not secure lower-layer negotiation or carry extra data: §7.11 warns \"if the lower layer performs ciphersuite negotiation, it should be understood that EAP does not provide by itself integrity protection of that negotiation.\" and §2.2 forbids reuse of result packets: \"the Success, Failure, Nak Response(s), and Notification Request/Response messages MUST NOT be used to carry data destined for delivery to other EAP methods.\"",
+          "history": "RFC 3748 is a June 2004 Standards Track document carrying “Obsoletes: 2284”. Section 6.2 describes the scarce identifier space: \"The original EAP method Type space has a range from 1 to 255, and is the scarcest resource in EAP, and thus must be allocated with care. Method Types 1-45 have been allocated, with 20 available for re-use.\"",
+          "refs": "- Wikipedia search entry for EAP 认证框架. https://zh.wikipedia.org/w/index.php?search=EAP%20%E8%AE%A4%E8%AF%81%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3748: Extensible Authentication Protocol. https://www.rfc-editor.org/rfc/rfc3748",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nExtensible Authentication Protocol: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "认证器：转发或本地执行 EAP 方法的一端。",
+          "peer：被认证的一端。",
+          "pass-through：认证器只转发包、不解释方法层。",
+          "Type 字段：标识具体 EAP 方法。",
+          "Identifier：用于匹配请求与应答。",
+          "canned Success：链路刚建立就发出的 Success 包，默认必须静默丢弃。"
+        ],
+        "en": [
+          "Authenticator: the end that forwards or locally runs EAP methods.",
+          "Peer: the end being authenticated.",
+          "Pass-through: the authenticator forwards packets without interpreting the method layer.",
+          "Type field: identifies the specific EAP method.",
+          "Identifier: matches requests to responses.",
+          "Canned Success: a Success packet sent as soon as the link is up, which by default MUST be silently discarded."
+        ]
+      },
+      "figures": [
+        {
+          "id": "eap-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP 认证框架：为什么需要 → 核心机制 → 边界。",
+            "en": "Extensible Authentication Protocol: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EAP 认证框架 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Extensible Authentication Protocol, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eap-details-flow.zh.svg",
+            "en": "assets/eap-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ceaaa7d40d57d60f90fc6fb10961841d8908024888a5d92cd9e7b4253599f6f8",
+            "en": "57b287a8d9781409f63f647592e5eefc3f3321f370a8e29a576242013475a2af"
+          }
+        },
+        {
+          "id": "eap-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP 认证框架 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Extensible Authentication Protocol: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EAP 认证框架 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Extensible Authentication Protocol, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eap-details-r138-model.zh.svg",
+            "en": "assets/eap-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "480724eca069a140dcccb008aa1503f1cd86d00db81b6752e8c7a3ab0d57e275",
+            "en": "ca7aa2a5dc5a7e07dcfaa3cfc659f51ed8cdbe6f5d11be5d28fcdeebda96d9f3"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "eap-r139-formal",
+          "entryId": "eap-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：EAP 认证框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 EAP 认证框架 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "eap-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eap-r139-formal"
+      ],
+      "sources": [
+        "eap-wikipedia",
+        "eap-reference-ref",
+        "eap-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eap-r139-formal",
+      "entryId": "eap-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：EAP 认证框架的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 EAP 认证框架 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "eap-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

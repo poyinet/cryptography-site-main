@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R112 side-channel/standards/theory batch for cache-attack-details.",
+  "entries": [
+    {
+      "id": "cache-attack-details",
+      "inventoryIds": [
+        "cache-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R112 侧信道批次：把“缓存计时攻击”的目录身份卡改写为 AES T 表访存、Bernstein 远程实验、末轮碰撞样本、云共置攻击面与常数时间防御。",
+        "en": "R112 side-channel batch: replaced the cache-timing catalog identity card with source-backed text on AES T-table access, Bernstein's remote experiment, final-round collision sample counts, cloud co-tenancy and constant-time defences."
+      },
+      "title": {
+        "zh": "缓存计时攻击",
+        "en": "Cache timing attack"
+      },
+      "claimIds": [
+        "cache-attack-r139-principle",
+        "cache-attack-r139-why",
+        "cache-attack-r139-used",
+        "cache-attack-r139-broken",
+        "cache-attack-r139-history",
+        "cache-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "cache-attack-wikipedia",
+        "cache-attack-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "side-channel-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cache-attack-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "缓存计时攻击机制图：受害进程按 p⊕k 查 AES T 表，缓存行命中/未命中改变总时间；攻击者用已知与未知密钥剖面相关，筛出候选密钥。",
+            "en": "Cache-timing mechanism: the victim looks up AES T[p⊕k], cache-line hits or misses change total time, and the attacker correlates known-key and unknown-key profiles to filter key candidates."
+          },
+          "alt": {
+            "zh": "图中上方为明文、p⊕k、T 表、缓存行与总时间，下方为已知/未知密钥剖面、相关与全键恢复。",
+            "en": "Diagram shows plaintext, p⊕k, T-tables, cache line and total time above; known/unknown-key profiles, correlation and full-key recovery below."
+          },
+          "files": {
+            "zh": "assets/cache-attack-details-mechanism.zh.svg",
+            "en": "assets/cache-attack-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "236348b5f272a401d0e0660d5c752b06ea02f836c6646a2558f4262dd27b2881",
+            "en": "949188bc14a7b452d2237413a35c373364884ec3940d55df16c97e846ca21b2f"
+          }
+        },
+        {
+          "id": "cache-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "缓存计时攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Cache timing attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "缓存计时攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Cache timing attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cache-attack-details-r138-model.zh.svg",
+            "en": "assets/cache-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "babcbe6015491a28b8b27dfb2faa35fe81d74c7b5848af27d7ede177d51219d6",
+            "en": "95158d449eb575c8075d0b68d92438d7fe8ff114b689cebeb36019e05d72923d"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：缓存计时攻击（Cache Timing Attack）。### 查表把密钥带到缓存\n\nAES 软件常用 4 张 T 表做轮变换，每张 256 项、每项 4 字节，共 1 KB。CPU 以 64 字节缓存行取数，一项命中或未命中，整次加密的时间会差出几百个周期。第一轮查表索引是 p_i ⊕ k_i，攻击者改变明文 p，就能观察“哪个索引被缓存”。### 从时间到密钥\n\n攻击者先在相同机器上用已知密钥建立“明文字节—时间”剖面，再对未知密钥重复采样，把两条剖面按候选密钥做相关。正确候选会让两次剖面的缓存模式对齐，错误候选对不齐；逐字节筛出候选后再用已知明文-密文对穷举剩余位。",
+          "why": "AES 的快速软件实现依赖 S-box/T-table 查表，而查表地址由密钥与明文共同决定。要快要安全，就得让访存时间与地址无关；在通用 CPU 上这很难，常数时间实现往往显著变慢。只要目标与攻击者共享缓存，或攻击者能精确测量加密时间，泄漏就存在。### 远程也能测\n\nBernstein 2005 年的实验从另一台机器经网络向 OpenSSL 服务器发请求，仅凭响应时间恢复完整 AES 密钥。网络抖动会稀释信号，但大量样本仍能把统计差异拉出来；这也是“远程计时攻击”一词的来源。",
+          "used": "缓存攻击可用于跨进程、跨虚拟机、云共置、浏览器计时和嵌入式设备。它不要求读取受害者的内存，只要求共享缓存层级和足够精细的计时源；Flush+Reload 等变体进一步降低了噪声。### 防御\n\n首选 AES-NI 等常数时间硬件指令；软件可用 bitslicing、布尔 S-box 或避免秘密索引的实现。系统层可做缓存着色、核心隔离、随机化计时源和噪声注入。防守方要同时考虑性能，不能只把表查改成慢速逐位运算。",
+          "broken": "Bernstein 的原始攻击约需 2^27.5 个明文/计时样本，并要求参考机与目标机的软件、CPU、后台负载足够接近。Bonneau–Mironov 2006 把攻击移到末轮，用约 2^15 个样本恢复全键，扩展末轮约 2^13；样本少了，但仍需精确计时和同构环境。### 不是所有 AES 都怕\n\nAES-NI、常数时间 bitsliced 实现、无秘密索引的硬件协处理器不会给出这类缓存信号。攻击主要打击“快速 T-table 软件 AES”，尤其是老旧 OpenSSL、跨进程共享缓存和云多租户环境。",
+          "history": "Daniel J.Bernstein 在 2005 年发表《Cache-timing attacks on AES》，用 OpenSSL 0.9.7a 与 Pentium III 从网络服务器恢复完整 128 位 AES 密钥，并留下可复现代码。这是缓存计时攻击的标志性工作。### 2006 之后\n\nOsvik–Shamir–Tromer 在 2006 年提出 Prime+Probe 与缓存碰撞，Bonneau–Mironov 用末轮碰撞把样本降到 2^15/2^13；2014 年 Yarom–Falkner 的 Flush+Reload 把分辨率推到缓存行级。之后 Meltdown/Spectre 让缓存侧信道成为通用 CPU 安全的核心议题。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：缓存计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 缓存计时攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for 缓存计时攻击. https://zh.wikipedia.org/w/index.php?search=%E7%BC%93%E5%AD%98%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n缓存计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Cache Timing Attack (缓存计时攻击). ### Table lookups carry the key into the cache\n\nAES software often uses four T-tables, each 256 entries of 4 bytes, about 1 KB total. The CPU fetches a 64-byte cache line; a hit or miss changes the encryption time by hundreds of cycles. In the first round the lookup index is p_i ⊕ k_i, so changing plaintext p lets the attacker observe which index is cached. ### From time to key\n\nThe attacker first profiles “plaintext byte versus time” on a similar machine with a known key, then samples the unknown key and correlates the two profiles under each key hypothesis. The correct hypothesis aligns the cache patterns; wrong ones do not. After filtering byte candidates, a known plaintext-ciphertext pair brute-forces the remaining bits.",
+          "why": "Fast AES software depends on S-box/T-table lookups, and the lookup address is determined by key and plaintext. To be both fast and safe, memory access time must be independent of the address; on a general-purpose CPU that is difficult, and constant-time code is often much slower. Leakage exists whenever the target shares a cache with the attacker or the attacker can time encryption precisely.\n\nBernstein's 2005 experiment sent requests over a network to an OpenSSL server from another machine and recovered the full AES key from response time alone. Network jitter dilutes the signal, but enough samples still expose the statistical difference; this is the origin of the term “remote timing attack”.",
+          "used": "Cache attacks apply across processes, virtual machines, cloud co-tenancy, browser timing and embedded devices. They do not require reading the victim's memory, only a shared cache level and a fine-grained timing source; variants such as Flush+Reload reduce noise further.\n\nPrefer constant-time hardware instructions such as AES-NI; software can use bitslicing, Boolean S-boxes or implementations that avoid secret indices. Systems can add cache colouring, core isolation, timing-source randomisation and noise. Defenders must consider performance, not merely replace table lookups with slow bit-by-bit operations.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Bernstein's original attack needed about 2^27.5 plaintext/timing samples and required the reference and target machines to match closely in software, CPU and background load. Bonneau–Mironov moved the attack to the final round and recovered the full key with about 2^15 samples, or about 2^13 for the expanded final round; fewer samples, but still precise timing and a matched environment.\n\nAES-NI, constant-time bitsliced implementations and hardware coprocessors with no secret-indexed tables do not emit this cache signal. The attack mainly hits fast T-table software AES, especially old OpenSSL, cross-process shared caches and multi-tenant cloud hosts.",
+          "history": "Daniel J. Bernstein published “Cache-timing attacks on AES” in 2005, recovering a full 128-bit AES key from a network server running OpenSSL 0.9.7a on a Pentium III, with reproducible code. This is the landmark cache-timing attack.\n\nOsvik–Shamir–Tromer introduced Prime+Probe and cache collisions in 2006; Bonneau–Mironov used final-round collisions to cut samples to 2^15/2^13; Yarom–Falkner's 2014 Flush+Reload pushed resolution to the cache-line level. Meltdown/Spectre later made cache side channels a central general-purpose CPU security issue.",
+          "refs": "- Wikipedia search entry for 缓存计时攻击. https://zh.wikipedia.org/w/index.php?search=%E7%BC%93%E5%AD%98%E8%AE%A1%E6%97%B6%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nCache Timing Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "cache-attack-r139-formal",
+          "entryId": "cache-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：缓存计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 缓存计时攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "cache-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "cache-attack-r139-formal"
+      ],
+      "sources": [
+        "cache-attack-wikipedia",
+        "cache-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cache-attack-r139-formal",
+      "entryId": "cache-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：缓存计时攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 缓存计时攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "cache-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

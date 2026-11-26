@@ -1,0 +1,76 @@
+[
+  {
+    "id": "idea-calc-hac-encryption",
+    "entryId": "idea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "HAC Example 7.106 key 0001 0002 0003 0004 0005 0006 0007 0008 and plaintext 0000 0001 0002 0003, with the per-round subkeys and states of Table 7.12",
+    "expected": "All 48 round subkeys, the eight intermediate states, the output subkeys 0080 00c0 0100 0140 and the ciphertext 11fb ed2b 0198 6de5 match HAC",
+    "sourceIds": [
+      "hac-ch7-idea"
+    ],
+    "dependencies": [
+      "idea-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "One authoritative worked example; it validates this key and plaintext but not every key or block."
+  },
+  {
+    "id": "idea-calc-hac-decryption",
+    "entryId": "idea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The HAC Table 7.13 decryption subkeys and states for ciphertext 11fb ed2b 0198 6de5 under the same key",
+    "expected": "All nine decryption subkey rows, the eight intermediate states and the recovered plaintext 0000 0001 0002 0003 match HAC",
+    "sourceIds": [
+      "hac-ch7-idea"
+    ],
+    "dependencies": [
+      "idea-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "One authoritative worked example; it checks the inverse-subkey derivation for this key only."
+  },
+  {
+    "id": "idea-calc-gnupg-vectors",
+    "entryId": "idea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 11 known-answer vectors in GnuPG 1.4 cipher/idea.c selftest()",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns the listed plaintext",
+    "sourceIds": [
+      "gnupg-idea"
+    ],
+    "dependencies": [
+      "idea-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Eleven fixed vectors; the first duplicates the HAC example, four use different keys, and they do not cover every key or plaintext."
+  },
+  {
+    "id": "idea-calc-key-schedule",
+    "entryId": "idea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Key 0001 0002 0003 0004 0005 0006 0007 0008 and the 52-subkey schedule of HAC Algorithm 7.102 and Table 7.12",
+    "expected": "The first eight subkeys equal the eight key words; each later group is the previous 128-bit key rotated left by 25 bits; the 52nd subkey is 0140",
+    "sourceIds": [
+      "hac-ch7-idea"
+    ],
+    "dependencies": [
+      "idea-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "One key; the rotation rule is checked on this key and the GnuPG vectors exercise four other keys."
+  },
+  {
+    "id": "idea-calc-multiplication",
+    "entryId": "idea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Boundary operands for the modified multiplication modulo 2^16+1 and the additive inverse modulo 2^16",
+    "expected": "0⊗0=1, 0⊗1=0, 0100⊗0100=0, 0100^-1=ff01, 0000^-1=0000, ffff⊗ffff=4, additive inverses of 0000 and 0001 are 0000 and ffff",
+    "sourceIds": [
+      "hac-ch7-idea"
+    ],
+    "dependencies": [
+      "idea-teaching.mjs"
+    ],
+    "limitations": "Selected boundary values, not an exhaustive test of all 2^16 operands."
+  }
+]

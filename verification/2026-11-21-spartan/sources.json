@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "spartan-details",
+  "sources": [
+    {
+      "id": "spartan-wikipedia",
+      "title": "Wikipedia search entry for Spartan 证明系统",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Spartan 证明系统",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "spartan-r139-principle",
+          "entryId": "spartan-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Spartan 证明系统（Spartan）。### 透明设置的 R1CS 证明\n\nSpartan 面向 R1CS，把电路编码成低次多项式，再用 sum-check 协议做交互式证明。证明者先对电路描述做一次“计算承诺”，把 R1CS 矩阵变成可高效打开的多线性多项式；验证者只需亚线性时间检查。它不需要可信设置：所有公共参数都是公开可验证的，没有有毒废料。证明大小约在 `O(log² n)` 到 `O(√n)` 之间，验证时间 `O(n^{1-1/c})`，prover 为 `O(n)`。",
+            "en": "**Algorithm**: Spartan (Spartan 证明系统).### Transparent R1CS proofs\n\nSpartan targets R1CS: it encodes the circuit as a low-degree polynomial and runs a sum-check protocol."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        },
+        {
+          "id": "spartan-r139-why",
+          "entryId": "spartan-details",
+          "section": "why",
+          "statement": {
+            "zh": "Spartan 是第一个对任意 R1CS 实现亚线性验证的透明 zk-SNARK，且 prover 时间最优。它把“无需 ceremony”与“验证者不必重算整个电路”结合起来，填补了 Bulletproofs（验证线性）与 Groth16（需可信设置）之间的空档。对不能做可信设置、又需要较大电路的场景，Spartan 是一个有吸引力的折中。",
+            "en": "Spartan was the first transparent zk-SNARK with sublinear verification for arbitrary R1CS and a time-optimal prover.It combines “no ceremony” with “the verifier need not recompute the whole circuit”, filling the gap between Bulletproofs (linear verification) and Groth16 (trusted setup)."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        },
+        {
+          "id": "spartan-r139-used",
+          "entryId": "spartan-details",
+          "section": "used",
+          "statement": {
+            "zh": "Spartan 的 Rust 库用于 R1CS 证明、可验证状态转换和递归证明研究；它的 sum-check + 多项式承诺框架也被后续透明证明系统借鉴。它适合需要透明参数、可接受比 Groth16 更大证明的场合，而不是追求最小链上 footprint 的场景。",
+            "en": "Spartan’s Rust library is used for R1CS proofs, verifiable state transitions and recursive-proof research; its sum-check plus polynomial-commitment framework influenced later transparent proof systems.It suits transparent-parameter settings that can tolerate larger proofs than Groth16, not applications that minimize on-chain footprint."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        },
+        {
+          "id": "spartan-r139-broken",
+          "entryId": "spartan-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Spartan 的证明和验证不是常数级：验证者仍需亚线性工作，证明比 Groth16 大。它依赖离散对数、多项式承诺和随机预言机模型，不是后量子安全。计算承诺需要一次性 `O(n)` 预处理；电路频繁变化时这笔成本会重复。开源实现也需经过独立安全审计，不能把“论文证明”当成“实现安全”。### 形式模型。",
+            "en": "Spartan’s proof and verification are not constant: the verifier still does sublinear work and proofs are larger than Groth16.It relies on discrete logarithms, polynomial commitments and the random-oracle model, and is not post-quantum."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        },
+        {
+          "id": "spartan-r139-history",
+          "entryId": "spartan-details",
+          "section": "history",
+          "statement": {
+            "zh": "Srinath Setty 在 CRYPTO 2020 发表 “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup”，提出计算承诺、SPARK 编译器和 R1CS 的低次多项式编码。论文的贡献是把 sum-check、短 PCP/MIP 与多项式承诺组合成透明的通用 zkSNARK，并给出 Rust 实现与实验比较。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Spartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Srinath Setty published “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup” at CRYPTO 2020, introducing computation commitments, the SPARK compiler and a low-degree encoding of R1CS.The contribution combines sum-check, short PCP/MIP techniques and polynomial commitments into a transparent general-purpose zkSNARK, with a Rust implementation and experimental comparison."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        },
+        {
+          "id": "spartan-r139-refs",
+          "entryId": "spartan-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Spartan 证明系统.https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Spartan 证明系统.https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "spartan-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "spartan-wikipedia"
+      ]
+    },
+    {
+      "id": "spartan-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "spartan-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "spartan-r139-principle",
+      "entryId": "spartan-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Spartan 证明系统（Spartan）。### 透明设置的 R1CS 证明\n\nSpartan 面向 R1CS，把电路编码成低次多项式，再用 sum-check 协议做交互式证明。证明者先对电路描述做一次“计算承诺”，把 R1CS 矩阵变成可高效打开的多线性多项式；验证者只需亚线性时间检查。它不需要可信设置：所有公共参数都是公开可验证的，没有有毒废料。证明大小约在 `O(log² n)` 到 `O(√n)` 之间，验证时间 `O(n^{1-1/c})`，prover 为 `O(n)`。",
+        "en": "**Algorithm**: Spartan (Spartan 证明系统).### Transparent R1CS proofs\n\nSpartan targets R1CS: it encodes the circuit as a low-degree polynomial and runs a sum-check protocol."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    },
+    {
+      "id": "spartan-r139-why",
+      "entryId": "spartan-details",
+      "section": "why",
+      "statement": {
+        "zh": "Spartan 是第一个对任意 R1CS 实现亚线性验证的透明 zk-SNARK，且 prover 时间最优。它把“无需 ceremony”与“验证者不必重算整个电路”结合起来，填补了 Bulletproofs（验证线性）与 Groth16（需可信设置）之间的空档。对不能做可信设置、又需要较大电路的场景，Spartan 是一个有吸引力的折中。",
+        "en": "Spartan was the first transparent zk-SNARK with sublinear verification for arbitrary R1CS and a time-optimal prover.It combines “no ceremony” with “the verifier need not recompute the whole circuit”, filling the gap between Bulletproofs (linear verification) and Groth16 (trusted setup)."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    },
+    {
+      "id": "spartan-r139-used",
+      "entryId": "spartan-details",
+      "section": "used",
+      "statement": {
+        "zh": "Spartan 的 Rust 库用于 R1CS 证明、可验证状态转换和递归证明研究；它的 sum-check + 多项式承诺框架也被后续透明证明系统借鉴。它适合需要透明参数、可接受比 Groth16 更大证明的场合，而不是追求最小链上 footprint 的场景。",
+        "en": "Spartan’s Rust library is used for R1CS proofs, verifiable state transitions and recursive-proof research; its sum-check plus polynomial-commitment framework influenced later transparent proof systems.It suits transparent-parameter settings that can tolerate larger proofs than Groth16, not applications that minimize on-chain footprint."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    },
+    {
+      "id": "spartan-r139-broken",
+      "entryId": "spartan-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Spartan 的证明和验证不是常数级：验证者仍需亚线性工作，证明比 Groth16 大。它依赖离散对数、多项式承诺和随机预言机模型，不是后量子安全。计算承诺需要一次性 `O(n)` 预处理；电路频繁变化时这笔成本会重复。开源实现也需经过独立安全审计，不能把“论文证明”当成“实现安全”。### 形式模型。",
+        "en": "Spartan’s proof and verification are not constant: the verifier still does sublinear work and proofs are larger than Groth16.It relies on discrete logarithms, polynomial commitments and the random-oracle model, and is not post-quantum."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    },
+    {
+      "id": "spartan-r139-history",
+      "entryId": "spartan-details",
+      "section": "history",
+      "statement": {
+        "zh": "Srinath Setty 在 CRYPTO 2020 发表 “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup”，提出计算承诺、SPARK 编译器和 R1CS 的低次多项式编码。论文的贡献是把 sum-check、短 PCP/MIP 与多项式承诺组合成透明的通用 zkSNARK，并给出 Rust 实现与实验比较。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Spartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Srinath Setty published “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup” at CRYPTO 2020, introducing computation commitments, the SPARK compiler and a low-degree encoding of R1CS.The contribution combines sum-check, short PCP/MIP techniques and polynomial commitments into a transparent general-purpose zkSNARK, with a Rust implementation and experimental comparison."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    },
+    {
+      "id": "spartan-r139-refs",
+      "entryId": "spartan-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Spartan 证明系统.https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Spartan 证明系统.https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "spartan-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

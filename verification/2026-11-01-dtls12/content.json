@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for dtls12: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "dtls12-details",
+      "inventoryIds": [
+        "dtls12"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「DTLS 1.2」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of DTLS 1.2: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "DTLS 1.2",
+        "en": "DTLS 1.2"
+      },
+      "claimIds": [
+        "dtls12-r139-principle",
+        "dtls12-r139-why",
+        "dtls12-r139-used",
+        "dtls12-r139-broken",
+        "dtls12-r139-history",
+        "dtls12-r139-refs"
+      ],
+      "sourceIds": [
+        "dtls12-wikipedia",
+        "dtls12-reference-ref"
+      ],
+      "related": [
+        "dtls10",
+        "dtls13",
+        "tls12"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：DTLS 1.2（DTLS 1.2）。摘要给出定位：「This document specifies version 1.2 of the Datagram Transport Layer Security (DTLS) protocol.The DTLS protocol provides communications privacy for datagram protocols.」并说明「This document updates DTLS 1.0 to work with TLS version 1.2.」",
+          "why": "版本号的对齐策略写在 §1：「There is no DTLS 1.1; that version number was skipped in order to harmonize version numbers with TLS.」算法层则直接继承 TLS 1.2——§4.1.2.4 说明「The existing AEAD cipher suites, defined in [ECCGCM] and [RSAGCM], can be used with DTLS exactly as with TLS 1.2.」",
+          "used": "与 TLS 最大的行为差异是容错：§4.1.2.7 规定无效记录「In general, invalid records SHOULD be silently discarded, thus preserving the association; however, an error MAY be logged for diagnostic purposes.」记录层本身则与 TLS 1.2 几乎相同，「The only change is the inclusion of an explicit sequence number in the record.」",
+          "broken": "选择告警的代价被明确劝阻：实现若对无效记录产生告警，「MUST generate fatal level alerts to avoid attacks where the attacker repeatedly probes the implementation to see how it responds to various types of error.」，而在 UDP 上「this practice is NOT RECOMMENDED for such transports.」§4.1 另要求 epoch 与序号唯一——「implementations MUST NOT allow the same epoch value to be reused within two times the TCP maximum segment lifetime.」",
+          "history": "RFC 6347 头部为 E.Rescorla（RTFM, Inc.）与 N.Modadugu（Google, Inc.），类别 Standards Track，2012 年 1 月，带 ISSN 行并标注「Obsoletes: 4347」，没有 Updates 行；§8 的「Changes since DTLS 1.0」把与 TLS 1.2 对齐、AEAD 一节的加入等改动逐项列出。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：DTLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 DTLS 1.2 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for DTLS 1.2. https://zh.wikipedia.org/w/index.php?search=DTLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nDTLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: DTLS 1.2 (DTLS 1.2). The abstract sets the scope: \"This document specifies version 1.2 of the Datagram Transport Layer Security (DTLS) protocol. The DTLS protocol provides communications privacy for datagram protocols.\" and adds \"This document updates DTLS 1.0 to work with TLS version 1.2.\"",
+          "why": "Section 1 explains the numbering: \"There is no DTLS 1.1; that version number was skipped in order to harmonize version numbers with TLS.\" The algorithm layer inherits TLS 1.2 outright — §4.1.2.4 says \"The existing AEAD cipher suites, defined in [ECCGCM] and [RSAGCM], can be used with DTLS exactly as with TLS 1.2.\"",
+          "used": "The behavioural difference from TLS is fault tolerance: §4.1.2.7 says \"In general, invalid records SHOULD be silently discarded, thus preserving the association; however, an error MAY be logged for diagnostic purposes.\" The record layer itself is near-identical, \"The only change is the inclusion of an explicit sequence number in the record.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Choosing alerts is actively discouraged: such implementations \"MUST generate fatal level alerts to avoid attacks where the attacker repeatedly probes the implementation to see how it responds to various types of error.\", and over UDP \"this practice is NOT RECOMMENDED for such transports.\" Section 4.1 adds that \"implementations MUST NOT allow the same epoch value to be reused within two times the TCP maximum segment lifetime.\"",
+          "history": "The RFC 6347 header lists E. Rescorla (RTFM, Inc.) and N. Modadugu (Google, Inc.), Category: Standards Track, January 2012, with an ISSN line and “Obsoletes: 4347” and no Updates line; §8 \"Changes since DTLS 1.0\" enumerates the alignment with TLS 1.2, the new AEAD section and the rest.",
+          "refs": "- Wikipedia search entry for DTLS 1.2. https://zh.wikipedia.org/w/index.php?search=DTLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nDTLS 1.2: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "与 TLS 1.2 对齐：以增量方式改写 TLS 1.2。",
+          "没有 DTLS 1.1：版本号跳过以与 TLS 同步。",
+          "AEAD 套件复用：与 TLS 1.2 完全一致地使用。",
+          "静默丢弃：无效记录的默认处置。",
+          "致命告警：一旦选择告警就必须 fatal。",
+          "epoch 复用限制：两倍 TCP MSL 内不得复用。"
+        ],
+        "en": [
+          "Aligned with TLS 1.2: presented as deltas on TLS 1.2.",
+          "No DTLS 1.1: the number was skipped to stay in step with TLS.",
+          "AEAD suites reused: usable exactly as in TLS 1.2.",
+          "Silent discard: the default handling of invalid records.",
+          "Fatal alerts only: if alerting, it must be fatal.",
+          "Epoch reuse limit: no reuse within twice the TCP maximum segment lifetime."
+        ]
+      },
+      "figures": [
+        {
+          "id": "dtls12-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DTLS 1.2：为什么需要 → 核心机制 → 边界。",
+            "en": "DTLS 1.2: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "DTLS 1.2 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for DTLS 1.2, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/dtls12-details-flow.zh.svg",
+            "en": "assets/dtls12-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ea071626be2074e3e1c692ff2e508f1205a3d0baae71b03f8a67f79811a7b0ae",
+            "en": "730580f0a683b5dfd4aa3bb788eea7e45041bd66090e3d6e459d1f4791228fe7"
+          }
+        },
+        {
+          "id": "dtls12-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "DTLS 1.2 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for DTLS 1.2: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "DTLS 1.2 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for DTLS 1.2, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/dtls12-details-r138-model.zh.svg",
+            "en": "assets/dtls12-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9df7500ca49e9ff59372b6cc5dc05cdfa2efc818708d7f9dccf4cc6d4906bc55",
+            "en": "77eefbe7acfa30eb97047386b22644247ab27582ef79ef76c20c8aea02fa912b"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "dtls12-r139-formal",
+          "entryId": "dtls12-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：DTLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 DTLS 1.2 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "dtls12-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "dtls12-r139-formal"
+      ],
+      "sources": [
+        "dtls12-wikipedia",
+        "dtls12-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "dtls12-r139-formal",
+      "entryId": "dtls12-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：DTLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 DTLS 1.2 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "dtls12-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

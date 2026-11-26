@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "d08-block-ciphers-details",
+  "sources": [
+    {
+      "id": "d08-block-ciphers-wikipedia",
+      "title": "Wikipedia search entry for 对称分组密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E7%A7%B0%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 对称分组密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "d08-block-ciphers-r139-principle",
+          "entryId": "d08-block-ciphers-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**领域**：对称分组密码（Symmetric Block Ciphers）。本概览采用手册的定义 1.26，整句印在 hac1.txt:510：「A block cipher is an encryption scheme which breaks up the plaintext messages to be transmitted into strings (called blocks) of a fixed length t over an alphabet A, and encrypts one block at a time.」（分组密码是这样一种加密方案：把要传输的明文消息切成字母表 A 上定长 t 的串（称为分组），并一次只加密一个分组）。全部结构由两个参数承担——分组长 t 与字母表 A——而定长这一点，正是下文的包装工作要为不是整数个分组的消息去解决的事。上一行把这个族放进对称加密的二分法中：「There are two classes of symmetric-key encryption schemes which are commonly distinguished: block ciphers and stream ciphers.」（通常区分类对称密钥加密方案：分组密码与流密码）（hac1.txt:509）。下一行既宣称这一族的主导地位，也给出它的内部结构：「Most well-known symmetric-key encryption techniques are block ciphers.",
+            "en": "**Domain**: Symmetric Block Ciphers.It is registered under symmetric block ciphers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        },
+        {
+          "id": "d08-block-ciphers-r139-why",
+          "entryId": "d08-block-ciphers-details",
+          "section": "why",
+          "statement": {
+            "zh": "设计者自己采用的模型正是现代标准继承的那个。rijndael-design.txt:710 把分组密码写作置换族：首句的分组长与密钥长带下标，本抽取件把下标压到基线，故此处转述；被引用的紧随其后的那一无下标分句是 「This set contains a Boolean permutation for each value of the cipher key k.」（对密钥 k 的每一个取值，该集合包含一个布尔置换）。每个密钥对应一个置换——同一算法因而是许多个密码，而解密恰为逆置换。设计理由随后以清单给出，引入句在 :715：「For a block cipher to be up to its task, it has to fulfil two requirements:」（一个分组密码要称职，必须满足两条要求）；第一项是效率（置换及其逆在广泛平台上都高效，:716，此处转述），第二项是 「2.Security.It must be impossible to exploit knowledge of the internal structure of the cipher in cryptographic attacks.」（2.安全性：必须不可能在密码攻击中利用对密码内部结构的了解）（:717）。一个对象如何同时满足两者？",
+            "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        },
+        {
+          "id": "d08-block-ciphers-r139-used",
+          "entryId": "d08-block-ciphers-details",
+          "section": "used",
+          "statement": {
+            "zh": "术语表用三个词目说清了原语、族的成员与包装方式，本概览的用途故事取自它们，而不是取自某个具体密码。在 block cipher 词目（rfc4949.txt:2107）下，定义是 「An encryption algorithm that breaks plain text into fixed-size       segments and uses the same key to transform each plaintext segment       into a fixed-size segment of cipher text.」（把明文切成定长段、用同一密钥把每个明文段变换成定长密文段的加密算法），同一条目以举例方式点出这一族：「Examples: AES, Blowfish,       DEA, IDEA, RC2, and SKIPJACK.」（例如 AES、Blowfish、DEA、IDEA、RC2 与 SKIPJACK）（:2110-2111）——这里只把它报告为该术语表自己的成员清单，不对这些密码多说一字，它们在本目录各有自己的行。包装写在同条目的 Tutorial 行：「A block cipher can be adapted to have a different       external interface, such as that of a stream cipher, by using a       mode of cryptographic operation to package the basic algorithm.",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        },
+        {
+          "id": "d08-block-ciphers-r139-broken",
+          "entryId": "d08-block-ciphers-details",
+          "section": "broken",
+          "statement": {
+            "zh": "三条边界都由本章自己说出。第一条是穷举，定义在 hac1.txt:436：「An encryption scheme can be broken by trying all possible keys to see which one the communicating parties are using (assuming that the class of encryption functions is public knowledge).This is called an exhaustive search of the key space.」（假定加密函数类是公知的，一种加密方案可以靠试遍所有密钥、看哪一个是通信双方所用的而被破掉；这称为对密钥空间的穷举搜索）。同一行接着说密钥空间应大到让这条路在计算上不可行，而设计者的目标就是让它成为所能得到的最好攻击——这正是争论一个分组密码密钥长度时所依据的全部标准。第二条边界是缺乏证明：本章在列举公钥加密的缺点时，于 hac1.txt:1008 用一个括注顺带承认了对称一侧的同样处境——「No public-key scheme has been proven to be secure (the same can be said for block ciphers).」（没有公钥方案被证明是安全的（分组密码同样如此）。这份让步是对称的，也是该条目目不对整个类别陈述安全定理的原因。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        },
+        {
+          "id": "d08-block-ciphers-r139-history",
+          "entryId": "d08-block-ciphers-details",
+          "section": "history",
+          "statement": {
+            "zh": "登记件能让这份概览定年的，是包装方式的标准化，而不是任何一个密码。该建议在 sp800-38a.txt:72-74 自陈范围：「This recommendation defines five confidentiality modes of operation for use with an underlying symmetric key block cipher algorithm: Electronic Codebook (ECB), Cipher Block Chaining」（本建议定义五种保密性工作模式，用于作为底层的对称密钥分组密码算法：电码本 ECB、密码分组链接）；清单在下一行继续列出 CFB、OFB 与 CTR，故引文止于行尾。它改了什么，是相对一个前件说出的（:303-304）：「FIPS Pub.",
+            "en": "Registered period: its registered period.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        },
+        {
+          "id": "d08-block-ciphers-r139-refs",
+          "entryId": "d08-block-ciphers-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 对称分组密码.https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E7%A7%B0%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013).https://link.springer.com/book/10.1007/978-3-319-01628-3。",
+            "en": "- Wikipedia search entry for 对称分组密码.https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E7%A7%B0%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "d08-block-ciphers-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "d08-block-ciphers-wikipedia"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-reference-ref",
+      "title": "A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)",
+      "url": "https://link.springer.com/book/10.1007/978-3-319-01628-3",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level historical reference; chapter locator follows the person/event family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "d08-block-ciphers-r139-principle",
+      "entryId": "d08-block-ciphers-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**领域**：对称分组密码（Symmetric Block Ciphers）。本概览采用手册的定义 1.26，整句印在 hac1.txt:510：「A block cipher is an encryption scheme which breaks up the plaintext messages to be transmitted into strings (called blocks) of a fixed length t over an alphabet A, and encrypts one block at a time.」（分组密码是这样一种加密方案：把要传输的明文消息切成字母表 A 上定长 t 的串（称为分组），并一次只加密一个分组）。全部结构由两个参数承担——分组长 t 与字母表 A——而定长这一点，正是下文的包装工作要为不是整数个分组的消息去解决的事。上一行把这个族放进对称加密的二分法中：「There are two classes of symmetric-key encryption schemes which are commonly distinguished: block ciphers and stream ciphers.」（通常区分类对称密钥加密方案：分组密码与流密码）（hac1.txt:509）。下一行既宣称这一族的主导地位，也给出它的内部结构：「Most well-known symmetric-key encryption techniques are block ciphers.",
+        "en": "**Domain**: Symmetric Block Ciphers.It is registered under symmetric block ciphers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-r139-why",
+      "entryId": "d08-block-ciphers-details",
+      "section": "why",
+      "statement": {
+        "zh": "设计者自己采用的模型正是现代标准继承的那个。rijndael-design.txt:710 把分组密码写作置换族：首句的分组长与密钥长带下标，本抽取件把下标压到基线，故此处转述；被引用的紧随其后的那一无下标分句是 「This set contains a Boolean permutation for each value of the cipher key k.」（对密钥 k 的每一个取值，该集合包含一个布尔置换）。每个密钥对应一个置换——同一算法因而是许多个密码，而解密恰为逆置换。设计理由随后以清单给出，引入句在 :715：「For a block cipher to be up to its task, it has to fulfil two requirements:」（一个分组密码要称职，必须满足两条要求）；第一项是效率（置换及其逆在广泛平台上都高效，:716，此处转述），第二项是 「2.Security.It must be impossible to exploit knowledge of the internal structure of the cipher in cryptographic attacks.」（2.安全性：必须不可能在密码攻击中利用对密码内部结构的了解）（:717）。一个对象如何同时满足两者？",
+        "en": "It is listed because it connects concrete records, objects or procedures in symmetric block ciphers, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-r139-used",
+      "entryId": "d08-block-ciphers-details",
+      "section": "used",
+      "statement": {
+        "zh": "术语表用三个词目说清了原语、族的成员与包装方式，本概览的用途故事取自它们，而不是取自某个具体密码。在 block cipher 词目（rfc4949.txt:2107）下，定义是 「An encryption algorithm that breaks plain text into fixed-size       segments and uses the same key to transform each plaintext segment       into a fixed-size segment of cipher text.」（把明文切成定长段、用同一密钥把每个明文段变换成定长密文段的加密算法），同一条目以举例方式点出这一族：「Examples: AES, Blowfish,       DEA, IDEA, RC2, and SKIPJACK.」（例如 AES、Blowfish、DEA、IDEA、RC2 与 SKIPJACK）（:2110-2111）——这里只把它报告为该术语表自己的成员清单，不对这些密码多说一字，它们在本目录各有自己的行。包装写在同条目的 Tutorial 行：「A block cipher can be adapted to have a different       external interface, such as that of a stream cipher, by using a       mode of cryptographic operation to package the basic algorithm.",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-r139-broken",
+      "entryId": "d08-block-ciphers-details",
+      "section": "broken",
+      "statement": {
+        "zh": "三条边界都由本章自己说出。第一条是穷举，定义在 hac1.txt:436：「An encryption scheme can be broken by trying all possible keys to see which one the communicating parties are using (assuming that the class of encryption functions is public knowledge).This is called an exhaustive search of the key space.」（假定加密函数类是公知的，一种加密方案可以靠试遍所有密钥、看哪一个是通信双方所用的而被破掉；这称为对密钥空间的穷举搜索）。同一行接着说密钥空间应大到让这条路在计算上不可行，而设计者的目标就是让它成为所能得到的最好攻击——这正是争论一个分组密码密钥长度时所依据的全部标准。第二条边界是缺乏证明：本章在列举公钥加密的缺点时，于 hac1.txt:1008 用一个括注顺带承认了对称一侧的同样处境——「No public-key scheme has been proven to be secure (the same can be said for block ciphers).」（没有公钥方案被证明是安全的（分组密码同样如此）。这份让步是对称的，也是该条目目不对整个类别陈述安全定理的原因。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-r139-history",
+      "entryId": "d08-block-ciphers-details",
+      "section": "history",
+      "statement": {
+        "zh": "登记件能让这份概览定年的，是包装方式的标准化，而不是任何一个密码。该建议在 sp800-38a.txt:72-74 自陈范围：「This recommendation defines five confidentiality modes of operation for use with an underlying symmetric key block cipher algorithm: Electronic Codebook (ECB), Cipher Block Chaining」（本建议定义五种保密性工作模式，用于作为底层的对称密钥分组密码算法：电码本 ECB、密码分组链接）；清单在下一行继续列出 CFB、OFB 与 CTR，故引文止于行尾。它改了什么，是相对一个前件说出的（:303-304）：「FIPS Pub.",
+        "en": "Registered period: its registered period.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    },
+    {
+      "id": "d08-block-ciphers-r139-refs",
+      "entryId": "d08-block-ciphers-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 对称分组密码.https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E7%A7%B0%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013).https://link.springer.com/book/10.1007/978-3-319-01628-3。",
+        "en": "- Wikipedia search entry for 对称分组密码.https://zh.wikipedia.org/w/index.php?search=%E5%AF%B9%E7%A7%B0%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "d08-block-ciphers-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

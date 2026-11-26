@@ -1,0 +1,177 @@
+{
+  "results": [
+    {
+      "id": "cbc-official-vector",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "SP 800-38A Appendix F.2 AES-128-CBC four-block vector",
+      "expected": "All four ciphertext blocks match the NIST values; decryption with the same IV recovers all four plaintext blocks",
+      "observed": {
+        "id": "cbc-official-vector",
+        "passed": true,
+        "blocks": 4,
+        "ciphertext": "7649abac8119b246cee98e9b12e9197d5086cb9b507219ee95db113a917678b273bed6b8e3c1743b7116e69e222295163ff1caa1681fac09120eca307586e1a7",
+        "limit": "One official four-block case; not protocol validation."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    },
+    {
+      "id": "cbc-iv-effect",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "Fixed AES-128 key and first plaintext block under different IVs, including a one-bit IV change",
+      "expected": "Different IVs change the first ciphertext block; the same IV reproduces it; flipping an IV bit flips the same bit in P1 only",
+      "observed": {
+        "id": "cbc-iv-effect",
+        "passed": true,
+        "ivA": "000102030405060708090a0b0c0d0e0f",
+        "ivB": "000102030405060708090a0b0c0d0e10",
+        "firstCipherA": "7649abac8119b246cee98e9b12e9197d",
+        "firstCipherB": "1f95b7c535356f1b28f98e269602ac12",
+        "limit": "Structural IV demonstration; no chosen-plaintext attack."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    },
+    {
+      "id": "cbc-bitflip",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "Four-block AES-128-CBC ciphertext with one bit flipped in C2",
+      "expected": "P2 is corrupted, the same bit of P3 flips, and P1 and P4 are unchanged",
+      "observed": {
+        "id": "cbc-bitflip",
+        "passed": true,
+        "tamperedCiphertext": "7649abac8119b246cee98e9b12e9197dd086cb9b507219ee95db113a917678b273bed6b8e3c1743b7116e69e222295163ff1caa1681fac09120eca307586e1a7",
+        "decrypted": "6bc1bee22e409f96e93d7e117393172a9072e8c6a556672a504afdf0f52f0022b0c81c46a35ce411e5fbc1191a0a52eff69f2445df4f9b17ad2b417be66c3710",
+        "limit": "Malleability demonstration on fixed data; not a full oracle attack."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    },
+    {
+      "id": "cbc-propagation",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "Four-block plaintext encrypted twice under the same key and IV, changing only P2",
+      "expected": "C1 is unchanged; C2, C3 and C4 all change because encryption chaining propagates the change",
+      "observed": {
+        "id": "cbc-propagation",
+        "passed": true,
+        "baseline": "7649abac8119b246cee98e9b12e9197d5086cb9b507219ee95db113a917678b273bed6b8e3c1743b7116e69e222295163ff1caa1681fac09120eca307586e1a7",
+        "modified": "7649abac8119b246cee98e9b12e9197d8b880ffb6d4e18fa9833cab1697ed1f29e8dfbd4340e268a3c823bbfa6c81d1685faf1680459341fddb02184ef6f3220",
+        "firstBlockUnchanged": true,
+        "laterBlocksChanged": true,
+        "limit": "Encryption-chaining demonstration only."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    },
+    {
+      "id": "cbc-padding",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "20-byte and 16-byte plaintexts padded with the CMS/PKCS#7 rule for a 16-byte block",
+      "expected": "20 bytes become 32 with twelve 0x0c bytes; 16 bytes become 32 with sixteen 0x10 bytes; unpadding restores both",
+      "observed": {
+        "id": "cbc-padding",
+        "passed": true,
+        "originalBytes": 20,
+        "paddedBytes": 32,
+        "paddingBytes": 12,
+        "fullBlockAdds": 16,
+        "invalidPaddingRejected": true,
+        "limit": "Padding mechanics only; no oracle behavior."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    },
+    {
+      "id": "cbc-birthday",
+      "entryId": "cbc-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "8169e91083a48e98be0ebaec76d9bc0e0211f3c7d907df1e5c300608967c3ae1",
+      "dependencyHashes": {
+        "cbc-teaching.mjs": "32d081722550369134263f6e3b0a49060e69b0300cacdfea74c0f6fb607860e8",
+        "article.zh.md": "7512102da1b3bb3ed653b4d5f40cc33c430fcd5b98365f9c9a35ec6356015087",
+        "article.en.md": "cc55388342557a43478e434c523ffac4dcc817d639d88548cf3e67a5a1aaee64",
+        "meta.json": "2bda2841c9e19644a2614650a07db5b81707ece2e6aca80af85cd2542349ad9a",
+        "glossary.json": "b4e2c30382641b32ed9a4af44341143243486c1032987a7f3f6c5c318e856d3a",
+        "calculations.json": "b5d404775ee2a9556e7ce97f39413a88f0fe6ceb9954544f511dc5296c9bddd5"
+      },
+      "inputs": "Birthday collision probability for 64-bit ciphertext blocks at 2^32 and 2^32.5 blocks",
+      "expected": "Probability is about 39.3% at 2^32 blocks and about 63.2% at 2^32.5 blocks",
+      "observed": {
+        "id": "cbc-birthday",
+        "passed": true,
+        "blockBits": 64,
+        "blocks": "4294967296",
+        "bytes": "34359738368",
+        "gibibytes": "32",
+        "probabilityAt2Pow32": 0.39346934021675706,
+        "probabilityAt2Pow32_5": 0.6321205587679913,
+        "limit": "Birthday arithmetic only; not a protocol attack model."
+      },
+      "contentSha256": "1d39c7ea2bc8b2aa44d2784e84fefa99d42fa160526fdd0e8087a17c472896e2",
+      "sourcesSha256": "86fc17d8d992294f31e07919c7816e61eb290efd4dd0ea937f3803fd8060ab3d",
+      "executedOn": "2026-11-25T07:03:15.657Z"
+    }
+  ]
+}

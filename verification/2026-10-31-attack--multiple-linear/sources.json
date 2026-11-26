@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--multiple-linear-details",
+  "sources": [
+    {
+      "id": "attack--multiple-linear-wikipedia",
+      "title": "Wikipedia search entry for 多重线性",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 多重线性",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--multiple-linear-r139-principle",
+          "entryId": "attack--multiple-linear-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：多重线性（Multiple Linear Cryptanalysis）。多重线性分析同时使用多条线性近似，把每条近似给出的信息合并起来，用最大似然或线性方程组方法恢复密钥。",
+            "en": "**Attack**: Multiple Linear Cryptanalysis (多重线性).Multiple linear cryptanalysis uses several linear approximations at once, combines the information from each, and recovers the key by maximum likelihood or linear-system methods."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--multiple-linear-r139-why",
+          "entryId": "attack--multiple-linear-details",
+          "section": "why",
+          "statement": {
+            "zh": "单条近似只利用一个偏差，浪费了其他可用信息；多条近似可以显著降低数据和时间复杂度，论文给出 Algorithm 1 和 Algorithm 2 的统一增益公式。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "A single approximation exploits only one bias and wastes other available information; multiple approximations can significantly reduce data and time complexity, and the paper gives unified gain formulas for Algorithms 1 and 2.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--multiple-linear-r139-used",
+          "entryId": "attack--multiple-linear-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文在缩减轮 DES 上验证方法：Algorithm 1 的数据和时间复杂度降低数个数量级；Algorithm 2 的数据量约降低到原来的二分之一，搜索阶段降低数个数量级，论文认为它可能优于当时对完整 DES 的最佳攻击。",
+            "en": "The paper benchmarks the method on reduced-round DES: Algorithm 1 reduces data and time complexity by several orders of magnitude, while Algorithm 2 roughly halves the data and reduces the search phase by several orders, which the paper suggests may outperform the best full-DES attacks at the time.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--multiple-linear-r139-broken",
+          "entryId": "attack--multiple-linear-details",
+          "section": "broken",
+          "statement": {
+            "zh": "效果取决于可用近似的数量、偏差和统计独立性；需要足够多的数据和正确的最大似然模型，近似之间相关或模型错误会削弱增益。",
+            "en": "Effectiveness depends on the number, bias and statistical independence of available approximations; it needs sufficient data and a correct maximum-likelihood model, and correlation among approximations or model errors reduce the gain.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--multiple-linear-r139-history",
+          "entryId": "attack--multiple-linear-details",
+          "section": "history",
+          "statement": {
+            "zh": "Biryukov、De Cannière 和 Quisquater 在 2004 年 CRYPTO 论文中给出多重线性近似的统一统计框架和增益公式。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「多重线性」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：多重线性的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 多重线性 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Biryukov, De Cannière and Quisquater gave a unified statistical framework and gain formulas for multiple linear approximations in their 2004 CRYPTO paper.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--multiple-linear-r139-refs",
+          "entryId": "attack--multiple-linear-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 多重线性.https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 多重线性.https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--multiple-linear-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--multiple-linear-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--multiple-linear-r139-principle",
+      "entryId": "attack--multiple-linear-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：多重线性（Multiple Linear Cryptanalysis）。多重线性分析同时使用多条线性近似，把每条近似给出的信息合并起来，用最大似然或线性方程组方法恢复密钥。",
+        "en": "**Attack**: Multiple Linear Cryptanalysis (多重线性).Multiple linear cryptanalysis uses several linear approximations at once, combines the information from each, and recovers the key by maximum likelihood or linear-system methods."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-r139-why",
+      "entryId": "attack--multiple-linear-details",
+      "section": "why",
+      "statement": {
+        "zh": "单条近似只利用一个偏差，浪费了其他可用信息；多条近似可以显著降低数据和时间复杂度，论文给出 Algorithm 1 和 Algorithm 2 的统一增益公式。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "A single approximation exploits only one bias and wastes other available information; multiple approximations can significantly reduce data and time complexity, and the paper gives unified gain formulas for Algorithms 1 and 2.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-r139-used",
+      "entryId": "attack--multiple-linear-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文在缩减轮 DES 上验证方法：Algorithm 1 的数据和时间复杂度降低数个数量级；Algorithm 2 的数据量约降低到原来的二分之一，搜索阶段降低数个数量级，论文认为它可能优于当时对完整 DES 的最佳攻击。",
+        "en": "The paper benchmarks the method on reduced-round DES: Algorithm 1 reduces data and time complexity by several orders of magnitude, while Algorithm 2 roughly halves the data and reduces the search phase by several orders, which the paper suggests may outperform the best full-DES attacks at the time.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-r139-broken",
+      "entryId": "attack--multiple-linear-details",
+      "section": "broken",
+      "statement": {
+        "zh": "效果取决于可用近似的数量、偏差和统计独立性；需要足够多的数据和正确的最大似然模型，近似之间相关或模型错误会削弱增益。",
+        "en": "Effectiveness depends on the number, bias and statistical independence of available approximations; it needs sufficient data and a correct maximum-likelihood model, and correlation among approximations or model errors reduce the gain.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-r139-history",
+      "entryId": "attack--multiple-linear-details",
+      "section": "history",
+      "statement": {
+        "zh": "Biryukov、De Cannière 和 Quisquater 在 2004 年 CRYPTO 论文中给出多重线性近似的统一统计框架和增益公式。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「多重线性」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：多重线性的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 多重线性 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Biryukov, De Cannière and Quisquater gave a unified statistical framework and gain formulas for multiple linear approximations in their 2004 CRYPTO paper.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--multiple-linear-r139-refs",
+      "entryId": "attack--multiple-linear-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 多重线性.https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 多重线性.https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--multiple-linear-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

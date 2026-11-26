@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R112 side-channel/standards/theory batch for euf-cma-details.",
+  "entries": [
+    {
+      "id": "euf-cma-details",
+      "inventoryIds": [
+        "euf-cma"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R112 理论批次：把“存在性不可伪造”的目录身份卡改写为 EUF-CMA 游戏、攻击/结果层级、GMR 1988 构造、SUF-CMA 边界与现代签名位置。",
+        "en": "R112 theory batch: replaced the existential-unforgeability catalog identity card with source-backed text on the EUF-CMA game, the attack/outcome hierarchy, the GMR 1988 construction, SUF-CMA boundaries and the modern signature position."
+      },
+      "title": {
+        "zh": "EUF-CMA 签名不可伪造",
+        "en": "EUF-CMA signature unforgeability"
+      },
+      "claimIds": [
+        "euf-cma-r139-principle",
+        "euf-cma-r139-why",
+        "euf-cma-r139-used",
+        "euf-cma-r139-broken",
+        "euf-cma-r139-history",
+        "euf-cma-r139-refs"
+      ],
+      "sourceIds": [
+        "euf-cma-wikipedia",
+        "euf-cma-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "euf-cma-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EUF-CMA 机制图：挑战者持有 sk 并开放签名 oracle，对手自适应查询后输出未查询消息的有效签名；底部标出 SUF-CMA 与 GMR 1988。",
+            "en": "EUF-CMA mechanism: the challenger holds sk and opens a signing oracle; the adversary queries adaptively and outputs a valid signature on an unqueried message; SUF-CMA and GMR 1988 are noted below."
+          },
+          "alt": {
+            "zh": "图中左侧为挑战者与签名 oracle，右侧为对手与伪造输出，箭头标出 pk 与 σ_i 的交换。",
+            "en": "Diagram shows the challenger and signing oracle on the left, the adversary and forgery output on the right, with arrows for pk and σ_i."
+          },
+          "files": {
+            "zh": "assets/euf-cma-details-mechanism.zh.svg",
+            "en": "assets/euf-cma-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "237ee1b1a8e2ef0c09b44176103512e7964f4513ccb9c9e2b88300ec7dd2c7a4",
+            "en": "f0dc291fc6d0b45a023a89ffe0af3a4517f4b4d9ce6457304a0290d1c008a755"
+          }
+        },
+        {
+          "id": "euf-cma-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EUF-CMA 签名不可伪造 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for EUF-CMA signature unforgeability: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EUF-CMA 签名不可伪造 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for EUF-CMA signature unforgeability, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/euf-cma-details-r138-model.zh.svg",
+            "en": "assets/euf-cma-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cffbd57eefdf155eef832a64c859b99d525bc0c0f0e60e2459d962828425f64c",
+            "en": "7eefd08af76d73819a028657b5ce82752bc9d085dd6067f8177a4509dcc7bde5"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：EUF-CMA 签名不可伪造（EUF-CMA signature unforgeability）。### 游戏定义\n\nEUF-CMA 是“自适应选择消息攻击下的存在性不可伪造”。挑战者生成 (pk, sk)，把 pk 给对手，并开放签名 oracle：对手可自适应地提交任意消息 m_i，得到 σ_i。最后对手输出 (m*, σ*)，若 m* 未被查询过且 Verify(pk, m*, σ*) = 1，则获胜。### 为什么叫“存在性”\n\n对手不必伪造指定消息，只要造出任何一个未查询过的新消息/签名对就算赢。这比“通用伪造”（能伪造任意消息）和“选择性伪造”（伪造事先选定的消息）弱，但仍是签名方案的最低可接受门槛；EUF-CMA 安全意味着不存在高效对手能以不可忽略概率赢下这个游戏。",
+          "why": "1976 年 Diffie–Hellman 提出签名概念，RSA 1978 给出第一个可用构造，但早期定义只讨论“给定公钥能否伪造”，没有把“对手能先取得大量签名”纳入模型。Goldwasser–Micali–Rivest 1988 首次把攻击能力与攻击结果分成层级，并给出可证明 EUF-CMA 的 GMR 方案。### GMR 的构造\n\nGMR 用一对 claw-free 置换（可基于分解难题）做随机化签名，再用树形认证把一次性签名扩展成多消息签名。论文证明：即使对手能自适应地查询签名 oracle，伪造仍等价于分解大整数；这是第一个严格满足 EUF-CMA 的实用型方案。",
+          "used": "EUF-CMA 是 RSA-PSS、DSA、ECDSA、EdDSA 等方案的安全目标，也是 TLS 证书、代码签名、软件更新和区块链签名的分析基线。协议设计常说“签名不可伪造”，默认指 EUF-CMA，除非另写 SUF-CMA。### 与 SUF-CMA 的区别\n\nSUF-CMA（强不可伪造）要求对手连“同一消息的新签名”也不能造出：给定 (m, σ)，不能输出 σ′ ≠ σ 使 Verify(m, σ′) = 1。确定性签名（如 FDH-RSA）通常天然 SUF；ECDSA 因 (r, s) 可延展不满足 SUF，DSA 则被证明 SUF。需要防重放/防交易 ID 篡改时，应明确选 SUF-CMA。",
+          "broken": "它不覆盖密钥替换/rogue-key 攻击、不覆盖签名者内部实现（nonce 重用、侧信道）、不覆盖多签名聚合中的模型差异，也不自动给出量子安全。EUF-CMA 是渐近定义，具体参数还需要精确安全界。### 常见误用\n\n把 ECDSA 的 (r, s) 可塑性当成“签名被伪造”；把 EUF-CMA 当成 SUF-CMA；在聚合签名中只验证单个签名而忽略密钥绑定；在 EdDSA 中重复使用 nonce。这些都不是 EUF-CMA 定义本身的漏洞，而是选型或实现错误。",
+          "history": "Goldwasser、Micali 与 Rivest 在 SIAM Journal on Computing 1988 发表《A Digital Signature Scheme Secure Against Adaptive Chosen-Message Attacks》，首次系统定义 key-only/known-message/adaptive chosen-message 攻击与 total/universal/selective/existential 伪造层级。### 之后的路线\n\nBellare–Micali、Naor–Yung、Rompel 等把假设逐步减弱到单向函数；Bellare–Rogaway 1993/1996 给出精确安全界与 RSA-PSS；Fersch–Kiltz–Poettering 证明 DSA 的 SUF-CMA，Brendel 等 2021 证明 IETF EdDSA 的 SUF-CMA。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：EUF-CMA 签名不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。 预期输出：按 EUF-CMA 签名不可伪造 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for EUF-CMA 签名不可伪造. https://zh.wikipedia.org/w/index.php?search=EUF-CMA%20%E7%AD%BE%E5%90%8D%E4%B8%8D%E5%8F%AF%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nEUF-CMA 签名不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: EUF-CMA signature unforgeability (EUF-CMA 签名不可伪造). ### The game\n\nEUF-CMA is “existential unforgeability under adaptive chosen-message attack”. The challenger generates (pk, sk), gives pk to the adversary and opens a signing oracle: the adversary adaptively submits any messages m_i and receives σ_i. At the end the adversary outputs (m*, σ*); it wins if m* was never queried and Verify(pk, m*, σ*) = 1. ### Why “existential”\n\nThe adversary need not forge a designated message; any valid new message/signature pair it did not query is a win. This is weaker than “universal forgery” (forge any message) and “selective forgery” (forge a message chosen in advance), but it is still the minimum acceptable bar for a signature scheme: EUF-CMA security means no efficient adversary wins this game with non-negligible probability.",
+          "why": "Diffie–Hellman proposed signatures in 1976 and RSA gave the first usable construction in 1978, but early definitions only asked whether an adversary with the public key could forge; they did not model an adversary who first obtains many signatures. Goldwasser–Micali–Rivest in 1988 separated attack capabilities from attack outcomes and gave the GMR scheme with a proof of EUF-CMA.\n\nGMR uses a claw-free pair of permutations (realizable from factoring) for randomized signing, then tree authentication extends a one-time signature into a multi-message one. The paper proves that even an adaptive signing-oracle adversary's forgery is equivalent to factoring; this was the first rigorous EUF-CMA scheme of practical type.",
+          "used": "EUF-CMA is the security target for RSA-PSS, DSA, ECDSA and EdDSA, and the analysis baseline for TLS certificates, code signing, software updates and blockchain signatures. When a protocol says “signatures cannot be forged”, it usually means EUF-CMA unless SUF-CMA is stated.\n\nSUF-CMA (strong unforgeability) also forbids a new signature on the same message: given (m, σ), the adversary cannot output σ′ ≠ σ with Verify(m, σ′) = 1. Deterministic signatures such as FDH-RSA are usually SUF by construction; ECDSA is not SUF because (r, s) is malleable, while DSA has been proved SUF. If replay or transaction-ID mutation matters, specify SUF-CMA.",
+          "broken": "It does not cover key-substitution/rogue-key attacks, the signer's implementation (nonce reuse, side channels), model differences in aggregate signatures, or quantum security. EUF-CMA is asymptotic; concrete parameters still need exact security bounds.\n\nTreating ECDSA's (r, s) malleability as a “forgery”; treating EUF-CMA as SUF-CMA; verifying individual signatures in an aggregate without key binding; reusing a nonce in EdDSA. These are selection or implementation errors, not flaws in the EUF-CMA definition.",
+          "history": "Goldwasser, Micali and Rivest published “A Digital Signature Scheme Secure Against Adaptive Chosen-Message Attacks” in SIAM Journal on Computing in 1988, systematically defining key-only/known-message/adaptive-chosen-message attacks and total/universal/selective/existential forgeries.\n\nBellare–Micali, Naor–Yung and Rompel weakened the assumption toward one-way functions; Bellare–Rogaway gave exact bounds and RSA-PSS in 1993/1996; Fersch–Kiltz–Poettering proved DSA's SUF-CMA, and Brendel et al. proved IETF EdDSA's SUF-CMA in 2021.",
+          "refs": "- Wikipedia search entry for EUF-CMA 签名不可伪造. https://zh.wikipedia.org/w/index.php?search=EUF-CMA%20%E7%AD%BE%E5%90%8D%E4%B8%8D%E5%8F%AF%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nEUF-CMA signature unforgeability: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "euf-cma-r139-formal",
+          "entryId": "euf-cma-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：EUF-CMA 签名不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 EUF-CMA 签名不可伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "euf-cma-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "euf-cma-r139-formal"
+      ],
+      "sources": [
+        "euf-cma-wikipedia",
+        "euf-cma-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "euf-cma-r139-formal",
+      "entryId": "euf-cma-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：EUF-CMA 签名不可伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 EUF-CMA 签名不可伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "euf-cma-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

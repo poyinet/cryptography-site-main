@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--differential-side-channel-details",
+  "sources": [
+    {
+      "id": "attack--differential-side-channel-wikipedia",
+      "title": "Wikipedia search entry for 差分侧信道",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E4%BE%A7%E4%BF%A1%E9%81%93",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 差分侧信道",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--differential-side-channel-r139-principle",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：差分侧信道（Differential Side-Channel）。差分侧信道分析比较大量测量轨迹，把猜测的中间值与功耗等物理泄漏做统计相关，从而恢复密钥；差分功耗分析是它在功耗测量上的典型形式。",
+            "en": "**Attack**: Differential Side-Channel (差分侧信道).Differential side-channel analysis compares many measurement traces and statistically correlates guessed intermediate values with physical leakage such as power consumption to recover keys; differential power analysis is its canonical power-measurement form."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-side-channel-r139-why",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "why",
+          "statement": {
+            "zh": "单条轨迹的泄漏可能被噪声掩盖，统计差分把大量轨迹中与数据相关的微小差异累积起来，使攻击者仍能恢复密钥。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Leakage in a single trace may be masked by noise; statistical differencing accumulates small data-dependent differences across many traces so the attacker can still recover keys.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-side-channel-r139-used",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文以智能卡等防篡改设备为主要对象，并指出差分功耗分析可用于几乎所有对称和非对称算法，甚至可逆向分析未知算法和协议。",
+            "en": "The paper focuses on tamper-resistant devices such as smart cards and notes that DPA can break implementations of almost any symmetric or asymmetric algorithm, and can even reverse-engineer unknown algorithms and protocols.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-side-channel-r139-broken",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御包括降低信号、加入噪声与随机化、以及容忍泄漏的设计；这些措施提高攻击成本，但信号降低通常无法把泄漏降为零，高阶 DPA 仍能击败许多对策。",
+            "en": "Defenses include reducing signal size, adding noise and randomization, and leak-tolerant design; these raise the cost but signal reduction generally cannot reduce leakage to zero, and high-order DPA can still defeat many countermeasures.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-side-channel-r139-history",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "history",
+          "statement": {
+            "zh": "Kocher、Jaffe 和 Jun 在 1999 年 CRYPTO 论文中系统提出差分功耗分析，奠定了差分侧信道分析的基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「差分侧信道」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：差分侧信道的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 差分侧信道 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Kocher, Jaffe and Jun introduced differential power analysis systematically in their 1999 CRYPTO paper, laying the foundation for differential side-channel analysis.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-side-channel-r139-refs",
+          "entryId": "attack--differential-side-channel-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 差分侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 差分侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--differential-side-channel-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--differential-side-channel-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--differential-side-channel-r139-principle",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：差分侧信道（Differential Side-Channel）。差分侧信道分析比较大量测量轨迹，把猜测的中间值与功耗等物理泄漏做统计相关，从而恢复密钥；差分功耗分析是它在功耗测量上的典型形式。",
+        "en": "**Attack**: Differential Side-Channel (差分侧信道).Differential side-channel analysis compares many measurement traces and statistically correlates guessed intermediate values with physical leakage such as power consumption to recover keys; differential power analysis is its canonical power-measurement form."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-r139-why",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "why",
+      "statement": {
+        "zh": "单条轨迹的泄漏可能被噪声掩盖，统计差分把大量轨迹中与数据相关的微小差异累积起来，使攻击者仍能恢复密钥。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Leakage in a single trace may be masked by noise; statistical differencing accumulates small data-dependent differences across many traces so the attacker can still recover keys.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-r139-used",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文以智能卡等防篡改设备为主要对象，并指出差分功耗分析可用于几乎所有对称和非对称算法，甚至可逆向分析未知算法和协议。",
+        "en": "The paper focuses on tamper-resistant devices such as smart cards and notes that DPA can break implementations of almost any symmetric or asymmetric algorithm, and can even reverse-engineer unknown algorithms and protocols.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-r139-broken",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御包括降低信号、加入噪声与随机化、以及容忍泄漏的设计；这些措施提高攻击成本，但信号降低通常无法把泄漏降为零，高阶 DPA 仍能击败许多对策。",
+        "en": "Defenses include reducing signal size, adding noise and randomization, and leak-tolerant design; these raise the cost but signal reduction generally cannot reduce leakage to zero, and high-order DPA can still defeat many countermeasures.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-r139-history",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "history",
+      "statement": {
+        "zh": "Kocher、Jaffe 和 Jun 在 1999 年 CRYPTO 论文中系统提出差分功耗分析，奠定了差分侧信道分析的基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「差分侧信道」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：差分侧信道的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 差分侧信道 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Kocher, Jaffe and Jun introduced differential power analysis systematically in their 1999 CRYPTO paper, laying the foundation for differential side-channel analysis.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-side-channel-r139-refs",
+      "entryId": "attack--differential-side-channel-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 差分侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 差分侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--differential-side-channel-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

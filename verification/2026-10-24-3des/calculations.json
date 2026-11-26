@@ -1,0 +1,72 @@
+[
+  {
+    "id": "tdea-official-vectors",
+    "entryId": "3des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "NIST TDES_ECB three-key and two-key examples; four 64-bit plaintext blocks, encryption and decryption in the teaching implementation and OpenSSL des-ede3-ecb",
+    "expected": "Both official ciphertexts match; decryption restores the plaintext; the two implementations agree",
+    "sourceIds": ["nist-tdes-ecb", "sp800-67r2"],
+    "dependencies": ["tdea-teaching.mjs", "des-core.mjs"],
+    "limitations": "Two fixed ECB examples; they check algorithm correctness, not modes, key management or side-channel behavior."
+  },
+  {
+    "id": "tdea-keying-options",
+    "entryId": "3des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "1-key, 2-key and 3-key bundles applied to fixed blocks; 1-key compared with single DES",
+    "expected": "1-key TDEA equals single DES; 2-key uses K1=K3; 3-key differs; nominal/effective bit counts are 64/128/192 and 56/112/168",
+    "sourceIds": ["sp800-67r2", "nist-tdes-ecb"],
+    "dependencies": ["tdea-teaching.mjs", "des-core.mjs"],
+    "limitations": "Structural equivalence only; it does not estimate the security of any option."
+  },
+  {
+    "id": "tdea-security-strength",
+    "entryId": "3des-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "2-key and 3-key effective key spaces and NIST-assigned strengths of 80 and 112 bits",
+    "expected": "Effective key spaces are 2^112 and 2^168; nominal bits are 128 and 192; NIST security strengths are 80 and 112 bits; nominal bits do not equal assessed strength",
+    "sourceIds": ["sp800-57pt1r5", "sp800-67r2"],
+    "dependencies": ["tdea-teaching.mjs"],
+    "limitations": "Records NIST's assessed strengths; it does not reproduce the underlying cryptanalytic attacks."
+  },
+  {
+    "id": "tdea-data-limit",
+    "entryId": "3des-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "SP 800-67 Revision 2 limit of 2^20 64-bit blocks per 3-key bundle; 8 bytes per block",
+    "expected": "2^20 blocks = 1,048,576 blocks = 8 MiB; 2-key TDEA must not be used for cryptographic protection",
+    "sourceIds": ["sp800-67r2"],
+    "dependencies": ["tdea-teaching.mjs"],
+    "limitations": "Policy-limit arithmetic only; it does not model protocol framing or per-message overhead."
+  },
+  {
+    "id": "tdea-sweet32-bound",
+    "entryId": "3des-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "64-bit block space, n = 2^32 blocks, 8 bytes per block",
+    "expected": "n blocks are about 32 GiB; birthday collision probability at n = 2^32 is about 0.39, and grows to about 0.63 at 2^32.5",
+    "sourceIds": ["sweet32"],
+    "dependencies": ["tdea-teaching.mjs"],
+    "limitations": "Birthday arithmetic only; it does not model a specific protocol, plaintext distribution or attack success beyond collisions."
+  },
+  {
+    "id": "tdea-weak-keys",
+    "entryId": "3des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The four DES weak keys used as K1=K2=K3, and 4,096 fixed blocks per key (16,384 cases)",
+    "expected": "TDEA with three identical weak keys equals single DES and satisfies E(E(P))=P for every tested block",
+    "sourceIds": ["sp800-67r2"],
+    "dependencies": ["tdea-teaching.mjs", "des-core.mjs"],
+    "limitations": "A finite structured sample; the degeneration follows from the EDE structure and identical keys."
+  },
+  {
+    "id": "tdea-block-rounds",
+    "entryId": "3des-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "TDEA composition of three DES calls; 64-bit block; 16 rounds per DES call",
+    "expected": "Block remains 64 bits; 3 x 16 = 48 DES rounds; key bundle has three 64-bit keys",
+    "sourceIds": ["sp800-67r2", "fips46-3"],
+    "dependencies": ["tdea-teaching.mjs", "des-core.mjs"],
+    "limitations": "Counting only; round count is not a security proof."
+  }
+]

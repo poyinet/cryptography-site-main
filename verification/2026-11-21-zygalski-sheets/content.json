@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R124 formula-level deepening for zygalski-sheets-details.",
+  "entries": [
+    {
+      "id": "zygalski-sheets-details",
+      "inventoryIds": [
+        "zygalski-sheets"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出 female 条件、26×26 孔位表、156/1,560 张的规模、约 10-12 条 female 的交集定位，以及 1940 年 5 月指示程序改变后的失效边界。",
+        "en": "This entry gives the female condition, the 26×26 hole grid, the 156/1,560-sheet scale, intersection with about 10-12 females, and the failure boundary after the May 1940 indicator change."
+      },
+      "title": {
+        "zh": "齐加尔斯基记录表",
+        "en": "Zygalski Sheet"
+      },
+      "claimIds": [
+        "zygalski-sheets-r139-principle",
+        "zygalski-sheets-r139-why",
+        "zygalski-sheets-r139-used",
+        "zygalski-sheets-r139-broken",
+        "zygalski-sheets-r139-history",
+        "zygalski-sheets-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出符号公式、攻击模型、参数与失效边界，不含逐步数值算例；论文定理、测试向量与历史统计以来源原文为准。",
+        "en": "This entry gives symbolic formulas, the attack model, parameters and failure boundaries, not a step-by-step numeric example; paper theorems, test vectors and historical counts follow the cited sources."
+      },
+      "sourceIds": [
+        "zygalski-sheets-wikipedia",
+        "zygalski-sheets-standard-ref"
+      ],
+      "subtopicIds": [
+        "crypto-machine-cryptanalysis"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "zygalski-sheets-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Zygalski 穿孔表：按转子顺序与左转子位置制表，再把多张表按指示字母平移叠加。",
+            "en": "Zygalski sheets: build one sheet per rotor order and left-rotor position, then shift and superpose them by indicator letters."
+          },
+          "alt": {
+            "zh": "四步公式级机制：识别 female → 按转子顺序制表 → 叠加并平移 → 读取唯一孔位；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: identify females → build sheets per rotor order → superpose and shift → read the surviving aperture; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/zygalski-sheets-mechanism.zh.svg",
+            "en": "assets/zygalski-sheets-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "988c69d36f427d242b82324207dcfce8764c17db5127decf1cc3791d1abfe255",
+            "en": "32a4878b7f47cad11562889faddfc9d0834b5d75032fec911fec48bc834720bb"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**术语**：齐加尔斯基记录表（Zygalski Sheet）。### female 与指示\n\n在 1940 年 5 月之前，Enigma 操作员把三字母消息密钥加密两次，形成六字母指示。若消息密钥的同一字母在两次加密后得到相同密文字母，就得到 1-4、2-5 或 3-6 位的 female。并非所有转子位置都能产生 female；这给出一组可筛选的约束。### 穿孔表\n\n固定转子顺序与左转子位置（26 种），对其余两个转子的 26×26 个位置逐一计算：若某位置可能产生 female，就在对应格子打孔。3 转子时期有 6 种顺序，因此每套 6×26=156 张表；每张表是 26×26 网格，约 1,000 个孔。多张表按指示字母平移叠加，孔位相交；约 10-12 条 female 后只剩一个透光孔，即候选设置。5 转子时期有 60 种顺序，需 1,560 张表。",
+          "why": "Zygalski 表把“可能性”变成可叠加的二维集合：每张表不是一条猜测，而是一个完整的位置约束。它展示了用组合筛选替代逐条试解的思路，也说明为什么波兰与英国必须为每一种转子顺序预制表。与 Bombe 不同，Zygalski 表不依赖 crib，也不要求已知明文；它只利用双倍加密指示的结构。它也不是“穷举所有 26^3 位置”：表把位置空间压缩成孔位交集，但制表与平移仍需大量人工。",
+          "used": "1.确认指示使用双倍加密，且报文日期在同一密钥期。2.收集 female，记录其 1-4、2-5 或 3-6 类型。3.对每个转子顺序与左转子位置取对应表。4.按指示字母平移表，叠加并观察透光孔。5.把唯一孔位转成中/右转子位置，回到 Enigma 验证。### 不能怎么用\n\n不能用于 1940 年 5 月后的单次加密指示；不能把一张表当一个完整密钥；不能忽略转子顺序变化与五转子时期的 1,560 张规模。",
+          "broken": "1.指示程序改变：单次加密后不再产生 female，整套方法失效。2.数据不足：female 太少时孔位交集不唯一。3.表的制造误差：错孔或漏孔会直接排除正确设置。4.转子顺序或左转子位置不在预制范围内：必须另制表。5.把透光孔当最终明文：它只给出候选设置，仍需机器验证与解密。",
+          "history": "Henryk Zygalski 在 1938 年秋提出穿孔表方法。1938 年 12 月德国增加到 5 个转子，转子顺序从 6 种增至 60 种，所需表从 156 张增至 1,560 张，波兰无法独立完成。英国 Bletchley Park 在 John Jeffreys 组织下制表并送到波兰，1940 年 1 月 17 日 Enigma 再次被读取。",
+          "refs": "- Wikipedia search entry for 齐加尔斯基记录表. https://zh.wikipedia.org/w/index.php?search=%E9%BD%90%E5%8A%A0%E5%B0%94%E6%96%AF%E5%9F%BA%E8%AE%B0%E5%BD%95%E8%A1%A8\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Zygalski Sheet. It is registered under cryptanalysis, rotor and mechanical ciphers. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in cryptanalysis, rotor and mechanical ciphers, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Interwar Period, World War II. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 齐加尔斯基记录表. https://zh.wikipedia.org/w/index.php?search=%E9%BD%90%E5%8A%A0%E5%B0%94%E6%96%AF%E5%9F%BA%E8%AE%B0%E5%BD%95%E8%A1%A8\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "sources": [
+        "zygalski-sheets-wikipedia",
+        "zygalski-sheets-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

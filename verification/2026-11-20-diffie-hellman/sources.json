@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "diffie-hellman-details",
+  "sources": [
+    {
+      "id": "diffie-hellman-wikipedia",
+      "title": "Wikipedia search entry for Diffie-Hellman 密钥协商",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Diffie-Hellman%20%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Diffie-Hellman 密钥协商",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "diffie-hellman-r139-principle",
+          "entryId": "diffie-hellman-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Diffie-Hellman 密钥协商（Diffie-Hellman Key Agreement）。论文提出的是 public key distribution，而不是把密钥封装后由一方传给另一方。它写：「Public key distribution systems offer a different approach to eliminating the need for a secure key distribution channel.」在这个系统里，「two users who wish to exchange a key communicate back and forth until they arrive at a key in common」，而「A third party eavesdropping on this exchange must find it computationally infeasible to compute the key from the information overheard」。机制基础是有限域上的离散对数：「The new technique makes use of the apparent difficulty of computing logarithms over a finite field GF(q) with a prime number q of elements.」。",
+            "en": "**Algorithm**: Diffie-Hellman Key Agreement (Diffie-Hellman 密钥协商).The paper proposes a public key distribution system, not a key wrapped by one party and transported to the other."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        },
+        {
+          "id": "diffie-hellman-r139-why",
+          "entryId": "diffie-hellman-details",
+          "section": "why",
+          "statement": {
+            "zh": "这样设计是为了避免事先依赖一条安全密钥分发通道。论文把 public key distribution 描述为「a different approach to eliminating the need for a secure key distribution channel」，两人无需先共享秘密，只要来回发送公开值就能得到共同密钥。它的安全性不是信息论意义上的完美保密，而是计算假设：「The security of our technique depends crucially on the difficulty of computing logarithms mod q」；论文还把 q^(1/2) 当作「a good measure of the problem's complexity」，这是 1976 年的估计。",
+            "en": "The design avoids dependence on a secure key-distribution channel set up in advance.The paper calls public key distribution “a different approach to eliminating the need for a secure key distribution channel”: the two parties need no prior shared secret, and can arrive at a common key by exchanging public values."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        },
+        {
+          "id": "diffie-hellman-r139-used",
+          "entryId": "diffie-hellman-details",
+          "section": "used",
+          "statement": {
+            "zh": "流程是：每个用户独立生成一个随机秘密指数，保留秘密，把对应的公开值放进公开文件。论文写：「Each user generates an independent random number」；「Each keeps Xi secret, but places」；公开值「in a public file with his name and address」。随后两人各自用自己的秘密指数与对方的公开值计算同一个密钥。正文只描述这一密钥协商步骤，不把它写成数字签名、证书签发或完整的部署协议；公开文件如何被可信地维护，也不是本文给出的 PKI 方案。",
+            "en": "The procedure is: each user independently generates a random secret exponent, keeps it secret, and places the corresponding public value in a public file.The paper says: “Each user generates an independent random number”; “Each keeps Xi secret, but places”; the public value “in a public file with his name and address”."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        },
+        {
+          "id": "diffie-hellman-r139-broken",
+          "entryId": "diffie-hellman-details",
+          "section": "broken",
+          "statement": {
+            "zh": "论文把安全建立在离散对数困难上，并明确这是假设：「The security of our technique depends crucially on the difficulty of computing logarithms mod q」；如果对数容易算，「the system can be broken」。作者还写：「we do not currently have a proof of the converse」，即没有证明“离散对数难 ⇒ 系统安全”。所以该条目不能把 1976 年的 q^(1/2) 估计当成现代安全证明；它既没有给出具体攻击，也没有给出归约。被动窃听者从公开值直接算密钥的困难性，仍是这个方案的核心边界。",
+            "en": "The paper grounds security in the hardness of discrete logarithms and explicitly treats it as an assumption: “The security of our technique depends crucially on the difficulty of computing logarithms mod q”; if logs are easy, “the system can be broken”.The authors also write: “we do not currently have a proof of the converse” — there is no proof that hard discrete logs imply a secure system."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        },
+        {
+          "id": "diffie-hellman-r139-history",
+          "entryId": "diffie-hellman-details",
+          "section": "history",
+          "statement": {
+            "zh": "论文以「New Directions in Cryptography」为题，作者是「WHITFIELD DIFFIE AND MARTIN E.HELLMAN, MEMBER, IEEE」，刊于 IEEE Transactions on Information Theory 22(6)，1976 年 11 月，644–654 页；文首记「Manuscript received June 3,1976.」。它提出 public-key distribution 并讨论 public-key cryptosystems，但作者自己写：「We propose some techniques for developing public key cryptosystems, but the problem is still largely open.」因此该条目把 1976 年论文断为密钥分发的公开提出，不写成已部署协议、已给出数字签名或已被证明安全。",
+            "en": "The paper is titled “New Directions in Cryptography” by “WHITFIELD DIFFIE AND MARTIN E.HELLMAN, MEMBER, IEEE”, published in IEEE Transactions on Information Theory 22(6), November 1976, pages 644–654; the first page records “Manuscript received June 3,1976.” It proposes public-key distribution and discusses public-key cryptosystems, but the authors themselves write: “We propose some techniques for developing public key cryptosystems, but the problem is still largely open.” This entry therefore dates the 1976 paper as a public proposal of key distribution; it is not a deployed protocol, a delivered digital signature, or a proven-secure system."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        },
+        {
+          "id": "diffie-hellman-r139-refs",
+          "entryId": "diffie-hellman-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Diffie-Hellman 密钥协商.https://zh.wikipedia.org/w/index.php?search=Diffie-Hellman%20%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- Diffie, Hellman: New Directions in Cryptography.https://ee.stanford.edu/~hellman/publications/24.pdf。",
+            "en": "- Wikipedia search entry for Diffie-Hellman 密钥协商.https://zh.wikipedia.org/w/index.php?search=Diffie-Hellman%20%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "diffie-hellman-reference-ref",
+            "diffie-hellman-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "diffie-hellman-wikipedia"
+      ]
+    },
+    {
+      "id": "diffie-hellman-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "diffie-hellman-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "diffie-hellman-specific",
+      "title": "Diffie, Hellman: New Directions in Cryptography",
+      "url": "https://ee.stanford.edu/~hellman/publications/24.pdf",
+      "kind": "primary",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "diffie-hellman-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "diffie-hellman-r139-principle",
+      "entryId": "diffie-hellman-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Diffie-Hellman 密钥协商（Diffie-Hellman Key Agreement）。论文提出的是 public key distribution，而不是把密钥封装后由一方传给另一方。它写：「Public key distribution systems offer a different approach to eliminating the need for a secure key distribution channel.」在这个系统里，「two users who wish to exchange a key communicate back and forth until they arrive at a key in common」，而「A third party eavesdropping on this exchange must find it computationally infeasible to compute the key from the information overheard」。机制基础是有限域上的离散对数：「The new technique makes use of the apparent difficulty of computing logarithms over a finite field GF(q) with a prime number q of elements.」。",
+        "en": "**Algorithm**: Diffie-Hellman Key Agreement (Diffie-Hellman 密钥协商).The paper proposes a public key distribution system, not a key wrapped by one party and transported to the other."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    },
+    {
+      "id": "diffie-hellman-r139-why",
+      "entryId": "diffie-hellman-details",
+      "section": "why",
+      "statement": {
+        "zh": "这样设计是为了避免事先依赖一条安全密钥分发通道。论文把 public key distribution 描述为「a different approach to eliminating the need for a secure key distribution channel」，两人无需先共享秘密，只要来回发送公开值就能得到共同密钥。它的安全性不是信息论意义上的完美保密，而是计算假设：「The security of our technique depends crucially on the difficulty of computing logarithms mod q」；论文还把 q^(1/2) 当作「a good measure of the problem's complexity」，这是 1976 年的估计。",
+        "en": "The design avoids dependence on a secure key-distribution channel set up in advance.The paper calls public key distribution “a different approach to eliminating the need for a secure key distribution channel”: the two parties need no prior shared secret, and can arrive at a common key by exchanging public values."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    },
+    {
+      "id": "diffie-hellman-r139-used",
+      "entryId": "diffie-hellman-details",
+      "section": "used",
+      "statement": {
+        "zh": "流程是：每个用户独立生成一个随机秘密指数，保留秘密，把对应的公开值放进公开文件。论文写：「Each user generates an independent random number」；「Each keeps Xi secret, but places」；公开值「in a public file with his name and address」。随后两人各自用自己的秘密指数与对方的公开值计算同一个密钥。正文只描述这一密钥协商步骤，不把它写成数字签名、证书签发或完整的部署协议；公开文件如何被可信地维护，也不是本文给出的 PKI 方案。",
+        "en": "The procedure is: each user independently generates a random secret exponent, keeps it secret, and places the corresponding public value in a public file.The paper says: “Each user generates an independent random number”; “Each keeps Xi secret, but places”; the public value “in a public file with his name and address”."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    },
+    {
+      "id": "diffie-hellman-r139-broken",
+      "entryId": "diffie-hellman-details",
+      "section": "broken",
+      "statement": {
+        "zh": "论文把安全建立在离散对数困难上，并明确这是假设：「The security of our technique depends crucially on the difficulty of computing logarithms mod q」；如果对数容易算，「the system can be broken」。作者还写：「we do not currently have a proof of the converse」，即没有证明“离散对数难 ⇒ 系统安全”。所以该条目不能把 1976 年的 q^(1/2) 估计当成现代安全证明；它既没有给出具体攻击，也没有给出归约。被动窃听者从公开值直接算密钥的困难性，仍是这个方案的核心边界。",
+        "en": "The paper grounds security in the hardness of discrete logarithms and explicitly treats it as an assumption: “The security of our technique depends crucially on the difficulty of computing logarithms mod q”; if logs are easy, “the system can be broken”.The authors also write: “we do not currently have a proof of the converse” — there is no proof that hard discrete logs imply a secure system."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    },
+    {
+      "id": "diffie-hellman-r139-history",
+      "entryId": "diffie-hellman-details",
+      "section": "history",
+      "statement": {
+        "zh": "论文以「New Directions in Cryptography」为题，作者是「WHITFIELD DIFFIE AND MARTIN E.HELLMAN, MEMBER, IEEE」，刊于 IEEE Transactions on Information Theory 22(6)，1976 年 11 月，644–654 页；文首记「Manuscript received June 3,1976.」。它提出 public-key distribution 并讨论 public-key cryptosystems，但作者自己写：「We propose some techniques for developing public key cryptosystems, but the problem is still largely open.」因此该条目把 1976 年论文断为密钥分发的公开提出，不写成已部署协议、已给出数字签名或已被证明安全。",
+        "en": "The paper is titled “New Directions in Cryptography” by “WHITFIELD DIFFIE AND MARTIN E.HELLMAN, MEMBER, IEEE”, published in IEEE Transactions on Information Theory 22(6), November 1976, pages 644–654; the first page records “Manuscript received June 3,1976.” It proposes public-key distribution and discusses public-key cryptosystems, but the authors themselves write: “We propose some techniques for developing public key cryptosystems, but the problem is still largely open.” This entry therefore dates the 1976 paper as a public proposal of key distribution; it is not a deployed protocol, a delivered digital signature, or a proven-secure system."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    },
+    {
+      "id": "diffie-hellman-r139-refs",
+      "entryId": "diffie-hellman-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Diffie-Hellman 密钥协商.https://zh.wikipedia.org/w/index.php?search=Diffie-Hellman%20%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- Diffie, Hellman: New Directions in Cryptography.https://ee.stanford.edu/~hellman/publications/24.pdf。",
+        "en": "- Wikipedia search entry for Diffie-Hellman 密钥协商.https://zh.wikipedia.org/w/index.php?search=Diffie-Hellman%20%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "diffie-hellman-reference-ref",
+        "diffie-hellman-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

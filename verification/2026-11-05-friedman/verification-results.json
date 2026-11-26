@@ -1,0 +1,162 @@
+{
+  "results": [
+    {
+      "id": "friedman-calc-ic-definition",
+      "entryId": "friedman-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "194dfd8223f3f69f041202477bd03df7aaff8800b81dec62b1192ade2c6eefef",
+      "dependencyHashes": {
+        "article.zh.md": "aa5198185506ded719c50039ae9dda9987639fc22d9240acbec85aca50664e41",
+        "article.en.md": "1227392c07ecaef1ed169588f625e7674b17fc58bc5e8731a3cfcd17d4c95f40",
+        "meta.json": "1fed93ca1ba91755ab2914230cd58d0c511603ede90355ba14b92ca14582bd7d",
+        "glossary.json": "b8e8fe945a033c7cb5fd9340c419e65b033dc73cda632125b2c0fab10964f050",
+        "calculations.json": "e94a06c7798d25d4b06eab74fca48e8ff46667ea7695620ffdc65fcdb091a03d",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "friedman-ic-calc.mjs": "fc255aa75b6599827c05121b00fe0e701086202340c8a4307b5835de9fae2c29",
+        "vigenre-shim.mjs": "da00ec84142b7928ca735e0cacea9bdd58a2efd60e7a5969c1da0dfccc98c8e1"
+      },
+      "inputs": "the printed definition of IC as the probability that two characters drawn from the sample are equal, implemented from equation (7.2) and independently by enumerating the pairs",
+      "expected": "hand cases AAB = 1/3, AABBC = 4/20, ABCD = 0, AAAA = 1, and agreement between the two routes on the 4598-letter sample",
+      "observed": {
+        "id": "friedman-calc-ic-definition",
+        "passed": true,
+        "handValues": {
+          "AAB": 0.333333,
+          "ABCD": 0,
+          "AAAA": 1,
+          "AABBC": 0.2
+        },
+        "sampleLetters": 4598,
+        "byFormula": 0.071072,
+        "byPairEnumeration": 0.071072,
+        "printedAt": "hac-ch7.txt:1536-1542"
+      },
+      "contentSha256": "ade4325977ef6dbf0460b237da18daba5328212c46ca0e79428824bb717c8cc2",
+      "sourcesSha256": "7590bbb3ccc55d540e6b34ebc16d922145412f75284163955be20f14d5c1e198",
+      "executedOn": "2026-11-25T07:05:02.452Z"
+    },
+    {
+      "id": "friedman-calc-ic-range",
+      "entryId": "friedman-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "194dfd8223f3f69f041202477bd03df7aaff8800b81dec62b1192ade2c6eefef",
+      "dependencyHashes": {
+        "article.zh.md": "aa5198185506ded719c50039ae9dda9987639fc22d9240acbec85aca50664e41",
+        "article.en.md": "1227392c07ecaef1ed169588f625e7674b17fc58bc5e8731a3cfcd17d4c95f40",
+        "meta.json": "1fed93ca1ba91755ab2914230cd58d0c511603ede90355ba14b92ca14582bd7d",
+        "glossary.json": "b8e8fe945a033c7cb5fd9340c419e65b033dc73cda632125b2c0fab10964f050",
+        "calculations.json": "e94a06c7798d25d4b06eab74fca48e8ff46667ea7695620ffdc65fcdb091a03d",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "friedman-ic-calc.mjs": "fc255aa75b6599827c05121b00fe0e701086202340c8a4307b5835de9fae2c29",
+        "vigenre-shim.mjs": "da00ec84142b7928ca735e0cacea9bdd58a2efd60e7a5969c1da0dfccc98c8e1"
+      },
+      "inputs": "the sample, a mono-alphabetic substitution of it, and Vigenere ciphertexts of periods 1, 2, 3, 5, 8, 13 and 26",
+      "expected": "the text prints that IC ranges from 1/n for an infinite-period polyalphabetic to p for a mono-alphabetic substitution, and prints r = 0.03846 for n = 26 and English p = 0.0667 in Table 7.1; a mono-alphabetic substitution must leave IC unchanged and the values must fall inside that band as the period grows",
+      "observed": {
+        "id": "friedman-calc-ic-range",
+        "passed": true,
+        "printedLowerBound": 0.03846,
+        "printedLowerBoundAt": "hac-ch7.txt:1569-1570 prints r = 0.03846 for n = 26",
+        "printedEnglishP": 0.0667,
+        "printedEnglishPAt": "hac-ch7.txt:1590 (Table 7.1)",
+        "samplePlaintextIc": 0.07107,
+        "sampleIcDiffersFromPrintedEnglishP": 0.00437,
+        "monoalphabeticUnchanged": true,
+        "monotoneInPeriod": true,
+        "byPeriod": [
+          "t=1:0.07107",
+          "t=2:0.05498",
+          "t=3:0.04987",
+          "t=5:0.04341",
+          "t=8:0.03981",
+          "t=13:0.03914",
+          "t=26:0.03837"
+        ],
+        "note": "the printed p is the source estimate for English; this sample measures its own value, and the check compares against that"
+      },
+      "contentSha256": "ade4325977ef6dbf0460b237da18daba5328212c46ca0e79428824bb717c8cc2",
+      "sourcesSha256": "7590bbb3ccc55d540e6b34ebc16d922145412f75284163955be20f14d5c1e198",
+      "executedOn": "2026-11-25T07:05:02.452Z"
+    },
+    {
+      "id": "friedman-calc-period-by-partitioning",
+      "entryId": "friedman-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "194dfd8223f3f69f041202477bd03df7aaff8800b81dec62b1192ade2c6eefef",
+      "dependencyHashes": {
+        "article.zh.md": "aa5198185506ded719c50039ae9dda9987639fc22d9240acbec85aca50664e41",
+        "article.en.md": "1227392c07ecaef1ed169588f625e7674b17fc58bc5e8731a3cfcd17d4c95f40",
+        "meta.json": "1fed93ca1ba91755ab2914230cd58d0c511603ede90355ba14b92ca14582bd7d",
+        "glossary.json": "b8e8fe945a033c7cb5fd9340c419e65b033dc73cda632125b2c0fab10964f050",
+        "calculations.json": "e94a06c7798d25d4b06eab74fca48e8ff46667ea7695620ffdc65fcdb091a03d",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "friedman-ic-calc.mjs": "fc255aa75b6599827c05121b00fe0e701086202340c8a4307b5835de9fae2c29",
+        "vigenre-shim.mjs": "da00ec84142b7928ca735e0cacea9bdd58a2efd60e7a5969c1da0dfccc98c8e1"
+      },
+      "inputs": "a ciphertext produced with the five-letter keyword LEMON and candidate periods t = 1..10, each partitioned into t groups whose ICs are averaged",
+      "expected": "Example 7.76 describes comparing the candidate values with the sample IC; the smallest candidate whose group means match the plaintext IC must be the period planted without the analysis being told it, and every candidate that matches must be a multiple of it - disclosed rather than smoothed over, because 10 matches as well as 5",
+      "observed": {
+        "id": "friedman-calc-period-by-partitioning",
+        "passed": true,
+        "plantedPeriod": 5,
+        "keyword": "LEMON",
+        "sampleLetters": 4598,
+        "plaintextIc": 0.07107,
+        "candidateMeans": [
+          "t=1:0.04233",
+          "t=2:0.04229",
+          "t=3:0.04225",
+          "t=4:0.04228",
+          "t=5:0.07093",
+          "t=6:0.04220",
+          "t=7:0.04207",
+          "t=8:0.04221",
+          "t=9:0.04226",
+          "t=10:0.07084"
+        ],
+        "smallestMatchingCandidate": 5,
+        "allMatchingCandidates": [
+          5,
+          10
+        ],
+        "disclosedLimitation": "the statistic identifies the period only up to its multiples; 10 matches as well as 5",
+        "method": "hac-ch7.txt:1572-1579 (Example 7.76)"
+      },
+      "contentSha256": "ade4325977ef6dbf0460b237da18daba5328212c46ca0e79428824bb717c8cc2",
+      "sourcesSha256": "7590bbb3ccc55d540e6b34ebc16d922145412f75284163955be20f14d5c1e198",
+      "executedOn": "2026-11-25T07:05:02.452Z"
+    },
+    {
+      "id": "friedman-calc-shim-anchored",
+      "entryId": "friedman-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "194dfd8223f3f69f041202477bd03df7aaff8800b81dec62b1192ade2c6eefef",
+      "dependencyHashes": {
+        "article.zh.md": "aa5198185506ded719c50039ae9dda9987639fc22d9240acbec85aca50664e41",
+        "article.en.md": "1227392c07ecaef1ed169588f625e7674b17fc58bc5e8731a3cfcd17d4c95f40",
+        "meta.json": "1fed93ca1ba91755ab2914230cd58d0c511603ede90355ba14b92ca14582bd7d",
+        "glossary.json": "b8e8fe945a033c7cb5fd9340c419e65b033dc73cda632125b2c0fab10964f050",
+        "calculations.json": "e94a06c7798d25d4b06eab74fca48e8ff46667ea7695620ffdc65fcdb091a03d",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "friedman-ic-calc.mjs": "fc255aa75b6599827c05121b00fe0e701086202340c8a4307b5835de9fae2c29",
+        "vigenre-shim.mjs": "da00ec84142b7928ca735e0cacea9bdd58a2efd60e7a5969c1da0dfccc98c8e1"
+      },
+      "inputs": "the local encipherment helper used by the two records above, run on the printed example ATTACKATDAWN with keyword LEMON",
+      "expected": "it must give the ciphertext the course text prints, so the partitions above are built on a mapping anchored outside this dossier",
+      "observed": {
+        "id": "friedman-calc-shim-anchored",
+        "passed": true,
+        "printedCiphertext": "LXFOPVEFRNHR",
+        "computed": "LXFOPVEFRNHR",
+        "printedAt": "rutgers-classical.txt:131, read at run time"
+      },
+      "contentSha256": "ade4325977ef6dbf0460b237da18daba5328212c46ca0e79428824bb717c8cc2",
+      "sourcesSha256": "7590bbb3ccc55d540e6b34ebc16d922145412f75284163955be20f14d5c1e198",
+      "executedOn": "2026-11-25T07:05:02.452Z"
+    }
+  ]
+}

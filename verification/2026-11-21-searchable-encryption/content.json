@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening batch for searchable-encryption-details.",
+  "entries": [
+    {
+      "id": "searchable-encryption-details",
+      "inventoryIds": [
+        "searchable-encryption"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R107 陷门签名、格加密、认证密钥协商、群签名与可搜索加密深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "可搜索加密",
+        "en": "Searchable Encryption"
+      },
+      "claimIds": [
+        "searchable-encryption-r139-principle",
+        "searchable-encryption-r139-why",
+        "searchable-encryption-r139-used",
+        "searchable-encryption-r139-broken",
+        "searchable-encryption-r139-history",
+        "searchable-encryption-r139-refs"
+      ],
+      "sourceIds": [
+        "searchable-encryption-wikipedia",
+        "searchable-encryption-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "prf"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "searchable-encryption-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "可搜索加密：为什么需要 → 核心机制 → 边界。",
+            "en": "Searchable Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "可搜索加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Searchable Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/searchable-encryption-details-flow.zh.svg",
+            "en": "assets/searchable-encryption-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e6110ad961bb0d62efd3a1615a238ff40af6146035cb77013edca6abffcaf29a",
+            "en": "65fbd726d9fb34f26c33b8b56c8a6441fda7853792f7aa9ca9583109fd60f07c"
+          }
+        },
+        {
+          "id": "searchable-encryption-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "可搜索加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Searchable Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "可搜索加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Searchable Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/searchable-encryption-details-r138-model.zh.svg",
+            "en": "assets/searchable-encryption-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6268511773746200bb432c91685e8dd6379d0932802079a97caebf5bd2269112",
+            "en": "c5acd7550a86f06c726275388e6b571e23e6575f63750807997f76e16e6ee2e9"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：可搜索加密（Searchable Encryption）。### 对称可搜索加密\n\n数据拥有者加密文档并建立密文索引；查询词 w 的 trapdoor T_w 由 PRF 和密钥派生；服务器用 T_w 定位包含 w 的密文文档，返回给拥有者解密。服务器不需要解密文档或知道 w。### 公钥 PEKS\n\nPEKS 让任何持有公钥的人生成关键词密文；接收者给网关一个 trapdoor，网关用配对等式测试关键词，不能解密正文。适合多发送者邮件和日志。### 泄漏画像\n\nSSE 的安全性用泄漏函数描述：访问模式（哪些文档命中）、搜索模式（两次查询是否同一词）、结果数量、更新模式。自适应安全允许敌手按先前结果选择查询；forward privacy 防止新插入被旧查询关联。",
+          "why": "云上搜索不能先下载全部密文再解密；SSE 把搜索成本降到与命中数相关，同时不让云看到明文关键词。PEKS 让网关按关键词路由加密邮件，而不拿到解密密钥；这是可搜索加密最早的应用，也是“给服务器有限能力”的典型设计。",
+          "used": "SSE 用于加密云盘、邮件归档、医疗记录检索、DLP 和备份；PEKS 用于加密邮件网关和多发送者日志。动态 SSE 支持插入/删除；布尔、范围和排序查询需要 OXT 等结构；高隐私场景叠加 ORAM 隐藏访问模式。",
+          "broken": "泄漏滥用攻击可用访问模式、搜索模式和结果大小恢复关键词：频率匹配、查询恢复、文件注入。只加密关键词不够，必须定义并接受泄漏。动态方案的删除/插入可能破坏 forward privacy；恶意服务器可省略或篡改结果，需可验证结果或完整性；访问模式隐藏要靠 ORAM，成本高。### 形式模型",
+          "history": "Song、Wagner 与 Perrig 2000 年提出加密搜索；Boneh 等 2004 年提出 PEKS；Curtmola 等 2006 年给出自适应安全的 SSE 定义和倒排索引；Kamara 等 2012 年推动动态 SSE；forward privacy 随后成为标准要求。现代 encrypted database 把 SSE 与 ORAM、可信硬件或结构化加密结合。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 可搜索加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 可搜索加密 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 可搜索加密 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。",
+          "refs": "- Wikipedia search entry for 可搜索加密. https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Searchable Encryption (可搜索加密). ### Symmetric searchable encryption\n\nThe owner encrypts documents and builds an encrypted index. A trapdoor T_w for keyword w is derived with a PRF and keys; the server uses T_w to locate ciphertext documents containing w and returns them to the owner, who decrypts. The server neither decrypts documents nor learns w. ### Public-key PEKS\n\nPEKS lets anyone holding the public key create keyword ciphertexts; the receiver gives a gateway a trapdoor, and the gateway tests the keyword with a pairing equation without decrypting the body. It suits multi-sender email and logs. ### Leakage profile\n\nSSE security is described by a leakage function: access pattern (which documents match), search pattern (whether two queries are the same word), result volume and update pattern. Adaptive security lets the adversary choose queries from prior results; forward privacy prevents new inserts from being linked to old queries.",
+          "why": "Searching in the cloud cannot mean downloading every ciphertext and decrypting it locally; SSE reduces search cost to roughly the number of hits while keeping plaintext keywords from the cloud.\n\nPEKS lets a gateway route encrypted mail by keyword without receiving the decryption key; it is one of the earliest searchable-encryption applications and a canonical example of giving a server limited capability.",
+          "used": "SSE is used in encrypted cloud drives, mail archives, medical-record retrieval, DLP and backups; PEKS is used in encrypted mail gateways and multi-sender logs.\n\nDynamic SSE supports insert/delete; Boolean, range and ordered queries need structures such as OXT; high-privacy settings add ORAM to hide access patterns.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Leakage-abuse attacks recover keywords from access patterns, search patterns and result volumes: frequency matching, query recovery and file injection. Encrypting keywords alone is insufficient; the leakage must be defined and accepted.\n\nDeletes/inserts in dynamic schemes can break forward privacy; a malicious server can omit or alter results, so verifiable results or integrity are needed; hiding access patterns requires ORAM at a high cost.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Song, Wagner and Perrig introduced encrypted search in 2000; Boneh et al. introduced PEKS in 2004; Curtmola et al. gave adaptive-security definitions and inverted-index SSE in 2006; Kamara et al. advanced dynamic SSE in 2012; forward privacy later became a standard requirement.\n\nModern encrypted databases combine SSE with ORAM, trusted hardware or structured encryption.",
+          "refs": "- Wikipedia search entry for 可搜索加密. https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E6%90%9C%E7%B4%A2%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nSearchable Encryption: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "searchable-encryption-r139-formal",
+          "entryId": "searchable-encryption-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 可搜索加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "searchable-encryption-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "searchable-encryption-r139-formal"
+      ],
+      "sources": [
+        "searchable-encryption-wikipedia",
+        "searchable-encryption-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "searchable-encryption-r139-formal",
+      "entryId": "searchable-encryption-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：可搜索加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 可搜索加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "searchable-encryption-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

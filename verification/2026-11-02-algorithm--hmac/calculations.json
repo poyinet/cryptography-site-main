@@ -1,0 +1,106 @@
+[
+  {
+    "id": "hmac-calc-rfc4231-vectors",
+    "entryId": "algorithm--hmac-details",
+    "kind": "known-answer-check",
+    "inputs": "all 7 registered RFC 4231 test cases x HMAC-SHA-224/256/384/512 = 28 printed digests; keys and data taken byte-for-byte from hmac-vectors.json, which records the line number each value was read from",
+    "expected": "derivation: the RFC 2104 §2 steps (1)-(7); expectation printed at RFC 4231 §4.2 lines 181-182, 183-184, 185-186-187, 188-189-190-191; RFC 4231 §4.3 lines 201-202, 203-204, 205-206-207, 208-209-210-211; RFC 4231 §4.4 lines 243-244, 245-246, 247-248-249, 250-251-252-253; RFC 4231 §4.5 lines 267-268, 269-270, 271-272-273, 274-275-276-277; RFC 4231 §4.6 lines 296, 297, 298, 299; RFC 4231 §4.7 lines 320-321, 322-323, 324-325-326, 327-328-329-330; RFC 4231 §4.8 lines 368-369, 370-371, 372-373-374, 375-376-377-378. A construction coded from those steps - using only the underlying hash as H and never crypto.createHmac - reproduces every printed digest. Test Case 5 is compared at its printed 16-byte truncated length and the full digest is additionally checked to extend that prefix.",
+    "sourceIds": [
+      "rfc4231",
+      "rfc2104-hmac"
+    ],
+    "dependencies": [
+      "hmac-teaching.mjs",
+      "hmac-vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Fixed official cases over the SHA-2 family only; they check the construction and the key/truncation rules, not the security of any hash, nor the performance or side-channel behaviour of an implementation."
+  },
+  {
+    "id": "hmac-calc-construction-steps",
+    "entryId": "algorithm--hmac-details",
+    "kind": "step-by-step-example",
+    "inputs": "Test Case 2: key Jefe (4 bytes, hex 4a656665, line 197), data \"what do ya want for nothing?\" (28 bytes, lines 198/199), H = SHA-256, B = 64",
+    "expected": "step (1) zero-pads the key to 64 bytes (4a656665 then 60 zero bytes); step (2) XOR with ipad must yield a block beginning 7c535053 and continuing 36 to the end; step (5) XOR with opad must yield a block beginning 16393a39 and continuing 5c; step (4) yields a 32-byte inner digest; step (7) output must equal the value printed at RFC 4231 §4.3 lines 203-204 (5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843). Only that final value is printed by the sources; the intermediates are derived by applying the numbered steps.",
+    "sourceIds": [
+      "rfc2104-hmac",
+      "rfc4231"
+    ],
+    "dependencies": [
+      "hmac-teaching.mjs",
+      "hmac-vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One worked case; it demonstrates the padding and the nesting, not the general case for other B or other hashes, which the other calculations in this dossier cover."
+  },
+  {
+    "id": "hmac-calc-longkey-rule",
+    "entryId": "algorithm--hmac-details",
+    "kind": "rule-equivalence-check",
+    "inputs": "Test Cases 6 and 7, both with 131-byte keys (longer than B=64 for SHA-224/256 and longer than B=128 for SHA-384/512)",
+    "expected": "derivation: the RFC 2104 §2 long-key sentence quoted segment by segment in the principle section. The implementation must take the H(key) branch; HMAC under the 131-byte key must equal HMAC under the key H(K) for the same data; and both must still produce the digests printed at RFC 4231 §4.7 and §4.8 (8 values).",
+    "sourceIds": [
+      "rfc2104-hmac",
+      "rfc4231"
+    ],
+    "dependencies": [
+      "hmac-teaching.mjs",
+      "hmac-vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Checks the key-shortening rule for four SHA-2 hashes on two cases; it does not test keys of every length, and the H(K)-equivalence is an invariant implied by the rule rather than something the sources print."
+  },
+  {
+    "id": "hmac-calc-truncation-rule",
+    "entryId": "algorithm--hmac-details",
+    "kind": "known-answer-check",
+    "inputs": "Test Case 5 (RFC 4231 §4.6, heading line 287), whose four printed digests are 16 bytes because that case truncates output to 128 bits",
+    "expected": "derivation: the §4.6 note line, the §3.2 statement that the output-length element carries the truncated length, and the RFC 2104 §5 truncation recommendation quoted in the used section. The full-length digest of the same key and data must begin with each printed 16-byte value, for all four hashes.",
+    "sourceIds": [
+      "rfc4231",
+      "rfc2104-hmac"
+    ],
+    "dependencies": [
+      "hmac-teaching.mjs",
+      "hmac-vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "A single truncation length (128 bits); the recommendation about how short is too short is a policy statement, not a computable claim."
+  },
+  {
+    "id": "hmac-calc-oracle-agreement",
+    "entryId": "algorithm--hmac-details",
+    "kind": "independent-implementation-check",
+    "inputs": "the 7 official cases plus every combination of key lengths 0,1,20,63,64,65,128,129,131,200 with data lengths 0,1,55,56,63,64,65,119,120,128,129,223,224,225 (140 cases) across the four hashes",
+    "expected": "the teaching construction and Node.js crypto.createHmac - an independent implementation, deliberately not used as an expected-value source - agree on every one of those cases. Agreement alone is not treated as proof: the printed RFC 4231 digests remain the expected values.",
+    "sourceIds": [
+      "rfc4231"
+    ],
+    "dependencies": [
+      "hmac-teaching.mjs",
+      "hmac-vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "The oracle is one platform implementation on one Node version; it corroborates the hand-built construction, it does not certify it."
+  }
+]

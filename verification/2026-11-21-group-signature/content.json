@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening batch for group-signature-details.",
+  "entries": [
+    {
+      "id": "group-signature-details",
+      "inventoryIds": [
+        "group-signature"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R107 陷门签名、格加密、认证密钥协商、群签名与可搜索加密深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "组签名",
+        "en": "Group Signature"
+      },
+      "claimIds": [
+        "group-signature-r139-principle",
+        "group-signature-r139-why",
+        "group-signature-r139-used",
+        "group-signature-r139-broken",
+        "group-signature-r139-history",
+        "group-signature-r139-refs"
+      ],
+      "sourceIds": [
+        "group-signature-wikipedia",
+        "group-signature-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "group-signature-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "组签名：为什么需要 → 核心机制 → 边界。",
+            "en": "Group Signature: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "组签名 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Group Signature, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/group-signature-details-flow.zh.svg",
+            "en": "assets/group-signature-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e5376de8a7aa59208421a7936b853af5af200ce24d2ea42076dbccf429eeb0cf",
+            "en": "1ae0b3fca263813a256ae981966913712f9424f4ba889dfebe5ca393ca1b0335"
+          }
+        },
+        {
+          "id": "group-signature-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "组签名 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Group Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "组签名 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Group Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/group-signature-details-r138-model.zh.svg",
+            "en": "assets/group-signature-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7cd1c417a5bb506daf811d4c814fbbe8a568563e8d5cb8f86e67664f21b6b4a8",
+            "en": "6ec03709ef4e528f743a9e369d888be3d3861810e6427be3e1007b02fa1faeb8"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：组签名（Group Signature）。### 群公钥与成员凭证\n\n群管理员生成群公钥 gpk 与成员凭证；BBS04 的凭证是 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}，签名用知识证明隐藏 A，打开者用 x 恢复 A。### BBS 实例\n\nBBS04 用配对群：gpk 含 g1,g2,h0,h1；管理员私钥 x；成员凭证 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}。签名是 A、e 及知识证明的 Fiat–Shamir 变换；打开者用 x 恢复 A，从而追溯成员。### 打开、链接与撤销\n\n打开权限由管理员持有；链接可选，让验证者判断两签名是否同一成员；撤销可用撤销列表或 verifier-local revocation。签名大小与群规模无关，但验证/撤销有成本。",
+          "why": "组签名把“成员资格”和“身份”分离：内部匿名、外部可验证、管理员可追溯。适合车联网、匿名凭证、电子投票、举报和 Direct Anonymous Attestation。一个群公钥让验证者不必持有每个成员证书；BBS04 把签名压到 200 B 以内，远小于早期方案，使隐私认证在带宽受限场景可用。",
+          "used": "ISO/IEC 20008-2 标准化 group-public-key 匿名签名，包含打开、链接和撤销流程；BBS04 是最短的配对实现之一。用于 Intel SGX/TPM 的 Direct Anonymous Attestation、Hyperledger 匿名凭证、车联网 V2X 和隐私投票；BBS+ 被 W3C 可验证凭证社区使用，但 BBS+ 本身是可组合签名，不是完整群签名。",
+          "broken": "匿名是计算性的：打开者可用主密钥去匿名；管理员被攻破则所有签名可追溯。成员合谋/凭证伪造、撤销列表过期、签名侧信道都会破坏安全。BBS 依赖 q-SDH 和 DLIN 等配对假设，不是后量子；群规模和撤销策略影响验证成本；强免责性（管理员不能伪造成员签名）需要额外构造，不能默认假设。",
+          "history": "Chaum 与 van Heijst 1991 年提出群签名；BBS04 用 SDH 和配对把签名缩到 200 B 内；ISO/IEC 20008-2:2013 标准化，2023 年修订；DAA 把群签名用于硬件匿名证明。后续 BBS+、LRSW、Groth 等推动匿名凭证和隐私认证。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。 预期输出：按 组签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 选择随机 k，计算 R=kG 与 r 2. 计算 s=k^{-1}(H(m)+rd) mod n 3. 输出 (r,s)，验证者检查签名方程。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 组签名 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 组签名. https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\n组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。1.选择随机 k，计算 R=kG 与 r。2.计算 s=k^{-1}(H(m)+rd) mod n。3.输出 (r,s)，验证者检查签名方程。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Group Signature (组签名). ### Group public key and member credentials\n\nA manager generates a group public key gpk and member credentials; in BBS04 the credential is A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}, the signature hides A in a proof of knowledge, and the opener recovers A with x. ### BBS instantiation\n\nBBS04 uses pairing groups: gpk contains g1,g2,h0,h1; the manager’s secret is x; a member credential is A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}. A signature is (A,e) plus a Fiat–Shamir-transformed zero-knowledge proof; the opener uses x to recover A and trace the member. ### Opening, linking and revocation\n\nOpening authority is held by the manager; linking is optional and lets a verifier tell whether two signatures come from the same member; revocation can use a revocation list or verifier-local revocation. Signature size is independent of group size, but verification/revocation has a cost.",
+          "why": "Group signatures separate “membership” from “identity”: anonymous inside, verifiable outside, traceable by the manager. They suit vehicle networks, anonymous credentials, e-voting, whistleblowing and Direct Anonymous Attestation.\n\nOne group public key means verifiers need not hold every member certificate; BBS04 pushes signatures under 200 bytes, far shorter than earlier schemes, making privacy authentication usable on bandwidth-limited links.",
+          "used": "ISO/IEC 20008-2 standardizes group-public-key anonymous signatures, including opening, linking and revocation; BBS04 is one of the shortest pairing-based instantiations.\n\nIt is used in Intel SGX/TPM Direct Anonymous Attestation, Hyperledger anonymous credentials, V2X and privacy-preserving voting; BBS+ is used by the W3C verifiable-credential community, but BBS+ itself is a composable signature, not a full group signature.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Anonymity is computational: the opener can deanonymize with the master key, and if the manager is compromised every signature is traceable. Member collusion/credential forgery, stale revocation lists and signing side channels all break security.\n\nBBS relies on pairing assumptions such as q-SDH and DLIN and is not post-quantum; group size and revocation strategy affect verification cost; strong exculpability (the manager cannot forge a member’s signature) needs an extra construction and must not be assumed by default.",
+          "history": "Chaum and van Heijst introduced group signatures in 1991; BBS04 used SDH and pairings to shrink signatures under 200 bytes; ISO/IEC 20008-2:2013 standardized them and was amended in 2023; DAA brought group signatures to hardware anonymous attestation.\n\nBBS+, LRSW and Groth-type schemes later advanced anonymous credentials and privacy authentication.",
+          "refs": "- Wikipedia search entry for 组签名. https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nGroup Signature: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "group-signature-r139-formal",
+          "entryId": "group-signature-details",
+          "kind": "formal-model",
+          "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+          "inputs": "输入：组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+          "expected": "按 组签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "选择随机 k，计算 R=kG 与 r",
+            "计算 s=k^{-1}(H(m)+rd) mod n",
+            "输出 (r,s)，验证者检查签名方程"
+          ],
+          "sourceIds": [
+            "group-signature-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "group-signature-r139-formal"
+      ],
+      "sources": [
+        "group-signature-wikipedia",
+        "group-signature-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "group-signature-r139-formal",
+      "entryId": "group-signature-details",
+      "kind": "formal-model",
+      "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+      "inputs": "输入：组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+      "expected": "按 组签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "选择随机 k，计算 R=kG 与 r",
+        "计算 s=k^{-1}(H(m)+rd) mod n",
+        "输出 (r,s)，验证者检查签名方程"
+      ],
+      "sourceIds": [
+        "group-signature-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

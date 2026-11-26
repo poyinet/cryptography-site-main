@@ -1,0 +1,72 @@
+[
+  {
+    "id": "des-known-answer",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "NIST SP 800-17 Appendix B Table 1 (commonly cited as Table B.1) variable-plaintext KAT #0 and the FIPS 81 Table B1 ECB example; encryption and decryption in the teaching implementation and OpenSSL 3DES equal-key mode",
+    "expected": "Both vectors match, decryption restores the plaintext, and the two independent implementations agree",
+    "sourceIds": ["sp800-17", "fips81", "sp800-67r2"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Two fixed known-answer cases; they check algorithm correctness, not implementation security or protocol use."
+  },
+  {
+    "id": "des-key-schedule",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The standard PC-1, shift and PC-2 tables applied to the fixed key 0101010101010101 and a deterministic sample",
+    "expected": "PC-1 excludes all eight parity positions and yields 56 bits; sixteen subkeys of 48 bits are produced; the halves return to their starting state after 16 rounds",
+    "sourceIds": ["sp800-67r2", "fips46-3"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Checks structural counts and table use, not the cryptographic quality of the key schedule."
+  },
+  {
+    "id": "des-exhaustion-bound",
+    "entryId": "des-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "2^56 and assumed search rates of 10^9 and 10^12 keys per second",
+    "expected": "2^56 = 72,057,594,037,927,936; about 834 days (2.2834 years) at 10^9/s and about 20.02 hours at 10^12/s",
+    "sourceIds": ["fips46-3", "diffie-hellman-1977"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Pure arithmetic estimate; real searches add candidate filtering, key verification and parallel overhead."
+  },
+  {
+    "id": "des-weak-keys",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The four published DES weak keys and 65,536 fixed 64-bit blocks built from repeating a 16-bit counter",
+    "expected": "Each weak key satisfies E(E(P))=P for every tested block, and the four keys are distinct",
+    "sourceIds": ["hac-ch7", "sp800-67r2"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "A finite sample over structured blocks; the involution property follows from identical subkeys, not from the sample alone."
+  },
+  {
+    "id": "des-complement",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "128 deterministic keys, each applied to 128 deterministic blocks (16,384 cases)",
+    "expected": "E with the bitwise-complemented key maps the bitwise-complemented plaintext to the bitwise complement of E(K,P)",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Verifies the structural complementation identity on a finite sample; it is not an attack."
+  },
+  {
+    "id": "des-sbox-rows",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All eight S-boxes and their four rows",
+    "expected": "Each of the 32 rows is a permutation of 0…15; each S-box has 64 entries",
+    "sourceIds": ["sp800-67r2", "fips46-3"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Checks the published table shape, not differential or linear resistance."
+  },
+  {
+    "id": "des-ip-fp-inverse",
+    "entryId": "des-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "4,096 deterministic 64-bit blocks",
+    "expected": "FP(IP(x))=x and IP(FP(x))=x for every tested block",
+    "sourceIds": ["sp800-67r2", "hac-ch7"],
+    "dependencies": ["des-teaching.mjs"],
+    "limitations": "Positional-permutation identity only; it does not test the rounds."
+  }
+]

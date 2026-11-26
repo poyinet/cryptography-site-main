@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-26",
+  "scope": "Full Twofish algorithm article only; no completion claim for Blowfish, AES, the other AES candidates, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "twofish-details",
+      "inventoryIds": [
+        "twofish"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 Twofish 这一种 128 位块、16 轮的 AES 候选分组密码：F/g/h 函数、q0/q1 置换、MDS 与 RS 编码、Me/Mo 密钥调度、小端字节序、输入/输出白化、提交论文附录 A 的三组中间值和 36 条链式向量；不把 Blowfish、AES、其他 AES 候选者、工作模式或整个库并入本实体。",
+        "en": "Covers the 128-bit-block, 16-round Twofish AES candidate: the F/g/h functions, q0/q1 permutations, MDS and RS encoding, Me/Mo key schedule, little-endian byte order, input/output whitening, the three Appendix A intermediate-value traces and the 36 chained vectors. It does not absorb Blowfish, AES, the other AES candidates, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "Twofish：128 位 16 轮 AES 候选分组密码",
+        "en": "Twofish: a 128-bit 16-round AES candidate block cipher"
+      },
+      "claimIds": [
+        "twofish-r139-principle",
+        "twofish-r139-why",
+        "twofish-r139-used",
+        "twofish-r139-broken",
+        "twofish-r139-history",
+        "twofish-r139-refs"
+      ],
+      "calculationIds": [
+        "twofish-calc-intermediate",
+        "twofish-calc-chain",
+        "twofish-calc-key-schedule",
+        "twofish-calc-structure",
+        "twofish-r139-formal"
+      ],
+      "sourceIds": [
+        "twofish-wikipedia",
+        "twofish-reference-ref"
+      ],
+      "related": [
+        "blowfish",
+        "algorithm--aes",
+        "blowfish-twofish"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. The blowfish-twofish record is a legacy grouping term and is not the Twofish algorithm article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Twofish 分组密码（Twofish）。Twofish 是 128 位分组密码，接受最长 256 位的密钥。AES 提交版本固定使用 16 轮、128 位块和 128/192/256 位密钥，对应 k=N/64=2/3/4 个 64 位密钥单元。它被描述为 16 轮 Feistel 类网络：轮函数 F 是双射，四个 8 位到 8 位的密钥相关 S-box 与一个固定的 4×4 MDS 矩阵构成 g 函数，两个 g 的输出经过伪 Hadamard 变换（PHT），再加上轮密钥。除两个 1 位旋转外，结构是 Feistel 式的；这两个旋转正是 Twofish 与纯 Feistel 网络的差别。128 位明文按小端序装入四个 32 位字 P0..P3，先与 K0..K3 异或做输入白化：\n\n```text\nR_{0,i} = P_i XOR K_i        i = 0..3\n```\n\n```text\n(F_{r,0}, F_{r,1}) = F(R_{r,0}, R_{r,1}, r)\n\nR_{r+1,0} = ROR(R_{r,2} XOR F_{r,0}, 1)\nR_{r+1,1} = ROL(R_{r,3}, 1) XOR F_{r,1}\nR_{r+1,2} = R_{r,0}\nR_{r+1,3} = R_{r,1}\n```\n\n16 轮后撤销最后一轮的左右交换，再做输出白化：\n\n```text\nC_i = R_{16,(i+2) mod 4} XOR K_{i+4}        i = 0..3\n```\n\nF 函数先对 R0 做 g，再把 R1 循环左移 8 位后做 g，然后做 PHT 并加两个轮密钥：\n\n```text\nT0 = g(R_{r,0})\nT1 = g(ROL(R_{r,1}, 8))\nF_{r,0} = (T0 + T1 + K_{2r+8}) mod 2^32\nF_{r,1} = (T0 + 2*T1 + K_{2r+9}) mod 2^32\n```\n\ng 把 32 位字拆成四个字节，分别通过四个密钥相关 S-box，再把四个结果视为 GF(2^8) 上的向量，乘以固定的 MDS 矩阵。GF(2^8) 用多项式 v(x)=x^8+x^6+x^5+x^3+1（0x169）表示，矩阵为：\n\n```text\nMDS =\n[ 01  EF  5B  5B ]\n[ 5B  EF  EF  01 ]\n[ EF  5B  01  EF ]\n[ EF  01  EF  5B ]\n```\n\n密钥调度先定义 h(X, L)。h 把 X 和列表 L 的每个字都拆成字节；k=4 时先用 q1、q0、q0、q1 与 L3 混合，k>=3 时再用 q1、q1、q0、q0 与 L2 混合，最后总是用 L1、L0 和 q1/q0 的复合完成：\n\n```text\ny0 = q1[q0[q0[x0] XOR l1,0] XOR l0,0]\ny1 = q0[q0[q1[x1] XOR l1,1] XOR l0,1]\ny2 = q1[q1[q0[x2] XOR l1,2] XOR l0,2]\ny3 = q0[q1[q1[x3] XOR l1,3] XOR l0,3]\n```\n\n随后把 y0..y3 乘以同一个 MDS 矩阵，得到 h 的输出。k=4 的 L3 阶段和 k>=3 的 L2 阶段作用在 x 上，k=2 时直接从 x 进入最后的 L1/L0 阶段。密钥相关 S-box 就是 g(X)=h(X,S)，其中 S 来自密钥的 RS 编码。密钥字节先按 4 字节一组装成 2k 个 32 位字 M0..M(2k-1)（小端）。偶数下标的字组成 Me，奇数下标的字组成 Mo。每 8 个密钥字节再用 RS 矩阵（GF(2^8) 的多项式 w(x)=x^8+x^6+x^3+x^2+1，即 0x14D）编码成 4 字节，装成字 S_i；S 列表按逆序排列：\n\n```text\nS = (S_{k-1}, S_{k-2}, ..., S_0)\n\nrho = 2^24 + 2^16 + 2^8 + 1 = 0x01010101\nA_i = h(2i*rho, Me)\nB_i = ROL(h((2i+1)*rho, Mo), 8)\nK_{2i}   = (A_i + B_i) mod 2^32\nK_{2i+1} = ROL((A_i + 2*B_i) mod 2^32, 9)\n```\n\ni 取 0..19，产生 40 个扩展密钥字。rho 的作用是让 i*rho 的四个字节都等于 i，因此 h 的输入字节是 2i 或 2i+1。固定置换 q0 和 q1 各由四个 4 位 S-box 构成。对输入字节 x：\n\n```text\na0 = x >> 4;  b0 = x AND 15\na1 = a0 XOR b0\nb1 = a0 XOR ROR4(b0, 1) XOR ((8*a0) AND 15)\na2 = t0[a1];  b2 = t1[b1]\na3 = a2 XOR b2\nb3 = a2 XOR ROR4(b2, 1) XOR ((8*a2) AND 15)\na4 = t2[a3];  b4 = t3[b3]\ny = 16*b4 + a4\n```\n\n```text\nt0 = 8 1 7 D 6 F 3 2 0 B 5 9 E C A 4\nt1 = E C B 8 1 2 3 5 F 4 A 6 7 0 9 D\nt2 = B A 5 E 6 D 9 0 C 8 F 3 2 4 7 1\nt3 = D 7 F 4 1 2 6 E 9 B 3 0 8 5 C A\n```\n\n```text\nt0 = 2 8 B D F 7 6 E 3 1 9 4 0 A C 5\nt1 = 1 E 2 B 4 C 3 7 6 D A 5 F 9 0 8\nt2 = 4 C 7 5 1 6 9 A 0 E D 8 2 B 3 F\nt3 = B 9 5 1 C 3 D E 6 4 7 F 2 0 8 A\n```\n\n提交论文指出 q0 有 1 个不动点，q1 有 2 个不动点。本文的实现从上述八张 4 位表重建两个 256 字节置换，并逐一检查双射性和不动点数量。Twofish 的字节序是小端：16 个明文字节按顺序进入四个 32 位字的最低到最高字节，密钥和输出也按同一约定。若对非零块或密钥按大端解析，结果会不同；全零向量不受字节序影响。短于 256 位的密钥在末尾补零到下一个已定义长度（例如 80 位密钥补到 128 位），而不是截断或重复。解密是加密的逆过程。先撤销输出白化并恢复 R16：\n\n```text\nR_{16,0} = C_2 XOR K_6\nR_{16,1} = C_3 XOR K_7\nR_{16,2} = C_0 XOR K_4\nR_{16,3} = C_1 XOR K_5\n```\n\n```text\n(F0, F1) = F(R_{r+1,2}, R_{r+1,3}, r)\nR_{r,0} = R_{r+1,2}\nR_{r,1} = R_{r+1,3}\nR_{r,2} = ROL(R_{r+1,0}, 1) XOR F0\nR_{r,3} = ROR(R_{r+1,1} XOR F1, 1)\n```\n\n最后 P_i = R_{0,i} XOR K_i。输入白化和输出白化都不改变分组密码的密码学结构，但能让攻击者无法直接看到第一轮和最后一轮的内部状态。",
+          "why": "Twofish 是为 NIST 的 AES 征集而设计的。论文列出的目标包括 128 位块、128/192/256 位密钥、无弱密钥、在 Pentium Pro 等 32 位处理器上高效、在 8 位智能卡和专用硬件上可实现、设计简单、支持流密码/哈希/MAC 等模式，以及可接受最多 256 位的任意密钥长度。设计者还给出具体的性能目标：在 Pentium/Pentium Pro/Pentium II 上完全优化版本每块少于 500 周期，在只有 64 字节 RAM 的 8 位微处理器上可运行，硬件少于 20000 门。论文摘要报告的三组 1998 年数据是：完全优化的 Pentium Pro 实现每字节 17.8 周期，8 位智能卡实现每字节 1660 周期，硬件约 14000 门。这些是当时设计和实现的结果，不是今天任何平台的性能承诺。Twofish 的结构允许在密钥调度上做不同权衡：可以预计算全部子密钥以换取加密速度，也可以在内存受限时按需计算。论文第 12 节说明，保留目标块上的 1 位旋转主要是为了降低任何基于字节边界的攻击的可行性；这一设计选择同时考虑了性能和密码分析。安全评估方面，论文称设计者做了大量密码分析，他们最好的攻击能突破 5 轮 Twofish，使用 2^22.5 个选择明文和 2^51 的工作量；完整 16 轮没有被同样的分析突破。作者页面进一步称「Currently there is no successful cryptanalysis of Twofish.」（目前没有对 Twofish 的成功密码分析）。这是设计者维护的页面自身带元数据日期（发布于 2015-12-10、修改于 2022-11-07），页内也把它称为最佳的攻击注明为 2000 年（Shiho Moriai 与 Yiquin Lisa Yin）；但这仍是设计者一方的声明，不是独立第三方对全部攻击模型的证明，也不是对未来的保证，页面同样没给出可供独立复现的条件。论文第 8 节还讨论了差分、线性、插值、部分密钥猜测、相关密钥、侧信道和故障分析；这些分析针对简化轮数或特定条件，不能简单外推成绝对安全。Twofish 是五种 AES 最终候选之一，但没有被选为 AES。作者页面称 Twofish 不受专利限制，源代码不受版权限制且许可自由，可用于所有用途；这些是设计者/维护者的声明，使用前仍应核对具体代码和许可文本。AES 的最终标准是 FIPS 197，只规定 Rijndael；Twofish 不在该标准中。从教学角度看，Twofish 的价值在于把几个独立构件组合起来：密钥相关的 8 位 S-box、GF(2^8) 上的 MDS 矩阵、PHT、1 位旋转、输入/输出白化，以及一个比数据路径更复杂的密钥调度。它适合用来练习一件事：规范中的字节序、矩阵多项式、密钥扩展和中间值必须逐项对齐，而不是只验证自己加密后还能解密。",
+          "used": "提交论文附录 A.1 给出三组完整中间值，分别对应 128 位全零密钥、192 位密钥 0123456789ABCDEFFEDCBA98765432100011223344556677 和 256 位密钥 0123456789ABCDEFFEDCBA987654321000112233445566778899AABBCCDDEEFF。正文的明文都是全零。128 位组的扩展密钥字 K0..K9 与 K38..K39 是：\n\n```text\nK0..K7 = 52C54DDE 11F0626D 7CAC9D4A 4D1B4AAA\n         B7B83A10 1E7D0BEB EE9C341F CFE14BE4\nK8..K9 = F98FFEF9 9C5B3C17\nK38..K39 = F298311E 696EA672\n```\n\n该组的中间状态从输入白化 R[0]=52C54DDE 11F0626D 7CAC9D4A 4D1B4AAA 开始，第 1 轮得到 t0=C06D4949、t1=41B9BFC1，R[1]=52C54DDE 11F0626D C38DCAA4 7A0A91B6；经过 16 轮和输出白化，最终密文是 9F589F5CF6122C32B6BFEC2F2AE8C35A。192 位组的密文是 CFD1D2E5A9BE9CDF501F13B892BD2248，256 位组是 37527BE0052334B89F0CFCCAE87CFA20。附录 A.2 给出链式已知答案测试：从第 2 条起，每条明文是上一条密文；从第 3 条起，密钥由往前第 2 条（必要时第 3 条）密文按密钥长度截断或补零拼接。论文按 128/192/256 位分别列出 49 条，但只印出部分条目。本文复现了每组的第 1 至 10 条以及第 48、49 条，例如：\n\n```text\n128 位，第 1 条：\nK = 00000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 9F589F5CF6122C32B6BFEC2F2AE8C35A\n\n128 位，第 3 条：\nK = 9F589F5CF6122C32B6BFEC2F2AE8C35A\nP = D491DB16E7B1C39E86CB086B789F5419\nC = 019F9809DE1711858FAAC3A3BA20FBC3\n\n192 位，第 1 条：\nK = 000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = EFA71F788965BD4453F860178FC19101\n\n256 位，第 1 条：\nK = 0000000000000000000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 57FF739D4DC92C1BD7FC01700CC8216F\n```\n\n这些向量覆盖三种密钥长度、零与非零密钥、零与非零明文，以及连续状态之间的链式关系。它们不是`加密后能解密`的自洽测试，而是与提交论文印出的固定答案逐字比对。Linux 内核的 CryptoAPI 包含一个 Twofish 实现（crypto/twofish_generic.c）。该文件头说明它是按提交论文写的 clean-room 实现，最初来自 GPG 代码，后来移植到内核 CryptoAPI。这说明 Twofish 作为一种可用的分组密码存在于通用操作系统的加密接口中；它不说明内核把 Twofish 当作推荐算法，也不说明任何协议标准采纳了它。",
+          "broken": "论文和作者页面的安全表述需要限定范围。论文第 8 节的分析包括差分、线性、插值、部分密钥猜测、相关密钥、侧信道和故障分析；摘要中「our best attack breaks 5 rounds」（最好的攻击突破 5 轮）是一个简化轮数结果，不是对 16 轮 Twofish 的破解。作者页面称目前没有对 Twofish 的成功密码分析，这是设计者维护页面的声明，没有给出独立复现条件，不能当作形式化证明。本文不复述未经核实的第三方攻击论文来宣称 Twofish 已被攻破或绝对安全。实现层面，Twofish 的密钥相关 S-box 和 MDS 乘法通常用查表加速。查表会带来缓存和时序侧信道风险；论文第 8.9 节把侧信道和故障分析列为需要单独考虑的攻击类别。本文的教学实现使用普通数组和 JavaScript 位运算，不是常量时间实现，也没有掩码、密钥隔离或故障检测，不能用于保护真实数据。密钥调度比数据路径更复杂：需要 RS 编码、h 函数、40 个扩展密钥字和最多 4 个密钥相关 S-box。这带来实现成本和出错面，但复杂本身不等于安全缺陷；论文用它来支持预计算与按需计算的多种权衡，也用它避免简单密钥调度可能带来的部分密钥猜测和相关密钥弱点。本文的向量验证只覆盖固定密钥下的已知答案，不评估密钥调度的全部密码学性质。部署范围也需要区分。FIPS 197 只规定 AES（Rijndael），Twofish 不是 FIPS 197 算法；Linux 内核对 Twofish 的支持是`可用实现`，不是标准采纳或安全推荐。Twofish 只定义分组密码，不提供工作模式、IV 管理、填充、完整性保护、密钥协商或侧信道防护；这些必须由协议层和实现层另行处理。最后，本文的 36 条链式向量和 3 组中间值全部来自同一份提交论文附录。它们能强有力地检查实现是否与规范一致，但不能证明 Twofish 对选择明文、相关密钥、侧信道或其他攻击的安全性。固定向量通过不等于密码分析完成。",
+          "history": "Twofish 由 Bruce Schneier、John Kelsey、Doug Whiting、David Wagner、Chris Hall 和 Niels Ferguson 设计，论文标注日期为 1998 年 6 月 15 日，作为 NIST AES 选择过程的提交。论文第 1 节说明 NIST 在 1997 年宣布 AES 计划、公开征集算法，目标是选出一个替代 DES 的新标准；Twofish 是应征方案之一。论文第 12 节说明了 Twofish 与 Blowfish 的渊源，原文写「Twofish originated from an attempt to take the original Blowfish design and modify it for a 128-bit block.」，即起源于把原 Blowfish 设计改造成 128 位块的尝试。设计者希望保留 Blowfish 的速度和良好扩散，同时让 F 函数成为双射、密钥调度更高效、表更小，从而可以用于智能卡和定制硬件，并尽可能比 Blowfish 更快。这个历史关系是设计渊源，不表示 Twofish 与 Blowfish 可以互相替代，也不表示学习 Blowfish 是使用 Twofish 的前提。NIST 宣布的五种 AES 最终候选是 MARS、RC6、Rijndael、Serpent 和 Twofish。Twofish 没有被选为 AES；NIST 最终选择 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197。FIPS 197 在 2023 年 5 月 9 日更新为 FIPS 197-upd1；更新不改变 Twofish 未被选为 AES 的事实。作者页面称 Twofish 不受专利限制，源代码不受版权限制且许可自由；页面还称目前没有对 Twofish 的成功密码分析。前者需要以具体代码和许可文本为准，后者是设计者声明而非独立证明。Twofish 后来出现在 Linux 内核的 CryptoAPI 中，但它不是 AES 标准，也没有取代 AES 的标准化地位。",
+          "refs": "- Wikipedia search entry for Twofish 分组密码. https://zh.wikipedia.org/w/index.php?search=Twofish%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Twofish (Twofish 分组密码). Twofish is a 128-bit block cipher that accepts keys of up to 256 bits. The AES submission uses 16 rounds, a 128-bit block and 128/192/256-bit keys, corresponding to k=N/64=2/3/4 64-bit key units. It is described as a 16-round Feistel-like network: the round function F is bijective, four key-dependent 8-by-8-bit S-boxes and a fixed 4-by-4 MDS matrix form the g function, the two g outputs pass through a pseudo-Hadamard transform (PHT), and round keys are added. Apart from two one-bit rotations, the structure is Feistel-like; those rotations are what distinguish Twofish from a pure Feistel network. The 128-bit plaintext is loaded little-endian into four 32-bit words P0..P3 and xored with K0..K3 for input whitening:\n\n```text\nR_{0,i} = P_i XOR K_i        i = 0..3\n```\n\nRound r (r=0..15) computes:\n\n```text\n(F_{r,0}, F_{r,1}) = F(R_{r,0}, R_{r,1}, r)\n\nR_{r+1,0} = ROR(R_{r,2} XOR F_{r,0}, 1)\nR_{r+1,1} = ROL(R_{r,3}, 1) XOR F_{r,1}\nR_{r+1,2} = R_{r,0}\nR_{r+1,3} = R_{r,1}\n```\n\nAfter 16 rounds the last swap is undone and output whitening is applied:\n\n```text\nC_i = R_{16,(i+2) mod 4} XOR K_{i+4}        i = 0..3\n```\n\nF first applies g to R0, then applies g to R1 rotated left by 8, combines the results in a PHT and adds two round keys:\n\n```text\nT0 = g(R_{r,0})\nT1 = g(ROL(R_{r,1}, 8))\nF_{r,0} = (T0 + T1 + K_{2r+8}) mod 2^32\nF_{r,1} = (T0 + 2*T1 + K_{2r+9}) mod 2^32\n```\n\ng splits a 32-bit word into four bytes, passes each byte through its own key-dependent S-box, treats the four results as a vector over GF(2^8), and multiplies it by the fixed MDS matrix. The field is GF(2)[x]/(v(x)) with v(x)=x^8+x^6+x^5+x^3+1 (0x169), and the matrix is:\n\n```text\nMDS =\n[ 01  EF  5B  5B ]\n[ 5B  EF  EF  01 ]\n[ EF  5B  01  EF ]\n[ EF  01  EF  5B ]\n```\n\nThe key schedule starts with h(X, L). h splits X and every word of L into bytes; for k=4 it first mixes with L3 using q1, q0, q0, q1; for k>=3 it then mixes with L2 using q1, q1, q0, q0; the final stage always uses L1, L0 and the q1/q0 compositions:\n\n```text\ny0 = q1[q0[q0[x0] XOR l1,0] XOR l0,0]\ny1 = q0[q0[q1[x1] XOR l1,1] XOR l0,1]\ny2 = q1[q1[q0[x2] XOR l1,2] XOR l0,2]\ny3 = q0[q1[q1[x3] XOR l1,3] XOR l0,3]\n```\n\nThe four bytes y0..y3 are then multiplied by the same MDS matrix to produce h's output. The k=4 L3 stage and the k>=3 L2 stage act on x; with k=2, x goes directly into the final L1/L0 stage. The key-dependent S-boxes are exactly g(X)=h(X,S), where S is derived from the key by an RS encoding. The key bytes are loaded little-endian into 2k 32-bit words M0..M(2k-1). Even-indexed words form Me and odd-indexed words form Mo. Each group of eight key bytes is encoded by the RS matrix (polynomial w(x)=x^8+x^6+x^3+x^2+1, i.e. 0x14D) into four bytes, packed into a word S_i, and the S list is stored in reverse order:\n\n```text\nS = (S_{k-1}, S_{k-2}, ..., S_0)\n\nrho = 2^24 + 2^16 + 2^8 + 1 = 0x01010101\nA_i = h(2i*rho, Me)\nB_i = ROL(h((2i+1)*rho, Mo), 8)\nK_{2i}   = (A_i + B_i) mod 2^32\nK_{2i+1} = ROL((A_i + 2*B_i) mod 2^32, 9)\n```\n\ni runs from 0 to 19 and produces 40 expanded key words. The constant rho multiplies a byte value i into a word whose four bytes are all i, so h receives words whose bytes are 2i or 2i+1. The fixed permutations q0 and q1 are each built from four 4-bit S-boxes. For an input byte x:\n\n```text\na0 = x >> 4;  b0 = x AND 15\na1 = a0 XOR b0\nb1 = a0 XOR ROR4(b0, 1) XOR ((8*a0) AND 15)\na2 = t0[a1];  b2 = t1[b1]\na3 = a2 XOR b2\nb3 = a2 XOR ROR4(b2, 1) XOR ((8*a2) AND 15)\na4 = t2[a3];  b4 = t3[b3]\ny = 16*b4 + a4\n```\n\nThe four q0 tables are:\n\n```text\nt0 = 8 1 7 D 6 F 3 2 0 B 5 9 E C A 4\nt1 = E C B 8 1 2 3 5 F 4 A 6 7 0 9 D\nt2 = B A 5 E 6 D 9 0 C 8 F 3 2 4 7 1\nt3 = D 7 F 4 1 2 6 E 9 B 3 0 8 5 C A\n```\n\nThe four q1 tables are:\n\n```text\nt0 = 2 8 B D F 7 6 E 3 1 9 4 0 A C 5\nt1 = 1 E 2 B 4 C 3 7 6 D A 5 F 9 0 8\nt2 = 4 C 7 5 1 6 9 A 0 E D 8 2 B 3 F\nt3 = B 9 5 1 C 3 D E 6 4 7 F 2 0 8 A\n```\n\nThe submission states that q0 has one fixed point and q1 has two. This article's implementation rebuilds both 256-byte permutations from those four-bit tables and checks bijectivity and the fixed-point counts. Twofish is little-endian: the 16 plaintext bytes fill the four 32-bit words from least to most significant byte, and keys and ciphertext follow the same convention. Parsing a non-zero block or key big-endian gives different results; all-zero vectors are unaffected by byte order. Keys shorter than 256 bits are zero-padded at the end to the next defined length (an 80-bit key becomes 128 bits), not truncated or repeated. Decryption inverts encryption. It first undoes output whitening to recover R16:\n\n```text\nR_{16,0} = C_2 XOR K_6\nR_{16,1} = C_3 XOR K_7\nR_{16,2} = C_0 XOR K_4\nR_{16,3} = C_1 XOR K_5\n```\n\n```text\n(F0, F1) = F(R_{r+1,2}, R_{r+1,3}, r)\nR_{r,0} = R_{r+1,2}\nR_{r,1} = R_{r+1,3}\nR_{r,2} = ROL(R_{r+1,0}, 1) XOR F0\nR_{r,3} = ROR(R_{r+1,1} XOR F1, 1)\n```\n\nFinally P_i = R_{0,i} XOR K_i. Input and output whitening do not change the cryptographic structure of the block cipher, but they keep an attacker from directly seeing the internal state at the first and last rounds.",
+          "why": "Twofish was designed for NIST's AES competition. The paper's goals include a 128-bit block, 128/192/256-bit keys, no weak keys, efficiency on 32-bit processors such as the Pentium Pro, implementability on 8-bit smart cards and dedicated VLSI hardware, a simple design, suitability for stream ciphers, hashing and MACs, and support for \"any key length up to 256 bits\". The designers also set concrete performance targets: fewer than 500 cycles per block on Pentium/Pentium Pro/Pentium II for a fully optimized version, feasible operation on an 8-bit microprocessor with only 64 bytes of RAM, and fewer than 20000 gates in hardware.\n\nThe paper's abstract reports three 1998 figures: a fully optimized Pentium Pro implementation at 17.8 cycles per byte, \"an 8-bit smart card implementation\" at 1660 cycles per byte, and about 14000 gates in hardware. These are design and implementation results from that period, not promises for any current platform.\n\nTwofish allows different key-schedule trade-offs: all subkeys can be precomputed for encryption speed, or computed on demand when memory is tight. Section 12 says \"the one-bit rotations of the target block\" were kept primarily to reduce vulnerability to attacks based on byte boundaries; the choice considered both performance and cryptanalysis.\n\nOn security, the paper says the designers cryptanalyzed Twofish extensively and that their best attack breaks five rounds with 2^22.5 chosen plaintexts and 2^51 work; the full 16 rounds were not broken by the same analysis. The author's page further states that there is currently no successful cryptanalysis of Twofish. That is a statement on a designer-maintained page, not an independent proof against every attack model and not a guarantee about the future. Section 8 also discusses differential, linear, interpolation, partial-key-guessing, related-key, side-channel and fault analysis; those results concern reduced rounds or specific conditions and cannot be extrapolated to an absolute security claim.\n\nTwofish was one of the five AES finalists but was not selected as AES. The author's page says Twofish is unpatented and that its source code is uncopyrighted and license-free for all uses; these are the designer's/maintainer's statements, and any use should still check the specific code and licence text. The final AES standard is FIPS 197, which specifies Rijndael only; Twofish is not part of that standard.\n\nFor teaching, Twofish combines several independent building blocks: key-dependent 8-bit S-boxes, an MDS matrix over GF(2^8), a PHT, one-bit rotations, input/output whitening, and a key schedule more complex than the data path. It is a good exercise in aligning byte order, field polynomials, key expansion and intermediate values with a specification instead of merely checking that an implementation can decrypt its own output.",
+          "used": "Appendix A.1 of the submission gives full intermediate values for a 128-bit all-zero key, the 192-bit key 0123456789ABCDEFFEDCBA98765432100011223344556677, and the 256-bit key 0123456789ABCDEFFEDCBA987654321000112233445566778899AABBCCDDEEFF. The plaintext is all zero in each case. The expanded key words K0..K9 and K38..K39 of the 128-bit case are:\n\n```text\nK0..K7 = 52C54DDE 11F0626D 7CAC9D4A 4D1B4AAA\n         B7B83A10 1E7D0BEB EE9C341F CFE14BE4\nK8..K9 = F98FFEF9 9C5B3C17\nK38..K39 = F298311E 696EA672\n```\n\nThe intermediate states start with input whitening R[0]=52C54DDE 11F0626D 7CAC9D4A 4D1B4AAA; round 1 gives t0=C06D4949, t1=41B9BFC1 and R[1]=52C54DDE 11F0626D C38DCAA4 7A0A91B6. After 16 rounds and output whitening the ciphertext is 9F589F5CF6122C32B6BFEC2F2AE8C35A. The 192-bit case produces CFD1D2E5A9BE9CDF501F13B892BD2248 and the 256-bit case produces 37527BE0052334B89F0CFCCAE87CFA20.\n\nAppendix A.2 contains chained known-answer tests: from entry 2 onwards each plaintext is the previous ciphertext, and from entry 3 onwards the key is assembled from the ciphertexts two (and, where needed, three) entries back, truncated or zero-padded to the key length. The paper lists 49 entries for each key size but prints only some of them. This article reproduces entries 1-10 and 48-49 of each group, for example:\n\n```text\n128-bit, entry 1:\nK = 00000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 9F589F5CF6122C32B6BFEC2F2AE8C35A\n\n128-bit, entry 3:\nK = 9F589F5CF6122C32B6BFEC2F2AE8C35A\nP = D491DB16E7B1C39E86CB086B789F5419\nC = 019F9809DE1711858FAAC3A3BA20FBC3\n\n192-bit, entry 1:\nK = 000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = EFA71F788965BD4453F860178FC19101\n\n256-bit, entry 1:\nK = 0000000000000000000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 57FF739D4DC92C1BD7FC01700CC8216F\n```\n\nThese vectors cover all three key lengths, zero and non-zero keys, zero and non-zero plaintexts, and the chained relation between consecutive states. They are fixed answers printed in the submission, not just self-consistent encrypt-then-decrypt checks.\n\nThe Linux kernel CryptoAPI contains a Twofish implementation (crypto/twofish_generic.c). Its file header describes a clean-room implementation written from the submission paper, originally from GPG code and later ported to CryptoAPI. This shows that Twofish exists as a usable block cipher in a general operating system's cryptographic interface; it does not show that the kernel recommends Twofish or that any protocol standard adopted it.",
+          "broken": "The security statements in the paper and on the author's page have to be scoped. Section 8 covers differential, linear, interpolation, partial-key-guessing, related-key, side-channel and fault analysis. The abstract's \"our best attack breaks 5 rounds\" is a reduced-round result, not a break of the full 16-round cipher. The author's page's \"Currently there is no successful cryptanalysis\" is a designer-maintained statement whose own page metadata is dated (published 2015-12-10, modified 2022-11-07) and which itself dates the analysis it calls best to 2000 (Shiho Moriai and Yiquin Lisa Yin), while offering no independent reproduction conditions and is not a formal proof. This article does not repeat unverified third-party attack papers to claim that Twofish has been broken, nor does it claim absolute security.\n\nAt the implementation level, Twofish's key-dependent S-boxes and MDS multiplication are usually accelerated with table lookups. Lookups create cache and timing side-channel risks; Section 8.9 lists side-channel and fault analysis as separate attack classes. This article's teaching implementation uses ordinary arrays and JavaScript bit operations, is not constant-time, and has no masking, key isolation or fault detection; it must not protect real data.\n\nThe key schedule is more complex than the data path: it needs RS encoding, the h function, 40 expanded key words and up to four key-dependent S-boxes. That creates implementation cost and a larger error surface, but complexity alone is not a security weakness; the paper uses it to support precomputation and on-the-fly trade-offs and to avoid weaknesses of a simple key schedule such as partial-key guessing and related-key attacks. The vector checks here cover known answers under fixed keys and do not evaluate every cryptographic property of the key schedule.\n\nDeployment scope also matters. FIPS 197 specifies AES (Rijndael) only; Twofish is not a FIPS 197 algorithm. Linux kernel support is an available implementation, not standardization or a security recommendation. Twofish defines only a block cipher: it supplies no mode of operation, IV management, padding, integrity protection, key agreement or side-channel defence. Protocols and implementations must handle those separately.\n\nFinally, all 36 chained vectors and the three sets of intermediate values come from the same submission appendix. They are strong checks that an implementation matches the specification, but they do not prove Twofish's security against chosen-plaintext, related-key, side-channel or other attacks. Passing fixed vectors is not the same as completing cryptanalysis.",
+          "history": "Twofish was designed by Bruce Schneier, John Kelsey, Doug Whiting, David Wagner, Chris Hall and Niels Ferguson. The paper is dated 15 June 1998 and was submitted to NIST's AES selection process. Section 1 explains that NIST announced the AES programme in 1997 and issued a public call for algorithms to replace DES; Twofish was one of the submissions.\n\nSection 12 describes Twofish's origin in an attempt to adapt the original Blowfish design to a 128-bit block. The designers wanted to keep Blowfish's speed and good diffusion while making F bijective, making the key schedule much more efficient, reducing table size so the cipher could run on smart cards and custom hardware, and, if possible, beating Blowfish per byte. This is a design lineage; it does not make Twofish and Blowfish interchangeable, and it does not make learning Blowfish a prerequisite for using Twofish.\n\nNIST's five AES finalists were MARS, RC6, Rijndael, Serpent and Twofish. Twofish was not selected as AES; NIST chose Rijndael and published FIPS 197 on 26 November 2001. FIPS 197 was updated on 9 May 2023 as FIPS 197-upd1; the update does not change the fact that Twofish was not selected as AES.\n\nThe author's page says Twofish is unpatented and that its source code is uncopyrighted and license-free, and that there is currently no successful cryptanalysis of Twofish. The licence statement must be checked against the specific code and licence text, and the cryptanalysis statement is the designer's claim, not independent proof. Twofish later appeared in the Linux kernel CryptoAPI, but it is not the AES standard and did not displace AES's standardized position.",
+          "refs": "- Wikipedia search entry for Twofish 分组密码. https://zh.wikipedia.org/w/index.php?search=Twofish%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Twofish：Schneier 等 1998 年提交给 AES 的 128 位分组密码，16 轮。",
+          "128 位块：AES 提交版本的块长，按小端序装入四个 32 位字。",
+          "16 轮：Twofish 的轮数，每轮使用 F 函数和两个轮密钥。",
+          "Feistel 类网络：Twofish 的轮结构；两个 1 位旋转是它区别于纯 Feistel 网络的元素。",
+          "F 函数：对两个 32 位输入做两次 g、PHT 和轮密钥加法，产生两个 32 位输出。",
+          "g 函数：四个密钥相关 8 位 S-box 加一个 GF(2^8) 上的 MDS 矩阵乘法。",
+          "h 函数：密钥调度中的多阶段置换，用 q0/q1 和 L 字生成 g 的 S-box 或扩展密钥。",
+          "密钥相关 S-box：由密钥的 RS 编码导出的 8 位置换，在 g 中逐字节作用。",
+          "MDS 矩阵：Twofish 的 4×4 矩阵，行向量为 01 EF 5B 5B、5B EF EF 01、EF 5B 01 EF、EF 01 EF 5B。",
+          "GF(2^8)：MDS 使用多项式 x^8+x^6+x^5+x^3+1，RS 使用 x^8+x^6+x^3+x^2+1。",
+          "PHT：伪 Hadamard 变换，把两个 32 位字变为其和与 sum+2×第二个字。",
+          "输入白化：加密前把明文与 K0..K3 异或。",
+          "输出白化：加密后把状态按 (i+2) mod 4 重排并与 K4..K7 异或。",
+          "扩展密钥 K：40 个 32 位轮密钥，K0..K7 用于白化，其余用于 16 轮。",
+          "Me 和 Mo：密钥的偶数下标和奇数下标 32 位字。",
+          "S 向量：每 8 个密钥字节经 RS 编码得到的字，按逆序存放并用于 g。",
+          "rho：0x01010101，把字节值 i 复制成四个字节都为 i 的字。",
+          "q0 和 q1：各由四张 4 位 S-box 构造的固定 8 位置换；q0 有 1 个不动点，q1 有 2 个。",
+          "小端字节序：明文字节从低到高填入四个 32 位字，密钥与密文使用同一约定。",
+          "密钥补零：短于 256 位的密钥在末尾补零到 128/192/256 位中下一个已定义长度。",
+          "已知答案测试：把实现的加密结果与提交论文印出的固定密文逐字比对。",
+          "AES 最终候选：Twofish 是五种 AES 最终候选之一，但未被选为 AES。"
+        ],
+        "en": [
+          "Twofish: the 128-bit, 16-round block cipher submitted to AES by Schneier and co-authors in 1998.",
+          "128-bit block: the AES submission's block size, loaded little-endian into four 32-bit words.",
+          "16 rounds: Twofish's round count, each using the F function and two round keys.",
+          "Feistel-like network: Twofish's round structure; its two one-bit rotations distinguish it from a pure Feistel network.",
+          "F function: applies g twice, a PHT and round-key additions to two 32-bit inputs and returns two 32-bit outputs.",
+          "g function: four key-dependent 8-bit S-boxes followed by a multiplication by an MDS matrix over GF(2^8).",
+          "h function: the multi-stage permutation in the key schedule that uses q0/q1 and L words to build g's S-boxes or expanded keys.",
+          "Key-dependent S-box: an 8-bit permutation derived from the RS encoding of the key and applied byte-wise in g.",
+          "MDS matrix: Twofish's 4-by-4 matrix with rows 01 EF 5B 5B, 5B EF EF 01, EF 5B 01 EF and EF 01 EF 5B.",
+          "GF(2^8): MDS uses x^8+x^6+x^5+x^3+1, while RS uses x^8+x^6+x^3+x^2+1.",
+          "PHT: the pseudo-Hadamard transform, mapping two 32-bit words to their sum and sum plus twice the second word.",
+          "Input whitening: xoring the plaintext with K0..K3 before the rounds.",
+          "Output whitening: reordering the state by (i+2) mod 4 and xoring it with K4..K7 after the rounds.",
+          "Expanded key K: the 40 32-bit round keys; K0..K7 whiten and the rest feed the 16 rounds.",
+          "Me and Mo: the even-indexed and odd-indexed 32-bit key words.",
+          "S vector: the words obtained by RS-encoding each eight key bytes, stored in reverse order and used by g.",
+          "rho: 0x01010101, which replicates a byte value i into a word whose four bytes are all i.",
+          "q0 and q1: fixed 8-bit permutations each built from four 4-bit S-boxes; q0 has one fixed point and q1 has two.",
+          "Little-endian: plaintext bytes fill the four 32-bit words from low to high, and keys and ciphertext use the same convention.",
+          "Key padding: keys shorter than 256 bits are zero-padded at the end to the next defined 128/192/256-bit length.",
+          "Known-answer test: comparing an implementation's encryption with fixed ciphertexts printed in the submission.",
+          "AES finalist: Twofish was one of the five AES finalists but was not selected as AES."
+        ]
+      },
+      "figures": [
+        {
+          "id": "twofish-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Twofish：128 位 16 轮 AES 候选分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Twofish: a 128-bit 16-round AES candidate block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Twofish：128 位 16 轮 AES 候选分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Twofish: a 128-bit 16-round AES candidate block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/twofish-details-flow.zh.svg",
+            "en": "assets/twofish-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c7c1c6704a2781d49e42cf7ef178db9fb3a9bd7241e1387df5fffc2979ec7dbe",
+            "en": "4cf4d858e262ce3c3379aff913d943ec9b826e075e9a1e1629e40e0294bab47e"
+          }
+        },
+        {
+          "id": "twofish-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Twofish：128 位 16 轮 AES 候选分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Twofish: a 128-bit 16-round AES candidate block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Twofish：128 位 16 轮 AES 候选分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Twofish: a 128-bit 16-round AES candidate block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/twofish-details-r138-model.zh.svg",
+            "en": "assets/twofish-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "adbc2d08d18eb3b039f87009348c0e82ea2e9367fbbf20aee705d19c57db4423",
+            "en": "d5475ba4277d7524be7cfb4cf83bc8d172c23896da662fe1a4f739b8e8f70a40"
+          }
+        }
+      ],
+      "sources": [
+        "twofish-wikipedia",
+        "twofish-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "twofish-calc-intermediate",
+          "entryId": "twofish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Appendix A.1's three key lengths (128/192/256), their keys, all-zero plaintexts, 120 printed expanded key words and 19 intermediate R states per key with each round's t0/t1",
+          "expected": "All 120 expanded key words and all 57 intermediate states match the printed values; every t0/t1 matches; the three ciphertexts are 9F589F5CF6122C32B6BFEC2F2AE8C35A, CFD1D2E5A9BE9CDF501F13B892BD2248 and 37527BE0052334B89F0CFCCAE87CFA20; decryption returns the zero plaintext",
+          "sourceIds": [
+            "twofish-wikipedia"
+          ],
+          "dependencies": [
+            "twofish-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Three fixed keys and three fixed intermediate traces; they test conformance to the submission, not security against cryptanalysis."
+        },
+        {
+          "id": "twofish-calc-chain",
+          "entryId": "twofish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "36 printed Appendix A.2 chained vectors: entries 1-10 and 48-49 for each of the 128/192/256-bit key lengths",
+          "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; within entries 1-10 each plaintext equals the previous ciphertext and each key is assembled from the ciphertexts two and three entries back, with zero padding where a predecessor is absent",
+          "sourceIds": [
+            "twofish-wikipedia"
+          ],
+          "dependencies": [
+            "twofish-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "The paper prints only 12 of its 49 chained entries per key length; the omitted entries cannot be reproduced from the printed data."
+        },
+        {
+          "id": "twofish-calc-key-schedule",
+          "entryId": "twofish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The three Appendix A.1 keys, k=N/64=2/3/4, Me/Mo split, RS-encoded S list and rho=0x01010101",
+          "expected": "The schedule has k S words and 40 K words for every key length; the printed 40-word K lists match; S is the reverse of the independently recomputed RS products; A_i/B_i and the PHT reproduce every printed key word",
+          "sourceIds": [
+            "twofish-wikipedia"
+          ],
+          "dependencies": [
+            "twofish-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "The submission prints K words but not S words for these keys; S is verified through the RS construction and through the ciphertexts that depend on it."
+        },
+        {
+          "id": "twofish-calc-structure",
+          "entryId": "twofish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The q0/q1 four-bit tables, the MDS and RS matrices, three zero keys and eight deterministic plaintexts, plus a 10-byte key for the padding rule",
+          "expected": "q0/q1 are 256-byte bijections with 1/2 fixed points; every square submatrix of MDS is nonsingular over 0x169 and every 4-column submatrix of RS is nonsingular over 0x14D; all 24 encrypt/decrypt round trips succeed; a 10-byte key pads to the 16-byte zero-padded key and gives the same ciphertext; one-bit rotations invert",
+          "sourceIds": [
+            "twofish-wikipedia"
+          ],
+          "dependencies": [
+            "twofish-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Matrix and round-trip checks are algebraic/structural; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "twofish-r139-formal",
+          "entryId": "twofish-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "Twofish 分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "twofish-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "twofish-calc-intermediate",
+      "entryId": "twofish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Appendix A.1's three key lengths (128/192/256), their keys, all-zero plaintexts, 120 printed expanded key words and 19 intermediate R states per key with each round's t0/t1",
+      "expected": "All 120 expanded key words and all 57 intermediate states match the printed values; every t0/t1 matches; the three ciphertexts are 9F589F5CF6122C32B6BFEC2F2AE8C35A, CFD1D2E5A9BE9CDF501F13B892BD2248 and 37527BE0052334B89F0CFCCAE87CFA20; decryption returns the zero plaintext",
+      "sourceIds": [
+        "twofish-wikipedia"
+      ],
+      "dependencies": [
+        "twofish-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Three fixed keys and three fixed intermediate traces; they test conformance to the submission, not security against cryptanalysis."
+    },
+    {
+      "id": "twofish-calc-chain",
+      "entryId": "twofish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "36 printed Appendix A.2 chained vectors: entries 1-10 and 48-49 for each of the 128/192/256-bit key lengths",
+      "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; within entries 1-10 each plaintext equals the previous ciphertext and each key is assembled from the ciphertexts two and three entries back, with zero padding where a predecessor is absent",
+      "sourceIds": [
+        "twofish-wikipedia"
+      ],
+      "dependencies": [
+        "twofish-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "The paper prints only 12 of its 49 chained entries per key length; the omitted entries cannot be reproduced from the printed data."
+    },
+    {
+      "id": "twofish-calc-key-schedule",
+      "entryId": "twofish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The three Appendix A.1 keys, k=N/64=2/3/4, Me/Mo split, RS-encoded S list and rho=0x01010101",
+      "expected": "The schedule has k S words and 40 K words for every key length; the printed 40-word K lists match; S is the reverse of the independently recomputed RS products; A_i/B_i and the PHT reproduce every printed key word",
+      "sourceIds": [
+        "twofish-wikipedia"
+      ],
+      "dependencies": [
+        "twofish-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "The submission prints K words but not S words for these keys; S is verified through the RS construction and through the ciphertexts that depend on it."
+    },
+    {
+      "id": "twofish-calc-structure",
+      "entryId": "twofish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The q0/q1 four-bit tables, the MDS and RS matrices, three zero keys and eight deterministic plaintexts, plus a 10-byte key for the padding rule",
+      "expected": "q0/q1 are 256-byte bijections with 1/2 fixed points; every square submatrix of MDS is nonsingular over 0x169 and every 4-column submatrix of RS is nonsingular over 0x14D; all 24 encrypt/decrypt round trips succeed; a 10-byte key pads to the 16-byte zero-padded key and gives the same ciphertext; one-bit rotations invert",
+      "sourceIds": [
+        "twofish-wikipedia"
+      ],
+      "dependencies": [
+        "twofish-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Matrix and round-trip checks are algebraic/structural; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "twofish-r139-formal",
+      "entryId": "twofish-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "Twofish 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "twofish-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

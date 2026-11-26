@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "trivium-details",
+  "sources": [
+    {
+      "id": "trivium-wikipedia",
+      "title": "Wikipedia search entry for Trivium 流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Trivium 流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "trivium-r139-principle",
+          "entryId": "trivium-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Trivium 流密码（Trivium）。### 三个 NLFSR 组成的 288 位状态\n\nTrivium 的状态是 288 位，分成三个非线性反馈移位寄存器 A、B、C，长度分别为 93、84、111。80 位密钥装入 A 的前 80 位，80 位 IV 装入 B 的前 80 位，C 的最后三位预置为 1，其余位补 0。### 每拍只更新三个位\n\nt1 = s66 ⊕ s93 ⊕ s91·s92 ⊕ s171\n\nt2 = s162 ⊕ s177 ⊕ s175·s176 ⊕ s264\n\nt3 = s243 ⊕ s288 ⊕ s286·s287 ⊕ s69\n\n三个新位分别移入 A、B、C 的头部，其余位右移；输出位 z = t1 ⊕ t2 ⊕ t3。三个寄存器首尾相接，使一个寄存器的输出成为另一个的输入。### 1152 拍初始化\n\n装载后先跑 4×288 = 1152 拍，丢弃输出，让密钥与 IV 扩散到全部 288 位；之后才输出密钥流，单对密钥/IV 最多产生 2^64 位。",
+            "en": "**Algorithm**: Trivium (Trivium 流密码).### A 288-bit state in three NLFSRs\n\nTrivium has a 288-bit state split into three nonlinear feedback shift registers A, B and C of lengths 93, 84 and 111."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        },
+        {
+          "id": "trivium-r139-why",
+          "entryId": "trivium-details",
+          "section": "why",
+          "statement": {
+            "zh": "Trivium 的设计目标是极小的硬件面积：288 个触发器、少量与门和异或门，没有 S 盒、查找表或大块存储。它入选 eSTREAM 硬件 portfolio，并被 ISO/IEC 29192-3 收为轻量流密码标准，适合 RFID、传感器和门数极紧的嵌入式芯片。软件实现也能通过位切片或 64 路并行获得可观吞吐，但它的主战场是硬件。与 AES-CTR 相比，Trivium 在面积和功耗上更紧凑，代价是每拍只产生 1 位、需要较长的初始化。",
+            "en": "Trivium targets minimal hardware area: 288 flip-flops, a few AND and XOR gates, no S-box, lookup table or large memory.It is an eSTREAM hardware-portfolio member and an ISO/IEC 29192-3 lightweight stream-cipher standard, suitable for RFID, sensors and gate-count-limited embedded chips."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        },
+        {
+          "id": "trivium-r139-used",
+          "entryId": "trivium-details",
+          "section": "used",
+          "statement": {
+            "zh": "Trivium 用于轻量物联网链路、RFID/传感器硬件加密核和资源受限设备的数据流加密；ISO/IEC 29192-3 给出了标准化的密钥流生成器定义。它只提供机密性，协议必须另加 MAC 或 AEAD 才能抵抗篡改。在软件侧，它常被用作密码分析基准：立方攻击、猜测确定攻击、代数侧信道分析都以 Trivium 为试验场，因为它的结构简单、轮数可裁、状态可完全建模。",
+            "en": "Trivium serves lightweight IoT links, RFID and sensor hardware crypto cores, and data-stream encryption on constrained devices; ISO/IEC 29192-3 standardizes its keystream generator.It provides confidentiality only, so a MAC or AEAD layer is required for integrity."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        },
+        {
+          "id": "trivium-r139-broken",
+          "entryId": "trivium-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Trivium 的安全性依赖完整的 1152 拍初始化。公开攻击大多针对缩减轮：例如 784/799 轮的立方攻击、缩减初始化的猜测确定攻击；完整 1152 轮没有公开的实用密钥恢复，但不能把“缩减轮分析”误读成“可以少跑初始化”。同步流密码的 IV 必须唯一；同一密钥/IV 重用会直接暴露明文异或。Trivium 没有内置认证，2^64 位密钥流上限也是硬边界。物理实现还要防侧信道：IET 2024 的代数侧信道分析表明，在 8/16/32 位微控制器上，单条功耗轨迹即可在很短时间内恢复完整 288 位状态；ASIC 在其实验模型下没有被打穿，但这不意味着硬件天然安全。掩码、双轨和功耗平衡仍是必需项。",
+            "en": "Trivium security depends on the full 1152-clock initialization.Published attacks mostly target reduced rounds, such as cube attacks on 784 or 799 rounds and guess-and-determine attacks on reduced initialization; no practical key recovery is public for the full 1152 rounds, but reduced-round analysis is not permission to cut initialization."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        },
+        {
+          "id": "trivium-r139-history",
+          "entryId": "trivium-details",
+          "section": "history",
+          "statement": {
+            "zh": "De Cannière 与 Preneel 在 2005 年设计 Trivium，提交 eSTREAM 并进入硬件 portfolio；2008 年成为 eSTREAM 最终组合成员；2012 年 ISO/IEC 29192-3 把它与 Enocoro 一起标准化。此后它成为轻量流密码和立方攻击的标准研究对象。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Trivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "De Cannière and Preneel designed Trivium in 2005, submitted it to eSTREAM and reached the hardware portfolio; it became a member of the final eSTREAM portfolio in 2008.ISO/IEC 29192-3 standardized it alongside Enocoro in 2012."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        },
+        {
+          "id": "trivium-r139-refs",
+          "entryId": "trivium-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Trivium 流密码.https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Trivium 流密码.https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "trivium-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "trivium-wikipedia"
+      ]
+    },
+    {
+      "id": "trivium-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "trivium-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "trivium-r139-principle",
+      "entryId": "trivium-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Trivium 流密码（Trivium）。### 三个 NLFSR 组成的 288 位状态\n\nTrivium 的状态是 288 位，分成三个非线性反馈移位寄存器 A、B、C，长度分别为 93、84、111。80 位密钥装入 A 的前 80 位，80 位 IV 装入 B 的前 80 位，C 的最后三位预置为 1，其余位补 0。### 每拍只更新三个位\n\nt1 = s66 ⊕ s93 ⊕ s91·s92 ⊕ s171\n\nt2 = s162 ⊕ s177 ⊕ s175·s176 ⊕ s264\n\nt3 = s243 ⊕ s288 ⊕ s286·s287 ⊕ s69\n\n三个新位分别移入 A、B、C 的头部，其余位右移；输出位 z = t1 ⊕ t2 ⊕ t3。三个寄存器首尾相接，使一个寄存器的输出成为另一个的输入。### 1152 拍初始化\n\n装载后先跑 4×288 = 1152 拍，丢弃输出，让密钥与 IV 扩散到全部 288 位；之后才输出密钥流，单对密钥/IV 最多产生 2^64 位。",
+        "en": "**Algorithm**: Trivium (Trivium 流密码).### A 288-bit state in three NLFSRs\n\nTrivium has a 288-bit state split into three nonlinear feedback shift registers A, B and C of lengths 93, 84 and 111."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    },
+    {
+      "id": "trivium-r139-why",
+      "entryId": "trivium-details",
+      "section": "why",
+      "statement": {
+        "zh": "Trivium 的设计目标是极小的硬件面积：288 个触发器、少量与门和异或门，没有 S 盒、查找表或大块存储。它入选 eSTREAM 硬件 portfolio，并被 ISO/IEC 29192-3 收为轻量流密码标准，适合 RFID、传感器和门数极紧的嵌入式芯片。软件实现也能通过位切片或 64 路并行获得可观吞吐，但它的主战场是硬件。与 AES-CTR 相比，Trivium 在面积和功耗上更紧凑，代价是每拍只产生 1 位、需要较长的初始化。",
+        "en": "Trivium targets minimal hardware area: 288 flip-flops, a few AND and XOR gates, no S-box, lookup table or large memory.It is an eSTREAM hardware-portfolio member and an ISO/IEC 29192-3 lightweight stream-cipher standard, suitable for RFID, sensors and gate-count-limited embedded chips."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    },
+    {
+      "id": "trivium-r139-used",
+      "entryId": "trivium-details",
+      "section": "used",
+      "statement": {
+        "zh": "Trivium 用于轻量物联网链路、RFID/传感器硬件加密核和资源受限设备的数据流加密；ISO/IEC 29192-3 给出了标准化的密钥流生成器定义。它只提供机密性，协议必须另加 MAC 或 AEAD 才能抵抗篡改。在软件侧，它常被用作密码分析基准：立方攻击、猜测确定攻击、代数侧信道分析都以 Trivium 为试验场，因为它的结构简单、轮数可裁、状态可完全建模。",
+        "en": "Trivium serves lightweight IoT links, RFID and sensor hardware crypto cores, and data-stream encryption on constrained devices; ISO/IEC 29192-3 standardizes its keystream generator.It provides confidentiality only, so a MAC or AEAD layer is required for integrity."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    },
+    {
+      "id": "trivium-r139-broken",
+      "entryId": "trivium-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Trivium 的安全性依赖完整的 1152 拍初始化。公开攻击大多针对缩减轮：例如 784/799 轮的立方攻击、缩减初始化的猜测确定攻击；完整 1152 轮没有公开的实用密钥恢复，但不能把“缩减轮分析”误读成“可以少跑初始化”。同步流密码的 IV 必须唯一；同一密钥/IV 重用会直接暴露明文异或。Trivium 没有内置认证，2^64 位密钥流上限也是硬边界。物理实现还要防侧信道：IET 2024 的代数侧信道分析表明，在 8/16/32 位微控制器上，单条功耗轨迹即可在很短时间内恢复完整 288 位状态；ASIC 在其实验模型下没有被打穿，但这不意味着硬件天然安全。掩码、双轨和功耗平衡仍是必需项。",
+        "en": "Trivium security depends on the full 1152-clock initialization.Published attacks mostly target reduced rounds, such as cube attacks on 784 or 799 rounds and guess-and-determine attacks on reduced initialization; no practical key recovery is public for the full 1152 rounds, but reduced-round analysis is not permission to cut initialization."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    },
+    {
+      "id": "trivium-r139-history",
+      "entryId": "trivium-details",
+      "section": "history",
+      "statement": {
+        "zh": "De Cannière 与 Preneel 在 2005 年设计 Trivium，提交 eSTREAM 并进入硬件 portfolio；2008 年成为 eSTREAM 最终组合成员；2012 年 ISO/IEC 29192-3 把它与 Enocoro 一起标准化。此后它成为轻量流密码和立方攻击的标准研究对象。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Trivium 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "De Cannière and Preneel designed Trivium in 2005, submitted it to eSTREAM and reached the hardware portfolio; it became a member of the final eSTREAM portfolio in 2008.ISO/IEC 29192-3 standardized it alongside Enocoro in 2012."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    },
+    {
+      "id": "trivium-r139-refs",
+      "entryId": "trivium-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Trivium 流密码.https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Trivium 流密码.https://zh.wikipedia.org/w/index.php?search=Trivium%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "trivium-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

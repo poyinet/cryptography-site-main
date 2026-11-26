@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening batch for bls-details.",
+  "entries": [
+    {
+      "id": "bls-details",
+      "inventoryIds": [
+        "bls"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R106 后量子签名/KEM、轻量 AEAD、配对签名与门限签名深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "BLS 短签名",
+        "en": "BLS Pairing-Based Signature"
+      },
+      "claimIds": [
+        "bls-r139-principle",
+        "bls-r139-why",
+        "bls-r139-used",
+        "bls-r139-broken",
+        "bls-r139-history",
+        "bls-r139-refs"
+      ],
+      "sourceIds": [
+        "bls-wikipedia",
+        "bls-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "ecdsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "bls-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLS 短签名：为什么需要 → 核心机制 → 边界。",
+            "en": "BLS Pairing-Based Signature: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "BLS 短签名 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for BLS Pairing-Based Signature, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/bls-details-flow.zh.svg",
+            "en": "assets/bls-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e565006e1ec02200882e91a7d6d45d1afed2f76bc37bd18369778192af22b0d1",
+            "en": "98be415db72a40fef2c27f0f205f86639e324bf953372a994e9b4226975aaa4d"
+          }
+        },
+        {
+          "id": "bls-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLS 短签名 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for BLS Pairing-Based Signature: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "BLS 短签名 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for BLS Pairing-Based Signature, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bls-details-r138-model.zh.svg",
+            "en": "assets/bls-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "833d68cc355127b9f0515cb73673a5607b9c4de0415c27b05e71ebb840606d86",
+            "en": "3c30c3a153e70397637f94c843ba4aaced83527ea256aca7066f5c68ec2d3ad9"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：BLS 短签名（Boneh-Lynn-Shacham Short Signatures）。### 配对与短签名\n\nBLS 在配对友好曲线上工作：私钥 sk，公钥 PK=sk·P2，签名 σ=sk·H(m)，H 把消息哈希到 G1。验证检查 e(σ,P2)=e(H(m),PK)。在 BLS12-381 上，签名 48 B、公钥 96 B。### 聚合\n\nn 个签名可以逐点相加成一个 48 B 聚合签名；验证用多配对 e(σ,P2)=∏e(H(m_i),PK_i)。聚合公钥也可相加。### 三种防 rogue-key\n\nBasic 要求聚合消息互不相同；Message augmentation 把 PK 拼进消息；Proof of possession 要求每个公钥附带 PoP。协议必须选一种，不能混。",
+          "why": "BLS 的价值是签名聚合：n 个验证者、交易或投票只占一个签名，带宽和存储随 n 亚线性增长。它确定、非可延展、验证可用多配对批量算，适合共识投票、证书透明度和跨链轻客户端。在以太坊共识里，成百上千个 attestation 聚合成一个 BLS 签名，是以太坊可扩展性的关键。",
+          "used": "用于以太坊共识的 attestation 聚合、Dfinity 的阈值签名、Cloudflare 的证书透明度和部分跨链桥；标准化文本是 CFRG BLS draft（07）。工程要点：用 BLS12-381 和 hash-to-curve；聚合验证必须检查 PK 非单位元、签名在正确子群；按方案选择 distinct messages、augmentation 或 PoP；不要自己拼接域分离。",
+          "broken": "BLS 的聚合是“签名可加”，但协议层最容易错：rogue-key 攻击可让攻击者用伪造公钥抵消诚实签名；只检查聚合方程不检查消息集合会接受伪造。",
+          "history": "BLS 由 Boneh、Lynn、Shacham 在 2001 年 ASIACRYPT 论文 “Short Signatures from the Weil Pairing” 提出；它利用 Weil/Tate 配对把签名压到群元素大小。IETF CFRG 从 2018 年起推动 BLS 标准化，当前草案定义 Basic、Message augmentation、PoP 三种方案和 BLS12-381 套件。BLS 在 2020 年后因以太坊 2.0 共识而大规模部署。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：BLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 BLS 短签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 BLS 短签名 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for BLS 短签名. https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nBLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Boneh-Lynn-Shacham Short Signatures (BLS 短签名). ### Pairing and short signatures\n\nBLS works on a pairing-friendly curve: private key sk, public key PK=sk·P2, signature σ=sk·H(m), where H hashes the message to G1. Verification checks e(σ,P2)=e(H(m),PK). On BLS12-381, a signature is 48 bytes and a public key is 96 bytes. ### Aggregation\n\nn signatures add pointwise into one 48-byte aggregate signature; verification uses the multi-pairing e(σ,P2)=∏e(H(m_i),PK_i). Public keys can also be aggregated. ### Three rogue-key defenses\n\nBasic requires all aggregated messages to be distinct; message augmentation prepends PK to the message; proof of possession requires a PoP with each public key. A protocol must choose one and not mix them.",
+          "why": "BLS’s value is signature aggregation: n validators, transactions or votes occupy one signature, so bandwidth and storage grow sublinearly in n. It is deterministic, non-malleable and batch-verifiable with multi-pairings, fitting consensus votes, certificate transparency and light clients.\n\nIn Ethereum consensus, hundreds or thousands of attestations aggregate into one BLS signature, a key enabler of Ethereum scalability.",
+          "used": "It is used for Ethereum consensus attestation aggregation, Dfinity threshold signatures, Cloudflare certificate transparency and some bridges; the standards text is the CFRG BLS draft (07).\n\nRequirements: BLS12-381 and hash-to-curve; aggregate verification must reject the identity public key and check signatures lie in the correct subgroup; choose distinct messages, augmentation or PoP per scheme; do not invent domain separation.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "BLS aggregation is “signatures add”, but protocol mistakes dominate: a rogue-key attack can cancel honest signatures with a crafted public key; checking only the aggregate equation without the message set can accept forgeries.\n\nBoundaries: BLS is not post-quantum; pairing parameters and subgroup checks must be correct; identity/zero-signature attacks require rejecting identity PK and σ; aggregate security depends on the scheme, and Basic is safe only with distinct messages.",
+          "history": "BLS was introduced by Boneh, Lynn and Shacham in the 2001 ASIACRYPT paper “Short Signatures from the Weil Pairing”; pairings compress a signature to one group element.\n\nIETF CFRG has standardized BLS since 2018; the current draft defines Basic, message augmentation, PoP and the BLS12-381 suite. BLS saw large-scale deployment after 2020 through Ethereum 2.0 consensus.",
+          "refs": "- Wikipedia search entry for BLS 短签名. https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nBoneh-Lynn-Shacham Short Signatures: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "bls-r139-formal",
+          "entryId": "bls-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：BLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 BLS 短签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "bls-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bls-r139-formal"
+      ],
+      "sources": [
+        "bls-wikipedia",
+        "bls-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bls-r139-formal",
+      "entryId": "bls-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：BLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 BLS 短签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "bls-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "id": "seed-calc-rfc-vectors",
+    "entryId": "seed-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The four RFC 4269 Appendix B vectors B.1-B.4, each with a 128-bit key and a 128-bit plaintext",
+    "expected": "Every encryption matches the listed ciphertext and every decryption returns the original plaintext; the B.1 table also matches all sixteen round subkeys and per-round input states, the state after round i equals the input state of round i+1, and the state after round 16 equals the ciphertext halves",
+    "sourceIds": [
+      "seed-rfc4269"
+    ],
+    "dependencies": [
+      "seed-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Four fixed vectors; they cover different keys and plaintexts but do not prove resistance to cryptanalysis."
+  },
+  {
+    "id": "seed-calc-key-schedule",
+    "entryId": "seed-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The all-zero B.1 key and the RFC 4269 KC constants, compared with the sixteen Ki0/Ki1 pairs listed in Appendix B.1",
+    "expected": "K1=7C8F8C7EC737A22C, K2=FF276CDBA7CA684A and K16=7189115098B255B0; all sixteen Ki match the RFC table; the decryption schedule is the reverse of the encryption schedule",
+    "sourceIds": [
+      "seed-rfc4269"
+    ],
+    "dependencies": [
+      "seed-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Only the all-zero key has published per-round subkeys; the other three vectors validate the schedule indirectly through their ciphertexts."
+  },
+  {
+    "id": "seed-calc-sboxes-g",
+    "entryId": "seed-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 4269 Appendix A S0, S1 and SS0-SS3, the mask definitions m0=FC, m1=F3, m2=CF, m3=3F, and deterministic G/F samples",
+    "expected": "S0 and S1 each have 256 entries; all four SS-boxes are reproduced from S0/S1 and the masks for all 256 inputs; S0[0]=A9, S1[0]=38, S0[255]=9A, S1[255]=B7; G(00000000)=B829B829, G(01234567)=27E4246B and F(K1,08090A0B0C0D0E0F)=8080BE54C0EF8C18",
+    "sourceIds": [
+      "seed-rfc4269"
+    ],
+    "dependencies": [
+      "seed-teaching.mjs",
+      "sboxes.json",
+      "vectors.json"
+    ],
+    "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+  },
+  {
+    "id": "seed-calc-roundtrip",
+    "entryId": "seed-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Three fixed keys (B.1 zero key, B.3 key and B.4 key) times eight deterministic plaintext patterns, including the B.1 and B.2 official plaintexts",
+    "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three keys produce three pairwise distinct schedules",
+    "sourceIds": [
+      "seed-rfc4269"
+    ],
+    "dependencies": [
+      "seed-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

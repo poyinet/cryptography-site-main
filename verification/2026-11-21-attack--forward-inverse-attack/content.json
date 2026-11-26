@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R123 formula-level deepening for attack--forward-inverse-attack-details.",
+  "entries": [
+    {
+      "id": "attack--forward-inverse-attack-details",
+      "inventoryIds": [
+        "attack--forward-inverse-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条从组合结构给出双向枚举、建表、误报过滤与 2^{k+1} 时间 / 2^k 内存的完整参数链，不把“中间相遇”写成泛泛的“从两端找”。",
+        "en": "This entry gives the composition-level chain of bidirectional enumeration, table construction, false-alarm filtering and the 2^{k+1} time / 2^k memory parameters; it does not reduce meet-in-the-middle to a vague “search from both ends”."
+      },
+      "title": {
+        "zh": "正反向中间相遇攻击",
+        "en": "Forward–Inverse Meet-in-the-Middle Attack"
+      },
+      "claimIds": [
+        "attack--forward-inverse-attack-r139-principle",
+        "attack--forward-inverse-attack-r139-why",
+        "attack--forward-inverse-attack-r139-used",
+        "attack--forward-inverse-attack-r139-broken",
+        "attack--forward-inverse-attack-r139-history",
+        "attack--forward-inverse-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--forward-inverse-attack-wikipedia",
+        "attack--forward-inverse-attack-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "attack--forward-inverse-attack-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "双密钥双重加密的正反向中间相遇：建表、扫描、候选与第二对过滤。",
+            "en": "Forward–inverse meet-in-the-middle on two-key double encryption: table, scan, candidate, second-pair filter."
+          },
+          "alt": {
+            "zh": "四步公式级机制：建立双密钥组合 → 正向建表 → 反向扫描 → 第二对过滤；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: two-key composition → forward table → backward scan → second-pair filter; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/attack--forward-inverse-attack-mechanism.zh.svg",
+            "en": "assets/attack--forward-inverse-attack-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d3d00105d65104c1e73510a233ddb8e60a12b793f4e6315f9c62906d6677e80e",
+            "en": "6cefe3123dbab77c45ad3986be205fd9f5fa0d4323685b136740a22992fc5971"
+          }
+        },
+        {
+          "id": "attack--forward-inverse-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "正反向中间相遇攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Forward–Inverse Meet-in-the-Middle Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "正反向中间相遇攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Forward–Inverse Meet-in-the-Middle Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--forward-inverse-attack-details-r138-model.zh.svg",
+            "en": "assets/attack--forward-inverse-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "abe20451c9c18898cc49cf25701fa98105f9f18ff2b72b0eaeaca6bd13ec8c8a",
+            "en": "8541e24262f4f890f9412b21780eb956ff65b196202e57bb09165018c8b7baed"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：正反向中间相遇攻击（Forward–Inverse Meet-in-the-Middle Attack）。### 组合加密与中间状态\n\n设分组密码 E 的密钥空间为 {0,1}^k，双密钥双重加密写作 C=E_{K2}(E_{K1}(P))。正反向攻击不枚举 2^{2k} 个密钥对，而是从明文端和密文端各枚举 2^k 个单密钥，把中间状态当作相遇点。### 正向表与反向扫描\n\n固定一个已知明密文对 (P,C)。正向计算 X=E_{K1}(P)，把 (X,K1) 存入表 T；反向计算 Y=D_{K2}(C)，在 T 中查 Y。若 X=Y，则 (K1,K2) 是候选密钥对；再用第二个明密文对验证，过滤误报。### 复杂度\n\n表大小 M=2^k，正向与反向各约 2^k 次分组运算，总时间 T≈2^{k+1}。对双 DES（k=56）约为 2^57 次运算、2^56 个中间状态。若分组长为 n，误报数约为 2^{2k−n}；第二个明密文对把误报压到可忽略。",
+          "why": "单靠双重加密把密钥空间从 2^k 扩到 2^{2k}，但中间相遇把搜索拆成两个 2^k 的表。它说明“密钥长度相加”不等于“安全强度相加”，是评估多重加密、密钥分离和分组长度的重要反例。",
+          "used": "1.确认适用条件：已知一个明密文对；加密可分解为两个独立密钥的串联；中间状态空间足够小以建表。2.建表：正向枚举 K1，存 X 与 K1。3.扫描：反向枚举 K2，查 Y。4.过滤：用第二个明密文对验证候选。5.评估：记录时间 2^{k+1}、内存 2^k 和误报率 2^{2k−n}。### 不能怎么用\n\n不能把“时间 2^{k+1}”单独当作实际可执行复杂度；不能忽略 2^k 个中间状态的存储与访问成本；不能把双 DES 的结果直接套到三重 DES、AES 或带密钥绑定的组合加密。",
+          "broken": "1.内存瓶颈：2^56 个状态在现实设备上仍然巨大；时间-内存权衡（区分点、彩虹表）会改变参数。2.误报与唯一性：仅一个明密文对会产生大量候选；第二个对或冗余位用于过滤。3.密钥独立性：若 K1、K2 由同一主密钥派生或有代数关系，攻击可进一步降复杂度；若三重加密使用三个独立密钥，简单双向相遇不直接适用。4.分组长度：误报率 2^{2k−n} 随 n 变化；短分组更易误报。",
+          "history": "Diffie 与 Hellman 1977 年在评估 DES 密钥搜索时提出时间-内存折衷；Merkle 与 Hellman 1981 年把“中间相遇”明确用于双重加密，指出 112 位双密钥可用约 2^56 次运算和 2^56 个字攻破。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 正反向中间相遇攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 正反向中间相遇攻击. https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Forward–Inverse Meet-in-the-Middle Attack (正反向中间相遇攻击). ### Composition and the middle state\n\nLet a block cipher E have key space {0,1}^k. Two-key double encryption is C=E_{K2}(E_{K1}(P)). The forward–inverse attack does not enumerate 2^{2k} key pairs: it enumerates 2^k single keys from each side and treats the middle state as the meeting point. ### Forward table and backward scan\n\nFix one known plaintext–ciphertext pair (P,C). Compute X=E_{K1}(P) forward and store (X,K1) in table T; compute Y=D_{K2}(C) backward and look up Y in T. If X=Y, then (K1,K2) is a candidate pair; a second pair verifies it and filters false alarms. ### Complexity\n\nThe table has M=2^k entries, and each side performs about 2^k block operations, so total time is T≈2^{k+1}. For double DES (k=56), this is about 2^57 operations and 2^56 intermediate states. For block size n, false alarms are about 2^{2k−n}; a second pair makes them negligible.",
+          "why": "Double encryption alone expands the key space from 2^k to 2^{2k}, but meet-in-the-middle splits the search into two 2^k tables. It shows that adding key lengths is not the same as adding security, and it is a key counterexample for multiple encryption, key separation and block-size choices.\n\nThis is a generic time–memory trade-off, not a break of one block cipher. Unlike differential or linear cryptanalysis, it uses composition structure rather than round-function bias; it therefore applies to any composable cipher, at a high memory cost.",
+          "used": "1. Check the conditions: one known plaintext–ciphertext pair; encryption decomposes into two independent-key stages; the middle space is small enough to store. 2. Build the table: enumerate K1 forward and store X with K1. 3. Scan: enumerate K2 backward and look up Y. 4. Filter: verify candidates with a second pair. 5. Report: time 2^{k+1}, memory 2^k, false-alarm rate 2^{2k−n}.\n\nDo not quote time 2^{k+1} without the 2^k storage and access cost; do not apply the double-DES result directly to triple DES, AES, or compositions with key binding.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Memory: 2^56 states remain enormous on real equipment; time–memory trade-offs (distinguished points, rainbow tables) change the parameters. 2. False alarms and uniqueness: one pair produces many candidates; a second pair or redundancy filters them. 3. Key independence: if K1 and K2 are derived from one master key or have algebraic relations, complexity can drop further; three independent keys are not directly covered. 4. Block size: the false-alarm rate 2^{2k−n} varies with n, and short blocks are worse.",
+          "history": "Diffie and Hellman proposed the time–memory trade-off in their 1977 assessment of DES key search. Merkle and Hellman made the meet-in-the-middle attack explicit for double encryption in 1981, showing that a 112-bit two-key double encryption can be broken with about 2^56 operations and 2^56 words.\n\nThis result drove the deployment of triple DES and the later migration to AES. This entry covers the classic two-key meet-in-the-middle only; multidimensional meet-in-the-middle, partial matching and quantum search have different costs and must not be conflated.",
+          "refs": "- Wikipedia search entry for 正反向中间相遇攻击. https://zh.wikipedia.org/w/index.php?search=%E6%AD%A3%E5%8F%8D%E5%90%91%E4%B8%AD%E9%97%B4%E7%9B%B8%E9%81%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nForward–Inverse Meet-in-the-Middle Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "attack--forward-inverse-attack-r139-formal",
+          "entryId": "attack--forward-inverse-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 正反向中间相遇攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--forward-inverse-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--forward-inverse-attack-r139-formal"
+      ],
+      "sources": [
+        "attack--forward-inverse-attack-wikipedia",
+        "attack--forward-inverse-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--forward-inverse-attack-r139-formal",
+      "entryId": "attack--forward-inverse-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：正反向中间相遇攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 正反向中间相遇攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--forward-inverse-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

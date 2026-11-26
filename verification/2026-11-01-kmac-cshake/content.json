@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for kmac-cshake: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "kmac-cshake-details",
+      "inventoryIds": [
+        "kmac-cshake"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释KMAC / cSHAKE 族的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of KMAC and cSHAKE Family: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "KMAC / cSHAKE 族",
+        "en": "KMAC and cSHAKE Family"
+      },
+      "claimIds": [
+        "kmac-cshake-r139-principle",
+        "kmac-cshake-r139-why",
+        "kmac-cshake-r139-used",
+        "kmac-cshake-r139-broken",
+        "kmac-cshake-r139-history",
+        "kmac-cshake-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "kmac-cshake-wikipedia",
+        "kmac-cshake-standard-ref"
+      ],
+      "related": [
+        "message-authentication-code",
+        "sha3",
+        "sponge-construction"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：KMAC / cSHAKE 族（KMAC / cSHAKE）。SP 800-185 定义一组由 KECCAK 派生的函数。摘要称 cSHAKE「is a customizable variant of the SHAKE function, as defined in Federal Information Processing Standard (FIPS) 202」，其计算把 encode_string(N) 与 encode_string(S) 一并做字节填充后再接输入。KMAC「is a PRF and keyed hash function based on KECCAK」，从 bytepad(encode_string(K)) 起始并追加右编码的输出长度。TupleHash 则被设计为「hash a tuple of input strings ...in an unambiguous way」。",
+          "why": "定制分两个串：N 是「function-name bit string, used by NIST to define functions based on cSHAKE」，S 是用户自选的 customization 串；当两者都为空时 cSHAKE 等价于 SHAKE，即 cSHAKE128(X, L, \"\", \"\") = SHAKE128(X, L)。§3.4 警告用户不得自造 N 值，否则「could cause interoperability problems with future NIST-defined functions」。KMAC 与 SHAKE/cSHAKE 的区别在于「altering the requested output length generates a new, unrelated output」。",
+          "used": "这四个函数「All support two security strengths: 128 and 256 bits」。表 1 给出等价用法：KMAC128(K, text, 128, S) 对应 AES-CMAC，KMAC256 取 256 位输出对应 HMAC-SHA256，取 512 位输出对应 HMAC-SHA512。§4.3.1 另外定义 KMACXOF128 与 KMACXOF256，通过把编码后的输出长度设为 0 来获得可变长度输出。",
+          "broken": "密钥与输出长度是主要误用点。§8.4.1 规定「shall not select an input key, K, whose length is less than their required security strength」；§8.4.2 规定用作 MAC 时输出长度不得小于 32 位，选择小于 64 位必须先做仔细的风险评估；§8.3 针对碰撞与原像说明这类函数无论输出多长都可能以 2 的 128 次方工作量被攻破，「a longer output does not, in general, improve its security against these attacks」。KMAC 的密钥 K 允许任意长度包括零长度，因此批准用途须自行满足密钥长度下限。",
+          "history": "SP 800-185 由 Kelsey、Chang 与 Perlner 撰写，2016 年 12 月发布，把 FIPS 202 的 SHAKE 扩展到可定制、keyed 与元组哈希场景，并为整族函数定义 128 与 256 两个安全强度档位。",
+          "refs": "- Wikipedia search entry for KMAC / cSHAKE 族. https://zh.wikipedia.org/w/index.php?search=KMAC%20%2F%20cSHAKE%20%E6%97%8F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: KMAC / cSHAKE. It is registered under authentication and AEAD, hashes. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in authentication and AEAD, hashes, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for KMAC / cSHAKE 族. https://zh.wikipedia.org/w/index.php?search=KMAC%20%2F%20cSHAKE%20%E6%97%8F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "cSHAKE：带函数名 N 与定制串 S 的可定制 SHAKE。",
+          "KMAC：基于 KECCAK 的 keyed 哈希与消息认证码。",
+          "TupleHash：对输入串元组无歧义哈希的函数。",
+          "定制串 S：用户选择、用来区分同一函数不同变体的位串。",
+          "XOF：可变长度输出函数。",
+          "安全强度 128/256：文档为整族函数定义的两个强度档位。"
+        ],
+        "en": [
+          "cSHAKE: SHAKE customisable by function name N and a customisation string S.",
+          "KMAC: a KECCAK-based keyed hash and message authentication code.",
+          "TupleHash: a function that hashes a tuple of input strings unambiguously.",
+          "Customisation string S: a user-chosen bit string separating variants of one function.",
+          "XOF: an extendable output function with variable output length.",
+          "128/256-bit strengths: the two levels defined for the whole family."
+        ]
+      },
+      "figures": [
+        {
+          "id": "kmac-cshake-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "KMAC / cSHAKE 族：为什么需要 → 核心机制 → 边界。",
+            "en": "KMAC and cSHAKE Family: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "KMAC / cSHAKE 族 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for KMAC and cSHAKE Family, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/kmac-cshake-details-flow.zh.svg",
+            "en": "assets/kmac-cshake-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "470caba8e0f55aefda8be57dcfac270d2e96b52759b67d8a8a367a379faf00b8",
+            "en": "8e0be1e3739c54a852dc77f6c592e75570829d7ec077d8675d4b2ff6368c4c48"
+          }
+        }
+      ],
+      "sources": [
+        "kmac-cshake-wikipedia",
+        "kmac-cshake-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

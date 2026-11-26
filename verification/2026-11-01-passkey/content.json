@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for passkey: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "passkey-details",
+      "inventoryIds": [
+        "passkey"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释通行密钥（Passkey）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Passkey (WebAuthn): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "通行密钥（Passkey）",
+        "en": "Passkey (WebAuthn)"
+      },
+      "claimIds": [
+        "passkey-r139-principle",
+        "passkey-r139-why",
+        "passkey-r139-used",
+        "passkey-r139-broken",
+        "passkey-r139-history",
+        "passkey-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "passkey-wikipedia",
+        "passkey-standard-ref"
+      ],
+      "related": [
+        "two-factor-authentication",
+        "asymmetric-cryptography",
+        "transport-layer-security"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：通行密钥（Passkey）（Passkey (FIDO2/WebAuthn)）。WebAuthn Level 3 是 W3C 于 2026 年 8 月 25 日发布的推荐标准，标题为「Web Authentication: An API for accessing Public Key Credentials - Level 3」。§4 把认证器定义为「A cryptographic entity, existing in hardware or software, that can register a user with a given Relying Party and later assert possession of the registered public key credential, and optionally verify the user to the Relying Party」。同节把通行密钥（Passkey）列为客户端可发现凭据来源的别名，该条目的定义是「a public key credential source that is discoverable and usable in authentication ceremonies where the Relying Party does not provide any credential IDs」。",
+          "why": "与服务器侧凭据不同（后者「only usable … when the Relying Party supplies its credential ID」），通行密钥可在空的 allowCredentials 参数下被发现并使用。§6.2.1 区分平台认证器与跨平台认证器，并据此得到 platform credential 与 roaming credential。§1.2.1 的消费者用例说明可以借助用户设备内置的认证器来「to provide phishing-resistant sign in using multi-device credentials (commonly referred to as synced passkeys)」；§4 还记载私钥「is expected to never be exposed to any other party, not even to the owner of the authenticator」。",
+          "used": "注册流程在 §7.1 由调用方发起 create() 操作，认证流程在 §7.2 通过 get() 完成，服务器必须验证「C.type is the string webauthn.get」、challenge 等于 pkOptions.challenge 的 base64url 编码、origin 属于 relying party 预期、且 rpIdHash 是预期 RP ID 的 SHA-256 哈希。§4 把用户验证定义为认证器本地授权 makeCredential 与 getAssertion 调用的技术过程，可通过触摸加 PIN、口令或生物识别触发；§5.8.6 的取值是 required、preferred 与 discouraged。",
+          "broken": "§13.4.3 把随机挑战当作强制要求：「the challenges MUST contain enough entropy to make guessing them infeasible.Challenges SHOULD therefore be at least 16 bytes long」，并说明协议「dependent upon randomized challenges to avoid replay attacks」。§13.4.9 要求 relying party「MUST validate the origin member of the client data」，否则「could allow a malicious website to obtain valid credentials」。§13.4.6 指出私钥一般不应离开创建它的认证器；§5.8.5 规定算法标识 SHOULD 取自 IANA COSE 注册表（例如 -7 为 ES256、-257 为 RS256），且 -7 必须指明 P-256 曲线。",
+          "history": "Level 3 由 Web Authentication Working Group 编写，前置页署名编辑者包括 Tim Cappalli、Akshay Kumar、Emil Lundberg、Matthew Miller 与 Nina Satragno 等；本版本是 2026 年 8 月 25 日的 W3C Recommendation，其 Previous Versions 一栏依次列出 2026 年 5 月 26 日的 Candidate Recommendation 快照与 webauthn-2、webauthn-1 两份推荐标准。§1 与 §3 依赖清单都说明该 API 扩展 W3C 的 Credential Management 接口；§5.1.10 提供让认证器得知凭据状态、以便更新、移除或隐藏错误与已撤销凭据的信号方法。",
+          "refs": "- Wikipedia search entry for 通行密钥（Passkey）. https://zh.wikipedia.org/w/index.php?search=%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5%EF%BC%88Passkey%EF%BC%89\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Passkey (FIDO2/WebAuthn). It is registered under protocols and PKI, applied security engineering. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, applied security engineering, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: The Frontier. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 通行密钥（Passkey）. https://zh.wikipedia.org/w/index.php?search=%E9%80%9A%E8%A1%8C%E5%AF%86%E9%92%A5%EF%BC%88Passkey%EF%BC%89\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "通行密钥：无需 relying party 提供凭据 ID 即可发现的公钥凭据源。",
+          "认证器：注册公钥凭据并在认证时证明持有私钥的实体。",
+          "Relying Party：在网络上依赖该凭据验证用户的站点。",
+          "用户验证：认证器本地授权操作的手势过程。",
+          "平台认证器：属于客户端设备本身的认证器。",
+          "跨平台认证器：通过外部传输协议接入的认证器。"
+        ],
+        "en": [
+          "Passkey: a public key credential source discoverable without supplied credential IDs.",
+          "Authenticator: the entity registering a credential and proving possession of its private key.",
+          "Relying Party: the website that depends on the credential to authenticate the user.",
+          "User verification: the authenticator-local gesture authorizing an operation.",
+          "Platform authenticator: an authenticator that is part of the client device.",
+          "Roaming authenticator: an authenticator reached over a cross-platform transport."
+        ]
+      },
+      "subtopicIds": [
+        "passkey"
+      ],
+      "figures": [
+        {
+          "id": "passkey-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "通行密钥（Passkey）：为什么需要 → 核心机制 → 边界。",
+            "en": "Passkey (WebAuthn): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "通行密钥（Passkey） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Passkey (WebAuthn), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/passkey-details-flow.zh.svg",
+            "en": "assets/passkey-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d651df6748980ce21332c37a44adca09ce91d1b8a025fa810f80317192a3f428",
+            "en": "b94826fd2bc3b265e14d7ec5d7eda0a7b4aaf4a2a05dbe7d6024257cb25385ac"
+          }
+        }
+      ],
+      "sources": [
+        "passkey-wikipedia",
+        "passkey-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

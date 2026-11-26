@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for vigen-re: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "vigen-re-details",
+      "inventoryIds": [
+        "vigen-re"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释维吉尼亚密码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Vigenère: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "维吉尼亚密码",
+        "en": "Vigenère"
+      },
+      "claimIds": [
+        "vigen-re-r139-principle",
+        "vigen-re-r139-why",
+        "vigen-re-r139-used",
+        "vigen-re-r139-broken",
+        "vigen-re-r139-history",
+        "vigen-re-r139-refs"
+      ],
+      "sourceIds": [
+        "vigen-re-wikipedia",
+        "vigen-re-standard-ref"
+      ],
+      "related": [
+        "alberti-cipher-disk",
+        "autokey-cipher",
+        "substitution"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "calculationIds": [
+        "vigenre-calc-printed-example",
+        "vigenre-calc-interleaved-caesars",
+        "vigenre-calc-shift-cipher-is-period-one",
+        "vigenre-calc-beaufort-variants",
+        "vigenre-calc-compound-lcm"
+      ],
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：维吉尼亚密码（Vigenère）。机制的可用陈述在讲义里：这一体制「It uses a shared keyword to select the substitution alphabet for each letter of the message.」——关键词的第 i 个字母决定第 i 个明文字母用哪一张表；因为关键词通常短于报文，发送方把它重复到与明文等长。手册一侧对同一构造给的是带周期的移位写法，见下面的`为什么`一节。",
+          "why": "为什么要多张表：手册定义 7.53 之后的说明段写「each of the t substitutions is different」，并把这件事称为使用 t 张字母表而不是单一映射。后果是同一个明文字母在不同位置上不再总映到同一个密文字母，单字母频率的对应被打散；手册还把移位密码算作周期 t = 1 的特例。要照录的是同一段落印出的位置序列写作 i、i+s、i+2s，而该定义把周期记作 t——这份副本如此印，该条目不代改。",
+          "used": "用法层面讲义给的是操作口径：这一体制「It could be used with a table, so the two parties no longer needed a cipher disk.」——表可以查，也可以由双方各自记住，代价是密钥退化成一个容易分享的词；讲义并举一个以 LEMON 为关键词、把密钥重复到与明文等长的算例。这里可登记的是`一张表加一个共享词`这件做法，而不是它比密码盘更强的评价。复算记在 calculations 中：按留存件印出的 ATTACKATDAWN / LEMONLEMONLE 得到 LXFOPVEFRNHR，三条路径同时命中该行印出的密文：同余加法、逐行读自留存件第 122 行印出表列的查位，以及按手册该行印出的式子 ci = mi + ki mod s 直接求值；留存件第 126-129 行印出的四次查表也由该表列与式子复现；4598 字母样本以关键词 LEMON 加密后，可拆成五个各自恰为单一凯撒位移的交错子列，与留存件所说的第 1、6、11 位同用 L、第 2、7、12 位同用 E 相对应；另复现留存件明载的两条等价关系——位移密码即周期 t=1 的维吉尼亚，以及周期 2 与 3 复合等于周期 6 的简单维吉尼亚。博福特自反性（c = k − m 两次作用复原明文）亦按原文所述验证。",
+          "broken": "攻破路径写在手册 §7.3.5 的第 (iv) 条：「Kasiski's method provides a general technique for cryptanalyzing polyalphabetic ciphers with repeated keywords」，依据是相同的明文段被同一段密钥加密会得到相同的密文段，于是手册接着印「Consequently one expects the number of characters between the beginning of repeated ciphertext segments to be a multiple of the keyword length」，取这些距离的公因子即可推定关键词长度（本副本把 number 一词按硬回车切成 num- 与 ber 两行）；手册同时提醒会有偶然重复，因而得到的是`最可能`的长度，并且长度 4 以上的重复段才最有用。也就是说，密钥一重复就留下结构，而检验本身带概率性。",
+          "history": "年代与命名：§7.8 把 1586 年的著作与其混合棋盘（表头与表侧都打乱）以及自动密钥主张系在同一位作者名下，并明确否认简单形态出自其人——该注记说那个更不安全的简单体制是被错误归属的。因为这份副本把人名印成带杂字的形式，该条目不复制该拼写、也不引那句原话，只登记两件事：1586 年这部论著落在 1450–1600 的窗口里，以及归属问题本身由手册提出。",
+          "refs": "- Wikipedia search entry for 维吉尼亚密码. https://zh.wikipedia.org/w/index.php?search=%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Vigenère. It is registered under polyalphabetic substitution. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in polyalphabetic substitution, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Renaissance & Reformation. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 维吉尼亚密码. https://zh.wikipedia.org/w/index.php?search=%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%AF%86%E7%A0%81\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "维吉尼亚密码：以长度为 t 的密钥轮换取 t 张移位表的多表替换。",
+          "period t（周期）：密钥长度，即所用移位表张数。",
+          "shift cipher（移位密码）：周期为 1 的特例。",
+          "t alphabets（t 张字母表）：手册对该体制的描述口径。",
+          "Kasiski examination（卡西斯基检验）：靠重复密文段间距求周期长度的方法。",
+          "mixed tableau（混合棋盘）：1586 年论著把表行与表头都打乱的表格。"
+        ],
+        "en": [
+          "Vigenere cipher: a polyalphabetic substitution cycling through t shift alphabets under a key of length t.",
+          "period t: the key length, hence the number of shift alphabets used.",
+          "shift cipher: the special case of period one.",
+          "t alphabets: the handbook's way of describing the scheme.",
+          "Kasiski examination: the method that recovers the period from repeated ciphertext distances.",
+          "mixed tableau: the 1586 treatise's table scrambled on both axes."
+        ]
+      },
+      "subtopicIds": [
+        "vigen-re"
+      ],
+      "figures": [
+        {
+          "id": "vigen-re-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "维吉尼亚密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Vigenère: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "维吉尼亚密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Vigenère, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/vigen-re-details-flow.zh.svg",
+            "en": "assets/vigen-re-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "830b7c73a1e7666113ab34a96e4680f8cac6e8a0ef495c7e11efd370f7b54200",
+            "en": "e025938b3cc60fa4a4c43851c69a73f3003bc2f51d0704f2403dc230374feb8d"
+          }
+        }
+      ],
+      "sources": [
+        "vigen-re-wikipedia",
+        "vigen-re-standard-ref"
+      ],
+      "calculations": [
+        {
+          "id": "vigenre-calc-printed-example",
+          "entryId": "vigen-re-details",
+          "kind": "known-answer-check",
+          "inputs": "plaintext ATTACKATDAWN with keyword LEMON, enciphered three ways: the mod-26 mapping of Definition 7.53, the row/column lookup of the square parsed out of the printed grid, and an evaluation of the expression string printed at hac-ch7.txt:1068",
+          "expected": "three routes give the ciphertext parsed from the course text at its line 131 - modular addition, a square parsed row by row out of the printed grid at line 122, and an evaluation of the expression ci = mi + ki mod s matched against the handbook line itself - the spelling comes from the file, the arithmetic it names is this module's, and the four worked lookups at positions 1-4 (A/L/L, T/E/X, T/M/F, A/O/O) each reproduce; decryption restores the plaintext",
+          "sourceIds": [
+            "vigen-re-wikipedia"
+          ],
+          "dependencies": [
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json",
+            "classical-sample.mjs",
+            "vigenre-calc.mjs"
+          ],
+          "limitations": "One fixed example of length 12. It anchors the two encipherment routes to a printed value; it says nothing about longer keys or about security."
+        },
+        {
+          "id": "vigenre-calc-interleaved-caesars",
+          "entryId": "vigen-re-details",
+          "kind": "structural-check",
+          "inputs": "the 4598-letter sample encrypted with keyword LEMON, then split into its five interleaved subsequences",
+          "expected": "the shifts are read back off the ciphertext rather than from the key: positions 1, 6 and 11 must each show shift 11 and positions 2, 7 and 12 shift 4, as the source names them; each subsequence must equal the single Caesar shift for that residue class and must decrypt back with its own shift",
+          "sourceIds": [
+            "vigen-re-wikipedia"
+          ],
+          "dependencies": [
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json",
+            "classical-sample.mjs",
+            "vigenre-calc.mjs"
+          ],
+          "limitations": "A repeating keyword only. The interleaving claim is exactly what a non-repeating running key defeats - see the Kasiski dossier for that case."
+        },
+        {
+          "id": "vigenre-calc-shift-cipher-is-period-one",
+          "entryId": "vigen-re-details",
+          "kind": "equivalence-check",
+          "inputs": "the sample enciphered as a shift cipher for shifts 0, 4, 11, 12, 13, 14 and 25, the seven the printed grid supplies rows for (A, E, L, M, N, O, Z), and as a simple Vigenere with a one-letter key",
+          "expected": "the handbook prints that the shift cipher is a simple Vigenere with period t = 1; each shift must equal the row parsed from the printed square under the same key letter, so the identity is checked against the grid the source prints and not only against this module. The excerpt prints rows for A, E, L, M, N, O and Z, and all seven are exercised.",
+          "sourceIds": [
+            "vigen-re-wikipedia"
+          ],
+          "dependencies": [
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json",
+            "classical-sample.mjs",
+            "vigenre-calc.mjs"
+          ],
+          "limitations": "Checks one stated identity between two constructions, not their security."
+        },
+        {
+          "id": "vigenre-calc-beaufort-variants",
+          "entryId": "vigen-re-details",
+          "kind": "rule-check",
+          "inputs": "the sample under the Beaufort mapping ci = ki - mi mod s and the variant Beaufort ci = mi - ki mod s with keyword KRYPT",
+          "expected": "the Beaufort must be its own inverse as the source states, applying it twice restores the plaintext; the variant must follow its own printed formula; both must differ from the simple Vigenere at most positions",
+          "sourceIds": [
+            "vigen-re-wikipedia"
+          ],
+          "dependencies": [
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json",
+            "classical-sample.mjs",
+            "vigenre-calc.mjs"
+          ],
+          "limitations": "The involution is a property of the mapping, not evidence about key choice or about attacks."
+        },
+        {
+          "id": "vigenre-calc-compound-lcm",
+          "entryId": "vigen-re-details",
+          "kind": "equivalence-check",
+          "inputs": "a compound Vigenere built from keys of periods 2 and 3 over the sample, using the key letters AE and LMN because the printed grid excerpt supplies rows for those",
+          "expected": "the source prints that compounding r simple Vigeneres gives a simple Vigenere of period lcm(t1,...,tr); the compound mapping is applied as two passes through the parsed printed grid, one per stage, and must equal a single pass with the merged period-6 key letters. The merged letters, and that single pass, are computed with modular addition rather than read from the grid, because the excerpt supplies rows for only seven key letters and three merged letters are not among them; lcm(2,3) must be 6.",
+          "sourceIds": [
+            "vigen-re-wikipedia"
+          ],
+          "dependencies": [
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json",
+            "classical-sample.mjs",
+            "vigenre-calc.mjs"
+          ],
+          "limitations": "Two periods only; the general lcm claim is stated by the source and exercised on one instance."
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "vigenre-calc-printed-example",
+      "entryId": "vigen-re-details",
+      "kind": "known-answer-check",
+      "inputs": "plaintext ATTACKATDAWN with keyword LEMON, enciphered three ways: the mod-26 mapping of Definition 7.53, the row/column lookup of the square parsed out of the printed grid, and an evaluation of the expression string printed at hac-ch7.txt:1068",
+      "expected": "three routes give the ciphertext parsed from the course text at its line 131 - modular addition, a square parsed row by row out of the printed grid at line 122, and an evaluation of the expression ci = mi + ki mod s matched against the handbook line itself - the spelling comes from the file, the arithmetic it names is this module's, and the four worked lookups at positions 1-4 (A/L/L, T/E/X, T/M/F, A/O/O) each reproduce; decryption restores the plaintext",
+      "sourceIds": [
+        "vigen-re-wikipedia"
+      ],
+      "dependencies": [
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json",
+        "classical-sample.mjs",
+        "vigenre-calc.mjs"
+      ],
+      "limitations": "One fixed example of length 12. It anchors the two encipherment routes to a printed value; it says nothing about longer keys or about security."
+    },
+    {
+      "id": "vigenre-calc-interleaved-caesars",
+      "entryId": "vigen-re-details",
+      "kind": "structural-check",
+      "inputs": "the 4598-letter sample encrypted with keyword LEMON, then split into its five interleaved subsequences",
+      "expected": "the shifts are read back off the ciphertext rather than from the key: positions 1, 6 and 11 must each show shift 11 and positions 2, 7 and 12 shift 4, as the source names them; each subsequence must equal the single Caesar shift for that residue class and must decrypt back with its own shift",
+      "sourceIds": [
+        "vigen-re-wikipedia"
+      ],
+      "dependencies": [
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json",
+        "classical-sample.mjs",
+        "vigenre-calc.mjs"
+      ],
+      "limitations": "A repeating keyword only. The interleaving claim is exactly what a non-repeating running key defeats - see the Kasiski dossier for that case."
+    },
+    {
+      "id": "vigenre-calc-shift-cipher-is-period-one",
+      "entryId": "vigen-re-details",
+      "kind": "equivalence-check",
+      "inputs": "the sample enciphered as a shift cipher for shifts 0, 4, 11, 12, 13, 14 and 25, the seven the printed grid supplies rows for (A, E, L, M, N, O, Z), and as a simple Vigenere with a one-letter key",
+      "expected": "the handbook prints that the shift cipher is a simple Vigenere with period t = 1; each shift must equal the row parsed from the printed square under the same key letter, so the identity is checked against the grid the source prints and not only against this module. The excerpt prints rows for A, E, L, M, N, O and Z, and all seven are exercised.",
+      "sourceIds": [
+        "vigen-re-wikipedia"
+      ],
+      "dependencies": [
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json",
+        "classical-sample.mjs",
+        "vigenre-calc.mjs"
+      ],
+      "limitations": "Checks one stated identity between two constructions, not their security."
+    },
+    {
+      "id": "vigenre-calc-beaufort-variants",
+      "entryId": "vigen-re-details",
+      "kind": "rule-check",
+      "inputs": "the sample under the Beaufort mapping ci = ki - mi mod s and the variant Beaufort ci = mi - ki mod s with keyword KRYPT",
+      "expected": "the Beaufort must be its own inverse as the source states, applying it twice restores the plaintext; the variant must follow its own printed formula; both must differ from the simple Vigenere at most positions",
+      "sourceIds": [
+        "vigen-re-wikipedia"
+      ],
+      "dependencies": [
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json",
+        "classical-sample.mjs",
+        "vigenre-calc.mjs"
+      ],
+      "limitations": "The involution is a property of the mapping, not evidence about key choice or about attacks."
+    },
+    {
+      "id": "vigenre-calc-compound-lcm",
+      "entryId": "vigen-re-details",
+      "kind": "equivalence-check",
+      "inputs": "a compound Vigenere built from keys of periods 2 and 3 over the sample, using the key letters AE and LMN because the printed grid excerpt supplies rows for those",
+      "expected": "the source prints that compounding r simple Vigeneres gives a simple Vigenere of period lcm(t1,...,tr); the compound mapping is applied as two passes through the parsed printed grid, one per stage, and must equal a single pass with the merged period-6 key letters. The merged letters, and that single pass, are computed with modular addition rather than read from the grid, because the excerpt supplies rows for only seven key letters and three merged letters are not among them; lcm(2,3) must be 6.",
+      "sourceIds": [
+        "vigen-re-wikipedia"
+      ],
+      "dependencies": [
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json",
+        "classical-sample.mjs",
+        "vigenre-calc.mjs"
+      ],
+      "limitations": "Two periods only; the general lcm claim is stated by the source and exercised on one instance."
+    }
+  ]
+}

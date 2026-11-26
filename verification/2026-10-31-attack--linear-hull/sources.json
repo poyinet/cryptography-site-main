@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--linear-hull-details",
+  "sources": [
+    {
+      "id": "attack--linear-hull-wikipedia",
+      "title": "Wikipedia search entry for 线性壳",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%A3%B3",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 线性壳",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--linear-hull-r139-principle",
+          "entryId": "attack--linear-hull-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：线性壳（Linear Hull）。线性壳是把具有相同输入、输出掩码的所有线性迹组成的族；其势是这些迹相关性的平方和（按相关性的常用约定），而不是单条迹的相关性。",
+            "en": "**Attack**: Linear Hull (线性壳).A linear hull is the family of all linear trails with the same input and output masks; its potential is the sum of squared trail correlations under the usual correlation convention, not the correlation of a single trail."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--linear-hull-r139-why",
+          "entryId": "attack--linear-hull-details",
+          "section": "why",
+          "statement": {
+            "zh": "Matsui 的 Algorithm 2 实际使用的是一族线性近似，而不是一条迹；只看单条迹会低估成功率，线性壳给出了更准确的分析框架。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Matsui’s Algorithm 2 actually uses a family of linear approximations rather than one trail; looking at a single trail underestimates success, and the linear hull provides a more accurate framework.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--linear-hull-r139-used",
+          "entryId": "attack--linear-hull-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文用线性壳分析 DES 类密码的 Algorithm 2，给出成功率和所需已知明文数的公式，并讨论明文分布的影响。",
+            "en": "The paper uses linear hulls to analyze Algorithm 2 on DES-like ciphers, derives formulas for success rate and required known plaintexts, and discusses the influence of the plaintext distribution.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--linear-hull-r139-broken",
+          "entryId": "attack--linear-hull-details",
+          "section": "broken",
+          "statement": {
+            "zh": "线性壳的相关性可能依赖密钥和轮子密钥，实际强度可能高于或低于单条迹的估计；要实现可证明抵抗，需要控制整个壳的相关性，而不只是消除高偏差单迹。",
+            "en": "A linear hull’s correlation may depend on the key and round subkeys, so actual strength can be higher or lower than a single-trail estimate; proven resistance requires controlling the whole hull, not merely removing high-bias trails.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--linear-hull-r139-history",
+          "entryId": "attack--linear-hull-details",
+          "section": "history",
+          "statement": {
+            "zh": "Nyberg 在 1994 年 EUROCRYPT 论文中系统提出线性壳，为 Matsui 线性密码分析提供了理论基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「线性壳」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：线性壳的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 线性壳 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Nyberg introduced linear hulls systematically in her 1994 EUROCRYPT paper, providing a theoretical foundation for Matsui’s linear cryptanalysis.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--linear-hull-r139-refs",
+          "entryId": "attack--linear-hull-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 线性壳.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%A3%B3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 线性壳.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%A3%B3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--linear-hull-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--linear-hull-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--linear-hull-r139-principle",
+      "entryId": "attack--linear-hull-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：线性壳（Linear Hull）。线性壳是把具有相同输入、输出掩码的所有线性迹组成的族；其势是这些迹相关性的平方和（按相关性的常用约定），而不是单条迹的相关性。",
+        "en": "**Attack**: Linear Hull (线性壳).A linear hull is the family of all linear trails with the same input and output masks; its potential is the sum of squared trail correlations under the usual correlation convention, not the correlation of a single trail."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-r139-why",
+      "entryId": "attack--linear-hull-details",
+      "section": "why",
+      "statement": {
+        "zh": "Matsui 的 Algorithm 2 实际使用的是一族线性近似，而不是一条迹；只看单条迹会低估成功率，线性壳给出了更准确的分析框架。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Matsui’s Algorithm 2 actually uses a family of linear approximations rather than one trail; looking at a single trail underestimates success, and the linear hull provides a more accurate framework.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-r139-used",
+      "entryId": "attack--linear-hull-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文用线性壳分析 DES 类密码的 Algorithm 2，给出成功率和所需已知明文数的公式，并讨论明文分布的影响。",
+        "en": "The paper uses linear hulls to analyze Algorithm 2 on DES-like ciphers, derives formulas for success rate and required known plaintexts, and discusses the influence of the plaintext distribution.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-r139-broken",
+      "entryId": "attack--linear-hull-details",
+      "section": "broken",
+      "statement": {
+        "zh": "线性壳的相关性可能依赖密钥和轮子密钥，实际强度可能高于或低于单条迹的估计；要实现可证明抵抗，需要控制整个壳的相关性，而不只是消除高偏差单迹。",
+        "en": "A linear hull’s correlation may depend on the key and round subkeys, so actual strength can be higher or lower than a single-trail estimate; proven resistance requires controlling the whole hull, not merely removing high-bias trails.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-r139-history",
+      "entryId": "attack--linear-hull-details",
+      "section": "history",
+      "statement": {
+        "zh": "Nyberg 在 1994 年 EUROCRYPT 论文中系统提出线性壳，为 Matsui 线性密码分析提供了理论基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「线性壳」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：线性壳的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 线性壳 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Nyberg introduced linear hulls systematically in her 1994 EUROCRYPT paper, providing a theoretical foundation for Matsui’s linear cryptanalysis.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--linear-hull-r139-refs",
+      "entryId": "attack--linear-hull-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 线性壳.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%A3%B3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 线性壳.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%A3%B3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--linear-hull-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

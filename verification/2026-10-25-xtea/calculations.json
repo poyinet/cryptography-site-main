@@ -1,0 +1,42 @@
+[
+  {
+    "id": "xtea-calc-vector-32",
+    "entryId": "xtea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "XTEA/ECB test 32: plaintext af20a390547571aa, key 27f917b1c1da899360e2acaaa6eb923d, 32 cycles",
+    "expected": "Ciphertext d26428af0a202283; decryption returns the plaintext",
+    "sourceIds": ["cryptopp-vectors", "xtea-vectors"],
+    "dependencies": ["xtea-teaching.mjs"],
+    "limitations": "One fixed vector for the recommended 32-cycle path; it does not cover every key or cycle count."
+  },
+  {
+    "id": "xtea-calc-vector-64",
+    "entryId": "xtea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "XTEA/ECB test 64: plaintext 2e6c1fe7f5571f9d, key 62ee209f069b7afc376a8936cdc9e923, 64 cycles",
+    "expected": "Ciphertext 7a01cbc9b03d6068; decryption returns the plaintext; the Lockstone 64-cycle six-word row is reproduced",
+    "sourceIds": ["cryptopp-vectors", "xtea-vectors"],
+    "dependencies": ["xtea-teaching.mjs"],
+    "limitations": "64 cycles is a parameterization test, not the paper's recommended count; one fixed vector."
+  },
+  {
+    "id": "xtea-calc-roundtrip",
+    "entryId": "xtea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Fixed plaintext and key pairs at 1, 2, 8, 16, 32 and 64 cycles",
+    "expected": "Every ciphertext decrypts back to its plaintext",
+    "sourceIds": ["xtea-paper", "cryptopp-vectors"],
+    "dependencies": ["xtea-teaching.mjs"],
+    "limitations": "Fixed data only; not a random or exhaustive test. Zero cycles is excluded because it performs no encryption."
+  },
+  {
+    "id": "xtea-calc-diffusion",
+    "entryId": "xtea-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 32-cycle reference plaintext af20a390547571aa and the same plaintext with the low bit of its first 32-bit word v0 flipped (af20a391547571aa), under key 27f917b1c1da899360e2acaaa6eb923d",
+    "expected": "The two ciphertexts differ in 36 bits",
+    "sourceIds": ["cryptopp-vectors"],
+    "dependencies": ["xtea-teaching.mjs"],
+    "limitations": "One fixed one-bit difference; it is a diffusion observation, not a differential probability or a security proof."
+  }
+]

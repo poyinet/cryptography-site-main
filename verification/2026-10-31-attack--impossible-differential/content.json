@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack-model entry for attack--impossible-differential: definition, mechanism, applications, limits and source attribution.",
+  "entries": [
+    {
+      "id": "attack--impossible-differential-details",
+      "inventoryIds": [
+        "attack--impossible-differential"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释`不可能差分`的攻击原理、适用场景、边界和来源；不复制其他密码算法或协议实体。",
+        "en": "A compact explanation of Impossible Differential Attack: mechanism, applications, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "不可能差分",
+        "en": "Impossible Differential Attack"
+      },
+      "claimIds": [
+        "attack--impossible-differential-r139-principle",
+        "attack--impossible-differential-r139-why",
+        "attack--impossible-differential-r139-used",
+        "attack--impossible-differential-r139-broken",
+        "attack--impossible-differential-r139-history",
+        "attack--impossible-differential-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--impossible-differential-wikipedia",
+        "attack--impossible-differential-reference-ref"
+      ],
+      "related": [
+        "attack--differential-cryptanalysis",
+        "block-cipher"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：不可能差分（Impossible Differential Attack）。不可能差分是概率为零的差分：某些输入差经过若干轮后不可能产生某个输出差。攻击者利用这种`不可能`事件排除提出该差分的错误密钥。",
+          "why": "传统差分分析依赖高概率差分；当整体差分概率很低时，不可能差分仍能提供强过滤条件，因此它扩展了差分分析适用的密码范围。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文给出 Skipjack 的 24 轮不可能差分，并把 32 轮 Skipjack 减到 31 轮后攻破：使用 2^34 个选择明文和 2^64 存储，复杂度略优于穷举搜索。",
+          "broken": "攻击需要足够多的选择明文对和大量存储来过滤错误密钥；它针对缩减轮数的密码，数据、时间和存储之间存在权衡，并非对所有密码通用。",
+          "history": "Biham、Biryukov 和 Shamir 在 1999 年 EUROCRYPT 论文中把不可能差分发展为一种系统的密码分析技术，并用于 Skipjack。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「不可能差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。 预期输出：按 不可能差分 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 构造输入差分 2. 统计输出差分概率 3. 与随机置换概率 2^{-n} 比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 不可能差分 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 不可能差分 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。",
+          "refs": "- Wikipedia search entry for 不可能差分. https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\n不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。1.构造输入差分。2.统计输出差分概率。3.与随机置换概率 2^{-n} 比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Impossible Differential Attack (不可能差分). An impossible differential is a differential with probability zero: some input difference cannot produce a particular output difference after a number of rounds. The attacker uses this impossible event to discard wrong keys that propose it.",
+          "why": "Traditional differential cryptanalysis relies on high-probability differentials; when whole-cipher differentials have low probability, impossible differentials still provide strong filters, extending the range of ciphers to which differential techniques apply.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper gives a 24-round impossible differential for Skipjack and breaks 31-round Skipjack (one round removed from 32) with 2^34 chosen plaintexts and 2^64 memory, slightly faster than exhaustive search.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The attack needs enough chosen plaintext pairs and large memory to filter wrong keys; it targets reduced-round ciphers, involves data/time/memory trade-offs, and is not universal.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Biham, Biryukov and Shamir developed impossible differentials into a systematic cryptanalytic technique in their 1999 EUROCRYPT paper and applied it to Skipjack.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 不可能差分. https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\nImpossible Differential Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "不可能差分：概率为零的差分。",
+          "错误密钥过滤：用不可能事件排除候选密钥。",
+          "选择明文：攻击者选择明文并获得密文。",
+          "Skipjack：美国政府的 64 位分组密码。",
+          "存储复杂度：攻击所需的存储量。",
+          "缩减轮数：去掉部分轮后的密码版本。"
+        ],
+        "en": [
+          "Impossible differential: a differential with probability zero.",
+          "Wrong-key filtering: discarding candidate keys using an impossible event.",
+          "Chosen plaintext: the attacker selects plaintexts and obtains ciphertexts.",
+          "Skipjack: a 64-bit block cipher designed for the U.S. government.",
+          "Memory complexity: the storage required by the attack.",
+          "Reduced-round: a cipher version with some rounds removed."
+        ]
+      },
+      "figures": [
+        {
+          "id": "attack--impossible-differential-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "不可能差分：为什么需要 → 核心机制 → 边界。",
+            "en": "Impossible Differential Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "不可能差分 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Impossible Differential Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--impossible-differential-details-flow.zh.svg",
+            "en": "assets/attack--impossible-differential-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "adf6c5774131f3d55ff56f1cc7d0f0bef236c9c9a7450ce4c49d2977512faede",
+            "en": "cfaacef17eaf9ff89e6ff8ed73fcb0ade7fb596d2f26c49aeee1d868b1d38730"
+          }
+        },
+        {
+          "id": "attack--impossible-differential-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "不可能差分 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Impossible Differential Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "不可能差分 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Impossible Differential Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--impossible-differential-details-r138-model.zh.svg",
+            "en": "assets/attack--impossible-differential-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a136a2cf043f9000ccd864e2511bc5d4e7ff8a132fd48b0c8496eac0744ef6f1",
+            "en": "b906f2cd8a611198cad3cbb4de422ba4f2ea73249e45c4c26287e1fe45218f52"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--impossible-differential-r139-formal",
+          "entryId": "attack--impossible-differential-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+          "inputs": "输入：不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+          "expected": "按 不可能差分 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "构造输入差分",
+            "统计输出差分概率",
+            "与随机置换概率 2^{-n} 比较"
+          ],
+          "sourceIds": [
+            "attack--impossible-differential-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--impossible-differential-r139-formal"
+      ],
+      "sources": [
+        "attack--impossible-differential-wikipedia",
+        "attack--impossible-differential-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--impossible-differential-r139-formal",
+      "entryId": "attack--impossible-differential-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+      "inputs": "输入：不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+      "expected": "按 不可能差分 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "构造输入差分",
+        "统计输出差分概率",
+        "与随机置换概率 2^{-n} 比较"
+      ],
+      "sourceIds": [
+        "attack--impossible-differential-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

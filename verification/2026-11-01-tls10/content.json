@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for tls10: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "tls10-details",
+      "inventoryIds": [
+        "tls10"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「TLS 1.0」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of TLS 1.0: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "TLS 1.0",
+        "en": "TLS 1.0"
+      },
+      "claimIds": [
+        "tls10-r139-principle",
+        "tls10-r139-why",
+        "tls10-r139-used",
+        "tls10-r139-broken",
+        "tls10-r139-history",
+        "tls10-r139-refs"
+      ],
+      "sourceIds": [
+        "tls10-wikipedia",
+        "tls10-reference-ref",
+        "tls10-specific"
+      ],
+      "related": [
+        "transport-layer-security",
+        "tls11",
+        "cipher-block-chaining"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：TLS 1.0（TLS 1.0）。RFC 2246 §1 给出目标与分层：「The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications.The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.」记录层负责分块、可选压缩、加 MAC 与加密，握手层在此之前完成认证与密钥协商。",
+          "why": "它是把加密从各应用里搬进公共一层的第一步：§3 交代血统「This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.」，§6 则把记录层的处理顺序钉死：「The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.」",
+          "used": "规范给出的强制基线只有一条：§9 写明「In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.」压缩方面 §6.2.2 只加尺寸限制——「Compression must be lossless and may not increase the content length by more than 1024 bytes.」该条目只述规范，不谈部署规模。",
+          "broken": "两处在文档内部就留下隐患：CBC 的 IV 是隐式的，§6.2.3.2 说明「The IV for subsequent records is the last ciphertext block from the previous record.」，使相邻记录的 IV 可被预测；§3 又承认 TLS 1.0 与 SSL 3.0「do not interoperate」，同时保留了可回落 SSL 3.0 的机制。附录 D.4 仅以非规范措辞劝阻 40 位加密与匿名 Diffie-Hellman，本文件没有把任何套件判死。",
+          "history": "RFC 2246 头部为 T.Dierks 与 C.Allen（Certicom），类别 Standards Track，日期 1999 年 1 月，既没有 Obsoletes 也没有 Updates 行；摘要自陈「This document specifies Version 1.0 of the Transport Layer Security (TLS) protocol.」，是 TLS 家族的第一份文档。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 TLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for TLS 1.0. https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 2246: The TLS Protocol Version 1.0. https://www.rfc-editor.org/rfc/rfc2246",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nTLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: TLS 1.0 (TLS 1.0). RFC 2246 §1 gives the goal and the layering: \"The primary goal of the TLS Protocol is to provide privacy and data integrity between two communicating applications. The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.\" The record layer fragments, optionally compresses, MACs and encrypts; the handshake layer authenticates and agrees keys first.",
+          "why": "This was the first step in moving crypto out of each application into a shared layer: §3 gives the lineage \"This document and the TLS protocol itself are based on the SSL 3.0 Protocol Specification as published by Netscape.\" and §6 fixes the record order: \"The Record Protocol takes messages to be transmitted, fragments the data into manageable blocks, optionally compresses the data, applies a MAC, encrypts, and transmits the result.\"",
+          "used": "The specification sets one mandatory baseline: §9 says \"In the absence of an application profile standard specifying otherwise, a TLS compliant application MUST implement the cipher suite TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA.\" On compression §6.2.2 only bounds size — \"Compression must be lossless and may not increase the content length by more than 1024 bytes.\" This entry stays with the specification and makes no deployment claims.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Two weaknesses are visible inside the document: the CBC IV is implicit — §6.2.3.2 states \"The IV for subsequent records is the last ciphertext block from the previous record.\", making successive IVs predictable — and §3 concedes TLS 1.0 and SSL 3.0 \"do not interoperate\" while keeping a mechanism to back down to SSL 3.0. Appendix D.4 discourages 40-bit encryption and anonymous Diffie-Hellman only in non-normative prose; no suite is declared broken here.",
+          "history": "The RFC 2246 header lists T. Dierks and C. Allen (Certicom), Category: Standards Track, January 1999, with neither an Obsoletes nor an Updates line; the abstract says \"This document specifies Version 1.0 of the Transport Layer Security (TLS) protocol.\" — the first document of the TLS family.",
+          "refs": "- Wikipedia search entry for TLS 1.0. https://zh.wikipedia.org/w/index.php?search=TLS%201.0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 2246: The TLS Protocol Version 1.0. https://www.rfc-editor.org/rfc/rfc2246",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nTLS 1.0: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "记录协议：分块、可选压缩、加 MAC、再加密。",
+          "握手协议：先认证并协商密钥的子协议。",
+          "隐式 IV：沿用上一条记录的密文尾块。",
+          "先 MAC 后加密：MAC 覆盖明文。",
+          "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA：§9 要求实现的套件。",
+          "SSL 3.0 血统：自陈基于 Netscape 规范。"
+        ],
+        "en": [
+          "Record protocol: fragments, optionally compresses, MACs and encrypts.",
+          "Handshake protocol: authenticates and agrees keys beforehand.",
+          "Implicit IV: reuses the previous record's final ciphertext block.",
+          "MAC-then-encrypt: the MAC covers the plaintext.",
+          "TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA: the suite §9 requires.",
+          "SSL 3.0 lineage: stated as based on the Netscape specification."
+        ]
+      },
+      "figures": [
+        {
+          "id": "tls10-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 1.0：为什么需要 → 核心机制 → 边界。",
+            "en": "TLS 1.0: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TLS 1.0 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for TLS 1.0, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/tls10-details-flow.zh.svg",
+            "en": "assets/tls10-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a13d367720eb944da6c11dbe669013987c57a83e7cc65b915d9f907d868eeff3",
+            "en": "8f6eeed4aa86182d4f188964457b82793b1b78935ecc03600360c0d9aa7a90b1"
+          }
+        },
+        {
+          "id": "tls10-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 1.0 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for TLS 1.0: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "TLS 1.0 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for TLS 1.0, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/tls10-details-r138-model.zh.svg",
+            "en": "assets/tls10-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fcd8cda1c6000938aa39a26d8e5acb72704e82830c05861d90538c4c30ce03db",
+            "en": "5c413e0b7b66b33f7d6a0aa11de08464d5a851e653ad5a0787da72bd0d8b7615"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "tls10-r139-formal",
+          "entryId": "tls10-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：TLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 TLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "tls10-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "tls10-r139-formal"
+      ],
+      "sources": [
+        "tls10-wikipedia",
+        "tls10-reference-ref",
+        "tls10-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tls10-r139-formal",
+      "entryId": "tls10-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：TLS 1.0的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 TLS 1.0 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "tls10-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

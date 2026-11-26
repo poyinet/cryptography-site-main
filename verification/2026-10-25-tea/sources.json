@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tea-details",
+  "sources": [
+    {
+      "id": "tea-wikipedia",
+      "title": "Wikipedia search entry for TEA 微型加密算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TEA 微型加密算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tea-r139-principle",
+          "entryId": "tea-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：TEA 微型加密算法（Tiny Encryption Algorithm）。TEA（Tiny Encryption Algorithm）是一种 64 位分组密码，使用 128 位密钥。它把 64 位明文分成两个 32 位字 y 和 z，把 128 位密钥分成四个 32 位字 k0、k1、k2、k3，然后执行 32 个循环；每个循环包含两次 Feistel 式混合，因此常被称为 64 轮。每个循环先累加黄金比例常数 `delta = 0x9e3779b9`，再更新 y 和 z：\n\n```text\nsum += delta\ny += ((z << 4) + k0) xor (z + sum) xor ((z >> 5) + k1)\nz += ((y << 4) + k2) xor (y + sum) xor ((y >> 5) + k3)\n```\n\n所有加法都是 32 位模 2^32 加法，移位和异或也是 32 位操作。解密执行相反的 32 个循环：sum 从 `delta * 32` 开始，先逆 z 的更新，再逆 y 的更新，最后减去 delta。TEA 没有密钥扩展：四个密钥字直接进入轮函数。这是它代码极短的原因之一，也是等效密钥问题的来源。TEA 不需要 S-box、查找表或预计算，轮函数只由加法、移位和异或组成，适合用很少的代码实现。",
+            "en": "**Algorithm**: Tiny Encryption Algorithm (TEA 微型加密算法).TEA (Tiny Encryption Algorithm) is a 64-bit block cipher with a 128-bit key."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        },
+        {
+          "id": "tea-r139-why",
+          "entryId": "tea-details",
+          "section": "why",
+          "statement": {
+            "zh": "TEA 的设计目标是用很短的程序、较多的迭代和很少的预计算来完成加密。原论文强调它不需要预设表或长初始化，容易移植到不同语言和机器；在资源受限或代码体积敏感的场景，这种简单性很有吸引力。TEA 也是理解 ARX 设计的清晰样本：没有 S-box，非线性来自加法、移位、异或的组合；每一轮把 y 和 z 交叉混合，32 个循环把局部变化扩散到两个 32 位字。它的代码可以直接写成十几行，因此常被用作教学实现。但 TEA 的简单性有代价。四个密钥字直接使用，导致每个密钥有三个等效密钥，有效密钥长度只有 126 位；相关密钥攻击也被指出。64 位块在生日碰撞意义下的安全边界也比 128 位块窄。TEA 适合作为历史和教学案例，不适合新设计。",
+            "en": "TEA was designed to encrypt with a short program, many iterations and little setup.The original paper emphasizes that it needs no preset tables or long initialization and is easy to port across languages and machines; that simplicity is attractive when code size or resources are tight."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        },
+        {
+          "id": "tea-r139-used",
+          "entryId": "tea-details",
+          "section": "used",
+          "statement": {
+            "zh": "TEA 曾被用于软件和嵌入式场景，因为它不需要表、代码短、容易移植。原论文的目标是让一个短程序在大多数机器上运行；这让 TEA 成为早期轻量级分组密码的代表之一。TEA 的参考测试向量是零明文、零密钥、32 个循环：\n\n```text\n明文 0000000000000000\n密钥 00000000000000000000000000000000\n密文 41ea3a0a94baa940\n```\n\n本文的教学实现复现这个向量，并验证解密回到零明文。它还演示等效密钥：把密钥的 k0/k1 最高位同时翻转、k2/k3 最高位同时翻转，或四个字都翻转，得到的密文完全相同。TEA 只定义分组密码，不定义工作模式。实际使用仍需 CBC、CTR 等模式；而 TEA 的 64 位块和密钥弱点意味着它不应被用于新的协议或长期数据保护。",
+            "en": "TEA has been used in software and embedded settings because it needs no tables, has short code and ports easily.The original paper aimed at a short program that runs on most machines; this made TEA an early representative of lightweight block ciphers."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        },
+        {
+          "id": "tea-r139-broken",
+          "entryId": "tea-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 等效密钥\n\nTEA 的四个密钥字直接进入轮函数。把 k0 和 k1 的最高位同时翻转，轮函数中的两项会抵消；k2 和 k3 同理。因此每个密钥都有三个等效密钥，四个密钥产生同一组密文，有效密钥长度只有 126 位。这不是实现错误，而是算法结构的结果。### 相关密钥攻击\n\nTEA 的简单密钥使用方式还导致相关密钥攻击。Needham 和 Wheeler 在 1997 年的 TEA extensions 中指出，TEA 的混合部分看起来未被破坏，但相关密钥攻击是可能的；在两个相关密钥下构造 2^32 个文本看起来并不实际。他们还指出有效密钥长度是 126 位而不是 128 位。### 64 位块\n\nTEA 的块只有 64 位。与 128 位块相比，生日碰撞意义下的安全边界更窄；处理大量数据时，64 位块会限制可安全加密的块数。TEA 没有像后来的标准那样给出单密钥加密次数限制。### 无完整性\n\nTEA 只提供分组密码的伪随机置换，不提供完整性。翻转密文会改变对应明文，但 TEA 本身无法检测；需要认证时应使用 AEAD 或加密后再 MAC。本文的教学实现只处理 TEA 的固定向量、32 循环加密/解密和等效密钥演示。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+            "en": "### Equivalent keys\n\nTEA's four key words enter the round function directly.Flipping the top bit of both k0 and k1 makes two terms in the round function cancel; the same holds for k2 and k3."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        },
+        {
+          "id": "tea-r139-history",
+          "entryId": "tea-details",
+          "section": "history",
+          "statement": {
+            "zh": "TEA 由 David Wheeler 和 Roger Needham 在 1994 年的 Fast Software Encryption 会议上提出，论文强调短程序、多次迭代、无预设表和容易移植。它的简洁性使它成为教学和嵌入式实现的常见例子。1997 年，Needham 和 Wheeler 发布 TEA extensions，修正 TEA 的密钥扩展和密钥引入方式，形成 XTEA。XTEA 仍是 64 位块、128 位密钥和 64 轮，但轮函数和密钥调度不同；它本身是独立实体，不能和 TEA 混为一条。TEA 的历史价值在于展示极简轮函数（加法、移位、异或）设计的可能性和边界：它用很少的代码获得扩散，但也暴露了等效密钥和相关密钥问题。后来的轻量级密码在简单性和密钥调度之间做了更谨慎的权衡。",
+            "en": "TEA was proposed by David Wheeler and Roger Needham at the 1994 Fast Software Encryption workshop; the paper emphasizes a short program, many iterations, no preset tables and easy portability.Its simplicity made it a common example in teaching and embedded implementations."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        },
+        {
+          "id": "tea-r139-refs",
+          "entryId": "tea-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TEA 微型加密算法.https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for TEA 微型加密算法.https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tea-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "tea-wikipedia"
+      ]
+    },
+    {
+      "id": "tea-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tea-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tea-r139-principle",
+      "entryId": "tea-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：TEA 微型加密算法（Tiny Encryption Algorithm）。TEA（Tiny Encryption Algorithm）是一种 64 位分组密码，使用 128 位密钥。它把 64 位明文分成两个 32 位字 y 和 z，把 128 位密钥分成四个 32 位字 k0、k1、k2、k3，然后执行 32 个循环；每个循环包含两次 Feistel 式混合，因此常被称为 64 轮。每个循环先累加黄金比例常数 `delta = 0x9e3779b9`，再更新 y 和 z：\n\n```text\nsum += delta\ny += ((z << 4) + k0) xor (z + sum) xor ((z >> 5) + k1)\nz += ((y << 4) + k2) xor (y + sum) xor ((y >> 5) + k3)\n```\n\n所有加法都是 32 位模 2^32 加法，移位和异或也是 32 位操作。解密执行相反的 32 个循环：sum 从 `delta * 32` 开始，先逆 z 的更新，再逆 y 的更新，最后减去 delta。TEA 没有密钥扩展：四个密钥字直接进入轮函数。这是它代码极短的原因之一，也是等效密钥问题的来源。TEA 不需要 S-box、查找表或预计算，轮函数只由加法、移位和异或组成，适合用很少的代码实现。",
+        "en": "**Algorithm**: Tiny Encryption Algorithm (TEA 微型加密算法).TEA (Tiny Encryption Algorithm) is a 64-bit block cipher with a 128-bit key."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    },
+    {
+      "id": "tea-r139-why",
+      "entryId": "tea-details",
+      "section": "why",
+      "statement": {
+        "zh": "TEA 的设计目标是用很短的程序、较多的迭代和很少的预计算来完成加密。原论文强调它不需要预设表或长初始化，容易移植到不同语言和机器；在资源受限或代码体积敏感的场景，这种简单性很有吸引力。TEA 也是理解 ARX 设计的清晰样本：没有 S-box，非线性来自加法、移位、异或的组合；每一轮把 y 和 z 交叉混合，32 个循环把局部变化扩散到两个 32 位字。它的代码可以直接写成十几行，因此常被用作教学实现。但 TEA 的简单性有代价。四个密钥字直接使用，导致每个密钥有三个等效密钥，有效密钥长度只有 126 位；相关密钥攻击也被指出。64 位块在生日碰撞意义下的安全边界也比 128 位块窄。TEA 适合作为历史和教学案例，不适合新设计。",
+        "en": "TEA was designed to encrypt with a short program, many iterations and little setup.The original paper emphasizes that it needs no preset tables or long initialization and is easy to port across languages and machines; that simplicity is attractive when code size or resources are tight."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    },
+    {
+      "id": "tea-r139-used",
+      "entryId": "tea-details",
+      "section": "used",
+      "statement": {
+        "zh": "TEA 曾被用于软件和嵌入式场景，因为它不需要表、代码短、容易移植。原论文的目标是让一个短程序在大多数机器上运行；这让 TEA 成为早期轻量级分组密码的代表之一。TEA 的参考测试向量是零明文、零密钥、32 个循环：\n\n```text\n明文 0000000000000000\n密钥 00000000000000000000000000000000\n密文 41ea3a0a94baa940\n```\n\n本文的教学实现复现这个向量，并验证解密回到零明文。它还演示等效密钥：把密钥的 k0/k1 最高位同时翻转、k2/k3 最高位同时翻转，或四个字都翻转，得到的密文完全相同。TEA 只定义分组密码，不定义工作模式。实际使用仍需 CBC、CTR 等模式；而 TEA 的 64 位块和密钥弱点意味着它不应被用于新的协议或长期数据保护。",
+        "en": "TEA has been used in software and embedded settings because it needs no tables, has short code and ports easily.The original paper aimed at a short program that runs on most machines; this made TEA an early representative of lightweight block ciphers."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    },
+    {
+      "id": "tea-r139-broken",
+      "entryId": "tea-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 等效密钥\n\nTEA 的四个密钥字直接进入轮函数。把 k0 和 k1 的最高位同时翻转，轮函数中的两项会抵消；k2 和 k3 同理。因此每个密钥都有三个等效密钥，四个密钥产生同一组密文，有效密钥长度只有 126 位。这不是实现错误，而是算法结构的结果。### 相关密钥攻击\n\nTEA 的简单密钥使用方式还导致相关密钥攻击。Needham 和 Wheeler 在 1997 年的 TEA extensions 中指出，TEA 的混合部分看起来未被破坏，但相关密钥攻击是可能的；在两个相关密钥下构造 2^32 个文本看起来并不实际。他们还指出有效密钥长度是 126 位而不是 128 位。### 64 位块\n\nTEA 的块只有 64 位。与 128 位块相比，生日碰撞意义下的安全边界更窄；处理大量数据时，64 位块会限制可安全加密的块数。TEA 没有像后来的标准那样给出单密钥加密次数限制。### 无完整性\n\nTEA 只提供分组密码的伪随机置换，不提供完整性。翻转密文会改变对应明文，但 TEA 本身无法检测；需要认证时应使用 AEAD 或加密后再 MAC。本文的教学实现只处理 TEA 的固定向量、32 循环加密/解密和等效密钥演示。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+        "en": "### Equivalent keys\n\nTEA's four key words enter the round function directly.Flipping the top bit of both k0 and k1 makes two terms in the round function cancel; the same holds for k2 and k3."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    },
+    {
+      "id": "tea-r139-history",
+      "entryId": "tea-details",
+      "section": "history",
+      "statement": {
+        "zh": "TEA 由 David Wheeler 和 Roger Needham 在 1994 年的 Fast Software Encryption 会议上提出，论文强调短程序、多次迭代、无预设表和容易移植。它的简洁性使它成为教学和嵌入式实现的常见例子。1997 年，Needham 和 Wheeler 发布 TEA extensions，修正 TEA 的密钥扩展和密钥引入方式，形成 XTEA。XTEA 仍是 64 位块、128 位密钥和 64 轮，但轮函数和密钥调度不同；它本身是独立实体，不能和 TEA 混为一条。TEA 的历史价值在于展示极简轮函数（加法、移位、异或）设计的可能性和边界：它用很少的代码获得扩散，但也暴露了等效密钥和相关密钥问题。后来的轻量级密码在简单性和密钥调度之间做了更谨慎的权衡。",
+        "en": "TEA was proposed by David Wheeler and Roger Needham at the 1994 Fast Software Encryption workshop; the paper emphasizes a short program, many iterations, no preset tables and easy portability.Its simplicity made it a common example in teaching and embedded implementations."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    },
+    {
+      "id": "tea-r139-refs",
+      "entryId": "tea-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TEA 微型加密算法.https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for TEA 微型加密算法.https://zh.wikipedia.org/w/index.php?search=TEA%20%E5%BE%AE%E5%9E%8B%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tea-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

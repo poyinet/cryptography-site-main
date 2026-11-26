@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "aes-details",
+  "sources": [
+    {
+      "id": "algorithm--aes-wikipedia",
+      "title": "Wikipedia search entry for AES 高级加密标准",
+      "url": "https://zh.wikipedia.org/w/index.php?search=AES%20%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: AES 高级加密标准",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--aes-r139-principle",
+          "entryId": "aes-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：AES 高级加密标准（Advanced Encryption Standard）。AES 是由秘密密钥选定的、作用于 128 位分组的可逆变换。这里详解目录中的算法实体 `algorithm--aes`；FIPS 197 是定义算法的标准文件，是关联标准，不是同一个实体。AES 不是一种文件格式、口令派生方法或完整通信协议。| 变体 | 密钥字节 | Nk（32位字数） | Nr（轮数） | 轮密钥组数 | 扩展字数 |\n| --- | --- | --- | --- | --- | --- |\n| AES-128 | 16 | 4 | 10 | 11 | 44 |\n| AES-192 | 24 | 6 | 12 | 13 | 52 |\n| AES-256 | 32 | 8 | 14 | 15 | 60 |\n\n三者的分组都是 16 字节。后缀说的是密钥长度，不能把 AES-256 理解为每次处理 256 位明文。以下字节数、轮数与算法顺序依据 FIPS 197-upd1；算术推导和程序是该条目的教学实现。### 先把字节放对：列主序状态\n\n输入字节记作 b[0]…b[15]，状态索引规定为 s[r,c]=b[r+4c]。也就是先填满一列，再填下一列。",
+            "en": "**Algorithm**: Advanced Encryption Standard (AES 高级加密标准).### What this algorithm does\n\nAES is a secret-key-selected reversible transformation of 128-bit blocks."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--aes-r139-why",
+          "entryId": "aes-details",
+          "section": "why",
+          "statement": {
+            "zh": "AES 把一个确定的密钥长度和分组长度，变成可以跨实现核验的算法。它的可读性来自分工：S 盒提供非线性字节变换，行移位与列混合提供扩散，轮密钥加引入由主密钥导出的秘密值。设计者用 wide trail 等方法分析组合后的结构；仅仅说重复很多遍没有解释设计理由。正确性的推理可以逐层做：每个步骤有逆变换，密钥扩展确定每次使用的轮密钥，反序应用就恢复输入。安全性是另一个问题：它需要分析在给定攻击模型下是否能以比预期更低的代价恢复密钥或区分输出。本文的往返、测试向量和中间态检查验证规则实现，不承担这种安全证明。理解算法本身也有助于排错。把 128 位分组、128 位密钥、10 轮、11 组轮密钥分开，才能解释长度错误、状态索引错误和扩展密钥错误为何分别出现在不同阶段。",
+            "en": "AES specifies an algorithm that different implementations can compare precisely.The components have different roles: nonlinear substitution, positional/column diffusion and secret key addition."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--aes-r139-used",
+          "entryId": "aes-details",
+          "section": "used",
+          "statement": {
+            "zh": "分组密码一次只回答这 16 字节在这把密钥下变成什么。长消息怎样分块、计数器怎样构造、是否认证、怎样处理重放，都需要算法之外的构造。SP 800-38A 的 ECB/CBC/CFB/OFB/CTR 是工作模式；SP 800-38D 定义的 GCM 组合保密与认证。模式的输入前提不能从`AES`三个字中省略。以当前查阅的 TLS 1.3 规范 RFC 9846 为明确用例：附录 B.4 列出 AES-GCM、AES-CCM 和 ChaCha20-Poly1305 套件，体现加密原语、AEAD 构造和协议三层。RFC 9846 已取代 RFC 8446；不要继续把后者称为最新规范，也不要把 AES-ECB 写成 TLS 1.3 AEAD 套件。套件名字的后缀还涉及协议哈希，不等于改变 AES 分组长度。本文用 ECB 单块接口只为从 Node/OpenSSL 调用同一个 AES 分组变换：恰好一个分组，关闭填充，没有文件格式或多消息协议。这是测试设施，并不是把 ECB 推荐为应用默认模式。",
+            "en": "A block cipher answers what happens to these sixteen bytes under this key.Handling long messages, counters, authentication and replay requires surrounding constructions."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--aes-r139-broken",
+          "entryId": "aes-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 先说清楚攻击对象\n\n完整轮数算法、减轮变体、允许攻击者控制相关密钥的模型、以及泄露运行信息的实现，是不同研究对象。NIST IR 8319 是带日期的 AES 回顾材料；不能把其中某个模型下的分析压成一句所有 AES 都破解了，也不能从一份报告推出永远安全。本文不编造一个固定的有效 126 位强度，也不编造量子攻击的运行时间。### 模式和密钥使用能使应用失败\n\n固定密钥下，相同分组输入给出相同输出；将裸变换独立用于重复消息块会泄露相等结构。本例两块相同明文得到相同密文，就是这个性质的反例演示，不是 AES 计算错了。GCM 同密钥重复 nonce 会破坏保密和认证保证。对于重用相同计数器密钥流的字节段，可由 `C1=P1 XOR S` 和 `C2=P2 XOR S` 直接推出 `C1 XOR C2=P1 XOR P2`。它通常不是只看两个密文就自动得到两段完整原文；是否进一步恢复明文要看已知信息。RFC 5116 §5.1.1 与 SP 800-38D 附录 A 分别说明其危害与条件。密钥的长度不等于未知性：一把公开的 128 位测试密钥没有现实秘密可保护。口令如何变成合格密钥、密钥如何分发和保存，不是本篇分组算法已经完成的工作。### 实现会多说话\n\nOsvik、Shamir、Tromer 的原始研究说明数据相关查表可经共享缓存泄露访问模式。这里的 JavaScript 教学实现也有查表、分支、复制与可观察的中间态；没有恒定时间、可靠清零、硬件攻击或故障防护保证。它只能运行公开示例。得到正确密文，并不能消除这些泄露渠道。",
+            "en": "### Identify what is being attacked\n\nFull-round AES, reduced-round variants, related-key models and implementations leaking execution information are different targets.NIST IR 8319 is a dated review, not a statement that every AES instance is broken or secure forever."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--aes-r139-history",
+          "entryId": "aes-details",
+          "section": "history",
+          "statement": {
+            "zh": "AES 来自 NIST 的公开选择流程。1997 年启动选择，2000 年 10 月 2 日宣布选用 Joan Daemen 与 Vincent Rijmen 设计的 Rijndael。FIPS 197 的刊载日期是 2001 年 11 月 26 日。AES 固定 128 位分组；Rijndael 这个更广的家族并不等于标准允许任意分组长度。2023 年 5 月 9 日的 FIPS 197 更新改进术语、排版和密钥扩展图，没有改变算法。这里用当前修订的算法定义和官方示例交叉阅读；不把文件更新日期误写为重新设计了 AES。算法条目解释机制，标准实体还需另行说明文档版本、范围、适用约束和引用关系。",
+            "en": "AES resulted from NIST’s public selection process, initiated in 1997.NIST announced selection of Joan Daemen and Vincent Rijmen’s Rijndael on October 2, 2000."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--aes-r139-refs",
+          "entryId": "aes-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for AES 高级加密标准.https://zh.wikipedia.org/w/index.php?search=AES%20%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for AES 高级加密标准.https://zh.wikipedia.org/w/index.php?search=AES%20%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--aes-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--aes-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--aes-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--aes-r139-principle",
+      "entryId": "aes-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：AES 高级加密标准（Advanced Encryption Standard）。AES 是由秘密密钥选定的、作用于 128 位分组的可逆变换。这里详解目录中的算法实体 `algorithm--aes`；FIPS 197 是定义算法的标准文件，是关联标准，不是同一个实体。AES 不是一种文件格式、口令派生方法或完整通信协议。| 变体 | 密钥字节 | Nk（32位字数） | Nr（轮数） | 轮密钥组数 | 扩展字数 |\n| --- | --- | --- | --- | --- | --- |\n| AES-128 | 16 | 4 | 10 | 11 | 44 |\n| AES-192 | 24 | 6 | 12 | 13 | 52 |\n| AES-256 | 32 | 8 | 14 | 15 | 60 |\n\n三者的分组都是 16 字节。后缀说的是密钥长度，不能把 AES-256 理解为每次处理 256 位明文。以下字节数、轮数与算法顺序依据 FIPS 197-upd1；算术推导和程序是该条目的教学实现。### 先把字节放对：列主序状态\n\n输入字节记作 b[0]…b[15]，状态索引规定为 s[r,c]=b[r+4c]。也就是先填满一列，再填下一列。",
+        "en": "**Algorithm**: Advanced Encryption Standard (AES 高级加密标准).### What this algorithm does\n\nAES is a secret-key-selected reversible transformation of 128-bit blocks."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--aes-r139-why",
+      "entryId": "aes-details",
+      "section": "why",
+      "statement": {
+        "zh": "AES 把一个确定的密钥长度和分组长度，变成可以跨实现核验的算法。它的可读性来自分工：S 盒提供非线性字节变换，行移位与列混合提供扩散，轮密钥加引入由主密钥导出的秘密值。设计者用 wide trail 等方法分析组合后的结构；仅仅说重复很多遍没有解释设计理由。正确性的推理可以逐层做：每个步骤有逆变换，密钥扩展确定每次使用的轮密钥，反序应用就恢复输入。安全性是另一个问题：它需要分析在给定攻击模型下是否能以比预期更低的代价恢复密钥或区分输出。本文的往返、测试向量和中间态检查验证规则实现，不承担这种安全证明。理解算法本身也有助于排错。把 128 位分组、128 位密钥、10 轮、11 组轮密钥分开，才能解释长度错误、状态索引错误和扩展密钥错误为何分别出现在不同阶段。",
+        "en": "AES specifies an algorithm that different implementations can compare precisely.The components have different roles: nonlinear substitution, positional/column diffusion and secret key addition."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--aes-r139-used",
+      "entryId": "aes-details",
+      "section": "used",
+      "statement": {
+        "zh": "分组密码一次只回答这 16 字节在这把密钥下变成什么。长消息怎样分块、计数器怎样构造、是否认证、怎样处理重放，都需要算法之外的构造。SP 800-38A 的 ECB/CBC/CFB/OFB/CTR 是工作模式；SP 800-38D 定义的 GCM 组合保密与认证。模式的输入前提不能从`AES`三个字中省略。以当前查阅的 TLS 1.3 规范 RFC 9846 为明确用例：附录 B.4 列出 AES-GCM、AES-CCM 和 ChaCha20-Poly1305 套件，体现加密原语、AEAD 构造和协议三层。RFC 9846 已取代 RFC 8446；不要继续把后者称为最新规范，也不要把 AES-ECB 写成 TLS 1.3 AEAD 套件。套件名字的后缀还涉及协议哈希，不等于改变 AES 分组长度。本文用 ECB 单块接口只为从 Node/OpenSSL 调用同一个 AES 分组变换：恰好一个分组，关闭填充，没有文件格式或多消息协议。这是测试设施，并不是把 ECB 推荐为应用默认模式。",
+        "en": "A block cipher answers what happens to these sixteen bytes under this key.Handling long messages, counters, authentication and replay requires surrounding constructions."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--aes-r139-broken",
+      "entryId": "aes-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 先说清楚攻击对象\n\n完整轮数算法、减轮变体、允许攻击者控制相关密钥的模型、以及泄露运行信息的实现，是不同研究对象。NIST IR 8319 是带日期的 AES 回顾材料；不能把其中某个模型下的分析压成一句所有 AES 都破解了，也不能从一份报告推出永远安全。本文不编造一个固定的有效 126 位强度，也不编造量子攻击的运行时间。### 模式和密钥使用能使应用失败\n\n固定密钥下，相同分组输入给出相同输出；将裸变换独立用于重复消息块会泄露相等结构。本例两块相同明文得到相同密文，就是这个性质的反例演示，不是 AES 计算错了。GCM 同密钥重复 nonce 会破坏保密和认证保证。对于重用相同计数器密钥流的字节段，可由 `C1=P1 XOR S` 和 `C2=P2 XOR S` 直接推出 `C1 XOR C2=P1 XOR P2`。它通常不是只看两个密文就自动得到两段完整原文；是否进一步恢复明文要看已知信息。RFC 5116 §5.1.1 与 SP 800-38D 附录 A 分别说明其危害与条件。密钥的长度不等于未知性：一把公开的 128 位测试密钥没有现实秘密可保护。口令如何变成合格密钥、密钥如何分发和保存，不是本篇分组算法已经完成的工作。### 实现会多说话\n\nOsvik、Shamir、Tromer 的原始研究说明数据相关查表可经共享缓存泄露访问模式。这里的 JavaScript 教学实现也有查表、分支、复制与可观察的中间态；没有恒定时间、可靠清零、硬件攻击或故障防护保证。它只能运行公开示例。得到正确密文，并不能消除这些泄露渠道。",
+        "en": "### Identify what is being attacked\n\nFull-round AES, reduced-round variants, related-key models and implementations leaking execution information are different targets.NIST IR 8319 is a dated review, not a statement that every AES instance is broken or secure forever."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--aes-r139-history",
+      "entryId": "aes-details",
+      "section": "history",
+      "statement": {
+        "zh": "AES 来自 NIST 的公开选择流程。1997 年启动选择，2000 年 10 月 2 日宣布选用 Joan Daemen 与 Vincent Rijmen 设计的 Rijndael。FIPS 197 的刊载日期是 2001 年 11 月 26 日。AES 固定 128 位分组；Rijndael 这个更广的家族并不等于标准允许任意分组长度。2023 年 5 月 9 日的 FIPS 197 更新改进术语、排版和密钥扩展图，没有改变算法。这里用当前修订的算法定义和官方示例交叉阅读；不把文件更新日期误写为重新设计了 AES。算法条目解释机制，标准实体还需另行说明文档版本、范围、适用约束和引用关系。",
+        "en": "AES resulted from NIST’s public selection process, initiated in 1997.NIST announced selection of Joan Daemen and Vincent Rijmen’s Rijndael on October 2, 2000."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--aes-r139-refs",
+      "entryId": "aes-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for AES 高级加密标准.https://zh.wikipedia.org/w/index.php?search=AES%20%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for AES 高级加密标准.https://zh.wikipedia.org/w/index.php?search=AES%20%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--aes-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

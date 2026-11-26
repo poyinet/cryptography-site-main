@@ -1,0 +1,82 @@
+[
+  {
+    "id": "alberti-disk-printed-mappings",
+    "entryId": "alberti-cipher-disk-details",
+    "kind": "known-answer-check",
+    "inputs": "a disk model with the outer alphabet fixed and an inner arrangement satisfying the two alignments the text prints (outer A against inner G, outer R against inner M)",
+    "expected": "the two alignments are parsed out of the registered course text at run time (outer A against inner G; outer R maps to inner M) and the inner arrangement is built from those parsed constraints; the model must reproduce both printed mappings, keep them consistent with a single permutation, change the alphabet when the inner disk turns and restore it after a full revolution, must change the substitution alphabet when the inner disk is rotated, and must restore the original alphabet after one full turn",
+    "sourceIds": [
+      "krzyzanowski-classical"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "alberti-disk-calc.mjs"
+    ],
+    "limitations": "Only inner[0]=G and inner[17]=M are printed; the other 24 positions are an arbitrary scramble here and no historical arrangement is claimed."
+  },
+  {
+    "id": "alberti-disk-one-letter-many-symbols",
+    "entryId": "alberti-cipher-disk-details",
+    "kind": "structural-check",
+    "inputs": "the letter R - the one the printed mapping names - enciphered under three alignments (0, 5, 11)",
+    "expected": "the text says one plaintext symbol can now map to many ciphertext symbols depending on its position; three alignments must give three different letters",
+    "sourceIds": [
+      "krzyzanowski-classical"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "alberti-disk-calc.mjs"
+    ],
+    "limitations": "Three alignments of one letter; the check shows the mechanism, it does not measure security."
+  },
+  {
+    "id": "alberti-disk-irregular-switching",
+    "entryId": "alberti-cipher-disk-details",
+    "kind": "detection-check",
+    "inputs": "the same 24-letter block enciphered with a regular alignment rule (0,1,2 repeating) and with an irregular one (0,7,3,19,11,2,23)",
+    "expected": "Alberti suggested changing at irregular intervals to make the switching harder to detect: an analyst assuming the regular period-3 rule is consistent with itself at 1.000 on the first and materially lower on the second",
+    "sourceIds": [
+      "krzyzanowski-classical"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "alberti-disk-calc.mjs"
+    ],
+    "limitations": "A single assumed-period detector on a short block; it demonstrates why the rule matters, it does not prove any particular rule safe."
+  },
+  {
+    "id": "alberti-disk-two-parties-identical-disks",
+    "entryId": "alberti-cipher-disk-details",
+    "kind": "round-trip-check",
+    "inputs": "a 17-letter block enciphered with alignments cycling 0,4,8 on one inner arrangement, then decrypted with the same and with a different inner arrangement",
+    "expected": "the source states both parties had to have identical disks: the same arrangement must recover the block, a different one must not",
+    "sourceIds": [
+      "krzyzanowski-classical"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "alberti-disk-calc.mjs"
+    ],
+    "limitations": "One round-trip pair; the failure of the wrong disk is the point, not a measure of work factor."
+  }
+]

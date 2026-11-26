@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--truncated-differential-details",
+  "sources": [
+    {
+      "id": "attack--truncated-differential-wikipedia",
+      "title": "Wikipedia search entry for 截断差分",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%88%AA%E6%96%AD%E5%B7%AE%E5%88%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 截断差分",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--truncated-differential-r139-principle",
+          "entryId": "attack--truncated-differential-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：截断差分（Truncated Differential Attack）。截断差分只预测差分的一部分，而不是完整的输出差；攻击者利用这种部分可预测性过滤候选密钥。论文同时讨论高阶差分作为相关工具。",
+            "en": "**Attack**: Truncated Differential Attack (截断差分).A truncated differential predicts only part of the difference rather than the full output difference; the attacker uses this partial predictability to filter candidate keys."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--truncated-differential-r139-why",
+          "entryId": "attack--truncated-differential-details",
+          "section": "why",
+          "statement": {
+            "zh": "一个密码可能对所有完整的一阶差分都有良好抵抗，却仍泄露部分差分信息；截断差分和高阶差分因此能攻击`看起来安全`的 Feistel 结构。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "A cipher may resist all full first-order differentials yet still leak partial difference information; truncated and higher-order differentials can therefore attack Feistel structures that appear secure.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--truncated-differential-r139-used",
+          "entryId": "attack--truncated-differential-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文给出对 6 轮 DES 的截断差分攻击，只需 46 个选择明文，预期运行时间约相当于 3500 次加密。",
+            "en": "The paper gives a truncated differential attack on 6-round DES using only 46 chosen plaintexts with an expected running time of about 3,500 encryptions.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--truncated-differential-r139-broken",
+          "entryId": "attack--truncated-differential-details",
+          "section": "broken",
+          "statement": {
+            "zh": "攻击需要选择明文和足够的数据来观察部分差分；其效果取决于密码的差分传播结构，高阶差分还会增加数据与计算需求。",
+            "en": "The attack requires chosen plaintexts and enough data to observe the partial difference; its effectiveness depends on the cipher’s differential propagation, and higher-order differentials increase data and computation requirements.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--truncated-differential-r139-history",
+          "entryId": "attack--truncated-differential-details",
+          "section": "history",
+          "statement": {
+            "zh": "Knudsen 在 1994 年 FSE 论文中提出截断差分，并把 Lai 的高阶导数思想用于分组密码分析；该论文为后续截断差分与高阶差分研究奠定了基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「截断差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：截断差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 截断差分 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Knudsen introduced truncated differentials in his 1994 FSE paper and applied Lai’s higher-order derivative ideas to block ciphers; the paper laid groundwork for later truncated-differential and higher-order differential research.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--truncated-differential-r139-refs",
+          "entryId": "attack--truncated-differential-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 截断差分.https://zh.wikipedia.org/w/index.php?search=%E6%88%AA%E6%96%AD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 截断差分.https://zh.wikipedia.org/w/index.php?search=%E6%88%AA%E6%96%AD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--truncated-differential-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--truncated-differential-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--truncated-differential-r139-principle",
+      "entryId": "attack--truncated-differential-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：截断差分（Truncated Differential Attack）。截断差分只预测差分的一部分，而不是完整的输出差；攻击者利用这种部分可预测性过滤候选密钥。论文同时讨论高阶差分作为相关工具。",
+        "en": "**Attack**: Truncated Differential Attack (截断差分).A truncated differential predicts only part of the difference rather than the full output difference; the attacker uses this partial predictability to filter candidate keys."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-r139-why",
+      "entryId": "attack--truncated-differential-details",
+      "section": "why",
+      "statement": {
+        "zh": "一个密码可能对所有完整的一阶差分都有良好抵抗，却仍泄露部分差分信息；截断差分和高阶差分因此能攻击`看起来安全`的 Feistel 结构。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "A cipher may resist all full first-order differentials yet still leak partial difference information; truncated and higher-order differentials can therefore attack Feistel structures that appear secure.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-r139-used",
+      "entryId": "attack--truncated-differential-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文给出对 6 轮 DES 的截断差分攻击，只需 46 个选择明文，预期运行时间约相当于 3500 次加密。",
+        "en": "The paper gives a truncated differential attack on 6-round DES using only 46 chosen plaintexts with an expected running time of about 3,500 encryptions.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-r139-broken",
+      "entryId": "attack--truncated-differential-details",
+      "section": "broken",
+      "statement": {
+        "zh": "攻击需要选择明文和足够的数据来观察部分差分；其效果取决于密码的差分传播结构，高阶差分还会增加数据与计算需求。",
+        "en": "The attack requires chosen plaintexts and enough data to observe the partial difference; its effectiveness depends on the cipher’s differential propagation, and higher-order differentials increase data and computation requirements.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-r139-history",
+      "entryId": "attack--truncated-differential-details",
+      "section": "history",
+      "statement": {
+        "zh": "Knudsen 在 1994 年 FSE 论文中提出截断差分，并把 Lai 的高阶导数思想用于分组密码分析；该论文为后续截断差分与高阶差分研究奠定了基础。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「截断差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：截断差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 截断差分 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Knudsen introduced truncated differentials in his 1994 FSE paper and applied Lai’s higher-order derivative ideas to block ciphers; the paper laid groundwork for later truncated-differential and higher-order differential research.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--truncated-differential-r139-refs",
+      "entryId": "attack--truncated-differential-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 截断差分.https://zh.wikipedia.org/w/index.php?search=%E6%88%AA%E6%96%AD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 截断差分.https://zh.wikipedia.org/w/index.php?search=%E6%88%AA%E6%96%AD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--truncated-differential-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--differential-linear-details",
+  "sources": [
+    {
+      "id": "attack--differential-linear-wikipedia",
+      "title": "Wikipedia search entry for 差分线性",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E7%BA%BF%E6%80%A7",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 差分线性",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--differential-linear-r139-principle",
+          "entryId": "attack--differential-linear-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：差分线性（Differential-Linear Cryptanalysis）。差分-线性攻击把一个分组密码分成两部分：前一部分使用高概率差分，后一部分使用高偏差线性近似，再用选择明文把两者连接起来恢复密钥位。",
+            "en": "**Attack**: Differential-Linear Cryptanalysis (差分线性).A differential-linear attack splits a block cipher into two parts: a high-probability differential covers the first part, a high-bias linear approximation covers the second, and chosen plaintexts connect the two to recover key bits."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-linear-r139-why",
+          "entryId": "attack--differential-linear-details",
+          "section": "why",
+          "statement": {
+            "zh": "论文的目标不是简单增加覆盖轮数，而是在与已有攻击相当的速度下把所需文本量降低一个数量级；差分和线性近似的组合让 8 轮 DES 只需数百个选择明文。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "The goal is not simply to cover more rounds, but to reduce the required text by an order of magnitude at comparable speed; combining a differential with a linear approximation lets 8-round DES use only hundreds of chosen plaintexts.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-linear-r139-used",
+          "entryId": "attack--differential-linear-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文对 8 轮 DES 给出攻击：512 个选择明文可以 80% 概率恢复 10 个密钥位，768 个选择明文把成功率提高到 95%，在 SUN-4 工作站上不到 10 秒。",
+            "en": "The paper attacks 8-round DES: 512 chosen plaintexts recover 10 key bits with 80% success probability, 768 chosen plaintexts raise success to 95%, and the attack runs in under 10 seconds on a SUN-4 workstation.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-linear-r139-broken",
+          "entryId": "attack--differential-linear-details",
+          "section": "broken",
+          "statement": {
+            "zh": "攻击效果取决于差分概率、线性偏差和选择明文量；它只恢复部分密钥位，成功率随数据量变化，不能直接推广为对所有轮数的完整密钥恢复。",
+            "en": "Effectiveness depends on the differential probability, linear bias and number of chosen plaintexts; it recovers only some key bits, success varies with data volume, and it does not directly generalize to full key recovery for all round counts.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-linear-r139-history",
+          "entryId": "attack--differential-linear-details",
+          "section": "history",
+          "statement": {
+            "zh": "Langford 和 Hellman 在 1994 年 CRYPTO 论文中提出差分-线性攻击，并用 8 轮 DES 展示了它比已有攻击少一个数量级的数据量。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「差分线性」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：差分线性的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 差分线性 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Langford and Hellman introduced differential-linear cryptanalysis in their 1994 CRYPTO paper and showed on 8-round DES that it needs an order of magnitude less text than existing attacks.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--differential-linear-r139-refs",
+          "entryId": "attack--differential-linear-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 差分线性.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 差分线性.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--differential-linear-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--differential-linear-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--differential-linear-r139-principle",
+      "entryId": "attack--differential-linear-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：差分线性（Differential-Linear Cryptanalysis）。差分-线性攻击把一个分组密码分成两部分：前一部分使用高概率差分，后一部分使用高偏差线性近似，再用选择明文把两者连接起来恢复密钥位。",
+        "en": "**Attack**: Differential-Linear Cryptanalysis (差分线性).A differential-linear attack splits a block cipher into two parts: a high-probability differential covers the first part, a high-bias linear approximation covers the second, and chosen plaintexts connect the two to recover key bits."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-r139-why",
+      "entryId": "attack--differential-linear-details",
+      "section": "why",
+      "statement": {
+        "zh": "论文的目标不是简单增加覆盖轮数，而是在与已有攻击相当的速度下把所需文本量降低一个数量级；差分和线性近似的组合让 8 轮 DES 只需数百个选择明文。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "The goal is not simply to cover more rounds, but to reduce the required text by an order of magnitude at comparable speed; combining a differential with a linear approximation lets 8-round DES use only hundreds of chosen plaintexts.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-r139-used",
+      "entryId": "attack--differential-linear-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文对 8 轮 DES 给出攻击：512 个选择明文可以 80% 概率恢复 10 个密钥位，768 个选择明文把成功率提高到 95%，在 SUN-4 工作站上不到 10 秒。",
+        "en": "The paper attacks 8-round DES: 512 chosen plaintexts recover 10 key bits with 80% success probability, 768 chosen plaintexts raise success to 95%, and the attack runs in under 10 seconds on a SUN-4 workstation.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-r139-broken",
+      "entryId": "attack--differential-linear-details",
+      "section": "broken",
+      "statement": {
+        "zh": "攻击效果取决于差分概率、线性偏差和选择明文量；它只恢复部分密钥位，成功率随数据量变化，不能直接推广为对所有轮数的完整密钥恢复。",
+        "en": "Effectiveness depends on the differential probability, linear bias and number of chosen plaintexts; it recovers only some key bits, success varies with data volume, and it does not directly generalize to full key recovery for all round counts.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-r139-history",
+      "entryId": "attack--differential-linear-details",
+      "section": "history",
+      "statement": {
+        "zh": "Langford 和 Hellman 在 1994 年 CRYPTO 论文中提出差分-线性攻击，并用 8 轮 DES 展示了它比已有攻击少一个数量级的数据量。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「差分线性」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：差分线性的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 差分线性 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Langford and Hellman introduced differential-linear cryptanalysis in their 1994 CRYPTO paper and showed on 8-round DES that it needs an order of magnitude less text than existing attacks.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--differential-linear-r139-refs",
+      "entryId": "attack--differential-linear-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 差分线性.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 差分线性.https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E7%BA%BF%E6%80%A7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--differential-linear-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

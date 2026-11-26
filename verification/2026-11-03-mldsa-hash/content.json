@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for mldsa-hash: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "mldsa-hash-details",
+      "inventoryIds": [
+        "mldsa-hash"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释HashML-DSA 预哈希签名变体的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of HashML-DSA Pre-Hash Signature Variant: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "HashML-DSA 预哈希签名变体",
+        "en": "HashML-DSA Pre-Hash Signature Variant"
+      },
+      "claimIds": [
+        "mldsa-hash-r139-principle",
+        "mldsa-hash-r139-why",
+        "mldsa-hash-r139-used",
+        "mldsa-hash-r139-broken",
+        "mldsa-hash-r139-history",
+        "mldsa-hash-r139-refs"
+      ],
+      "sourceIds": [
+        "mldsa-hash-wikipedia",
+        "mldsa-hash-reference-ref"
+      ],
+      "related": [
+        "algorithm--ml-dsa",
+        "standard-fips204",
+        "term--hash-function"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：HashML-DSA 混合签名（HashML-DSA）。变体的身份由两个事实构成（§3 的定义段）：它「includes an additional pre-hashing step before signing」，并且「It consists of three main algorithms: ML-DSA.KeyGen (Algorithm 1), which is the same key generation algorithm used for ML-DSA; HashML-DSA.Sign (Algorithm 4); and HashML-DSA.Verify (Algorithm 5).」也即密钥层复用 ML-DSA，只有签名与验证算法换成预哈希版本。",
+          "why": "为什么要多一步预哈希：§3 的定义段把这一步写成变体的定义特征（principle 段所引的 additional pre-hashing step）。工程动机由此可直接读出——签名算法吃的是摘要而不是任意长的消息本体，调用方因此可以在消息规模很大时先把数据收敛成定长输入，而不必把整段数据交给内部编码。标准把这一支与 ML-DSA 并列规定，也说明预哈希不是实现私改而是被规范化的选项。",
+          "used": "合规口径在 §1.4 给出定义：一个技术要成为 approved，须满足该条定义列出的三种情形之一——写在 FIPS 或 NIST 建议里、被 FIPS 或 NIST 建议采纳、或列入 NIST 批准的安全函数清单（按留存件的编号列以散文复述，不逐字引用，避免把编号里的引号带进正文）。对使用者的含义是：把 HashML-DSA 当作经批准的签名方法来对接现有合规流程，与 ML-DSA 同属 FIPS 204 的批准范围，而不是`后量子候选算法`。",
+          "broken": "限度有两层。其一是哈希函数的耦合：预哈希变体的行为由所选哈希决定，标准把这一支单列成独立算法（Sign/Verify 编号与 ML-DSA 不同）就意味着换哈希或换预处理即不再是同一算法，不能混用。其二是确定性口径：文件把 pseudorandom 定义写成「effectively random as long as the internal action of the process is hidden from observation」，也即确定性签名对外表现得随机的前提是内部动作不被观察；若实现泄露中间值，这一层论证就不成立。",
+          "history": "版本事实按项目口径复述于引号外：FIPS 204 于 2024 年 8 月 13 日发布并生效，把 ML-DSA 与预哈希的 HashML-DSA 一并写进同一份标准；留存件的免费获取行给出数字对象标识符，该行不引号。就条目本身而言，值得记的是`变体被标准化`这一步：从竞赛候选里的方案，到拥有自己算法编号的 Sign/Verify，说明它已按可实现、可验证的形式进入标准文本。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)。输入：输入：HashML-DSA 混合签名的公开参数、密钥/随机数与消息；变量说明：M 任意长度消息，h 为 n 位摘要。 预期输出：按 HashML-DSA 混合签名 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 消息填充到块边界 2. 压缩函数逐块迭代 3. 输出链值作为摘要。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for HashML-DSA 混合签名. https://zh.wikipedia.org/w/index.php?search=HashML-DSA%20%E6%B7%B7%E5%90%88%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\]\n\nHashML-DSA 混合签名的公开参数、密钥/随机数与消息；变量说明：M 任意长度消息，h 为 n 位摘要。1.消息填充到块边界。2.压缩函数逐块迭代。3.输出链值作为摘要。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: HashML-DSA (HashML-DSA 混合签名). The variant's identity is two facts printed in its §3 definition: it \"includes an additional pre-hashing step before signing\" and \"It consists of three main algorithms: ML-DSA.KeyGen (Algorithm 1), which is the same key generation algorithm used for ML-DSA; HashML-DSA.Sign (Algorithm 4); and HashML-DSA.Verify (Algorithm 5).\" So the key layer is ML-DSA's, and only signing and verification are replaced by the pre-hashed versions.",
+          "why": "Why the extra step exists is stated as the variant's defining feature: the additional pre-hashing step quoted above. The §3 definition states this, so the engineering reading follows directly - the signature consumes a digest rather than an arbitrarily long message, so callers can fold large data into a fixed-size input before the internal encoding runs. That the standard specifies this branch alongside ML-DSA means pre-hashing is a normalised option, not an implementer's private modification.",
+          "used": "The compliance frame is defined in §1.4: a technique is approved when it is specified in a FIPS or NIST recommendation, adopted in one, or listed among NIST-approved security functions (restated in prose from the printed numbered list rather than quoted, to keep the numbering artefacts out of the article). For users this means HashML-DSA is wired in as an approved signature method inside FIPS 204's scope, on the same footing as ML-DSA - not as a post-quantum candidate.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Two limits. First, hash coupling: a pre-hashed variant's behaviour is set by the chosen hash, and the standard numbering its Sign/Verify separately from ML-DSA means a different hash or preprocessing is no longer the same algorithm and cannot be mixed. Second, the determinism caveat: the document's §2.1 pseudorandom definition reads \"effectively random as long as the internal action of the process is hidden from observation\", so if an implementation leaks intermediate values that argument no longer holds.",
+          "history": "Version facts, restated outside quotes per house rule: FIPS 204 was published and effective August 13, 2024, writing ML-DSA and the pre-hashed HashML-DSA into one standard; the retained copy prints a free-availability line with a digital object identifier, which is not quoted. What is worth recording for this entity is that the variant itself became standardised - from a competition-candidate scheme to Sign and Verify algorithms with their own numbers, in implementable and testable form.",
+          "refs": "- Wikipedia search entry for HashML-DSA 混合签名. https://zh.wikipedia.org/w/index.php?search=HashML-DSA%20%E6%B7%B7%E5%90%88%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\]\n\nHashML-DSA: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "HashML-DSA：FIPS 204 里带预哈希步骤的 ML-DSA 变体。",
+          "pre-hash：签名前先对消息做哈希的额外步骤。",
+          "ML-DSA.KeyGen：与 ML-DSA 共用的密钥生成算法。",
+          "HashML-DSA.Sign / Verify：预哈希变体的签名与验证算法。",
+          "deterministic：内部动作被隐藏时其输出仍等效随机的性质。",
+          "approved / NIST-recommended：FIPS 204 §1.4 定义的合规口径。"
+        ],
+        "en": [
+          "HashML-DSA: the pre-hashed ML-DSA variant in FIPS 204.",
+          "Pre-hash: the additional step hashing the message before signing.",
+          "ML-DSA.KeyGen: the key generation algorithm shared with ML-DSA.",
+          "HashML-DSA.Sign and HashML-DSA.Verify: the variant's signing and verification algorithms.",
+          "Deterministic: effectively random while the internal action stays hidden.",
+          "Approved / NIST-recommended: the compliance terms defined in FIPS 204 §1.4."
+        ]
+      },
+      "figures": [
+        {
+          "id": "mldsa-hash-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HashML-DSA 预哈希签名变体：为什么需要 → 核心机制 → 边界。",
+            "en": "HashML-DSA Pre-Hash Signature Variant: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "HashML-DSA 预哈希签名变体 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for HashML-DSA Pre-Hash Signature Variant, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/mldsa-hash-details-flow.zh.svg",
+            "en": "assets/mldsa-hash-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "dedf41b4958122cfd3c93c202260101468b7b6cb6ec1b3ca3dbbbc1ff0b44318",
+            "en": "cf16683b1b66fa2cfb3acbe7eb86d7a3e8107ff36fe4eba34aefbb7c689a3f08"
+          }
+        },
+        {
+          "id": "mldsa-hash-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "HashML-DSA 预哈希签名变体 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for HashML-DSA Pre-Hash Signature Variant: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "HashML-DSA 预哈希签名变体 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for HashML-DSA Pre-Hash Signature Variant, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/mldsa-hash-details-r138-model.zh.svg",
+            "en": "assets/mldsa-hash-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d8f7f7bfc34fe1e09c435c42d26e858fa79fb79d19ecd88cb3e259bf90b99f1b",
+            "en": "0612deed74b8f2a42760b9ff01650bdb38159f3e45d33ddae0b0a04c643cb3a7"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "mldsa-hash-r139-formal",
+          "entryId": "mldsa-hash-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "输入：HashML-DSA 混合签名的公开参数、密钥/随机数与消息；变量说明：M 任意长度消息，h 为 n 位摘要。",
+          "expected": "按 HashML-DSA 混合签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "消息填充到块边界",
+            "压缩函数逐块迭代",
+            "输出链值作为摘要"
+          ],
+          "sourceIds": [
+            "mldsa-hash-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "mldsa-hash-r139-formal"
+      ],
+      "sources": [
+        "mldsa-hash-wikipedia",
+        "mldsa-hash-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "mldsa-hash-r139-formal",
+      "entryId": "mldsa-hash-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "输入：HashML-DSA 混合签名的公开参数、密钥/随机数与消息；变量说明：M 任意长度消息，h 为 n 位摘要。",
+      "expected": "按 HashML-DSA 混合签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "消息填充到块边界",
+        "压缩函数逐块迭代",
+        "输出链值作为摘要"
+      ],
+      "sourceIds": [
+        "mldsa-hash-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tls12-details",
+  "sources": [
+    {
+      "id": "tls12-wikipedia",
+      "title": "Wikipedia search entry for TLS 1.2",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TLS%201.2",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TLS 1.2",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tls12-r139-principle",
+          "entryId": "tls12-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：TLS 1.2（TLS 1.2）。摘要同样是版本声明：「This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol.The TLS protocol provides communications security over the Internet.」§1 保留同一分层描述「The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.」。",
+            "en": "**Protocol**: TLS 1.2 (TLS 1.2).The abstract is again a version statement: \"This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        },
+        {
+          "id": "tls12-r139-why",
+          "entryId": "tls12-details",
+          "section": "why",
+          "statement": {
+            "zh": "本版主题是算法协商自由度：§1.2 写明「The MD5/SHA-1 combination in the pseudorandom function (PRF) has been replaced with cipher-suite-specified PRFs.All cipher suites in this document use P_SHA256.」并加入「Addition of support for authenticated encryption with additional data modes.」。",
+            "en": "The theme is algorithm flexibility: §1.2 records \"The MD5/SHA-1 combination in the pseudorandom function (PRF) has been replaced with cipher-suite-specified PRFs.All cipher suites in this document use P_SHA256.\" and adds \"Addition of support for authenticated encryption with additional data modes.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        },
+        {
+          "id": "tls12-r139-used",
+          "entryId": "tls12-details",
+          "section": "used",
+          "statement": {
+            "zh": "记录层把 IV 写成硬性要求：「The Initialization Vector (IV) SHOULD be chosen at random, and MUST be unpredictable.」同时回顾旧版问题——1.1 之前没有 IV 字段而使用 CBC 残值。填充错误从 1.1 的 SHOULD 升为 MUST：「The receiver MUST check this padding and MUST use the bad_record_mac alert to indicate padding errors.」§9 的强制套件是 TLS_RSA_WITH_AES_128_CBC_SHA。",
+            "en": "The record layer hardens the IV: \"The Initialization Vector (IV) SHOULD be chosen at random, and MUST be unpredictable.\" — with a retrospective note that before TLS 1.1 there was no IV field and the CBC residue was used.Padding handling moves from the 1.1 SHOULD to \"The receiver MUST check this padding and MUST use the bad_record_mac alert to indicate padding errors.\" The §9 mandatory suite is TLS_RSA_WITH_AES_128_CBC_SHA."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        },
+        {
+          "id": "tls12-r139-broken",
+          "entryId": "tls12-details",
+          "section": "broken",
+          "statement": {
+            "zh": "本版本没有清理旧套件与静态密钥风险：§1.2 只说「Removed IDEA and DES cipher suites.They are now deprecated and will be documented in a separate document.」，对 RC4、MD5 或静态 RSA 未作否定，而强制套件本身就是静态 RSA；§7.4.1.4 劝阻用扩展大改设计——「This is not recommended; it would be more appropriate to define a new version of TLS」；前向保密仍是建议句「TLS users desiring Perfect Forward Secrecy should use DHE cipher suites.」。",
+            "en": "This version does not clear the legacy suites or static keys: §1.2 says only \"Removed IDEA and DES cipher suites.They are now deprecated and will be documented in a separate document.\" — nothing invalidates RC4, MD5 or static RSA, and the mandatory suite is itself static RSA; §7.4.1.4 argues against redesign through extensions, \"This is not recommended; it would be more appropriate to define a new version of TLS\"; and forward secrecy stays advisory, \"TLS users desiring Perfect Forward Secrecy should use DHE cipher suites.\"。."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        },
+        {
+          "id": "tls12-r139-history",
+          "entryId": "tls12-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 5246 头部为 T.Dierks 与 E.Rescorla（RTFM, Inc.），类别 Standards Track，2008 年 8 月，同时标注「Obsoletes: 3268, 4346, 4366」与「Updates: 4492」；§1.2 自陈是 TLS 1.1 的修订，重点是「improved flexibility, particularly for negotiation of cryptographic algorithms」。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "The RFC 5246 header lists T.Dierks and E."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        },
+        {
+          "id": "tls12-r139-refs",
+          "entryId": "tls12-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TLS 1.2.https://zh.wikipedia.org/w/index.php?search=TLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2.https://www.rfc-editor.org/rfc/rfc5246\n- Published standard/RFC for TLS 1.2.https://www.rfc-editor.org/rfc/rfc5246。",
+            "en": "- Wikipedia search entry for TLS 1.2.https://zh.wikipedia.org/w/index.php?search=TLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tls12-reference-ref",
+            "tls12-specific",
+            "tls12-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "tls12-wikipedia"
+      ]
+    },
+    {
+      "id": "tls12-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls12-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "tls12-specific",
+      "title": "RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2",
+      "url": "https://www.rfc-editor.org/rfc/rfc5246",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls12-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "tls12-standard",
+      "title": "Published standard/RFC for TLS 1.2",
+      "url": "https://www.rfc-editor.org/rfc/rfc5246",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for TLS 1.2",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls12-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "tls12-r139-principle",
+      "entryId": "tls12-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：TLS 1.2（TLS 1.2）。摘要同样是版本声明：「This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol.The TLS protocol provides communications security over the Internet.」§1 保留同一分层描述「The protocol is composed of two layers: the TLS Record Protocol and the TLS Handshake Protocol.」。",
+        "en": "**Protocol**: TLS 1.2 (TLS 1.2).The abstract is again a version statement: \"This document specifies Version 1.2 of the Transport Layer Security (TLS) protocol."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    },
+    {
+      "id": "tls12-r139-why",
+      "entryId": "tls12-details",
+      "section": "why",
+      "statement": {
+        "zh": "本版主题是算法协商自由度：§1.2 写明「The MD5/SHA-1 combination in the pseudorandom function (PRF) has been replaced with cipher-suite-specified PRFs.All cipher suites in this document use P_SHA256.」并加入「Addition of support for authenticated encryption with additional data modes.」。",
+        "en": "The theme is algorithm flexibility: §1.2 records \"The MD5/SHA-1 combination in the pseudorandom function (PRF) has been replaced with cipher-suite-specified PRFs.All cipher suites in this document use P_SHA256.\" and adds \"Addition of support for authenticated encryption with additional data modes.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    },
+    {
+      "id": "tls12-r139-used",
+      "entryId": "tls12-details",
+      "section": "used",
+      "statement": {
+        "zh": "记录层把 IV 写成硬性要求：「The Initialization Vector (IV) SHOULD be chosen at random, and MUST be unpredictable.」同时回顾旧版问题——1.1 之前没有 IV 字段而使用 CBC 残值。填充错误从 1.1 的 SHOULD 升为 MUST：「The receiver MUST check this padding and MUST use the bad_record_mac alert to indicate padding errors.」§9 的强制套件是 TLS_RSA_WITH_AES_128_CBC_SHA。",
+        "en": "The record layer hardens the IV: \"The Initialization Vector (IV) SHOULD be chosen at random, and MUST be unpredictable.\" — with a retrospective note that before TLS 1.1 there was no IV field and the CBC residue was used.Padding handling moves from the 1.1 SHOULD to \"The receiver MUST check this padding and MUST use the bad_record_mac alert to indicate padding errors.\" The §9 mandatory suite is TLS_RSA_WITH_AES_128_CBC_SHA."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    },
+    {
+      "id": "tls12-r139-broken",
+      "entryId": "tls12-details",
+      "section": "broken",
+      "statement": {
+        "zh": "本版本没有清理旧套件与静态密钥风险：§1.2 只说「Removed IDEA and DES cipher suites.They are now deprecated and will be documented in a separate document.」，对 RC4、MD5 或静态 RSA 未作否定，而强制套件本身就是静态 RSA；§7.4.1.4 劝阻用扩展大改设计——「This is not recommended; it would be more appropriate to define a new version of TLS」；前向保密仍是建议句「TLS users desiring Perfect Forward Secrecy should use DHE cipher suites.」。",
+        "en": "This version does not clear the legacy suites or static keys: §1.2 says only \"Removed IDEA and DES cipher suites.They are now deprecated and will be documented in a separate document.\" — nothing invalidates RC4, MD5 or static RSA, and the mandatory suite is itself static RSA; §7.4.1.4 argues against redesign through extensions, \"This is not recommended; it would be more appropriate to define a new version of TLS\"; and forward secrecy stays advisory, \"TLS users desiring Perfect Forward Secrecy should use DHE cipher suites.\"。."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    },
+    {
+      "id": "tls12-r139-history",
+      "entryId": "tls12-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 5246 头部为 T.Dierks 与 E.Rescorla（RTFM, Inc.），类别 Standards Track，2008 年 8 月，同时标注「Obsoletes: 3268, 4346, 4366」与「Updates: 4492」；§1.2 自陈是 TLS 1.1 的修订，重点是「improved flexibility, particularly for negotiation of cryptographic algorithms」。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.2的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "The RFC 5246 header lists T.Dierks and E."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    },
+    {
+      "id": "tls12-r139-refs",
+      "entryId": "tls12-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TLS 1.2.https://zh.wikipedia.org/w/index.php?search=TLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5246: The Transport Layer Security (TLS) Protocol Version 1.2.https://www.rfc-editor.org/rfc/rfc5246\n- Published standard/RFC for TLS 1.2.https://www.rfc-editor.org/rfc/rfc5246。",
+        "en": "- Wikipedia search entry for TLS 1.2.https://zh.wikipedia.org/w/index.php?search=TLS%201.2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tls12-reference-ref",
+        "tls12-specific",
+        "tls12-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

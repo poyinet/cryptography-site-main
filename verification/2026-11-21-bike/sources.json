@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "bike-details",
+  "sources": [
+    {
+      "id": "bike-wikipedia",
+      "title": "Wikipedia search entry for BIKE 备选 KEM",
+      "url": "https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: BIKE 备选 KEM",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "bike-r139-principle",
+          "entryId": "bike-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：BIKE 备选 KEM（BIKE）。### 密钥、封装与解封\n\nBIKE 在模 x^r−1 的多项式环上令 h=h1·h0^{-1}，封装 c=(e0+e1h,m⊕L(e0,e1))。### QC-MDPC 结构\n\n私钥是重量各为 w/2 的稀疏多项式 (h0,h1)，码长 n=2r，错误向量 (e0,e1) 的总重量为 t；解封用 decoder(c0h0,h0,h1) 恢复 e′ 并验 e′=H(m′)。### 参数与尺寸\n\nNIST 第四轮参数：Level 1 r=12323,w=142,t=134；Level 3 r=24659,w=206,t=199；Level 5 r=40973,w=274,t=264。LibOQS 5.1 报告 BIKE-L1 公钥 1541 B、私钥 5223 B、密文 1573 B、共享密钥 32 B。",
+            "en": "**Algorithm**: BIKE (BIKE 备选 KEM).### Key, encapsulation and decapsulation\n\nBIKE works in the polynomial ring modulo x^r−1 with h=h1·h0^{-1}, and encapsulation forms c=(e0+e1h,m⊕L(e0,e1))."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        },
+        {
+          "id": "bike-r139-why",
+          "entryId": "bike-details",
+          "section": "why",
+          "statement": {
+            "zh": "BIKE 是 code-based KEM，安全性建立在 QC syndrome decoding 与码区分困难上；比 McEliece 公钥小得多，封装/解封快，适合 TLS 等临时密钥。它只需一个对称原语（Keccak/SHAKE）和多项式运算，硬件 footprint 小；作为 NIST 备选方案，提供了不同于格密码的假设多样性。",
+            "en": "BIKE is a code-based KEM whose security rests on quasi-cyclic syndrome decoding and code distinguishing; its public key is far smaller than McEliece, and encapsulation/decapsulation are fast, suiting ephemeral TLS keys.It needs one symmetric primitive (Keccak/SHAKE) and polynomial arithmetic, giving a small hardware footprint."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        },
+        {
+          "id": "bike-r139-used",
+          "entryId": "bike-details",
+          "section": "used",
+          "statement": {
+            "zh": "BIKE 进入 NIST PQC 第四轮备选评估，liboqs 提供 C 实现；典型用法是 TLS/QUIC 的临时 KEM、混合密钥交换和研究对比。由于未被 NIST 最终标准化，生产部署应使用混合 KEM 并等待标准与侧信道审计；不能把它当成已批准算法。",
+            "en": "BIKE entered NIST PQC Round 4 as an alternate candidate, and liboqs provides a C implementation; typical uses are ephemeral TLS/QUIC KEMs, hybrid key exchange and research comparison.Because NIST did not standardize it, production should use a hybrid KEM and wait for standards and side-channel audits; it is not an approved algorithm."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        },
+        {
+          "id": "bike-r139-broken",
+          "entryId": "bike-details",
+          "section": "broken",
+          "statement": {
+            "zh": "解码失败率必须可证明地低（目标 2^-128/192/256），否则攻击者可用反应攻击恢复私钥；解码器必须常量时间，避免计时和故障。密钥重用、多目标攻击、弱私钥多项式和不正确 FO 变换都破坏 IND-CCA；BIKE 的安全证明依赖理想 decoder 与随机预言机假设，不是无条件安全。### 形式模型。",
+            "en": "The decoding failure rate must be provably low (targets 2^-128/192/256); otherwise reaction attacks can recover the private key.The decoder must be constant-time against timing and faults."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        },
+        {
+          "id": "bike-r139-history",
+          "entryId": "bike-details",
+          "section": "history",
+          "statement": {
+            "zh": "BIKE 源自 QC-MDPC 码与 Niederreiter 框架，2017 年提交 NIST PQC；经过 Round 2/3/4 与多次参数、解码器修订，2022/2023 规范 v5.x 固定单变体与 BGF 解码器。它推动了 code-based KEM 的工程化，但在 NIST 最终选择中未成为标准；其参数选择与解码器研究继续影响 HQC 等方案。**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：BIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+            "en": "BIKE grew from QC-MDPC codes and the Niederreiter framework and was submitted to NIST PQC in 2017; after Rounds 2/3/4 and several parameter and decoder revisions, the 2022/2023 v5.x specification fixed a single variant and the BGF decoder.It advanced the engineering of code-based KEMs but was not selected for NIST standardization; its parameter and decoder research continues to influence schemes such as HQC."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        },
+        {
+          "id": "bike-r139-refs",
+          "entryId": "bike-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for BIKE 备选 KEM.https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for BIKE 备选 KEM.https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "bike-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "bike-wikipedia"
+      ]
+    },
+    {
+      "id": "bike-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "bike-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "bike-r139-principle",
+      "entryId": "bike-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：BIKE 备选 KEM（BIKE）。### 密钥、封装与解封\n\nBIKE 在模 x^r−1 的多项式环上令 h=h1·h0^{-1}，封装 c=(e0+e1h,m⊕L(e0,e1))。### QC-MDPC 结构\n\n私钥是重量各为 w/2 的稀疏多项式 (h0,h1)，码长 n=2r，错误向量 (e0,e1) 的总重量为 t；解封用 decoder(c0h0,h0,h1) 恢复 e′ 并验 e′=H(m′)。### 参数与尺寸\n\nNIST 第四轮参数：Level 1 r=12323,w=142,t=134；Level 3 r=24659,w=206,t=199；Level 5 r=40973,w=274,t=264。LibOQS 5.1 报告 BIKE-L1 公钥 1541 B、私钥 5223 B、密文 1573 B、共享密钥 32 B。",
+        "en": "**Algorithm**: BIKE (BIKE 备选 KEM).### Key, encapsulation and decapsulation\n\nBIKE works in the polynomial ring modulo x^r−1 with h=h1·h0^{-1}, and encapsulation forms c=(e0+e1h,m⊕L(e0,e1))."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    },
+    {
+      "id": "bike-r139-why",
+      "entryId": "bike-details",
+      "section": "why",
+      "statement": {
+        "zh": "BIKE 是 code-based KEM，安全性建立在 QC syndrome decoding 与码区分困难上；比 McEliece 公钥小得多，封装/解封快，适合 TLS 等临时密钥。它只需一个对称原语（Keccak/SHAKE）和多项式运算，硬件 footprint 小；作为 NIST 备选方案，提供了不同于格密码的假设多样性。",
+        "en": "BIKE is a code-based KEM whose security rests on quasi-cyclic syndrome decoding and code distinguishing; its public key is far smaller than McEliece, and encapsulation/decapsulation are fast, suiting ephemeral TLS keys.It needs one symmetric primitive (Keccak/SHAKE) and polynomial arithmetic, giving a small hardware footprint."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    },
+    {
+      "id": "bike-r139-used",
+      "entryId": "bike-details",
+      "section": "used",
+      "statement": {
+        "zh": "BIKE 进入 NIST PQC 第四轮备选评估，liboqs 提供 C 实现；典型用法是 TLS/QUIC 的临时 KEM、混合密钥交换和研究对比。由于未被 NIST 最终标准化，生产部署应使用混合 KEM 并等待标准与侧信道审计；不能把它当成已批准算法。",
+        "en": "BIKE entered NIST PQC Round 4 as an alternate candidate, and liboqs provides a C implementation; typical uses are ephemeral TLS/QUIC KEMs, hybrid key exchange and research comparison.Because NIST did not standardize it, production should use a hybrid KEM and wait for standards and side-channel audits; it is not an approved algorithm."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    },
+    {
+      "id": "bike-r139-broken",
+      "entryId": "bike-details",
+      "section": "broken",
+      "statement": {
+        "zh": "解码失败率必须可证明地低（目标 2^-128/192/256），否则攻击者可用反应攻击恢复私钥；解码器必须常量时间，避免计时和故障。密钥重用、多目标攻击、弱私钥多项式和不正确 FO 变换都破坏 IND-CCA；BIKE 的安全证明依赖理想 decoder 与随机预言机假设，不是无条件安全。### 形式模型。",
+        "en": "The decoding failure rate must be provably low (targets 2^-128/192/256); otherwise reaction attacks can recover the private key.The decoder must be constant-time against timing and faults."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    },
+    {
+      "id": "bike-r139-history",
+      "entryId": "bike-details",
+      "section": "history",
+      "statement": {
+        "zh": "BIKE 源自 QC-MDPC 码与 Niederreiter 框架，2017 年提交 NIST PQC；经过 Round 2/3/4 与多次参数、解码器修订，2022/2023 规范 v5.x 固定单变体与 BGF 解码器。它推动了 code-based KEM 的工程化，但在 NIST 最终选择中未成为标准；其参数选择与解码器研究继续影响 HQC 等方案。**技术参数与复算边界**\n\n本条的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：BIKE 备选 KEM的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+        "en": "BIKE grew from QC-MDPC codes and the Niederreiter framework and was submitted to NIST PQC in 2017; after Rounds 2/3/4 and several parameter and decoder revisions, the 2022/2023 v5.x specification fixed a single variant and the BGF decoder.It advanced the engineering of code-based KEMs but was not selected for NIST standardization; its parameter and decoder research continues to influence schemes such as HQC."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    },
+    {
+      "id": "bike-r139-refs",
+      "entryId": "bike-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for BIKE 备选 KEM.https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for BIKE 备选 KEM.https://zh.wikipedia.org/w/index.php?search=BIKE%20%E5%A4%87%E9%80%89%20KEM\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "bike-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

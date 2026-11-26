@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for ocsp-stapling: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ocsp-stapling-details",
+      "inventoryIds": [
+        "ocsp-stapling"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释OCSP 装订的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of OCSP Stapling: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "OCSP 装订",
+        "en": "OCSP Stapling"
+      },
+      "claimIds": [
+        "ocsp-stapling-r139-principle",
+        "ocsp-stapling-r139-why",
+        "ocsp-stapling-r139-used",
+        "ocsp-stapling-r139-broken",
+        "ocsp-stapling-r139-history",
+        "ocsp-stapling-r139-refs"
+      ],
+      "sourceIds": [
+        "ocsp-stapling-wikipedia",
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ],
+      "related": [
+        "online-certificate-status-protocol",
+        "transport-layer-security",
+        "digital-signature"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：OCSP 装订（OCSP Stapling）。机制是把手上的证书状态信息放进 TLS 握手：RFC 6066 §8（Certificate Status Request）说明「This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.」",
+          "why": "动因是带宽与往返，而不是隐私：同节写道「Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.」",
+          "used": "服务端的应答是可选的：§8 规定「Servers that receive a client hello containing the \"status_request\" extension MAY return a suitable certificate status response to the client along with their certificate.」并且「Only one OCSP response may be sent.」；若真的返回 CertificateStatus，则此前必须在 ServerHello 里带上空的 status_request 扩展。",
+          "broken": "装订不能替代校验：§11.6 警告「If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.」并建议必须做 OCSP 校验的客户端「SHOULD either contact the OCSP server directly or abort the handshake」。",
+          "history": "该扩展由 2011 年 1 月的 Standards Track 文档 RFC 6066 规定，头部标注「Obsoletes: 4366」，§1 说明文件多为对 RFC 4366 材料的改编与编辑；nonce 的编码在此被钉死：「for clarification, the nonce MUST be a DER-encoded OCTET STRING」。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：OCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 OCSP 装订 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for OCSP 装订. https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 6960: Online Certificate Status Protocol. https://www.rfc-editor.org/rfc/rfc6960\n- Published standard/RFC for OCSP 装订. https://www.rfc-editor.org/rfc/rfc6960",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nOCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: OCSP Stapling (OCSP 装订). The mechanism carries certificate status information inside the handshake: RFC 6066 §8 (Certificate Status Request) says \"This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.\"",
+          "why": "The stated reason is bandwidth and round-trips, not privacy: the same section says \"Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.\"",
+          "used": "The server answers optionally: §8 covers a client hello \"containing the “status_request” extension\" and says such servers \"MAY return a suitable certificate status response to the client along with their certificate.\" and that \"Only one OCSP response may be sent.\" A server that does send a CertificateStatus message must earlier have included the extension with empty data in the server hello.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Stapling does not replace validation: §11.6 warns that \"If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.\" and advises a client that requires OCSP validation to \"SHOULD either contact the OCSP server directly or abort the handshake\".",
+          "history": "The extension is specified by RFC 6066, a Standards Track document from January 2011 whose header carries “Obsoletes: 4366” and whose §1 says the text is largely an adaptation of RFC 4366 material. The nonce encoding is pinned here: \"for clarification, the nonce MUST be a DER-encoded OCTET STRING\".",
+          "refs": "- Wikipedia search entry for OCSP 装订. https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 6960: Online Certificate Status Protocol. https://www.rfc-editor.org/rfc/rfc6960\n- Published standard/RFC for OCSP 装订. https://www.rfc-editor.org/rfc/rfc6960",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nOCSP Stapling: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "status_request：请求与回传证书状态的 TLS 扩展。",
+          "CertificateStatus：随证书一并发送的状态消息。",
+          "OCSP：在线证书状态协议（RFC 2560）。",
+          "responder_id 空表：表示响应方由双方事先约定。",
+          "nonce 扩展：用于抵抗 OCSP 响应重放。",
+          "bad_certificate_status_response：状态不合格时中止握手的告警。"
+        ],
+        "en": [
+          "status_request: the TLS extension requesting and returning certificate status.",
+          "CertificateStatus: the status message sent alongside the certificate.",
+          "OCSP: the Online Certificate Status Protocol (RFC 2560).",
+          "Empty responder_id list: responders are known to the server by prior arrangement.",
+          "Nonce extension: helps resist replay of OCSP responses.",
+          "bad_certificate_status_response: the fatal alert when the response fails checking."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ocsp-stapling-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "OCSP 装订：为什么需要 → 核心机制 → 边界。",
+            "en": "OCSP Stapling: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "OCSP 装订 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for OCSP Stapling, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ocsp-stapling-details-flow.zh.svg",
+            "en": "assets/ocsp-stapling-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3f449c91e065e3c216f20fe2af9339f7ab0ef19298c35a4ac709bb7633f0f6ed",
+            "en": "d74164adeebb2412e1188e45a931c1d750301b0630d19f8c3a16e2717789f19f"
+          }
+        },
+        {
+          "id": "ocsp-stapling-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "OCSP 装订 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for OCSP Stapling: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "OCSP 装订 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for OCSP Stapling, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ocsp-stapling-details-r138-model.zh.svg",
+            "en": "assets/ocsp-stapling-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "576032b6836b5d4a89b41e5a4e0cf769b395913bc2169c26aa78ce26efd022c7",
+            "en": "d485ff2b23df652dff2ffb6c2208a6afcbe4f28f61a4a7229b40493e834b94e0"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ocsp-stapling-r139-formal",
+          "entryId": "ocsp-stapling-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：OCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 OCSP 装订 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "ocsp-stapling-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ocsp-stapling-r139-formal"
+      ],
+      "sources": [
+        "ocsp-stapling-wikipedia",
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ocsp-stapling-r139-formal",
+      "entryId": "ocsp-stapling-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：OCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 OCSP 装订 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "ocsp-stapling-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

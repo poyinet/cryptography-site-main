@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension batch for puf-details.",
+  "entries": [
+    {
+      "id": "puf-details",
+      "inventoryIds": [
+        "puf"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R108 证明变换、混淆电路、硬件根信任、编码型 KEM 与哈希长度扩展深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "物理不可克隆函数",
+        "en": "Physical Unclonable Functions"
+      },
+      "claimIds": [
+        "puf-r139-principle",
+        "puf-r139-why",
+        "puf-r139-used",
+        "puf-r139-broken",
+        "puf-r139-history",
+        "puf-r139-refs"
+      ],
+      "sourceIds": [
+        "puf-wikipedia",
+        "puf-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "puf-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "物理不可克隆函数：为什么需要 → 核心机制 → 边界。",
+            "en": "Physical Unclonable Functions: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "物理不可克隆函数 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Physical Unclonable Functions, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/puf-details-flow.zh.svg",
+            "en": "assets/puf-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "12fc7edf53eee0d99ce88aec9bcf336aafbd8b287681739356193ac62f243ca4",
+            "en": "ca790b5bed9e5421602c4755e888308d02a30f96bc9965c91402193c6bc54f86"
+          }
+        },
+        {
+          "id": "puf-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "物理不可克隆函数 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Physical Unclonable Functions: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "物理不可克隆函数 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Physical Unclonable Functions, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/puf-details-r138-model.zh.svg",
+            "en": "assets/puf-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1d83f551bd79e2c7d3da465a38e7b95f719673e5f4f5ad29cf068b512abff8fc",
+            "en": "69b6311efad024032d54bffe40aa191cb07072d7cc9324830b35168e44a95ba0"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：物理不可克隆函数（Physically Unclonable Function）。### 挑战—响应与延时机制\n\nPUF 把制造随机性映射为挑战—响应：R=PUF(C)，同一芯片可重复、不同芯片不可克隆。Arbiter PUF 让两条路径在 k 级开关中赛跑，锁存器比较到达先后；响应带噪声，需纠错与模糊提取器恢复稳定密钥。### 延时与存储型\n\nArbiter PUF 的延迟差可写成 Δ=w^TΦ(C)；RO PUF 比较振荡器频率，SRAM PUF 用上电初值，蝶形 PUF 用交叉耦合锁存器。强 PUF 有指数级 CRP 空间，弱 PUF 只有少量 CRP。### 密钥派生\n\nenrollment 时采集多个 CRP，生成 helper data 与稳定密钥；重建时用 helper data 纠错。helper data 不能泄露密钥，通常配合模糊提取器和强提取器。",
+          "why": "PUF 不把长期密钥存进 NVM，掉电即消失，能抵抗克隆和读出；成本低，适合 RFID、FPGA、IoT 和芯片根信任。它把“物理不可克隆”变成可测量的数值，用于设备身份、许可绑定和防伪；与安全元件不同，PUF 是密钥来源而不是完整协议。",
+          "used": "用于 FPGA IP 保护、设备认证、防伪标签、安全启动密钥释放和 TPM/root-of-trust；SRAM PUF 已商用，Arbiter/RO PUF 用于轻量认证。强 PUF 提供指数级 CRP 空间，适合无状态认证；弱 PUF 只有少量 CRP，适合密钥生成。",
+          "broken": "延时 PUF 可用逻辑回归/机器学习建模：普通 Arbiter PUF 约 640 个 CRP 即可学习，XOR/Feed-Forward 变体需要更多但并非不可破；可靠性受温度、电压、老化影响。helper data 可能泄漏信息，故障注入和侵入式读取可破坏假设；PUF 不是加密算法，必须绑定挑战—响应协议、限速和防重放。### 形式模型",
+          "history": "2002 年 optical PUF 与 silicon PUF 提出；Suh–Devadas 2007 给出 Ring Oscillator PUF 与密钥生成；Rührmair 2010 系统展示建模攻击；此后 XOR PUF、轻量 PUF 与标准化讨论推进。它从硬件指纹发展为设备根信任，但安全证明仍依赖具体物理实现。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 物理不可克隆函数 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 物理不可克隆函数 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 物理不可克隆函数. https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Physically Unclonable Function (物理不可克隆函数). ### Challenge–response and delay mechanism\n\nA PUF maps fabrication randomness to a challenge–response pair R=PUF(C): the same chip is repeatable and another chip cannot be cloned. An arbiter PUF races two paths through k switching stages and a latch compares arrival order; responses are noisy, so error correction and a fuzzy extractor recover a stable key. ### Delay-based and memory-based designs\n\nThe arbiter delay difference is Δ=w^TΦ(C); RO PUFs compare oscillator frequencies, SRAM PUFs use power-up values, and butterfly PUFs use cross-coupled latches. Strong PUFs have an exponential CRP space; weak PUFs have only a few CRPs. ### Key derivation\n\nEnrollment collects several CRPs, produces helper data and a stable key; reconstruction uses the helper data to correct noise. Helper data must not leak the key, so designs pair it with a fuzzy extractor and a strong extractor.",
+          "why": "A PUF keeps no long-term key in NVM: the secret disappears when power is removed, resisting cloning and readout at low cost for RFID, FPGA, IoT and chip roots of trust.\n\nIt turns “physically unclonable” into a measurable value for device identity, license binding and anti-counterfeiting. Unlike a secure element, a PUF is a key source rather than a complete protocol.",
+          "used": "PUFs are used for FPGA IP protection, device authentication, anti-counterfeiting labels, secure-boot key release and TPM/root-of-trust functions; SRAM PUFs are commercial, while arbiter and RO PUFs serve lightweight authentication.\n\nStrong PUFs offer an exponential CRP space for stateless authentication; weak PUFs have few CRPs and suit key generation.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Delay PUFs are learnable with logistic regression and machine learning: a plain arbiter PUF falls at about 640 CRPs, while XOR and feed-forward variants need more but are not unbreakable. Reliability varies with temperature, voltage and aging.\n\nHelper data can leak information, and fault injection or invasive readout can break the assumptions. A PUF is not an encryption algorithm; it must be bound to a challenge–response protocol with rate limiting and replay protection.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Optical and silicon PUFs appeared in 2002; Suh and Devadas gave a ring-oscillator PUF and key generation in 2007; Rührmair et al. systematically demonstrated modeling attacks in 2010; XOR PUFs, lightweight PUFs and standardization discussions followed.\n\nIt grew from a hardware fingerprint into a device root of trust, but its security proof still depends on the concrete physical implementation.",
+          "refs": "- Wikipedia search entry for 物理不可克隆函数. https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nPhysically Unclonable Function: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "puf-r139-formal",
+          "entryId": "puf-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 物理不可克隆函数 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "puf-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "puf-r139-formal"
+      ],
+      "sources": [
+        "puf-wikipedia",
+        "puf-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "puf-r139-formal",
+      "entryId": "puf-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 物理不可克隆函数 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "puf-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

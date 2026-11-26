@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sigma-protocol-details",
+  "sources": [
+    {
+      "id": "sigma-protocol-wikipedia",
+      "title": "Wikipedia search entry for Sigma 协议",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Sigma%20%E5%8D%8F%E8%AE%AE",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Sigma 协议",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sigma-protocol-r139-principle",
+          "entryId": "sigma-protocol-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Sigma 协议（Sigma Protocol）。### 三轮公开硬币协议\n\nΣ-protocol 是证明者与验证者之间的三轮交互：证明者发送承诺 `a`，验证者发送随机挑战 `e`，证明者返回响应 `z`。验证者检查 `(a,e,z)` 是否满足关系。它通常用于证明“我知道一个见证 `w`，使得 `(x,w)` 属于某个 NP 关系”。### 三条性质\n\n完备性：诚实验证者接受诚实证明。特别可靠性：同一承诺 `a` 下，两个不同挑战 `e,e'` 的有效响应 `z,z'` 可提取出见证。特别诚实验证者零知识（SHVZK）：给定挑战 `e`，模拟器可以生成与真实交互不可区分的 `(a,z)`。### 典型例子\n\nSchnorr 协议证明离散对数知识；Guillou–Quisquater 证明模平方根知识；这些协议经 Fiat–Shamir 变换后可变成签名。",
+            "en": "**Algorithm**: Sigma Protocol (Sigma 协议).### A three-move public-coin protocol\n\nA Σ-protocol is a three-move interaction between a prover and a verifier: the prover sends a commitment `a`, the verifier sends a random challenge `e`, and the prover returns a response `z`."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        },
+        {
+          "id": "sigma-protocol-r139-why",
+          "entryId": "sigma-protocol-details",
+          "section": "why",
+          "statement": {
+            "zh": "Σ-protocol 把“证明知道秘密”压缩成三次消息，计算和通信都很轻，是高效零知识证明的基本积木。它比通用电路 ZK 更简单，适合离散对数、RSA 和格关系。三条性质分别回答：诚实方能否通过、作弊方能否伪造、验证者是否泄露信息。理解这三条，才能判断一个“零知识证明”到底证明了什么。",
+            "en": "A Σ-protocol compresses “prove that you know a secret” into three messages with light computation and communication.It is a basic building block of efficient zero-knowledge proofs and is simpler than generic circuit ZK for discrete-logarithm, RSA and lattice relations."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        },
+        {
+          "id": "sigma-protocol-r139-used",
+          "entryId": "sigma-protocol-details",
+          "section": "used",
+          "statement": {
+            "zh": "Schnorr 身份识别和签名、Bulletproofs 的范围证明、匿名凭证、环签名、MPC 中的知识证明，都建立在 Σ-protocol 或其组合上。多个 Σ-protocol 可通过挑战共享组合成“或”“与”和门限证明。实际部署通常用 Fiat–Shamir 去掉交互，并把挑战绑定到消息、会话和域标签。",
+            "en": "Schnorr identification and signatures, Bulletproof range proofs, anonymous credentials, ring signatures and knowledge proofs inside MPC are built on Σ-protocols or their composition.Several Σ-protocols can share challenges to build OR, AND and threshold proofs."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        },
+        {
+          "id": "sigma-protocol-r139-broken",
+          "entryId": "sigma-protocol-details",
+          "section": "broken",
+          "statement": {
+            "zh": "SHVZK 只对诚实验证者成立；恶意验证者可能选择特定挑战来提取信息，需要更强的零知识性质或承诺方案。Σ-protocol 本身不提供可转移性：交互记录不能直接给第三方看。并行重复可提高可靠性，但组合不当会破坏零知识；域分离和挑战熵也必须足够。### 形式模型。",
+            "en": "SHVZK holds only against an honest verifier; a malicious verifier may choose challenges to extract information and needs a stronger zero-knowledge property or a commitment scheme.A Σ-protocol is not transferable by itself: an interaction transcript cannot simply be shown to a third party."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        },
+        {
+          "id": "sigma-protocol-r139-history",
+          "entryId": "sigma-protocol-details",
+          "section": "history",
+          "statement": {
+            "zh": "“Σ-protocol” 这个名称来自 Cramer、Damgård 与 Schoenmakers 1994 年的工作，但 Schnorr 1991 年的识别协议已是典型实例。IETF CFRG 正在标准化椭圆曲线上的通用 Σ-protocol。它后来成为 Bulletproofs、PLONK 等现代证明系统的语言基础；这些系统把 Σ-protocol 与多项式承诺、Fiat–Shamir 组合起来。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Sigma 协议的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "The name “Σ-protocol” comes from work by Cramer, Damgård and Schoenmakers in 1994, although Schnorr’s 1991 identification protocol is a canonical instance.IETF CFRG is standardizing generic Σ-protocols over elliptic curves."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        },
+        {
+          "id": "sigma-protocol-r139-refs",
+          "entryId": "sigma-protocol-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Sigma 协议.https://zh.wikipedia.org/w/index.php?search=Sigma%20%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Sigma 协议.https://zh.wikipedia.org/w/index.php?search=Sigma%20%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sigma-protocol-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sigma-protocol-wikipedia"
+      ]
+    },
+    {
+      "id": "sigma-protocol-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sigma-protocol-r139-principle",
+      "entryId": "sigma-protocol-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Sigma 协议（Sigma Protocol）。### 三轮公开硬币协议\n\nΣ-protocol 是证明者与验证者之间的三轮交互：证明者发送承诺 `a`，验证者发送随机挑战 `e`，证明者返回响应 `z`。验证者检查 `(a,e,z)` 是否满足关系。它通常用于证明“我知道一个见证 `w`，使得 `(x,w)` 属于某个 NP 关系”。### 三条性质\n\n完备性：诚实验证者接受诚实证明。特别可靠性：同一承诺 `a` 下，两个不同挑战 `e,e'` 的有效响应 `z,z'` 可提取出见证。特别诚实验证者零知识（SHVZK）：给定挑战 `e`，模拟器可以生成与真实交互不可区分的 `(a,z)`。### 典型例子\n\nSchnorr 协议证明离散对数知识；Guillou–Quisquater 证明模平方根知识；这些协议经 Fiat–Shamir 变换后可变成签名。",
+        "en": "**Algorithm**: Sigma Protocol (Sigma 协议).### A three-move public-coin protocol\n\nA Σ-protocol is a three-move interaction between a prover and a verifier: the prover sends a commitment `a`, the verifier sends a random challenge `e`, and the prover returns a response `z`."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    },
+    {
+      "id": "sigma-protocol-r139-why",
+      "entryId": "sigma-protocol-details",
+      "section": "why",
+      "statement": {
+        "zh": "Σ-protocol 把“证明知道秘密”压缩成三次消息，计算和通信都很轻，是高效零知识证明的基本积木。它比通用电路 ZK 更简单，适合离散对数、RSA 和格关系。三条性质分别回答：诚实方能否通过、作弊方能否伪造、验证者是否泄露信息。理解这三条，才能判断一个“零知识证明”到底证明了什么。",
+        "en": "A Σ-protocol compresses “prove that you know a secret” into three messages with light computation and communication.It is a basic building block of efficient zero-knowledge proofs and is simpler than generic circuit ZK for discrete-logarithm, RSA and lattice relations."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    },
+    {
+      "id": "sigma-protocol-r139-used",
+      "entryId": "sigma-protocol-details",
+      "section": "used",
+      "statement": {
+        "zh": "Schnorr 身份识别和签名、Bulletproofs 的范围证明、匿名凭证、环签名、MPC 中的知识证明，都建立在 Σ-protocol 或其组合上。多个 Σ-protocol 可通过挑战共享组合成“或”“与”和门限证明。实际部署通常用 Fiat–Shamir 去掉交互，并把挑战绑定到消息、会话和域标签。",
+        "en": "Schnorr identification and signatures, Bulletproof range proofs, anonymous credentials, ring signatures and knowledge proofs inside MPC are built on Σ-protocols or their composition.Several Σ-protocols can share challenges to build OR, AND and threshold proofs."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    },
+    {
+      "id": "sigma-protocol-r139-broken",
+      "entryId": "sigma-protocol-details",
+      "section": "broken",
+      "statement": {
+        "zh": "SHVZK 只对诚实验证者成立；恶意验证者可能选择特定挑战来提取信息，需要更强的零知识性质或承诺方案。Σ-protocol 本身不提供可转移性：交互记录不能直接给第三方看。并行重复可提高可靠性，但组合不当会破坏零知识；域分离和挑战熵也必须足够。### 形式模型。",
+        "en": "SHVZK holds only against an honest verifier; a malicious verifier may choose challenges to extract information and needs a stronger zero-knowledge property or a commitment scheme.A Σ-protocol is not transferable by itself: an interaction transcript cannot simply be shown to a third party."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    },
+    {
+      "id": "sigma-protocol-r139-history",
+      "entryId": "sigma-protocol-details",
+      "section": "history",
+      "statement": {
+        "zh": "“Σ-protocol” 这个名称来自 Cramer、Damgård 与 Schoenmakers 1994 年的工作，但 Schnorr 1991 年的识别协议已是典型实例。IETF CFRG 正在标准化椭圆曲线上的通用 Σ-protocol。它后来成为 Bulletproofs、PLONK 等现代证明系统的语言基础；这些系统把 Σ-protocol 与多项式承诺、Fiat–Shamir 组合起来。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Sigma 协议的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "The name “Σ-protocol” comes from work by Cramer, Damgård and Schoenmakers in 1994, although Schnorr’s 1991 identification protocol is a canonical instance.IETF CFRG is standardizing generic Σ-protocols over elliptic curves."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    },
+    {
+      "id": "sigma-protocol-r139-refs",
+      "entryId": "sigma-protocol-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Sigma 协议.https://zh.wikipedia.org/w/index.php?search=Sigma%20%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Sigma 协议.https://zh.wikipedia.org/w/index.php?search=Sigma%20%E5%8D%8F%E8%AE%AE\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sigma-protocol-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

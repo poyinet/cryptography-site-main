@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ccm-details",
+  "sources": [
+    {
+      "id": "ccm-wikipedia",
+      "title": "Wikipedia search entry for CCM 计数器 CBC 模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CCM 计数器 CBC 模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ccm-r139-principle",
+          "entryId": "ccm-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：CCM 计数器 CBC 模式（Counter with CBC-MAC）。CCM 的构造要点是原语复用同一把密钥（§5.2）：「The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.」。它保护两类对象：「The data that CCM protects consists of a message, i.e., a bit string, called the payload, denoted P, of bit length denoted Plen, and a bit string, called the associated data」——payload 加密、关联数据只认证，二者一起进 MAC。",
+            "en": "**Algorithm**: Counter with CBC-MAC (CCM 计数器 CBC 模式).CCM's construction reuses one key across both primitives, printed in §5.2 as the same key: \"The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.\"."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        },
+        {
+          "id": "ccm-r139-why",
+          "entryId": "ccm-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么要把两者合起来：§3 把 CCM 写成两个过程的组合，「CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives」」（跨页处以省略号标示）。合起来的动机是同一条分组密码同时提供机密性与真实性，不必再各跑一套；§5.2 的同一密钥句正是这一取舍的落地方式。",
+            "en": "Why combine them: §3 specifies CCM as a pairing of processes - \"CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives\".One block cipher therefore delivers both confidentiality and authenticity instead of two separate machinery sets, and the shared-key sentence in §5.2 is how that choice is realised."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        },
+        {
+          "id": "ccm-r139-used",
+          "entryId": "ccm-details",
+          "section": "used",
+          "statement": {
+            "zh": "部署面在 §3 的适用范围里以互操作意图给出：「This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].」也即这份建议是为对齐无线局域网标准里的既有用法。长度参数在附录 B 里被提升为安全量：「The length, Tlen, of the MAC within CCM is an important security parameter.」——截断多长在文件里被明确当作安全量看待。",
+            "en": "The deployment motive is stated in §3 as interoperability: \"This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].\" The recommendation exists to align with how CCM was already used in wireless LAN standardisation.Truncation is a mandatory design decision, stated in Appendix B: \"The length, Tlen, of the MAC within CCM is an important security parameter.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        },
+        {
+          "id": "ccm-r139-broken",
+          "entryId": "ccm-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度系于两个参数。其一是 nonce 的唯一性：文件把 nonce 写成「a unique value, called a nonce, that is assigned to the payload and the associated data」——唯一性是规定条件，重用即把组合模式的机密性与真实性一起置于风险。其二是 Tlen：既然它被称作「an important security parameter」，把它截得过短就等于自己降低认证强度，而不是省下一笔无害的字节。",
+            "en": "The limits hang on two parameters.Nonce uniqueness: the document requires \"a unique value, called a nonce, that is assigned to the payload and the associated data\" - repeating it puts both the confidentiality and the authenticity of the combined mode at risk."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        },
+        {
+          "id": "ccm-r139-history",
+          "entryId": "ccm-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本事实：文件自陈是分组密码模式系列建议的一部分，并把动机落在与 IEEE 802.11 修正案草案的兼容性上（§1 所引）。留存件的扉页日期为 2004 年 5 月。也就是说，CCM 作为国家建议的规范化时间晚于它在无线标准草案里的使用——这份文件的工作是把既有的组合构造写成通用建议，而不是从零发明。头部信息按项目口径复述于引号外。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Version facts: the document presents itself as part of the block cipher modes series and grounds its motive in compatibility with the IEEE 802.11 draft amendment (quoted from §1).The retained copy is dated May 2004."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        },
+        {
+          "id": "ccm-r139-refs",
+          "entryId": "ccm-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CCM 计数器 CBC 模式.https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for CCM 计数器 CBC 模式.https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ccm-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ccm-wikipedia"
+      ]
+    },
+    {
+      "id": "ccm-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ccm-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ccm-r139-principle",
+      "entryId": "ccm-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：CCM 计数器 CBC 模式（Counter with CBC-MAC）。CCM 的构造要点是原语复用同一把密钥（§5.2）：「The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.」。它保护两类对象：「The data that CCM protects consists of a message, i.e., a bit string, called the payload, denoted P, of bit length denoted Plen, and a bit string, called the associated data」——payload 加密、关联数据只认证，二者一起进 MAC。",
+        "en": "**Algorithm**: Counter with CBC-MAC (CCM 计数器 CBC 模式).CCM's construction reuses one key across both primitives, printed in §5.2 as the same key: \"The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.\"."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    },
+    {
+      "id": "ccm-r139-why",
+      "entryId": "ccm-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么要把两者合起来：§3 把 CCM 写成两个过程的组合，「CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives」」（跨页处以省略号标示）。合起来的动机是同一条分组密码同时提供机密性与真实性，不必再各跑一套；§5.2 的同一密钥句正是这一取舍的落地方式。",
+        "en": "Why combine them: §3 specifies CCM as a pairing of processes - \"CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives\".One block cipher therefore delivers both confidentiality and authenticity instead of two separate machinery sets, and the shared-key sentence in §5.2 is how that choice is realised."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    },
+    {
+      "id": "ccm-r139-used",
+      "entryId": "ccm-details",
+      "section": "used",
+      "statement": {
+        "zh": "部署面在 §3 的适用范围里以互操作意图给出：「This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].」也即这份建议是为对齐无线局域网标准里的既有用法。长度参数在附录 B 里被提升为安全量：「The length, Tlen, of the MAC within CCM is an important security parameter.」——截断多长在文件里被明确当作安全量看待。",
+        "en": "The deployment motive is stated in §3 as interoperability: \"This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].\" The recommendation exists to align with how CCM was already used in wireless LAN standardisation.Truncation is a mandatory design decision, stated in Appendix B: \"The length, Tlen, of the MAC within CCM is an important security parameter.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    },
+    {
+      "id": "ccm-r139-broken",
+      "entryId": "ccm-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度系于两个参数。其一是 nonce 的唯一性：文件把 nonce 写成「a unique value, called a nonce, that is assigned to the payload and the associated data」——唯一性是规定条件，重用即把组合模式的机密性与真实性一起置于风险。其二是 Tlen：既然它被称作「an important security parameter」，把它截得过短就等于自己降低认证强度，而不是省下一笔无害的字节。",
+        "en": "The limits hang on two parameters.Nonce uniqueness: the document requires \"a unique value, called a nonce, that is assigned to the payload and the associated data\" - repeating it puts both the confidentiality and the authenticity of the combined mode at risk."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    },
+    {
+      "id": "ccm-r139-history",
+      "entryId": "ccm-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本事实：文件自陈是分组密码模式系列建议的一部分，并把动机落在与 IEEE 802.11 修正案草案的兼容性上（§1 所引）。留存件的扉页日期为 2004 年 5 月。也就是说，CCM 作为国家建议的规范化时间晚于它在无线标准草案里的使用——这份文件的工作是把既有的组合构造写成通用建议，而不是从零发明。头部信息按项目口径复述于引号外。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Version facts: the document presents itself as part of the block cipher modes series and grounds its motive in compatibility with the IEEE 802.11 draft amendment (quoted from §1).The retained copy is dated May 2004."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    },
+    {
+      "id": "ccm-r139-refs",
+      "entryId": "ccm-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CCM 计数器 CBC 模式.https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for CCM 计数器 CBC 模式.https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ccm-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

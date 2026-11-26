@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "lcg-details",
+  "sources": [
+    {
+      "id": "lcg-wikipedia",
+      "title": "Wikipedia search entry for 线性同余发生器",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E5%8F%91%E7%94%9F%E5%99%A8",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 线性同余发生器",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "lcg-r139-principle",
+          "entryId": "lcg-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：线性同余发生器（Linear Congruential Generator）。线性同余发生器（LCG）是密码学史上最重要、也最被误用的一个算法。**它只有一行公式：**\n\n```\nX(n+1) = (a · X(n) + c) mod m\n```\n\n三个参数加一个种子：`m` 是模数，`a` 是乘子，`c` 是增量，`X(0)` 是种子。**输出就是状态本身**（或者状态的某几位）。就这么简单。它能成为半个世纪的标准答案，靠的是三个优点：**快**（一次乘加一次取模）、**可移植**（任何语言三行代码实现）、**周期可以做到和模数一样长**。**Hull–Dobell 定理**给出了「周期达到最大值 m」的充要条件：\n\n1.`c` 与 `m` 互素；\n2.`a − 1` 能被 `m` 的**每一个素因子**整除；\n3.如果 4 整除 `m`，那么 `a − 1` 还要能被 4 整除。满足这三条，序列会遍历 `0 … m−1` 的每一个值一次，不重不漏。经典的 ANSI C 参数 `a = 1103515245, c = 12345, m = 2^31` 就满足；POSIX 的 `rand48` 系列用 `a = 0x5DEECE66D, c = 0xB, m = 2^48`，Java 的 `java.util.Random` 用的也是这一组。**但必须立刻说清楚一件事：LCG 不是密码学安全的，而且差得很远。**\n\n它的输出序列是一条**确定性的线性轨迹**。给定足够多的输出，攻击者可以用纯代数（甚至格归约）把内部状态算出来。",
+            "en": "**Algorithm**: Linear Congruential Generator (线性同余发生器).The Linear Congruential Generator (LCG) is the most important and most misused algorithm in the history of cryptography."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        },
+        {
+          "id": "lcg-r139-why",
+          "entryId": "lcg-details",
+          "section": "why",
+          "statement": {
+            "zh": "**LCG 不是密码学的东西，但它是一个了不起的工程产物。** 搞清楚它为什么成功、以及为什么不能用在密码学上，是理解现代密码学「什么才算安全」的最快路径。- **极快。** 现代 CPU 上一次 LCG 只要几纳秒，比哈希快一个数量级。做蒙特卡洛模拟、负载均衡抖动、图形着色器里的噪声，**没有比它更划算的方案**。- **状态小。** 状态就是一个 32 位或 64 位整数，**可以塞进一个寄存器**，也可以塞进缓存行里避免原子操作。- **统计性质可分析。** 周期、相关性、格结构都有理论刻画。**这在模拟领域是优点，在密码学领域是致命伤——因为「可分析」就意味着「可预测」。**\n- **一条直线。** 没有任何分支、没有任何查表、没有任何异常情况。**它是密码学里最容易审计的算法之一——正因如此，它才成了攻击者的教科书目标。**\n\n**它在密码学里失败的原因，恰好是它在模拟里成功的原因：**\n\nLCG 的输出序列在数学上是一条**格（lattice）**。**这意味着相邻的输出之间存在可以被写出来的线性关系。** 对攻击者来说：\n\n- 拿到**完整状态**输出 → 一个样本就够了。- 拿到**高位截断**输出（比如 Java 的 `nextInt()` 给 32 位而状态是 48 位）→ **两个输出加一次 2^16 的暴力枚举就能复原整个状态**。- 拿到**低位输出** → 低位的周期极短（最低位周期就是 2），**基本等于没加密。**\n\n**换句话说：LCG 不是「弱」，是「透明」。**\n\n**为什么它还活着？",
+            "en": "**The LCG is not a cryptographic algorithm, but it is a remarkable engineering artefact.** Understanding why it succeeded — and why it cannot be used in cryptography — is the fastest route to understanding what \"secure\" actually means in modern crypto.- **It is extremely fast.** A modern CPU does one LCG step in a few nanoseconds, an order of magnitude faster than a hash."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        },
+        {
+          "id": "lcg-r139-used",
+          "entryId": "lcg-details",
+          "section": "used",
+          "statement": {
+            "zh": "- **C 标准库的 `rand()` / `srand()`**：C89 就定下的接口，POSIX 追加了 `random()` / `srandom()`。glibc 的 `random()` 默认使用 128 字节状态的三次多项式加法反馈发生器（TYPE_3），输出 31 位；而 `rand_r()` 用的是最朴素的 LCG（`next = next*1103515245 + 12345`，取 `next/65536 % 32768`）。- **`rand48` / `drand48` / `erand48`**：POSIX 的 48 位 LCG，`m = 2^48`。**这是所有标准库里熵最多的 LCG**，但 48 位仍然远远不够任何密码学用途。- **Java 的 `java.util.Random`**：`a = 0x5DEECE66D, c = 0xB, m = 2^48`，每次返回状态的**高 32 位**。**Java 的 `SecureRandom` 是完全不同的东西**（默认走操作系统的 `NativePRNG`，Linux 上读 `/dev/urandom`）——**但很多 Java 代码错误地用了 `java.util.Random` 去生成密钥或 nonce。**\n- **Microsoft Visual C++ 的 `rand()`**：32 位 LCG，**返回值只有 15 位（0–32767）**——**这个范围本身就说明它不能干任何严肃的事**。",
+            "en": "- **C's `rand()` / `srand()`**: the interface dates from C89; POSIX added `random()` / `srandom()`.glibc's `random()` defaults to a 128-byte-state trinomial additive-feedback generator (TYPE_3) producing 31-bit output, while `rand_r()` uses the plain LCG (`next = next*1103515245 + 12345`, returning `next/65536 % 32768`)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        },
+        {
+          "id": "lcg-r139-broken",
+          "entryId": "lcg-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**LCG 不是「被攻破」的，它是「一直被看穿」的。这份清单里每一条都是常识，但每年都有人重新踩一遍。**\n\n- **低位周期极短**：对 `m = 2^n` 的 LCG，第 k 位低位的周期**最多是 2^(k+1)**。**最低位的周期就是 2**——它在 0 和 1 之间来回摆。**任何还在用低位输出的代码，等于在输出一个计数器。**\n- **模 2^n 是 LCG 的天敌**：模数是 2 的幂时，输出序列的**格结构特别难看**，多维格上能直接看到平面。Knuth 的**谱检验（spectral test）**就是专门用来量这件事的，**一个参数选得不好的 LCG 在谱检验下会立刻露馅**。用素数模数（如 `2^31−1`）或精心挑选的 64 位乘子能缓解可见结构，但**消不掉根本的线性**。- **状态恢复攻击**：\n  - 输出即状态 → **一个输出就够**。- 截断输出（只给高位）→ 变成**隐数问题（Hidden Number Problem）**，用**格归约（LLL）**解。Frieze、Kannan 与 Kuperberg 在 1994 年给出了系统的算法。- **Java 的 `java.util.Random`：两个 `nextInt()` 输出加一次 2^16 暴力枚举，就能克隆出整个发生器**，之后所有输出都可预测。- **种子空间小得可怜**：`srand()` 的种子通常只有 32 位。**攻击者只要枚举 2^32 个种子，把每个种子跑一遍再和已知输出比对就行。** 这不需要任何数学，纯粹是暴力。",
+            "en": "**An LCG was never \"broken\".It has always been transparent.** Every item on this list is common knowledge, and every year somebody re-learns it the hard way."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        },
+        {
+          "id": "lcg-r139-history",
+          "entryId": "lcg-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1951 年**：**D.H.Lehmer 发表《On Pseudo-Random Sequences》**（*Journal of the ACM*，Vol.3, No.3, pp.341–343），并在哈佛大学出版社出版的《第二次大规模数字计算机研讨会论文集》（同一年）里给出**乘法同余法**的经典描述——用 `m = 2^31 − 1` 这个梅森素数做模数的发生器，至今仍是教科书范例。- **1955 年**：**T.E.Hull 与 A.R.Dobell 发表《A Method for Simulating Non-Numerical Data》**（*IBM Journal of Research and Development*），**给出了全周期判据**——后来在 1962 年的 *SIAM Review* 长文《Random Number Generators》里扩写成完整定理。**这三个条件至今仍是选参数的标准做法。**\n- **1960s–1970s**：LCG 成为模拟界的默认选择。**Knuth 在《计算机程序设计艺术》第二卷（1969）里系统剖析了它的数学结构**，谱检验和格结构也是在这本书里定型的。- **1980s**：**ANSI C 委员会把 `rand()` 写进语言标准**（C89），并特别要求「如果模数是 2^31，低位至少要有 15 位随机性」——**这条要求本身就承认了低位周期的存在**。POSIX 后来补上 `rand48` 家族。",
+            "en": "- **1951**: **D.H."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        },
+        {
+          "id": "lcg-r139-refs",
+          "entryId": "lcg-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 线性同余发生器.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 线性同余发生器.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "lcg-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "lcg-wikipedia"
+      ]
+    },
+    {
+      "id": "lcg-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "lcg-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "lcg-r139-principle",
+      "entryId": "lcg-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：线性同余发生器（Linear Congruential Generator）。线性同余发生器（LCG）是密码学史上最重要、也最被误用的一个算法。**它只有一行公式：**\n\n```\nX(n+1) = (a · X(n) + c) mod m\n```\n\n三个参数加一个种子：`m` 是模数，`a` 是乘子，`c` 是增量，`X(0)` 是种子。**输出就是状态本身**（或者状态的某几位）。就这么简单。它能成为半个世纪的标准答案，靠的是三个优点：**快**（一次乘加一次取模）、**可移植**（任何语言三行代码实现）、**周期可以做到和模数一样长**。**Hull–Dobell 定理**给出了「周期达到最大值 m」的充要条件：\n\n1.`c` 与 `m` 互素；\n2.`a − 1` 能被 `m` 的**每一个素因子**整除；\n3.如果 4 整除 `m`，那么 `a − 1` 还要能被 4 整除。满足这三条，序列会遍历 `0 … m−1` 的每一个值一次，不重不漏。经典的 ANSI C 参数 `a = 1103515245, c = 12345, m = 2^31` 就满足；POSIX 的 `rand48` 系列用 `a = 0x5DEECE66D, c = 0xB, m = 2^48`，Java 的 `java.util.Random` 用的也是这一组。**但必须立刻说清楚一件事：LCG 不是密码学安全的，而且差得很远。**\n\n它的输出序列是一条**确定性的线性轨迹**。给定足够多的输出，攻击者可以用纯代数（甚至格归约）把内部状态算出来。",
+        "en": "**Algorithm**: Linear Congruential Generator (线性同余发生器).The Linear Congruential Generator (LCG) is the most important and most misused algorithm in the history of cryptography."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    },
+    {
+      "id": "lcg-r139-why",
+      "entryId": "lcg-details",
+      "section": "why",
+      "statement": {
+        "zh": "**LCG 不是密码学的东西，但它是一个了不起的工程产物。** 搞清楚它为什么成功、以及为什么不能用在密码学上，是理解现代密码学「什么才算安全」的最快路径。- **极快。** 现代 CPU 上一次 LCG 只要几纳秒，比哈希快一个数量级。做蒙特卡洛模拟、负载均衡抖动、图形着色器里的噪声，**没有比它更划算的方案**。- **状态小。** 状态就是一个 32 位或 64 位整数，**可以塞进一个寄存器**，也可以塞进缓存行里避免原子操作。- **统计性质可分析。** 周期、相关性、格结构都有理论刻画。**这在模拟领域是优点，在密码学领域是致命伤——因为「可分析」就意味着「可预测」。**\n- **一条直线。** 没有任何分支、没有任何查表、没有任何异常情况。**它是密码学里最容易审计的算法之一——正因如此，它才成了攻击者的教科书目标。**\n\n**它在密码学里失败的原因，恰好是它在模拟里成功的原因：**\n\nLCG 的输出序列在数学上是一条**格（lattice）**。**这意味着相邻的输出之间存在可以被写出来的线性关系。** 对攻击者来说：\n\n- 拿到**完整状态**输出 → 一个样本就够了。- 拿到**高位截断**输出（比如 Java 的 `nextInt()` 给 32 位而状态是 48 位）→ **两个输出加一次 2^16 的暴力枚举就能复原整个状态**。- 拿到**低位输出** → 低位的周期极短（最低位周期就是 2），**基本等于没加密。**\n\n**换句话说：LCG 不是「弱」，是「透明」。**\n\n**为什么它还活着？",
+        "en": "**The LCG is not a cryptographic algorithm, but it is a remarkable engineering artefact.** Understanding why it succeeded — and why it cannot be used in cryptography — is the fastest route to understanding what \"secure\" actually means in modern crypto.- **It is extremely fast.** A modern CPU does one LCG step in a few nanoseconds, an order of magnitude faster than a hash."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    },
+    {
+      "id": "lcg-r139-used",
+      "entryId": "lcg-details",
+      "section": "used",
+      "statement": {
+        "zh": "- **C 标准库的 `rand()` / `srand()`**：C89 就定下的接口，POSIX 追加了 `random()` / `srandom()`。glibc 的 `random()` 默认使用 128 字节状态的三次多项式加法反馈发生器（TYPE_3），输出 31 位；而 `rand_r()` 用的是最朴素的 LCG（`next = next*1103515245 + 12345`，取 `next/65536 % 32768`）。- **`rand48` / `drand48` / `erand48`**：POSIX 的 48 位 LCG，`m = 2^48`。**这是所有标准库里熵最多的 LCG**，但 48 位仍然远远不够任何密码学用途。- **Java 的 `java.util.Random`**：`a = 0x5DEECE66D, c = 0xB, m = 2^48`，每次返回状态的**高 32 位**。**Java 的 `SecureRandom` 是完全不同的东西**（默认走操作系统的 `NativePRNG`，Linux 上读 `/dev/urandom`）——**但很多 Java 代码错误地用了 `java.util.Random` 去生成密钥或 nonce。**\n- **Microsoft Visual C++ 的 `rand()`**：32 位 LCG，**返回值只有 15 位（0–32767）**——**这个范围本身就说明它不能干任何严肃的事**。",
+        "en": "- **C's `rand()` / `srand()`**: the interface dates from C89; POSIX added `random()` / `srandom()`.glibc's `random()` defaults to a 128-byte-state trinomial additive-feedback generator (TYPE_3) producing 31-bit output, while `rand_r()` uses the plain LCG (`next = next*1103515245 + 12345`, returning `next/65536 % 32768`)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    },
+    {
+      "id": "lcg-r139-broken",
+      "entryId": "lcg-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**LCG 不是「被攻破」的，它是「一直被看穿」的。这份清单里每一条都是常识，但每年都有人重新踩一遍。**\n\n- **低位周期极短**：对 `m = 2^n` 的 LCG，第 k 位低位的周期**最多是 2^(k+1)**。**最低位的周期就是 2**——它在 0 和 1 之间来回摆。**任何还在用低位输出的代码，等于在输出一个计数器。**\n- **模 2^n 是 LCG 的天敌**：模数是 2 的幂时，输出序列的**格结构特别难看**，多维格上能直接看到平面。Knuth 的**谱检验（spectral test）**就是专门用来量这件事的，**一个参数选得不好的 LCG 在谱检验下会立刻露馅**。用素数模数（如 `2^31−1`）或精心挑选的 64 位乘子能缓解可见结构，但**消不掉根本的线性**。- **状态恢复攻击**：\n  - 输出即状态 → **一个输出就够**。- 截断输出（只给高位）→ 变成**隐数问题（Hidden Number Problem）**，用**格归约（LLL）**解。Frieze、Kannan 与 Kuperberg 在 1994 年给出了系统的算法。- **Java 的 `java.util.Random`：两个 `nextInt()` 输出加一次 2^16 暴力枚举，就能克隆出整个发生器**，之后所有输出都可预测。- **种子空间小得可怜**：`srand()` 的种子通常只有 32 位。**攻击者只要枚举 2^32 个种子，把每个种子跑一遍再和已知输出比对就行。** 这不需要任何数学，纯粹是暴力。",
+        "en": "**An LCG was never \"broken\".It has always been transparent.** Every item on this list is common knowledge, and every year somebody re-learns it the hard way."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    },
+    {
+      "id": "lcg-r139-history",
+      "entryId": "lcg-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1951 年**：**D.H.Lehmer 发表《On Pseudo-Random Sequences》**（*Journal of the ACM*，Vol.3, No.3, pp.341–343），并在哈佛大学出版社出版的《第二次大规模数字计算机研讨会论文集》（同一年）里给出**乘法同余法**的经典描述——用 `m = 2^31 − 1` 这个梅森素数做模数的发生器，至今仍是教科书范例。- **1955 年**：**T.E.Hull 与 A.R.Dobell 发表《A Method for Simulating Non-Numerical Data》**（*IBM Journal of Research and Development*），**给出了全周期判据**——后来在 1962 年的 *SIAM Review* 长文《Random Number Generators》里扩写成完整定理。**这三个条件至今仍是选参数的标准做法。**\n- **1960s–1970s**：LCG 成为模拟界的默认选择。**Knuth 在《计算机程序设计艺术》第二卷（1969）里系统剖析了它的数学结构**，谱检验和格结构也是在这本书里定型的。- **1980s**：**ANSI C 委员会把 `rand()` 写进语言标准**（C89），并特别要求「如果模数是 2^31，低位至少要有 15 位随机性」——**这条要求本身就承认了低位周期的存在**。POSIX 后来补上 `rand48` 家族。",
+        "en": "- **1951**: **D.H."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    },
+    {
+      "id": "lcg-r139-refs",
+      "entryId": "lcg-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 线性同余发生器.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 线性同余发生器.https://zh.wikipedia.org/w/index.php?search=%E7%BA%BF%E6%80%A7%E5%90%8C%E4%BD%99%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "lcg-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

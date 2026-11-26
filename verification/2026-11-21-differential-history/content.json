@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R123 formula-level deepening for differential-history-details.",
+  "entries": [
+    {
+      "id": "differential-history-details",
+      "inventoryIds": [
+        "differential-history"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条把差分分析史写成可复述的公式链：S 盒差分、特征概率 p^Ω、正确对与末轮计键，并给出 16 轮 DES 的 2^47/2^36/2^37 参数。",
+        "en": "This entry turns the history into a reproducible formula chain: S-box difference, characteristic probability p^Ω, right pairs and last-round counting, with the 2^47/2^36/2^37 parameters for 16-round DES."
+      },
+      "title": {
+        "zh": "差分分析史",
+        "en": "History of Differential Cryptanalysis"
+      },
+      "claimIds": [
+        "differential-history-r139-principle",
+        "differential-history-r139-why",
+        "differential-history-r139-used",
+        "differential-history-r139-broken",
+        "differential-history-r139-history",
+        "differential-history-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出符号公式、攻击模型、参数与失效边界，不含逐步数值算例；论文定理、测试向量与历史统计以来源原文为准。",
+        "en": "This entry gives symbolic formulas, the attack model, parameters and failure boundaries, not a step-by-step numeric example; paper theorems, test vectors and historical counts follow the cited sources."
+      },
+      "sourceIds": [
+        "differential-history-wikipedia",
+        "differential-history-standard-ref"
+      ],
+      "subtopicIds": [
+        "crypto-differential"
+      ],
+      "related": [
+        "differential-cryptanalysis"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "differential-history-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "差分分析的四步链：输入差分、S 盒差分、多轮特征概率与末轮计键。",
+            "en": "Four-step differential chain: input difference, S-box difference, multi-round characteristic probability and last-round key counting."
+          },
+          "alt": {
+            "zh": "四步公式级机制：定义输入差分 → 选高概率特征 → 收集正确对 → 末轮计键；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: define input difference → choose characteristic → collect right pairs → count last-round keys; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/differential-history-mechanism.zh.svg",
+            "en": "assets/differential-history-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "6b548bf0fb9e094595a1286a9d4568b460cd14ae62a5bd79802e0dc83cdd08b5",
+            "en": "c14d3dd58aa9177d5efc104222dbf61314b1cd20b81a268b7f4fdb89047bc04b"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**术语**：差分分析史（History of Differential Cryptanalysis）。### 差分与 S 盒\n\n对一对明文 x,x′，定义差分 Δx=x⊕x′。S 盒的输入输出差分满足\n\n对固定 Δx，Δy 的分布不是均匀的；差分分析寻找概率显著高于 2^{−m} 的差分（m 为 S 盒输出位数）。### 特征与概率\n\n一条 r 轮特征 Ω=(α_0,α_1,…,α_r) 给出每轮输入/输出差分。若各轮条件近似独立，整条特征的概率为\n\np^Ω=∏_{i=1}^r p_i。攻击者收集 N 对明文，使 N·p^Ω 足够大，再对末轮子密钥计数；满足特征的“正确对”会给出异常计数。",
+          "why": "差分分析是第一个公开的、系统化的分组密码选择明文攻击。它把“S 盒局部差分分布”提升为“多轮整体偏差”，说明分组密码的轮数、S 盒与扩散层必须联合设计；DES 的 16 轮正是为了把差分概率压到攻击不可行的范围。差分分析追踪概率偏差，线性分析追踪线性逼近的偏差，不变量子空间追踪概率为 1 的轨道。三者不是同一类“统计攻击”，参数与失效条件不能互换。",
+          "used": "1.选输入差分 α_0，构造高概率特征。2.收集 N 对满足 α_0 的明文，得到密文对。3.猜测末轮子密钥，部分解密并统计 Δ 是否符合 α_{r−1}。4.取计数最高的候选子密钥，再恢复主密钥。5.用 p^Ω 估算数据复杂度 N≈c/p^Ω，并检查信噪比。### 不能怎么用\n\n不能只给一条特征而不说明正确对数量；不能把差分区分器直接当成密钥恢复；不能把 DES 的参数套到 AES 或其他轮结构不同的密码。",
+          "broken": "1.概率衰减：轮数增加使 p^Ω 指数下降；全 16 轮 DES 的特征概率极低，需要约 2^47 个选择明文。2.密钥调度与轮常数：会破坏特征的独立性和概率估计。3.误报：大量错误对也会进入计数，需信噪比和额外筛选。4.选择明文模型：只有已知/选择明文能力时才适用；不能把理论复杂度当成实际可执行时间。",
+          "history": "Biham 与 Shamir 在 1990 年 CRYPTO 发表扩展摘要，1991 年 Journal of Cryptology 完整论文给出 DES 类密码的差分分析。1993 年他们进一步把全 16 轮 DES 的攻击降到约 2^47 个选择明文、2^36 个密文和 2^37 次分析；早期版本约 2^58 次运算。### 设计史",
+          "refs": "- Wikipedia search entry for 差分分析史. https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E5%88%86%E6%9E%90%E5%8F%B2\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: History of Differential Cryptanalysis. It is registered under cryptanalysis. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in cryptanalysis, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Cold War & Information Theory, Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 差分分析史. https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E5%88%86%E6%9E%90%E5%8F%B2\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "sources": [
+        "differential-history-wikipedia",
+        "differential-history-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

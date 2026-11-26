@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ikev2-details",
+  "sources": [
+    {
+      "id": "ikev2-wikipedia",
+      "title": "Wikipedia search entry for IKEv2 密钥交换",
+      "url": "https://zh.wikipedia.org/w/index.php?search=IKEv2%20%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: IKEv2 密钥交换",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ikev2-r139-principle",
+          "entryId": "ikev2-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：IKEv2 密钥交换（Internet Key Exchange Version 2）。IKEv2 先做 IKE_SA_INIT：双方交换 SA 提案、Ni/Nr 与 DH 公钥，协商 PRF、加密、完整性算法和 DH 组。随后计算 SKEYSEED=prf(Ni|Nr, g^ir)，其中 g^ir 是 DH 共享秘密。再用 prf+(SKEYSEED, Ni|Nr|SPIi|SPIr) 扩展出 SK_d、SK_ai、SK_ar、SK_ei、SK_er、SK_pi、SK_pr。SK_d 是派生 Child SA 密钥材料的长期密钥，SK_a 保护完整性，SK_e 保护机密性，SK_p 保护身份信息。",
+            "en": "**Protocol**: Internet Key Exchange Version 2 (IKEv2 密钥交换).IKEv2 starts with IKE_SA_INIT: both sides exchange SA proposals, Ni/Nr and DH public keys, negotiating PRF, encryption, integrity and DH group."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        },
+        {
+          "id": "ikev2-r139-why",
+          "entryId": "ikev2-details",
+          "section": "why",
+          "statement": {
+            "zh": "SKEYSEED 同时绑定双方 nonce、DH 共享秘密和 SPI，任何一项不同都会得到不同的会话密钥；prf+ 把固定长度 PRF 输出拉长成所需密钥流，避免不同用途复用同一段密钥。IKE_AUTH 用 AUTH 把真实消息、对端 nonce 和身份绑定起来，防止中间人替换 ID 或重放旧消息；Child SA 可加新 DH 实现 PFS。",
+            "en": "SKEYSEED binds both nonces, the DH shared secret and the SPIs, so any difference yields different session keys; prf+ stretches a fixed-length PRF output into the required key stream and avoids reusing one segment for different purposes.IKE_AUTH uses AUTH to bind the real message, the peer nonce and the identity, stopping a man-in-the-middle from replacing the ID or replaying an old message; a Child SA can add fresh DH for PFS."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        },
+        {
+          "id": "ikev2-r139-used",
+          "entryId": "ikev2-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现按 RFC 7296 §2.14 计算：先选 PRF（如 HMAC-SHA-256，输出 32 字节），再按密钥长度切分 prf+ 输出；SK_d 至少取 PRF 输出长度。Child SA 的 KEYMAT=prf+(SK_d, Ni|Nr)，带 PFS 时改为 prf+(SK_d, g^ir(new)|Ni|Nr)；AUTH 的 SignedOctets 包含 RealMessage、对端 nonce 和 prf(SK_p, ID)。",
+            "en": "Implement RFC 7296 §2.14: choose the PRF, for example HMAC-SHA-256 with 32-byte output, then slice the prf+ output by key length; SK_d is at least the PRF output length.Child SA KEYMAT=prf+(SK_d, Ni|Nr), or prf+(SK_d, g^ir(new)|Ni|Nr) with PFS; AUTH SignedOctets contains RealMessage, the peer nonce and prf(SK_p, ID)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        },
+        {
+          "id": "ikev2-r139-broken",
+          "entryId": "ikev2-details",
+          "section": "broken",
+          "statement": {
+            "zh": "PFS 是可选项：不带新 DH 的 Child SA 只靠 SK_d 与 nonce，长期 SK_d 泄漏会回溯到该 SA 的密钥。nonce 重用会让 SKEYSEED 重复，直接破坏会话密钥唯一性。PSK 模式必须先做 Key Pad 内层 prf，低熵口令仍会遭受离线字典攻击；PPK 只是把额外密钥混入，不替代强共享秘密。IKEv2 保护协商与 SA，不自动保护应用数据。",
+            "en": "PFS is optional: a Child SA without fresh DH relies only on SK_d and nonces, so a long-lived SK_d leak reaches that SA’s keys.Nonce reuse repeats SKEYSEED and destroys session-key uniqueness."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        },
+        {
+          "id": "ikev2-r139-history",
+          "entryId": "ikev2-details",
+          "section": "history",
+          "statement": {
+            "zh": "IKEv2 最早由 RFC 4306 在 2005 年 12 月提出，RFC 5996 在 2010 年修订，RFC 7296 在 2014 年 10 月成为 Internet Standard STD 79。RFC 8784 在 2020 年加入 PPK，用于把后量子预共享密钥混入 IKEv2；RFC 7383 加入消息分片，RFC 7815 给出最小实现示例。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：IKEv2 密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "IKEv2 first appeared in RFC 4306 in December 2005, was revised by RFC 5996 in 2010, and became Internet Standard STD 79 in RFC 7296 in October 2014.RFC 8784 added PPK in 2020 to mix a post-quantum pre-shared key into IKEv2; RFC 7383 added message fragmentation and RFC 7815 gives a minimal implementation example."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        },
+        {
+          "id": "ikev2-r139-refs",
+          "entryId": "ikev2-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for IKEv2 密钥交换.https://zh.wikipedia.org/w/index.php?search=IKEv2%20%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for IKEv2 密钥交换.https://zh.wikipedia.org/w/index.php?search=IKEv2%20%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ikev2-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ikev2-wikipedia"
+      ]
+    },
+    {
+      "id": "ikev2-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ikev2-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ikev2-r139-principle",
+      "entryId": "ikev2-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：IKEv2 密钥交换（Internet Key Exchange Version 2）。IKEv2 先做 IKE_SA_INIT：双方交换 SA 提案、Ni/Nr 与 DH 公钥，协商 PRF、加密、完整性算法和 DH 组。随后计算 SKEYSEED=prf(Ni|Nr, g^ir)，其中 g^ir 是 DH 共享秘密。再用 prf+(SKEYSEED, Ni|Nr|SPIi|SPIr) 扩展出 SK_d、SK_ai、SK_ar、SK_ei、SK_er、SK_pi、SK_pr。SK_d 是派生 Child SA 密钥材料的长期密钥，SK_a 保护完整性，SK_e 保护机密性，SK_p 保护身份信息。",
+        "en": "**Protocol**: Internet Key Exchange Version 2 (IKEv2 密钥交换).IKEv2 starts with IKE_SA_INIT: both sides exchange SA proposals, Ni/Nr and DH public keys, negotiating PRF, encryption, integrity and DH group."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    },
+    {
+      "id": "ikev2-r139-why",
+      "entryId": "ikev2-details",
+      "section": "why",
+      "statement": {
+        "zh": "SKEYSEED 同时绑定双方 nonce、DH 共享秘密和 SPI，任何一项不同都会得到不同的会话密钥；prf+ 把固定长度 PRF 输出拉长成所需密钥流，避免不同用途复用同一段密钥。IKE_AUTH 用 AUTH 把真实消息、对端 nonce 和身份绑定起来，防止中间人替换 ID 或重放旧消息；Child SA 可加新 DH 实现 PFS。",
+        "en": "SKEYSEED binds both nonces, the DH shared secret and the SPIs, so any difference yields different session keys; prf+ stretches a fixed-length PRF output into the required key stream and avoids reusing one segment for different purposes.IKE_AUTH uses AUTH to bind the real message, the peer nonce and the identity, stopping a man-in-the-middle from replacing the ID or replaying an old message; a Child SA can add fresh DH for PFS."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    },
+    {
+      "id": "ikev2-r139-used",
+      "entryId": "ikev2-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现按 RFC 7296 §2.14 计算：先选 PRF（如 HMAC-SHA-256，输出 32 字节），再按密钥长度切分 prf+ 输出；SK_d 至少取 PRF 输出长度。Child SA 的 KEYMAT=prf+(SK_d, Ni|Nr)，带 PFS 时改为 prf+(SK_d, g^ir(new)|Ni|Nr)；AUTH 的 SignedOctets 包含 RealMessage、对端 nonce 和 prf(SK_p, ID)。",
+        "en": "Implement RFC 7296 §2.14: choose the PRF, for example HMAC-SHA-256 with 32-byte output, then slice the prf+ output by key length; SK_d is at least the PRF output length.Child SA KEYMAT=prf+(SK_d, Ni|Nr), or prf+(SK_d, g^ir(new)|Ni|Nr) with PFS; AUTH SignedOctets contains RealMessage, the peer nonce and prf(SK_p, ID)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    },
+    {
+      "id": "ikev2-r139-broken",
+      "entryId": "ikev2-details",
+      "section": "broken",
+      "statement": {
+        "zh": "PFS 是可选项：不带新 DH 的 Child SA 只靠 SK_d 与 nonce，长期 SK_d 泄漏会回溯到该 SA 的密钥。nonce 重用会让 SKEYSEED 重复，直接破坏会话密钥唯一性。PSK 模式必须先做 Key Pad 内层 prf，低熵口令仍会遭受离线字典攻击；PPK 只是把额外密钥混入，不替代强共享秘密。IKEv2 保护协商与 SA，不自动保护应用数据。",
+        "en": "PFS is optional: a Child SA without fresh DH relies only on SK_d and nonces, so a long-lived SK_d leak reaches that SA’s keys.Nonce reuse repeats SKEYSEED and destroys session-key uniqueness."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    },
+    {
+      "id": "ikev2-r139-history",
+      "entryId": "ikev2-details",
+      "section": "history",
+      "statement": {
+        "zh": "IKEv2 最早由 RFC 4306 在 2005 年 12 月提出，RFC 5996 在 2010 年修订，RFC 7296 在 2014 年 10 月成为 Internet Standard STD 79。RFC 8784 在 2020 年加入 PPK，用于把后量子预共享密钥混入 IKEv2；RFC 7383 加入消息分片，RFC 7815 给出最小实现示例。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：IKEv2 密钥交换的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "IKEv2 first appeared in RFC 4306 in December 2005, was revised by RFC 5996 in 2010, and became Internet Standard STD 79 in RFC 7296 in October 2014.RFC 8784 added PPK in 2020 to mix a post-quantum pre-shared key into IKEv2; RFC 7383 added message fragmentation and RFC 7815 gives a minimal implementation example."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    },
+    {
+      "id": "ikev2-r139-refs",
+      "entryId": "ikev2-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for IKEv2 密钥交换.https://zh.wikipedia.org/w/index.php?search=IKEv2%20%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for IKEv2 密钥交换.https://zh.wikipedia.org/w/index.php?search=IKEv2%20%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ikev2-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

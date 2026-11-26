@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full cipher-feedback (CFB) concept article only; no completion claim for block-cipher-mode, CBC, OFB, AES, other modes or the whole library.",
+  "entries": [
+    {
+      "id": "cfb-details",
+      "inventoryIds": [
+        "cfb"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 cfb 这一实体：段参数 s、密文反馈、IV 不可预测、串行加密与可并行解密、错误传播和无完整性；不把 AES、CBC、OFB、工作模式层或其他模式并入本实体。",
+        "en": "Covers the cfb entity: segment parameter s, ciphertext feedback, IV unpredictability, serial encryption and parallelizable decryption, error propagation and the absence of integrity. It does not absorb AES, CBC, OFB, the mode layer or other modes."
+      },
+      "title": {
+        "zh": "CFB 密文反馈模式：把分组密码变成自同步流",
+        "en": "CFB mode: turning a block cipher into a self-synchronizing stream"
+      },
+      "claimIds": [
+        "cfb-r139-principle",
+        "cfb-r139-why",
+        "cfb-r139-used",
+        "cfb-r139-broken",
+        "cfb-r139-history",
+        "cfb-r139-refs"
+      ],
+      "calculationIds": [
+        "cfb-official-vector128",
+        "cfb-official-vector8",
+        "cfb-bitflip",
+        "cfb-iv-reuse",
+        "cfb-no-padding",
+        "cfb-r139-formal"
+      ],
+      "sourceIds": [
+        "cfb-wikipedia",
+        "cfb-reference-ref"
+      ],
+      "related": [
+        "block-cipher-mode",
+        "cipher-block-chaining",
+        "ofb",
+        "counter-mode",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：CFB 密文反馈模式（Cipher Feedback）。CFB（Cipher Feedback，密文反馈）把分组密码变成按段处理的流式生成器。它有一个段参数 s，满足 1 ≤ s ≤ b（b 是分组长度）。明文和密文都按 s 位一段处理。加密过程是：\n\n```text\nI_1 = IV\nI_j = LSB_(b-s)(I_(j-1)) || C_(j-1)      (j >= 2)\nO_j = E_K(I_j)\nC_j = P_j xor MSB_s(O_j)\n```\n\n其中 I_j 是第 j 个输入块，O_j 是分组密码的输出块，C_j 是第 j 个密文段。CFB 只使用正向 E_K，不需要 D_K。解密使用同样的输入块构造：\n\n```text\nP_j = C_j xor MSB_s(O_j)\n```\n\n第一个输入块是 IV。后续输入块由前一个输入块左移 s 位、再把前一个密文段填入最低 s 位构成。因此加密必须串行，因为下一个输入块依赖上一个密文段；解密在输入块构造完成后，可以对正向 E_K 并行计算。CFB 的 IV 不需要保密，但必须不可预测。这与 CBC 的 IV 要求相同，而不是 CTR/OFB 那种只要求唯一的要求。可预测 IV 会让攻击者判断两个消息的首段是否相同，或进行选择明文区分。CFB 以 s 位段为单位，密文段与明文段等长。当 s=8 时，任意字节串都可以直接处理，不需要把消息补到分组长度；当 s 等于分组长度时，输入长度必须是分组长度的整数倍，除非协议另有分段规则。CFB 不改变底层分组密码的块大小或密钥长度。",
+          "why": "CFB 展示了一种反馈密文的流式构造：分组密码仍然一次处理一个块，但输出只取前 s 位与明文异或，密文再反馈到下一个输入块。选择 s=8 时，它可以直接处理字节流；选择 s=b 时，它接近 CBC 的链接结构，但解密方向不同。当 s=8 时，CFB 不需要块填充，并且只需要分组密码的正向方向。它的代价是 IV 必须不可预测、加密不能并行，以及错误会沿着反馈链传播。理解 CFB 也有助于区分流式与无状态：CFB 看起来像流密码，但它的密钥流依赖前一个密文段，因此不是 CTR 那种可随机访问的独立密钥流。",
+          "used": "CFB 是通用的机密性模式，适合需要按段处理、且不希望做块填充的场景。SP 800-38A 面向联邦机构和非政府组织的敏感信息保护，CFB 是其中定义的模式之一。当 s=8 时，CFB 可以逐字节处理数据，适合字节流或字符流；当 s=b 时，CFB 按完整块反馈，适合与块结构一致的数据。具体选择 s 必须由协议明确，因为 s 决定段边界、错误传播范围和互操作性。CFB 不提供完整性。需要认证时，必须使用 AEAD 或外加 MAC；不能因为密文看起来是流式就认为它具备抗篡改能力。",
+          "broken": "CFB 的 IV 不必保密，但必须不可预测。可预测 IV 会让攻击者构造明文，使首段加密结果与目标相等，从而判断目标首段内容；这类选择明文区分针对 IV 生成，而不是 AES 本身。### IV 重用\n\n同一密钥下重复使用 IV 会重复首段密钥流，泄露两条消息首段的异或关系；后续段因为反馈了不同密文，通常不会保持相同，但首段的泄露已经足够破坏机密性。### 位翻转与错误传播\n\n翻转 CFB 密文段的一个比特，会翻转对应明文段的同一比特；同时该密文段进入下一个输入块，导致后续输出块变化。当 s=b 时，错误通常影响当前块和下一块，之后重新同步；当 s<b 时，错误会跨越更多段。### 无完整性\n\nCFB 只提供机密性，不提供完整性。攻击者可以修改密文段并影响明文，CFB 本身无法检测；需要完整性时，必须使用 AEAD 或 MAC。### 段参数与互操作\n\ns 是 CFB 的显式参数。发送方和接收方必须使用相同的 s，否则段边界和反馈方式不同，密文无法正确解密。把 `CFB` 当成一个没有参数的单一模式，是协议设计中的常见错误。本文教学实现只演示 AES-128-CFB128 和 CFB8 的官方向量、位翻转和固定数据的 IV 重用关系。它不实现安全的 IV 生成、常量时间处理、密钥管理、协议状态机或侧信道防护，不能用于生产环境。",
+          "history": "1980 年，FIPS 81 为 DES 定义了 CFB 模式，使分组密码可以按小于块长的段处理数据。2001 年，SP 800-38A 把 CFB 推广到通用分组密码，并给出不同 s 值的测试向量。CFB 的长期使用说明，流式并不等于无状态。CFB 通过反馈密文获得自同步性质，但也因此把 IV 和错误传播变成协议必须处理的边界。后来的 CTR 和 AEAD 用不同的方式解决了流式处理与完整性之间的张力。这段历史说明，CFB 是一个边界清晰的基础模式：选对 s、正确生成 IV、接受错误传播的代价，它可以提供机密性；把这些前提省略，就会把模式性质变成攻击面。",
+          "refs": "- Wikipedia search entry for CFB 密文反馈模式. https://zh.wikipedia.org/w/index.php?search=CFB%20%E5%AF%86%E6%96%87%E5%8F%8D%E9%A6%88%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Cipher Feedback (CFB 密文反馈模式). CFB (Cipher Feedback) turns a block cipher into a segment-oriented stream generator. It has a segment parameter s with 1 <= s <= b, where b is the block size. Plaintext and ciphertext are processed in s-bit segments. Encryption is:\n\n```text\nI_1 = IV\nI_j = LSB_(b-s)(I_(j-1)) || C_(j-1)      (j >= 2)\nO_j = E_K(I_j)\nC_j = P_j xor MSB_s(O_j)\n```\n\nI_j is the j-th input block, O_j is the block-cipher output and C_j is the j-th ciphertext segment. CFB uses only the forward E_K and needs no D_K. Decryption builds the same input blocks:\n\n```text\nP_j = C_j xor MSB_s(O_j)\n```\n\nThe first input block is the IV. Each later input block is formed by shifting the previous input block left by s bits and placing the previous ciphertext segment in the lowest s bits. Encryption must therefore be serial because the next input block depends on the previous ciphertext segment; after the input blocks are constructed, decryption can compute E_K in parallel. The CFB IV need not be secret but must be unpredictable. This is the same requirement as CBC, not the uniqueness-only requirement of CTR/OFB. A predictable IV lets an attacker test whether two messages share an initial segment or mount a chosen-plaintext distinction. CFB works in s-bit segments, and ciphertext segments have the same length as plaintext segments. With s=8, any byte string can be processed without padding to the block size; with s equal to the block size, the input length must be a multiple of the block size unless the protocol defines a final-segment rule. CFB does not change the underlying block size or key length.",
+          "why": "CFB shows a ciphertext-feedback stream construction: the block cipher still processes one block at a time, but only the first s bits of its output are XORed with plaintext, and the ciphertext is fed back into the next input block. With s=8 it processes byte streams directly; with s=b it resembles CBC chaining but has a different decryption structure.\n\nWith s=8, CFB needs no block padding and only the forward cipher direction. Its costs are an unpredictable IV, serial encryption and error propagation along the feedback chain.\n\nUnderstanding CFB also separates a stream-like appearance from a stateless design: CFB looks like a stream cipher, but its keystream depends on the previous ciphertext segment, so it is not the independently addressable keystream of CTR.",
+          "used": "CFB is a general confidentiality mode for segment-oriented processing where block padding is unwanted. SP 800-38A addresses protection of sensitive information by federal agencies and non-government organizations, and CFB is one of its defined modes.\n\nWith s=8, CFB processes data byte by byte, suitable for byte or character streams; with s=b, it feeds back complete blocks, suitable for block-structured data. The choice of s must be explicit in the protocol because it determines segment boundaries, error propagation and interoperability.\n\nCFB provides no integrity. When authentication is needed, use AEAD or add a MAC; the ciphertext looking stream-like does not make it tamper-resistant.",
+          "broken": "The CFB IV need not be secret but must be unpredictable. A predictable IV lets an attacker construct plaintext so that the first encrypted segment equals a target, testing that target's first segment. This chosen-plaintext distinction targets IV generation, not AES itself.\n\nReusing an IV under the same key repeats the first segment's keystream and leaks the XOR of the two messages' first segments; later segments usually differ because they feed back different ciphertext, but the first-segment leak already breaks confidentiality.\n\nFlipping one bit in a CFB ciphertext segment flips the same bit in the corresponding plaintext segment; the changed segment also enters the next input block, changing later output blocks. With s=b, the error usually affects the current and next block and then resynchronizes; with s<b, it spans more segments.\n\nCFB provides confidentiality only, not integrity. An attacker can modify ciphertext segments and affect plaintext, and CFB cannot detect it; when integrity is needed, use AEAD or a MAC.\n\ns is an explicit CFB parameter. Sender and receiver must use the same s, or segment boundaries and feedback differ and the ciphertext cannot be decrypted correctly. Treating `CFB` as a single mode without a parameter is a common protocol design error.\n\nThis article's teaching implementation demonstrates only AES-128-CFB128 and CFB8 official vectors, bit flipping and IV reuse on fixed data. It does not implement secure IV generation, constant-time processing, key management, protocol state machines or side-channel defenses, and it must not be used in production.",
+          "history": "In 1980, FIPS 81 defined CFB for DES, letting a block cipher process data in segments shorter than a block. In 2001, SP 800-38A generalized CFB to block ciphers and supplied test vectors for different s values.\n\nCFB's long use shows that looking stream-like does not mean being stateless. CFB obtains self-synchronizing behavior by feeding ciphertext back, but that also makes the IV and error propagation protocol boundaries. CTR and AEAD later addressed the tension between stream processing and integrity in different ways.\n\nThis history shows that CFB is a basic mode with a clear boundary: choose s correctly, generate the IV correctly and accept error propagation, and it can provide confidentiality; omit those preconditions and the mode's properties become an attack surface.",
+          "refs": "- Wikipedia search entry for CFB 密文反馈模式. https://zh.wikipedia.org/w/index.php?search=CFB%20%E5%AF%86%E6%96%87%E5%8F%8D%E9%A6%88%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CFB：密文反馈模式，把前一个密文段反馈到下一个输入块。",
+          "段参数 s：CFB 每次处理的位数，1 ≤ s ≤ b。",
+          "输入块：送入分组密码正向函数的块，由 IV 或前一个输入块与密文段构成。",
+          "输出块：E_K(I_j) 的结果，取前 s 位与明文段异或。",
+          "自同步：错误在有限段后重新同步的性质。",
+          "IV 不可预测：CFB 对 IV 的要求，与 CBC 相同。",
+          "串行加密：下一个输入块依赖前一个密文段，加密不能并行。",
+          "并行解密：输入块构造完成后，正向 E_K 可以并行。",
+          "错误传播：密文段修改会影响当前段和后续输入块。",
+          "无完整性：CFB 本身不能检测密文修改。",
+          "CFB8/CFB128：s=8 和 s=128 的 CFB 变体。",
+          "教学实现：只演示公开向量和结构性质，不是生产代码。"
+        ],
+        "en": [
+          "CFB: Cipher Feedback, feeding the previous ciphertext segment into the next input block.",
+          "Segment parameter s: the number of bits CFB processes at a time, with 1 <= s <= b.",
+          "Input block: the block fed to the forward cipher, built from the IV or a previous input block and ciphertext segment.",
+          "Output block: the result E_K(I_j), whose first s bits are XORed with the plaintext segment.",
+          "Self-synchronizing: the property that errors resynchronize after a bounded number of segments.",
+          "Unpredictable IV: CFB's IV requirement, the same as CBC.",
+          "Serial encryption: the next input block depends on the previous ciphertext segment, so encryption cannot be parallel.",
+          "Parallel decryption: after input blocks are constructed, forward E_K can run in parallel.",
+          "Error propagation: a modified ciphertext segment affects the current segment and later input blocks.",
+          "No integrity: CFB alone cannot detect ciphertext modification.",
+          "CFB8/CFB128: CFB variants with s=8 and s=128.",
+          "Teaching implementation: demonstrates public vectors and structural properties only; not production code."
+        ]
+      },
+      "figures": [
+        {
+          "id": "cfb-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CFB 密文反馈模式：把分组密码变成自同步流：为什么需要 → 核心机制 → 边界。",
+            "en": "CFB mode: turning a block cipher into a self-synchronizing stream: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CFB 密文反馈模式：把分组密码变成自同步流 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for CFB mode: turning a block cipher into a self-synchronizing stream, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cfb-details-flow.zh.svg",
+            "en": "assets/cfb-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ec286ba13dd9c3ea5b7920b84a19accde9dbeada4682d6bb5bd6cbe6d1fa6701",
+            "en": "cc38bfc144e7459dc15b910ee7463264417026e2bf5401eb1f98c7a4875ab6d9"
+          }
+        },
+        {
+          "id": "cfb-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CFB 密文反馈模式：把分组密码变成自同步流 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for CFB mode: turning a block cipher into a self-synchronizing stream: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CFB 密文反馈模式：把分组密码变成自同步流 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for CFB mode: turning a block cipher into a self-synchronizing stream, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cfb-details-r138-model.zh.svg",
+            "en": "assets/cfb-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0fb8240450baa56e24bd39df62d18afa1ba36958dbb1cfafa00716b0ebcded71",
+            "en": "1f089954885689fb5c9b01ff8c883f68fc320c44a6190174507ee2ab79af514b"
+          }
+        }
+      ],
+      "sources": [
+        "cfb-wikipedia",
+        "cfb-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "cfb-official-vector128",
+          "entryId": "cfb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "SP 800-38A Appendix F.3.13 AES-128-CFB128 four-block vector",
+          "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "dependencies": [
+            "cfb-teaching.mjs"
+          ],
+          "limitations": "One official four-block case for s=128; not full-message protocol validation."
+        },
+        {
+          "id": "cfb-official-vector8",
+          "entryId": "cfb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "SP 800-38A Appendix F.3.7 AES-128-CFB8 first 16 bytes",
+          "expected": "The first 16 ciphertext bytes are 3b79424c9c0dd436bace9e0ed4586a4f",
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "dependencies": [
+            "cfb-teaching.mjs"
+          ],
+          "limitations": "Checks the first 16 bytes of the CFB8 example; it does not reproduce the full segment table."
+        },
+        {
+          "id": "cfb-bitflip",
+          "entryId": "cfb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Four-block AES-128-CFB128 ciphertext with one bit flipped in the second block",
+          "expected": "The second plaintext block flips the same bit, the third block is corrupted and the fourth is unchanged",
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "dependencies": [
+            "cfb-teaching.mjs"
+          ],
+          "limitations": "One fixed s=b case; it does not measure propagation for smaller s."
+        },
+        {
+          "id": "cfb-iv-reuse",
+          "entryId": "cfb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Two messages with the same key, IV and first plaintext segment",
+          "expected": "The XOR of the first ciphertext segments equals the XOR of the first plaintext segments",
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "dependencies": [
+            "cfb-teaching.mjs"
+          ],
+          "limitations": "First-segment arithmetic only; later segments differ because they feed back different ciphertext."
+        },
+        {
+          "id": "cfb-no-padding",
+          "entryId": "cfb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "20-byte plaintext encrypted with AES-128-CFB8",
+          "expected": "Ciphertext length equals plaintext length; no padding block is added",
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "dependencies": [
+            "cfb-teaching.mjs"
+          ],
+          "limitations": "s=8 length behavior only; s=128 still requires block-aligned input unless the protocol defines final-segment handling."
+        },
+        {
+          "id": "cfb-r139-formal",
+          "entryId": "cfb-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "CFB 密文反馈模式 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "cfb-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cfb-official-vector128",
+      "entryId": "cfb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "SP 800-38A Appendix F.3.13 AES-128-CFB128 four-block vector",
+      "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "dependencies": [
+        "cfb-teaching.mjs"
+      ],
+      "limitations": "One official four-block case for s=128; not full-message protocol validation."
+    },
+    {
+      "id": "cfb-official-vector8",
+      "entryId": "cfb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "SP 800-38A Appendix F.3.7 AES-128-CFB8 first 16 bytes",
+      "expected": "The first 16 ciphertext bytes are 3b79424c9c0dd436bace9e0ed4586a4f",
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "dependencies": [
+        "cfb-teaching.mjs"
+      ],
+      "limitations": "Checks the first 16 bytes of the CFB8 example; it does not reproduce the full segment table."
+    },
+    {
+      "id": "cfb-bitflip",
+      "entryId": "cfb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Four-block AES-128-CFB128 ciphertext with one bit flipped in the second block",
+      "expected": "The second plaintext block flips the same bit, the third block is corrupted and the fourth is unchanged",
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "dependencies": [
+        "cfb-teaching.mjs"
+      ],
+      "limitations": "One fixed s=b case; it does not measure propagation for smaller s."
+    },
+    {
+      "id": "cfb-iv-reuse",
+      "entryId": "cfb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Two messages with the same key, IV and first plaintext segment",
+      "expected": "The XOR of the first ciphertext segments equals the XOR of the first plaintext segments",
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "dependencies": [
+        "cfb-teaching.mjs"
+      ],
+      "limitations": "First-segment arithmetic only; later segments differ because they feed back different ciphertext."
+    },
+    {
+      "id": "cfb-no-padding",
+      "entryId": "cfb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "20-byte plaintext encrypted with AES-128-CFB8",
+      "expected": "Ciphertext length equals plaintext length; no padding block is added",
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "dependencies": [
+        "cfb-teaching.mjs"
+      ],
+      "limitations": "s=8 length behavior only; s=128 still requires block-aligned input unless the protocol defines final-segment handling."
+    },
+    {
+      "id": "cfb-r139-formal",
+      "entryId": "cfb-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "CFB 密文反馈模式 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "cfb-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

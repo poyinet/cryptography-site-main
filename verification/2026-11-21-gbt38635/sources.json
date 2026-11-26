@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt38635-details",
+  "sources": [
+    {
+      "id": "gbt38635-wikipedia",
+      "title": "Wikipedia search entry for SM9 标识密码算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SM9 标识密码算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt38635-r139-principle",
+          "entryId": "gbt38635-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：SM9 标识密码算法（SM9 Identity-Based Cryptography Algorithm）。### 配对与系统参数\n\nSM9 使用双线性配对 e:G1×G2→GT。密钥生成中心持有主私钥 ks，计算系统公钥 Ppub=ksP2。用户标识 ID 与 hid 经 H1 映射到标量，用户私钥为\n\nd_{ID}=ks·(H1(ID‖hid,N)+ks)^{-1} mod N·P1。### 签名\n\n签名者取随机 r，计算 w=e(P1,Ppub)^r、h=H2(M‖w,N)、l=(r−h) mod N，若 l=0 重取；签名 S=l·d_ID，输出 (h,S)。### 验证与加密\n\n验证计算 u=e(S,H1(ID‖hid,N)P2+Ppub)，w=u·g^h，检查 H2(M‖w,N)=h。加密/KEM 先把标识映射为 Q=H1(ID‖hid,N)P1+Ppub，取随机 r，C1=rQ，共享值 g=e(Ppub,Q)^r，再经 KDF 派生密钥。",
+            "en": "**Standard**: SM9 Identity-Based Cryptography Algorithm (SM9 标识密码算法).### Pairing and system parameters\n\nSM9 uses a bilinear pairing e:G1×G2→GT."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38635-r139-why",
+          "entryId": "gbt38635-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么用标识密码\n\nSM9 把公钥直接绑定到标识，不需要证书链；密钥生成中心负责派生用户私钥。它适合邮件、专网与需要简化证书管理的场景。SM9 是标识密码；SM2 是证书式椭圆曲线公钥算法，SM4 是分组密码。SM9 的信任根在 KGC，和 SM2 的证书信任模型不同。",
+            "en": "### Why identity-based cryptography\n\nSM9 binds the public key directly to an identity and removes certificate chains; the KGC derives user private keys.It suits email, private networks and settings that want simpler certificate management."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38635-r139-used",
+          "entryId": "gbt38635-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.系统参数：使用标准曲线、配对与哈希函数，固定 hid 与标识编码。2.密钥派生：KGC 认证标识后派生 d_ID，私钥安全下发并可更新。3.签名/加密：每次取新鲜随机 r；加密先 KEM 再对称加密。4.验证：检查配对结果、h/S 范围与标识绑定。### 不能怎么用\n\n不能把 KGC 当无信任第三方；不能跨 hid/参数混用密钥；不能把 SM9 当抗量子算法。",
+            "en": "### Correct use\n\n1.System parameters: use the standard curve, pairing and hash, and fix hid and identity encoding."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38635-r139-broken",
+          "entryId": "gbt38635-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.密钥托管：KGC 能派生任何用户私钥，必须作为信任根审计；主密钥泄露会瓦解全系统。2.配对实现：配对运算的时序、缓存与故障可泄漏私钥或伪造签名。3.标识与参数：hid、曲线、哈希或编码不一致会导致互操作失败或跨域攻击。4.协议层：不绑定标识、不检查 C1 与 KDF 输出，可能遭替换或解密错误。",
+            "en": "### Failure conditions\n\n1.Key escrow: the KGC can derive any user key and must be audited as a trust root; master-key compromise breaks the system."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38635-r139-history",
+          "entryId": "gbt38635-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 标准沿革\n\nSM9 于 2016 年进入 GM/T 0044 序列，2020 年发布 GB/T 38635.1/2—2020；ISO/IEC 18033-5 也收录标识密码方案。RFC 8998 不覆盖 SM9。SM9 的签名、密钥交换、KEM 与加密分属不同部分；实现以所声明部分与版本为准。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "### Standard history\n\nSM9 entered GM/T 0044 in 2016 and was published as GB/T 38635.1/2—2020 in 2020; ISO/IEC 18033-5 also covers identity-based ciphers.RFC 8998 does not cover SM9."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt38635-r139-refs",
+          "entryId": "gbt38635-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt38635-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt38635-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt38635-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt38635-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt38635-r139-principle",
+      "entryId": "gbt38635-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：SM9 标识密码算法（SM9 Identity-Based Cryptography Algorithm）。### 配对与系统参数\n\nSM9 使用双线性配对 e:G1×G2→GT。密钥生成中心持有主私钥 ks，计算系统公钥 Ppub=ksP2。用户标识 ID 与 hid 经 H1 映射到标量，用户私钥为\n\nd_{ID}=ks·(H1(ID‖hid,N)+ks)^{-1} mod N·P1。### 签名\n\n签名者取随机 r，计算 w=e(P1,Ppub)^r、h=H2(M‖w,N)、l=(r−h) mod N，若 l=0 重取；签名 S=l·d_ID，输出 (h,S)。### 验证与加密\n\n验证计算 u=e(S,H1(ID‖hid,N)P2+Ppub)，w=u·g^h，检查 H2(M‖w,N)=h。加密/KEM 先把标识映射为 Q=H1(ID‖hid,N)P1+Ppub，取随机 r，C1=rQ，共享值 g=e(Ppub,Q)^r，再经 KDF 派生密钥。",
+        "en": "**Standard**: SM9 Identity-Based Cryptography Algorithm (SM9 标识密码算法).### Pairing and system parameters\n\nSM9 uses a bilinear pairing e:G1×G2→GT."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38635-r139-why",
+      "entryId": "gbt38635-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么用标识密码\n\nSM9 把公钥直接绑定到标识，不需要证书链；密钥生成中心负责派生用户私钥。它适合邮件、专网与需要简化证书管理的场景。SM9 是标识密码；SM2 是证书式椭圆曲线公钥算法，SM4 是分组密码。SM9 的信任根在 KGC，和 SM2 的证书信任模型不同。",
+        "en": "### Why identity-based cryptography\n\nSM9 binds the public key directly to an identity and removes certificate chains; the KGC derives user private keys.It suits email, private networks and settings that want simpler certificate management."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38635-r139-used",
+      "entryId": "gbt38635-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.系统参数：使用标准曲线、配对与哈希函数，固定 hid 与标识编码。2.密钥派生：KGC 认证标识后派生 d_ID，私钥安全下发并可更新。3.签名/加密：每次取新鲜随机 r；加密先 KEM 再对称加密。4.验证：检查配对结果、h/S 范围与标识绑定。### 不能怎么用\n\n不能把 KGC 当无信任第三方；不能跨 hid/参数混用密钥；不能把 SM9 当抗量子算法。",
+        "en": "### Correct use\n\n1.System parameters: use the standard curve, pairing and hash, and fix hid and identity encoding."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38635-r139-broken",
+      "entryId": "gbt38635-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.密钥托管：KGC 能派生任何用户私钥，必须作为信任根审计；主密钥泄露会瓦解全系统。2.配对实现：配对运算的时序、缓存与故障可泄漏私钥或伪造签名。3.标识与参数：hid、曲线、哈希或编码不一致会导致互操作失败或跨域攻击。4.协议层：不绑定标识、不检查 C1 与 KDF 输出，可能遭替换或解密错误。",
+        "en": "### Failure conditions\n\n1.Key escrow: the KGC can derive any user key and must be audited as a trust root; master-key compromise breaks the system."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38635-r139-history",
+      "entryId": "gbt38635-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 标准沿革\n\nSM9 于 2016 年进入 GM/T 0044 序列，2020 年发布 GB/T 38635.1/2—2020；ISO/IEC 18033-5 也收录标识密码方案。RFC 8998 不覆盖 SM9。SM9 的签名、密钥交换、KEM 与加密分属不同部分；实现以所声明部分与版本为准。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "### Standard history\n\nSM9 entered GM/T 0044 in 2016 and was published as GB/T 38635.1/2—2020 in 2020; ISO/IEC 18033-5 also covers identity-based ciphers.RFC 8998 does not cover SM9."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt38635-r139-refs",
+      "entryId": "gbt38635-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt38635-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

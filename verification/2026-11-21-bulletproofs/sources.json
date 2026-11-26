@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "bulletproofs-details",
+  "sources": [
+    {
+      "id": "bulletproofs-wikipedia",
+      "title": "Wikipedia search entry for Bulletproofs 简洁证明系统",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Bulletproofs 简洁证明系统",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "bulletproofs-r139-principle",
+          "entryId": "bulletproofs-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Bulletproofs 简洁证明系统（Bulletproofs）。### 内积论证与范围证明\n\nBulletproofs 的核心是一个对数大小的内积论证：证明者证明两个 Pedersen 承诺向量 `a、b` 满足 `c=⟨a,b⟩`，通信量为 `2log₂(n)` 个群元素。范围证明把“承诺值在区间内”编码成内积关系，再交给这个论证。范围证明大小为 `2log₂(n)+9` 个群/域元素，证明和验证时间与 `n` 线性相关。它不需要可信设置，只依赖离散对数假设，并用 Fiat–Shamir 变成非交互。",
+            "en": "**Algorithm**: Bulletproofs (Bulletproofs 简洁证明系统).### Inner-product argument and range proofs\n\nAt the core of Bulletproofs is a logarithmic-size inner-product argument: the prover shows that two Pedersen commitment vectors `a, b` satisfy `c=⟨a,b⟩` with `2log₂(n)` group elements of communication."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        },
+        {
+          "id": "bulletproofs-r139-why",
+          "entryId": "bulletproofs-details",
+          "section": "why",
+          "statement": {
+            "zh": "Bulletproofs 解决了“没有可信设置、又要短证明”的中间地带。Groth16 证明更短但需要 ceremony；Bulletproofs 不需要任何有毒废料，证明随 witness 对数增长，适合链上范围证明。它让保密交易从每笔超过 10KB 的证明降到不足 1KB，并支持把多笔范围证明聚合成一个证明。",
+            "en": "Bulletproofs occupy the middle ground between “no trusted setup” and “short proof”.Groth16 proofs are shorter but need a ceremony; Bulletproofs need no toxic waste and grow logarithmically with the witness, making them suitable for on-chain range proofs."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        },
+        {
+          "id": "bulletproofs-r139-used",
+          "entryId": "bulletproofs-details",
+          "section": "used",
+          "statement": {
+            "zh": "Bulletproofs 用于 Monero 的 RingCT 范围证明、Mimblewimble/Grin 的保密交易，以及比特币社区提出的 confidential transaction 方案。它也用于可验证 shuffles、偿付能力证明和一般算术电路。它不是通用 SNARK 的替代品：验证时间线性，适合中小规模 statement，不适合需要常数验证的超大电路。",
+            "en": "Bulletproofs are used for Monero’s RingCT range proofs, Mimblewimble/Grin confidential transactions, and proposed Bitcoin confidential transactions.They also serve verifiable shuffles, proofs of solvency and general arithmetic circuits."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        },
+        {
+          "id": "bulletproofs-r139-broken",
+          "entryId": "bulletproofs-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Bulletproofs 的验证时间与 witness 规模线性，不是完全简洁的 verifier；对于百万门电路，验证仍然昂贵。它依赖离散对数，不是后量子安全。范围证明只证明区间，不证明其他业务约束；上层协议仍需处理承诺绑定、盲因子、聚合证明的 MPC 和 Fiat–Shamir 域分离。### 形式模型。",
+            "en": "Bulletproof verification is linear in witness size, not fully succinct; for million-gate circuits verification remains expensive.Security relies on discrete logarithms and is not post-quantum."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        },
+        {
+          "id": "bulletproofs-r139-history",
+          "entryId": "bulletproofs-details",
+          "section": "history",
+          "statement": {
+            "zh": "Bünz、Bootle、Boneh、Poelstra、Wuille 与 Maxwell 在 2017 年发布 ePrint 2017/1066，2018 年发表于 IEEE S&P。论文把 Bootle 等人的内积论证改进三倍，并给出范围证明与聚合方法。Bulletproofs 后来成为“透明设置 + 对数证明”的代表，被 Monero 等系统采用；它与 Groth16/PLONK 形成不同的效率取舍。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Bulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Bünz, Bootle, Boneh, Poelstra, Wuille and Maxwell released ePrint 2017/1066 in 2017 and published at IEEE S&P 2018.The paper improves the Bootle et al."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        },
+        {
+          "id": "bulletproofs-r139-refs",
+          "entryId": "bulletproofs-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Bulletproofs 简洁证明系统.https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Bulletproofs 简洁证明系统.https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "bulletproofs-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "bulletproofs-wikipedia"
+      ]
+    },
+    {
+      "id": "bulletproofs-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "bulletproofs-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "bulletproofs-r139-principle",
+      "entryId": "bulletproofs-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Bulletproofs 简洁证明系统（Bulletproofs）。### 内积论证与范围证明\n\nBulletproofs 的核心是一个对数大小的内积论证：证明者证明两个 Pedersen 承诺向量 `a、b` 满足 `c=⟨a,b⟩`，通信量为 `2log₂(n)` 个群元素。范围证明把“承诺值在区间内”编码成内积关系，再交给这个论证。范围证明大小为 `2log₂(n)+9` 个群/域元素，证明和验证时间与 `n` 线性相关。它不需要可信设置，只依赖离散对数假设，并用 Fiat–Shamir 变成非交互。",
+        "en": "**Algorithm**: Bulletproofs (Bulletproofs 简洁证明系统).### Inner-product argument and range proofs\n\nAt the core of Bulletproofs is a logarithmic-size inner-product argument: the prover shows that two Pedersen commitment vectors `a, b` satisfy `c=⟨a,b⟩` with `2log₂(n)` group elements of communication."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    },
+    {
+      "id": "bulletproofs-r139-why",
+      "entryId": "bulletproofs-details",
+      "section": "why",
+      "statement": {
+        "zh": "Bulletproofs 解决了“没有可信设置、又要短证明”的中间地带。Groth16 证明更短但需要 ceremony；Bulletproofs 不需要任何有毒废料，证明随 witness 对数增长，适合链上范围证明。它让保密交易从每笔超过 10KB 的证明降到不足 1KB，并支持把多笔范围证明聚合成一个证明。",
+        "en": "Bulletproofs occupy the middle ground between “no trusted setup” and “short proof”.Groth16 proofs are shorter but need a ceremony; Bulletproofs need no toxic waste and grow logarithmically with the witness, making them suitable for on-chain range proofs."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    },
+    {
+      "id": "bulletproofs-r139-used",
+      "entryId": "bulletproofs-details",
+      "section": "used",
+      "statement": {
+        "zh": "Bulletproofs 用于 Monero 的 RingCT 范围证明、Mimblewimble/Grin 的保密交易，以及比特币社区提出的 confidential transaction 方案。它也用于可验证 shuffles、偿付能力证明和一般算术电路。它不是通用 SNARK 的替代品：验证时间线性，适合中小规模 statement，不适合需要常数验证的超大电路。",
+        "en": "Bulletproofs are used for Monero’s RingCT range proofs, Mimblewimble/Grin confidential transactions, and proposed Bitcoin confidential transactions.They also serve verifiable shuffles, proofs of solvency and general arithmetic circuits."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    },
+    {
+      "id": "bulletproofs-r139-broken",
+      "entryId": "bulletproofs-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Bulletproofs 的验证时间与 witness 规模线性，不是完全简洁的 verifier；对于百万门电路，验证仍然昂贵。它依赖离散对数，不是后量子安全。范围证明只证明区间，不证明其他业务约束；上层协议仍需处理承诺绑定、盲因子、聚合证明的 MPC 和 Fiat–Shamir 域分离。### 形式模型。",
+        "en": "Bulletproof verification is linear in witness size, not fully succinct; for million-gate circuits verification remains expensive.Security relies on discrete logarithms and is not post-quantum."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    },
+    {
+      "id": "bulletproofs-r139-history",
+      "entryId": "bulletproofs-details",
+      "section": "history",
+      "statement": {
+        "zh": "Bünz、Bootle、Boneh、Poelstra、Wuille 与 Maxwell 在 2017 年发布 ePrint 2017/1066，2018 年发表于 IEEE S&P。论文把 Bootle 等人的内积论证改进三倍，并给出范围证明与聚合方法。Bulletproofs 后来成为“透明设置 + 对数证明”的代表，被 Monero 等系统采用；它与 Groth16/PLONK 形成不同的效率取舍。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Bulletproofs 简洁证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Bünz, Bootle, Boneh, Poelstra, Wuille and Maxwell released ePrint 2017/1066 in 2017 and published at IEEE S&P 2018.The paper improves the Bootle et al."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    },
+    {
+      "id": "bulletproofs-r139-refs",
+      "entryId": "bulletproofs-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Bulletproofs 简洁证明系统.https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Bulletproofs 简洁证明系统.https://zh.wikipedia.org/w/index.php?search=Bulletproofs%20%E7%AE%80%E6%B4%81%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "bulletproofs-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

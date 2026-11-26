@@ -1,0 +1,196 @@
+{
+  "results": [
+    {
+      "id": "vigenre-calc-printed-example",
+      "entryId": "vigen-re-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "57018012c154561d27ca961c71f69b542b358241936f122111982daaf1586c3e",
+      "dependencyHashes": {
+        "article.zh.md": "83b9c65d569ddfad94948d0bd95323f38b4434237aba834dea56ec5a6b0f2a12",
+        "article.en.md": "83779443460448719d53d4e795a6a7f235b355bd4e6c9eb4a67832fbde6d5073",
+        "meta.json": "eb0401b313c679beea067ad4bd6602767e09bb56b73fc9b05bcae9544b865238",
+        "glossary.json": "4a87b845b7f99ce53ae2d1cd935f5efba32924e960af9e3b575f7b02b52742ae",
+        "calculations.json": "6f87477a3dbe301bf2dbb11232b3d55034105a71e8c4a20ac5cf3bfe1e30f22f",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "vigenre-calc.mjs": "d6c6a719323fee37f5bb94e1c4fd0376b4c39d30eb730056a885c222d0b073d4"
+      },
+      "inputs": "plaintext ATTACKATDAWN with keyword LEMON, enciphered three ways: the mod-26 mapping of Definition 7.53, the row/column lookup of the square parsed out of the printed grid, and an evaluation of the expression string printed at hac-ch7.txt:1068",
+      "expected": "three routes give the ciphertext parsed from the course text at its line 131 - modular addition, a square parsed row by row out of the printed grid at line 122, and an evaluation of the expression ci = mi + ki mod s matched against the handbook line itself - the spelling comes from the file, the arithmetic it names is this module's, and the four worked lookups at positions 1-4 (A/L/L, T/E/X, T/M/F, A/O/O) each reproduce; decryption restores the plaintext",
+      "observed": {
+        "id": "vigenre-calc-printed-example",
+        "passed": true,
+        "parsedExampleLine": 131,
+        "parsedSquareRows": 7,
+        "parsedFormulas": [
+          "c = c1c2c3 . . . is defined on individual characters by ci = mi + ki mod s, where subscript",
+          "mi + ki mod s, the Beaufort cipher has ci = ki - mi mod s, and is its own inverse. The",
+          "variant Beaufort has encryption mapping ci = mi - ki mod s."
+        ],
+        "plaintext": "ATTACKATDAWN",
+        "keystream": "LEMONLEMONLE",
+        "printedCiphertext": "LXFOPVEFRNHR",
+        "byFormula": "LXFOPVEFRNHR",
+        "byParsedSquare": "LXFOPVEFRNHR",
+        "byInterpretedExpression": "LXFOPVEFRNHR",
+        "printedLookupsChecked": 4
+      },
+      "contentSha256": "44a3f218d0807c9a6d76b663e91e8892a543a75b381979081ec84c26d6aa3b0d",
+      "sourcesSha256": "bd3e4b41615a39583cf0052e0983a48a4cbc7ecbb209fc344ba74702c32e51ae",
+      "executedOn": "2026-11-25T07:05:01.714Z"
+    },
+    {
+      "id": "vigenre-calc-interleaved-caesars",
+      "entryId": "vigen-re-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "57018012c154561d27ca961c71f69b542b358241936f122111982daaf1586c3e",
+      "dependencyHashes": {
+        "article.zh.md": "83b9c65d569ddfad94948d0bd95323f38b4434237aba834dea56ec5a6b0f2a12",
+        "article.en.md": "83779443460448719d53d4e795a6a7f235b355bd4e6c9eb4a67832fbde6d5073",
+        "meta.json": "eb0401b313c679beea067ad4bd6602767e09bb56b73fc9b05bcae9544b865238",
+        "glossary.json": "4a87b845b7f99ce53ae2d1cd935f5efba32924e960af9e3b575f7b02b52742ae",
+        "calculations.json": "6f87477a3dbe301bf2dbb11232b3d55034105a71e8c4a20ac5cf3bfe1e30f22f",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "vigenre-calc.mjs": "d6c6a719323fee37f5bb94e1c4fd0376b4c39d30eb730056a885c222d0b073d4"
+      },
+      "inputs": "the 4598-letter sample encrypted with keyword LEMON, then split into its five interleaved subsequences",
+      "expected": "the shifts are read back off the ciphertext rather than from the key: positions 1, 6 and 11 must each show shift 11 and positions 2, 7 and 12 shift 4, as the source names them; each subsequence must equal the single Caesar shift for that residue class and must decrypt back with its own shift",
+      "observed": {
+        "id": "vigenre-calc-interleaved-caesars",
+        "passed": true,
+        "printedAt": "rutgers-classical.txt:136",
+        "positionsMeasuredFromCiphertext": [
+          "1:T->E(shift 11)",
+          "6:P->A(shift 11)",
+          "11:F->Q(shift 11)",
+          "2:H->L(shift 4)",
+          "7:H->L(shift 4)",
+          "12:A->E(shift 4)"
+        ],
+        "groupsChecked": 5,
+        "lettersPerGroup": 919,
+        "allGroupsMatch": true,
+        "eachGroupDecryptedWithItsOwnShift": true
+      },
+      "contentSha256": "44a3f218d0807c9a6d76b663e91e8892a543a75b381979081ec84c26d6aa3b0d",
+      "sourcesSha256": "bd3e4b41615a39583cf0052e0983a48a4cbc7ecbb209fc344ba74702c32e51ae",
+      "executedOn": "2026-11-25T07:05:01.714Z"
+    },
+    {
+      "id": "vigenre-calc-shift-cipher-is-period-one",
+      "entryId": "vigen-re-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "57018012c154561d27ca961c71f69b542b358241936f122111982daaf1586c3e",
+      "dependencyHashes": {
+        "article.zh.md": "83b9c65d569ddfad94948d0bd95323f38b4434237aba834dea56ec5a6b0f2a12",
+        "article.en.md": "83779443460448719d53d4e795a6a7f235b355bd4e6c9eb4a67832fbde6d5073",
+        "meta.json": "eb0401b313c679beea067ad4bd6602767e09bb56b73fc9b05bcae9544b865238",
+        "glossary.json": "4a87b845b7f99ce53ae2d1cd935f5efba32924e960af9e3b575f7b02b52742ae",
+        "calculations.json": "6f87477a3dbe301bf2dbb11232b3d55034105a71e8c4a20ac5cf3bfe1e30f22f",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "vigenre-calc.mjs": "d6c6a719323fee37f5bb94e1c4fd0376b4c39d30eb730056a885c222d0b073d4"
+      },
+      "inputs": "the sample enciphered as a shift cipher for shifts 0, 4, 11, 12, 13, 14 and 25, the seven the printed grid supplies rows for (A, E, L, M, N, O, Z), and as a simple Vigenere with a one-letter key",
+      "expected": "the handbook prints that the shift cipher is a simple Vigenere with period t = 1; each shift must equal the row parsed from the printed square under the same key letter, so the identity is checked against the grid the source prints and not only against this module. The excerpt prints rows for A, E, L, M, N, O and Z, and all seven are exercised.",
+      "observed": {
+        "id": "vigenre-calc-shift-cipher-is-period-one",
+        "passed": true,
+        "shiftValuesChecked": [
+          0,
+          4,
+          11,
+          12,
+          13,
+          14,
+          25
+        ],
+        "printedRowsUsed": 7,
+        "letters": 4598,
+        "evidence": [
+          "shift 0 (Key A): THECIPHE...",
+          "shift 4 (Key E): XLIGMTLI...",
+          "shift 11 (Key L): ESPNTASP...",
+          "shift 12 (Key M): FTQOUBTQ...",
+          "shift 13 (Key N): GURPVCUR...",
+          "shift 14 (Key O): HVSQWDVS...",
+          "shift 25 (Key Z): SGDBHOGD..."
+        ],
+        "anchor": "all seven rows the printed excerpt supplies",
+        "printedAt": "hac-ch7.txt:1075 and rutgers-classical.txt:122"
+      },
+      "contentSha256": "44a3f218d0807c9a6d76b663e91e8892a543a75b381979081ec84c26d6aa3b0d",
+      "sourcesSha256": "bd3e4b41615a39583cf0052e0983a48a4cbc7ecbb209fc344ba74702c32e51ae",
+      "executedOn": "2026-11-25T07:05:01.714Z"
+    },
+    {
+      "id": "vigenre-calc-beaufort-variants",
+      "entryId": "vigen-re-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "57018012c154561d27ca961c71f69b542b358241936f122111982daaf1586c3e",
+      "dependencyHashes": {
+        "article.zh.md": "83b9c65d569ddfad94948d0bd95323f38b4434237aba834dea56ec5a6b0f2a12",
+        "article.en.md": "83779443460448719d53d4e795a6a7f235b355bd4e6c9eb4a67832fbde6d5073",
+        "meta.json": "eb0401b313c679beea067ad4bd6602767e09bb56b73fc9b05bcae9544b865238",
+        "glossary.json": "4a87b845b7f99ce53ae2d1cd935f5efba32924e960af9e3b575f7b02b52742ae",
+        "calculations.json": "6f87477a3dbe301bf2dbb11232b3d55034105a71e8c4a20ac5cf3bfe1e30f22f",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "vigenre-calc.mjs": "d6c6a719323fee37f5bb94e1c4fd0376b4c39d30eb730056a885c222d0b073d4"
+      },
+      "inputs": "the sample under the Beaufort mapping ci = ki - mi mod s and the variant Beaufort ci = mi - ki mod s with keyword KRYPT",
+      "expected": "the Beaufort must be its own inverse as the source states, applying it twice restores the plaintext; the variant must follow its own printed formula; both must differ from the simple Vigenere at most positions",
+      "observed": {
+        "id": "vigenre-calc-beaufort-variants",
+        "passed": true,
+        "key": "KRYPT",
+        "letters": 4598,
+        "printedExpressions": [
+          "ci = ki - mi mod s",
+          "ci = mi - ki mod s"
+        ],
+        "beaufortInvolutionHolds": true,
+        "positionsDifferingFromSimple": 3938,
+        "printedAt": "hac-ch7.txt:1077-1079"
+      },
+      "contentSha256": "44a3f218d0807c9a6d76b663e91e8892a543a75b381979081ec84c26d6aa3b0d",
+      "sourcesSha256": "bd3e4b41615a39583cf0052e0983a48a4cbc7ecbb209fc344ba74702c32e51ae",
+      "executedOn": "2026-11-25T07:05:01.714Z"
+    },
+    {
+      "id": "vigenre-calc-compound-lcm",
+      "entryId": "vigen-re-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "57018012c154561d27ca961c71f69b542b358241936f122111982daaf1586c3e",
+      "dependencyHashes": {
+        "article.zh.md": "83b9c65d569ddfad94948d0bd95323f38b4434237aba834dea56ec5a6b0f2a12",
+        "article.en.md": "83779443460448719d53d4e795a6a7f235b355bd4e6c9eb4a67832fbde6d5073",
+        "meta.json": "eb0401b313c679beea067ad4bd6602767e09bb56b73fc9b05bcae9544b865238",
+        "glossary.json": "4a87b845b7f99ce53ae2d1cd935f5efba32924e960af9e3b575f7b02b52742ae",
+        "calculations.json": "6f87477a3dbe301bf2dbb11232b3d55034105a71e8c4a20ac5cf3bfe1e30f22f",
+        "classical-sample.mjs": "56d9d9467096b08e564e644e85e21e936866182f8a3466a4df751eab46236fbe",
+        "vigenre-calc.mjs": "d6c6a719323fee37f5bb94e1c4fd0376b4c39d30eb730056a885c222d0b073d4"
+      },
+      "inputs": "a compound Vigenere built from keys of periods 2 and 3 over the sample, using the key letters AE and LMN because the printed grid excerpt supplies rows for those",
+      "expected": "the source prints that compounding r simple Vigeneres gives a simple Vigenere of period lcm(t1,...,tr); the compound mapping is applied as two passes through the parsed printed grid, one per stage, and must equal a single pass with the merged period-6 key letters. The merged letters, and that single pass, are computed with modular addition rather than read from the grid, because the excerpt supplies rows for only seven key letters and three merged letters are not among them; lcm(2,3) must be 6.",
+      "observed": {
+        "id": "vigenre-calc-compound-lcm",
+        "passed": true,
+        "periods": [
+          2,
+          3
+        ],
+        "lcmPeriod": 6,
+        "mergedKey": "LQNPMR",
+        "letters": 4598,
+        "anchor": "two grid passes per letter against one grid pass with the merged row letters",
+        "printedAt": "hac-ch7.txt:1081-1085"
+      },
+      "contentSha256": "44a3f218d0807c9a6d76b663e91e8892a543a75b381979081ec84c26d6aa3b0d",
+      "sourcesSha256": "bd3e4b41615a39583cf0052e0983a48a4cbc7ecbb209fc344ba74702c32e51ae",
+      "executedOn": "2026-11-25T07:05:01.714Z"
+    }
+  ]
+}

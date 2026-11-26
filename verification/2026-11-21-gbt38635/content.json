@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R121 formula-level deepening for gbt38635-details.",
+  "entries": [
+    {
+      "id": "gbt38635-details",
+      "inventoryIds": [
+        "gbt38635"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R121 公式级深化：把“SM9 标识密码算法”从机制结构条提升为公式级条目，给出轮函数/签名/密钥流/配对方程、参数、用途与失效边界；具体数值算例仍不冒充标准测试向量。",
+        "en": "R121 formula-level deepening: upgrades “SM9 Identity-Based Cryptographic Algorithm” from a mechanism-structure card to a formula-level entry with round/signature/keystream/pairing equations, parameters, use and failure boundary; numeric examples are not claimed as standard test vectors."
+      },
+      "title": {
+        "zh": "SM9 标识密码算法",
+        "en": "SM9 Identity-Based Cryptographic Algorithm"
+      },
+      "claimIds": [
+        "gbt38635-r139-principle",
+        "gbt38635-r139-why",
+        "gbt38635-r139-used",
+        "gbt38635-r139-broken",
+        "gbt38635-r139-history",
+        "gbt38635-r139-refs"
+      ],
+      "sourceIds": [
+        "gbt38635-wikipedia",
+        "gbt38635-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sm2"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gbt38635-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM9 公式级机制图：配对、主密钥、标识私钥、h/S 签名与 C1/KDF 封装。",
+            "en": "SM9 formula-level mechanism: pairing, master key, identity key, h/S signature and C1/KDF encapsulation."
+          },
+          "alt": {
+            "zh": "四步公式级机制：主密钥与系统参数 → 用户标识私钥 → 签名或封装 → 配对验证；核心公式与参数边界。",
+            "en": "Four formula-level steps: master key and parameters → identity private key → signature or encapsulation → pairing verification; core formulas and parameter boundary."
+          },
+          "files": {
+            "zh": "assets/gbt38635-mechanism.zh.svg",
+            "en": "assets/gbt38635-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引标准绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited standard)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "3b7e8474e96d776583873a372bd307ad98325931bfff4f510fc3bf5638e4941e",
+            "en": "dd7924af9480454b8b39a27c8d2c325516c529a65137aa0d3c44c6d43f7ca2eb"
+          }
+        },
+        {
+          "id": "gbt38635-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM9 标识密码算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SM9 Identity-Based Cryptographic Algorithm: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SM9 标识密码算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SM9 Identity-Based Cryptographic Algorithm, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gbt38635-details-r138-model.zh.svg",
+            "en": "assets/gbt38635-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "39d5ab667017e65f7d8784769589982bedde7161d5f8ecf6249067b2ac27f0f1",
+            "en": "25ae9e6c5290d93d2c55a92d1864ad8aaca7a6900588ef50f281d77097b6adff"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：SM9 标识密码算法（SM9 Identity-Based Cryptography Algorithm）。### 配对与系统参数\n\nSM9 使用双线性配对 e:G1×G2→GT。密钥生成中心持有主私钥 ks，计算系统公钥 Ppub=ksP2。用户标识 ID 与 hid 经 H1 映射到标量，用户私钥为\n\nd_{ID}=ks·(H1(ID‖hid,N)+ks)^{-1} mod N·P1。### 签名\n\n签名者取随机 r，计算 w=e(P1,Ppub)^r、h=H2(M‖w,N)、l=(r−h) mod N，若 l=0 重取；签名 S=l·d_ID，输出 (h,S)。### 验证与加密\n\n验证计算 u=e(S,H1(ID‖hid,N)P2+Ppub)，w=u·g^h，检查 H2(M‖w,N)=h。加密/KEM 先把标识映射为 Q=H1(ID‖hid,N)P1+Ppub，取随机 r，C1=rQ，共享值 g=e(Ppub,Q)^r，再经 KDF 派生密钥。",
+          "why": "SM9 把公钥直接绑定到标识，不需要证书链；密钥生成中心负责派生用户私钥。它适合邮件、专网与需要简化证书管理的场景。SM9 是标识密码；SM2 是证书式椭圆曲线公钥算法，SM4 是分组密码。SM9 的信任根在 KGC，和 SM2 的证书信任模型不同。",
+          "used": "1.系统参数：使用标准曲线、配对与哈希函数，固定 hid 与标识编码。2.密钥派生：KGC 认证标识后派生 d_ID，私钥安全下发并可更新。3.签名/加密：每次取新鲜随机 r；加密先 KEM 再对称加密。4.验证：检查配对结果、h/S 范围与标识绑定。### 不能怎么用\n\n不能把 KGC 当无信任第三方；不能跨 hid/参数混用密钥；不能把 SM9 当抗量子算法。",
+          "broken": "1.密钥托管：KGC 能派生任何用户私钥，必须作为信任根审计；主密钥泄露会瓦解全系统。2.配对实现：配对运算的时序、缓存与故障可泄漏私钥或伪造签名。3.标识与参数：hid、曲线、哈希或编码不一致会导致互操作失败或跨域攻击。4.协议层：不绑定标识、不检查 C1 与 KDF 输出，可能遭替换或解密错误。",
+          "history": "SM9 于 2016 年进入 GM/T 0044 序列，2020 年发布 GB/T 38635.1/2—2020；ISO/IEC 18033-5 也收录标识密码方案。RFC 8998 不覆盖 SM9。SM9 的签名、密钥交换、KEM 与加密分属不同部分；实现以所声明部分与版本为准。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 SM9 标识密码算法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for SM9 标识密码算法. https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: SM9 Identity-Based Cryptography Algorithm (SM9 标识密码算法). ### Pairing and system parameters\n\nSM9 uses a bilinear pairing e:G1×G2→GT. The key-generation centre holds master secret ks and publishes Ppub=ksP2. The identity ID and hid are mapped by H1 to a scalar, and the user private key is\n\nd_{ID}=ks·(H1(ID‖hid,N)+ks)^{-1} mod N·P1. ### Signing\n\nThe signer picks random r, computes w=e(P1,Ppub)^r, h=H2(M‖w,N) and l=(r−h) mod N, retrying if l=0; the signature is S=l·d_ID and output (h,S). ### Verification and encryption\n\nVerification computes u=e(S,H1(ID‖hid,N)P2+Ppub), w=u·g^h and checks H2(M‖w,N)=h. Encryption/KEM maps the identity to Q=H1(ID‖hid,N)P1+Ppub, picks random r, sets C1=rQ, derives from g=e(Ppub,Q)^r through a KDF.",
+          "why": "SM9 binds the public key directly to an identity and removes certificate chains; the KGC derives user private keys. It suits email, private networks and settings that want simpler certificate management.\n\nSM9 is identity-based; SM2 is certificate-based elliptic-curve public-key cryptography and SM4 is a block cipher. SM9’s trust root is the KGC, unlike SM2’s certificate model.",
+          "used": "1. System parameters: use the standard curve, pairing and hash, and fix hid and identity encoding. 2. Key derivation: the KGC authenticates the identity, derives d_ID and delivers it securely, with update support. 3. Signing/encryption: use fresh random r; encrypt by KEM then symmetric encryption. 4. Verification: check pairings, h/S ranges and identity binding.\n\nDo not treat the KGC as a zero-trust party; do not mix keys across hid/parameters; do not present SM9 as quantum-resistant.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Key escrow: the KGC can derive any user key and must be audited as a trust root; master-key compromise breaks the system. 2. Pairing implementation: timing, cache and faults in pairing can leak keys or enable forgeries. 3. Identity and parameters: inconsistent hid, curve, hash or encoding causes interoperability failure or cross-domain attacks. 4. Protocol layer: missing identity binding, C1 checks or KDF output validation enables substitution or decryption errors.",
+          "history": "SM9 entered GM/T 0044 in 2016 and was published as GB/T 38635.1/2—2020 in 2020; ISO/IEC 18033-5 also covers identity-based ciphers. RFC 8998 does not cover SM9.\n\nSM9 signatures, key exchange, KEM and encryption are separate parts; implementations follow the claimed part and edition.",
+          "refs": "- Wikipedia search entry for SM9 标识密码算法. https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM9 Identity-Based Cryptography Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "gbt38635-r139-formal",
+          "entryId": "gbt38635-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 SM9 标识密码算法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gbt38635-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "gbt38635-r139-formal"
+      ],
+      "sources": [
+        "gbt38635-wikipedia",
+        "gbt38635-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gbt38635-r139-formal",
+      "entryId": "gbt38635-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 SM9 标识密码算法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gbt38635-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

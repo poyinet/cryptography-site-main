@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-26",
+  "scope": "Full Serpent algorithm article only; no completion claim for Serpent-0, DES, AES, the other AES candidates, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "serpent-details",
+      "inventoryIds": [
+        "serpent"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 Serpent 这一种 128 位块、32 轮的 AES 候选 SP 网络：四个 32 位字、八个 4 位 S-box、bitslice 表示、线性变换 LT、1 位补齐到 256 位的密钥调度、33 个子密钥、NESSIE 三组已验证向量与迭代测试；不把 Serpent-0、DES、AES、其他 AES 候选者、工作模式或整个库并入本实体。",
+        "en": "Covers the 128-bit-block, 32-round Serpent AES-candidate SP network: four 32-bit words, eight 4-bit S-boxes, the bitslice representation, the LT linear transformation, the key schedule that pads short keys to 256 bits with a 1 bit, 33 subkeys, and the three NESSIE verified vector sets with iterated tests. It does not absorb Serpent-0, DES, AES, the other AES candidates, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "Serpent：128 位 32 轮 AES 候选 SP 网络",
+        "en": "Serpent: a 128-bit 32-round AES candidate SP network"
+      },
+      "claimIds": [
+        "serpent-r139-principle",
+        "serpent-r139-why",
+        "serpent-r139-used",
+        "serpent-r139-broken",
+        "serpent-r139-history",
+        "serpent-r139-refs"
+      ],
+      "calculationIds": [
+        "serpent-calc-set1",
+        "serpent-calc-sets",
+        "serpent-calc-key-schedule",
+        "serpent-calc-structure",
+        "serpent-r139-formal"
+      ],
+      "sourceIds": [
+        "serpent-wikipedia",
+        "serpent-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "blowfish",
+        "twofish"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. Serpent-0 is an earlier version of the same design lineage but is not described as the Serpent-1 entity; AES is the final standard, Blowfish and Twofish are other block ciphers.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Serpent 分组密码（Serpent）。Serpent 是 128 位分组密码：32 轮 SP 网络，明文视为四个 32 位字，密钥支持 128/192/256 位（最长 256 位），共有 33 个 128 位子密钥 K0..K32。本文采用论文第 3 节的 bitslice 描述：明文直接作为 B0，不做初始置换 IP；32 轮中的前 31 轮依次做密钥异或、S-box 和线性变换 LT，最后一轮用 S7 并把结果与 K32 异或：\n\n```text\nB0 = P\nfor i = 0..30:\n  B_{i+1} = LT(S_{i mod 8}(B_i XOR K_i))\nB32 = S7(B31 XOR K31) XOR K32\nC = B32\n```\n\n论文的标准描述另有初始置换 IP 和最终置换 FP。它们没有密码学意义，只是把数据与标准实现的位序对齐；bitslice 描述不需要它们。标准模式中要计算 Khat_i = IP(K_i)，bitslice 模式直接使用 K_i。本文的实现和向量都使用 bitslice 描述，因此不存在 IP/FP 这一步。轮函数每轮只用一个 4 位 S-box，但在 bitslice 模式下同时作用于 32 个位置：四个 32 位字 X0..X3 是四个位平面，第 j 个 S-box 的输入是 X0、X1、X2、X3 的第 j 位组成的 4 位值，输出再写回四个位平面的第 j 位。S-box 按 S0、S1、…、S7 循环使用，第 i 轮用 S_{i mod 8}。线性变换 LT 对四个 32 位字做以下运算（`<<<` 是 32 位循环左移，`<<` 是逻辑左移）：\n\n```text\nX0 = X0 <<< 13\nX2 = X2 <<< 3\nX1 = X1 XOR X0 XOR X2\nX3 = X3 XOR X2 XOR (X0 << 3)\nX1 = X1 <<< 1\nX3 = X3 <<< 7\nX0 = X0 XOR X1 XOR X3\nX2 = X2 XOR X3 XOR (X1 << 7)\nX0 = X0 <<< 5\nX2 = X2 <<< 22\n```\n\n八个 4 位 S-box 的输入 0..15 对应输出如下：\n\n```text\nS0 = 3 8 F 1 A 6 5 B E D 4 2 7 0 9 C\nS1 = F C 2 7 9 0 5 A 1 B E 8 6 D 3 4\nS2 = 8 6 7 9 3 C A F D 1 E 4 0 B 5 2\nS3 = 0 F B 8 C 9 6 3 D 1 2 4 A 7 5 E\nS4 = 1 F 8 3 C 0 B 6 2 5 4 A 9 E 7 D\nS5 = F 5 2 B 4 A 9 C 0 3 E 8 D 6 7 1\nS6 = 7 2 C 5 8 4 6 B E 9 1 F D 3 A 0\nS7 = 1 D F 0 E 8 2 B 7 4 C A 9 3 5 6\n```\n\n这些 S-box 是 4 位双射，具有以下性质：任意差分特征的概率至多 1/4，一位输入差分不会产生一位输出差分；线性特征的概率在 1/2±1/4 之间，单个输入位与单个输出位的线性关系在 1/2±1/8 之间；输出位关于输入位的非线性阶数为最大值 3。它们不是任意挑选的：论文说明 S-box 由 32 行 DES S-box 出发，用类似 RC4 的交换过程生成，初始字符串是 \"sboxesforserpent\"，满足上述差分/线性条件后才被保留。Serpent-0 直接使用 DES 的 S-box；Serpent-1 改用这组生成 S-box，并微调了密钥调度。密钥调度把用户密钥补齐到 256 位：若密钥短于 256 位，在其最高有效端追加一个 1 位，再补零到 256 位。例如 128 位密钥在位置 128 置 1，192 位密钥在位置 192 置 1。补齐后的 256 位按小端序写成八个 32 位字 w[-8..-1]，然后计算 132 个 prekey：\n\n```text\nphi = 0x9E3779B9\nw[i] = (w[i-8] XOR w[i-5] XOR w[i-3] XOR w[i-1] XOR phi XOR i) <<< 11\n```\n\ni 取 0..131。随后把每四个连续 prekey 通过一个 S-box 变换成四个 32 位子密钥字：\n\n```text\nK_i = S_{(3-i) mod 8}(w[4i], w[4i+1], w[4i+2], w[4i+3])\n```\n\ni 取 0..32，得到 33 个 128 位子密钥。注意 K0 用 S3，K1 用 S2，K2 用 S1，K3 用 S0，K4 又回到 S7，依此类推。S-box 在这里同样是 bitslice 作用：四个 32 位字的同一比特位置构成一个 4 位输入。字节序是小端：第一个明文字节进入 word0 的最低有效字节，「bit 0 is the least significant bit of」word0（bit 0 是 word0 的最低位）；外部通常把 128 位块写成 32 个十六进制数字。本文的 NESSIE 向量按通常的字节顺序打印，实现按小端装入四个 32 位字后与这些十六进制逐字匹配；若把四个字按大端解释，非零向量会得到不同结果。解密使用逆 S-box、逆线性变换和逆序子密钥：\n\n```text\nstate = C\nstate = state XOR K32\nstate = InvS7(state)\nstate = state XOR K31\nfor i = 30..0:\n  state = InvLT(state)\n  state = InvS_{i mod 8}(state)\n  state = state XOR K_i\nP = state\n```\n\n逆 LT 按正变换的逆序执行：先右旋 X2 22 位、X0 5 位，撤销 X2 的异或，撤销 X0 的异或，再右旋 X3 7 位、X1 1 位，撤销 X3 与 X1 的异或，最后右旋 X0 13 位、X2 3 位。教学实现直接按键级顺序写出这些步骤，并用 32 位掩码保证结果。Serpent 的 bitslice 设计允许单个 128 位块用 32 位处理器并行计算 32 个 S-box 实例，而不是像传统 bitslice DES 那样必须同时加密 64 个块。这是它能在常见工作模式下保持高速的原因；论文的 SP 网络结构、S-box 选择和 LT 都是围绕这一点设计的。",
+          "why": "Serpent 的设计目标是保守、可分析、在 32 位处理器上高效，并且比三密钥 3DES 更安全。论文设定的块长是 128 位，密钥可以是 128、192 或 256 位，轮数是 32。设计者认为 16 轮 Serpent 已经与三密钥 3DES 相当，但 AES 可能在标准位置和遗留系统中使用很多年，因此选择 32 轮来留出更大的安全边际。安全性分析给出了具体的保守界：6 轮差分特征的概率至多 2^-58，24 轮特征至多 2^-232；28 轮线性特征的分析也给出类似量级；论文进一步猜想最佳 28 轮差分的概率不高于 2^-120。设计者用比完整 32 轮短 8 轮和 4 轮的 24/28 轮特征做分析，并称没有发现有用的捷径攻击；他们认为最好的攻击仍是穷举密钥，128/192/256 位密钥分别对应 2^128、2^192、2^256 的工作量。这些是 1998 年设计者的分析结论，不是对全部攻击模型的形式化证明。论文第 2.1 节给出的 S-box 性质是：差分特征概率至多 1/4，不存在一位输入差分能产生「to a one-bit output difference」（一位输出差分）的情形；线性特征概率在 1/2±1/4 之间，一位对一位的线性关系在 1/2±1/8 之间；非线性阶数为 3。这些性质使每一轮至少有一个活跃 S-box，并在后续轮中迅速扩散。S-box 由 DES 的 32 行 S-box 经确定性交换生成，而不是随机表；这既是为了避免后门质疑，也是为了在保持差分/线性性质的同时减少硬件门数。性能方面，论文报告在 133 MHz Pentium/MMX 上，32 轮 bitslice 实现达到 9,791,000 bit/s，约 1738 周期/块，与同一机器上的优化 DES 实现（9,824,864 bit/s）大致相同；「keeping the subkeys in a fixed array」（把子密钥放进固定数组）后达到 10,281,124 bit/s，约 1656 周期/块。论文估计在 200 MHz Pentium 上约为 14.7 Mbit/s。这些是 1998 年的实现数据，不是今天平台的性能承诺。Serpent 是 NESSIE 项目验证过测试向量的算法之一，也是五种 AES 最终候选之一；它没有被选为 AES。作者页面称 Serpent 已完全进入公有领域，不施加使用限制；页面同时说明优化实现按 GPL 发布，尽管旧的「comments in the code still say otherwise」（代码里的注释仍说另有说法）。使用具体代码时仍应以实际许可文本为准。从教学角度看，Serpent 的价值在于：它把 4 位 S-box、位平面并行、线性变换和 256 位密钥扩展组合成一个结构清晰的 SP 网络；同时它的密钥补齐规则（追加 1 位而不是简单补零）和 bitslice 表示是常见的实现错误来源。",
+          "used": "NESSIE 验证向量按密钥长度分为 128、192、256 位三套文件，每套的 Set 1 分别有 128、192、256 条向量，恰好每条对应一个密钥位翻转；Set 2 是零密钥、变化明文；Set 3 是密钥与明文使用相同的重复字节；Set 4 是两组固定密钥/明文。本文完整复现了：\n\n- 三套 Set 1 的全部 576 条向量（128+192+256），逐条加密并解密；\n- 每条 Set 1 向量的 “Iterated 100 times” 结果，以及每条密钥长度 vector#0 的 “Iterated 1000 times”；\n- 三套 Set 2 的前 32 条、Set 3 的前 32 条和 Set 4 的全部 2 条（合计 198 条）。```text\n128 位，Set 1 #0：\nK = 80000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 264E5481EFF42A4606ABDA06C0BFDA3D\n\n128 位，Set 3 #0：\nK = 00000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 3620B17AE6A993D09618B8768266BAE9\n\n192 位，Set 1 #0：\nK = 800000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 9E274EAD9B737BB21EFCFCA548602689\n\n256 位，Set 1 #0：\nK = 8000000000000000000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = A223AA1288463C0E2BE38EBD825616C0\n\n128 位，Set 4 #0：\nK = 000102030405060708090A0B0C0D0E0F\nP = 00112233445566778899AABBCCDDEEFF\nC = 563E2CF8740A27C164804560391E9B27\n```\n\n128 位 Set 1 #0 连续加密 100 次的结果是 EFE6F058D74E357A1CA935D35E0E4F24，与 NESSIE 文件一致；192 位和 256 位对应结果也分别匹配。Set 2 #0 使用全零密钥、明文 80000000000000000000000000000000，密文是 A3B35DE7C358DDD82644678C64B8BCBB，用来检查零密钥下的明文扩散。192 位和 256 位 Set 1 vector#0 的 100 次迭代结果分别是 B083CEAE24F090E4F24E743F1D47BFC2 和 739E0148971FD975B585EAFDBD659E2C。本文按论文公式为 128 位密钥 80000000000000000000000000000000 计算出的第一个子密钥 K0 是 6F539CD2 A7A3A3CE D29591ED 8EDF7292。这个中间值论文没有直接列出，是由密钥补齐、prekey 递推和 S3 变换算出的；它通过全部 NESSIE 向量的密文间接校验。Linux 内核 CryptoAPI 包含 Serpent 实现（crypto/serpent_generic.c），文件头标注版权 2002 Dag Arne Osvik，并说明密钥「to the maximum of 256 bits before round key generation」（在生成轮密钥前补齐到 256 位）、允许最长 256 位。这证明 Serpent 在通用操作系统的加密接口中可用；它不证明内核推荐 Serpent，也不证明任何协议标准采纳了它。",
+          "broken": "Serpent 的安全结论必须限定在论文第 5 节的分析范围内。6 轮差分特征 ≤2^-58、24 轮 ≤2^-232、28 轮差分猜想 ≤2^-120，都是设计者用保守模型得到上界或猜想，不是对 32 轮 Serpent 的完整形式化证明。「there is no indication of any useful shortcut attack」（没有发现有用的捷径攻击）是 1998 年的分析结论，不等于未来不会出现新的密码分析；本文不引用未经核实的第三方攻击来宣称 Serpent 已被攻破或绝对安全。工作模式方面，128 位块在 CBC/CFB 下加密约 2^64 个块后，预期出现相同密文块，攻击者可以利用这一点推导明文关系；密钥碰撞攻击的复杂度约为 2^(k/2)。这些性质适用于所有 128 位块密码，不是 Serpent 独有的缺陷。实际协议应在远早于 2^64 个块之前更换密钥，并避免把分组密码直接当哈希或 MAC 使用。实现层面，Serpent 的 S-box 和 LT 通常用查表或位运算实现；查表会带来缓存和时序侧信道风险，位切片实现则对寄存器压力和编译器优化敏感。本文的教学实现用普通 JavaScript 数组和 32 位位运算，不是常量时间实现，也没有掩码、密钥隔离或故障检测，不能用于保护真实数据。部署范围需要区分：NESSIE 验证向量只证明实现与规范一致，不证明安全性；Linux 内核提供 Serpent 实现不等于标准采纳或安全推荐；FIPS 197 只规定 AES（Rijndael），Serpent 不是 FIPS 197 算法。Serpent 只定义分组密码，不提供工作模式、IV 管理、填充、完整性保护、密钥协商或侧信道防护。最后，本文的 576 条 Set 1 向量加上 Set 2/3/4 的抽样都来自同一组作者提供的 NESSIE 文件。它们能强有力地检查字节序、密钥补齐、子密钥和轮函数，但不能替代密码分析。",
+          "history": "Serpent 由 Ross Anderson、Eli Biham 和 Lars Knudsen 设计。第一版 Serpent-0 在 1998 年的 Fast Software Encryption（FSE'98）会议上发表，直接使用 DES 的 S-box；随后设计者为了 AES 提交改进了算法：使用新生成的 8 个 S-box、微调密钥调度，并把轮数保持为 32。这个版本称为 Serpent-1，也就是通常说的 Serpent。论文说明 Serpent-0 使用 DES S-box 是为了借助已被长期研究的差分/线性性质，并让公众相信设计者没有植入陷门；Serpent-1 的 S-box 则用确定性的 RC4 类交换过程从 32 行 DES S-box 生成，初始字符串为 \"sboxesforserpent\"，满足条件后才保留。这样既保留了可分析性，又改善了差分/线性界。1998 年，Serpent 作为 AES 候选算法提交。作者页面称 Serpent 是五种 AES 最终候选之一；AES 最终选择了 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197。FIPS 197 在 2023 年 5 月 9 日更新为 FIPS 197-upd1；更新不改变 Serpent 未被选为 AES 的事实。作者页面称 Serpent 在 1998 年 8 月 21 日的 AES 会议上宣布进入公有领域，不施加使用限制；页面同时说明提交包中的优化实现现在按 GPL 发布，尽管代码注释仍写旧声明。使用具体代码或许可文本时，应以实际文件为准。Serpent 后来出现在 Linux 内核中；crypto/serpent_generic.c 是 Dag Arne Osvik 在 2002 年写的实现。这些实现说明 Serpent 作为一种分组密码仍可使用，但不改变它不是 AES 标准的事实。",
+          "refs": "- Wikipedia search entry for Serpent 分组密码. https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Serpent (Serpent 分组密码). Serpent is a 128-bit block cipher: a 32-round SP network operating on four 32-bit words, with keys of 128/192/256 bits (up to 256 bits) and 33 128-bit subkeys K0..K32. This article uses the bitslice description from Section 3 of the paper: the plaintext is B0 with no initial permutation IP; each of the first 31 rounds performs key mixing, an S-box and the linear transformation LT, and the last round uses S7 and xors the result with K32:\n\n```text\nB0 = P\nfor i = 0..30:\n  B_{i+1} = LT(S_{i mod 8}(B_i XOR K_i))\nB32 = S7(B31 XOR K31) XOR K32\nC = B32\n```\n\nThe paper's standard description also has an initial permutation IP and a final permutation FP. They have no cryptographic significance; they only align the data and key bits with the standard implementation's bit order. The standard mode uses Khat_i = IP(K_i), while the bitslice mode uses K_i directly. This article's implementation and vectors use the bitslice description, so there is no IP/FP step. Each round uses a single 4-bit S-box, but in bitslice mode it acts on 32 positions at once: the four 32-bit words X0..X3 are four bit planes, and the j-th S-box input is the 4-bit value formed from bit j of X0, X1, X2 and X3; the output is written back to bit j of the four planes. The S-boxes cycle S0, S1, ..., S7, and round i uses S_{i mod 8}. The linear transformation LT acts on the four 32-bit words as follows (`<<<` is a 32-bit rotation, `<<` a logical shift):\n\n```text\nX0 = X0 <<< 13\nX2 = X2 <<< 3\nX1 = X1 XOR X0 XOR X2\nX3 = X3 XOR X2 XOR (X0 << 3)\nX1 = X1 <<< 1\nX3 = X3 <<< 7\nX0 = X0 XOR X1 XOR X3\nX2 = X2 XOR X3 XOR (X1 << 7)\nX0 = X0 <<< 5\nX2 = X2 <<< 22\n```\n\nThe eight 4-bit S-boxes map inputs 0..15 to the following outputs:\n\n```text\nS0 = 3 8 F 1 A 6 5 B E D 4 2 7 0 9 C\nS1 = F C 2 7 9 0 5 A 1 B E 8 6 D 3 4\nS2 = 8 6 7 9 3 C A F D 1 E 4 0 B 5 2\nS3 = 0 F B 8 C 9 6 3 D 1 2 4 A 7 5 E\nS4 = 1 F 8 3 C 0 B 6 2 5 4 A 9 E 7 D\nS5 = F 5 2 B 4 A 9 C 0 3 E 8 D 6 7 1\nS6 = 7 2 C 5 8 4 6 B E 9 1 F D 3 A 0\nS7 = 1 D F 0 E 8 2 B 7 4 C A 9 3 5 6\n```\n\nThese S-boxes are 4-bit bijections with the following properties: every differential characteristic has probability at most 1/4, and a one-bit input difference never produces a one-bit output difference; linear characteristic probabilities lie in 1/2±1/4, and a single-input-bit to single-output-bit relation lies in 1/2±1/8; the output bits have maximum nonlinear order 3. They were not chosen arbitrarily: the paper says the S-boxes were generated from the 32 rows of the DES S-boxes by an RC4-like swapping process seeded with the string \"sboxesforserpent\", and retained only when they met the differential/linear conditions. Serpent-0 used the DES S-boxes directly; Serpent-1 replaced them with these generated boxes and slightly adjusted the key schedule. The key schedule pads the user key to 256 bits: if the key is shorter than 256 bits, one 1 bit is appended at its most significant end, followed by zeros up to 256 bits. For example, a 128-bit key gets a 1 at position 128 and a 192-bit key gets a 1 at position 192. The padded 256-bit key is written little-endian as eight 32-bit words w[-8..-1], and 132 prekeys are computed:\n\n```text\nphi = 0x9E3779B9\nw[i] = (w[i-8] XOR w[i-5] XOR w[i-3] XOR w[i-1] XOR phi XOR i) <<< 11\n```\n\ni runs from 0 to 131. Every four consecutive prekeys are then transformed by one S-box into four 32-bit subkey words:\n\n```text\nK_i = S_{(3-i) mod 8}(w[4i], w[4i+1], w[4i+2], w[4i+3])\n```\n\ni runs from 0 to 32, producing 33 128-bit subkeys. K0 uses S3, K1 uses S2, K2 uses S1, K3 uses S0, K4 uses S7 again, and so on. The S-box is applied bitslice-style here as well: the same bit position in the four words forms one 4-bit input. The byte order is little-endian: the first plaintext byte enters the least significant byte of word0, and \"bit 0 is the least significant bit of\" word0; externally the 128-bit block is usually written as 32 hexadecimal digits. The NESSIE vectors used here print bytes in the usual order, and an implementation that loads the four words little-endian matches those hex strings exactly; interpreting the words big-endian gives different results for non-zero vectors. Decryption uses inverse S-boxes, the inverse linear transformation and the subkeys in reverse order:\n\n```text\nstate = C\nstate = state XOR K32\nstate = InvS7(state)\nstate = state XOR K31\nfor i = 30..0:\n  state = InvLT(state)\n  state = InvS_{i mod 8}(state)\n  state = state XOR K_i\nP = state\n```\n\nThe inverse LT reverses the forward operations: rotate X2 right by 22 and X0 right by 5, undo the X2 xor, undo the X0 xor, rotate X3 right by 7 and X1 right by 1, undo the X3 and X1 xors, and finally rotate X0 right by 13 and X2 right by 3. The teaching implementation writes these steps in bit-level order and masks every result to 32 bits. Serpent's bitslice design lets a single 128-bit block compute 32 S-box instances in parallel on a 32-bit processor, unlike traditional bitslice DES which must encrypt 64 blocks at once. This is why it can stay fast in ordinary modes of operation; the SP network, the S-box choice and the LT were all designed around this goal.",
+          "why": "Serpent's design goals were conservative analysis, efficiency on 32-bit processors, and security beyond three-key 3DES. The paper fixes a 128-bit block, 128/192/256-bit keys and 32 rounds. The designers believed 16 rounds would already be comparable to three-key 3DES, but because AES might be used in standards and legacy systems for many years, they chose 32 rounds for a larger security margin.\n\nThe security analysis gives specific conservative bounds: a 6-round differential characteristic has probability at most 2^-58, a 24-round characteristic at most 2^-232, and the 28-round linear analysis gives a similar order; the paper further conjectures that the best 28-round differential has probability at most 2^-120. The designers analyzed 24- and 28-round characteristics, 8 and 4 rounds shorter than the full cipher, and say they found no useful shortcut attack; they believe the best attack is exhaustive key search, with 2^128, 2^192 and 2^256 work for the three key lengths. These are the designers' 1998 conclusions, not a formal proof against every attack model.\n\nSection 2.1 lists the S-box properties: differential characteristic probability at most 1/4, no one-bit input difference leading \"to a one-bit output difference\"; linear characteristic probability in 1/2±1/4, and one-bit to one-bit linear relations in 1/2±1/8; nonlinear order 3. These properties ensure at least one active S-box per round and rapid diffusion in later rounds. The S-boxes were generated deterministically from the 32 DES S-box rows rather than chosen at random; this addresses trapdoor concerns while preserving differential/linear properties and reducing hardware gate count.\n\nOn performance, the paper reports that on a 133 MHz Pentium/MMX the 32-round bitslice implementation reaches 9,791,000 bit/s, about 1738 cycles per block, roughly the same as the optimized DES implementation on the same machine (9,824,864 bit/s); \"keeping the subkeys in a fixed array\" raises this to 10,281,124 bit/s, about 1656 cycles per block. The paper estimates about 14.7 Mbit/s on a 200 MHz Pentium. These are 1998 implementation figures, not performance promises for current platforms.\n\nSerpent is one of the algorithms whose test vectors were verified by the NESSIE project and was one of the five AES finalists; it was not selected as AES. The authors' page says Serpent is completely in the public domain with no use restrictions; it also says the optimized implementations in the submission package are now released under the GPL, although old \"comments in the code still say otherwise\". Any use of specific code should rely on the actual licence text.\n\nFor teaching, Serpent combines 4-bit S-boxes, bit-plane parallelism, a linear transformation and a 256-bit key expansion into a clear SP network; its key-padding rule (append a 1 bit rather than merely zero-pad) and its bitslice representation are common sources of implementation errors.",
+          "used": "The NESSIE verified vectors are supplied as three files for 128-, 192- and 256-bit keys. In each file, Set 1 has 128, 192 and 256 vectors respectively, exactly one per key bit flip; Set 2 uses a zero key with varying plaintext; Set 3 uses a key and plaintext made of the same repeated byte; Set 4 contains two fixed key/plaintext pairs. This article reproduces:\n\n- all 576 Set 1 vectors (128+192+256), encrypting and decrypting each one;\n- the \"Iterated 100 times\" result for every Set 1 vector and the \"Iterated 1000 times\" result for vector#0 of each key length;\n- the first 32 Set 2 vectors, the first 32 Set 3 vectors and both Set 4 vectors for each key length (198 vectors in total).\n\nRepresentative vectors:\n\n```text\n128-bit, Set 1 #0:\nK = 80000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 264E5481EFF42A4606ABDA06C0BFDA3D\n\n128-bit, Set 3 #0:\nK = 00000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 3620B17AE6A993D09618B8768266BAE9\n\n192-bit, Set 1 #0:\nK = 800000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = 9E274EAD9B737BB21EFCFCA548602689\n\n256-bit, Set 1 #0:\nK = 8000000000000000000000000000000000000000000000000000000000000000\nP = 00000000000000000000000000000000\nC = A223AA1288463C0E2BE38EBD825616C0\n\n128-bit, Set 4 #0:\nK = 000102030405060708090A0B0C0D0E0F\nP = 00112233445566778899AABBCCDDEEFF\nC = 563E2CF8740A27C164804560391E9B27\n```\n\nIterating 128-bit Set 1 #0 one hundred times gives EFE6F058D74E357A1CA935D35E0E4F24, matching the NESSIE file; the 192- and 256-bit results also match. Set 2 #0 uses an all-zero key and plaintext 80000000000000000000000000000000, producing ciphertext A3B35DE7C358DDD82644678C64B8BCBB, which checks plaintext diffusion under a zero key. The 100-iteration results for 192-bit and 256-bit Set 1 vector#0 are B083CEAE24F090E4F24E743F1D47BFC2 and 739E0148971FD975B585EAFDBD659E2C.\n\nUsing the paper's formulas, this article computes the first subkey K0 for the 128-bit key 80000000000000000000000000000000 as 6F539CD2 A7A3A3CE D29591ED 8EDF7292. The paper does not print this intermediate value; it follows from key padding, the prekey recurrence and the S3 transform, and it is checked indirectly through the ciphertexts of all NESSIE vectors.\n\nThe Linux kernel CryptoAPI contains a Serpent implementation (crypto/serpent_generic.c); the file header attributes it to Dag Arne Osvik (2002) and notes that the key is padded \"to the maximum of 256 bits before round key generation\" and that keys up to 256 bits are allowed. This shows Serpent is available in a general operating system's cryptographic interface; it does not show that the kernel recommends Serpent or that any protocol standard adopted it.",
+          "broken": "Serpent's security conclusions must be limited to the analysis in Section 5. The bounds of 2^-58 for six rounds, 2^-232 for 24 rounds and the 2^-120 conjecture for a 28-round differential are upper bounds or conjectures from a conservative model, not a complete formal proof for 32-round Serpent. The paper's \"there is no indication of any useful shortcut attack\" is a 1998 analysis conclusion, not a guarantee that no future cryptanalysis will appear; this article does not cite unverified third-party attacks to claim that Serpent has been broken or is absolutely secure.\n\nFor modes of operation, after about 2^64 blocks in CBC/CFB an attacker expects a repeated ciphertext block and can derive plaintext relations; key-collision attacks cost about 2^(k/2). These properties apply to every 128-bit block cipher, not only Serpent. Real protocols should rekey well before 2^64 blocks and should not use a block cipher directly as a hash or MAC.\n\nAt the implementation level, Serpent's S-boxes and LT are usually implemented with table lookups or bit operations; lookups create cache and timing side-channel risks, while bitslice implementations are sensitive to register pressure and compiler optimization. This article's teaching implementation uses ordinary JavaScript arrays and 32-bit operations; it is not constant-time, has no masking, key isolation or fault detection, and must not protect real data.\n\nDeployment scope also matters: NESSIE vectors show conformance, not security; a Linux kernel implementation is not standardization or a security recommendation; FIPS 197 specifies AES (Rijndael) only, and Serpent is not a FIPS 197 algorithm. Serpent defines only a block cipher and supplies no mode of operation, IV management, padding, integrity protection, key agreement or side-channel defence.\n\nFinally, all 576 Set 1 vectors and the sampled Set 2/3/4 vectors come from the same author-supplied NESSIE files. They are strong checks of byte order, key padding, subkeys and the round function, but they are not a substitute for cryptanalysis.",
+          "history": "Serpent was designed by Ross Anderson, Eli Biham and Lars Knudsen. The first version, Serpent-0, was presented at the 1998 Fast Software Encryption (FSE'98) workshop and used the DES S-boxes directly. For the AES submission the designers improved the algorithm: they used eight newly generated S-boxes, slightly adjusted the key schedule and kept 32 rounds. That version is Serpent-1, normally called Serpent.\n\nThe paper says Serpent-0 used the DES S-boxes to borrow their long-studied differential and linear properties and to reassure the public that no trapdoor had been inserted; Serpent-1 generates its S-boxes with a deterministic RC4-like swapping process over the 32 DES S-box rows, seeded with \"sboxesforserpent\", and keeps them only if they meet the required conditions. This preserves analyzability while improving the differential/linear bounds.\n\nSerpent was submitted as an AES candidate in 1998. The authors' page says it was one of the five AES finalists; AES ultimately chose Rijndael, published as FIPS 197 on 26 November 2001. FIPS 197 was updated on 9 May 2023 as FIPS 197-upd1; the update does not change the fact that Serpent was not selected as AES.\n\nThe authors' page says Serpent was announced as public domain at the AES conference on 21 August 1998 and imposes no use restrictions; it also says the optimized implementations in the submission package are now under the GPL, although comments in the code still carry the old statement. Any use of specific code or licence text should follow the actual files.\n\nSerpent later appeared in the Linux kernel; crypto/serpent_generic.c is Dag Arne Osvik's 2002 implementation. Such implementations show that Serpent remains usable as a block cipher, but they do not change the fact that it is not the AES standard.",
+          "refs": "- Wikipedia search entry for Serpent 分组密码. https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Serpent：Anderson、Biham、Knudsen 设计的 128 位、32 轮分组密码，1998 年提交 AES。",
+          "SP 网络：Serpent 的结构，每轮由密钥异或、S-box 替换和线性变换组成。",
+          "128 位块：Serpent 的分组长度，写成四个 32 位字。",
+          "32 轮：Serpent 的轮数；前 31 轮含线性变换 LT，最后一轮不含。",
+          "33 个子密钥：K0..K32，每个 128 位；K0 用于第一轮，K32 用于最后异或。",
+          "bitslice：把四个 32 位字看作四个位平面，同时计算 32 个 S-box 实例。",
+          "位平面：四个字中相同比特位置的 4 位值组成一个 S-box 输入。",
+          "S-box：Serpent 的八个 4 位双射，按 S0..S7 循环使用。",
+          "差分特征：S-box 输入/输出差分的概率分布；Serpent S-box 最大为 1/4。",
+          "线性特征：S-box 输入/输出掩码的线性偏差；Serpent S-box 在 1/2±1/4 内。",
+          "非线性阶数：输出位作为输入位布尔函数的最高代数次数；Serpent S-box 为 3。",
+          "密钥补齐：短密钥在最高有效端追加一个 1 位，再补零到 256 位。",
+          "prekey：由密钥递推得到的 132 个 32 位字 w0..w131。",
+          "phi：密钥递推常数 0x9E3779B9，来自黄金比例。",
+          "K_i 生成：K_i = S_{(3-i) mod 8}(w[4i..4i+3])，共 33 个。",
+          "线性变换 LT：对四个 32 位字做异或、循环左移和逻辑左移的混合。",
+          "循环左移与逻辑左移：LT 中 <<< 是循环左移，<< 是丢弃高位、低位补零的逻辑左移。",
+          "IP/FP：标准描述中的初始/最终置换；无数密码学意义，bitslice 描述不使用。",
+          "逆 LT：解密时按 LT 的逆序执行右旋和异或。",
+          "NESSIE 向量：NESSIE 项目验证的 Serpent 测试向量，按 128/192/256 位密钥分文件。",
+          "迭代测试：同一密钥下把密文反复作为下一次明文，检查 100/1000 次后的固定结果。",
+          "AES 最终候选：Serpent 是五种 AES 最终候选之一，但未被选为 AES。"
+        ],
+        "en": [
+          "Serpent: the 128-bit, 32-round block cipher designed by Anderson, Biham and Knudsen and submitted to AES in 1998.",
+          "SP network: Serpent's structure, with each round combining key xor, S-box substitution and a linear transformation.",
+          "128-bit block: Serpent's block size, written as four 32-bit words.",
+          "32 rounds: Serpent's round count; the first 31 include the LT linear transformation and the last does not.",
+          "33 subkeys: K0..K32, each 128 bits; K0 feeds the first round and K32 the final xor.",
+          "Bitslice: treating the four 32-bit words as four bit planes and computing 32 S-box instances at once.",
+          "Bit plane: the 4-bit value formed by the same bit position in the four words, which is one S-box input.",
+          "S-box: one of Serpent's eight 4-bit bijections, cycled S0..S7.",
+          "Differential characteristic: the probability distribution of an S-box input/output difference; Serpent's maximum is 1/4.",
+          "Linear characteristic: the linear bias of an S-box input/output mask; Serpent's lies within 1/2±1/4.",
+          "Nonlinear order: the highest algebraic degree of an output bit as a Boolean function of the input bits; Serpent's S-boxes have order 3.",
+          "Key padding: appending a 1 bit at the most significant end of a short key, then zeros to 256 bits.",
+          "Prekey: one of the 132 32-bit words w0..w131 produced by the key recurrence.",
+          "phi: the key-recurrence constant 0x9E3779B9, derived from the golden ratio.",
+          "K_i generation: K_i = S_{(3-i) mod 8}(w[4i..4i+3]), producing 33 subkeys.",
+          "Linear transformation LT: a mix of xors, rotations and logical shifts on the four 32-bit words.",
+          "Rotation and logical shift: in LT, <<< is a rotation while << discards high bits and fills low bits with zero.",
+          "IP/FP: the initial and final permutations of the standard description; they have no cryptographic significance and the bitslice description omits them.",
+          "Inverse LT: decryption applies the rotations and xors of LT in reverse order.",
+          "NESSIE vector: a Serpent test vector verified by the NESSIE project, supplied in files for 128/192/256-bit keys.",
+          "Iterated test: re-encrypting the ciphertext as the next plaintext under the same key and checking the fixed 100/1000-iteration result.",
+          "AES finalist: Serpent was one of the five AES finalists but was not selected as AES."
+        ]
+      },
+      "figures": [
+        {
+          "id": "serpent-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Serpent：128 位 32 轮 AES 候选 SP 网络：为什么需要 → 核心机制 → 边界。",
+            "en": "Serpent: a 128-bit 32-round AES candidate SP network: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Serpent：128 位 32 轮 AES 候选 SP 网络 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Serpent: a 128-bit 32-round AES candidate SP network, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/serpent-details-flow.zh.svg",
+            "en": "assets/serpent-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "eb37b0b172250bbd2ecdf0408f7f0b12416a109299fdf9e9aef1c8125a59773d",
+            "en": "d0bfb4f20b9915a9c6c764e62d4c8d20f0e6d15b70412026e9936d49444c5510"
+          }
+        },
+        {
+          "id": "serpent-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Serpent：128 位 32 轮 AES 候选 SP 网络 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Serpent: a 128-bit 32-round AES candidate SP network: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Serpent：128 位 32 轮 AES 候选 SP 网络 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Serpent: a 128-bit 32-round AES candidate SP network, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/serpent-details-r138-model.zh.svg",
+            "en": "assets/serpent-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6d425afc7337022cd7c0387233c2ad3a4850e2b37b8e53d9d19c5590b47184b5",
+            "en": "b8f3d1222d362c7a5511ee2856e9be4e47369dcf1dd7f62bab964bdd4dbd81d5"
+          }
+        }
+      ],
+      "sources": [
+        "serpent-wikipedia",
+        "serpent-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "serpent-calc-set1",
+          "entryId": "serpent-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "All 576 NESSIE Set 1 vectors (128 for 128-bit keys, 192 for 192-bit keys, 256 for 256-bit keys), their Iterated 100 results, and the Iterated 1000 result of the first vector of each key length",
+          "expected": "Every encryption matches the printed ciphertext, every decryption returns the printed plaintext, all 576 Iterated 100 results match, and the three Iterated 1000 results match",
+          "sourceIds": [
+            "serpent-wikipedia"
+          ],
+          "dependencies": [
+            "serpent-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Set 1 varies one key bit per vector but uses a fixed zero plaintext; it tests key avalanche and conformance, not cryptanalytic security."
+        },
+        {
+          "id": "serpent-calc-sets",
+          "entryId": "serpent-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The first 32 Set 2 vectors, the first 32 Set 3 vectors and both Set 4 vectors for each of the 128/192/256-bit key lengths (198 vectors)",
+          "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; the Set 2 vectors use a zero key with variable plaintext, Set 3 uses key equal to repeated plaintext byte, and Set 4 uses fixed incrementing key/plaintext",
+          "sourceIds": [
+            "serpent-wikipedia"
+          ],
+          "dependencies": [
+            "serpent-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Only the first 32 of the printed Set 2 and Set 3 vectors are used; the remaining vectors are not transcribed."
+        },
+        {
+          "id": "serpent-calc-key-schedule",
+          "entryId": "serpent-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 128/192/256-bit key-padding samples, the eight padded words, the 132-prekey recurrence with phi=0x9e3779b9 and rotl 11, and the 33 S-box-derived subkeys",
+          "expected": "padKey places the 1 bit at position 128/192 (256 unchanged), keySchedule returns 132 prekeys and 33 four-word subkeys, independently recomputing the recurrence and K_i reproduces the schedule, and the 128-bit key 80000000000000000000000000000000 gives K0=6F539CD2 A7A3A3CE D29591ED 8EDF7292",
+          "sourceIds": [
+            "serpent-wikipedia"
+          ],
+          "dependencies": [
+            "serpent-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "The paper does not print subkey values; K0 is computed from the specified padding, recurrence and S-box, and the schedule is verified indirectly through all NESSIE ciphertexts."
+        },
+        {
+          "id": "serpent-calc-structure",
+          "entryId": "serpent-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The eight 4-bit S-box tables, their differential/linear distributions and nonlinear order, the LT and inverse LT, three keys and eight deterministic plaintexts, and byte-order/padding samples",
+          "expected": "All S-boxes are permutations with maximum differential probability at most 1/4, no one-bit to one-bit differential, linear bias at most 1/4 (one-bit at most 1/8) and maximum nonlinear order 3; LT and inverse LT invert; all 24 round trips succeed; the 128-bit key pads with a 1 at position 128; a non-zero big-endian negative control gives a different ciphertext",
+          "sourceIds": [
+            "serpent-wikipedia"
+          ],
+          "dependencies": [
+            "serpent-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "The S-box and LT checks are structural; round trips are deterministic and do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "serpent-r139-formal",
+          "entryId": "serpent-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "Serpent 分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "serpent-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "serpent-calc-set1",
+      "entryId": "serpent-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "All 576 NESSIE Set 1 vectors (128 for 128-bit keys, 192 for 192-bit keys, 256 for 256-bit keys), their Iterated 100 results, and the Iterated 1000 result of the first vector of each key length",
+      "expected": "Every encryption matches the printed ciphertext, every decryption returns the printed plaintext, all 576 Iterated 100 results match, and the three Iterated 1000 results match",
+      "sourceIds": [
+        "serpent-wikipedia"
+      ],
+      "dependencies": [
+        "serpent-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Set 1 varies one key bit per vector but uses a fixed zero plaintext; it tests key avalanche and conformance, not cryptanalytic security."
+    },
+    {
+      "id": "serpent-calc-sets",
+      "entryId": "serpent-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The first 32 Set 2 vectors, the first 32 Set 3 vectors and both Set 4 vectors for each of the 128/192/256-bit key lengths (198 vectors)",
+      "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; the Set 2 vectors use a zero key with variable plaintext, Set 3 uses key equal to repeated plaintext byte, and Set 4 uses fixed incrementing key/plaintext",
+      "sourceIds": [
+        "serpent-wikipedia"
+      ],
+      "dependencies": [
+        "serpent-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Only the first 32 of the printed Set 2 and Set 3 vectors are used; the remaining vectors are not transcribed."
+    },
+    {
+      "id": "serpent-calc-key-schedule",
+      "entryId": "serpent-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 128/192/256-bit key-padding samples, the eight padded words, the 132-prekey recurrence with phi=0x9e3779b9 and rotl 11, and the 33 S-box-derived subkeys",
+      "expected": "padKey places the 1 bit at position 128/192 (256 unchanged), keySchedule returns 132 prekeys and 33 four-word subkeys, independently recomputing the recurrence and K_i reproduces the schedule, and the 128-bit key 80000000000000000000000000000000 gives K0=6F539CD2 A7A3A3CE D29591ED 8EDF7292",
+      "sourceIds": [
+        "serpent-wikipedia"
+      ],
+      "dependencies": [
+        "serpent-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "The paper does not print subkey values; K0 is computed from the specified padding, recurrence and S-box, and the schedule is verified indirectly through all NESSIE ciphertexts."
+    },
+    {
+      "id": "serpent-calc-structure",
+      "entryId": "serpent-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The eight 4-bit S-box tables, their differential/linear distributions and nonlinear order, the LT and inverse LT, three keys and eight deterministic plaintexts, and byte-order/padding samples",
+      "expected": "All S-boxes are permutations with maximum differential probability at most 1/4, no one-bit to one-bit differential, linear bias at most 1/4 (one-bit at most 1/8) and maximum nonlinear order 3; LT and inverse LT invert; all 24 round trips succeed; the 128-bit key pads with a 1 at position 128; a non-zero big-endian negative control gives a different ciphertext",
+      "sourceIds": [
+        "serpent-wikipedia"
+      ],
+      "dependencies": [
+        "serpent-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "The S-box and LT checks are structural; round trips are deterministic and do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "serpent-r139-formal",
+      "entryId": "serpent-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "Serpent 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "serpent-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

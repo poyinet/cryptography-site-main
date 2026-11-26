@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension batch for length-extension-details.",
+  "entries": [
+    {
+      "id": "length-extension-details",
+      "inventoryIds": [
+        "length-extension"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R108 证明变换、混淆电路、硬件根信任、编码型 KEM 与哈希长度扩展深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R108 proof transforms, garbled circuits, hardware roots of trust, code-based KEMs and hash length extension deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "长度扩展攻击",
+        "en": "Length-Extension Attack"
+      },
+      "claimIds": [
+        "length-extension-r139-principle",
+        "length-extension-r139-why",
+        "length-extension-r139-used",
+        "length-extension-r139-broken",
+        "length-extension-r139-history",
+        "length-extension-r139-refs"
+      ],
+      "sourceIds": [
+        "length-extension-wikipedia",
+        "length-extension-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sha1"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "length-extension-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "长度扩展攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Length-Extension Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "长度扩展攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Length-Extension Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/length-extension-details-flow.zh.svg",
+            "en": "assets/length-extension-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "93b36b4b0e74411ed4b6de657594ea17cfd8207603ae84ac80f9eb8586dc2268",
+            "en": "4d5e9d262321b5e9c7090a3f20d5bed97568401cb87b1cc948295406979a4181"
+          }
+        },
+        {
+          "id": "length-extension-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "长度扩展攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Length-Extension Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "长度扩展攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Length-Extension Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/length-extension-details-r138-model.zh.svg",
+            "en": "assets/length-extension-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a7a4cc6b046f854feec4df7bb7f3e16b39e7cec1268e595d9d71d619879cbf5c",
+            "en": "cd12ae730b280072b14023ce9c2f42d9cad7ecfc4eda946d202e5d3ad7bafeed"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：长度扩展攻击（Length Extension Attack）。### Merkle–Damgård 状态\n\nMerkle–Damgård 哈希把消息分块，用压缩函数 f 迭代链接值：h_i=f(h_{i−1},m_i)。最终摘要就是最后一轮的链接值；填充 pad=0x80||0…||len 把消息长度编码进最后一块。### 长度扩展伪造\n\n给定 H(K||m) 和 K 的长度，攻击者把摘要当作链接值，直接继续压缩 m′，得到 H(K||m||pad||m′)，无需知道 K。若协议用 MAC=H(K||m) 且比较摘要，攻击者可追加任意消息并伪造有效 MAC。### HMAC 与海绵结构\n\nHMAC 用 H((K⊕opad)||H((K⊕ipad)||m))，外层哈希遮蔽内层链接值，因而抗长度扩展；SHA-3 的海绵结构输出不是可直接续用的链接值，也不受影响。",
+          "why": "这是“把哈希当 MAC”的经典错误：H(K||m) 看似密钥在前，实际把内部状态暴露给攻击者。它解释了为什么 HMAC 不是多此一举，也说明协议必须区分 hash、MAC、KDF 和签名原语。",
+          "used": "给定 MAC=H(K||m) 与摘要，攻击者先猜 K 的长度、计算 pad，把摘要当作 IV 继续压缩 m′，得到 H(K||m||pad||m′)；把新消息与新摘要一起发给验证者即可通过。旧版 Flickr API、自定义 token 与“密钥前缀”文件完整性方案都出现过该问题。现代做法：HMAC、KMAC、BLAKE3 keyed mode、AEAD；若必须用 hash 构造 MAC，使用 HMAC 或先做长度编码与域分离。",
+          "broken": "受影响：MD5、SHA-1、SHA-256/512 等 Merkle–Damgård 哈希；不受影响：SHA-3/SHAKE、BLAKE2/3、HMAC、KMAC。SHA-384/512-256 的截断输出也不可直接扩展。",
+          "history": "Merkle 1989 与 Damgård 1989 独立给出 MD 构造；1997 年 RFC 2104 标准化 HMAC 以修复密钥前缀 MAC 的缺陷；NIST SP 800-107r1 规范 HMAC 使用；SHA-3 海绵结构从根本上改变状态输出。它成为密码协议设计课的必修反例，也推动了 MAC 原语标准化。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 长度扩展攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for 长度扩展攻击. https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Length Extension Attack (长度扩展攻击). ### Merkle–Damgård state\n\nA Merkle–Damgård hash splits the message into blocks and iterates a compression function f over a chaining value: h_i=f(h_{i−1},m_i). The final digest is the last chaining value; padding pad=0x80||0…||len encodes the message length in the final block. ### Length-extension forgery\n\nGiven H(K||m) and the length of K, an attacker treats the digest as a chaining value and continues compressing m′, obtaining H(K||m||pad||m′) without knowing K. If a protocol uses MAC=H(K||m) and compares digests, the attacker can append any message and forge a valid MAC. ### HMAC and sponge constructions\n\nHMAC uses H((K⊕opad)||H((K⊕ipad)||m)); the outer hash hides the inner chaining value and blocks extension. A SHA-3 sponge output is not a reusable chaining value, so it is also unaffected.",
+          "why": "This is the classic “hash as MAC” mistake: H(K||m) looks like a keyed hash but exposes the internal state to the attacker.\n\nIt explains why HMAC is not redundant and why protocols must distinguish hash, MAC, KDF and signature primitives.",
+          "used": "Given MAC=H(K||m) and its digest, an attacker guesses the length of K, computes the padding, treats the digest as an IV and continues compressing m′ to obtain H(K||m||pad||m′); sending the new message with the new digest passes verification. The old Flickr API, custom tokens and “key-prefix” file-integrity schemes exhibited the flaw.\n\nModern practice uses HMAC, KMAC, BLAKE3 keyed mode or AEAD; if a hash-based MAC is unavoidable, use HMAC or length-encode and domain-separate first.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Affected: MD5, SHA-1 and Merkle–Damgård SHA-256/512; unaffected: SHA-3/SHAKE, BLAKE2/3, HMAC and KMAC. Truncated SHA-384/512-256 outputs also cannot be extended directly.",
+          "history": "Merkle and Damgård independently introduced the MD construction in 1989; RFC 2104 standardized HMAC in 1997 to fix key-prefix MACs; NIST SP 800-107r1 regulates HMAC usage; SHA-3’s sponge changed the state-output model.\n\nIt became a required counterexample in protocol-design courses and pushed MAC primitives toward standardization.",
+          "refs": "- Wikipedia search entry for 长度扩展攻击. https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nLength Extension Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "length-extension-r139-formal",
+          "entryId": "length-extension-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 长度扩展攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "length-extension-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "length-extension-r139-formal"
+      ],
+      "sources": [
+        "length-extension-wikipedia",
+        "length-extension-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "length-extension-r139-formal",
+      "entryId": "length-extension-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 长度扩展攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "length-extension-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

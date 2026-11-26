@@ -1,0 +1,448 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full SHA-1 article only: FIPS 180-4's definition, padding, message schedule, 80-step compression function, test vectors, the SHA-0 lineage, NIST usage policy, the 2005 Wang-Yin-Yu collision attack, the 2017 SHAttered collision, the 2020 chosen-prefix collision and the HMAC-SHA-1 test vectors. No completion claim for SHA-2, SHA-3, SHA-0 as a separate entity, RIPEMD, HMAC as a standalone entity, TLS, Git or any other protocol or implementation.",
+  "entries": [
+    {
+      "id": "sha1-details",
+      "inventoryIds": [
+        "sha1"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 FIPS 180-4 定义的 SHA-1：512 位块、160 位摘要、填充与 64 位大端长度、五个初始字、80 字消息表、Ch/Parity/Maj 三函数、四个 20 步阶段、四组轮常量、回加与大端输出；覆盖 SHA-0 到 SHA-1 的谱系、RFC 3174 的测试向量、NIST 的用途分级、Wang-Yin-Yu 2005、SHAttered 2017、Shambles 2020 的碰撞时间线，以及 HMAC-SHA-1 的 RFC 2202 向量。不把 SHA-2、SHA-3、SHA-0 实体、HMAC 本身或整个哈希家族并入本实体。",
+        "en": "Covers FIPS 180-4's SHA-1: 512-bit blocks, the 160-bit digest, padding and the 64-bit big-endian length, the five initial words, the 80-word message schedule, the Ch/Parity/Maj functions, four 20-step stages, the four round constants, the feed-forward and the big-endian output; the SHA-0 lineage, RFC 3174's test vectors, NIST's use categories, the collision timeline from Wang-Yin-Yu 2005 through SHAttered 2017 and Shambles 2020, and the HMAC-SHA-1 vectors of RFC 2202. It does not absorb SHA-2, SHA-3, the SHA-0 entity, HMAC itself or the whole hash family."
+      },
+      "title": {
+        "zh": "SHA-1：FIPS 180-4 的 160 位哈希与碰撞攻破",
+        "en": "SHA-1: the FIPS 180-4 160-bit hash and its collision break"
+      },
+      "claimIds": [
+        "sha1-r139-principle",
+        "sha1-r139-why",
+        "sha1-r139-used",
+        "sha1-r139-broken",
+        "sha1-r139-history",
+        "sha1-r139-refs"
+      ],
+      "calculationIds": [
+        "sha1-calc-rfc-suite",
+        "sha1-calc-abc-trace",
+        "sha1-calc-crosscheck",
+        "sha1-calc-structure",
+        "sha1-calc-hmac",
+        "sha1-r139-formal"
+      ],
+      "sourceIds": [
+        "sha1-wikipedia",
+        "sha1-reference-ref",
+        "sha1-specific"
+      ],
+      "related": [
+        "md4",
+        "algorithm--md5",
+        "sha2",
+        "sha3",
+        "fips180-4",
+        "algorithm--hmac"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. MD4 and MD5 are the earlier MD-family designs; SHA-2 and SHA-3 are separate hash families with their own entities; FIPS 180-4 is the standard document; HMAC is the construction whose SHA-1 instantiation is discussed here. The term--sha-1 record was merged into sha1 in this round; the fips202 standard entity and its keccak alias ambiguity are deliberately separate from sha3.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：SHA-1 散列（SHA-1）。SHA-1 是 FIPS 180-4 规定的安全哈希算法之一：输入任意长度小于 2^64 位的消息，输出固定的 160 位（20 字节）消息摘要。它按 512 位（16 个 32 位字）分块处理，内部状态是 5 个 32 位字 H0…H4。RFC 3174（2001 年 9 月，Informational）把同一算法、C 参考代码和测试驱动程序公开给互联网社区，并明确它不规定任何互联网标准；本轮的算法描述以 FIPS 180-4 为准，测试向量以 RFC 3174 为准。填充规则是：先追加一个 1 位（实现上是 0x80 字节），再补最少的 0 位，使消息位数对 512 同余于 448；最后追加填充前消息位数的 64 位表示（高位在前，即大端），即使消息长度已经同余也要填充。例如 \"abc\" 长 24 位，填充后成为 64 字节块：`61 62 63 80` 后跟 52 个 `00`，末尾 8 字节是 `00 00 00 00 00 00 00 18`。按 32 位字读，X[0] = 0x61626380、X[15] = 0x00000018，其余为零。填充后的消息被解析为 N 个 512 位块，每块是 16 个 32 位字 M(0)…M(15)。SHA-1 的初始哈希值是：\n\n```\nH0 = 67452301\nH1 = efcdab89\nH2 = 98badcfe\nH3 = 10325476\nH4 = c3d2e1f0\n```\n\n消息表的前 16 个字就是块字；对 16 ≤ t ≤ 79，扩展公式是\n\n```\nW(t) = ROTL1(W(t−3) xor W(t−8) xor W(t−14) xor W(t−16))\n```\n\n其中 ROTL1 表示 32 位循环左移 1 位。80 步使用三个逻辑函数：0–19 步用条件选择 `Ch(x,y,z) = (x and y) xor (not x and z)`；20–39 与 60–79 步用奇偶函数 `x xor y xor z`；40–59 步用多数函数 `Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)`。四个阶段的轮常量分别是 0x5a827999（0–19）、0x6ed9eba1（20–39）、0x8f1bbcdc（40–59）与 0xca62c1d6（60–79）。```\nT = ROTL5(a) + f(t,b,c,d) + e + K(t) + W(t)\ne ← d\nd ← c\nc ← ROTL30(b)\nb ← a\na ← T\n```\n\n所有加法都是模 2^32 的 32 位加法，ROTL5 与 ROTL30 分别是循环左移 5 位与 30 位。每块 80 步结束后，把工作变量加回进入该块时的哈希值：H0←H0+a、H1←H1+b、H2←H2+c、H3←H3+d、H4←H4+e。处理完所有块后，160 位摘要是 H0 H1 H2 H3 H4 的串联。SHA-1 共 80 步，按函数与常量分为四个 20 步阶段。",
+          "why": "SHA-1 的谱系可以追溯到 MD4：RFC 3174 说 SHA-1 基于 Ronald L.Rivest 设计 MD4 时的类似原则，并以 MD4 为模型。它之前的 SHA-0 于 1993 年首次发布，SHA-1 于 1996 年首次发布；SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转，而 NIST 于 1996 年撤回了 SHA-0。RFC 6194 因此说「it is not prudent to use either」（在需要碰撞抗性时使用 SHA-0 或 SHA-1 都不明智），任何 SHA-0 用法都被强烈劝阻。160 位摘要的直接后果是生日界为 2^80：在理想哈希函数上，找到「any two messages with the same digest」（任意两条同摘要消息）约需 2^80 次计算，而 128 位摘要只有 2^64。SHA-1 的 80 步、四个 20 步阶段和消息表在每一步的参与，使局部改动在更多轮次中扩散。RFC 3174 也指出，签名「digest rather than the message often improves」（摘要而不是整条消息，通常能提高效率），因为摘要远小于消息，验证方必须使用与签名方相同的哈希算法。但标准并没有给出安全证明。RFC 3174 说 SHA-1 `被称为安全`是因为计算上难以找到给定摘要的原像或两条同摘要消息——这是当时的安全假设，不是数学定理，也不是对碰撞抗性的永久保证。后来的攻击正是从这条假设的边界上突破的。",
+          "used": "SHA-1 的典型用途是数字签名：先计算消息摘要，再把摘要交给签名算法生成或验证签名；FIPS 180-4 也把 SHA-1 列入安全哈希标准。即使到 2017 年，它仍广泛用于文档签名与 TLS 证书签名，以及 Git 等软件的完整性与备份。SHAttered 论文把 Git 版本控制系统列为当时仍广泛使用 SHA-1 的软件例子之一。HMAC-SHA-1 是另一类用途：HMAC 把 SHA-1 用作带密钥的消息认证码，而不是把 SHA-1 直接当作碰撞抗性哈希。RFC 6194 §3.3 说，截至 2011 年没有迹象表明针对 SHA-1 的攻击可以扩展到 HMAC-SHA-1。RFC 2202 §3 给出七组 HMAC-SHA-1 一致性测试向量，其中第 2 组使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，摘要为 `effcdf6ae5eb2fa2d27416d5f184df9c259a7c79`。NIST 的当前政策把用途分得很细：SP 800-131A Rev.2 的表 8 规定，SHA-1 用于数字签名生成是「disallowed」，除非「specifically allowed by NIST protocol-specific guidance」，用于数字签名验证属于「legacy use」，用于非数字签名应用属于「acceptable」；表后的说明重申了这三点。RFC 6194 的结论则是，SHA-1 的碰撞抗性低于预期，协议设计者应认真考虑支持更强的哈希，SHA-256 是当时最常被指定的替代。需要强调：这里`可接受`只针对「that do not require collision resistance」（不要求碰撞抗性）的用途；任何要求碰撞抗性的新设计都不应使用 SHA-1。SHAttered 论文还记录，2015 年 freestart 碰撞的成本估计公布后，CA/Browser Forum 撤回了延长 SHA-1 HTTPS 证书签发的议案，IETF 的 TLS 1.3 规范也弃用了 SHA-1 数字签名。",
+          "broken": "碰撞是两条不同消息 x、y 满足 H(x)=H(y)。对 160 位摘要，生日攻击的通用复杂度约为 2^80；SHA-1 的碰撞抗性在 2005 年以后被一步步压到这个界以下。RFC 6194 §3.1 记载：2005 年初的第一项 SHA-1 攻击针对「reduced to 53 rounds.The very next month」（版本被缩减到 53 轮；就在下一个月）；Wang、Yin、Yu 的论文展示了「showed collisions in the full 80 rounds in」（在完整 80 轮上、约 2^69 次操作内找到）碰撞；截至 2011 年没有已发表结果改进这一复杂度。RFC 6194 同时指出，SHA-1 的「collision security strength is significantly less than」（碰撞安全强度显著低于）理想哈希函数的 2^80。2013 年，Stevens 给出完整 SHA-1 的当时最好碰撞攻击，估计约 2^61 次压缩。2017 年，Stevens、Bursztein、Karpman、Albertini 与 Markov 给出了完整 SHA-1 的第一个已知碰撞实例：两条哈希相同但显示内容不同的 PDF。该碰撞的计算量约等于 2^63.1 次 SHA-1 压缩，耗费约 6,500 CPU 年和 100 GPU 年；作者说这仍比暴力搜索快 100,000 倍以上。这个结果把 SHA-1 碰撞从`理论上可行`推到了`可以实际计算`。2020 年，Leurent 与 Peyrin 报告了第一个实际实现的 SHA-1 选择前缀碰撞：攻击者可以让两条碰撞消息各自以任意指定前缀开头，这比普通（同前缀）碰撞更危险。选择前缀碰撞的复杂度约为 2^63.4（普通碰撞约为 2^61.2）；实际计算用 900 块 Nvidia GTX 1060 GPU 跑了两个月，作者估计成本约 4.5 万美元（普通碰撞约 1.1 万美元）。在 PGP 演示中，攻击者构造两把身份不同的密钥和相互碰撞的 SHA-1 证书，使第三方对 Bob 密钥的认证签名可以转移到 Alice 的伪造密钥上，从而形成冒充。作者结论是：SHA-1 不应用于任何期望某种碰撞抗性的安全协议；继续把 SHA-1 用于证书或 TLS/SSH 握手消息认证是危险的，作者强烈建议移除 SHA-1 支持。但被打破的是碰撞抗性，不是全部性质：\n\n- **原像与第二原像**：RFC 6194 §3.2 说「There are no known pre-image or second pre-image attacks」（没有已知的专门针对完整 80 轮 SHA-1 的原像或第二原像攻击）；但对窄管道 Merkle-Damgård 哈希有一般性结果：对 60 字节消息可在约 2^106 次计算内找到第二原像。最好的缩减轮原像攻击是 48/80 轮、复杂度 2^159；RFC 提醒缩减轮结果只说明安全余量，不是完整算法的攻击。- **HMAC-SHA-1**：RFC 6194 §3.3 说截至 2011 年没有迹象表明针对 SHA-1 的攻击可以扩展到 HMAC-SHA-1。这与 NIST 把 SHA-1 的非签名用途列为`可接受`一致；但这只是说已知碰撞攻击没有扩展到 HMAC，不等于 HMAC-SHA-1 在所有场景都安全。在治理层面，SHAttered 论文说 SHA-1 是 1995 年的 NIST 标准，并因密码分析显示的根本性弱点在 2011 年被 NIST 正式弃用；RFC 6194 则记载 NIST 建议 2010 年 12 月 31 日之后不再用 SHA-1 生成数字签名，并规定美国联邦政府机构在 2013 年 12 月 31 日之后不得为敏感但非机密信息生成 SHA-1 签名。今天仍在使用 SHA-1 的系统，应当把它限制在不需要碰撞抗性的遗留场景，并按迁移计划替换。",
+          "history": "- **1993 年**：SHA-0 首次发布；RFC 6194 记载 NIST 于 1996 年撤回 SHA-0。- **1995–1996 年**：SHAttered 论文称 SHA-1 是 1995 年的 NIST 标准；RFC 6194 记载 SHA-1 于 1996 年首次发布。SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转。- **2001 年 9 月**：RFC 3174 发布，把 SHA-1 的算法、C 代码和测试向量整理为 Informational 文档。- **2005 年**：Wang、Yin、Yu 展示完整 80 轮、约 2^69 次操作的碰撞攻击；此前一个月左右，第一项攻击只针对缩减到 53 轮的版本。- **2011 年 3 月**：RFC 6194 发布，汇总 SHA-0 与 SHA-1 的安全考虑，并给出协议设计建议；同年前后 NIST 正式弃用 SHA-1 用于数字签名。- **2013 年**：Stevens 给出约 2^61 次压缩的完整 SHA-1 碰撞估计。- **2017 年**：SHAttered 结果在 CRYPTO 2017（LNCS 10401，pp.570-596）发表，给出第一个实际碰撞实例。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 给出 SHA-1 在签名生成、签名验证和非签名应用中的当前状态。- **2020 年 8 月**：Shambles 结果在第 29 届 USENIX Security Symposium 发表，给出第一个实际选择前缀碰撞与 PGP/GnuPG 冒充演示。",
+          "refs": "- Wikipedia search entry for SHA-1 散列. https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3174: US Secure Hash Algorithm 1 (SHA1). https://www.rfc-editor.org/rfc/rfc3174",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: SHA-1 (SHA-1 散列). SHA-1 is one of the secure hash algorithms specified by FIPS 180-4: it takes a message shorter than 2^64 bits and outputs a fixed 160-bit (20-byte) message digest. It processes 512-bit (sixteen 32-bit word) blocks, and its internal state is five 32-bit words H0…H4. RFC 3174 (September 2001, Informational) makes the same algorithm, its C reference code and its test driver conveniently available to the Internet community, and states that it does not specify an Internet standard; this article follows FIPS 180-4 for the algorithm description and RFC 3174 for the test vectors. The padding rule is: append a single 1 bit (an 0x80 byte in implementations), then the smallest number of 0 bits that makes the bit length congruent to 448 modulo 512, and finally a 64-bit representation of the message length before padding (most significant byte first, i.e. big-endian). Padding is applied even when the length is already congruent. For \"abc\" (24 bits), the padded block is 64 bytes: `61 62 63 80`, then 52 `00` bytes, then the 8-byte length `00 00 00 00 00 00 00 18`. Read as 32-bit words, X[0] = 0x61626380, X[15] = 0x00000018, and the rest are zero. The padded message is parsed into N 512-bit blocks, each block being sixteen 32-bit words M(0)…M(15). SHA-1's initial hash value is:\n\n```\nH0 = 67452301\nH1 = efcdab89\nH2 = 98badcfe\nH3 = 10325476\nH4 = c3d2e1f0\n```\n\nThe first sixteen schedule words are the block words; for 16 ≤ t ≤ 79 the expansion is\n\n```\nW(t) = ROTL1(W(t−3) xor W(t−8) xor W(t−14) xor W(t−16))\n```\n\nwhere ROTL1 is a 32-bit left rotation by one position. The 80 steps use three logical functions: steps 0–19 use the conditional select `Ch(x,y,z) = (x and y) xor (not x and z)`; steps 20–39 and 60–79 use the parity function `x xor y xor z`; steps 40–59 use the majority function `Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)`. The four stage constants are 0x5a827999 (0–19), 0x6ed9eba1 (20–39), 0x8f1bbcdc (40–59) and 0xca62c1d6 (60–79). Each step computes\n\n```\nT = ROTL5(a) + f(t,b,c,d) + e + K(t) + W(t)\ne ← d\nd ← c\nc ← ROTL30(b)\nb ← a\na ← T\n```\n\nAll additions are 32-bit additions modulo 2^32, and ROTL5 and ROTL30 are left rotations by 5 and 30 positions. After the 80 steps of a block, the working variables are added back to the incoming hash value: H0←H0+a, H1←H1+b, H2←H2+c, H3←H3+d, H4←H4+e. After all blocks are processed, the 160-bit digest is the concatenation H0 H1 H2 H3 H4. SHA-1 has 80 steps divided into four 20-step stages by function and constant.",
+          "why": "SHA-1's lineage goes back to MD4: RFC 3174 says SHA-1 is based on principles similar to those used by Ronald L. Rivest in designing MD4, and is modelled after MD4. Its predecessor SHA-0 was first published in 1993 and SHA-1 in 1996; SHA-0 is SHA-1's predecessor and the two differ only by a single rotation in the message-expansion function, and NIST withdrew SHA-0 in 1996. RFC 6194 therefore says \"it is not prudent to use either\" SHA-0 or SHA-1 when collision resistance is required, and that any use of SHA-0 is strongly discouraged.\n\nA 160-bit digest has a birthday bound of 2^80: on an ideal hash function, finding \"any two messages with the same digest\" costs about 2^80 operations, while a 128-bit digest gives 2^64. SHA-1's 80 steps, four 20-step stages and per-step message-schedule word spread a local change over more rounds. RFC 3174 also notes that signing the \"digest rather than the message often improves\" efficiency because the digest is much smaller, and that the verifier must use the same hash algorithm as the signer.\n\nThe standard does not give a security proof. RFC 3174 says SHA-1 is called secure because it is computationally infeasible to find a message for a given digest or two messages with the same digest - the security assumption of its time, not a mathematical theorem or a permanent guarantee of collision resistance. The later attacks broke exactly at the edge of that assumption.",
+          "used": "SHA-1's typical use is digital signatures: compute a message digest, then feed the digest to a signature algorithm for signature generation or verification; FIPS 180-4 also includes SHA-1 in the Secure Hash Standard. Even in 2017 it was still widely used for document signatures and TLS certificate signatures, and in software such as Git for integrity and backup. The SHAttered paper lists the Git version-control system as one of the software examples where SHA-1 was still widely used in 2017.\n\nHMAC-SHA-1 is a different use: HMAC uses SHA-1 as a keyed message authentication code rather than as a collision-resistant hash. RFC 6194 section 3.3 says that as of 2011 there is no indication that attacks on SHA-1 can be extended to HMAC-SHA-1. RFC 2202 section 3 provides seven HMAC-SHA-1 conformance test cases; case 2 uses key \"Jefe\" and message \"what do ya want for nothing?\", with digest `effcdf6ae5eb2fa2d27416d5f184df9c259a7c79`.\n\nNIST's current policy separates the uses carefully: Table 8 of SP 800-131A Rev. 2 marks SHA-1 digital signature generation as \"disallowed\" except where \"specifically allowed by NIST protocol-specific guidance\", digital signature verification as \"legacy use\", and non-digital-signature applications as \"acceptable\"; the notes after the table repeat these three points. RFC 6194 concludes that SHA-1 provides less collision resistance than expected, and that protocol designers should strongly consider supporting a stronger hash; SHA-256 was the most commonly specified alternative at the time.\n\nTo be explicit: \"acceptable\" here covers only uses \"that do not require collision resistance\"; no new design that requires collision resistance should use SHA-1. The SHAttered paper also records that after the 2015 freestart-collision cost estimates, the CA/Browser Forum withdrew its ballot to extend SHA-1 HTTPS certificate issuance, and the IETF TLS 1.3 specification deprecated SHA-1 digital signatures.",
+          "broken": "A collision is a pair of distinct messages x and y with H(x)=H(y). For a 160-bit digest the generic birthday attack costs about 2^80; SHA-1's collision resistance was pushed below that bound step by step after 2005. RFC 6194 section 3.1 records that the first SHA-1 attack in early 2005 targeted a version \"reduced to 53 rounds. The very next month\" Wang, Yin and Yu \"showed collisions in the full 80 rounds in\" about 2^69 operations; as of 2011 no published result improved on that result. RFC 6194 also states that SHA-1's \"collision security strength is significantly less than\" the ideal hash function's 2^80.\n\nIn 2013 Stevens presented the then-best collision attack on full SHA-1, with an estimated cost of about 2^61 compression-function calls. In 2017 Stevens, Bursztein, Karpman, Albertini and Markov provided the first known collision instance for full SHA-1: two PDF documents with the same SHA-1 hash but different visual contents. The collision cost was equivalent to about 2^63.1 SHA-1 compressions and took approximately 6,500 CPU years and 100 GPU years; the authors say this is still more than 100,000 times faster than a brute-force search. That result moved SHA-1 collisions from a theoretical possibility to an actual computation.\n\nIn 2020 Leurent and Peyrin reported the first practical implementation of a SHA-1 chosen-prefix collision: the attacker can make two colliding messages begin with two arbitrary distinct prefixes, which is more dangerous than a plain (identical-prefix) collision. The chosen-prefix collision has complexity about 2^63.4 (about 2^61.2 for a plain collision); the actual computation used 900 Nvidia GTX 1060 GPUs for two months, and the authors estimate a cost of about US$45,000 (about US$11,000 for a plain collision). In the PGP demonstration, the attacker creates two keys with different identities and colliding SHA-1 certificates, so that a third party's certification signature on Bob's key transfers to Alice's forged key, yielding impersonation. The authors conclude that SHA-1 should not be used in any security protocol where some kind of collision resistance is expected; continued use of SHA-1 for certificates or for authentication of handshake messages in TLS or SSH is dangerous, and they strongly advise removing SHA-1 support.\n\nWhat was broken is collision resistance, not every property:\n\n- **Pre-image and second pre-image**: RFC 6194 section 3.2 says \"There are no known pre-image or second pre-image attacks\" specific to full-round SHA-1; however, a general result for narrow-pipe Merkle-Damgård hashes finds a second pre-image for a 60-byte message in about 2^106 computations. The best reduced-round pre-image attack is on 48 of 80 rounds with complexity 2^159; the RFC cautions that reduced-round results indicate a security margin, not an attack on the full algorithm. - **HMAC-SHA-1**: RFC 6194 section 3.3 says that as of 2011 there is no indication that attacks on SHA-1 can be extended to HMAC-SHA-1. This is consistent with NIST marking SHA-1's non-signature uses as acceptable; but it only says the known collision attacks have not extended to HMAC, not that HMAC-SHA-1 is safe in every setting.\n\nOn the governance side, the SHAttered paper says SHA-1 is a 1995 NIST standard and was officially deprecated by NIST in 2011 because of fundamental security weaknesses demonstrated by cryptanalysis; RFC 6194 records that NIST recommended against generating digital signatures with SHA-1 after 31 December 2010, and specified that U.S. federal agencies must not generate SHA-1 signatures for sensitive but unclassified information after 31 December 2013. Systems that still use SHA-1 today should restrict it to legacy settings that do not need collision resistance and replace it under a migration plan.",
+          "history": "- **1993**: SHA-0 is first published; RFC 6194 records that NIST withdrew SHA-0 in 1996. - **1995–1996**: the SHAttered paper calls SHA-1 a 1995 NIST standard; RFC 6194 records that SHA-1 was first published in 1996. SHA-0 is SHA-1's predecessor and the two differ only by a single rotation in the message-expansion function. - **September 2001**: RFC 3174 is published, collecting the SHA-1 algorithm, C code and test vectors in an Informational document. - **2005**: Wang, Yin and Yu show collisions in the full 80 rounds in about 2^69 operations; about a month earlier, the first attack had targeted a version reduced to 53 rounds. - **March 2011**: RFC 6194 is published, summarizing the security considerations for SHA-0 and SHA-1 and giving protocol-design guidance; around the same time NIST officially deprecated SHA-1 for digital signatures. - **2013**: Stevens gives an estimated full-SHA-1 collision cost of about 2^61 compression-function calls. - **2017**: the SHAttered result is published at CRYPTO 2017 (LNCS 10401, pp. 570-596), giving the first actual collision instance. - **March 2019**: NIST SP 800-131A Rev. 2 is published; its Table 8 gives the current status of SHA-1 for signature generation, signature verification and non-signature applications. - **August 2020**: the Shambles result is published at the 29th USENIX Security Symposium, giving the first practical chosen-prefix collision and a PGP/GnuPG impersonation demonstration.",
+          "refs": "- Wikipedia search entry for SHA-1 散列. https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3174: US Secure Hash Algorithm 1 (SHA1). https://www.rfc-editor.org/rfc/rfc3174",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "消息摘要：把任意长消息压缩成固定长度指纹的函数值；SHA-1 输出 160 位摘要。",
+          "哈希函数：把任意长输入映射为固定长度输出、并希望难以求逆或找碰撞的函数；SHA-1 是其中一种。",
+          "块：SHA-1 处理消息的固定单位，每块 512 位（16 个 32 位字）。",
+          "字：SHA-1 的 32 位基本运算单位；状态、消息表和轮常量都由 32 位字组成。",
+          "大端序：高位字节在前；SHA-1 的块字、长度字段和摘要都按大端表示。",
+          "填充：追加一个 1 位和若干 0 位使消息位数对 512 同余于 448，再追加 64 位大端长度；SHA-1 总是填充。",
+          "初始哈希值（IV）：SHA-1 的五个起始字 67452301、efcdab89、98badcfe、10325476、c3d2e1f0。",
+          "消息表：由 16 个块字扩展出的 80 个 32 位字；W(t) = ROTL1(W(t−3) xor W(t−8) xor W(t−14) xor W(t−16))。",
+          "Ch：条件选择函数 Ch(x,y,z) = (x and y) xor (not x and z)，用于第 0–19 步。",
+          "奇偶函数：Parity(x,y,z) = x xor y xor z，用于第 20–39 与 60–79 步。",
+          "Maj：多数函数 Maj(x,y,z) = (x and y) xor (x and z) xor (y and z)，用于第 40–59 步。",
+          "轮常量：SHA-1 四个阶段分别使用的 5a827999、6ed9eba1、8f1bbcdc、ca62c1d6。",
+          "循环左移：把 32 位字向左旋转若干位，移出的高位回到低位；SHA-1 使用 ROTL1、ROTL5 与 ROTL30。",
+          "回加（feed-forward）：每块 80 步后把工作变量加回进入该块时的哈希值，使压缩函数更难求逆。",
+          "压缩函数：把当前 160 位链接值与一个 512 位消息块混合成新链接值的核心迭代。",
+          "Merkle-Damgård 迭代：先填充、再逐块调用压缩函数、最后输出状态的哈希结构；SHA-1 采用这一骨架。",
+          "碰撞：两条不同消息具有相同摘要；SHA-1 的碰撞已在 2017 年被实际构造。",
+          "选择前缀碰撞：攻击者可以让两条碰撞消息各自以任意指定前缀开头；2020 年的 Shambles 攻击实现了 SHA-1 的选择前缀碰撞。",
+          "生日界：通用碰撞搜索的复杂度下界约为 2^(n/2)；SHA-1 的 160 位摘要对应 2^80。",
+          "原像攻击：给定摘要 h 找到任意消息 M 使 H(M)=h；完整 SHA-1 尚无已知专用原像攻击。",
+          "第二原像攻击：给定消息 M 找到另一条同摘要消息；对窄管道 Merkle-Damgård 哈希有约 2^106 的通用结果（60 字节消息）。",
+          "HMAC-SHA-1：以 SHA-1 为底层哈希的 HMAC；RFC 6194 说截至 2011 年没有迹象表明 SHA-1 碰撞攻击可扩展到它。",
+          "SHA-0：SHA-1 的前身，与 SHA-1 只差消息扩展中的一次旋转；NIST 于 1996 年撤回。",
+          "碰撞抗性：使攻击者难以找到两条同摘要消息的性质；SHA-1 已不再提供这一性质。"
+        ],
+        "en": [
+          "Message digest: the fixed-length fingerprint of an arbitrary-length message; SHA-1 outputs a 160-bit digest.",
+          "Hash function: a function mapping arbitrary-length input to a fixed-length output that should be hard to invert or collide; SHA-1 is one.",
+          "Block: the fixed processing unit of SHA-1, 512 bits (sixteen 32-bit words).",
+          "Word: the 32-bit unit of SHA-1 arithmetic; the state, message schedule and round constants are all 32-bit words.",
+          "Big-endian: most significant byte first; SHA-1's block words, length field and digest are big-endian.",
+          "Padding: append one 1 bit and enough 0 bits to make the length congruent to 448 modulo 512, then append the 64-bit big-endian length; SHA-1 always pads.",
+          "Initial hash value (IV): SHA-1's five starting words 67452301, efcdab89, 98badcfe, 10325476 and c3d2e1f0.",
+          "Message schedule: the 80 32-bit words expanded from the 16 block words; W(t) = ROTL1(W(t−3) xor W(t−8) xor W(t−14) xor W(t−16)).",
+          "Ch: the conditional-select function Ch(x,y,z) = (x and y) xor (not x and z), used in steps 0–19.",
+          "Parity: Parity(x,y,z) = x xor y xor z, used in steps 20–39 and 60–79.",
+          "Maj: the majority function Maj(x,y,z) = (x and y) xor (x and z) xor (y and z), used in steps 40–59.",
+          "Round constants: the four stage constants 5a827999, 6ed9eba1, 8f1bbcdc and ca62c1d6.",
+          "Circular left rotation: rotate a 32-bit word left, high bits wrapping to low; SHA-1 uses ROTL1, ROTL5 and ROTL30.",
+          "Feed-forward: after a block's 80 steps, add the working variables back to the incoming hash value to make the compression function hard to invert.",
+          "Compression function: the core iteration mixing the current 160-bit chaining value with one 512-bit message block.",
+          "Merkle-Damgård iteration: the hash skeleton of padding, block-by-block compression and final state output; SHA-1 uses it.",
+          "Collision: two different messages with the same digest; a SHA-1 collision was actually constructed in 2017.",
+          "Chosen-prefix collision: a collision where the attacker fixes an arbitrary distinct prefix for each message; the 2020 Shambles attack achieved this for SHA-1.",
+          "Birthday bound: the generic collision-search cost is about 2^(n/2); SHA-1's 160-bit digest gives 2^80.",
+          "Pre-image attack: given a digest h, find any M with H(M)=h; no full-SHA-1 specific pre-image attack is known.",
+          "Second pre-image attack: given a message M, find another message with the same digest; for narrow-pipe Merkle-Damgård hashes there is a generic result of about 2^106 for a 60-byte message.",
+          "HMAC-SHA-1: HMAC built on SHA-1; RFC 6194 says that as of 2011 there was no indication that SHA-1 collision attacks extend to it.",
+          "SHA-0: SHA-1's predecessor, differing only by a single rotation in the message expansion; NIST withdrew it in 1996.",
+          "Collision resistance: the property that makes it hard for an attacker to find two messages with the same digest; SHA-1 no longer provides it."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sha1-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-1：FIPS 180-4 的 160 位哈希与碰撞攻破：为什么需要 → 核心机制 → 边界。",
+            "en": "SHA-1: the FIPS 180-4 160-bit hash and its collision break: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SHA-1：FIPS 180-4 的 160 位哈希与碰撞攻破 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SHA-1: the FIPS 180-4 160-bit hash and its collision break, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sha1-details-flow.zh.svg",
+            "en": "assets/sha1-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "db71588108c843f2282096cbabc423579fc1b97fd0593f3d1321a7feb5bc5820",
+            "en": "a8552061cd7166d60544aa9e1a138dc73446037999ed2a8c7002b50a86eb0419"
+          }
+        },
+        {
+          "id": "sha1-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SHA-1：FIPS 180-4 的 160 位哈希与碰撞攻破 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SHA-1: the FIPS 180-4 160-bit hash and its collision break: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SHA-1：FIPS 180-4 的 160 位哈希与碰撞攻破 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SHA-1: the FIPS 180-4 160-bit hash and its collision break, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sha1-details-r138-model.zh.svg",
+            "en": "assets/sha1-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0491beaa161e7c7aefccb3146c5da7584c61df2fba6348b4cdd8241e3550d77f",
+            "en": "fac6f6038682feac4cc2ce29d21a28f8d6908f097dac7c44032a0b73741cb559"
+          }
+        }
+      ],
+      "sources": [
+        "sha1-wikipedia",
+        "sha1-reference-ref",
+        "sha1-specific"
+      ],
+      "calculations": [
+        {
+          "id": "sha1-calc-rfc-suite",
+          "entryId": "sha1-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 3174 section 7.3's four test messages and printed digests, stored in vectors.json",
+          "expected": "The teaching implementation reproduces all four digests exactly: abc=a9993e364706816aba3e25717850c26c9cd0d89d, the 56-byte abcdbcde... string=84983e441c3bd26ebaae4aa1f95129e5e54670f1, one million 'a'=34aa973cd4c4daa4f61eeb2bdbad27316534016f and the 640-byte 01234567... string=dea356a2cddd90c7a7ecedc5ebb563934f460452",
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "dependencies": [
+            "sha1-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Four unkeyed test messages only; they check conformance, not collision resistance or any security property."
+        },
+        {
+          "id": "sha1-calc-abc-trace",
+          "entryId": "sha1-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The single-block computation of abc: the padded block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first five step traces, the registers after each 20-step group, the feed-forward values and the final digest stored in vectors.json",
+          "expected": "The block words are derived from pad(abc); the first step has Ch(B,C,D)=0x98badcfe, ROTL5(A)=0xe8a4602c and T=0x0116fc33; the group registers and feed-forward values in vectors.json equal the teaching implementation's trace; the digest is a9993e364706816aba3e25717850c26c9cd0d89d",
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "dependencies": [
+            "sha1-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+        },
+        {
+          "id": "sha1-calc-crosscheck",
+          "entryId": "sha1-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "18 deterministic cases produced with an external oracle (Node's OpenSSL-backed crypto.createHash('sha1')): empty, abc, the RFC 56-byte string, eight NUL bytes, a UTF-8 CJK string, one million 'a', the RFC 640-byte string, and LCG byte strings of lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129",
+          "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths, the million-character input and the 640-byte RFC input",
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "dependencies": [
+            "sha1-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-1 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+        },
+        {
+          "id": "sha1-calc-structure",
+          "entryId": "sha1-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The IV words; the 80 round constants; the message schedule formula; padding boundary cases; the abc block words; the published code block; and negative controls for a SHA-0-style schedule without the ROTL1, a schedule rotation by 2, a missing feed-forward and little-endian block parsing",
+          "expected": "The IV and the four constant groups match FIPS 180-4; the schedule's first expanded word is 0xc2c4c700; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; each negative control fails to reproduce the RFC abc digest; the article's js code block is a substring of sha1-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "dependencies": [
+            "sha1-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The SHA-0-style, rotation-2, no-feed-forward and little-endian digests are batch-generated controls; the calculation asserts only that each differs from the official RFC digest."
+        },
+        {
+          "id": "sha1-calc-hmac",
+          "entryId": "sha1-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 2202 section 3's seven HMAC-SHA-1 test cases (keys, messages and digests), stored in vectors.json",
+          "expected": "The teaching hmacSha1 reproduces all seven RFC 2202 digests, including Jefe/what do ya want for nothing?=effcdf6ae5eb2fa2d27416d5f184df9c259a7c79 and the 80-byte key case aa4ae5e15272d00e95705637ce8a3b55ed402112",
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "dependencies": [
+            "sha1-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Seven HMAC-SHA-1 conformance vectors only; they do not establish the security of HMAC-SHA-1 in any particular protocol or key-management setting."
+        },
+        {
+          "id": "sha1-r139-formal",
+          "entryId": "sha1-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "SHA-1 散列 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "sha1-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sha1-calc-rfc-suite",
+      "entryId": "sha1-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 3174 section 7.3's four test messages and printed digests, stored in vectors.json",
+      "expected": "The teaching implementation reproduces all four digests exactly: abc=a9993e364706816aba3e25717850c26c9cd0d89d, the 56-byte abcdbcde... string=84983e441c3bd26ebaae4aa1f95129e5e54670f1, one million 'a'=34aa973cd4c4daa4f61eeb2bdbad27316534016f and the 640-byte 01234567... string=dea356a2cddd90c7a7ecedc5ebb563934f460452",
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "dependencies": [
+        "sha1-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Four unkeyed test messages only; they check conformance, not collision resistance or any security property."
+    },
+    {
+      "id": "sha1-calc-abc-trace",
+      "entryId": "sha1-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The single-block computation of abc: the padded block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first five step traces, the registers after each 20-step group, the feed-forward values and the final digest stored in vectors.json",
+      "expected": "The block words are derived from pad(abc); the first step has Ch(B,C,D)=0x98badcfe, ROTL5(A)=0xe8a4602c and T=0x0116fc33; the group registers and feed-forward values in vectors.json equal the teaching implementation's trace; the digest is a9993e364706816aba3e25717850c26c9cd0d89d",
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "dependencies": [
+        "sha1-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+    },
+    {
+      "id": "sha1-calc-crosscheck",
+      "entryId": "sha1-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "18 deterministic cases produced with an external oracle (Node's OpenSSL-backed crypto.createHash('sha1')): empty, abc, the RFC 56-byte string, eight NUL bytes, a UTF-8 CJK string, one million 'a', the RFC 640-byte string, and LCG byte strings of lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129",
+      "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths, the million-character input and the 640-byte RFC input",
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "dependencies": [
+        "sha1-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-1 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+    },
+    {
+      "id": "sha1-calc-structure",
+      "entryId": "sha1-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The IV words; the 80 round constants; the message schedule formula; padding boundary cases; the abc block words; the published code block; and negative controls for a SHA-0-style schedule without the ROTL1, a schedule rotation by 2, a missing feed-forward and little-endian block parsing",
+      "expected": "The IV and the four constant groups match FIPS 180-4; the schedule's first expanded word is 0xc2c4c700; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; each negative control fails to reproduce the RFC abc digest; the article's js code block is a substring of sha1-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "dependencies": [
+        "sha1-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The SHA-0-style, rotation-2, no-feed-forward and little-endian digests are batch-generated controls; the calculation asserts only that each differs from the official RFC digest."
+    },
+    {
+      "id": "sha1-calc-hmac",
+      "entryId": "sha1-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 2202 section 3's seven HMAC-SHA-1 test cases (keys, messages and digests), stored in vectors.json",
+      "expected": "The teaching hmacSha1 reproduces all seven RFC 2202 digests, including Jefe/what do ya want for nothing?=effcdf6ae5eb2fa2d27416d5f184df9c259a7c79 and the 80-byte key case aa4ae5e15272d00e95705637ce8a3b55ed402112",
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "dependencies": [
+        "sha1-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Seven HMAC-SHA-1 conformance vectors only; they do not establish the security of HMAC-SHA-1 in any particular protocol or key-management setting."
+    },
+    {
+      "id": "sha1-r139-formal",
+      "entryId": "sha1-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "SHA-1 散列 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "sha1-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "rc5-reference-vector",
+    "entryId": "rc5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RC5-32/20/16: key 000102030405060708090a0b0c0d0e0f, block input 0001020304050607",
+    "expected": "Block output 2a0edc0e9431ff73; decryption returns the block input",
+    "sourceIds": ["rc5-vectors"],
+    "dependencies": ["rc5-teaching.mjs"],
+    "limitations": "One reference vector for one w/r/b parameter set; not a parameter matrix."
+  },
+  {
+    "id": "rc5-key-schedule",
+    "entryId": "rc5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The RC5-32/20/16 key 000102030405060708090a0b0c0d0e0f",
+    "expected": "42 round-key words; S[0]=98c9276e, S[1]=30979fa4 and S[41]=4765b2f6",
+    "sourceIds": ["rfc2040"],
+    "dependencies": ["rc5-teaching.mjs"],
+    "limitations": "One fixed key and round count; values are derived from the key-expansion algorithm, not a separate official vector."
+  },
+  {
+    "id": "rc5-roundtrip",
+    "entryId": "rc5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Fixed 64-bit plaintexts and 128-bit keys at 0, 1, 8, 12, 16 and 20 rounds",
+    "expected": "Every encryption decrypts back to the original plaintext",
+    "sourceIds": ["rfc2040", "rc5-vectors"],
+    "dependencies": ["rc5-teaching.mjs"],
+    "limitations": "Fixed data only; not a random or exhaustive test."
+  },
+  {
+    "id": "rc5-avalanche",
+    "entryId": "rc5-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Plaintexts 0000000000000000 and 0000000000000001 under key 00112233445566778899aabbccddeeff, 20 rounds",
+    "expected": "The ciphertexts differ in 36 bits",
+    "sourceIds": ["rc5-paper", "rfc2040"],
+    "dependencies": ["rc5-teaching.mjs"],
+    "limitations": "One fixed one-bit difference; it demonstrates diffusion, not a differential probability."
+  }
+]

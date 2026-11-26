@@ -1,0 +1,146 @@
+{
+  "results": [
+    {
+      "id": "padding-pkcs7-lengths",
+      "entryId": "padding-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "ca95946c38a24050536dfe97724fcfc948c17a1ca01e999b49e24d47038db834",
+      "dependencyHashes": {
+        "padding-teaching.mjs": "c4784b4b90c7f500bf3bb468958d31a7186fb1009a4596d4a0fd20571f3b17bf",
+        "article.zh.md": "f5c6bb1fdc7c8a1f537c2ca1c1dd92a67391be1f2ec233643529eed633ce66fa",
+        "article.en.md": "e4f3e67e0bea65f98830b948a23212c5ae37ca0514b6e54a66a89e4b3976d2ca",
+        "meta.json": "580d401a40081c8ea9e04f38147e33e4a47d4310ae1cccb7c6219a8ae592b2c5",
+        "glossary.json": "a6de3b9418b6c24601cf0c8562ffcba22e3cd6c859082c78ba3a5c25a966c1e0",
+        "calculations.json": "a54d2eaf47a29ebe6d4dfd60539e6db8760df33cd503d0d1c8fecd35d2cc1c86"
+      },
+      "inputs": "Messages of 0, 1, 15, 16 and 17 bytes padded with PKCS#7 and a 16-byte block",
+      "expected": "Padded lengths are 16, 16, 16, 32 and 32; final bytes are 10, 0f, 01, 10 and 0f",
+      "observed": {
+        "id": "padding-pkcs7-lengths",
+        "passed": true,
+        "cases": [
+          {
+            "bytes": 0,
+            "paddedBytes": 16,
+            "last": "10"
+          },
+          {
+            "bytes": 1,
+            "paddedBytes": 16,
+            "last": "0f"
+          },
+          {
+            "bytes": 15,
+            "paddedBytes": 16,
+            "last": "01"
+          },
+          {
+            "bytes": 16,
+            "paddedBytes": 32,
+            "last": "10"
+          },
+          {
+            "bytes": 17,
+            "paddedBytes": 32,
+            "last": "0f"
+          }
+        ],
+        "limit": "One fixed block size and five lengths; not an exhaustive length matrix."
+      },
+      "contentSha256": "5e7ed8b6c6ff860e4d2556e5100779d3c7fa882f199d7d1e394d03842514d882",
+      "sourcesSha256": "1fa05f6e851a8e527438f750132d2656fae5aa8f3991e35bb2aeda2252319403",
+      "executedOn": "2026-11-25T07:04:17.642Z"
+    },
+    {
+      "id": "padding-unpad-validation",
+      "entryId": "padding-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "ca95946c38a24050536dfe97724fcfc948c17a1ca01e999b49e24d47038db834",
+      "dependencyHashes": {
+        "padding-teaching.mjs": "c4784b4b90c7f500bf3bb468958d31a7186fb1009a4596d4a0fd20571f3b17bf",
+        "article.zh.md": "f5c6bb1fdc7c8a1f537c2ca1c1dd92a67391be1f2ec233643529eed633ce66fa",
+        "article.en.md": "e4f3e67e0bea65f98830b948a23212c5ae37ca0514b6e54a66a89e4b3976d2ca",
+        "meta.json": "580d401a40081c8ea9e04f38147e33e4a47d4310ae1cccb7c6219a8ae592b2c5",
+        "glossary.json": "a6de3b9418b6c24601cf0c8562ffcba22e3cd6c859082c78ba3a5c25a966c1e0",
+        "calculations.json": "a54d2eaf47a29ebe6d4dfd60539e6db8760df33cd503d0d1c8fecd35d2cc1c86"
+      },
+      "inputs": "Round-trip padding for lengths 0 through 32, plus empty, non-multiple, zero-length, oversized and inconsistent padding",
+      "expected": "Every round trip returns the original message; every malformed padding is rejected",
+      "observed": {
+        "id": "padding-unpad-validation",
+        "passed": true,
+        "roundTrips": 33,
+        "rejected": [
+          "empty",
+          "zero-length padding",
+          "padding length 17",
+          "inconsistent padding",
+          "non-block length"
+        ],
+        "limit": "Strict-removal checks on fixed malformed cases; not a fuzzing campaign."
+      },
+      "contentSha256": "5e7ed8b6c6ff860e4d2556e5100779d3c7fa882f199d7d1e394d03842514d882",
+      "sourcesSha256": "1fa05f6e851a8e527438f750132d2656fae5aa8f3991e35bb2aeda2252319403",
+      "executedOn": "2026-11-25T07:04:17.642Z"
+    },
+    {
+      "id": "padding-cbc-overhead",
+      "entryId": "padding-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "ca95946c38a24050536dfe97724fcfc948c17a1ca01e999b49e24d47038db834",
+      "dependencyHashes": {
+        "padding-teaching.mjs": "c4784b4b90c7f500bf3bb468958d31a7186fb1009a4596d4a0fd20571f3b17bf",
+        "article.zh.md": "f5c6bb1fdc7c8a1f537c2ca1c1dd92a67391be1f2ec233643529eed633ce66fa",
+        "article.en.md": "e4f3e67e0bea65f98830b948a23212c5ae37ca0514b6e54a66a89e4b3976d2ca",
+        "meta.json": "580d401a40081c8ea9e04f38147e33e4a47d4310ae1cccb7c6219a8ae592b2c5",
+        "glossary.json": "a6de3b9418b6c24601cf0c8562ffcba22e3cd6c859082c78ba3a5c25a966c1e0",
+        "calculations.json": "a54d2eaf47a29ebe6d4dfd60539e6db8760df33cd503d0d1c8fecd35d2cc1c86"
+      },
+      "inputs": "15-byte and 16-byte plaintexts padded and encrypted with AES-128-CBC without automatic padding",
+      "expected": "15 bytes produce a 16-byte ciphertext; 16 bytes produce a 32-byte ciphertext; both decrypt and unpad correctly",
+      "observed": {
+        "id": "padding-cbc-overhead",
+        "passed": true,
+        "shortPlaintextBytes": 15,
+        "shortCiphertextBytes": 16,
+        "alignedPlaintextBytes": 16,
+        "alignedCiphertextBytes": 32,
+        "limit": "One key, IV and two lengths; it demonstrates overhead, not protocol behavior."
+      },
+      "contentSha256": "5e7ed8b6c6ff860e4d2556e5100779d3c7fa882f199d7d1e394d03842514d882",
+      "sourcesSha256": "1fa05f6e851a8e527438f750132d2656fae5aa8f3991e35bb2aeda2252319403",
+      "executedOn": "2026-11-25T07:04:17.642Z"
+    },
+    {
+      "id": "padding-oracle-recovery",
+      "entryId": "padding-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "ca95946c38a24050536dfe97724fcfc948c17a1ca01e999b49e24d47038db834",
+      "dependencyHashes": {
+        "padding-teaching.mjs": "c4784b4b90c7f500bf3bb468958d31a7186fb1009a4596d4a0fd20571f3b17bf",
+        "article.zh.md": "f5c6bb1fdc7c8a1f537c2ca1c1dd92a67391be1f2ec233643529eed633ce66fa",
+        "article.en.md": "e4f3e67e0bea65f98830b948a23212c5ae37ca0514b6e54a66a89e4b3976d2ca",
+        "meta.json": "580d401a40081c8ea9e04f38147e33e4a47d4310ae1cccb7c6219a8ae592b2c5",
+        "glossary.json": "a6de3b9418b6c24601cf0c8562ffcba22e3cd6c859082c78ba3a5c25a966c1e0",
+        "calculations.json": "a54d2eaf47a29ebe6d4dfd60539e6db8760df33cd503d0d1c8fecd35d2cc1c86"
+      },
+      "inputs": "A fixed two-block AES-128-CBC ciphertext and a simulated valid-padding oracle",
+      "expected": "The oracle rejects the original ciphertext, and the byte-flipping search recovers the original last plaintext byte 60",
+      "observed": {
+        "id": "padding-oracle-recovery",
+        "passed": true,
+        "originalLastByte": "60",
+        "recoveredLastByte": "60",
+        "guess": 248,
+        "limit": "One fixed byte and fixed ciphertext; not a full multi-byte or end-to-end protocol attack."
+      },
+      "contentSha256": "5e7ed8b6c6ff860e4d2556e5100779d3c7fa882f199d7d1e394d03842514d882",
+      "sourcesSha256": "1fa05f6e851a8e527438f750132d2656fae5aa8f3991e35bb2aeda2252319403",
+      "executedOn": "2026-11-25T07:04:17.642Z"
+    }
+  ]
+}

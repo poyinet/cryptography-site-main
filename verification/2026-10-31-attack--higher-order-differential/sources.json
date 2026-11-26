@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--higher-order-differential-details",
+  "sources": [
+    {
+      "id": "attack--higher-order-differential-wikipedia",
+      "title": "Wikipedia search entry for 高阶差分",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 高阶差分",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--higher-order-differential-r139-principle",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：高阶差分（Higher-Order Differential Attack）。高阶差分对函数在一个 k 维子空间上取 k 次导数；若函数的代数次数小于 k，则该导数为零。攻击者用 2^k 个选择明文覆盖子空间来利用这一性质。",
+            "en": "**Attack**: Higher-Order Differential Attack (高阶差分).A higher-order differential takes the k-th derivative of a function over a k-dimensional subspace; if the algebraic degree is less than k, the derivative is zero."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--higher-order-differential-r139-why",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "why",
+          "statement": {
+            "zh": "高非线性并不自动保证抵抗高阶差分：几乎 bent 函数的 Walsh 谱有整除性质，会降低复合函数的次数上界，使 5 轮 Feistel 结构可能被高阶差分攻破。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "High nonlinearity does not automatically guarantee resistance to higher-order differentials: the Walsh spectrum of almost bent functions has divisibility properties that lower the degree bound of compositions, making 5-round Feistel structures potentially vulnerable.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--higher-order-differential-r139-used",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文给出对使用几乎 bent S 盒的 5 轮 Feistel 密码的高阶差分攻击（次数达到上限的几乎 bent 函数除外），并说明 MISTY1 缩减版本的已知弱点是使用几乎 bent S 盒的直接后果。",
+            "en": "The paper gives a higher-order differential attack on 5-round Feistel ciphers using almost bent substitution boxes, excluding almost bent functions of maximum degree, and shows that the known weakness of a reduced MISTY1 version follows directly from almost bent S-boxes.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--higher-order-differential-r139-broken",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "broken",
+          "statement": {
+            "zh": "攻击需要知道缩减密码的次数上界并准备 2^k 个选择明文；设计者可以通过控制 Walsh 谱和复合次数来提高抵抗，但这不能仅靠提高非线性度完成。",
+            "en": "The attack requires a degree bound for the reduced cipher and 2^k chosen plaintexts; designers can improve resistance by controlling the Walsh spectrum and composition degree, but not by increasing nonlinearity alone.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--higher-order-differential-r139-history",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "history",
+          "statement": {
+            "zh": "Knudsen 把高阶导数用于分组密码并系统化高阶差分分析；Canteaut 和 Videau 在 2002 年 EUROCRYPT 论文中给出新的次数上界和 5 轮 Feistel 攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「高阶差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 高阶差分 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Knudsen applied higher-order derivatives to block ciphers and systematized higher-order differential cryptanalysis; Canteaut and Videau gave a new degree bound and a 5-round Feistel attack in their 2002 EUROCRYPT paper.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--higher-order-differential-r139-refs",
+          "entryId": "attack--higher-order-differential-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 高阶差分.https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 高阶差分.https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--higher-order-differential-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--higher-order-differential-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--higher-order-differential-r139-principle",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：高阶差分（Higher-Order Differential Attack）。高阶差分对函数在一个 k 维子空间上取 k 次导数；若函数的代数次数小于 k，则该导数为零。攻击者用 2^k 个选择明文覆盖子空间来利用这一性质。",
+        "en": "**Attack**: Higher-Order Differential Attack (高阶差分).A higher-order differential takes the k-th derivative of a function over a k-dimensional subspace; if the algebraic degree is less than k, the derivative is zero."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-r139-why",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "why",
+      "statement": {
+        "zh": "高非线性并不自动保证抵抗高阶差分：几乎 bent 函数的 Walsh 谱有整除性质，会降低复合函数的次数上界，使 5 轮 Feistel 结构可能被高阶差分攻破。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "High nonlinearity does not automatically guarantee resistance to higher-order differentials: the Walsh spectrum of almost bent functions has divisibility properties that lower the degree bound of compositions, making 5-round Feistel structures potentially vulnerable.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-r139-used",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文给出对使用几乎 bent S 盒的 5 轮 Feistel 密码的高阶差分攻击（次数达到上限的几乎 bent 函数除外），并说明 MISTY1 缩减版本的已知弱点是使用几乎 bent S 盒的直接后果。",
+        "en": "The paper gives a higher-order differential attack on 5-round Feistel ciphers using almost bent substitution boxes, excluding almost bent functions of maximum degree, and shows that the known weakness of a reduced MISTY1 version follows directly from almost bent S-boxes.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-r139-broken",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "broken",
+      "statement": {
+        "zh": "攻击需要知道缩减密码的次数上界并准备 2^k 个选择明文；设计者可以通过控制 Walsh 谱和复合次数来提高抵抗，但这不能仅靠提高非线性度完成。",
+        "en": "The attack requires a degree bound for the reduced cipher and 2^k chosen plaintexts; designers can improve resistance by controlling the Walsh spectrum and composition degree, but not by increasing nonlinearity alone.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-r139-history",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "history",
+      "statement": {
+        "zh": "Knudsen 把高阶导数用于分组密码并系统化高阶差分分析；Canteaut 和 Videau 在 2002 年 EUROCRYPT 论文中给出新的次数上界和 5 轮 Feistel 攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「高阶差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 高阶差分 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Knudsen applied higher-order derivatives to block ciphers and systematized higher-order differential cryptanalysis; Canteaut and Videau gave a new degree bound and a 5-round Feistel attack in their 2002 EUROCRYPT paper.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--higher-order-differential-r139-refs",
+      "entryId": "attack--higher-order-differential-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 高阶差分.https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 高阶差分.https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--higher-order-differential-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

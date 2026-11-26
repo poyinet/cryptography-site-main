@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for masque-connect-ip: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "masque-connect-ip-details",
+      "inventoryIds": [
+        "masque-connect-ip"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「MASQUE CONNECT-IP」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of MASQUE CONNECT-IP: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "MASQUE CONNECT-IP",
+        "en": "MASQUE CONNECT-IP"
+      },
+      "claimIds": [
+        "masque-connect-ip-r139-principle",
+        "masque-connect-ip-r139-why",
+        "masque-connect-ip-r139-used",
+        "masque-connect-ip-r139-broken",
+        "masque-connect-ip-r139-history",
+        "masque-connect-ip-r139-refs"
+      ],
+      "sourceIds": [
+        "masque-connect-ip-wikipedia",
+        "masque-connect-ip-reference-ref",
+        "masque-connect-ip-specific"
+      ],
+      "related": [
+        "masque-connect-udp",
+        "quic",
+        "wireguard"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：MASQUE CONNECT-IP（MASQUE Proxying IP over HTTP）。RFC 9484 的自述分三句：「This document describes how to proxy IP packets in HTTP.」「This protocol is similar to UDP proxying in HTTP but allows transmitting arbitrary IP packets.」以及「More specifically, this document defines a protocol that allows an HTTP client to create an IP tunnel through an HTTP server that acts as an IP proxy.」——粒度从数据报升到 IP 包。",
+          "why": "它补的是 CONNECT-UDP 之外的通用性缺口：摘要说明本协议允许「transmitting arbitrary IP packets」，因此可承载非 UDP 的协议族；同段还声明对基础件的更新关系——「This document updates RFC 9298.」",
+          "used": "用途清单写在 §1：「This can be used for various use cases, such as remote access VPN, site-to-site VPN, secure point-to-point communication, or general-purpose packet tunnelling.」摘要说明它是把 IP 经 HTTP 服务器代理出去的协议，§1 又把它与 UDP 代理归为同族——「IP proxying operates similarly to UDP proxying [CONNECT-UDP]」。",
+          "broken": "这份文件规定怎么代理 IP 包，但把部署责任留给运营方：§11 给出建议级要求——「HTTP servers that support IP proxying SHOULD restrict its use to authenticated users」，§4.6 提供收窄请求范围的手段（客户端可把请求限制到特定 IP 前缀或协议）。也就是说`放行什么`不由本文件硬性规定，而由 SHOULD 级配置与范围限制共同承担。",
+          "history": "页眉给出编辑者与时间：T.Pauly, Ed.（Apple Inc.），与 D.Schinazi、A.Chernyakhovsky、M.Kühlewind、M.Westerlund 同列，日期 2023 年 10 月，Category 为 Standards Track，并标「Updates: 9298」；版权行同样是 2023 年的 IETF Trust 声明。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：MASQUE CONNECT-IP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 MASQUE CONNECT-IP 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for MASQUE CONNECT-IP. https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-IP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9484: Proxying IP in HTTP. https://www.rfc-editor.org/rfc/rfc9484",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nMASQUE CONNECT-IP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: MASQUE Proxying IP over HTTP (MASQUE CONNECT-IP). The self-description comes in three sentences: \"This document describes how to proxy IP packets in HTTP.\", \"This protocol is similar to UDP proxying in HTTP but allows transmitting arbitrary IP packets.\", and \"More specifically, this document defines a protocol that allows an HTTP client to create an IP tunnel through an HTTP server that acts as an IP proxy.\" The granularity rises from datagrams to IP packets.",
+          "why": "It closes the generality gap left by CONNECT-UDP: the abstract says the protocol \"allows transmitting arbitrary IP packets\", so protocol families beyond UDP can be carried. The same block states the relationship to the base document: \"This document updates RFC 9298.\"",
+          "used": "The use cases are listed in §1: \"This can be used for various use cases, such as remote access VPN, site-to-site VPN, secure point-to-point communication, or general-purpose packet tunnelling.\" The abstract frames it as proxying IP through an HTTP server, and §1 places it in the same family: \"IP proxying operates similarly to UDP proxying [CONNECT-UDP]\".\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The document specifies how IP packets are proxied and leaves deployment duty to the operator: §11 states a recommendation-level requirement — \"HTTP servers that support IP proxying SHOULD restrict its use to authenticated users\" — and §4.6 supplies the means to narrow a request to a specific IP prefix or IP protocol. What a proxy ought to permit is therefore carried by SHOULD-level configuration plus scope limiting, not by a hard rule in this specification.",
+          "history": "The masthead names the editor and dates the file: T. Pauly, Ed. (Apple Inc.) with D. Schinazi, A. Chernyakhovsky, M. Kühlewind and M. Westerlund, October 2023, Standards Track, marked \"Updates: 9298\", under the 2023 IETF Trust copyright line.",
+          "refs": "- Wikipedia search entry for MASQUE CONNECT-IP. https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-IP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9484: Proxying IP in HTTP. https://www.rfc-editor.org/rfc/rfc9484",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nMASQUE Proxying IP over HTTP: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CONNECT-IP：在 HTTP 之上代理任意 IP 包的方法。",
+          "IP proxy：充当 IP 隧道终点的 HTTP 服务器。",
+          "arbitrary IP packets：不受单一传输协议限制的包。",
+          "Updates: 9298：对 CONNECT-UDP 的更新标记。",
+          "MASQUE：本条目所属的代理族；RFC 9484 另建立 MASQUE URI Suffixes 注册表。",
+          "隧道端点：客户端与代理之间封装的两侧。"
+        ],
+        "en": [
+          "CONNECT-IP: proxying arbitrary IP packets over HTTP.",
+          "IP proxy: the HTTP server terminating the IP tunnel.",
+          "Arbitrary IP packets: traffic not limited to one transport.",
+          "Updates: 9298: the marker that this revises CONNECT-UDP.",
+          "MASQUE: the proxy family; RFC 9484 also creates the MASQUE URI Suffixes registry.",
+          "Tunnel endpoints: the two ends of the encapsulation."
+        ]
+      },
+      "figures": [
+        {
+          "id": "masque-connect-ip-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "MASQUE CONNECT-IP：为什么需要 → 核心机制 → 边界。",
+            "en": "MASQUE CONNECT-IP: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "MASQUE CONNECT-IP 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for MASQUE CONNECT-IP, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/masque-connect-ip-details-flow.zh.svg",
+            "en": "assets/masque-connect-ip-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c68dea3a91201183e8a52a06c5935b15ca9687c357ed0d1924c69a9899f86976",
+            "en": "9628f69dabd2fcb6527e15310f76d0f955e7c666df11fb20e914d7a23addfe4f"
+          }
+        },
+        {
+          "id": "masque-connect-ip-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "MASQUE CONNECT-IP 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for MASQUE CONNECT-IP: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "MASQUE CONNECT-IP 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for MASQUE CONNECT-IP, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/masque-connect-ip-details-r138-model.zh.svg",
+            "en": "assets/masque-connect-ip-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c9a63a03e5f135d0cf02e4fd799ff87281c137653de136ac0da7a4904d70da6c",
+            "en": "365f545617c75f9df66d1f3ca0f27a4957d716384bbc4c4143fb0823a1b8e08a"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "masque-connect-ip-r139-formal",
+          "entryId": "masque-connect-ip-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：MASQUE CONNECT-IP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 MASQUE CONNECT-IP 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "masque-connect-ip-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "masque-connect-ip-r139-formal"
+      ],
+      "sources": [
+        "masque-connect-ip-wikipedia",
+        "masque-connect-ip-reference-ref",
+        "masque-connect-ip-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "masque-connect-ip-r139-formal",
+      "entryId": "masque-connect-ip-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：MASQUE CONNECT-IP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 MASQUE CONNECT-IP 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "masque-connect-ip-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--rabin-details",
+  "sources": [
+    {
+      "id": "algorithm--rabin-wikipedia",
+      "title": "Wikipedia search entry for Rabin 陷门公钥密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Rabin 陷门公钥密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--rabin-r139-principle",
+          "entryId": "algorithm--rabin-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Rabin 陷门公钥密码（Rabin Cryptosystem）。### 二次剩余陷门\n\nRabin 签名把消息哈希映射到模 n 的二次剩余，签名是方程 x²+bx≡H(m,u) 的一个根。公钥是 n=pq 与常数 b；私钥 p,q 用于在 Z_p、Z_q 上开方，再用 CRT 合并。### 四根与编码\n\n平方映射的每个值有四个根；签名者只公开一个，两个不同根会泄露 gcd 从而分解 n。标准化变体用 Rabin-Williams 编码和冗余，并把随机串 u 纳入哈希，避免根选择歧义和选择消息攻击。### 安全归约\n\n在随机预言机模型下，伪造签名可归约为求模 n 平方根，而求平方根与分解 n 等价。验证只需一次模平方和编码检查，比 RSA 的模幂快数百倍。",
+            "en": "**Algorithm**: Rabin Cryptosystem (Rabin 陷门公钥密码).### Quadratic-residue trapdoor\n\nA Rabin signature hashes the message to a quadratic residue modulo n and returns a root of x²+bx≡H(m,u)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rabin-r139-why",
+          "entryId": "algorithm--rabin-details",
+          "section": "why",
+          "statement": {
+            "zh": "Rabin 是第一个可证明“伪造难度等价于分解大整数”的实用签名族。RSA 只做到“破签不比分解更难”，Rabin 给出反向归约：能从伪造推出因子。验签一次平方，签名端一次开方加 CRT，计算量都低于同规模 RSA；这让它适合智能卡、传感器和低功耗验证方。代价是签名端要处理四根与编码，工程上比 RSA 难用，标准化版本转向 Rabin-Williams。",
+            "en": "Rabin was the first practical signature family proven “forging is as hard as factoring”.RSA only gives “breaking signatures is no harder than factoring”; Rabin gives the converse reduction from forgery to factors."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rabin-r139-used",
+          "entryId": "algorithm--rabin-details",
+          "section": "used",
+          "statement": {
+            "zh": "Rabin-Williams 变体进入 ISO/IEC 14888-2（带附录签名）与 ISO/IEC 9796-2（消息恢复签名），IEEE P1363 也收录 Rabin；主要用于标准教材、嵌入式验签和需要可证明因子分解安全的场景。实际部署远少于 RSA：签名是概率性的，根选择、编码和专利/生态都增加成本；现代 TLS、代码签名和证书几乎只用 RSA、ECDSA 或 Ed25519。",
+            "en": "Rabin-Williams variants appear in ISO/IEC 14888-2 (signatures with appendix) and ISO/IEC 9796-2 (message-recovery signatures), and IEEE P1363 includes Rabin.Uses are mainly standards education, embedded verification and settings that want a factoring-equivalence proof."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rabin-r139-broken",
+          "entryId": "algorithm--rabin-details",
+          "section": "broken",
+          "statement": {
+            "zh": "裸平方根签名对选择消息攻击脆弱：攻击者取随机 x，请求签 x² mod n；若返回的根不是 ±x，gcd(x−s,n) 直接给出 p 或 q。必须用带冗余的编码和随机化哈希阻断。ISO 9796-2 的 Rabin-Williams 实例曾被 Coron–Naccache–Stern 类攻击和后续改进攻击；哈希太短或编码不当会允许伪造。参数、编码和根的选择都必须按标准执行。",
+            "en": "A raw square-root signature is vulnerable to a chosen-message attack: the attacker picks random x and asks for a signature on x² mod n.If the returned root is not ±x, gcd(x−s,n) directly reveals p or q."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rabin-r139-history",
+          "entryId": "algorithm--rabin-details",
+          "section": "history",
+          "statement": {
+            "zh": "Rabin 1979 年在 MIT/LCS/TR-212 提出该方案；Williams 1980 给出 Rabin-Williams 变体，使签名更接近 RSA 形式；Bellare–Rogaway 1996 给出精确安全界；随后进入 ISO/IEC 14888-2 与 9796-2。它影响了可证明安全签名和基于分解的密码学，但因工程复杂性未成为主流。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Rabin proposed the scheme in MIT/LCS/TR-212 in 1979; Williams gave the Rabin-Williams variant in 1980, making signatures closer to RSA form; Bellare and Rogaway gave exact security bounds in 1996; it later entered ISO/IEC 14888-2 and 9796-2.It influenced provably secure signatures and factorization-based cryptography, but engineering complexity kept it out of the mainstream."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--rabin-r139-refs",
+          "entryId": "algorithm--rabin-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Rabin 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Rabin 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--rabin-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--rabin-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--rabin-r139-principle",
+      "entryId": "algorithm--rabin-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Rabin 陷门公钥密码（Rabin Cryptosystem）。### 二次剩余陷门\n\nRabin 签名把消息哈希映射到模 n 的二次剩余，签名是方程 x²+bx≡H(m,u) 的一个根。公钥是 n=pq 与常数 b；私钥 p,q 用于在 Z_p、Z_q 上开方，再用 CRT 合并。### 四根与编码\n\n平方映射的每个值有四个根；签名者只公开一个，两个不同根会泄露 gcd 从而分解 n。标准化变体用 Rabin-Williams 编码和冗余，并把随机串 u 纳入哈希，避免根选择歧义和选择消息攻击。### 安全归约\n\n在随机预言机模型下，伪造签名可归约为求模 n 平方根，而求平方根与分解 n 等价。验证只需一次模平方和编码检查，比 RSA 的模幂快数百倍。",
+        "en": "**Algorithm**: Rabin Cryptosystem (Rabin 陷门公钥密码).### Quadratic-residue trapdoor\n\nA Rabin signature hashes the message to a quadratic residue modulo n and returns a root of x²+bx≡H(m,u)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-r139-why",
+      "entryId": "algorithm--rabin-details",
+      "section": "why",
+      "statement": {
+        "zh": "Rabin 是第一个可证明“伪造难度等价于分解大整数”的实用签名族。RSA 只做到“破签不比分解更难”，Rabin 给出反向归约：能从伪造推出因子。验签一次平方，签名端一次开方加 CRT，计算量都低于同规模 RSA；这让它适合智能卡、传感器和低功耗验证方。代价是签名端要处理四根与编码，工程上比 RSA 难用，标准化版本转向 Rabin-Williams。",
+        "en": "Rabin was the first practical signature family proven “forging is as hard as factoring”.RSA only gives “breaking signatures is no harder than factoring”; Rabin gives the converse reduction from forgery to factors."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-r139-used",
+      "entryId": "algorithm--rabin-details",
+      "section": "used",
+      "statement": {
+        "zh": "Rabin-Williams 变体进入 ISO/IEC 14888-2（带附录签名）与 ISO/IEC 9796-2（消息恢复签名），IEEE P1363 也收录 Rabin；主要用于标准教材、嵌入式验签和需要可证明因子分解安全的场景。实际部署远少于 RSA：签名是概率性的，根选择、编码和专利/生态都增加成本；现代 TLS、代码签名和证书几乎只用 RSA、ECDSA 或 Ed25519。",
+        "en": "Rabin-Williams variants appear in ISO/IEC 14888-2 (signatures with appendix) and ISO/IEC 9796-2 (message-recovery signatures), and IEEE P1363 includes Rabin.Uses are mainly standards education, embedded verification and settings that want a factoring-equivalence proof."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-r139-broken",
+      "entryId": "algorithm--rabin-details",
+      "section": "broken",
+      "statement": {
+        "zh": "裸平方根签名对选择消息攻击脆弱：攻击者取随机 x，请求签 x² mod n；若返回的根不是 ±x，gcd(x−s,n) 直接给出 p 或 q。必须用带冗余的编码和随机化哈希阻断。ISO 9796-2 的 Rabin-Williams 实例曾被 Coron–Naccache–Stern 类攻击和后续改进攻击；哈希太短或编码不当会允许伪造。参数、编码和根的选择都必须按标准执行。",
+        "en": "A raw square-root signature is vulnerable to a chosen-message attack: the attacker picks random x and asks for a signature on x² mod n.If the returned root is not ±x, gcd(x−s,n) directly reveals p or q."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-r139-history",
+      "entryId": "algorithm--rabin-details",
+      "section": "history",
+      "statement": {
+        "zh": "Rabin 1979 年在 MIT/LCS/TR-212 提出该方案；Williams 1980 给出 Rabin-Williams 变体，使签名更接近 RSA 形式；Bellare–Rogaway 1996 给出精确安全界；随后进入 ISO/IEC 14888-2 与 9796-2。它影响了可证明安全签名和基于分解的密码学，但因工程复杂性未成为主流。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabin 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Rabin proposed the scheme in MIT/LCS/TR-212 in 1979; Williams gave the Rabin-Williams variant in 1980, making signatures closer to RSA form; Bellare and Rogaway gave exact security bounds in 1996; it later entered ISO/IEC 14888-2 and 9796-2.It influenced provably secure signatures and factorization-based cryptography, but engineering complexity kept it out of the mainstream."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--rabin-r139-refs",
+      "entryId": "algorithm--rabin-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Rabin 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Rabin 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Rabin%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--rabin-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

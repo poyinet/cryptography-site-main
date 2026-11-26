@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "hill-hastad-details",
+  "sources": [
+    {
+      "id": "hill-hastad-wikipedia",
+      "title": "Wikipedia search entry for Håstad 广播攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Håstad 广播攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "hill-hastad-r139-principle",
+          "entryId": "hill-hastad-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Håstad 广播攻击（Håstad's Broadcast Attack）。### 同一消息广播到多个模数\n\n设消息 m 用同一小指数 e 分别加密给 k 个接收者，模数为两两互素的 N1,…,Nk：\n\nc_i = m^e mod N_i。若 k ≥ e 且 m^e < ∏ N_i，由中国剩余定理可把这些同余式合成\n\nC ≡ m^e (mod ∏ N_i)，且 0 ≤ C < ∏ N_i。因为 m^e 也小于乘积，C 就等于整数 m^e，而不是“模意义下”的幂；对 C 取整数 e 次根即得 m。### 线性相关消息的一般定理\n\nHåstad 1988 的定理处理更一般的情形：第 i 个模数下满足次数 ≤ d 的多项式方程 P_i(x) ≡ 0 (mod n_i)。若方程数 k > d(d+1)/2 且最小模数足够大（论文条件 min n_i > 2^{d^2}），就可在关于 k 与 log n_i 的多项式时间内恢复 x。用于 RSA 时 d=e，因此“仿射相关消息”需要超过 e(e+1)/2 个接收者；这与“同一消息只需 e 个”是两条不同的阈值。### 阈值不是装饰\n\n基本广播攻击的 k≥e 来自 CRT 需要至少 e 个同余式才能把 m^e 放进一个完整乘积；一般定理的 k>d(d+1)/2 来自格与结式消元的维度。把两个阈值混写，会得到错误的安全结论。若填充随机化，m_i 不再满足同一低次多项式，CRT 与整数开根的前提同时消失。",
+            "en": "**Theorem**: Håstad's Broadcast Attack (Håstad 广播攻击).### Broadcasting one message to several moduli\n\nSuppose a message m is encrypted for k recipients with the same small exponent e and pairwise coprime moduli N1,…,Nk:\n\nc_i = m^e mod N_i."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        },
+        {
+          "id": "hill-hastad-r139-why",
+          "entryId": "hill-hastad-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 低指数与广播的乘积\n\ne=3 的 RSA 加密很快，适合资源受限设备；但把同一条消息广播给三个以上接收者，且不做随机化填充，等于把 m^3 放到一个比 m^3 更大的整数环里，攻击者可以用 CRT 精确重建它。Håstad 的一般化说明，即使每条消息不同，只要它们按已知仿射关系变化，足够多的接收者仍会泄露消息。### 为什么随机化填充能挡住\n\nOAEP 等随机化填充让每条消息的编码包含独立随机数，接收者之间的编码不再满足同一个低次多项式。此时 CRT 合成的是不同随机多项式的密文，整数开根不再对应明文。注意“加了填充”不等于“安全”：确定性填充、固定时间戳或可预测计数器仍可能保留关系。### 现实判断\n\n评估广播协议时，先问：是否同一消息？e 是 3 还是 65537？接收者数量是否达到 e？是否每条都独立随机化？模数是否两两互素？这些问题比“RSA 是否 2048 位”更直接。",
+            "en": "### The product of a low exponent and broadcast\n\nRSA with e=3 is fast and attractive for constrained devices; but broadcasting the same message to three or more recipients without randomised padding places m^3 inside an integer ring larger than m^3, so CRT reconstructs it exactly.Hastad’s generalisation shows that even when the messages differ, enough recipients still leak the message if the messages follow a known affine relation."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        },
+        {
+          "id": "hill-hastad-r139-used",
+          "entryId": "hill-hastad-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 审计与攻击复现的步骤\n\n1.确认同一 e、不同 N_i，且 N_i 两两互素；若不互素，gcd(N_i,N_j) 直接分解，反而更简单。2.收集至少 e 条同一消息的密文；检查 m 是否小于 min N_i，以确保 m^e < ∏ N_i。3.用 CRT 合成 C；对 C 做整数 e 次根；验证结果是否满足所有 c_i。4.若消息是仿射相关而非相同，按 Håstad 一般定理检查 k > e(e+1)/2 与模数下界。5.记录失败原因：填充随机化、接收者不足、消息过大、模数不互素。### 协议设计中的用法\n\n在协议评审中把“广播”视为一种特殊的相关消息场景；对低指数加密要求随机化填充；对群发协议要求每条密文独立编码。测试向量应覆盖 e=3 与 e=65537 两种指数，以及 k=e、k=e+1 的边界。",
+            "en": "### Auditing and reproducing the attack\n\n1.Confirm a common e and distinct N_i, with the N_i pairwise coprime; if two moduli share a factor, gcd(N_i,N_j) factors them and the attack is even simpler."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        },
+        {
+          "id": "hill-hastad-r139-broken",
+          "entryId": "hill-hastad-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.接收者少于阈值。基本攻击需要 k≥e；一般仿射定理需要 k>e(e+1)/2。少一个接收者就可能失败。2.m^e 不小于乘积。此时 CRT 得到的 C 只是 m^e mod 乘积，整数开根不再等于 m；需要格方法或其他信息。3.模数不两两互素。CRT 条件破坏；不过这时 gcd 可能直接给出分解，是另一种攻击。4.随机化填充。每条消息的编码不同，低次关系不成立。5.e 很大。阈值和多项式次数随 e 增长；e=65537 时一般仿射攻击的接收者数量不现实。6.消息不是仿射相关。Håstad 的定理要求已知低次多项式；任意关系不保证可解。",
+            "en": "### Failure conditions\n\n1.Too few recipients."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        },
+        {
+          "id": "hill-hastad-r139-history",
+          "entryId": "hill-hastad-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1988 年的定理\n\nHåstad 在 1988 年的 SIAM Journal on Computing 论文中给出“低次模方程组的解”定理，并把它应用于低指数 RSA 广播。论文的条件 k > d(d+1)/2 与 min n_i > 2^{d^2} 成为后来相关消息攻击的标准参数语言。### 与 Coppersmith 路线的关系\n\n1996 年的 Franklin-Reiter 攻击处理同一模数下的相关消息；Håstad 处理不同模数下的广播与仿射关系。1997 年前后，Coppersmith 的小根方法又把“已知部分消息或小根”的问题系统化。三者常被并列，但假设与数学工具不同。",
+            "en": "### The 1988 theorem\n\nHastad’s 1988 SIAM Journal on Computing paper proved the “solving simultaneous modular equations of low degree” theorem and applied it to low-exponent RSA broadcast.Its conditions k > d(d+1)/2 and min n_i > 2^{d^2} became standard parameter language for later related-message attacks."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        },
+        {
+          "id": "hill-hastad-r139-refs",
+          "entryId": "hill-hastad-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Håstad 广播攻击.https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Håstad 广播攻击.https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "hill-hastad-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "hill-hastad-wikipedia"
+      ]
+    },
+    {
+      "id": "hill-hastad-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hill-hastad-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "hill-hastad-r139-principle",
+      "entryId": "hill-hastad-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Håstad 广播攻击（Håstad's Broadcast Attack）。### 同一消息广播到多个模数\n\n设消息 m 用同一小指数 e 分别加密给 k 个接收者，模数为两两互素的 N1,…,Nk：\n\nc_i = m^e mod N_i。若 k ≥ e 且 m^e < ∏ N_i，由中国剩余定理可把这些同余式合成\n\nC ≡ m^e (mod ∏ N_i)，且 0 ≤ C < ∏ N_i。因为 m^e 也小于乘积，C 就等于整数 m^e，而不是“模意义下”的幂；对 C 取整数 e 次根即得 m。### 线性相关消息的一般定理\n\nHåstad 1988 的定理处理更一般的情形：第 i 个模数下满足次数 ≤ d 的多项式方程 P_i(x) ≡ 0 (mod n_i)。若方程数 k > d(d+1)/2 且最小模数足够大（论文条件 min n_i > 2^{d^2}），就可在关于 k 与 log n_i 的多项式时间内恢复 x。用于 RSA 时 d=e，因此“仿射相关消息”需要超过 e(e+1)/2 个接收者；这与“同一消息只需 e 个”是两条不同的阈值。### 阈值不是装饰\n\n基本广播攻击的 k≥e 来自 CRT 需要至少 e 个同余式才能把 m^e 放进一个完整乘积；一般定理的 k>d(d+1)/2 来自格与结式消元的维度。把两个阈值混写，会得到错误的安全结论。若填充随机化，m_i 不再满足同一低次多项式，CRT 与整数开根的前提同时消失。",
+        "en": "**Theorem**: Håstad's Broadcast Attack (Håstad 广播攻击).### Broadcasting one message to several moduli\n\nSuppose a message m is encrypted for k recipients with the same small exponent e and pairwise coprime moduli N1,…,Nk:\n\nc_i = m^e mod N_i."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    },
+    {
+      "id": "hill-hastad-r139-why",
+      "entryId": "hill-hastad-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 低指数与广播的乘积\n\ne=3 的 RSA 加密很快，适合资源受限设备；但把同一条消息广播给三个以上接收者，且不做随机化填充，等于把 m^3 放到一个比 m^3 更大的整数环里，攻击者可以用 CRT 精确重建它。Håstad 的一般化说明，即使每条消息不同，只要它们按已知仿射关系变化，足够多的接收者仍会泄露消息。### 为什么随机化填充能挡住\n\nOAEP 等随机化填充让每条消息的编码包含独立随机数，接收者之间的编码不再满足同一个低次多项式。此时 CRT 合成的是不同随机多项式的密文，整数开根不再对应明文。注意“加了填充”不等于“安全”：确定性填充、固定时间戳或可预测计数器仍可能保留关系。### 现实判断\n\n评估广播协议时，先问：是否同一消息？e 是 3 还是 65537？接收者数量是否达到 e？是否每条都独立随机化？模数是否两两互素？这些问题比“RSA 是否 2048 位”更直接。",
+        "en": "### The product of a low exponent and broadcast\n\nRSA with e=3 is fast and attractive for constrained devices; but broadcasting the same message to three or more recipients without randomised padding places m^3 inside an integer ring larger than m^3, so CRT reconstructs it exactly.Hastad’s generalisation shows that even when the messages differ, enough recipients still leak the message if the messages follow a known affine relation."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    },
+    {
+      "id": "hill-hastad-r139-used",
+      "entryId": "hill-hastad-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 审计与攻击复现的步骤\n\n1.确认同一 e、不同 N_i，且 N_i 两两互素；若不互素，gcd(N_i,N_j) 直接分解，反而更简单。2.收集至少 e 条同一消息的密文；检查 m 是否小于 min N_i，以确保 m^e < ∏ N_i。3.用 CRT 合成 C；对 C 做整数 e 次根；验证结果是否满足所有 c_i。4.若消息是仿射相关而非相同，按 Håstad 一般定理检查 k > e(e+1)/2 与模数下界。5.记录失败原因：填充随机化、接收者不足、消息过大、模数不互素。### 协议设计中的用法\n\n在协议评审中把“广播”视为一种特殊的相关消息场景；对低指数加密要求随机化填充；对群发协议要求每条密文独立编码。测试向量应覆盖 e=3 与 e=65537 两种指数，以及 k=e、k=e+1 的边界。",
+        "en": "### Auditing and reproducing the attack\n\n1.Confirm a common e and distinct N_i, with the N_i pairwise coprime; if two moduli share a factor, gcd(N_i,N_j) factors them and the attack is even simpler."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    },
+    {
+      "id": "hill-hastad-r139-broken",
+      "entryId": "hill-hastad-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.接收者少于阈值。基本攻击需要 k≥e；一般仿射定理需要 k>e(e+1)/2。少一个接收者就可能失败。2.m^e 不小于乘积。此时 CRT 得到的 C 只是 m^e mod 乘积，整数开根不再等于 m；需要格方法或其他信息。3.模数不两两互素。CRT 条件破坏；不过这时 gcd 可能直接给出分解，是另一种攻击。4.随机化填充。每条消息的编码不同，低次关系不成立。5.e 很大。阈值和多项式次数随 e 增长；e=65537 时一般仿射攻击的接收者数量不现实。6.消息不是仿射相关。Håstad 的定理要求已知低次多项式；任意关系不保证可解。",
+        "en": "### Failure conditions\n\n1.Too few recipients."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    },
+    {
+      "id": "hill-hastad-r139-history",
+      "entryId": "hill-hastad-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1988 年的定理\n\nHåstad 在 1988 年的 SIAM Journal on Computing 论文中给出“低次模方程组的解”定理，并把它应用于低指数 RSA 广播。论文的条件 k > d(d+1)/2 与 min n_i > 2^{d^2} 成为后来相关消息攻击的标准参数语言。### 与 Coppersmith 路线的关系\n\n1996 年的 Franklin-Reiter 攻击处理同一模数下的相关消息；Håstad 处理不同模数下的广播与仿射关系。1997 年前后，Coppersmith 的小根方法又把“已知部分消息或小根”的问题系统化。三者常被并列，但假设与数学工具不同。",
+        "en": "### The 1988 theorem\n\nHastad’s 1988 SIAM Journal on Computing paper proved the “solving simultaneous modular equations of low degree” theorem and applied it to low-exponent RSA broadcast.Its conditions k > d(d+1)/2 and min n_i > 2^{d^2} became standard parameter language for later related-message attacks."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    },
+    {
+      "id": "hill-hastad-r139-refs",
+      "entryId": "hill-hastad-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Håstad 广播攻击.https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Håstad 广播攻击.https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "hill-hastad-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

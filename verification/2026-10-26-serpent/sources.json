@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "serpent-details",
+  "sources": [
+    {
+      "id": "serpent-wikipedia",
+      "title": "Wikipedia search entry for Serpent 分组密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Serpent 分组密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "serpent-r139-principle",
+          "entryId": "serpent-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Serpent 分组密码（Serpent）。Serpent 是 128 位分组密码：32 轮 SP 网络，明文视为四个 32 位字，密钥支持 128/192/256 位（最长 256 位），共有 33 个 128 位子密钥 K0..K32。本文采用论文第 3 节的 bitslice 描述：明文直接作为 B0，不做初始置换 IP；32 轮中的前 31 轮依次做密钥异或、S-box 和线性变换 LT，最后一轮用 S7 并把结果与 K32 异或：\n\n```text\nB0 = P\nfor i = 0..30:\n  B_{i+1} = LT(S_{i mod 8}(B_i XOR K_i))\nB32 = S7(B31 XOR K31) XOR K32\nC = B32\n```\n\n论文的标准描述另有初始置换 IP 和最终置换 FP。它们没有密码学意义，只是把数据与标准实现的位序对齐；bitslice 描述不需要它们。标准模式中要计算 Khat_i = IP(K_i)，bitslice 模式直接使用 K_i。本文的实现和向量都使用 bitslice 描述，因此不存在 IP/FP 这一步。轮函数每轮只用一个 4 位 S-box，但在 bitslice 模式下同时作用于 32 个位置：四个 32 位字 X0..X3 是四个位平面，第 j 个 S-box 的输入是 X0、X1、X2、X3 的第 j 位组成的 4 位值，输出再写回四个位平面的第 j 位。S-box 按 S0、S1、…、S7 循环使用，第 i 轮用 S_{i mod 8}。",
+            "en": "**Algorithm**: Serpent (Serpent 分组密码).Serpent is a 128-bit block cipher: a 32-round SP network operating on four 32-bit words, with keys of 128/192/256 bits (up to 256 bits) and 33 128-bit subkeys K0..K32."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        },
+        {
+          "id": "serpent-r139-why",
+          "entryId": "serpent-details",
+          "section": "why",
+          "statement": {
+            "zh": "Serpent 的设计目标是保守、可分析、在 32 位处理器上高效，并且比三密钥 3DES 更安全。论文设定的块长是 128 位，密钥可以是 128、192 或 256 位，轮数是 32。设计者认为 16 轮 Serpent 已经与三密钥 3DES 相当，但 AES 可能在标准位置和遗留系统中使用很多年，因此选择 32 轮来留出更大的安全边际。安全性分析给出了具体的保守界：6 轮差分特征的概率至多 2^-58，24 轮特征至多 2^-232；28 轮线性特征的分析也给出类似量级；论文进一步猜想最佳 28 轮差分的概率不高于 2^-120。设计者用比完整 32 轮短 8 轮和 4 轮的 24/28 轮特征做分析，并称没有发现有用的捷径攻击；他们认为最好的攻击仍是穷举密钥，128/192/256 位密钥分别对应 2^128、2^192、2^256 的工作量。这些是 1998 年设计者的分析结论，不是对全部攻击模型的形式化证明。论文第 2.1 节给出的 S-box 性质是：差分特征概率至多 1/4，不存在一位输入差分能产生「to a one-bit output difference」（一位输出差分）的情形；线性特征概率在 1/2±1/4 之间，一位对一位的线性关系在 1/2±1/8 之间；非线性阶数为 3。这些性质使每一轮至少有一个活跃 S-box，并在后续轮中迅速扩散。S-box 由 DES 的 32 行 S-box 经确定性交换生成，而不是随机表；这既是为了避免后门质疑，也是为了在保持差分/线性性质的同时减少硬件门数。",
+            "en": "Serpent's design goals were conservative analysis, efficiency on 32-bit processors, and security beyond three-key 3DES.The paper fixes a 128-bit block, 128/192/256-bit keys and 32 rounds."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        },
+        {
+          "id": "serpent-r139-used",
+          "entryId": "serpent-details",
+          "section": "used",
+          "statement": {
+            "zh": "NESSIE 验证向量按密钥长度分为 128、192、256 位三套文件，每套的 Set 1 分别有 128、192、256 条向量，恰好每条对应一个密钥位翻转；Set 2 是零密钥、变化明文；Set 3 是密钥与明文使用相同的重复字节；Set 4 是两组固定密钥/明文。本文完整复现了：\n\n- 三套 Set 1 的全部 576 条向量（128+192+256），逐条加密并解密；\n- 每条 Set 1 向量的 “Iterated 100 times” 结果，以及每条密钥长度 vector#0 的 “Iterated 1000 times”；\n- 三套 Set 2 的前 32 条、Set 3 的前 32 条和 Set 4 的全部 2 条（合计 198 条）。",
+            "en": "The NESSIE verified vectors are supplied as three files for 128-, 192- and 256-bit keys.In each file, Set 1 has 128, 192 and 256 vectors respectively, exactly one per key bit flip; Set 2 uses a zero key with varying plaintext; Set 3 uses a key and plaintext made of the same repeated byte; Set 4 contains two fixed key/plaintext pairs."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        },
+        {
+          "id": "serpent-r139-broken",
+          "entryId": "serpent-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Serpent 的安全结论必须限定在论文第 5 节的分析范围内。6 轮差分特征 ≤2^-58、24 轮 ≤2^-232、28 轮差分猜想 ≤2^-120，都是设计者用保守模型得到上界或猜想，不是对 32 轮 Serpent 的完整形式化证明。「there is no indication of any useful shortcut attack」（没有发现有用的捷径攻击）是 1998 年的分析结论，不等于未来不会出现新的密码分析；本文不引用未经核实的第三方攻击来宣称 Serpent 已被攻破或绝对安全。工作模式方面，128 位块在 CBC/CFB 下加密约 2^64 个块后，预期出现相同密文块，攻击者可以利用这一点推导明文关系；密钥碰撞攻击的复杂度约为 2^(k/2)。这些性质适用于所有 128 位块密码，不是 Serpent 独有的缺陷。实际协议应在远早于 2^64 个块之前更换密钥，并避免把分组密码直接当哈希或 MAC 使用。实现层面，Serpent 的 S-box 和 LT 通常用查表或位运算实现；查表会带来缓存和时序侧信道风险，位切片实现则对寄存器压力和编译器优化敏感。本文的教学实现用普通 JavaScript 数组和 32 位位运算，不是常量时间实现，也没有掩码、密钥隔离或故障检测，不能用于保护真实数据。部署范围需要区分：NESSIE 验证向量只证明实现与规范一致，不证明安全性；Linux 内核提供 Serpent 实现不等于标准采纳或安全推荐；FIPS 197 只规定 AES（Rijndael），Serpent 不是 FIPS 197 算法。",
+            "en": "Serpent's security conclusions must be limited to the analysis in Section 5.The bounds of 2^-58 for six rounds, 2^-232 for 24 rounds and the 2^-120 conjecture for a 28-round differential are upper bounds or conjectures from a conservative model, not a complete formal proof for 32-round Serpent."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        },
+        {
+          "id": "serpent-r139-history",
+          "entryId": "serpent-details",
+          "section": "history",
+          "statement": {
+            "zh": "Serpent 由 Ross Anderson、Eli Biham 和 Lars Knudsen 设计。第一版 Serpent-0 在 1998 年的 Fast Software Encryption（FSE'98）会议上发表，直接使用 DES 的 S-box；随后设计者为了 AES 提交改进了算法：使用新生成的 8 个 S-box、微调密钥调度，并把轮数保持为 32。这个版本称为 Serpent-1，也就是通常说的 Serpent。论文说明 Serpent-0 使用 DES S-box 是为了借助已被长期研究的差分/线性性质，并让公众相信设计者没有植入陷门；Serpent-1 的 S-box 则用确定性的 RC4 类交换过程从 32 行 DES S-box 生成，初始字符串为 \"sboxesforserpent\"，满足条件后才保留。这样既保留了可分析性，又改善了差分/线性界。1998 年，Serpent 作为 AES 候选算法提交。作者页面称 Serpent 是五种 AES 最终候选之一；AES 最终选择了 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197。FIPS 197 在 2023 年 5 月 9 日更新为 FIPS 197-upd1；更新不改变 Serpent 未被选为 AES 的事实。作者页面称 Serpent 在 1998 年 8 月 21 日的 AES 会议上宣布进入公有领域，不施加使用限制；页面同时说明提交包中的优化实现现在按 GPL 发布，尽管代码注释仍写旧声明。使用具体代码或许可文本时，应以实际文件为准。",
+            "en": "Serpent was designed by Ross Anderson, Eli Biham and Lars Knudsen.The first version, Serpent-0, was presented at the 1998 Fast Software Encryption (FSE'98) workshop and used the DES S-boxes directly."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        },
+        {
+          "id": "serpent-r139-refs",
+          "entryId": "serpent-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Serpent 分组密码.https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Serpent 分组密码.https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "serpent-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "serpent-wikipedia"
+      ]
+    },
+    {
+      "id": "serpent-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "serpent-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "serpent-r139-principle",
+      "entryId": "serpent-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Serpent 分组密码（Serpent）。Serpent 是 128 位分组密码：32 轮 SP 网络，明文视为四个 32 位字，密钥支持 128/192/256 位（最长 256 位），共有 33 个 128 位子密钥 K0..K32。本文采用论文第 3 节的 bitslice 描述：明文直接作为 B0，不做初始置换 IP；32 轮中的前 31 轮依次做密钥异或、S-box 和线性变换 LT，最后一轮用 S7 并把结果与 K32 异或：\n\n```text\nB0 = P\nfor i = 0..30:\n  B_{i+1} = LT(S_{i mod 8}(B_i XOR K_i))\nB32 = S7(B31 XOR K31) XOR K32\nC = B32\n```\n\n论文的标准描述另有初始置换 IP 和最终置换 FP。它们没有密码学意义，只是把数据与标准实现的位序对齐；bitslice 描述不需要它们。标准模式中要计算 Khat_i = IP(K_i)，bitslice 模式直接使用 K_i。本文的实现和向量都使用 bitslice 描述，因此不存在 IP/FP 这一步。轮函数每轮只用一个 4 位 S-box，但在 bitslice 模式下同时作用于 32 个位置：四个 32 位字 X0..X3 是四个位平面，第 j 个 S-box 的输入是 X0、X1、X2、X3 的第 j 位组成的 4 位值，输出再写回四个位平面的第 j 位。S-box 按 S0、S1、…、S7 循环使用，第 i 轮用 S_{i mod 8}。",
+        "en": "**Algorithm**: Serpent (Serpent 分组密码).Serpent is a 128-bit block cipher: a 32-round SP network operating on four 32-bit words, with keys of 128/192/256 bits (up to 256 bits) and 33 128-bit subkeys K0..K32."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    },
+    {
+      "id": "serpent-r139-why",
+      "entryId": "serpent-details",
+      "section": "why",
+      "statement": {
+        "zh": "Serpent 的设计目标是保守、可分析、在 32 位处理器上高效，并且比三密钥 3DES 更安全。论文设定的块长是 128 位，密钥可以是 128、192 或 256 位，轮数是 32。设计者认为 16 轮 Serpent 已经与三密钥 3DES 相当，但 AES 可能在标准位置和遗留系统中使用很多年，因此选择 32 轮来留出更大的安全边际。安全性分析给出了具体的保守界：6 轮差分特征的概率至多 2^-58，24 轮特征至多 2^-232；28 轮线性特征的分析也给出类似量级；论文进一步猜想最佳 28 轮差分的概率不高于 2^-120。设计者用比完整 32 轮短 8 轮和 4 轮的 24/28 轮特征做分析，并称没有发现有用的捷径攻击；他们认为最好的攻击仍是穷举密钥，128/192/256 位密钥分别对应 2^128、2^192、2^256 的工作量。这些是 1998 年设计者的分析结论，不是对全部攻击模型的形式化证明。论文第 2.1 节给出的 S-box 性质是：差分特征概率至多 1/4，不存在一位输入差分能产生「to a one-bit output difference」（一位输出差分）的情形；线性特征概率在 1/2±1/4 之间，一位对一位的线性关系在 1/2±1/8 之间；非线性阶数为 3。这些性质使每一轮至少有一个活跃 S-box，并在后续轮中迅速扩散。S-box 由 DES 的 32 行 S-box 经确定性交换生成，而不是随机表；这既是为了避免后门质疑，也是为了在保持差分/线性性质的同时减少硬件门数。",
+        "en": "Serpent's design goals were conservative analysis, efficiency on 32-bit processors, and security beyond three-key 3DES.The paper fixes a 128-bit block, 128/192/256-bit keys and 32 rounds."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    },
+    {
+      "id": "serpent-r139-used",
+      "entryId": "serpent-details",
+      "section": "used",
+      "statement": {
+        "zh": "NESSIE 验证向量按密钥长度分为 128、192、256 位三套文件，每套的 Set 1 分别有 128、192、256 条向量，恰好每条对应一个密钥位翻转；Set 2 是零密钥、变化明文；Set 3 是密钥与明文使用相同的重复字节；Set 4 是两组固定密钥/明文。本文完整复现了：\n\n- 三套 Set 1 的全部 576 条向量（128+192+256），逐条加密并解密；\n- 每条 Set 1 向量的 “Iterated 100 times” 结果，以及每条密钥长度 vector#0 的 “Iterated 1000 times”；\n- 三套 Set 2 的前 32 条、Set 3 的前 32 条和 Set 4 的全部 2 条（合计 198 条）。",
+        "en": "The NESSIE verified vectors are supplied as three files for 128-, 192- and 256-bit keys.In each file, Set 1 has 128, 192 and 256 vectors respectively, exactly one per key bit flip; Set 2 uses a zero key with varying plaintext; Set 3 uses a key and plaintext made of the same repeated byte; Set 4 contains two fixed key/plaintext pairs."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    },
+    {
+      "id": "serpent-r139-broken",
+      "entryId": "serpent-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Serpent 的安全结论必须限定在论文第 5 节的分析范围内。6 轮差分特征 ≤2^-58、24 轮 ≤2^-232、28 轮差分猜想 ≤2^-120，都是设计者用保守模型得到上界或猜想，不是对 32 轮 Serpent 的完整形式化证明。「there is no indication of any useful shortcut attack」（没有发现有用的捷径攻击）是 1998 年的分析结论，不等于未来不会出现新的密码分析；本文不引用未经核实的第三方攻击来宣称 Serpent 已被攻破或绝对安全。工作模式方面，128 位块在 CBC/CFB 下加密约 2^64 个块后，预期出现相同密文块，攻击者可以利用这一点推导明文关系；密钥碰撞攻击的复杂度约为 2^(k/2)。这些性质适用于所有 128 位块密码，不是 Serpent 独有的缺陷。实际协议应在远早于 2^64 个块之前更换密钥，并避免把分组密码直接当哈希或 MAC 使用。实现层面，Serpent 的 S-box 和 LT 通常用查表或位运算实现；查表会带来缓存和时序侧信道风险，位切片实现则对寄存器压力和编译器优化敏感。本文的教学实现用普通 JavaScript 数组和 32 位位运算，不是常量时间实现，也没有掩码、密钥隔离或故障检测，不能用于保护真实数据。部署范围需要区分：NESSIE 验证向量只证明实现与规范一致，不证明安全性；Linux 内核提供 Serpent 实现不等于标准采纳或安全推荐；FIPS 197 只规定 AES（Rijndael），Serpent 不是 FIPS 197 算法。",
+        "en": "Serpent's security conclusions must be limited to the analysis in Section 5.The bounds of 2^-58 for six rounds, 2^-232 for 24 rounds and the 2^-120 conjecture for a 28-round differential are upper bounds or conjectures from a conservative model, not a complete formal proof for 32-round Serpent."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    },
+    {
+      "id": "serpent-r139-history",
+      "entryId": "serpent-details",
+      "section": "history",
+      "statement": {
+        "zh": "Serpent 由 Ross Anderson、Eli Biham 和 Lars Knudsen 设计。第一版 Serpent-0 在 1998 年的 Fast Software Encryption（FSE'98）会议上发表，直接使用 DES 的 S-box；随后设计者为了 AES 提交改进了算法：使用新生成的 8 个 S-box、微调密钥调度，并把轮数保持为 32。这个版本称为 Serpent-1，也就是通常说的 Serpent。论文说明 Serpent-0 使用 DES S-box 是为了借助已被长期研究的差分/线性性质，并让公众相信设计者没有植入陷门；Serpent-1 的 S-box 则用确定性的 RC4 类交换过程从 32 行 DES S-box 生成，初始字符串为 \"sboxesforserpent\"，满足条件后才保留。这样既保留了可分析性，又改善了差分/线性界。1998 年，Serpent 作为 AES 候选算法提交。作者页面称 Serpent 是五种 AES 最终候选之一；AES 最终选择了 Rijndael，并在 2001 年 11 月 26 日发布 FIPS 197。FIPS 197 在 2023 年 5 月 9 日更新为 FIPS 197-upd1；更新不改变 Serpent 未被选为 AES 的事实。作者页面称 Serpent 在 1998 年 8 月 21 日的 AES 会议上宣布进入公有领域，不施加使用限制；页面同时说明提交包中的优化实现现在按 GPL 发布，尽管代码注释仍写旧声明。使用具体代码或许可文本时，应以实际文件为准。",
+        "en": "Serpent was designed by Ross Anderson, Eli Biham and Lars Knudsen.The first version, Serpent-0, was presented at the 1998 Fast Software Encryption (FSE'98) workshop and used the DES S-boxes directly."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    },
+    {
+      "id": "serpent-r139-refs",
+      "entryId": "serpent-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Serpent 分组密码.https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Serpent 分组密码.https://zh.wikipedia.org/w/index.php?search=Serpent%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "serpent-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

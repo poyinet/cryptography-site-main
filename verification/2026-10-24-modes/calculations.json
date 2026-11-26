@@ -1,0 +1,72 @@
+[
+  {
+    "id": "modes-official-vectors",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "SP 800-38A AES-128 first-block vectors for ECB, CBC, CFB, OFB and CTR",
+    "expected": "All five ciphertexts match the NIST values; decryption/round-trip where applicable",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "One block per mode; checks the mode formula, not full-message protocol behavior."
+  },
+  {
+    "id": "modes-gcm-vector",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "NIST CAVP gcmEncryptExtIV128.rsp Count 0 (128-bit key, 96-bit IV, 128-bit plaintext, no AAD, 128-bit tag)",
+    "expected": "Ciphertext 2ccda4a5415cb91e135c2a0f78c9b2fd and tag b36d1df9b9d5e596f83e8b7f52971cb3; authenticated decryption succeeds",
+    "sourceIds": ["cavp-gcm"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "One official test case; it does not exercise AAD, long messages or nonce management."
+  },
+  {
+    "id": "modes-ecb-pattern",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "AES-128 with a repeated 16-byte plaintext block under ECB, CBC and CTR",
+    "expected": "ECB produces identical ciphertext blocks; CBC and CTR do not",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "A structural demonstration, not an attack on AES or a statement about all plaintexts."
+  },
+  {
+    "id": "modes-ctr-reuse",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Two fixed plaintexts under the same AES-128 key and CTR nonce, then under different nonces",
+    "expected": "Same-nonce ciphertext XOR equals plaintext XOR; different nonce breaks the relation",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "Arithmetic consequence of keystream reuse; it does not model a full protocol attack."
+  },
+  {
+    "id": "modes-cbc-bitflip",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "AES-128-CBC two-block ciphertext with one bit flipped in the first ciphertext block",
+    "expected": "The first plaintext block is corrupted and the same bit of the second plaintext block flips",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "Shows CBC malleability, not a complete chosen-ciphertext attack."
+  },
+  {
+    "id": "modes-gcm-tamper",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The GCM test vector with a modified ciphertext and a modified tag",
+    "expected": "Authenticated decryption rejects both modifications",
+    "sourceIds": ["sp800-38d"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "Checks tag verification behavior; it does not test every malformed-input path."
+  },
+  {
+    "id": "modes-padding",
+    "entryId": "modes-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "A 20-byte plaintext padded with PKCS#7 for AES-CBC and a 20-byte plaintext under CTR",
+    "expected": "CBC input grows to 32 bytes with 12 bytes of padding 0x0c; CTR needs no padding and preserves length",
+    "sourceIds": ["sp800-38a"],
+    "dependencies": ["modes-teaching.mjs"],
+    "limitations": "Padding mechanics only; it does not test padding-oracle behavior."
+  }
+]

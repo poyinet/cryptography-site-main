@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--threshold-signature-details",
+  "sources": [
+    {
+      "id": "algorithm--threshold-signature-wikipedia",
+      "title": "Wikipedia search entry for 门限签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E9%97%A8%E9%99%90%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 门限签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--threshold-signature-r139-principle",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：门限签名（Threshold Signature）。### Shamir 分享与 Lagrange\n\n门限签名把群私钥 s 用 Shamir 分享分成 n 份，任意 t 份用 Lagrange 系数重组；FROST 两轮：先发布 nonce 承诺，再聚合成 z=Σz_i 的普通 Schnorr 签名。### FROST 两轮\n\nFROST 第一轮每个签名者生成一次性 nonce (d,e) 并发布承诺 (D,E)；第二轮用消息、承诺集合和自身 share 计算 z_i；协调者聚合 z=Σz_i。签名可像单签者 Schnorr 一样验证。### DKG\n\n密钥生成可用可信 dealer，也可用分布式密钥生成；DKG 让各方在没有完整 s 的情况下生成 share，但协议更复杂。",
+            "en": "**Algorithm**: Threshold Signature (门限签名).### Shamir sharing and Lagrange\n\nThreshold signing Shamir-shares the group secret s into n shares, and any t shares reconstruct it via Lagrange coefficients; FROST uses two rounds—publish nonce commitments, then aggregate z=Σz_i into an ordinary Schnorr signature."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--threshold-signature-r139-why",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "why",
+          "statement": {
+            "zh": "门限签名把单点私钥变成 t-of-n：少于 t 个 share 泄露不泄露 s，至少 t 个诚实方在线才能签；适合交易所冷钱包、CA 根密钥、企业签名和区块链验证者。FROST 只需两轮，且不限制并发签名会话；签名与普通 Schnorr 不可区分，链上或协议上不暴露门限结构。",
+            "en": "Threshold signatures turn a single private key into t-of-n: fewer than t shares do not reveal s, and at least t honest parties must be online to sign.They suit exchange cold wallets, CA root keys, enterprise signing and blockchain validators."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--threshold-signature-r139-used",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于区块链托管和验证者、CA 与代码签名、企业多签、DNSSEC 和跨机构审批；RFC 9591 定义 FROST 及 Ed25519/Ed448 兼容套件，密钥生成可用可信 dealer 或 DKG。工程要点：nonce 绝不能重用；每个签名会话要绑定唯一消息和承诺集合；协调者要验证部分签名；DKG 要防恶意 share 和抱怨；门限签名不是多签，链上只看到一个公钥。",
+            "en": "It is used for blockchain custody and validators, CA and code signing, enterprise multisignature, DNSSEC and cross-institution approvals; RFC 9591 defines FROST and Ed25519/Ed448-compatible suites, with trusted-dealer or DKG key generation.Requirements: never reuse a nonce; bind every signing session to a unique message and commitment set; the coordinator must verify partial signatures; DKG must handle malicious shares and complaints; a threshold signature is not multisig—only one public key appears on-chain."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--threshold-signature-r139-broken",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "broken",
+          "statement": {
+            "zh": "最致命的实现错误是 nonce 重用：两个签名共享同一个 (d,e) 会直接解出 share，进而恢复群私钥；RFC 9591 要求 nonce 一次性并建议签名后擦除。",
+            "en": "The most damaging implementation error is nonce reuse: two signatures sharing the same (d,e) directly solve for a share and then the group private key; RFC 9591 requires one-time nonces and recommends erasing them after signing.Boundaries: threshold signing protects the private key, not endpoints; a malicious coordinator can deny service or choose messages but cannot forge; t or more colluding parties can recover s; FROST is not post-quantum and relies on discrete logarithms."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--threshold-signature-r139-history",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "history",
+          "statement": {
+            "zh": "FROST 由 Komlo 与 Goldberg 在 2020 年论文中提出（ePrint 2020/852），2021 年进入 CFRG，2024 年 6 月发布 RFC 9591；它基于 Schnorr 门限签名和 Shamir 分享，改进早期方案的三轮和并发限制。RFC 9591 是 Informational，不是 IETF 标准；生产部署要按具体曲线和协议做域分离。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：门限签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "FROST was proposed by Komlo and Goldberg in 2020 (ePrint 2020/852), entered CFRG in 2021 and became RFC 9591 in June 2024.It builds on Schnorr threshold signatures and Shamir sharing, improving earlier three-round and concurrency-limited schemes."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--threshold-signature-r139-refs",
+          "entryId": "algorithm--threshold-signature-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 门限签名.https://zh.wikipedia.org/w/index.php?search=%E9%97%A8%E9%99%90%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 门限签名.https://zh.wikipedia.org/w/index.php?search=%E9%97%A8%E9%99%90%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--threshold-signature-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--threshold-signature-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--threshold-signature-r139-principle",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：门限签名（Threshold Signature）。### Shamir 分享与 Lagrange\n\n门限签名把群私钥 s 用 Shamir 分享分成 n 份，任意 t 份用 Lagrange 系数重组；FROST 两轮：先发布 nonce 承诺，再聚合成 z=Σz_i 的普通 Schnorr 签名。### FROST 两轮\n\nFROST 第一轮每个签名者生成一次性 nonce (d,e) 并发布承诺 (D,E)；第二轮用消息、承诺集合和自身 share 计算 z_i；协调者聚合 z=Σz_i。签名可像单签者 Schnorr 一样验证。### DKG\n\n密钥生成可用可信 dealer，也可用分布式密钥生成；DKG 让各方在没有完整 s 的情况下生成 share，但协议更复杂。",
+        "en": "**Algorithm**: Threshold Signature (门限签名).### Shamir sharing and Lagrange\n\nThreshold signing Shamir-shares the group secret s into n shares, and any t shares reconstruct it via Lagrange coefficients; FROST uses two rounds—publish nonce commitments, then aggregate z=Σz_i into an ordinary Schnorr signature."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-r139-why",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "why",
+      "statement": {
+        "zh": "门限签名把单点私钥变成 t-of-n：少于 t 个 share 泄露不泄露 s，至少 t 个诚实方在线才能签；适合交易所冷钱包、CA 根密钥、企业签名和区块链验证者。FROST 只需两轮，且不限制并发签名会话；签名与普通 Schnorr 不可区分，链上或协议上不暴露门限结构。",
+        "en": "Threshold signatures turn a single private key into t-of-n: fewer than t shares do not reveal s, and at least t honest parties must be online to sign.They suit exchange cold wallets, CA root keys, enterprise signing and blockchain validators."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-r139-used",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于区块链托管和验证者、CA 与代码签名、企业多签、DNSSEC 和跨机构审批；RFC 9591 定义 FROST 及 Ed25519/Ed448 兼容套件，密钥生成可用可信 dealer 或 DKG。工程要点：nonce 绝不能重用；每个签名会话要绑定唯一消息和承诺集合；协调者要验证部分签名；DKG 要防恶意 share 和抱怨；门限签名不是多签，链上只看到一个公钥。",
+        "en": "It is used for blockchain custody and validators, CA and code signing, enterprise multisignature, DNSSEC and cross-institution approvals; RFC 9591 defines FROST and Ed25519/Ed448-compatible suites, with trusted-dealer or DKG key generation.Requirements: never reuse a nonce; bind every signing session to a unique message and commitment set; the coordinator must verify partial signatures; DKG must handle malicious shares and complaints; a threshold signature is not multisig—only one public key appears on-chain."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-r139-broken",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "broken",
+      "statement": {
+        "zh": "最致命的实现错误是 nonce 重用：两个签名共享同一个 (d,e) 会直接解出 share，进而恢复群私钥；RFC 9591 要求 nonce 一次性并建议签名后擦除。",
+        "en": "The most damaging implementation error is nonce reuse: two signatures sharing the same (d,e) directly solve for a share and then the group private key; RFC 9591 requires one-time nonces and recommends erasing them after signing.Boundaries: threshold signing protects the private key, not endpoints; a malicious coordinator can deny service or choose messages but cannot forge; t or more colluding parties can recover s; FROST is not post-quantum and relies on discrete logarithms."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-r139-history",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "history",
+      "statement": {
+        "zh": "FROST 由 Komlo 与 Goldberg 在 2020 年论文中提出（ePrint 2020/852），2021 年进入 CFRG，2024 年 6 月发布 RFC 9591；它基于 Schnorr 门限签名和 Shamir 分享，改进早期方案的三轮和并发限制。RFC 9591 是 Informational，不是 IETF 标准；生产部署要按具体曲线和协议做域分离。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：门限签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "FROST was proposed by Komlo and Goldberg in 2020 (ePrint 2020/852), entered CFRG in 2021 and became RFC 9591 in June 2024.It builds on Schnorr threshold signatures and Shamir sharing, improving earlier three-round and concurrency-limited schemes."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--threshold-signature-r139-refs",
+      "entryId": "algorithm--threshold-signature-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 门限签名.https://zh.wikipedia.org/w/index.php?search=%E9%97%A8%E9%99%90%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 门限签名.https://zh.wikipedia.org/w/index.php?search=%E9%97%A8%E9%99%90%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--threshold-signature-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

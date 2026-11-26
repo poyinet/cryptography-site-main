@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Compact definitional article for the cryptographic-hash term: definition, security goals, constructions, MDC/MAC distinction, birthday bound, standards and implementation boundary. It does not duplicate any algorithm entity.",
+  "entries": [
+    {
+      "id": "cryptographichash-details",
+      "inventoryIds": [
+        "cryptographic-hash"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密码学哈希这一术语：定义、安全目标、构造、MDC/MAC 区分、生日界、标准与实现边界；不复制 SHA-1/SHA-2/SHA-3 等算法实体。",
+        "en": "A compact definition of the cryptographic-hash term: definition, security goals, constructions, MDC/MAC distinction, birthday bound, standards and implementation boundary; it does not duplicate any SHA algorithm entity."
+      },
+      "title": {
+        "zh": "密码学哈希",
+        "en": "Cryptographic hash"
+      },
+      "claimIds": [
+        "cryptographic-hash-r139-principle",
+        "cryptographic-hash-r139-why",
+        "cryptographic-hash-r139-used",
+        "cryptographic-hash-r139-broken",
+        "cryptographic-hash-r139-history",
+        "cryptographic-hash-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性术语条目，没有需要复算的数值算法；相关算法的计算验证见对应的 SHA/MD5 批次。",
+        "en": "This is a definitional term entry with no numerical algorithm to reproduce; executable checks for related algorithms live in the corresponding SHA/MD5 batches."
+      },
+      "sourceIds": [
+        "cryptographic-hash-wikipedia",
+        "cryptographic-hash-standard-ref"
+      ],
+      "related": [
+        "sha1",
+        "sha2",
+        "sha3",
+        "algorithm--hmac"
+      ],
+      "relatedPolicy": "These are distinct entities; this term is the general concept and does not absorb any algorithm, standard or construction.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：密码学哈希（Cryptographic Hash）。密码学哈希函数把任意长度消息映射为固定长度摘要；摘要只有在本身受到保护时才能可靠检测消息是否被改变。哈希函数的基本安全目标是抗原像、抗第二原像和抗碰撞：给定摘要难以找到原消息，给定消息难以找到另一条同摘要消息，难以找到两条同摘要的不同消息。常见构造是迭代哈希：先填充消息，再分成固定块，反复调用压缩函数；Merkle-Damgård 是经典构造。无密钥哈希（MDC）用于摘要和完整性，带密钥哈希（MAC）用于消息认证，两者用途不同。",
+          "why": "哈希函数把长消息压缩成短摘要，使数字签名、消息认证和完整性检查不必直接处理任意长数据。摘要长度决定通用生日攻击的成本：对 n 位摘要，碰撞搜索约需 2^(n/2) 次操作，因此 256 位摘要的碰撞强度约为 128 位，而不是 256 位。安全性取决于具体算法和使用方式；碰撞、第二原像和原像的攻击模型不同，不能用一个`哈希安全`标签概括所有用途。",
+          "used": "哈希函数用于数据完整性、数字签名和消息认证等场景，通常与其他密码算法组合使用。SHA-1/SHA-2 由 FIPS 180-4 规定，SHA-3/SHAKE 由 FIPS 202 规定；两个标准不同，不能把 SHA-3 当作 SHA-2 的一个变体。",
+          "broken": "**攻击模型**：碰撞攻击不等于原像攻击；生日攻击把通用碰撞安全强度限制在约 2^(n/2)，但具体算法的结构弱点可能使攻击更快。**实现边界**：符合标准只保证算法输出一致，标准不保证具体实现没有侧信道或部署错误。**用途边界**：MDC 不能替代 MAC；裸摘要的完整性需要真实信道或带密钥认证保护。",
+          "history": "1996 年的《Handbook of Applied Cryptography》第 9 章系统整理了哈希函数的分类、构造和安全目标；FIPS 180-4（2015）规定 SHA-1/SHA-2，FIPS 202（2015）规定 SHA-3/SHAKE。哈希家族的历史细节由各自算法实体展开，该条目只定义共同概念。",
+          "refs": "- Wikipedia search entry for 密码学哈希. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%93%88%E5%B8%8C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Cryptographic Hash. It is registered under hashes. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in hashes, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 密码学哈希. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%93%88%E5%B8%8C\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "密码学哈希：把任意长度消息映射为固定长度摘要的函数。",
+          "摘要：哈希函数的固定长度输出。",
+          "抗原像：给定摘要难以找到原消息。",
+          "抗第二原像：给定消息难以找到另一条同摘要消息。",
+          "抗碰撞：难以找到两条同摘要的不同消息。",
+          "压缩函数：迭代哈希中把状态与消息块混合的函数。",
+          "Merkle-Damgård：填充后逐块压缩的迭代构造。",
+          "MDC：无密钥哈希，用于摘要/完整性。",
+          "MAC：带密钥哈希，用于消息认证。",
+          "生日界：n 位摘要的通用碰撞复杂度约为 2^(n/2)。",
+          "SHA-1/SHA-2：FIPS 180-4 规定的哈希家族。",
+          "SHA-3/SHAKE：FIPS 202 规定的哈希/XOF 家族。"
+        ],
+        "en": [
+          "Cryptographic hash: a function mapping arbitrary-length messages to a fixed-length digest.",
+          "Digest: the fixed-length output of a hash function.",
+          "Preimage resistance: given a digest, finding a message is hard.",
+          "Second-preimage resistance: given a message, finding another message with the same digest is hard.",
+          "Collision resistance: finding two different messages with the same digest is hard.",
+          "Compression function: the function mixing state and a message block in an iterated hash.",
+          "Merkle-Damgard: the iterated construction that pads and compresses block by block.",
+          "MDC: an unkeyed hash used for digests/integrity.",
+          "MAC: a keyed hash used for message authentication.",
+          "Birthday bound: the generic collision cost for an n-bit digest is about 2^(n/2).",
+          "SHA-1/SHA-2: the hash families specified by FIPS 180-4.",
+          "SHA-3/SHAKE: the hash/XOF families specified by FIPS 202."
+        ]
+      },
+      "subtopicIds": [
+        "cryptographic-hash"
+      ],
+      "figures": [
+        {
+          "id": "cryptographichash-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密码学哈希：为什么需要 → 核心机制 → 边界。",
+            "en": "Cryptographic hash: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密码学哈希 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Cryptographic hash, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cryptographichash-details-flow.zh.svg",
+            "en": "assets/cryptographichash-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "06a19a41dc979fb715f2478fe8517f45ff36e822888cce378ee436936e225ab0",
+            "en": "05a78d6d10410c7efde41b57b1f5e0a76fb9879dedcd53a1fada59ba581b94d5"
+          }
+        }
+      ],
+      "sources": [
+        "cryptographic-hash-wikipedia",
+        "cryptographic-hash-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

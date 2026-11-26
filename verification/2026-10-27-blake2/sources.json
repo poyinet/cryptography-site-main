@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "blake2-details",
+  "sources": [
+    {
+      "id": "blake2-wikipedia",
+      "title": "Wikipedia search entry for BLAKE2 散列",
+      "url": "https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: BLAKE2 散列",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "blake2-r139-principle",
+          "entryId": "blake2-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：BLAKE2 散列（BLAKE2）。BLAKE2 是一个密码散列函数族，源自 2008 年 SHA-3 候选算法 BLAKE，由 Aumasson、Neves、Wilcox-O'Hearn 和 Winnerlein 设计。它有两种基本变体：BLAKE2b 面向 64 位平台，BLAKE2s 面向 8 到 32 位平台。两者的结构相同，只是字长、轮数、块大小和参数范围不同。| 参数 | BLAKE2b | BLAKE2s |\n| --- | --- | --- |\n| 字长 w | 64 位 | 32 位 |\n| 压缩轮数 r | 12 | 10 |\n| 块字节 bb | 128 | 64 |\n| 摘要字节 nn | 1 到 64 | 1 到 32 |\n| 密钥字节 kk | 0 到 64 | 0 到 32 |\n| 输入字节 ll | 小于 2^128 | 小于 2^64 |\n| G 的旋转常量 (R1,R2,R3,R4) | (32,24,16,63) | (16,12,8,7) |\n\n散列的内部状态是 8 个字 `h[0..7]`。初始值 IV 由素数平方根的小数部分定义：`IV[i] = floor(2^w * frac(sqrt(prime(i+1))))`，其中 prime(i) 是第 i 个素数 2、3、5、7、11、13、17、19。BLAKE2b 的 IV 与 SHA-512 的 IV 相同，BLAKE2s 的 IV 与 SHA-256 的 IV 相同。所有输入、密钥和输出都按小端序解释：字节流从低地址开始填入字的低位。",
+            "en": "**Algorithm**: BLAKE2 (BLAKE2 散列).BLAKE2 is a family of cryptographic hash functions derived from BLAKE, a 2008 SHA-3 candidate."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        },
+        {
+          "id": "blake2-r139-why",
+          "entryId": "blake2-details",
+          "section": "why",
+          "statement": {
+            "zh": "BLAKE2 的设计目标是给软件提供一种比 SHA-2、SHA-3 更快、又不像 MD5 那样已被攻破的散列函数。论文的出发点是：SHA-3 在硬件上很快，但在当时常见的处理器上并没有全面超过 SHA-2；许多系统为了性能继续使用 MD5、SHA-1 或自定义函数。BLAKE2 以 SHA-3 候选 BLAKE 为基础，保留其安全结构，同时针对软件实现做减法。与 BLAKE 相比，论文列出的主要改动是：\n\n- 轮数从 BLAKE-512 的 16 轮降到 12 轮，从 BLAKE-256 的 14 轮降到 10 轮；论文称这在长数据上直接带来约 25% 和 29% 的加速；\n- G 的旋转从 (32,25,16,11) 改为 (32,24,16,63)，以利用 SSSE3 的字节混洗和左旋 1 位的廉价实现；\n- 去掉 G 内的额外常量，每个 G 省下两次异或和两次加载，约占算术指令的 16%；\n- 最小化填充，用最后一块标志替代部分填充的安全作用；\n- 改用小端序，计数器按字节而不是按位计数；\n- 用参数块编码摘要长度和密钥长度，并支持 BLAKE2 论文中的 salt、personalization 和树散列；\n- 常量从 24 个字减少到 8 个，论文称 BLAKE2 比 BLAKE 少用 32% 的 RAM。",
+            "en": "BLAKE2's design goal was a software hash function faster than SHA-2 and SHA-3 but not carrying MD5's known breaks.The paper's premise was that SHA-3 is fast in hardware but did not comprehensively beat SHA-2 on the processors of the time, while many systems kept using MD5, SHA-1 or custom functions for speed."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        },
+        {
+          "id": "blake2-r139-used",
+          "entryId": "blake2-details",
+          "section": "used",
+          "statement": {
+            "zh": "RFC 7693 为常用参数集规定了 ASN.1 OID 后缀，同一个 OID 同时用于有密钥和无密钥模式，因为密钥长度是参数而不是另一种算法：\n\n| 标识 | 目标平台 | 碰撞强度 | 摘要字节 | OID 后缀 |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64 位 | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64 位 | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64 位 | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64 位 | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32 位 | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32 位 | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32 位 | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32 位 | 2^128 | 32 | x.2.8 |\n\n其中 `x = 1.3.6.1.4.1.1722.12.2`。RFC 7693 没有给出完整测试向量集，但给出了两组逐轮示例和一套自检模块。",
+            "en": "RFC 7693 assigns ASN.1 OID suffixes for common parameter sets; the same OID serves keyed and unkeyed hashing because key length is a parameter, not a different algorithm:\n\n| Identifier | Target | Collision security | Digest bytes | OID suffix |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64-bit | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64-bit | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64-bit | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64-bit | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32-bit | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32-bit | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32-bit | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32-bit | 2^128 | 32 | x.2.8 |\n\nHere `x = \"1.3.6.1.4.1.1722.12.2\"`."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        },
+        {
+          "id": "blake2-r139-broken",
+          "entryId": "blake2-details",
+          "section": "broken",
+          "statement": {
+            "zh": "BLAKE2 的安全结论必须按来源限定。RFC 7693 明确说「We wish to make no independent assertion to its security in this document」（它不对 BLAKE2 的安全性作独立断言），只描述算法；设计论证在 BLAKE 与 BLAKE2 的论文中。本文不复述未经核实的第三方攻击，也不把没有公开的完整轮攻击写成绝对安全。输出长度直接决定碰撞强度。按 RFC 的参数表，BLAKE2b-512 的碰撞强度是 2^256，BLAKE2b-256 降到 2^128，BLAKE2b-160 只有 2^80；BLAKE2s-256 是 2^128，BLAKE2s-128 只有 2^64。把长摘要截短成短摘要并不能保持长摘要的强度，因为摘要长度是参数块的一部分：`BLAKE2b(nn=20)` 与 `BLAKE2b(nn=64)` 的前 20 字节是两个不同的函数。选择参数集时要按目标安全级别，而不是越长越好、截短也无所谓。BLAKE2 是快速散列，不是口令派生函数。它的设计目标是吞吐量，单次计算成本很低；用 BLAKE2 直接散列口令不能抵抗大规模离线猜测。Argon2 之所以以 BLAKE2b 为底层原语，是为了在快速压缩函数之上再构造内存硬和可并行的时间成本，而不是因为 BLAKE2 本身适合存口令。有密钥的 BLAKE2 是 MAC/PRF，不是认证加密。它不提供保密性，不接收 nonce，不隐藏消息长度，也不防止重放；协议需要这些性质时，必须另行使用加密、随机数或序列号。",
+            "en": "BLAKE2's security claims must be bounded by their sources.RFC 7693 explicitly states that it makes no independent assertion about BLAKE2's security; the design argument is in the BLAKE and BLAKE2 papers."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        },
+        {
+          "id": "blake2-r139-history",
+          "entryId": "blake2-details",
+          "section": "history",
+          "statement": {
+            "zh": "BLAKE2 由 Jean-Philippe Aumasson、Samuel Neves、Zooko Wilcox-O'Hearn 和 Christian Winnerlein 设计。设计论文《BLAKE2: simpler, smaller, fast as MD5》标注日期为 2013 年 1 月 29 日，论文说明它是对 SHA-3 最终候选 BLAKE 的改进，目标是在软件上更快，同时保持与 SHA-3 相近的安全水平。BLAKE 参加了 NIST 的 SHA-3 竞赛并进入最终候选名单。论文回顾说，BLAKE 最初提交时使用 14 轮（BLAKE-512）和 10 轮（BLAKE-256），后来的增加是受 BLAKE 的高速度推动，达到 16 轮和 14 轮；BLAKE2 又把轮数降回 12 轮和 10 轮，理由是已有的密码分析和对未来进展的合理假设表明，增加的四轮并没有带来有意义的安全提升。论文还说明 BLAKE2 去掉了 G 内的常量、简化了填充、改用小端序和按字节计数，并引入参数块和有密钥模式。2015 年 11 月，RFC 7693 以 Independent Submission 的 Informational 文档发布，作者是 J.-P.Aumasson 和 M-J.Saarinen（编辑）。RFC 把 BLAKE2b 和 BLAKE2s 的顺序模式、参数块、压缩函数、OID 和自检模块固定下来，并明确它不作独立的安全断言。",
+            "en": "BLAKE2 was designed by Jean-Philippe Aumasson, Samuel Neves, Zooko Wilcox-O'Hearn and Christian Winnerlein.The design paper \"BLAKE2: simpler, smaller, fast as MD5\" is dated 29 January 2013 and describes an improved version of BLAKE, a SHA-3 finalist, targeting faster software while keeping security similar to SHA-3."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        },
+        {
+          "id": "blake2-r139-refs",
+          "entryId": "blake2-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for BLAKE2 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for BLAKE2 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "blake2-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "blake2-wikipedia"
+      ]
+    },
+    {
+      "id": "blake2-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "blake2-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "blake2-r139-principle",
+      "entryId": "blake2-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：BLAKE2 散列（BLAKE2）。BLAKE2 是一个密码散列函数族，源自 2008 年 SHA-3 候选算法 BLAKE，由 Aumasson、Neves、Wilcox-O'Hearn 和 Winnerlein 设计。它有两种基本变体：BLAKE2b 面向 64 位平台，BLAKE2s 面向 8 到 32 位平台。两者的结构相同，只是字长、轮数、块大小和参数范围不同。| 参数 | BLAKE2b | BLAKE2s |\n| --- | --- | --- |\n| 字长 w | 64 位 | 32 位 |\n| 压缩轮数 r | 12 | 10 |\n| 块字节 bb | 128 | 64 |\n| 摘要字节 nn | 1 到 64 | 1 到 32 |\n| 密钥字节 kk | 0 到 64 | 0 到 32 |\n| 输入字节 ll | 小于 2^128 | 小于 2^64 |\n| G 的旋转常量 (R1,R2,R3,R4) | (32,24,16,63) | (16,12,8,7) |\n\n散列的内部状态是 8 个字 `h[0..7]`。初始值 IV 由素数平方根的小数部分定义：`IV[i] = floor(2^w * frac(sqrt(prime(i+1))))`，其中 prime(i) 是第 i 个素数 2、3、5、7、11、13、17、19。BLAKE2b 的 IV 与 SHA-512 的 IV 相同，BLAKE2s 的 IV 与 SHA-256 的 IV 相同。所有输入、密钥和输出都按小端序解释：字节流从低地址开始填入字的低位。",
+        "en": "**Algorithm**: BLAKE2 (BLAKE2 散列).BLAKE2 is a family of cryptographic hash functions derived from BLAKE, a 2008 SHA-3 candidate."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    },
+    {
+      "id": "blake2-r139-why",
+      "entryId": "blake2-details",
+      "section": "why",
+      "statement": {
+        "zh": "BLAKE2 的设计目标是给软件提供一种比 SHA-2、SHA-3 更快、又不像 MD5 那样已被攻破的散列函数。论文的出发点是：SHA-3 在硬件上很快，但在当时常见的处理器上并没有全面超过 SHA-2；许多系统为了性能继续使用 MD5、SHA-1 或自定义函数。BLAKE2 以 SHA-3 候选 BLAKE 为基础，保留其安全结构，同时针对软件实现做减法。与 BLAKE 相比，论文列出的主要改动是：\n\n- 轮数从 BLAKE-512 的 16 轮降到 12 轮，从 BLAKE-256 的 14 轮降到 10 轮；论文称这在长数据上直接带来约 25% 和 29% 的加速；\n- G 的旋转从 (32,25,16,11) 改为 (32,24,16,63)，以利用 SSSE3 的字节混洗和左旋 1 位的廉价实现；\n- 去掉 G 内的额外常量，每个 G 省下两次异或和两次加载，约占算术指令的 16%；\n- 最小化填充，用最后一块标志替代部分填充的安全作用；\n- 改用小端序，计数器按字节而不是按位计数；\n- 用参数块编码摘要长度和密钥长度，并支持 BLAKE2 论文中的 salt、personalization 和树散列；\n- 常量从 24 个字减少到 8 个，论文称 BLAKE2 比 BLAKE 少用 32% 的 RAM。",
+        "en": "BLAKE2's design goal was a software hash function faster than SHA-2 and SHA-3 but not carrying MD5's known breaks.The paper's premise was that SHA-3 is fast in hardware but did not comprehensively beat SHA-2 on the processors of the time, while many systems kept using MD5, SHA-1 or custom functions for speed."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    },
+    {
+      "id": "blake2-r139-used",
+      "entryId": "blake2-details",
+      "section": "used",
+      "statement": {
+        "zh": "RFC 7693 为常用参数集规定了 ASN.1 OID 后缀，同一个 OID 同时用于有密钥和无密钥模式，因为密钥长度是参数而不是另一种算法：\n\n| 标识 | 目标平台 | 碰撞强度 | 摘要字节 | OID 后缀 |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64 位 | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64 位 | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64 位 | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64 位 | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32 位 | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32 位 | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32 位 | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32 位 | 2^128 | 32 | x.2.8 |\n\n其中 `x = 1.3.6.1.4.1.1722.12.2`。RFC 7693 没有给出完整测试向量集，但给出了两组逐轮示例和一套自检模块。",
+        "en": "RFC 7693 assigns ASN.1 OID suffixes for common parameter sets; the same OID serves keyed and unkeyed hashing because key length is a parameter, not a different algorithm:\n\n| Identifier | Target | Collision security | Digest bytes | OID suffix |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64-bit | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64-bit | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64-bit | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64-bit | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32-bit | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32-bit | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32-bit | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32-bit | 2^128 | 32 | x.2.8 |\n\nHere `x = \"1.3.6.1.4.1.1722.12.2\"`."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    },
+    {
+      "id": "blake2-r139-broken",
+      "entryId": "blake2-details",
+      "section": "broken",
+      "statement": {
+        "zh": "BLAKE2 的安全结论必须按来源限定。RFC 7693 明确说「We wish to make no independent assertion to its security in this document」（它不对 BLAKE2 的安全性作独立断言），只描述算法；设计论证在 BLAKE 与 BLAKE2 的论文中。本文不复述未经核实的第三方攻击，也不把没有公开的完整轮攻击写成绝对安全。输出长度直接决定碰撞强度。按 RFC 的参数表，BLAKE2b-512 的碰撞强度是 2^256，BLAKE2b-256 降到 2^128，BLAKE2b-160 只有 2^80；BLAKE2s-256 是 2^128，BLAKE2s-128 只有 2^64。把长摘要截短成短摘要并不能保持长摘要的强度，因为摘要长度是参数块的一部分：`BLAKE2b(nn=20)` 与 `BLAKE2b(nn=64)` 的前 20 字节是两个不同的函数。选择参数集时要按目标安全级别，而不是越长越好、截短也无所谓。BLAKE2 是快速散列，不是口令派生函数。它的设计目标是吞吐量，单次计算成本很低；用 BLAKE2 直接散列口令不能抵抗大规模离线猜测。Argon2 之所以以 BLAKE2b 为底层原语，是为了在快速压缩函数之上再构造内存硬和可并行的时间成本，而不是因为 BLAKE2 本身适合存口令。有密钥的 BLAKE2 是 MAC/PRF，不是认证加密。它不提供保密性，不接收 nonce，不隐藏消息长度，也不防止重放；协议需要这些性质时，必须另行使用加密、随机数或序列号。",
+        "en": "BLAKE2's security claims must be bounded by their sources.RFC 7693 explicitly states that it makes no independent assertion about BLAKE2's security; the design argument is in the BLAKE and BLAKE2 papers."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    },
+    {
+      "id": "blake2-r139-history",
+      "entryId": "blake2-details",
+      "section": "history",
+      "statement": {
+        "zh": "BLAKE2 由 Jean-Philippe Aumasson、Samuel Neves、Zooko Wilcox-O'Hearn 和 Christian Winnerlein 设计。设计论文《BLAKE2: simpler, smaller, fast as MD5》标注日期为 2013 年 1 月 29 日，论文说明它是对 SHA-3 最终候选 BLAKE 的改进，目标是在软件上更快，同时保持与 SHA-3 相近的安全水平。BLAKE 参加了 NIST 的 SHA-3 竞赛并进入最终候选名单。论文回顾说，BLAKE 最初提交时使用 14 轮（BLAKE-512）和 10 轮（BLAKE-256），后来的增加是受 BLAKE 的高速度推动，达到 16 轮和 14 轮；BLAKE2 又把轮数降回 12 轮和 10 轮，理由是已有的密码分析和对未来进展的合理假设表明，增加的四轮并没有带来有意义的安全提升。论文还说明 BLAKE2 去掉了 G 内的常量、简化了填充、改用小端序和按字节计数，并引入参数块和有密钥模式。2015 年 11 月，RFC 7693 以 Independent Submission 的 Informational 文档发布，作者是 J.-P.Aumasson 和 M-J.Saarinen（编辑）。RFC 把 BLAKE2b 和 BLAKE2s 的顺序模式、参数块、压缩函数、OID 和自检模块固定下来，并明确它不作独立的安全断言。",
+        "en": "BLAKE2 was designed by Jean-Philippe Aumasson, Samuel Neves, Zooko Wilcox-O'Hearn and Christian Winnerlein.The design paper \"BLAKE2: simpler, smaller, fast as MD5\" is dated 29 January 2013 and describes an improved version of BLAKE, a SHA-3 finalist, targeting faster software while keeping security similar to SHA-3."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    },
+    {
+      "id": "blake2-r139-refs",
+      "entryId": "blake2-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for BLAKE2 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for BLAKE2 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "blake2-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ssh2-details",
+  "sources": [
+    {
+      "id": "ssh2-wikipedia",
+      "title": "Wikipedia search entry for SSH 2.0 协议族",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SSH%202.0%20%E5%8D%8F%E8%AE%AE%E6%97%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SSH 2.0 协议族",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ssh2-r139-principle",
+          "entryId": "ssh2-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：SSH 2.0 协议族（SSH Protocol Version 2）。SSH 2.0 的传输层先交换版本串与 KEXINIT，再做 DH 得到共享秘密 K。交换哈希 H 把版本串、双方 KEXINIT 原始 payload、主机密钥、DH 的 e/f 与 K 按固定顺序拼接后哈希；首次 KEX 的 H 就是 session_id。随后用 K1=HASH(K||H||X||session_id) 起步，X 取 A–F 分别派生 c→s IV、s→c IV、c→s 加密键、s→c 加密键、c→s 完整性键、s→c 完整性键；长度不够时继续链式哈希扩展。",
+            "en": "**Protocol**: SSH Protocol Version 2 (SSH 2.0 协议族).The SSH 2.0 transport first exchanges version strings and KEXINIT, then runs DH to obtain the shared secret K."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        },
+        {
+          "id": "ssh2-r139-why",
+          "entryId": "ssh2-details",
+          "section": "why",
+          "statement": {
+            "zh": "H 同时绑定算法协商、主机身份和 DH 值，防止中间人替换其中任何一项；session_id 在 rekey 后保持不变，把整条连接的历史绑定在一起。六向密钥把方向与用途分开，避免用同一密钥同时做加密和 MAC；序列号隐式进入 MAC，让重放、重排和丢包都能被接收端发现。",
+            "en": "H binds algorithm negotiation, host identity and DH values, so a man-in-the-middle cannot replace any one of them; session_id stays unchanged across rekeys and ties the connection history together.The six keys separate direction and purpose, avoiding one key for both encryption and MAC; the sequence number enters the MAC implicitly, so replay, reordering and loss are visible to the receiver."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        },
+        {
+          "id": "ssh2-r139-used",
+          "entryId": "ssh2-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现按 RFC 4253 §7.2 的顺序扩展密钥：先算 K1，再算 K2、K3，直到六个密钥都够长；AES-128-CTR 取 16 字节加密键，HMAC-SHA256 取 32 字节完整性键。包层先组明文包，再算 MAC=MAC(K_mac, seq||packet_without_mac)，最后加密；AEAD 模式把 MAC 与加密合并，但仍要维护序列号。",
+            "en": "Implement the RFC 4253 §7.2 expansion order: compute K1, then K2 and K3, until all six keys are long enough; AES-128-CTR takes a 16-byte encryption key and HMAC-SHA256 a 32-byte integrity key.The packet layer assembles the plaintext packet, computes MAC=MAC(K_mac, seq||packet_without_mac), then encrypts; AEAD modes merge MAC and encryption but still maintain the sequence number."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        },
+        {
+          "id": "ssh2-r139-broken",
+          "entryId": "ssh2-details",
+          "section": "broken",
+          "statement": {
+            "zh": "独立 MAC 与加密的顺序决定安全边界：先加密再 MAC 更稳，先 MAC 再加密会给填充 oracle 留空间；CBC 模式与 SHA-1 已不应在新部署中使用。序列号回绕后不能重用旧 nonce；rekey 只换密钥，不重置序列号。主机密钥信任不在传输层内完成，known_hosts 或证书校验仍需单独做。### 形式模型。",
+            "en": "The order of MAC and encryption defines the boundary: encrypt-then-MAC is safer, while MAC-then-encrypt leaves room for padding oracles; CBC modes and SHA-1 should not be used in new deployments.After sequence wrap, old nonces must not be reused; rekey changes keys but not the sequence number."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        },
+        {
+          "id": "ssh2-r139-history",
+          "entryId": "ssh2-details",
+          "section": "history",
+          "statement": {
+            "zh": "SSH-1 在 1995 年前后出现，因 CRC 补偿攻击与协议缺陷被 SSH-2 取代；RFC 4250–4254 在 2006 年 1 月把 SSH-2 定型为传输层、认证、连接与架构四份文档。RFC 6668 在 2012 年增补 hmac-sha2-256 与 hmac-sha2-512；OpenSSH 等实现后续加入 AEAD、strict KEX 与后量子 KEX 扩展，但包层公式仍沿用 RFC 4253。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SSH 2.0 协议族的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "SSH-1 appeared around 1995 and was replaced by SSH-2 because of the CRC compensation attack and protocol flaws; RFC 4250–4254 in January 2006 fixed SSH-2 as transport, authentication, connection and architecture documents.RFC 6668 added hmac-sha2-256 and hmac-sha2-512 in 2012; OpenSSH and other implementations later added AEAD, strict KEX and post-quantum KEX extensions, while the packet formulas still follow RFC 4253."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        },
+        {
+          "id": "ssh2-r139-refs",
+          "entryId": "ssh2-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SSH 2.0 协议族.https://zh.wikipedia.org/w/index.php?search=SSH%202.0%20%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4251: The Secure Shell (SSH) Protocol Architecture.https://www.rfc-editor.org/rfc/rfc4251\n- Published standard/RFC for SSH 2.0 协议族.https://www.rfc-editor.org/rfc/rfc4251。",
+            "en": "- Wikipedia search entry for SSH 2.0 协议族.https://zh.wikipedia.org/w/index.php?search=SSH%202.0%20%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ssh2-reference-ref",
+            "ssh2-specific",
+            "ssh2-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "ssh2-wikipedia"
+      ]
+    },
+    {
+      "id": "ssh2-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ssh2-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "ssh2-specific",
+      "title": "RFC 4251: The Secure Shell (SSH) Protocol Architecture",
+      "url": "https://www.rfc-editor.org/rfc/rfc4251",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ssh2-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "ssh2-standard",
+      "title": "Published standard/RFC for SSH 2.0 协议族",
+      "url": "https://www.rfc-editor.org/rfc/rfc4251",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for SSH 2.0 协议族",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ssh2-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "ssh2-r139-principle",
+      "entryId": "ssh2-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：SSH 2.0 协议族（SSH Protocol Version 2）。SSH 2.0 的传输层先交换版本串与 KEXINIT，再做 DH 得到共享秘密 K。交换哈希 H 把版本串、双方 KEXINIT 原始 payload、主机密钥、DH 的 e/f 与 K 按固定顺序拼接后哈希；首次 KEX 的 H 就是 session_id。随后用 K1=HASH(K||H||X||session_id) 起步，X 取 A–F 分别派生 c→s IV、s→c IV、c→s 加密键、s→c 加密键、c→s 完整性键、s→c 完整性键；长度不够时继续链式哈希扩展。",
+        "en": "**Protocol**: SSH Protocol Version 2 (SSH 2.0 协议族).The SSH 2.0 transport first exchanges version strings and KEXINIT, then runs DH to obtain the shared secret K."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    },
+    {
+      "id": "ssh2-r139-why",
+      "entryId": "ssh2-details",
+      "section": "why",
+      "statement": {
+        "zh": "H 同时绑定算法协商、主机身份和 DH 值，防止中间人替换其中任何一项；session_id 在 rekey 后保持不变，把整条连接的历史绑定在一起。六向密钥把方向与用途分开，避免用同一密钥同时做加密和 MAC；序列号隐式进入 MAC，让重放、重排和丢包都能被接收端发现。",
+        "en": "H binds algorithm negotiation, host identity and DH values, so a man-in-the-middle cannot replace any one of them; session_id stays unchanged across rekeys and ties the connection history together.The six keys separate direction and purpose, avoiding one key for both encryption and MAC; the sequence number enters the MAC implicitly, so replay, reordering and loss are visible to the receiver."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    },
+    {
+      "id": "ssh2-r139-used",
+      "entryId": "ssh2-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现按 RFC 4253 §7.2 的顺序扩展密钥：先算 K1，再算 K2、K3，直到六个密钥都够长；AES-128-CTR 取 16 字节加密键，HMAC-SHA256 取 32 字节完整性键。包层先组明文包，再算 MAC=MAC(K_mac, seq||packet_without_mac)，最后加密；AEAD 模式把 MAC 与加密合并，但仍要维护序列号。",
+        "en": "Implement the RFC 4253 §7.2 expansion order: compute K1, then K2 and K3, until all six keys are long enough; AES-128-CTR takes a 16-byte encryption key and HMAC-SHA256 a 32-byte integrity key.The packet layer assembles the plaintext packet, computes MAC=MAC(K_mac, seq||packet_without_mac), then encrypts; AEAD modes merge MAC and encryption but still maintain the sequence number."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    },
+    {
+      "id": "ssh2-r139-broken",
+      "entryId": "ssh2-details",
+      "section": "broken",
+      "statement": {
+        "zh": "独立 MAC 与加密的顺序决定安全边界：先加密再 MAC 更稳，先 MAC 再加密会给填充 oracle 留空间；CBC 模式与 SHA-1 已不应在新部署中使用。序列号回绕后不能重用旧 nonce；rekey 只换密钥，不重置序列号。主机密钥信任不在传输层内完成，known_hosts 或证书校验仍需单独做。### 形式模型。",
+        "en": "The order of MAC and encryption defines the boundary: encrypt-then-MAC is safer, while MAC-then-encrypt leaves room for padding oracles; CBC modes and SHA-1 should not be used in new deployments.After sequence wrap, old nonces must not be reused; rekey changes keys but not the sequence number."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    },
+    {
+      "id": "ssh2-r139-history",
+      "entryId": "ssh2-details",
+      "section": "history",
+      "statement": {
+        "zh": "SSH-1 在 1995 年前后出现，因 CRC 补偿攻击与协议缺陷被 SSH-2 取代；RFC 4250–4254 在 2006 年 1 月把 SSH-2 定型为传输层、认证、连接与架构四份文档。RFC 6668 在 2012 年增补 hmac-sha2-256 与 hmac-sha2-512；OpenSSH 等实现后续加入 AEAD、strict KEX 与后量子 KEX 扩展，但包层公式仍沿用 RFC 4253。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SSH 2.0 协议族的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "SSH-1 appeared around 1995 and was replaced by SSH-2 because of the CRC compensation attack and protocol flaws; RFC 4250–4254 in January 2006 fixed SSH-2 as transport, authentication, connection and architecture documents.RFC 6668 added hmac-sha2-256 and hmac-sha2-512 in 2012; OpenSSH and other implementations later added AEAD, strict KEX and post-quantum KEX extensions, while the packet formulas still follow RFC 4253."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    },
+    {
+      "id": "ssh2-r139-refs",
+      "entryId": "ssh2-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SSH 2.0 协议族.https://zh.wikipedia.org/w/index.php?search=SSH%202.0%20%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4251: The Secure Shell (SSH) Protocol Architecture.https://www.rfc-editor.org/rfc/rfc4251\n- Published standard/RFC for SSH 2.0 协议族.https://www.rfc-editor.org/rfc/rfc4251。",
+        "en": "- Wikipedia search entry for SSH 2.0 协议族.https://zh.wikipedia.org/w/index.php?search=SSH%202.0%20%E5%8D%8F%E8%AE%AE%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ssh2-reference-ref",
+        "ssh2-specific",
+        "ssh2-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tpm-details",
+  "sources": [
+    {
+      "id": "tpm-wikipedia",
+      "title": "Wikipedia search entry for 可信平台模块",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%B9%B3%E5%8F%B0%E6%A8%A1%E5%9D%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 可信平台模块",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tpm-r139-principle",
+          "entryId": "tpm-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：可信平台模块（Trusted Platform Module）。留存语料里最直白的机制句来自 NIST SP 800-193 的平台器件清单：TPM 是第 2 项，定义是一对能力，原文为 「A TPM [4] is a security coprocessor capable of securely storing and using cryptographic keys and measurements of the state of the platform.」（TPM 是一种安全协处理器，能够安全地存储并使用密码密钥以及反映平台状态的度量值）。方括号里的 4 是该文档自己的参考文献编号，指向 sp800-193.txt:894-900 列出的 TCG 规范。同一行由这组能力引出三项用途，「These capabilities can be used, among other things, to secure data stored on the system, provide a strong device identity, and to attest the state of the system.」（这些能力可用于保护系统上的数据、提供强设备身份、证明系统状态）。也就是说，这一定义把两样东西放进同一个可寻址部件：平台可以使用、但在该部件自身保护之下的密钥，以及该部件能够签名的平台状态记录。",
+            "en": "**Algorithm**: Trusted Platform Module (可信平台模块).The plainest mechanism sentence in the retained corpus is NIST SP 800-193's platform-device list, where the TPM is item 2 and the definition is a capability pair: \"A TPM [4] is a security coprocessor capable of securely storing and using cryptographic keys and measurements of the state of the platform.\" The bracketed 4 is this document's own reference number for the TCG specification, given at sp800-193.txt:894-900."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        },
+        {
+          "id": "tpm-r139-why",
+          "entryId": "tpm-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么要单独规定一个部件，而不是写一段程序？RFC 4949 的答案藏在该词条规定这个名字指代什么的那段措辞里。rfc4949.txt:17927-17930 的条目原文是 「The name of a specification, published by the TCG, for a       microcontroller that can store secured information; and also the       general name of implementations of that specification.」（一个规范的名称，由 TCG 发布，规定一种可存储受保护信息的微控制器；同时也是该规范各实现形式的通用名称）——引文里的宽空格是这个文件给续行保留的六个空格缩进，照原样带出。由此读出两点设计后果。第一，同一个缩写既指文档又指器件类别，所以 rfc4949.txt:17343-17344 那条 $ TPM 只能写 「See: Trusted Platform Module.」（见 Trusted Platform Module）。第二，发布者是一套标准组织而非某家厂商：TCG 在 rfc4949.",
+            "en": "Why a separately specified component rather than a program?RFC 4949's answer is inside what the name denotes."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        },
+        {
+          "id": "tpm-r139-used",
+          "entryId": "tpm-details",
+          "section": "used",
+          "statement": {
+            "zh": "本语料里最明确的部署陈述来自 W3C 的 Web Authentication Level 3，它把 TPM 列为合规认证器可以运行的位置之一：「on an on-device Secure Execution Environment, Trusted Platform Module (TPM), or a Secure Element (SE)」（在设备内的安全执行环境、可信平台模块（TPM）或安全单元（SE）上）（webauthn3.html:1506）。当认证器内嵌在客户端时，抽象模型把该模块变成其中最可信的部分：「This is particularly important for authenticators that are embedded in the WebAuthn client, as in those cases this cryptographic module (which may, for example, be a TPM) could be considered more trustworthy than the rest of the authenticator.」（这对内嵌于 WebAuthn 客户端的认证器尤其重要，因为此时该密码模块（例如可以是 TPM）可被视为比认证器的其余部分更可信）（webauthn3.html:5680-5682）。",
+            "en": "The clearest deployment statement in this corpus is W3C's Web Authentication Level 3, which treats a TPM as one of the places a conforming authenticator may execute: \"on an on-device Secure Execution Environment, Trusted Platform Module (TPM), or a Secure Element (SE)\" (webauthn3.html:1506).Where the authenticator is embedded in the client, the abstract model makes the module the strongest part of it: \"This is particularly important for authenticators that are embedded in the WebAuthn client, as in those cases this cryptographic module (which may, for example, be a TPM) could be considered more trustworthy than the rest of the authenticator.\" (webauthn3.html:5680-5682)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        },
+        {
+          "id": "tpm-r139-broken",
+          "entryId": "tpm-details",
+          "section": "broken",
+          "statement": {
+            "zh": "留存件给出的边界，是该部件仅仅存在并不满足的条件。SP 800-193 把该模块自身列为必须受保护的对象，而不是一串保障的来源：「While not all platforms include or make use of a TPM, on any system in which a TPM is included and used, its firmware must be protected given its criticality in helping ensure the trustworthiness of the platform.」（并非所有平台都包含或使用 TPM；但凡是包含并使用 TPM 的系统，其固件必须受到保护，因为它对保障平台可信性至关重要），紧接着 「TPMs also contain non-volatile memory storage which may contain critical data and, if so, must be protected.」（TPM 还含有非易失存储，其中可能存放关键数据，若是如此就必须加以保护）（两句都在 sp800-193.txt:222）。fTPM 这一实现形式在同一页面上扩大了受攻击面：功能角色改由 「firmware executed on a platform host controller or other microcontroller」（运行在平台主控制器或其它微控制器上的固件） 承担（sp800-193.txt:231），即与主机共用硅片的代码。",
+            "en": "The limits the retained sources state are conditions the module does not meet by existing.SP 800-193 makes the module itself an object that has to be protected rather than a source of guarantees: \"While not all platforms include or make use of a TPM, on any system in which a TPM is included and used, its firmware must be protected given its criticality in helping ensure the trustworthiness of the platform.\" and, in the next sentence, \"TPMs also contain non-volatile memory storage which may contain critical data and, if so, must be protected.\" (both sp800-193.txt:222)."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        },
+        {
+          "id": "tpm-r139-history",
+          "entryId": "tpm-details",
+          "section": "history",
+          "statement": {
+            "zh": "三份留存件只能给自己定年，对该器件的首次出现一无所言。最早的是 RFC 4949：第 8 行带着 「August 2007」（2007 年 8 月），第 10 行写着 「Obsoletes: 2828」（取代 2828），第 14 行的标题是 「Internet Security Glossary, Version 2」（互联网安全术语表 第二版），同一串字在页眉里反复出现（第 17924 行把它与同一个日期并列）。该文档已经把这个词当作既成缩写来记录，并点名了发布它的标准组织（17927-17931 行），却没有为它所指的规范给出年份——这正是术语表能提供内容的上限。下一个可定年的留存件是 SP 800-193，第 2 行是其标题，第 11 行署 May 2018；它把 TCG 的库规范列为参考文献 [4]（sp800-193.txt:894-900，访问日期印作 5/2/18），这是本语料唯一登记了路径的 TCG 文档。最新的是 WebAuthn Level 3 留存件，webauthn3.html:972 印着 25 August 2026，其中带有 tpm 证明格式与一串 TPMv2 分部规范的参考文献。这些行里没有任何一行印出 TPM 规范的首次发布年份、版本沿革或提出者姓名，因此该条目目不归因发明者、也不给出起源日期；目录行自带的那条未被留存的 TCG 规范书目，在这里不构成证据。",
+            "en": "The three registered files date themselves and say nothing about the module's first appearance.The earliest is RFC 4949: its header carries \"August 2007\" at line 8 and \"Obsoletes: 2828\" at line 10, and its title line at 14 reads \"Internet Security Glossary, Version 2\", a string that recurs on the page imprints (line 17924 pairs it with the same date)."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        },
+        {
+          "id": "tpm-r139-refs",
+          "entryId": "tpm-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 可信平台模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%B9%B3%E5%8F%B0%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 可信平台模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%B9%B3%E5%8F%B0%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tpm-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "tpm-wikipedia"
+      ]
+    },
+    {
+      "id": "tpm-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tpm-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "tpm-r139-principle",
+      "entryId": "tpm-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：可信平台模块（Trusted Platform Module）。留存语料里最直白的机制句来自 NIST SP 800-193 的平台器件清单：TPM 是第 2 项，定义是一对能力，原文为 「A TPM [4] is a security coprocessor capable of securely storing and using cryptographic keys and measurements of the state of the platform.」（TPM 是一种安全协处理器，能够安全地存储并使用密码密钥以及反映平台状态的度量值）。方括号里的 4 是该文档自己的参考文献编号，指向 sp800-193.txt:894-900 列出的 TCG 规范。同一行由这组能力引出三项用途，「These capabilities can be used, among other things, to secure data stored on the system, provide a strong device identity, and to attest the state of the system.」（这些能力可用于保护系统上的数据、提供强设备身份、证明系统状态）。也就是说，这一定义把两样东西放进同一个可寻址部件：平台可以使用、但在该部件自身保护之下的密钥，以及该部件能够签名的平台状态记录。",
+        "en": "**Algorithm**: Trusted Platform Module (可信平台模块).The plainest mechanism sentence in the retained corpus is NIST SP 800-193's platform-device list, where the TPM is item 2 and the definition is a capability pair: \"A TPM [4] is a security coprocessor capable of securely storing and using cryptographic keys and measurements of the state of the platform.\" The bracketed 4 is this document's own reference number for the TCG specification, given at sp800-193.txt:894-900."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    },
+    {
+      "id": "tpm-r139-why",
+      "entryId": "tpm-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么要单独规定一个部件，而不是写一段程序？RFC 4949 的答案藏在该词条规定这个名字指代什么的那段措辞里。rfc4949.txt:17927-17930 的条目原文是 「The name of a specification, published by the TCG, for a       microcontroller that can store secured information; and also the       general name of implementations of that specification.」（一个规范的名称，由 TCG 发布，规定一种可存储受保护信息的微控制器；同时也是该规范各实现形式的通用名称）——引文里的宽空格是这个文件给续行保留的六个空格缩进，照原样带出。由此读出两点设计后果。第一，同一个缩写既指文档又指器件类别，所以 rfc4949.txt:17343-17344 那条 $ TPM 只能写 「See: Trusted Platform Module.」（见 Trusted Platform Module）。第二，发布者是一套标准组织而非某家厂商：TCG 在 rfc4949.",
+        "en": "Why a separately specified component rather than a program?RFC 4949's answer is inside what the name denotes."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    },
+    {
+      "id": "tpm-r139-used",
+      "entryId": "tpm-details",
+      "section": "used",
+      "statement": {
+        "zh": "本语料里最明确的部署陈述来自 W3C 的 Web Authentication Level 3，它把 TPM 列为合规认证器可以运行的位置之一：「on an on-device Secure Execution Environment, Trusted Platform Module (TPM), or a Secure Element (SE)」（在设备内的安全执行环境、可信平台模块（TPM）或安全单元（SE）上）（webauthn3.html:1506）。当认证器内嵌在客户端时，抽象模型把该模块变成其中最可信的部分：「This is particularly important for authenticators that are embedded in the WebAuthn client, as in those cases this cryptographic module (which may, for example, be a TPM) could be considered more trustworthy than the rest of the authenticator.」（这对内嵌于 WebAuthn 客户端的认证器尤其重要，因为此时该密码模块（例如可以是 TPM）可被视为比认证器的其余部分更可信）（webauthn3.html:5680-5682）。",
+        "en": "The clearest deployment statement in this corpus is W3C's Web Authentication Level 3, which treats a TPM as one of the places a conforming authenticator may execute: \"on an on-device Secure Execution Environment, Trusted Platform Module (TPM), or a Secure Element (SE)\" (webauthn3.html:1506).Where the authenticator is embedded in the client, the abstract model makes the module the strongest part of it: \"This is particularly important for authenticators that are embedded in the WebAuthn client, as in those cases this cryptographic module (which may, for example, be a TPM) could be considered more trustworthy than the rest of the authenticator.\" (webauthn3.html:5680-5682)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    },
+    {
+      "id": "tpm-r139-broken",
+      "entryId": "tpm-details",
+      "section": "broken",
+      "statement": {
+        "zh": "留存件给出的边界，是该部件仅仅存在并不满足的条件。SP 800-193 把该模块自身列为必须受保护的对象，而不是一串保障的来源：「While not all platforms include or make use of a TPM, on any system in which a TPM is included and used, its firmware must be protected given its criticality in helping ensure the trustworthiness of the platform.」（并非所有平台都包含或使用 TPM；但凡是包含并使用 TPM 的系统，其固件必须受到保护，因为它对保障平台可信性至关重要），紧接着 「TPMs also contain non-volatile memory storage which may contain critical data and, if so, must be protected.」（TPM 还含有非易失存储，其中可能存放关键数据，若是如此就必须加以保护）（两句都在 sp800-193.txt:222）。fTPM 这一实现形式在同一页面上扩大了受攻击面：功能角色改由 「firmware executed on a platform host controller or other microcontroller」（运行在平台主控制器或其它微控制器上的固件） 承担（sp800-193.txt:231），即与主机共用硅片的代码。",
+        "en": "The limits the retained sources state are conditions the module does not meet by existing.SP 800-193 makes the module itself an object that has to be protected rather than a source of guarantees: \"While not all platforms include or make use of a TPM, on any system in which a TPM is included and used, its firmware must be protected given its criticality in helping ensure the trustworthiness of the platform.\" and, in the next sentence, \"TPMs also contain non-volatile memory storage which may contain critical data and, if so, must be protected.\" (both sp800-193.txt:222)."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    },
+    {
+      "id": "tpm-r139-history",
+      "entryId": "tpm-details",
+      "section": "history",
+      "statement": {
+        "zh": "三份留存件只能给自己定年，对该器件的首次出现一无所言。最早的是 RFC 4949：第 8 行带着 「August 2007」（2007 年 8 月），第 10 行写着 「Obsoletes: 2828」（取代 2828），第 14 行的标题是 「Internet Security Glossary, Version 2」（互联网安全术语表 第二版），同一串字在页眉里反复出现（第 17924 行把它与同一个日期并列）。该文档已经把这个词当作既成缩写来记录，并点名了发布它的标准组织（17927-17931 行），却没有为它所指的规范给出年份——这正是术语表能提供内容的上限。下一个可定年的留存件是 SP 800-193，第 2 行是其标题，第 11 行署 May 2018；它把 TCG 的库规范列为参考文献 [4]（sp800-193.txt:894-900，访问日期印作 5/2/18），这是本语料唯一登记了路径的 TCG 文档。最新的是 WebAuthn Level 3 留存件，webauthn3.html:972 印着 25 August 2026，其中带有 tpm 证明格式与一串 TPMv2 分部规范的参考文献。这些行里没有任何一行印出 TPM 规范的首次发布年份、版本沿革或提出者姓名，因此该条目目不归因发明者、也不给出起源日期；目录行自带的那条未被留存的 TCG 规范书目，在这里不构成证据。",
+        "en": "The three registered files date themselves and say nothing about the module's first appearance.The earliest is RFC 4949: its header carries \"August 2007\" at line 8 and \"Obsoletes: 2828\" at line 10, and its title line at 14 reads \"Internet Security Glossary, Version 2\", a string that recurs on the page imprints (line 17924 pairs it with the same date)."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    },
+    {
+      "id": "tpm-r139-refs",
+      "entryId": "tpm-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 可信平台模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%B9%B3%E5%8F%B0%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 可信平台模块.https://zh.wikipedia.org/w/index.php?search=%E5%8F%AF%E4%BF%A1%E5%B9%B3%E5%8F%B0%E6%A8%A1%E5%9D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tpm-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

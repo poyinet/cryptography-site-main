@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R123 formula-level deepening for venona-cryptanalysis-details.",
+  "entries": [
+    {
+      "id": "venona-cryptanalysis-details",
+      "inventoryIds": [
+        "venona-cryptanalysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条把 VENONA 写成“码本 + OTP + 重复页深度”的公式链，给出约 35,000 页重复、约 3,000 条翻译、1943–1980 时间线与正确 OTP 的不可破边界。",
+        "en": "This entry makes VENONA a formula chain of codebook, OTP and duplicate-page depth, with about 35,000 duplicate pages, about 3,000 translations, the 1943–1980 timeline and the unbreakability boundary of a correct OTP."
+      },
+      "title": {
+        "zh": "VENONA 破译",
+        "en": "VENONA Cryptanalysis"
+      },
+      "claimIds": [
+        "venona-cryptanalysis-r139-principle",
+        "venona-cryptanalysis-r139-why",
+        "venona-cryptanalysis-r139-used",
+        "venona-cryptanalysis-r139-broken",
+        "venona-cryptanalysis-r139-history",
+        "venona-cryptanalysis-r139-refs"
+      ],
+      "sourceIds": [
+        "venona-cryptanalysis-wikipedia",
+        "venona-cryptanalysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "one-time-pad-reuse"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "venona-cryptanalysis-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "VENONA 的四步链：定位重复页、对齐相减、恢复码组、翻译校验。",
+            "en": "Four-step VENONA chain: locate duplicate pages, align and subtract, recover code groups, translate and verify."
+          },
+          "alt": {
+            "zh": "四步公式级机制：定位重复页 → 对齐并相减 → 恢复码组 → 翻译与校验；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: locate duplicate page → align and subtract → recover code groups → translate and verify; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/venona-cryptanalysis-mechanism.zh.svg",
+            "en": "assets/venona-cryptanalysis-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "b653449572980cbd3c3b23c39d3716a63e307aa018b0f7667fa334819c9c9839",
+            "en": "2e8115e4e6e004813ada77c90060e84b531781c3f1a0aee05e89105147c78bf8"
+          }
+        },
+        {
+          "id": "venona-cryptanalysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "VENONA 破译 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for VENONA Cryptanalysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "VENONA 破译 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for VENONA Cryptanalysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/venona-cryptanalysis-details-r138-model.zh.svg",
+            "en": "assets/venona-cryptanalysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "826219c29c9d3cd7f41798830987b25a14c859807157ff8f831c58ca4118d0fc",
+            "en": "f759831f595aeaed32d1aeee67b5d35d22123ebc0776a85a6554aba61a3ac312"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：VENONA 破译（VENONA Cryptanalysis）。### 码本 + 一次性密码本\n\n苏联商务、外交与情报电文先查码本得 x_i，再用一次性密码本 k_i 逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。若 k_i 真随机、只使用一次且与 x_i 等长，则密文对消息是完美保密的；VENONA 的突破口不是算法，而是密码本页被重复使用。### 复用与深度\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。掩码被消去，剩下两个码本码组的差。重复页越多、消息越长，深度越大；分析者再借助码本频率、已知片段和英文/俄文 crib，恢复码组含义并翻译。",
+          "why": "VENONA 证明一次性密码本的安全条件是不可重复使用。它把“密钥复用”从抽象禁忌变成可操作的历史案例：一旦复用，OTP 就退化为可统计分析的 running-key 问题。JN-25 的加法簿本来就会重复使用；VENONA 的 OTP 本应只用一次，却因约 35,000 页重复制造出深度。两者的制度背景与失效性质不同，不能都写成“加法簿复用”。",
+          "used": "1.找重复页：用相同位置的密文序列匹配，定位同一页。2.对齐消息，逐位相减得到码本差分。3.用 depth、频率和 crib 恢复码组。4.反查码本，得到明文；对仍不通的片段做语言猜测。5.记录覆盖率和翻译置信度。### 不能怎么用\n\n不能把部分解密说成完整原文；不能忽略码本更换和抄收错误；不能把 VENONA 的结果当作 OTP 算法本身可破。",
+          "broken": "1.正确使用 OTP 时无解：密钥真随机、不重复、不短于消息，VENONA 方法失效。2.复用页稀少：约 35,000 页重复密钥相对巨量流量仍是少数；只有部分电文可读。3.码本更换/编译错误：码组含义变化会产生系统性误读。4.翻译瓶颈：即使码组恢复，人名、缩写和俄语语法仍可能误判；不能把部分解密当成完整原文。",
+          "history": "1943 年 2 月，美国陆军信号情报局启动后来代号 VENONA 的秘密项目；1945 年出现深度线索，1946 年 2 月由 Meredith Gardner 读出首条消息；项目持续到 1980 年 10 月。1995 年 7 月起分六批公开约 3,000 条翻译。公开资料确认约 35,000 页重复密钥，但并非所有重复页都可利用；该条目只写机制、规模与已公开的时间线，不把情报史结论扩大为密码学定理。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：VENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 VENONA 破译 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for VENONA 破译. https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nVENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: VENONA Cryptanalysis (VENONA 破译). ### Codebook plus one-time pad\n\nSoviet trade, diplomatic and intelligence messages were looked up in a codebook to obtain x_i, then superenciphered with a one-time-pad stream k_i by digitwise addition modulo 10:\n\nc_i=(x_i+k_i) mod 10. If k_i is truly random, used once and as long as x_i, the ciphertext is perfectly secret about the message; VENONA’s opening was not the algorithm but reuse of pad pages. ### Reuse and depth\n\nWhen two messages reuse the same page:\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10. The mask cancels, leaving differences between two codebook groups. More duplicate pages and longer messages give more depth; codebook frequency, known fragments and English/Russian cribs then recover group meanings and translations.",
+          "why": "VENONA shows that the security condition of a one-time pad is non-reuse. It turns “key reuse” from an abstract prohibition into an operational case: once reused, the OTP degenerates into a statistically analyzable running-key problem.\n\nJN-25’s additive book was reused by design; VENONA’s OTP should have been used once but about 35,000 duplicate pages created depth. Their institutional settings and failure modes differ, and both should not be described as “additive-book reuse”.",
+          "used": "1. Find duplicate pages by matching ciphertext sequences at the same positions. 2. Align messages and subtract digitwise to obtain codebook differences. 3. Recover groups with depth, frequency and cribs. 4. Look up the codebook to obtain plaintext; use language guesses for unresolved fragments. 5. Record coverage and translation confidence.\n\nDo not present a partial decrypt as the full text; do not ignore codebook changes and copying errors; do not claim the OTP algorithm itself was broken.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Correct OTP use is unbreakable: truly random, non-reused, message-length keys defeat VENONA methods. 2. Duplicate pages are rare: about 35,000 duplicated pages are still a minority of huge traffic, and only part of the messages can be read. 3. Codebook changes or compilation errors produce systematic misreads. 4. Translation bottleneck: even recovered groups can be misread in names, abbreviations and Russian grammar; a partial decrypt is not the full text.",
+          "history": "In February 1943 the U.S. Army Signal Intelligence Service began the secret program later codenamed VENONA; depth clues appeared in 1945, and Meredith Gardner read the first message in February 1946; the project ran until October 1980. From July 1995, six releases made about 3,000 translations public.\n\nPublic records confirm about 35,000 duplicate key pages, but not every duplicate page was exploitable. This entry covers the mechanism, scale and public timeline; it does not turn intelligence-history conclusions into cryptographic theorems.",
+          "refs": "- Wikipedia search entry for VENONA 破译. https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nVENONA Cryptanalysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "venona-cryptanalysis-r139-formal",
+          "entryId": "venona-cryptanalysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：VENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 VENONA 破译 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "venona-cryptanalysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "venona-cryptanalysis-r139-formal"
+      ],
+      "sources": [
+        "venona-cryptanalysis-wikipedia",
+        "venona-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "venona-cryptanalysis-r139-formal",
+      "entryId": "venona-cryptanalysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：VENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 VENONA 破译 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "venona-cryptanalysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

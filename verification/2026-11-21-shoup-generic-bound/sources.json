@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "shoup-generic-bound-details",
+  "sources": [
+    {
+      "id": "shoup-generic-bound-wikipedia",
+      "title": "Wikipedia search entry for Shoup 通用界",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Shoup%20%E9%80%9A%E7%94%A8%E7%95%8C",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Shoup 通用界",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "shoup-generic-bound-r139-principle",
+          "entryId": "shoup-generic-bound-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Shoup 通用界（Shoup's Generic Group Bound）。### 通用群模型\n\n在通用群模型（generic group model, GGM）中，群元素不是可读的整数或有理点，而是随机编码 σ(g)。算法只能做三件事：对已知元素做群运算、比较两个编码是否相等、接收挑战编码。它不能利用具体群的特殊性质（例如有限域元素的代数结构、椭圆曲线的坐标方程）。### Shoup 的界\n\n设群阶为素数 p，算法做 m 次群运算，挑战为 σ(g) 与 σ(g^x)。Shoup 证明\nPr[A(p, σ(g), σ(g^x)) = x] ≤ (m+2)^2/(2p) + 1/p。证明思路：模拟器维护编码表与线性多项式 aX+b 的列表；每次群运算对应多项式加法。若两个不同多项式得到同一随机编码，算法就可能“碰巧”区分它们；这种碰撞的概率由 (m+2)^2/(2p) 控制。若没有碰撞，算法看到的所有编码都与 x 独立，无法以高于 1/p 的概率猜出 x。### 从概率界到运算下界\n\n要让成功概率非可忽略，必须让 (m+2)^2/(2p) 达到常数，即 m=Ω(√p)。所以任何通用算法解离散对数都需要 Ω(√p) 次群运算。这个下界与 baby-step giant-step、Pollard rho 的上界只差常数，因此在这些群中通用攻击已经渐进最优。",
+            "en": "**Theorem**: Shoup's Generic Group Bound (Shoup 通用界).### The generic group model\n\nIn the generic group model (GGM), group elements are not readable integers or rational points; they are random encodings σ(g)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "shoup-generic-bound-r139-why",
+          "entryId": "shoup-generic-bound-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么它支撑椭圆曲线安全\n\n在椭圆曲线群中，目前没有已知的非通用离散对数算法；最好的攻击是 Pollard rho，约 √p 次群运算。Shoup 的界说明：只要算法不利用曲线坐标的特殊代数结构，√p 就是硬下限。这正是 256 位曲线提供约 128 位安全的原因：p≈2^256，√p≈2^128。### 它不能证明什么\n\nGGM 是一个模型，不是对所有算法的定理。有限域 F_p^* 上的 index calculus 利用了域元素的代数结构，运行时间亚指数，完全绕过 GGM。Shoup 的界也不能排除针对特定曲线的特殊攻击、配对攻击或量子攻击。把“GGM 下界”当成“DLP 在所有群中都难”是常见误读。### 对参数选择的意义\n\nGGM 下界给出的是“通用攻击的成本”，不是“最佳攻击的成本”。选择曲线时还要检查：曲线是否被安全标准收录、是否抗配对/扭曲安全、是否满足 CM 判别式、是否经过可信参数生成。",
+            "en": "### Why it supports elliptic-curve security\n\nIn elliptic-curve groups there is no known non-generic discrete-log algorithm; the best attacks are Pollard rho, about √p group operations.Shoup’s bound says that as long as an algorithm does not exploit the special algebraic structure of curve coordinates, √p is a hard lower bound."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "shoup-generic-bound-r139-used",
+          "entryId": "shoup-generic-bound-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 怎样引用这条界\n\n1.先说明模型：算法是否只使用群运算与等值测试。2.给出群阶 p 与查询数 m，代入 (m+2)^2/(2p)+1/p。3.把概率界换算成运算下界：m=Ω(√p)。4.与已知上界比较：BSGS/Pollard 是否只差常数。5.明确未覆盖的算法类别：index calculus、特殊曲线攻击、量子算法。### 典型用途\n\n- 椭圆曲线参数选择：用 √p 估计通用攻击成本。- 证明协议在 GGM 中的安全性：把敌手限制为通用算法。- 教学：说明为什么“只知道群运算”会限制攻击者，以及模型假设何时不成立。",
+            "en": "### How to cite the bound\n\n1.State the model: does the algorithm use only group operations and equality tests?"
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "shoup-generic-bound-r139-broken",
+          "entryId": "shoup-generic-bound-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 边界与失效条件\n\n1.模型限制。真实算法可以读取群元素的编码，利用域运算、配对、坐标方程；这些都不在 GGM 中。2.具体群的反例。F_p^* 上的 index calculus 亚指数；某些特殊曲线有更快攻击。GGM 下界不适用于它们。3.预处理与多方计算。Shoup 的原始界针对在线查询；若允许离线预处理或预计算表，界的形式会变。4.m 的含义。界按群运算次数计，不按比特运算或内存访问计；不同成本模型会改变常数。5.量子算法。GGM 是经典模型；量子敌手可以在叠加查询下获得不同界，不能直接套用。6.概率界不是安全证明。它只说明通用算法成功率低；协议的其他部分仍可能泄漏 x。",
+            "en": "### Boundaries and failure conditions\n\n1.Model restriction."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "shoup-generic-bound-r139-history",
+          "entryId": "shoup-generic-bound-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1994 与 1997\n\nNechaev 在 1994 年给出确定性通用算法的下界；Shoup 在 1997 年 EUROCRYPT 上给出概率通用算法的界，覆盖离散对数与相关问题，并给出修正错误 Diffie–Hellman 预言机的方法。这个结果后来成为 GGM 证明的标准工具。### 标准化时代\n\nelliptic-curve 标准化（SECG、NIST、Brainpool、GM/T）用 √p 估计通用攻击成本。Shoup 的界因此不只是理论结果，也进入了曲线参数选择的实践语言。",
+            "en": "### 1994 and 1997\n\nNechaev gave a lower bound for deterministic generic algorithms in 1994; Shoup gave the probabilistic bound at EUROCRYPT 1997, covering discrete logarithm and related problems, and added a method for correcting a faulty Diffie–Hellman oracle.The result became a standard tool for GGM proofs."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        },
+        {
+          "id": "shoup-generic-bound-r139-refs",
+          "entryId": "shoup-generic-bound-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Shoup 通用界.https://zh.wikipedia.org/w/index.php?search=Shoup%20%E9%80%9A%E7%94%A8%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Shoup 通用界.https://zh.wikipedia.org/w/index.php?search=Shoup%20%E9%80%9A%E7%94%A8%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "shoup-generic-bound-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "shoup-generic-bound-wikipedia"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "shoup-generic-bound-r139-principle",
+      "entryId": "shoup-generic-bound-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Shoup 通用界（Shoup's Generic Group Bound）。### 通用群模型\n\n在通用群模型（generic group model, GGM）中，群元素不是可读的整数或有理点，而是随机编码 σ(g)。算法只能做三件事：对已知元素做群运算、比较两个编码是否相等、接收挑战编码。它不能利用具体群的特殊性质（例如有限域元素的代数结构、椭圆曲线的坐标方程）。### Shoup 的界\n\n设群阶为素数 p，算法做 m 次群运算，挑战为 σ(g) 与 σ(g^x)。Shoup 证明\nPr[A(p, σ(g), σ(g^x)) = x] ≤ (m+2)^2/(2p) + 1/p。证明思路：模拟器维护编码表与线性多项式 aX+b 的列表；每次群运算对应多项式加法。若两个不同多项式得到同一随机编码，算法就可能“碰巧”区分它们；这种碰撞的概率由 (m+2)^2/(2p) 控制。若没有碰撞，算法看到的所有编码都与 x 独立，无法以高于 1/p 的概率猜出 x。### 从概率界到运算下界\n\n要让成功概率非可忽略，必须让 (m+2)^2/(2p) 达到常数，即 m=Ω(√p)。所以任何通用算法解离散对数都需要 Ω(√p) 次群运算。这个下界与 baby-step giant-step、Pollard rho 的上界只差常数，因此在这些群中通用攻击已经渐进最优。",
+        "en": "**Theorem**: Shoup's Generic Group Bound (Shoup 通用界).### The generic group model\n\nIn the generic group model (GGM), group elements are not readable integers or rational points; they are random encodings σ(g)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-r139-why",
+      "entryId": "shoup-generic-bound-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么它支撑椭圆曲线安全\n\n在椭圆曲线群中，目前没有已知的非通用离散对数算法；最好的攻击是 Pollard rho，约 √p 次群运算。Shoup 的界说明：只要算法不利用曲线坐标的特殊代数结构，√p 就是硬下限。这正是 256 位曲线提供约 128 位安全的原因：p≈2^256，√p≈2^128。### 它不能证明什么\n\nGGM 是一个模型，不是对所有算法的定理。有限域 F_p^* 上的 index calculus 利用了域元素的代数结构，运行时间亚指数，完全绕过 GGM。Shoup 的界也不能排除针对特定曲线的特殊攻击、配对攻击或量子攻击。把“GGM 下界”当成“DLP 在所有群中都难”是常见误读。### 对参数选择的意义\n\nGGM 下界给出的是“通用攻击的成本”，不是“最佳攻击的成本”。选择曲线时还要检查：曲线是否被安全标准收录、是否抗配对/扭曲安全、是否满足 CM 判别式、是否经过可信参数生成。",
+        "en": "### Why it supports elliptic-curve security\n\nIn elliptic-curve groups there is no known non-generic discrete-log algorithm; the best attacks are Pollard rho, about √p group operations.Shoup’s bound says that as long as an algorithm does not exploit the special algebraic structure of curve coordinates, √p is a hard lower bound."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-r139-used",
+      "entryId": "shoup-generic-bound-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 怎样引用这条界\n\n1.先说明模型：算法是否只使用群运算与等值测试。2.给出群阶 p 与查询数 m，代入 (m+2)^2/(2p)+1/p。3.把概率界换算成运算下界：m=Ω(√p)。4.与已知上界比较：BSGS/Pollard 是否只差常数。5.明确未覆盖的算法类别：index calculus、特殊曲线攻击、量子算法。### 典型用途\n\n- 椭圆曲线参数选择：用 √p 估计通用攻击成本。- 证明协议在 GGM 中的安全性：把敌手限制为通用算法。- 教学：说明为什么“只知道群运算”会限制攻击者，以及模型假设何时不成立。",
+        "en": "### How to cite the bound\n\n1.State the model: does the algorithm use only group operations and equality tests?"
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-r139-broken",
+      "entryId": "shoup-generic-bound-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 边界与失效条件\n\n1.模型限制。真实算法可以读取群元素的编码，利用域运算、配对、坐标方程；这些都不在 GGM 中。2.具体群的反例。F_p^* 上的 index calculus 亚指数；某些特殊曲线有更快攻击。GGM 下界不适用于它们。3.预处理与多方计算。Shoup 的原始界针对在线查询；若允许离线预处理或预计算表，界的形式会变。4.m 的含义。界按群运算次数计，不按比特运算或内存访问计；不同成本模型会改变常数。5.量子算法。GGM 是经典模型；量子敌手可以在叠加查询下获得不同界，不能直接套用。6.概率界不是安全证明。它只说明通用算法成功率低；协议的其他部分仍可能泄漏 x。",
+        "en": "### Boundaries and failure conditions\n\n1.Model restriction."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-r139-history",
+      "entryId": "shoup-generic-bound-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1994 与 1997\n\nNechaev 在 1994 年给出确定性通用算法的下界；Shoup 在 1997 年 EUROCRYPT 上给出概率通用算法的界，覆盖离散对数与相关问题，并给出修正错误 Diffie–Hellman 预言机的方法。这个结果后来成为 GGM 证明的标准工具。### 标准化时代\n\nelliptic-curve 标准化（SECG、NIST、Brainpool、GM/T）用 √p 估计通用攻击成本。Shoup 的界因此不只是理论结果，也进入了曲线参数选择的实践语言。",
+        "en": "### 1994 and 1997\n\nNechaev gave a lower bound for deterministic generic algorithms in 1994; Shoup gave the probabilistic bound at EUROCRYPT 1997, covering discrete logarithm and related problems, and added a method for correcting a faulty Diffie–Hellman oracle.The result became a standard tool for GGM proofs."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    },
+    {
+      "id": "shoup-generic-bound-r139-refs",
+      "entryId": "shoup-generic-bound-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Shoup 通用界.https://zh.wikipedia.org/w/index.php?search=Shoup%20%E9%80%9A%E7%94%A8%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Shoup 通用界.https://zh.wikipedia.org/w/index.php?search=Shoup%20%E9%80%9A%E7%94%A8%E7%95%8C\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "shoup-generic-bound-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

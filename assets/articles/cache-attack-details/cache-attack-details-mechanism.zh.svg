@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 820" width="1240" height="820" role="img" aria-labelledby="fig-title fig-desc">
+<title id="fig-title">缓存计时攻击</title>
+<desc id="fig-desc">查表地址如何泄漏密钥 — mechanism schematic with parameters, use and limits.</desc>
+<defs>
+<marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4B3F9E"/></marker>
+<marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#1F7A6A"/></marker>
+<marker id="arrowAmber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#8A6100"/></marker>
+<marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9B2C2C"/></marker>
+<marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#6B655C"/></marker>
+<clipPath id="mainClip"><rect x="50" y="185" width="760" height="450" rx="16"/></clipPath>
+</defs>
+<rect x="0" y="0" width="1240" height="820" fill="#F7F5EF"/>
+<text x="60" y="52" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="700" fill="#6B655C" text-anchor="left">侧信道 · 缓存</text>
+<text x="60" y="104" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="37" font-weight="800" fill="#1F1D1A" text-anchor="left">缓存计时攻击</text>
+<text x="60" y="143" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="17" font-weight="500" fill="#6B655C" text-anchor="left">AES T 表索引 → 缓存行 → 加密时间</text>
+<rect x="50" y="185" width="760" height="450" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<text x="78" y="224" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="800" fill="#1F1D1A" text-anchor="left">查表地址如何泄漏密钥</text>
+<g clip-path="url(#mainClip)">
+<text x="70" y="250" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="800" fill="#4B3F9E" text-anchor="left">受害进程</text>
+<rect x="70" y="265" width="115" height="60" rx="10" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.6"/>
+<text x="127.5" y="285" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#4B3F9E" text-anchor="middle">明文 P</text>
+<text x="127.5" y="301" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">16 字节</text>
+<rect x="210" y="265" width="115" height="60" rx="10" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.6"/>
+<text x="267.5" y="285" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#1F7A6A" text-anchor="middle">p ⊕ k</text>
+<text x="267.5" y="301" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">索引</text>
+<line x1="185" y1="295" x2="210" y2="295" stroke="#4B3F9E" stroke-width="2"  marker-end="url(#arrowPurple)"/>
+<rect x="350" y="265" width="145" height="60" rx="10" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.6"/>
+<text x="422.5" y="285" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#1F7A6A" text-anchor="middle">T 表</text>
+<text x="422.5" y="301" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">1 KB · 4 张</text>
+<line x1="325" y1="295" x2="350" y2="295" stroke="#1F7A6A" stroke-width="2"  marker-end="url(#arrowGreen)"/>
+<rect x="350" y="355" width="145" height="70" rx="10" fill="#FFF3CD" stroke="#8A6100" stroke-width="1.6"/>
+<text x="422.5" y="375" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#8A6100" text-anchor="middle">缓存行</text>
+<text x="422.5" y="391" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">64 B · 命中/未命中</text>
+<line x1="422" y1="325" x2="422" y2="355" stroke="#8A6100" stroke-width="2"  marker-end="url(#arrowAmber)"/>
+<rect x="530" y="355" width="135" height="55" rx="10" fill="#FBE9E9" stroke="#9B2C2C" stroke-width="1.6"/>
+<text x="597.5" y="375" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#9B2C2C" text-anchor="middle">总时间</text>
+<text x="597.5" y="391" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">数百周期差</text>
+<line x1="495" y1="390" x2="530" y2="390" stroke="#9B2C2C" stroke-width="2"  marker-end="url(#arrowRed)"/>
+<text x="70" y="460" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="800" fill="#4B3F9E" text-anchor="left">攻击者侧</text>
+<rect x="70" y="475" width="125" height="55" rx="10" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.6"/>
+<text x="132.5" y="495" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#4B3F9E" text-anchor="middle">已知密钥</text>
+<text x="132.5" y="511" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">参考机</text>
+<rect x="215" y="475" width="125" height="55" rx="10" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.6"/>
+<text x="277.5" y="495" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#4B3F9E" text-anchor="middle">未知密钥</text>
+<text x="277.5" y="511" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">目标机</text>
+<rect x="400" y="475" width="130" height="55" rx="10" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.6"/>
+<text x="465" y="495" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#1F7A6A" text-anchor="middle">相关</text>
+<text x="465" y="511" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">候选 k</text>
+<line x1="195" y1="502" x2="215" y2="502" stroke="#4B3F9E" stroke-width="2"  marker-end="url(#arrowPurple)"/>
+<line x1="340" y1="502" x2="400" y2="502" stroke="#1F7A6A" stroke-width="2"  marker-end="url(#arrowGreen)"/>
+<rect x="560" y="475" width="110" height="55" rx="10" fill="#FFF3CD" stroke="#8A6100" stroke-width="1.6"/>
+<text x="615" y="495" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="700" fill="#8A6100" text-anchor="middle">全键</text>
+<text x="615" y="511" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="11" font-weight="500" fill="#6B655C" text-anchor="middle">穷举剩余位</text>
+<line x1="530" y1="502" x2="560" y2="502" stroke="#8A6100" stroke-width="2"  marker-end="url(#arrowAmber)"/>
+<text x="70" y="570" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="600" fill="#1F1D1A" text-anchor="left">p_i ⊕ k_i 决定缓存行；正确候选让两条剖面重合</text>
+</g>
+<rect x="830" y="185" width="360" height="450" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<rect x="835" y="205" width="350" height="132" rx="12" fill="#ECE9FA" stroke="#4B3F9E" stroke-width="1.2"/>
+<text x="851" y="229" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#4B3F9E" text-anchor="left">泄漏点</text>
+<circle cx="854" cy="252" r="2.5" fill="#4B3F9E"/>
+<text x="864" y="256" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">T 表索引 = p ⊕ k</text>
+<circle cx="854" cy="280" r="2.5" fill="#4B3F9E"/>
+<text x="864" y="284" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">64 字节缓存行命中/未命中</text>
+<rect x="835" y="345" width="350" height="132" rx="12" fill="#E2F3EE" stroke="#1F7A6A" stroke-width="1.2"/>
+<text x="851" y="369" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#1F7A6A" text-anchor="left">样本</text>
+<circle cx="854" cy="392" r="2.5" fill="#1F7A6A"/>
+<text x="864" y="396" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">Bernstein：约 2^27.5</text>
+<circle cx="854" cy="420" r="2.5" fill="#1F7A6A"/>
+<text x="864" y="424" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">末轮碰撞：2^15 / 2^13</text>
+<rect x="835" y="485" width="350" height="132" rx="12" fill="#FFF3CD" stroke="#8A6100" stroke-width="1.2"/>
+<text x="851" y="509" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="800" fill="#8A6100" text-anchor="left">边界</text>
+<circle cx="854" cy="532" r="2.5" fill="#8A6100"/>
+<text x="864" y="536" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">需共享缓存或精确计时</text>
+<circle cx="854" cy="560" r="2.5" fill="#8A6100"/>
+<text x="864" y="564" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="13" font-weight="500" fill="#1F1D1A" text-anchor="left">AES-NI / bitslicing 可</text>
+<text x="864" y="579" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="500" fill="#6B655C" text-anchor="left">消除</text>
+<rect x="50" y="660" width="1140" height="105" rx="16" fill="#FFFFFF" stroke="#DED9CE" stroke-width="1.5"/>
+<text x="74" y="690" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="14" font-weight="800" fill="#4B3F9E" text-anchor="left">怎么读这张图</text>
+<text x="74" y="716" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="500" fill="#1F1D1A" text-anchor="left">读法：左侧受害进程按 p⊕k 查 T 表，命中与否改变总时间；右侧攻击者把已知与未知密钥剖面按候选密钥对齐。正确候选让曲线重合，</text>
+<text x="74" y="739" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="15" font-weight="500" fill="#1F1D1A" text-anchor="left">逐字节筛出后穷举剩余位。</text>
+<line x1="60" y1="782" x2="1180" y2="782" stroke="#DED9CE" stroke-width="1.2"/>
+<text x="60" y="804" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="12" font-weight="500" fill="#6B655C" text-anchor="left">原创机制示意图 · CC BY 4.0 · poyi knowledge · 2026-11-22 · 参数与结构据所引规格绘制</text>
+</svg>

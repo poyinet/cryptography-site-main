@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "tls13-details",
+  "sources": [
+    {
+      "id": "tls13-wikipedia",
+      "title": "Wikipedia search entry for TLS 1.3",
+      "url": "https://zh.wikipedia.org/w/index.php?search=TLS%201.3",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: TLS 1.3",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "tls13-r139-principle",
+          "entryId": "tls13-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：TLS 1.3（TLS 1.3）。TLS 1.3 先把握手消息累积成 transcript，再用 HKDF 阶梯派生各阶段密钥。Transcript-Hash 对 ClientHello 到当前消息做哈希；Derive-Secret 把标签、transcript 哈希和当前 secret 绑定，输出下一层 secret。Early Secret 由 PSK 或全零 PSK 提取；Handshake Secret 把 Early 的 derived secret 与 (EC)DHE 共享秘密提取；Main Secret 再把 Handshake 的 derived secret 与全零 IKM 提取。之后 c hs traffic、s hs traffic、c ap traffic、s ap traffic 分别绑定握手或应用阶段的消息序列，最后扩展出 AEAD 的 key 与 IV。",
+            "en": "**Protocol**: TLS 1.3 (TLS 1.3).TLS 1.3 first accumulates handshake messages into a transcript, then derives each stage key with an HKDF ladder."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        },
+        {
+          "id": "tls13-r139-why",
+          "entryId": "tls13-details",
+          "section": "why",
+          "statement": {
+            "zh": "把密钥按阶段拆开，可以做到握手后段加密、前向保密和 0-RTT 分离：Handshake Secret 由临时 DH 提供前向保密，应用流量密钥再由 Main Secret 派生；PSK 只影响 Early Secret，不能替代证书或 Finished。每个 traffic secret 绑定 transcript，防止握手消息被剪接；Finished 再用 finished_key 对 transcript 做 HMAC，确认双方看到同一段握手。",
+            "en": "Splitting keys by stage gives encrypted latter handshake, forward secrecy and separated 0-RTT: Handshake Secret uses ephemeral DH for forward secrecy, application traffic keys come from Main Secret, and the PSK only affects Early Secret; it cannot replace certificates or Finished.Each traffic secret binds the transcript, preventing handshake splicing; Finished then HMACs the transcript with finished_key and confirms that both sides saw the same handshake."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        },
+        {
+          "id": "tls13-r139-used",
+          "entryId": "tls13-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现时按 RFC 9846 的 key schedule 顺序计算：先确定 Hash（如 SHA-256，输出 32 字节），再算 Early/Handshake/Main；每个 traffic secret 用 Derive-Secret 加标签；key 与 IV 用 HKDF-Expand-Label 扩展，AES-128-GCM 取 16 字节 key、12 字节 IV。记录层把 64 位序列号补零到 IV 长度后异或，得到 per-record nonce；AEAD 的 additional_data 是记录头，明文是内容。Finished 的 base key 是 handshake traffic secret，finished_key 再扩展 Hash.length 字节。",
+            "en": "Implement in the RFC 9846 key-schedule order: fix the Hash first, for example SHA-256 with 32-byte output, then compute Early/Handshake/Main; derive each traffic secret with a label; expand key and IV with HKDF-Expand-Label, using a 16-byte key and 12-byte IV for AES-128-GCM.The record layer zero-pads the 64-bit sequence number to IV length and XORs it with the IV to obtain the per-record nonce; AEAD additional_data is the record header and plaintext is the content."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        },
+        {
+          "id": "tls13-r139-broken",
+          "entryId": "tls13-details",
+          "section": "broken",
+          "statement": {
+            "zh": "0-RTT 早期数据没有跨连接防重放，重放窗口由应用自己限制；PSK 泄漏会削弱 Early Secret，不能把它当长期身份。记录序列号耗尽必须 key update，不能回绕重用 nonce；AEAD 的 IV 复用会直接破坏机密性与完整性。TLS 1.3 不保护端点被攻破后的明文，也不替代证书校验、主机名验证和授权；RFC 9846 是对 RFC 8446 的小幅更新，引用时应以现行文本为准。",
+            "en": "0-RTT early data has no cross-connection replay guarantee, and the application must bound its replay window; PSK compromise weakens Early Secret and cannot be treated as a long-term identity.Sequence exhaustion requires key update and forbids wrapping nonce reuse; IV reuse in AEAD directly breaks confidentiality and integrity."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        },
+        {
+          "id": "tls13-r139-history",
+          "entryId": "tls13-details",
+          "section": "history",
+          "statement": {
+            "zh": "TLS 1.3 由 RFC 8446 在 2018 年 8 月标准化，移除静态 RSA 与静态 DH 密钥交换，要求所有公钥交换提供前向保密，并把握手后段加密。RFC 9846 在 2026 年 7 月发布，替代 RFC 8446，但协议版本仍是 TLS 1.3；它禁止跨连接复用 KeyShare，把握手用量上限前的 key update 升为 MUST，并把 master 术语改为 main。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.3的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "TLS 1.3 was standardised by RFC 8446 in August 2018, removing static RSA and static DH key exchange, requiring forward secrecy for all public-key exchange, and encrypting the latter handshake.RFC 9846 was published in July 2026 and replaces RFC 8446, while the protocol version remains TLS 1.3; it forbids reusing KeyShare across connections, makes key update before usage limits a MUST, and renames master to main."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        },
+        {
+          "id": "tls13-r139-refs",
+          "entryId": "tls13-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for TLS 1.3.https://zh.wikipedia.org/w/index.php?search=TLS%201.3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3.https://www.rfc-editor.org/rfc/rfc8446\n- Published standard/RFC for TLS 1.3.https://www.rfc-editor.org/rfc/rfc8446。",
+            "en": "- Wikipedia search entry for TLS 1.3.https://zh.wikipedia.org/w/index.php?search=TLS%201.3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "tls13-reference-ref",
+            "tls13-specific",
+            "tls13-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "tls13-wikipedia"
+      ]
+    },
+    {
+      "id": "tls13-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls13-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "tls13-specific",
+      "title": "RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls13-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "tls13-standard",
+      "title": "Published standard/RFC for TLS 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for TLS 1.3",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "tls13-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "tls13-r139-principle",
+      "entryId": "tls13-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：TLS 1.3（TLS 1.3）。TLS 1.3 先把握手消息累积成 transcript，再用 HKDF 阶梯派生各阶段密钥。Transcript-Hash 对 ClientHello 到当前消息做哈希；Derive-Secret 把标签、transcript 哈希和当前 secret 绑定，输出下一层 secret。Early Secret 由 PSK 或全零 PSK 提取；Handshake Secret 把 Early 的 derived secret 与 (EC)DHE 共享秘密提取；Main Secret 再把 Handshake 的 derived secret 与全零 IKM 提取。之后 c hs traffic、s hs traffic、c ap traffic、s ap traffic 分别绑定握手或应用阶段的消息序列，最后扩展出 AEAD 的 key 与 IV。",
+        "en": "**Protocol**: TLS 1.3 (TLS 1.3).TLS 1.3 first accumulates handshake messages into a transcript, then derives each stage key with an HKDF ladder."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    },
+    {
+      "id": "tls13-r139-why",
+      "entryId": "tls13-details",
+      "section": "why",
+      "statement": {
+        "zh": "把密钥按阶段拆开，可以做到握手后段加密、前向保密和 0-RTT 分离：Handshake Secret 由临时 DH 提供前向保密，应用流量密钥再由 Main Secret 派生；PSK 只影响 Early Secret，不能替代证书或 Finished。每个 traffic secret 绑定 transcript，防止握手消息被剪接；Finished 再用 finished_key 对 transcript 做 HMAC，确认双方看到同一段握手。",
+        "en": "Splitting keys by stage gives encrypted latter handshake, forward secrecy and separated 0-RTT: Handshake Secret uses ephemeral DH for forward secrecy, application traffic keys come from Main Secret, and the PSK only affects Early Secret; it cannot replace certificates or Finished.Each traffic secret binds the transcript, preventing handshake splicing; Finished then HMACs the transcript with finished_key and confirms that both sides saw the same handshake."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    },
+    {
+      "id": "tls13-r139-used",
+      "entryId": "tls13-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现时按 RFC 9846 的 key schedule 顺序计算：先确定 Hash（如 SHA-256，输出 32 字节），再算 Early/Handshake/Main；每个 traffic secret 用 Derive-Secret 加标签；key 与 IV 用 HKDF-Expand-Label 扩展，AES-128-GCM 取 16 字节 key、12 字节 IV。记录层把 64 位序列号补零到 IV 长度后异或，得到 per-record nonce；AEAD 的 additional_data 是记录头，明文是内容。Finished 的 base key 是 handshake traffic secret，finished_key 再扩展 Hash.length 字节。",
+        "en": "Implement in the RFC 9846 key-schedule order: fix the Hash first, for example SHA-256 with 32-byte output, then compute Early/Handshake/Main; derive each traffic secret with a label; expand key and IV with HKDF-Expand-Label, using a 16-byte key and 12-byte IV for AES-128-GCM.The record layer zero-pads the 64-bit sequence number to IV length and XORs it with the IV to obtain the per-record nonce; AEAD additional_data is the record header and plaintext is the content."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    },
+    {
+      "id": "tls13-r139-broken",
+      "entryId": "tls13-details",
+      "section": "broken",
+      "statement": {
+        "zh": "0-RTT 早期数据没有跨连接防重放，重放窗口由应用自己限制；PSK 泄漏会削弱 Early Secret，不能把它当长期身份。记录序列号耗尽必须 key update，不能回绕重用 nonce；AEAD 的 IV 复用会直接破坏机密性与完整性。TLS 1.3 不保护端点被攻破后的明文，也不替代证书校验、主机名验证和授权；RFC 9846 是对 RFC 8446 的小幅更新，引用时应以现行文本为准。",
+        "en": "0-RTT early data has no cross-connection replay guarantee, and the application must bound its replay window; PSK compromise weakens Early Secret and cannot be treated as a long-term identity.Sequence exhaustion requires key update and forbids wrapping nonce reuse; IV reuse in AEAD directly breaks confidentiality and integrity."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    },
+    {
+      "id": "tls13-r139-history",
+      "entryId": "tls13-details",
+      "section": "history",
+      "statement": {
+        "zh": "TLS 1.3 由 RFC 8446 在 2018 年 8 月标准化，移除静态 RSA 与静态 DH 密钥交换，要求所有公钥交换提供前向保密，并把握手后段加密。RFC 9846 在 2026 年 7 月发布，替代 RFC 8446，但协议版本仍是 TLS 1.3；它禁止跨连接复用 KeyShare，把握手用量上限前的 key update 升为 MUST，并把 master 术语改为 main。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.3的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "TLS 1.3 was standardised by RFC 8446 in August 2018, removing static RSA and static DH key exchange, requiring forward secrecy for all public-key exchange, and encrypting the latter handshake.RFC 9846 was published in July 2026 and replaces RFC 8446, while the protocol version remains TLS 1.3; it forbids reusing KeyShare across connections, makes key update before usage limits a MUST, and renames master to main."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    },
+    {
+      "id": "tls13-r139-refs",
+      "entryId": "tls13-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for TLS 1.3.https://zh.wikipedia.org/w/index.php?search=TLS%201.3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3.https://www.rfc-editor.org/rfc/rfc8446\n- Published standard/RFC for TLS 1.3.https://www.rfc-editor.org/rfc/rfc8446。",
+        "en": "- Wikipedia search entry for TLS 1.3.https://zh.wikipedia.org/w/index.php?search=TLS%201.3\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "tls13-reference-ref",
+        "tls13-specific",
+        "tls13-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

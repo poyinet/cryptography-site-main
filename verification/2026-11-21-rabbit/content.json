@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R109 stream-cipher batch for rabbit-details.",
+  "entries": [
+    {
+      "id": "rabbit-details",
+      "inventoryIds": [
+        "rabbit"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R109 流密码批次：把 GRAIN、HC-128、Rabbit、Trivium 与 XSalsa20 的目录身份卡改写为来源可核的机制、参数、标准、用途与边界正文；保留目录坐标、前置关系与子主题链接。",
+        "en": "R109 stream-cipher batch: replaced the catalog identity cards for GRAIN, HC-128, Rabbit, Trivium and XSalsa20 with source-backed mechanism, parameters, standards, use and boundary text while retaining catalog position, prerequisites and subtopic links."
+      },
+      "title": {
+        "zh": "Rabbit 流密码",
+        "en": "Rabbit Stream Cipher"
+      },
+      "claimIds": [
+        "rabbit-r139-principle",
+        "rabbit-r139-why",
+        "rabbit-r139-used",
+        "rabbit-r139-broken",
+        "rabbit-r139-history",
+        "rabbit-r139-refs"
+      ],
+      "sourceIds": [
+        "rabbit-wikipedia",
+        "rabbit-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "salsa20"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "rabbit-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Rabbit：计数器加平方耦合：密钥/IV 路径、核心状态与输出。",
+            "en": "Rabbit: counters and coupled squares: key/IV path, core state and output."
+          },
+          "alt": {
+            "zh": "Rabbit：计数器加平方耦合 的机制示意图，含参数、用途与边界。",
+            "en": "Mechanism schematic for Rabbit: counters and coupled squares, with parameters, use and boundaries."
+          },
+          "files": {
+            "zh": "assets/rabbit-details-mechanism.zh.svg",
+            "en": "assets/rabbit-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据规格与正文绘制）",
+            "en": "Original mechanism diagram (drawn from the specification and article)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "eda8745a556d1a97a559d40a870b6a4caacb581b815a565cdccb168705a41ce5",
+            "en": "6057d04b9c75c252e49f54ef442d2c246219f30a19afb93e4319f67d997ac349"
+          }
+        },
+        {
+          "id": "rabbit-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Rabbit 流密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Rabbit Stream Cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Rabbit 流密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Rabbit Stream Cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rabbit-details-r138-model.zh.svg",
+            "en": "assets/rabbit-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "18cd1b259ecec0a5120ea40cf758f74c62f9b574e554b640d85911e1d03fc9bc",
+            "en": "1e9dc95d5f2dcc82f40de4747ebd396d1f3d47a7bbe0367643781e72bfcfc1b0"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Rabbit 流密码（Rabbit）。### 513 位状态与 8 个计数器\n\nRabbit 的内部状态是 513 位：8 个 32 位状态变量 X0..X7、8 个 32 位计数器 C0..C7，再加 1 位进位 b。计数器每拍加上固定常数 a0..a7（0x4D34D34D、0xD34D34D3、0x34D34D34 循环），32 位溢出产生进位，进位再参与下一字的加法。### 密钥装载与 IV 混合\n\n128 位密钥拆成 8 个 16 位子密钥，按奇偶位置交叉拼成 X 与 C；系统先迭代 4 次，再把 C_j 与 X_{j+4} 异或、b 置 1。64 位 IV 再异或进计数器字，迭代 4 次。之后每一拍令 g_j = (x_j + c_j)^2，取平方的高 16 位与低 16 位异或，更新 8 个状态变量，最后把 8 个状态字异或成 128 位输出块。### 为什么没有 S 盒\n\nRabbit 只用 32 位加、异或、旋转和平方，没有查找表；每拍出 128 位，软件流水线容易打满。它的非线性来自耦合的平方函数和计数器进位，而不是 S 盒。",
+          "why": "Rabbit 是为软件高吞吐设计的。FSE 2003 论文报告在 Pentium III 上 3.7 周期/字节；没有表查找意味着缓存行为可预测，不会出现 AES T 表那种秘密下标访问。它进入 eSTREAM 软件 portfolio，并由 RFC 4503 给出互操作描述。设计目标是“用通用 32 位指令跑得比常见密码快”，而不是追求最小门数；因此它和 Grain/Trivium 的硬件路线正好相反。",
+          "used": "RFC 4503 定义了 Rabbit 的密钥装载、IV 设置、下一状态函数、输出提取和测试向量，适合软件库和嵌入式协议实现。它可用于数据流加密、伪随机位生成，以及作为高速软件流密码的基准。Rabbit 不是 TLS 的标准套件，也没有 AES-GCM 那样的广泛部署；使用它意味着协议双方要自行约定密钥/IV 管理和完整性保护。",
+          "broken": "Rabbit 只有 64 位 IV。同一密钥下，随机 IV 在高消息量下会发生碰撞；RFC 4503 要求每次加密使用不同 IV，但在 2^32 量级的消息上，64 位空间的生日碰撞已经不可忽略。它没有内置认证，必须外接 MAC；密钥/IV 重用会直接泄露明文异或。物理对手还能用故障注入：SAC 2009 的差分故障分析用约 128–256 次随机位故障和 2^38 步恢复完整内部状态，说明设备级防护不能缺。Rabbit 的设计明文上限是 2^64 字节量级；超过这个边界，计数器周期和安全性论证都不再成立。完整算法没有公开的实用选择明文攻击，但“没有公开攻击”不等于可以跳过 IV 与实现防护。",
+          "history": "Boesgaard、Vesterager、Pedersen、Christiansen 与 Scavenius 在 2003 年 FSE 发表 Rabbit，随后提交 eSTREAM 并进入软件 portfolio。2006 年 RFC 4503 给出标准描述；2008 年算法转为 public domain。它以“混沌映射离散化 + 计数器”的设计，成为高吞吐软件流密码的代表。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Rabbit 流密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for Rabbit 流密码. https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nRabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Rabbit (Rabbit 流密码). ### A 513-bit state with eight counters\n\nRabbit has a 513-bit internal state: eight 32-bit state variables X0..X7, eight 32-bit counters C0..C7, and one carry bit b. Each clock adds fixed constants a0..a7 (0x4D34D34D, 0xD34D34D3, 0x34D34D34 in rotation) to the counters; a 32-bit overflow produces the carry used by the next word. ### Key setup and IV mixing\n\nThe 128-bit key is split into eight 16-bit subkeys and interleaved into X and C by parity; the system iterates four times, then sets C_j ^= X_{j+4} and b = 1. The 64-bit IV is XORed into the counter words and the system iterates four more times. In each output clock, g_j = (x_j + c_j)^2 is formed, its high and low halves are XORed to update the eight state words, and the eight words are combined into a 128-bit output block. ### No S-boxes\n\nRabbit uses only 32-bit addition, XOR, rotation and squaring. There are no lookup tables; each clock emits 128 bits, so software pipelines stay busy. Nonlinearity comes from the coupled squaring function and counter carries, not from an S-box.",
+          "why": "Rabbit was designed for high software throughput. The FSE 2003 paper reports 3.7 cycles per byte on a Pentium III. The absence of table lookups also makes cache behavior predictable, unlike AES T-table implementations with secret-dependent indices.\n\nIt entered the eSTREAM software portfolio, and RFC 4503 gives an interoperable description. The goal was to run fast on ordinary 32-bit instructions, not to minimize gate count; Rabbit and Grain/Trivium therefore sit on opposite ends of the software-hardware trade-off.",
+          "used": "RFC 4503 specifies Rabbit key setup, IV setup, next-state function, output extraction and test vectors, making it suitable for software libraries and embedded protocols. It can encrypt data streams, generate pseudorandom bits and serve as a high-speed software stream-cipher benchmark.\n\nRabbit is not a TLS cipher suite and lacks the deployment breadth of AES-GCM. Using it means the protocol must define key/IV management and integrity protection itself.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Rabbit has only a 64-bit IV. Under one key, random IVs will collide at high message volumes; RFC 4503 requires a fresh IV per encryption, but the birthday bound in a 64-bit space is already material around 2^32 messages.\n\nIt has no built-in authentication, so a MAC is required. Key/IV reuse directly reveals plaintext XOR. A physical adversary can also inject faults: the SAC 2009 differential fault analysis recovers the full internal state from about 128 to 256 random bit faults in roughly 2^38 work, so device-level protection is not optional.\n\nThe design limit is on the order of 2^64 bytes per key; beyond that the counter period and the security argument no longer hold. No practical chosen-plaintext attack is publicly known on the full cipher, but absence of a published attack does not excuse skipping IV and implementation defenses.",
+          "history": "Boesgaard, Vesterager, Pedersen, Christiansen and Scavenius presented Rabbit at FSE 2003, then submitted it to eSTREAM, where it entered the software portfolio. RFC 4503 standardized the description in 2006, and the algorithm became public domain in 2008. Its discretized chaotic map plus counter design made it a reference point for high-throughput software stream ciphers.",
+          "refs": "- Wikipedia search entry for Rabbit 流密码. https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nRabbit: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "rabbit-r139-formal",
+          "entryId": "rabbit-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Rabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Rabbit 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "rabbit-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "rabbit-r139-formal"
+      ],
+      "sources": [
+        "rabbit-wikipedia",
+        "rabbit-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rabbit-r139-formal",
+      "entryId": "rabbit-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Rabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Rabbit 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "rabbit-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

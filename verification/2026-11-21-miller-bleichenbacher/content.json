@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R122 formula-level deepening for miller-bleichenbacher-details.",
+  "entries": [
+    {
+      "id": "miller-bleichenbacher-details",
+      "inventoryIds": [
+        "miller-bleichenbacher"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R122 公式级深化：把 Miller–Bleichenbacher 从机制结构条提升为公式级攻击条件与修复，给出 PKCS#1 v1.5 编码、过宽解析、e=3 立方根搜索和全字节校验；不提供利用代码。",
+        "en": "R122 formula-level deepening: upgrades Miller–Bleichenbacher from a mechanism card to formula-level attack conditions and fixes, with PKCS#1 v1.5 encoding, lenient parsing, e=3 cube-root search and full-byte verification; no exploit code is provided."
+      },
+      "title": {
+        "zh": "Miller–Bleichenbacher 低指数 RSA 签名伪造",
+        "en": "Miller–Bleichenbacher Low-Exponent RSA Signature Forgery"
+      },
+      "claimIds": [
+        "miller-bleichenbacher-r139-principle",
+        "miller-bleichenbacher-r139-why",
+        "miller-bleichenbacher-r139-used",
+        "miller-bleichenbacher-r139-broken",
+        "miller-bleichenbacher-r139-history",
+        "miller-bleichenbacher-r139-refs"
+      ],
+      "sourceIds": [
+        "miller-bleichenbacher-wikipedia",
+        "miller-bleichenbacher-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "miller-bleichenbacher-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Miller–Bleichenbacher 公式级机制图：PKCS#1 v1.5 编码、过宽解析、e=3 立方根伪造与严格全字节校验。",
+            "en": "Miller–Bleichenbacher formula-level mechanism: PKCS#1 v1.5 encoding, lenient parsing, e=3 cube-root forgery and strict full-byte verification."
+          },
+          "alt": {
+            "zh": "四步公式级机制：PKCS#1 v1.5 编码 → 过宽解析 → e=3 立方根伪造 → 严格全字节校验；核心公式、假设与边界。",
+            "en": "Four formula-level steps: PKCS#1 v1.5 encoding → lenient parsing → e=3 cube-root forgery → strict full-byte verification; core formulas, assumptions and boundary."
+          },
+          "files": {
+            "zh": "assets/miller-bleichenbacher-mechanism.zh.svg",
+            "en": "assets/miller-bleichenbacher-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/说明绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/advisory)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "bada02c377ae25ae427a3dd69be97501d6511dfa727a52ddf3c5facaefca1795",
+            "en": "cd3b943855db1c4dbbb20d9193677da8966682536934bcb55ad9536937c483b4"
+          }
+        },
+        {
+          "id": "miller-bleichenbacher-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Miller–Bleichenbacher 低指数 RSA 签名伪造 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Miller–Bleichenbacher Low-Exponent RSA Signature Forgery: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Miller–Bleichenbacher 低指数 RSA 签名伪造 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Miller–Bleichenbacher Low-Exponent RSA Signature Forgery, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/miller-bleichenbacher-details-r138-model.zh.svg",
+            "en": "assets/miller-bleichenbacher-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "871e876b7e489c5fd9edb5877b6f9f057c063bf92fd00cb1b471540e865a1759",
+            "en": "42b18ba6d2917b60538c29095c2cf72a174010f2d9737a422ea66ea94879896a"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：Miller–Bleichenbacher 低指数 RSA 签名伪造（Miller–Bleichenbacher Low-Exponent RSA Signature Forgery）。### 期望编码\n\nRSASSA-PKCS1-v1_5 的签名编码为\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)，\n\n其中 H(M) 必须右对齐。验证计算 s^e mod n，解析出 ASN.1 与 H(M)，再与消息的重算摘要比较。### 过宽解析\n\n若验证器只找到 padding 结束与 ASN.1，取固定长度 H(M)，却不检查 H(M) 之后是否还有字节，则尾部 garbage G 被忽略：\n\nEM′=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)‖G。e=3 时，攻击者在目标前缀的立方根附近搜索 s，使 s^3=EM′ 且 EM′<n；把 s 作为签名提交，验证器解析出正确 H(M) 即接受。### 为什么可行\n\n小 e 使整数三次根搜索可行；模数越长，可在前缀与 H(M) 之后容纳的 G 越多。e 较大时求 e 次根困难，攻击条件不成立。",
+          "why": "这不是 RSA 算法被攻破，而是签名验证的解析边界被攻破：同一串 s^e mod n 在严格验证器下应整串匹配 EM，在过宽验证器下只匹配前缀和摘要。把“编码—解析—比较”三层分开，才能看清漏洞在实现而不是数学。",
+          "used": "1.严格验证：从消息重新构造完整 EM，与 s^e mod n 的整串逐字节比较；不要只解析摘要。2.拒绝尾部：H(M) 之后出现任何字节都拒绝；ASN.1 必须完整消费，OID 与参数必须精确匹配。3.选指数：签名场景不要用 e=3；优先 RSA-PSS 或标准规定的安全方案。4.负测试：加入带尾部 garbage、错误 ASN.1、错误 OID 的负向量，确认验证器全部拒绝。### 不能怎么用\n\n不能只检查前导 00 01 与摘要；不能忽略 ASN.1 长度；不能把“库默认拒绝”当成无需测试；不能把该条目当作利用工具。",
+          "broken": "1.攻击前提：验证器过宽、e 小、攻击者能让目标验证伪造签名；三者缺一不可。2.变体：除尾部 garbage 外，算法参数、OID 前缀、padding 字节值或 ASN.1 长度检查不严也可形成同族问题。3.严格实现：完整重建 EM、拒绝尾部、精确 DER/OID 与足够大的 e 可消除该路线；RSA-PSS 不依赖该编码解析。4.边界：该条目只讨论签名伪造的验证缺陷，不涉及私钥恢复、侧信道或 RSA 因子分解；不提供利用步骤或代码。",
+          "history": "Daniel Bleichenbacher 在 CRYPTO 2006 rump session 演示了该攻击；NIST 随即发布说明，给出 PKCS#1 v1.5 与 ANS X9.31 的过宽解析问题及修复建议。2019 年 Black Hat 的白皮书重新审计多种实现，发现尾部字节、算法参数、OID 前缀与 padding 检查仍有变体。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Miller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。 预期输出：按 Miller–Bleichenbacher 低指数 RSA 签名伪造 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造. https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nMiller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Miller–Bleichenbacher Low-Exponent RSA Signature Forgery (Miller–Bleichenbacher 低指数 RSA 签名伪造). ### Expected encoding\n\nRSASSA-PKCS1-v1_5 encodes a signature as\n\nEM=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M),\n\nwhere H(M) must be right-justified. Verification computes s^e mod n, parses ASN.1 and H(M), and compares the digest with a fresh hash of the message. ### Lenient parsing\n\nIf the verifier finds the end of padding and ASN.1, extracts a fixed-length H(M), but never checks whether bytes follow H(M), the trailing garbage G is ignored:\n\nEM′=00‖01‖FF…FF‖00‖ASN.1(H)‖H(M)‖G. For e=3, the attacker searches s near the cube root of the target prefix so that s^3=EM′ and EM′<n; submitting s as the signature makes the verifier extract the correct H(M) and accept. ### Why it works\n\nSmall e makes the integer cube-root search feasible; a longer modulus leaves more room for G after the prefix and H(M). For larger e, extracting an e-th root is hard and the attack condition fails.",
+          "why": "This is not a break of RSA itself but of the parsing boundary in signature verification: the same s^e mod n must match the whole EM under a strict verifier, while a lenient verifier matches only a prefix and digest. Separating encoding, parsing and comparison shows that the flaw is in the implementation, not the mathematics.\n\nThis is a signature-verification attack, not Bleichenbacher's 1998 padding-oracle attack on RSA encryption; both carry the name but differ in target, padding structure and conditions. It also differs from Håstad's broadcast attack, which targets unpadded low-exponent encryption.",
+          "used": "1. Strict verification: rebuild the full EM from the message and compare it byte-for-byte with s^e mod n; do not extract only a digest. 2. Reject trailing data: reject any bytes after H(M); consume the entire ASN.1 structure and match OID and parameters exactly. 3. Choose an exponent: do not use e=3 for signatures; prefer RSA-PSS or a standard-approved scheme. 4. Negative tests: add vectors with trailing garbage, wrong ASN.1 and wrong OID, and confirm that every one is rejected.\n\nDo not check only the leading 00 01 and the digest; do not ignore ASN.1 lengths; do not assume a library default is safe without testing; do not treat this entry as an exploit tool.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Attack premises: a lenient verifier, small e and the ability to make a target verify the forged signature are all required. 2. Variants: beyond trailing garbage, weak checks of algorithm parameters, OID prefixes, padding byte values or ASN.1 lengths form the same family of flaws. 3. Strict implementation: full EM reconstruction, trailing-byte rejection, exact DER/OID checks and a larger e remove this route; RSA-PSS does not depend on this encoding parser. 4. Boundary: this entry covers signature-forgery verification flaws only, not private-key recovery, side channels or RSA factorisation; it provides no exploit steps or code.",
+          "history": "Daniel Bleichenbacher demonstrated the attack at the CRYPTO 2006 rump session; NIST then published a note describing the lenient parsing of PKCS#1 v1.5 and ANS X9.31 and giving fixes. A 2019 Black Hat white paper re-audited implementations and found variants involving trailing bytes, algorithm parameters, OID prefixes and padding checks.\n\nThe catalogue keeps the Miller–Bleichenbacher juxtaposition; this entry expands only the Bleichenbacher 2006 route with public primary sources, because Miller's earlier observation is not in a verifiable source here. Repair status differs by PKCS#1 edition and verifier implementation, so the claimed edition governs.",
+          "refs": "- Wikipedia search entry for Miller–Bleichenbacher 低指数 RSA 签名伪造. https://zh.wikipedia.org/w/index.php?search=Miller%E2%80%93Bleichenbacher%20%E4%BD%8E%E6%8C%87%E6%95%B0%20RSA%20%E7%AD%BE%E5%90%8D%E4%BC%AA%E9%80%A0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nMiller–Bleichenbacher Low-Exponent RSA Signature Forgery: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "miller-bleichenbacher-r139-formal",
+          "entryId": "miller-bleichenbacher-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：Miller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 Miller–Bleichenbacher 低指数 RSA 签名伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "miller-bleichenbacher-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "miller-bleichenbacher-r139-formal"
+      ],
+      "sources": [
+        "miller-bleichenbacher-wikipedia",
+        "miller-bleichenbacher-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "miller-bleichenbacher-r139-formal",
+      "entryId": "miller-bleichenbacher-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：Miller–Bleichenbacher 低指数 RSA 签名伪造的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 Miller–Bleichenbacher 低指数 RSA 签名伪造 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "miller-bleichenbacher-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "id": "vigenre-calc-printed-example",
+    "entryId": "vigen-re-details",
+    "kind": "known-answer-check",
+    "inputs": "plaintext ATTACKATDAWN with keyword LEMON, enciphered three ways: the mod-26 mapping of Definition 7.53, the row/column lookup of the square parsed out of the printed grid, and an evaluation of the expression string printed at hac-ch7.txt:1068",
+    "expected": "three routes give the ciphertext parsed from the course text at its line 131 - modular addition, a square parsed row by row out of the printed grid at line 122, and an evaluation of the expression ci = mi + ki mod s matched against the handbook line itself - the spelling comes from the file, the arithmetic it names is this module's, and the four worked lookups at positions 1-4 (A/L/L, T/E/X, T/M/F, A/O/O) each reproduce; decryption restores the plaintext",
+    "sourceIds": [
+      "krzyzanowski-classical",
+      "hac7-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "vigenre-calc.mjs"
+    ],
+    "limitations": "One fixed example of length 12. It anchors the two encipherment routes to a printed value; it says nothing about longer keys or about security."
+  },
+  {
+    "id": "vigenre-calc-interleaved-caesars",
+    "entryId": "vigen-re-details",
+    "kind": "structural-check",
+    "inputs": "the 4598-letter sample encrypted with keyword LEMON, then split into its five interleaved subsequences",
+    "expected": "the shifts are read back off the ciphertext rather than from the key: positions 1, 6 and 11 must each show shift 11 and positions 2, 7 and 12 shift 4, as the source names them; each subsequence must equal the single Caesar shift for that residue class and must decrypt back with its own shift",
+    "sourceIds": [
+      "krzyzanowski-classical",
+      "hac7-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "vigenre-calc.mjs"
+    ],
+    "limitations": "A repeating keyword only. The interleaving claim is exactly what a non-repeating running key defeats - see the Kasiski dossier for that case."
+  },
+  {
+    "id": "vigenre-calc-shift-cipher-is-period-one",
+    "entryId": "vigen-re-details",
+    "kind": "equivalence-check",
+    "inputs": "the sample enciphered as a shift cipher for shifts 0, 4, 11, 12, 13, 14 and 25, the seven the printed grid supplies rows for (A, E, L, M, N, O, Z), and as a simple Vigenere with a one-letter key",
+    "expected": "the handbook prints that the shift cipher is a simple Vigenere with period t = 1; each shift must equal the row parsed from the printed square under the same key letter, so the identity is checked against the grid the source prints and not only against this module. The excerpt prints rows for A, E, L, M, N, O and Z, and all seven are exercised.",
+    "sourceIds": [
+      "hac7-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "vigenre-calc.mjs"
+    ],
+    "limitations": "Checks one stated identity between two constructions, not their security."
+  },
+  {
+    "id": "vigenre-calc-beaufort-variants",
+    "entryId": "vigen-re-details",
+    "kind": "rule-check",
+    "inputs": "the sample under the Beaufort mapping ci = ki - mi mod s and the variant Beaufort ci = mi - ki mod s with keyword KRYPT",
+    "expected": "the Beaufort must be its own inverse as the source states, applying it twice restores the plaintext; the variant must follow its own printed formula; both must differ from the simple Vigenere at most positions",
+    "sourceIds": [
+      "hac7-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "vigenre-calc.mjs"
+    ],
+    "limitations": "The involution is a property of the mapping, not evidence about key choice or about attacks."
+  },
+  {
+    "id": "vigenre-calc-compound-lcm",
+    "entryId": "vigen-re-details",
+    "kind": "equivalence-check",
+    "inputs": "a compound Vigenere built from keys of periods 2 and 3 over the sample, using the key letters AE and LMN because the printed grid excerpt supplies rows for those",
+    "expected": "the source prints that compounding r simple Vigeneres gives a simple Vigenere of period lcm(t1,...,tr); the compound mapping is applied as two passes through the parsed printed grid, one per stage, and must equal a single pass with the merged period-6 key letters. The merged letters, and that single pass, are computed with modular addition rather than read from the grid, because the excerpt supplies rows for only seven key letters and three merged letters are not among them; lcm(2,3) must be 6.",
+    "sourceIds": [
+      "hac7-ch7"
+    ],
+    "dependencies": [
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json",
+      "classical-sample.mjs",
+      "vigenre-calc.mjs"
+    ],
+    "limitations": "Two periods only; the general lcm claim is stated by the source and exercised on one instance."
+  }
+]

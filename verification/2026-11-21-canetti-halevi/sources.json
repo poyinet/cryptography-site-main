@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "canetti-halevi-details",
+  "sources": [
+    {
+      "id": "canetti-halevi-wikipedia",
+      "title": "Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Canetti–Halevi–Katz（CHK）变换",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "canetti-halevi-r139-principle",
+          "entryId": "canetti-halevi-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：Canetti–Halevi–Katz（CHK）变换（Canetti–Halevi–Katz (CHK) Transform）。### 构件\n\n取 IBE Π′=(Setup,Der,E′,D′)，它只需对选择性身份 CPA 安全；取强一次性签名 Sig=(G,Sign,Vrfy)。构造 PKE Π=(Gen,E,D)：\n\nGen(1^k) 运行 Setup(1^k,ℓ_s(k)) 得到 (PK,msk)，公钥 PK、私钥 msk。加密 m：先 G(1^k)→(vk,sk)，再 C←E′_PK(vk,m)，σ←Sign_sk(C)，输出 (vk,C,σ)。解密：先检查 Vrfy_vk(C,σ)=1，否则拒绝；通过后 SK_vk←Der_msk(vk)，m←D′_{SK_vk}(vk,C)。### 定理\n\n若 Π′ 选择性身份 CPA 安全，且 Sig 强一次性不可伪造，则 Π 是 CCA 安全 PKE。归约中定义 Forge 为敌手对 vk* 提交新 (C,σ) 且验签通过的事件，并有\n\nPr_{A′,Π′}[Succ]≥Pr_{A,Π}[Succ]−½Pr_A[Forge]。因为 Forge 可忽略，A 的 CCA 优势也回到 1/2 附近。",
+            "en": "**Theorem**: Canetti–Halevi–Katz (CHK) Transform (Canetti–Halevi–Katz（CHK）变换).### Building blocks\n\nTake an IBE Π′=(Setup,Der,E′,D′) that is only selective-identity CPA secure, and a strongly unforgeable one-time signature Sig=(G,Sign,Vrfy)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        },
+        {
+          "id": "canetti-halevi-r139-why",
+          "entryId": "canetti-halevi-details",
+          "section": "why",
+          "statement": {
+            "zh": "CHK 变换把“身份”从用户标识改成一次性验证密钥 vk。挑战密文绑定 vk*；敌手的解密查询若 vk≠vk*，就落到另一个身份，IBE 的 CPA 安全仍可回答；若 vk=vk*，则任何新的有效 (C,σ) 都直接给出强一次性签名的伪造。",
+            "en": "### Why it is separate\n\nThe CHK transform replaces the identity by a one-time verification key vk.The challenge ciphertext is bound to vk*; a decryption query with vk≠vk* lands at a different identity and can be answered under IBE CPA security; if vk=vk*, any new valid (C,σ) directly yields a forgery against the strong one-time signature."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        },
+        {
+          "id": "canetti-halevi-r139-used",
+          "entryId": "canetti-halevi-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.选 IBE：确认其安全性是选择性身份 CPA，且身份空间能容纳 ℓ_s(k) 位的 vk。2.选签名：使用强一次性签名，密钥只签一个 C；不得复用 vk/sk。3.加密：先加密再签名，签名覆盖完整 C；不要把 σ 放进 IBE 明文。4.解密：先完整验签，再派生身份私钥并解密；验签失败不得泄漏任何解密信息。### 不能怎么用\n\n不能把弱一次性签名当作强一次性签名；不能让两个密文复用同一 vk；不能在验签前调用 IBE 解密；不能把选择性身份安全当成自适应身份安全。",
+            "en": "### Correct use\n\n1.Choose IBE: confirm selective-identity CPA security and that the identity space accommodates a ℓ_s(k)-bit vk."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        },
+        {
+          "id": "canetti-halevi-r139-broken",
+          "entryId": "canetti-halevi-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.安全模型：底层 IBE 只有选择性身份 CPA 安全；若需要自适应身份，必须换更强 IBE 或额外技术。2.签名强度：若签名只是弱一次性不可伪造，敌手可在同一 C 上改 σ，Forge 事件不再被排除。3.身份空间：ℓ_s(k) 太短、vk 编码不唯一或验签密钥可替换，会破坏 vk 到身份的绑定。4.归约边界：证明只给出存在性构造；不保证具体 IBE 的效率、密钥托管、侧信道或实现安全，也不声称从任意 CPA PKE 黑盒得到 CCA PKE。",
+            "en": "### Failure conditions\n\n1.Security model: the underlying IBE is only selective-identity CPA secure; adaptive identity needs a stronger IBE or additional techniques."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        },
+        {
+          "id": "canetti-halevi-r139-history",
+          "entryId": "canetti-halevi-details",
+          "section": "history",
+          "statement": {
+            "zh": "论文以 ePrint 2003/182 公开，作者为 Ran Canetti、Shai Halevi 与 Jonathan Katz；该条目目录名沿用 Canetti–Halevi 的简称，正文按三位作者的 CHK 变换展开。论文给出从选择性身份 CPA IBE 到 CCA PKE 的标准模型构造，并扩展到 BTE/HIBE。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Canetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "### Historical position\n\nThe paper was published as ePrint 2003/182 by Ran Canetti, Shai Halevi and Jonathan Katz; this catalogue keeps the Canetti–Halevi shorthand while the entry follows the three-author CHK transform.It gives a standard-model construction from selective-identity CPA IBE to CCA PKE and extends it to BTE/HIBE."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        },
+        {
+          "id": "canetti-halevi-r139-refs",
+          "entryId": "canetti-halevi-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换.https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换.https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "canetti-halevi-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "canetti-halevi-wikipedia"
+      ]
+    },
+    {
+      "id": "canetti-halevi-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "canetti-halevi-r139-principle",
+      "entryId": "canetti-halevi-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：Canetti–Halevi–Katz（CHK）变换（Canetti–Halevi–Katz (CHK) Transform）。### 构件\n\n取 IBE Π′=(Setup,Der,E′,D′)，它只需对选择性身份 CPA 安全；取强一次性签名 Sig=(G,Sign,Vrfy)。构造 PKE Π=(Gen,E,D)：\n\nGen(1^k) 运行 Setup(1^k,ℓ_s(k)) 得到 (PK,msk)，公钥 PK、私钥 msk。加密 m：先 G(1^k)→(vk,sk)，再 C←E′_PK(vk,m)，σ←Sign_sk(C)，输出 (vk,C,σ)。解密：先检查 Vrfy_vk(C,σ)=1，否则拒绝；通过后 SK_vk←Der_msk(vk)，m←D′_{SK_vk}(vk,C)。### 定理\n\n若 Π′ 选择性身份 CPA 安全，且 Sig 强一次性不可伪造，则 Π 是 CCA 安全 PKE。归约中定义 Forge 为敌手对 vk* 提交新 (C,σ) 且验签通过的事件，并有\n\nPr_{A′,Π′}[Succ]≥Pr_{A,Π}[Succ]−½Pr_A[Forge]。因为 Forge 可忽略，A 的 CCA 优势也回到 1/2 附近。",
+        "en": "**Theorem**: Canetti–Halevi–Katz (CHK) Transform (Canetti–Halevi–Katz（CHK）变换).### Building blocks\n\nTake an IBE Π′=(Setup,Der,E′,D′) that is only selective-identity CPA secure, and a strongly unforgeable one-time signature Sig=(G,Sign,Vrfy)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    },
+    {
+      "id": "canetti-halevi-r139-why",
+      "entryId": "canetti-halevi-details",
+      "section": "why",
+      "statement": {
+        "zh": "CHK 变换把“身份”从用户标识改成一次性验证密钥 vk。挑战密文绑定 vk*；敌手的解密查询若 vk≠vk*，就落到另一个身份，IBE 的 CPA 安全仍可回答；若 vk=vk*，则任何新的有效 (C,σ) 都直接给出强一次性签名的伪造。",
+        "en": "### Why it is separate\n\nThe CHK transform replaces the identity by a one-time verification key vk.The challenge ciphertext is bound to vk*; a decryption query with vk≠vk* lands at a different identity and can be answered under IBE CPA security; if vk=vk*, any new valid (C,σ) directly yields a forgery against the strong one-time signature."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    },
+    {
+      "id": "canetti-halevi-r139-used",
+      "entryId": "canetti-halevi-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.选 IBE：确认其安全性是选择性身份 CPA，且身份空间能容纳 ℓ_s(k) 位的 vk。2.选签名：使用强一次性签名，密钥只签一个 C；不得复用 vk/sk。3.加密：先加密再签名，签名覆盖完整 C；不要把 σ 放进 IBE 明文。4.解密：先完整验签，再派生身份私钥并解密；验签失败不得泄漏任何解密信息。### 不能怎么用\n\n不能把弱一次性签名当作强一次性签名；不能让两个密文复用同一 vk；不能在验签前调用 IBE 解密；不能把选择性身份安全当成自适应身份安全。",
+        "en": "### Correct use\n\n1.Choose IBE: confirm selective-identity CPA security and that the identity space accommodates a ℓ_s(k)-bit vk."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    },
+    {
+      "id": "canetti-halevi-r139-broken",
+      "entryId": "canetti-halevi-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.安全模型：底层 IBE 只有选择性身份 CPA 安全；若需要自适应身份，必须换更强 IBE 或额外技术。2.签名强度：若签名只是弱一次性不可伪造，敌手可在同一 C 上改 σ，Forge 事件不再被排除。3.身份空间：ℓ_s(k) 太短、vk 编码不唯一或验签密钥可替换，会破坏 vk 到身份的绑定。4.归约边界：证明只给出存在性构造；不保证具体 IBE 的效率、密钥托管、侧信道或实现安全，也不声称从任意 CPA PKE 黑盒得到 CCA PKE。",
+        "en": "### Failure conditions\n\n1.Security model: the underlying IBE is only selective-identity CPA secure; adaptive identity needs a stronger IBE or additional techniques."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    },
+    {
+      "id": "canetti-halevi-r139-history",
+      "entryId": "canetti-halevi-details",
+      "section": "history",
+      "statement": {
+        "zh": "论文以 ePrint 2003/182 公开，作者为 Ran Canetti、Shai Halevi 与 Jonathan Katz；该条目目录名沿用 Canetti–Halevi 的简称，正文按三位作者的 CHK 变换展开。论文给出从选择性身份 CPA IBE 到 CCA PKE 的标准模型构造，并扩展到 BTE/HIBE。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Canetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "### Historical position\n\nThe paper was published as ePrint 2003/182 by Ran Canetti, Shai Halevi and Jonathan Katz; this catalogue keeps the Canetti–Halevi shorthand while the entry follows the three-author CHK transform.It gives a standard-model construction from selective-identity CPA IBE to CCA PKE and extends it to BTE/HIBE."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    },
+    {
+      "id": "canetti-halevi-r139-refs",
+      "entryId": "canetti-halevi-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换.https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换.https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "canetti-halevi-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

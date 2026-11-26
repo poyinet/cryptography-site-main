@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "rabbit-details",
+  "sources": [
+    {
+      "id": "rabbit-wikipedia",
+      "title": "Wikipedia search entry for Rabbit 流密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Rabbit 流密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "rabbit-r139-principle",
+          "entryId": "rabbit-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Rabbit 流密码（Rabbit）。### 513 位状态与 8 个计数器\n\nRabbit 的内部状态是 513 位：8 个 32 位状态变量 X0..X7、8 个 32 位计数器 C0..C7，再加 1 位进位 b。计数器每拍加上固定常数 a0..a7（0x4D34D34D、0xD34D34D3、0x34D34D34 循环），32 位溢出产生进位，进位再参与下一字的加法。### 密钥装载与 IV 混合\n\n128 位密钥拆成 8 个 16 位子密钥，按奇偶位置交叉拼成 X 与 C；系统先迭代 4 次，再把 C_j 与 X_{j+4} 异或、b 置 1。64 位 IV 再异或进计数器字，迭代 4 次。之后每一拍令 g_j = (x_j + c_j)^2，取平方的高 16 位与低 16 位异或，更新 8 个状态变量，最后把 8 个状态字异或成 128 位输出块。### 为什么没有 S 盒\n\nRabbit 只用 32 位加、异或、旋转和平方，没有查找表；每拍出 128 位，软件流水线容易打满。它的非线性来自耦合的平方函数和计数器进位，而不是 S 盒。",
+            "en": "**Algorithm**: Rabbit (Rabbit 流密码).### A 513-bit state with eight counters\n\nRabbit has a 513-bit internal state: eight 32-bit state variables X0..X7, eight 32-bit counters C0..C7, and one carry bit b."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        },
+        {
+          "id": "rabbit-r139-why",
+          "entryId": "rabbit-details",
+          "section": "why",
+          "statement": {
+            "zh": "Rabbit 是为软件高吞吐设计的。FSE 2003 论文报告在 Pentium III 上 3.7 周期/字节；没有表查找意味着缓存行为可预测，不会出现 AES T 表那种秘密下标访问。它进入 eSTREAM 软件 portfolio，并由 RFC 4503 给出互操作描述。设计目标是“用通用 32 位指令跑得比常见密码快”，而不是追求最小门数；因此它和 Grain/Trivium 的硬件路线正好相反。",
+            "en": "Rabbit was designed for high software throughput.The FSE 2003 paper reports 3.7 cycles per byte on a Pentium III."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        },
+        {
+          "id": "rabbit-r139-used",
+          "entryId": "rabbit-details",
+          "section": "used",
+          "statement": {
+            "zh": "RFC 4503 定义了 Rabbit 的密钥装载、IV 设置、下一状态函数、输出提取和测试向量，适合软件库和嵌入式协议实现。它可用于数据流加密、伪随机位生成，以及作为高速软件流密码的基准。Rabbit 不是 TLS 的标准套件，也没有 AES-GCM 那样的广泛部署；使用它意味着协议双方要自行约定密钥/IV 管理和完整性保护。",
+            "en": "RFC 4503 specifies Rabbit key setup, IV setup, next-state function, output extraction and test vectors, making it suitable for software libraries and embedded protocols.It can encrypt data streams, generate pseudorandom bits and serve as a high-speed software stream-cipher benchmark."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        },
+        {
+          "id": "rabbit-r139-broken",
+          "entryId": "rabbit-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Rabbit 只有 64 位 IV。同一密钥下，随机 IV 在高消息量下会发生碰撞；RFC 4503 要求每次加密使用不同 IV，但在 2^32 量级的消息上，64 位空间的生日碰撞已经不可忽略。它没有内置认证，必须外接 MAC；密钥/IV 重用会直接泄露明文异或。物理对手还能用故障注入：SAC 2009 的差分故障分析用约 128–256 次随机位故障和 2^38 步恢复完整内部状态，说明设备级防护不能缺。Rabbit 的设计明文上限是 2^64 字节量级；超过这个边界，计数器周期和安全性论证都不再成立。完整算法没有公开的实用选择明文攻击，但“没有公开攻击”不等于可以跳过 IV 与实现防护。",
+            "en": "Rabbit has only a 64-bit IV.Under one key, random IVs will collide at high message volumes; RFC 4503 requires a fresh IV per encryption, but the birthday bound in a 64-bit space is already material around 2^32 messages."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        },
+        {
+          "id": "rabbit-r139-history",
+          "entryId": "rabbit-details",
+          "section": "history",
+          "statement": {
+            "zh": "Boesgaard、Vesterager、Pedersen、Christiansen 与 Scavenius 在 2003 年 FSE 发表 Rabbit，随后提交 eSTREAM 并进入软件 portfolio。2006 年 RFC 4503 给出标准描述；2008 年算法转为 public domain。它以“混沌映射离散化 + 计数器”的设计，成为高吞吐软件流密码的代表。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Boesgaard, Vesterager, Pedersen, Christiansen and Scavenius presented Rabbit at FSE 2003, then submitted it to eSTREAM, where it entered the software portfolio.RFC 4503 standardized the description in 2006, and the algorithm became public domain in 2008."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        },
+        {
+          "id": "rabbit-r139-refs",
+          "entryId": "rabbit-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Rabbit 流密码.https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Rabbit 流密码.https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "rabbit-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "rabbit-wikipedia"
+      ]
+    },
+    {
+      "id": "rabbit-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "rabbit-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "rabbit-r139-principle",
+      "entryId": "rabbit-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Rabbit 流密码（Rabbit）。### 513 位状态与 8 个计数器\n\nRabbit 的内部状态是 513 位：8 个 32 位状态变量 X0..X7、8 个 32 位计数器 C0..C7，再加 1 位进位 b。计数器每拍加上固定常数 a0..a7（0x4D34D34D、0xD34D34D3、0x34D34D34 循环），32 位溢出产生进位，进位再参与下一字的加法。### 密钥装载与 IV 混合\n\n128 位密钥拆成 8 个 16 位子密钥，按奇偶位置交叉拼成 X 与 C；系统先迭代 4 次，再把 C_j 与 X_{j+4} 异或、b 置 1。64 位 IV 再异或进计数器字，迭代 4 次。之后每一拍令 g_j = (x_j + c_j)^2，取平方的高 16 位与低 16 位异或，更新 8 个状态变量，最后把 8 个状态字异或成 128 位输出块。### 为什么没有 S 盒\n\nRabbit 只用 32 位加、异或、旋转和平方，没有查找表；每拍出 128 位，软件流水线容易打满。它的非线性来自耦合的平方函数和计数器进位，而不是 S 盒。",
+        "en": "**Algorithm**: Rabbit (Rabbit 流密码).### A 513-bit state with eight counters\n\nRabbit has a 513-bit internal state: eight 32-bit state variables X0..X7, eight 32-bit counters C0..C7, and one carry bit b."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    },
+    {
+      "id": "rabbit-r139-why",
+      "entryId": "rabbit-details",
+      "section": "why",
+      "statement": {
+        "zh": "Rabbit 是为软件高吞吐设计的。FSE 2003 论文报告在 Pentium III 上 3.7 周期/字节；没有表查找意味着缓存行为可预测，不会出现 AES T 表那种秘密下标访问。它进入 eSTREAM 软件 portfolio，并由 RFC 4503 给出互操作描述。设计目标是“用通用 32 位指令跑得比常见密码快”，而不是追求最小门数；因此它和 Grain/Trivium 的硬件路线正好相反。",
+        "en": "Rabbit was designed for high software throughput.The FSE 2003 paper reports 3.7 cycles per byte on a Pentium III."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    },
+    {
+      "id": "rabbit-r139-used",
+      "entryId": "rabbit-details",
+      "section": "used",
+      "statement": {
+        "zh": "RFC 4503 定义了 Rabbit 的密钥装载、IV 设置、下一状态函数、输出提取和测试向量，适合软件库和嵌入式协议实现。它可用于数据流加密、伪随机位生成，以及作为高速软件流密码的基准。Rabbit 不是 TLS 的标准套件，也没有 AES-GCM 那样的广泛部署；使用它意味着协议双方要自行约定密钥/IV 管理和完整性保护。",
+        "en": "RFC 4503 specifies Rabbit key setup, IV setup, next-state function, output extraction and test vectors, making it suitable for software libraries and embedded protocols.It can encrypt data streams, generate pseudorandom bits and serve as a high-speed software stream-cipher benchmark."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    },
+    {
+      "id": "rabbit-r139-broken",
+      "entryId": "rabbit-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Rabbit 只有 64 位 IV。同一密钥下，随机 IV 在高消息量下会发生碰撞；RFC 4503 要求每次加密使用不同 IV，但在 2^32 量级的消息上，64 位空间的生日碰撞已经不可忽略。它没有内置认证，必须外接 MAC；密钥/IV 重用会直接泄露明文异或。物理对手还能用故障注入：SAC 2009 的差分故障分析用约 128–256 次随机位故障和 2^38 步恢复完整内部状态，说明设备级防护不能缺。Rabbit 的设计明文上限是 2^64 字节量级；超过这个边界，计数器周期和安全性论证都不再成立。完整算法没有公开的实用选择明文攻击，但“没有公开攻击”不等于可以跳过 IV 与实现防护。",
+        "en": "Rabbit has only a 64-bit IV.Under one key, random IVs will collide at high message volumes; RFC 4503 requires a fresh IV per encryption, but the birthday bound in a 64-bit space is already material around 2^32 messages."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    },
+    {
+      "id": "rabbit-r139-history",
+      "entryId": "rabbit-details",
+      "section": "history",
+      "statement": {
+        "zh": "Boesgaard、Vesterager、Pedersen、Christiansen 与 Scavenius 在 2003 年 FSE 发表 Rabbit，随后提交 eSTREAM 并进入软件 portfolio。2006 年 RFC 4503 给出标准描述；2008 年算法转为 public domain。它以“混沌映射离散化 + 计数器”的设计，成为高吞吐软件流密码的代表。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Rabbit 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Boesgaard, Vesterager, Pedersen, Christiansen and Scavenius presented Rabbit at FSE 2003, then submitted it to eSTREAM, where it entered the software portfolio.RFC 4503 standardized the description in 2006, and the algorithm became public domain in 2008."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    },
+    {
+      "id": "rabbit-r139-refs",
+      "entryId": "rabbit-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Rabbit 流密码.https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Rabbit 流密码.https://zh.wikipedia.org/w/index.php?search=Rabbit%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "rabbit-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,214 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for cbor: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "cbor-details",
+      "inventoryIds": [
+        "cbor"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释CBOR 二进制编码的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Concise Binary Object Representation: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "CBOR 二进制编码",
+        "en": "Concise Binary Object Representation"
+      },
+      "claimIds": [
+        "cbor-r139-principle",
+        "cbor-r139-why",
+        "cbor-r139-used",
+        "cbor-r139-broken",
+        "cbor-r139-history",
+        "cbor-r139-refs"
+      ],
+      "sourceIds": [
+        "cbor-wikipedia",
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ],
+      "related": [
+        "cose",
+        "digital-signature",
+        "transport-layer-security"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：CBOR 二进制编码（Concise Binary Object Representation）。摘要定义目标：「The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.」§1 交代数据模型——「The underlying data model is an extended version of the JSON data model [RFC8259].」§3.1 列出主类型，例如「Major type 0: An unsigned integer in the range 0..2^(64)-1 inclusive.」「Major type 2: A byte string.」「Major type 5: A map of pairs of data items.」§3.2.1 说明终止符性质：「It is not itself a data item: it is just a syntactic feature to close an indefinite-length item.」§3.4 给出扩展机制：「In CBOR, a data item can be enclosed by a tag to give it some additional semantics」。",
+          "why": "它针对的是既有格式没满足的目标。§1 承认 IETF 里最知名的通用二进制格式是「In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].」§1.1 按重要性递减列出目标：「The representation must be able to unambiguously encode most common data formats used in Internet standards.」「The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.」「Data must be able to be decoded without a schema description.」以及「The format must be extensible, and the extended data must be decodable by earlier decoders.」",
+          "used": "同一数据可有多种合法编码，§4.1 说明取舍：「it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.」扩展由注册表管理，§9.2 记录「IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry」。摘要还交代版本策略：「It does not create a new version of the format.」——它与 RFC 7049 的交换格式完全兼容，因此部署里的 CBOR 报文不需要协商版本。",
+          "broken": "歧义编码是可被利用的面，因此确定性格式给出三条限制：§4.2.1 要求「Preferred serialization MUST be used.」「Indefinite-length items MUST NOT appear.」以及「The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.」§5.3 指出合法但无效的数据项必须交由理解语义的那一层处理：「A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model.」§10 把风险落到解析器：「Complex parsers are well known as a likely source of such vulnerabilities, such as the ability to remotely crash a node, or even remotely execute arbitrary code on it.」并要求解码器假定输入敌对——「A CBOR decoder needs to assume that all input may be hostile even if it has been checked by a firewall, has come over a secure channel such as TLS」。",
+          "history": "RFC 8949 署名 C.Bormann（Universität Bremen TZI）与 P.Hoffman（ICANN），2020 年 12 月发布，头部标「STD: 94」与「Obsoletes: 7049」。摘要说明替换的性质：「This document obsoletes RFC 7049, providing editorial improvements, new details, and errata fixes while keeping full compatibility with the interchange format of RFC 7049.」",
+          "refs": "- Wikipedia search entry for CBOR 二进制编码. https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8949: Concise Binary Object Representation. https://www.rfc-editor.org/rfc/rfc8949\n- Published standard/RFC for CBOR 二进制编码. https://www.rfc-editor.org/rfc/rfc8949",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nCBOR 二进制编码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Concise Binary Object Representation (CBOR 二进制编码). The abstract states the aim: \"The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.\" §1 sets the model — \"The underlying data model is an extended version of the JSON data model [RFC8259].\" §3.1 enumerates the major types, e.g. \"Major type 0: An unsigned integer in the range 0..2^(64)-1 inclusive.\", \"Major type 2: A byte string.\" and \"Major type 5: A map of pairs of data items.\" §3.2.1 characterises the terminator: \"It is not itself a data item: it is just a syntactic feature to close an indefinite-length item.\" §3.4 gives the extension mechanism: \"In CBOR, a data item can be enclosed by a tag to give it some additional semantics\".",
+          "why": "It targets goals earlier formats miss. §1 notes \"In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].\" §1.1 lists the objectives in decreasing importance: \"The representation must be able to unambiguously encode most common data formats used in Internet standards.\", \"The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.\", \"Data must be able to be decoded without a schema description.\" and \"The format must be extensible, and the extended data must be decodable by earlier decoders.\"",
+          "used": "One value admits several legal encodings, and §4.1 sets the trade-off: \"it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.\" Extension is managed by registry — §9.2 records \"IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry\". The abstract also settles versioning: \"It does not create a new version of the format.\" — it stays fully compatible with the RFC 7049 interchange format, so deployed CBOR needs no version negotiation.",
+          "broken": "Encoding ambiguity is an exploitable surface, so the deterministic profile imposes three restrictions: §4.2.1 requires \"Preferred serialization MUST be used.\", \"Indefinite-length items MUST NOT appear.\" and \"The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.\" §5.3 puts malformed-but-valid items on the layer that understands them: \"A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model.\" §10 lands the risk in the parser: \"Complex parsers are well known as a likely source of such vulnerabilities, such as the ability to remotely crash a node, or even remotely execute arbitrary code on it.\" and demands hostility by default — \"A CBOR decoder needs to assume that all input may be hostile even if it has been checked by a firewall, has come over a secure channel such as TLS\".",
+          "history": "RFC 8949 is signed by C. Bormann (Universität Bremen TZI) and P. Hoffman (ICANN), published December 2020 with “STD: 94” and “Obsoletes: 7049” in the header. The abstract characterises the replacement: \"This document obsoletes RFC 7049, providing editorial improvements, new details, and errata fixes while keeping full compatibility with the interchange format of RFC 7049.\"",
+          "refs": "- Wikipedia search entry for CBOR 二进制编码. https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8949: Concise Binary Object Representation. https://www.rfc-editor.org/rfc/rfc8949\n- Published standard/RFC for CBOR 二进制编码. https://www.rfc-editor.org/rfc/rfc8949",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nConcise Binary Object Representation: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "主类型：首字节高三位标注的数据种类。",
+          "argument：跟在首字节后的长度或值。",
+          "preferred serialization：推荐使用的最短编码。",
+          "deterministic encoding：可比较、无歧义的编码规则。",
+          "tag：主类型 6 提供的附加语义。",
+          "break：结束不定长项的停止码。"
+        ],
+        "en": [
+          "Major type: the data kind in the high three bits.",
+          "argument: the length or value following the initial byte.",
+          "Preferred serialization: the recommended shortest encoding.",
+          "Deterministic encoding: comparable, unambiguous rules.",
+          "Tag: major type 6, adding semantics to an item.",
+          "break: the stop code closing an indefinite-length item."
+        ]
+      },
+      "figures": [
+        {
+          "id": "cbor-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CBOR 二进制编码：为什么需要 → 核心机制 → 边界。",
+            "en": "Concise Binary Object Representation: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CBOR 二进制编码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Concise Binary Object Representation, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/cbor-details-flow.zh.svg",
+            "en": "assets/cbor-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "860b013be5eb2189a813b845065887c77e3431ff6ba35dd3f3e2f1bc7f7ba26f",
+            "en": "e6c21d03d217239975e03388b0a9dbf6444efd807a69cd4c0af918c6667bc2c6"
+          }
+        },
+        {
+          "id": "cbor-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CBOR 二进制编码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Concise Binary Object Representation: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CBOR 二进制编码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Concise Binary Object Representation, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/cbor-details-r138-model.zh.svg",
+            "en": "assets/cbor-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "81772be47b1648880ec270bb7b6049c67dc44ac3359f9c1fc1c3f54450678c54",
+            "en": "c1a035f6be7e11347cea9c38a2e13ae21f2bfe8d584e8a7a68ee665c9c5aa7aa"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "cbor-r139-formal",
+          "entryId": "cbor-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：CBOR 二进制编码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 CBOR 二进制编码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "cbor-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "cbor-r139-formal"
+      ],
+      "sources": [
+        "cbor-wikipedia",
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "cbor-r139-formal",
+      "entryId": "cbor-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：CBOR 二进制编码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 CBOR 二进制编码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "cbor-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "checkedOn": "2026-11-25",
+  "scope": "R133 formula-level deepening for tls13-details.",
+  "entry": {
+    "id": "tls13-details",
+    "inventoryIds": [
+      "tls13"
+    ],
+    "coverage": "catalog-entry",
+    "sectionKeys": [
+      "principle",
+      "why",
+      "used",
+      "broken",
+      "history",
+      "refs"
+    ],
+    "coverageRationale": {
+      "zh": "把 TLS 1.3 从“协议概述”推进到公式级密钥调度：Transcript-Hash、HKDF-Expand-Label、Derive-Secret、Early/Handshake/Main 三层提取、四类 traffic secret、AEAD key/IV 与 Finished 的绑定关系。",
+      "en": "Moves TLS 1.3 from a protocol overview to a formula-level key schedule: Transcript-Hash, HKDF-Expand-Label, Derive-Secret, the Early/Handshake/Main extraction layers, four traffic secrets, AEAD key/IV and Finished binding."
+    },
+    "title": {
+      "zh": "TLS 1.3",
+      "en": "TLS 1.3"
+    },
+    "claimIds": [
+      "tls13-principle",
+      "tls13-why",
+      "tls13-used",
+      "tls13-broken",
+      "tls13-history",
+      "tls13-details-r138-1",
+      "tls13-details-r138-2",
+      "tls13-details-r138-3"
+    ],
+    "calculationNotApplicable": {
+      "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按标准原文或来源重算。",
+      "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the standard text or sources."
+    },
+    "sourceIds": [
+      "tls13-rfc9846",
+      "tls13-rfc8448",
+      "tls13-rfc8446",
+      "tls13-rfc5869"
+    ],
+    "related": [
+      "tls12",
+      "forward-secrecy",
+      "downgrade-attack",
+      "dtls13"
+    ],
+    "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+    "verificationStatus": "independently-reviewed-detailed-article",
+    "sections": {
+      "zh": {
+        "principle": "TLS 1.3 先把握手消息累积成 transcript，再用 HKDF 阶梯派生各阶段密钥。Transcript-Hash 对 ClientHello 到当前消息做哈希；Derive-Secret 把标签、transcript 哈希和当前 secret 绑定，输出下一层 secret。\n\nEarly Secret 由 PSK 或全零 PSK 提取；Handshake Secret 把 Early 的 derived secret 与 (EC)DHE 共享秘密提取；Main Secret 再把 Handshake 的 derived secret 与全零 IKM 提取。之后 c hs traffic、s hs traffic、c ap traffic、s ap traffic 分别绑定握手或应用阶段的消息序列，最后扩展出 AEAD 的 key 与 IV。",
+        "why": "把密钥按阶段拆开，可以做到握手后段加密、前向保密和 0-RTT 分离：Handshake Secret 由临时 DH 提供前向保密，应用流量密钥再由 Main Secret 派生；PSK 只影响 Early Secret，不能替代证书或 Finished。\n\n每个 traffic secret 绑定 transcript，防止握手消息被剪接；Finished 再用 finished_key 对 transcript 做 HMAC，确认双方看到同一段握手。",
+        "used": "实现时按 RFC 9846 的 key schedule 顺序计算：先确定 Hash（如 SHA-256，输出 32 字节），再算 Early/Handshake/Main；每个 traffic secret 用 Derive-Secret 加标签；key 与 IV 用 HKDF-Expand-Label 扩展，AES-128-GCM 取 16 字节 key、12 字节 IV。\n\n记录层把 64 位序列号补零到 IV 长度后异或，得到 per-record nonce；AEAD 的 additional_data 是记录头，明文是内容。Finished 的 base key 是 handshake traffic secret，finished_key 再扩展 Hash.length 字节。",
+        "broken": "0-RTT 早期数据没有跨连接防重放，重放窗口由应用自己限制；PSK 泄漏会削弱 Early Secret，不能把它当长期身份。记录序列号耗尽必须 key update，不能回绕重用 nonce；AEAD 的 IV 复用会直接破坏机密性与完整性。\n\nTLS 1.3 不保护端点被攻破后的明文，也不替代证书校验、主机名验证和授权；RFC 9846 是对 RFC 8446 的小幅更新，引用时应以现行文本为准。",
+        "history": "TLS 1.3 由 RFC 8446 在 2018 年 8 月标准化，移除静态 RSA 与静态 DH 密钥交换，要求所有公钥交换提供前向保密，并把握手后段加密。\n\nRFC 9846 在 2026 年 7 月发布，替代 RFC 8446，但协议版本仍是 TLS 1.3；它禁止跨连接复用 KeyShare，把握手用量上限前的 key update 升为 MUST，并把 master 术语改为 main。",
+        "refs": "- [RFC 9846: The Transport Layer Security (TLS) Protocol Version 1.3](https://www.rfc-editor.org/rfc/rfc9846.html) — §7.1 Key Schedule：Early/Handshake/Main secret、Derive-Secret、traffic secret；§7.3 traffic key 与 IV；§7.5 Finished；§5.3 record nonce\n\n- [RFC 8448: Example Handshake Traces for TLS 1.3](https://www.rfc-editor.org/rfc/rfc8448.html) — 完整 1-RTT 握手轨迹：ClientHello、ServerHello、key share、Finished 与密钥派生中间值\n\n- [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://www.rfc-editor.org/rfc/rfc8446.html) — 2018 年原始 TLS 1.3 文本；已被 RFC 9846 替代，用于对照历史版本与术语变化\n\n- [RFC 5869: HKDF](https://www.rfc-editor.org/rfc/rfc5869.html) — HKDF-Extract 与 HKDF-Expand 的定义；TLS 1.3 用 HKDF-Expand-Label 包装"
+      },
+      "en": {
+        "principle": "TLS 1.3 first accumulates handshake messages into a transcript, then derives each stage key with an HKDF ladder. Transcript-Hash hashes ClientHello through the current message; Derive-Secret binds a label, the transcript hash and the current secret to produce the next secret.\n\nEarly Secret is extracted from the PSK, or an all-zero PSK; Handshake Secret extracts the Early derived secret with the (EC)DHE shared secret; Main Secret extracts the Handshake derived secret with an all-zero IKM. Then c hs traffic, s hs traffic, c ap traffic and s ap traffic bind the handshake or application message sequence, and finally expand into AEAD keys and IVs.",
+        "why": "Splitting keys by stage gives encrypted latter handshake, forward secrecy and separated 0-RTT: Handshake Secret uses ephemeral DH for forward secrecy, application traffic keys come from Main Secret, and the PSK only affects Early Secret; it cannot replace certificates or Finished.\n\nEach traffic secret binds the transcript, preventing handshake splicing; Finished then HMACs the transcript with finished_key and confirms that both sides saw the same handshake.",
+        "used": "Implement in the RFC 9846 key-schedule order: fix the Hash first, for example SHA-256 with 32-byte output, then compute Early/Handshake/Main; derive each traffic secret with a label; expand key and IV with HKDF-Expand-Label, using a 16-byte key and 12-byte IV for AES-128-GCM.\n\nThe record layer zero-pads the 64-bit sequence number to IV length and XORs it with the IV to obtain the per-record nonce; AEAD additional_data is the record header and plaintext is the content. Finished uses the handshake traffic secret as base key and expands finished_key to Hash.length bytes.",
+        "broken": "0-RTT early data has no cross-connection replay guarantee, and the application must bound its replay window; PSK compromise weakens Early Secret and cannot be treated as a long-term identity. Sequence exhaustion requires key update and forbids wrapping nonce reuse; IV reuse in AEAD directly breaks confidentiality and integrity.\n\nTLS 1.3 does not protect plaintext after an endpoint compromise, and does not replace certificate validation, hostname checks or authorisation; RFC 9846 is a minor update to RFC 8446, so implementations should cite the current text.",
+        "history": "TLS 1.3 was standardised by RFC 8446 in August 2018, removing static RSA and static DH key exchange, requiring forward secrecy for all public-key exchange, and encrypting the latter handshake.\n\nRFC 9846 was published in July 2026 and replaces RFC 8446, while the protocol version remains TLS 1.3; it forbids reusing KeyShare across connections, makes key update before usage limits a MUST, and renames master to main.",
+        "refs": "- [RFC 9846: The Transport Layer Security (TLS) Protocol Version 1.3](https://www.rfc-editor.org/rfc/rfc9846.html) — §7.1 Key Schedule：Early/Handshake/Main secret、Derive-Secret、traffic secret；§7.3 traffic key 与 IV；§7.5 Finished；§5.3 record nonce\n\n- [RFC 8448: Example Handshake Traces for TLS 1.3](https://www.rfc-editor.org/rfc/rfc8448.html) — 完整 1-RTT 握手轨迹：ClientHello、ServerHello、key share、Finished 与密钥派生中间值\n\n- [RFC 8446: The Transport Layer Security (TLS) Protocol Version 1.3](https://www.rfc-editor.org/rfc/rfc8446.html) — 2018 年原始 TLS 1.3 文本；已被 RFC 9846 替代，用于对照历史版本与术语变化\n\n- [RFC 5869: HKDF](https://www.rfc-editor.org/rfc/rfc5869.html) — HKDF-Extract 与 HKDF-Expand 的定义；TLS 1.3 用 HKDF-Expand-Label 包装"
+      }
+    },
+    "glossary": {
+      "zh": [
+        "Transcript：握手消息按顺序拼接后的累积记录。",
+        "Early Secret：由 PSK 提取的最底层 secret。",
+        "Handshake Secret：加入 (EC)DHE 后得到的握手阶段 secret。",
+        "Finished：用 finished_key 对 transcript 做 HMAC 的确认标签。"
+      ],
+      "en": [
+        "Transcript: the accumulated, ordered record of handshake messages.",
+        "Early Secret: the lowest-layer secret extracted from the PSK.",
+        "Handshake Secret: the handshake-stage secret after adding (EC)DHE.",
+        "Finished: the confirmation tag produced by HMAC over the transcript with finished_key."
+      ]
+    },
+    "figures": [
+      {
+        "id": "tls13-mechanism",
+        "section": "principle",
+        "kind": "diagram",
+        "caption": {
+          "zh": "TLS 1.3 密钥调度：Transcript-Hash 绑定握手上下文，Early/Handshake/Main 逐层 HKDF-Extract，流量 secret 再扩展出 AEAD key、IV 与 Finished key。",
+          "en": "TLS 1.3 key schedule: Transcript-Hash binds the handshake context, Early/Handshake/Main are extracted in sequence, and traffic secrets expand into AEAD keys, IVs and Finished keys."
+        },
+        "alt": {
+          "zh": "TLS 1.3 密钥调度：Transcript-Hash 绑定握手上下文，Early/Handshake/Main 逐层 HKDF-Extract，流量 secret 再扩展出 AEAD key、IV 与 Finished key。",
+          "en": "TLS 1.3 key schedule: Transcript-Hash binds the handshake context, Early/Handshake/Main are extracted in sequence, and traffic secrets expand into AEAD keys, IVs and Finished keys."
+        },
+        "files": {
+          "zh": "assets/tls13-mechanism.zh.svg",
+          "en": "assets/tls13-mechanism.en.svg"
+        },
+        "credit": {
+          "zh": "来源：RFC 9846（现行 TLS 1.3）、RFC 8448 握手轨迹、RFC 8446（历史版本）、RFC 5869（HKDF）。",
+          "en": "Sources: RFC 9846 (current TLS 1.3), RFC 8448 handshake traces, RFC 8446 (historical) and RFC 5869 (HKDF)."
+        },
+        "license": {
+          "name": "CC BY 4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "source": {
+          "type": "original",
+          "author": "poyi knowledge",
+          "createdOn": "2026-11-24"
+        },
+        "evidence": [
+          "content.json sections",
+          "sources.json"
+        ],
+        "sha256": {
+          "zh": "642f22fdf0a46178a8d6e26052e19a5395e3e8ca09b6a435de504cc823ec9cb6",
+          "en": "b33dac513a76d7049e03f28b8ed0b545eef825403e2618db3d52a25081b9f047"
+        }
+      }
+    ],
+    "calculationIds": [],
+    "subtopicIds": [
+      "tls"
+    ]
+  }
+}

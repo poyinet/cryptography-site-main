@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--hmac-details",
+  "sources": [
+    {
+      "id": "algorithm--hmac-wikipedia",
+      "title": "Wikipedia search entry for HMAC 密钥化哈希认证码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: HMAC 密钥化哈希认证码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--hmac-r139-principle",
+          "entryId": "algorithm--hmac-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：HMAC 密钥化哈希认证码（Hash-based Message Authentication Code）。留存 RFC 2104 文本在摘要段给出定义：「This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.」其下一句交代它与密钥和哈希的结合方式：「HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.」两句都在文首 Abstract 段（本副本报为 front）。原理骨架即此：以迭代型哈希函数为构件、配一把共享秘密密钥，产出一个消息认证码；强度归属见同一段的「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」\n\n§2 把构造写成可执行的七步。先定义两个定串：「ipad = the byte 0x36 repeated B times」与「opad = the byte 0x5C repeated B times.」（两行明文各占一行，0x5C 按原文大小写书写），随后一行给出整体式「H(K XOR opad, H(K XOR ipad, text))」。",
+            "en": "**Algorithm**: Hash-based Message Authentication Code (HMAC 密钥化哈希认证码).The retained RFC 2104 text gives the definition in the Abstract: \"This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.\" The next sentence fixes its relation to a key and a hash: \"HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.\" both sitting in the front Abstract block (reported as front in this copy)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--hmac-r139-why",
+          "entryId": "algorithm--hmac-details",
+          "section": "why",
+          "statement": {
+            "zh": "§1 说明其构造取向：「This document specifies HMAC using a generic cryptographic hash function (denoted by H).」并紧跟实例化要求：「Specific instantiations of HMAC need to define a particular hash function.」——文件定义的是与具体哈希无关的通用构造，实例化时才选定哈希。这解释了为什么要以`可替换底层哈希`的嵌套结构来做 MAC：既有软件里表现良好、代码随处可得的哈希函数无需改动即可复用。摘要段那句把强度前提也归到底层哈希：「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」（front）。于是动机是复用现成哈希并保留其性能，同时把安全性下推到对 H 的常规假设。",
+            "en": "Section 1 states the construction stance: \"This document specifies HMAC using a generic cryptographic hash function (denoted by H).\" followed immediately by the instantiation rule \"Specific instantiations of HMAC need to define a particular hash function.\" the file defining a hash-agnostic generic construction and the choice of hash deferred to instantiation.That is why HMAC is built as a nesting that can swap the underlying hash: hash functions that already run well in software and are widely available can be reused unchanged."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--hmac-r139-used",
+          "entryId": "algorithm--hmac-details",
+          "section": "used",
+          "statement": {
+            "zh": "使用条件散在编号小节，措辞有 must 级也有 recommend 级。§3 对密钥的取法是祈使式陈述：「Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.」——密钥须随机选择并定期刷新。§5 对截断输出给的是 recommend：「We recommend that the output length t be not less than half the length of the hash output (to match the birthday attack bound) and not less than 80 bits」即截断后的长度 t 建议不小于哈希输出的一半且不少于 80 位。用途因此是把 HMAC 套在某一具体哈希上作消息认证，并对密钥管理与输出截断给出上述两级指引；该条目目据的是 RFC 2104 文本，而非目录行的首要引用 FIPS 198-1。留存 RFC 4231 §4.1 交代这批测试向量的地位：「The test vectors in this document have been cross-verified by three」接「independent implementations.」——同一句被硬回车切成两行，故分两段引。",
+            "en": "The usage conditions sit in the numbered sections, at must level for keys and recommend level for output.Section 3 states the key rule in plain imperatival prose: \"Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.\" keys must be random and refreshed periodically."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--hmac-r139-broken",
+          "entryId": "algorithm--hmac-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在两处。§1 记底层哈希的现状：「MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].」并限定其影响面：「This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.」——已知的 MD5 碰撞攻击当时尚未危及 HMAC 内的 MD5 使用，但 SHA-1 被评述为更强。§6 给出理论上的最强攻击（该句在原文里紧跟带 ASCII 引号的 birthday attack 一词，此处只引到 H 为止）：「The strongest attack known against HMAC is based on the frequency of collisions for the hash function H」即攻击面被归结为底层 H 的碰撞频率。两条合说：HMAC 的安全性随所选哈希的碰撞抗力而变，MD5 这类构件是其明文点名的弱点来源。",
+            "en": "The limits are stated in two places.Section 1 records the state of the underlying hash: \"MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].\" and bounds the impact: \"This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.\" the known MD5 collisions did not, at the time of writing, compromise MD5 inside HMAC, yet SHA-1 is described as stronger."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--hmac-r139-history",
+          "entryId": "algorithm--hmac-details",
+          "section": "history",
+          "statement": {
+            "zh": "门面按留存文本连读：标题行印 HMAC: Keyed-Hashing for Message Authentication，作者行 Krawczyk、Bellare、Canetti，头部印 Request for Comments: 2104 与 Category: Informational（头部行复述于引号外）。其 Status of This Memo 段三句为：「This memo provides information for the Internet community.」 「This memo does not specify an Internet standard of any kind.」 「Distribution of this memo is unlimited.」——信息类文档，不规定任何因特网标准。版本口径分歧在此记录：本留存文件的日期行印 February 1997，而目录行把 RFC 2104 记作 `RFC 2104(1999)` 并将 FIPS 198-1(2008) 列为首要引用；该条目目所有断言均以留存 RFC 2104 文本为准，日期从文本所印。",
+            "en": "Read as printed, the front matter gives the title line HMAC: Keyed-Hashing for Message Authentication, the author line Krawczyk, Bellare and Canetti, and the header Request for Comments: 2104 with Category: Informational (header lines stated outside the quotes).Its Status of This Memo paragraph reads: \"This memo provides information for the Internet community.\" \"This memo does not specify an Internet standard of any kind.\" \"Distribution of this memo is unlimited.\" an informational document that specifies no Internet standard."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--hmac-r139-refs",
+          "entryId": "algorithm--hmac-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for HMAC 密钥化哈希认证码.https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for HMAC 密钥化哈希认证码.https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--hmac-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--hmac-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--hmac-r139-principle",
+      "entryId": "algorithm--hmac-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：HMAC 密钥化哈希认证码（Hash-based Message Authentication Code）。留存 RFC 2104 文本在摘要段给出定义：「This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.」其下一句交代它与密钥和哈希的结合方式：「HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.」两句都在文首 Abstract 段（本副本报为 front）。原理骨架即此：以迭代型哈希函数为构件、配一把共享秘密密钥，产出一个消息认证码；强度归属见同一段的「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」\n\n§2 把构造写成可执行的七步。先定义两个定串：「ipad = the byte 0x36 repeated B times」与「opad = the byte 0x5C repeated B times.」（两行明文各占一行，0x5C 按原文大小写书写），随后一行给出整体式「H(K XOR opad, H(K XOR ipad, text))」。",
+        "en": "**Algorithm**: Hash-based Message Authentication Code (HMAC 密钥化哈希认证码).The retained RFC 2104 text gives the definition in the Abstract: \"This document describes HMAC, a mechanism for message authentication using cryptographic hash functions.\" The next sentence fixes its relation to a key and a hash: \"HMAC can be used with any iterative cryptographic hash function, e.g., MD5, SHA-1, in combination with a secret shared key.\" both sitting in the front Abstract block (reported as front in this copy)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-r139-why",
+      "entryId": "algorithm--hmac-details",
+      "section": "why",
+      "statement": {
+        "zh": "§1 说明其构造取向：「This document specifies HMAC using a generic cryptographic hash function (denoted by H).」并紧跟实例化要求：「Specific instantiations of HMAC need to define a particular hash function.」——文件定义的是与具体哈希无关的通用构造，实例化时才选定哈希。这解释了为什么要以`可替换底层哈希`的嵌套结构来做 MAC：既有软件里表现良好、代码随处可得的哈希函数无需改动即可复用。摘要段那句把强度前提也归到底层哈希：「The cryptographic strength of HMAC depends on the properties of the underlying hash function.」（front）。于是动机是复用现成哈希并保留其性能，同时把安全性下推到对 H 的常规假设。",
+        "en": "Section 1 states the construction stance: \"This document specifies HMAC using a generic cryptographic hash function (denoted by H).\" followed immediately by the instantiation rule \"Specific instantiations of HMAC need to define a particular hash function.\" the file defining a hash-agnostic generic construction and the choice of hash deferred to instantiation.That is why HMAC is built as a nesting that can swap the underlying hash: hash functions that already run well in software and are widely available can be reused unchanged."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-r139-used",
+      "entryId": "algorithm--hmac-details",
+      "section": "used",
+      "statement": {
+        "zh": "使用条件散在编号小节，措辞有 must 级也有 recommend 级。§3 对密钥的取法是祈使式陈述：「Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.」——密钥须随机选择并定期刷新。§5 对截断输出给的是 recommend：「We recommend that the output length t be not less than half the length of the hash output (to match the birthday attack bound) and not less than 80 bits」即截断后的长度 t 建议不小于哈希输出的一半且不少于 80 位。用途因此是把 HMAC 套在某一具体哈希上作消息认证，并对密钥管理与输出截断给出上述两级指引；该条目目据的是 RFC 2104 文本，而非目录行的首要引用 FIPS 198-1。留存 RFC 4231 §4.1 交代这批测试向量的地位：「The test vectors in this document have been cross-verified by three」接「independent implementations.」——同一句被硬回车切成两行，故分两段引。",
+        "en": "The usage conditions sit in the numbered sections, at must level for keys and recommend level for output.Section 3 states the key rule in plain imperatival prose: \"Keys need to be chosen at random (or using a cryptographically strong pseudo-random generator seeded with a random seed), and periodically refreshed.\" keys must be random and refreshed periodically."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-r139-broken",
+      "entryId": "algorithm--hmac-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在两处。§1 记底层哈希的现状：「MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].」并限定其影响面：「This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.」——已知的 MD5 碰撞攻击当时尚未危及 HMAC 内的 MD5 使用，但 SHA-1 被评述为更强。§6 给出理论上的最强攻击（该句在原文里紧跟带 ASCII 引号的 birthday attack 一词，此处只引到 H 为止）：「The strongest attack known against HMAC is based on the frequency of collisions for the hash function H」即攻击面被归结为底层 H 的碰撞频率。两条合说：HMAC 的安全性随所选哈希的碰撞抗力而变，MD5 这类构件是其明文点名的弱点来源。",
+        "en": "The limits are stated in two places.Section 1 records the state of the underlying hash: \"MD5 has been recently shown to be vulnerable to collision search attacks [Dobb].\" and bounds the impact: \"This attack and other currently known weaknesses of MD5 do not compromise the use of MD5 within HMAC as specified in this document (see [Dobb]); however, SHA-1 appears to be a cryptographically stronger function.\" the known MD5 collisions did not, at the time of writing, compromise MD5 inside HMAC, yet SHA-1 is described as stronger."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-r139-history",
+      "entryId": "algorithm--hmac-details",
+      "section": "history",
+      "statement": {
+        "zh": "门面按留存文本连读：标题行印 HMAC: Keyed-Hashing for Message Authentication，作者行 Krawczyk、Bellare、Canetti，头部印 Request for Comments: 2104 与 Category: Informational（头部行复述于引号外）。其 Status of This Memo 段三句为：「This memo provides information for the Internet community.」 「This memo does not specify an Internet standard of any kind.」 「Distribution of this memo is unlimited.」——信息类文档，不规定任何因特网标准。版本口径分歧在此记录：本留存文件的日期行印 February 1997，而目录行把 RFC 2104 记作 `RFC 2104(1999)` 并将 FIPS 198-1(2008) 列为首要引用；该条目目所有断言均以留存 RFC 2104 文本为准，日期从文本所印。",
+        "en": "Read as printed, the front matter gives the title line HMAC: Keyed-Hashing for Message Authentication, the author line Krawczyk, Bellare and Canetti, and the header Request for Comments: 2104 with Category: Informational (header lines stated outside the quotes).Its Status of This Memo paragraph reads: \"This memo provides information for the Internet community.\" \"This memo does not specify an Internet standard of any kind.\" \"Distribution of this memo is unlimited.\" an informational document that specifies no Internet standard."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--hmac-r139-refs",
+      "entryId": "algorithm--hmac-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for HMAC 密钥化哈希认证码.https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for HMAC 密钥化哈希认证码.https://zh.wikipedia.org/w/index.php?search=HMAC%20%E5%AF%86%E9%92%A5%E5%8C%96%E5%93%88%E5%B8%8C%E8%AE%A4%E8%AF%81%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--hmac-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

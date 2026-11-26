@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "acme-details",
+  "sources": [
+    {
+      "id": "acme-wikipedia",
+      "title": "Wikipedia search entry for ACME 证书自动管理",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ACME%20%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E7%AE%A1%E7%90%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ACME 证书自动管理",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "acme-r139-principle",
+          "entryId": "acme-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：ACME 证书自动管理（Automatic Certificate Management Environment）。ACME 把域名控制证明自动化：§1 交代前提「Certificates [RFC5280] in the Web PKI are most commonly used to authenticate domain names.」摘要批评现状「As of this writing, this verification is done through a collection of ad hoc mechanisms.」§4 说明载体：「ACME allows a client to request certificate management actions using a set of JavaScript Object Notation (JSON) messages [RFC8259] carried over HTTPS [RFC2818].」§6.2 规定请求认证：「All ACME requests with a non-empty body MUST encapsulate their payload in a JSON Web Signature (JWS) [RFC7515] object」且「The server MUST verify the JWS before processing the request.」。",
+            "en": "**Protocol**: Automatic Certificate Management Environment (ACME 证书自动管理).ACME automates proof of domain control: §1 sets the premise \"Certificates [RFC5280] in the Web PKI are most commonly used to authenticate domain names.\" the abstract describes the status quo it replaces — \"As of this writing, this verification is done through a collection of ad hoc mechanisms.\" — and §4 gives the carrier: \"ACME allows a client to request certificate management actions using a set of JavaScript Object Notation (JSON) messages [RFC8259] carried over HTTPS [RFC2818].\" §6."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        },
+        {
+          "id": "acme-r139-why",
+          "entryId": "acme-details",
+          "section": "why",
+          "statement": {
+            "zh": "文档聚焦 Web PKI 里的域名校验，但明确留出扩展空间：§1 写「while the focus of this document is on validating domain names for purposes of issuing certificates in the Web PKI, ACME supports extensions for uses with other identifiers in other PKI contexts.」对 DV 证书而言，§1 写明「The only validation the CA is required to perform in the DV issuance process is to verify that the requester has effective control of the domain」并补充「The CA is not required to attempt to verify the requester's real-world identity.」§2 解释为什么这能全自动：DV 校验检查的是签发方可在线观察的属性，因此「all steps in the request, verification, and issuance process can be represented and performed by Internet protocols with no out-of-band human intervention.」。",
+            "en": "The document centres on domain validation for the Web PKI while leaving extension room on purpose: §1 states \"while the focus of this document is on validating domain names for purposes of issuing certificates in the Web PKI, ACME supports extensions for uses with other identifiers in other PKI contexts.\" For DV certificates §1 also states \"The only validation the CA is required to perform in the DV issuance process is to verify that the requester has effective control of the domain\" and adds \"The CA is not required to attempt to verify the requester's real-world identity."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        },
+        {
+          "id": "acme-r139-used",
+          "entryId": "acme-details",
+          "section": "used",
+          "statement": {
+            "zh": "授权流程确认两件事，§7.5 列为「That the client controls the private key of the account key pair」与「That the client controls the identifier in question.」授权对象状态在 §7.1.4 枚举：「Possible values are “pending”, “valid”, “invalid”, “deactivated”, “expired”, and “revoked”.」§8.3 的 http-01 挑战要求「With HTTP validation, the client in an ACME transaction proves its control over a domain name by proving that it can provision HTTP resources on a server accessible under that domain name.」并解释为何走明文端口——「the challenge must be completed over HTTP, not HTTPS.」§8.4 的 dns-01 则「prove control of that domain by provisioning a TXT resource record containing a designated value for a specific validation domain name.」§6.",
+            "en": "Authorization asserts two facts, listed in §7.5 as \"That the client controls the private key of the account key pair\" and \"That the client controls the identifier in question.\" §7.1.4 enumerates the states: \"Possible values are “pending”, “valid”, “invalid”, “deactivated”, “expired”, and “revoked”.\" §8.3's http-01 challenge works because \"With HTTP validation, the client in an ACME transaction proves its control over a domain name by proving that it can provision HTTP resources on a server accessible under that domain name.\" and explains the cleartext port — \"the challenge must be completed over HTTP, not HTTPS.\" §8."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        },
+        {
+          "id": "acme-r139-broken",
+          "entryId": "acme-details",
+          "section": "broken",
+          "statement": {
+            "zh": "nonce 是一次性的：§6.5 规定「Once a nonce value has appeared in an ACME request, the server MUST consider it invalid, in the same way as a value it had never issued.」令牌必须有足够熵，§8.3 要求「This value MUST have at least 128 bits of entropy.」§11.3 解释两个目的，其中之一是让未被逐条配置的朴素校验服务器难以实现。§10.4 记录服务端请求伪造：校验用的 GET「This request is made before the server has verified that the client controls the domain, so any client can cause a query to any domain.」并且攻击者可借重定向扩大影响——「then they can send the server an HTTP redirect (e.g., a 302 response) which will cause the server to query an arbitrary URL.」§10.3 也承认这类出站连接代价与风险，§6.6 用速率限制兜底：「Creation of resources can be rate limited by ACME servers to ensure fair usage and prevent abuse.」。",
+            "en": "Nonces are single use: §6.5 requires \"Once a nonce value has appeared in an ACME request, the server MUST consider it invalid, in the same way as a value it had never issued.\" Tokens need entropy — §8.3 states \"This value MUST have at least 128 bits of entropy.\" and §11.3 explains the two purposes, one being to make an unconfigured “naive” validation server hard to build.§10.4 records the SSRF exposure: the validation GET \"This request is made before the server has verified that the client controls the domain, so any client can cause a query to any domain.\" and a redirect widens it — \"then they can send the server an HTTP redirect (e.g."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        },
+        {
+          "id": "acme-r139-history",
+          "entryId": "acme-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 8555 署名 R.Barnes（Cisco）、J.Hoffman-Andrews（EFF）、D.McCarney（Let's Encrypt）与 J.Kasten（University of Michigan），2019 年 3 月发布，Category: Standards Track，头部无 Obsoletes 行。§1 描述它要替代的现状：「Existing Web PKI certification authorities tend to use a set of ad hoc protocols for certificate issuance and identity verification.」§2 交代此前的部署体验：「Prior to ACME, when deploying an HTTPS server, a server operator typically gets a prompt to generate a self-signed certificate.」。",
+            "en": "RFC 8555 is signed by R.Barnes (Cisco), J."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        },
+        {
+          "id": "acme-r139-refs",
+          "entryId": "acme-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ACME 证书自动管理.https://zh.wikipedia.org/w/index.php?search=ACME%20%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8555: Automatic Certificate Management Environment.https://www.rfc-editor.org/rfc/rfc8555\n- Published standard/RFC for ACME 证书自动管理.https://www.rfc-editor.org/rfc/rfc8555。",
+            "en": "- Wikipedia search entry for ACME 证书自动管理.https://zh.wikipedia.org/w/index.php?search=ACME%20%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "acme-reference-ref",
+            "acme-specific",
+            "acme-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "acme-wikipedia"
+      ]
+    },
+    {
+      "id": "acme-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "acme-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "acme-specific",
+      "title": "RFC 8555: Automatic Certificate Management Environment",
+      "url": "https://www.rfc-editor.org/rfc/rfc8555",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "acme-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "acme-standard",
+      "title": "Published standard/RFC for ACME 证书自动管理",
+      "url": "https://www.rfc-editor.org/rfc/rfc8555",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for ACME 证书自动管理",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "acme-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "acme-r139-principle",
+      "entryId": "acme-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：ACME 证书自动管理（Automatic Certificate Management Environment）。ACME 把域名控制证明自动化：§1 交代前提「Certificates [RFC5280] in the Web PKI are most commonly used to authenticate domain names.」摘要批评现状「As of this writing, this verification is done through a collection of ad hoc mechanisms.」§4 说明载体：「ACME allows a client to request certificate management actions using a set of JavaScript Object Notation (JSON) messages [RFC8259] carried over HTTPS [RFC2818].」§6.2 规定请求认证：「All ACME requests with a non-empty body MUST encapsulate their payload in a JSON Web Signature (JWS) [RFC7515] object」且「The server MUST verify the JWS before processing the request.」。",
+        "en": "**Protocol**: Automatic Certificate Management Environment (ACME 证书自动管理).ACME automates proof of domain control: §1 sets the premise \"Certificates [RFC5280] in the Web PKI are most commonly used to authenticate domain names.\" the abstract describes the status quo it replaces — \"As of this writing, this verification is done through a collection of ad hoc mechanisms.\" — and §4 gives the carrier: \"ACME allows a client to request certificate management actions using a set of JavaScript Object Notation (JSON) messages [RFC8259] carried over HTTPS [RFC2818].\" §6."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    },
+    {
+      "id": "acme-r139-why",
+      "entryId": "acme-details",
+      "section": "why",
+      "statement": {
+        "zh": "文档聚焦 Web PKI 里的域名校验，但明确留出扩展空间：§1 写「while the focus of this document is on validating domain names for purposes of issuing certificates in the Web PKI, ACME supports extensions for uses with other identifiers in other PKI contexts.」对 DV 证书而言，§1 写明「The only validation the CA is required to perform in the DV issuance process is to verify that the requester has effective control of the domain」并补充「The CA is not required to attempt to verify the requester's real-world identity.」§2 解释为什么这能全自动：DV 校验检查的是签发方可在线观察的属性，因此「all steps in the request, verification, and issuance process can be represented and performed by Internet protocols with no out-of-band human intervention.」。",
+        "en": "The document centres on domain validation for the Web PKI while leaving extension room on purpose: §1 states \"while the focus of this document is on validating domain names for purposes of issuing certificates in the Web PKI, ACME supports extensions for uses with other identifiers in other PKI contexts.\" For DV certificates §1 also states \"The only validation the CA is required to perform in the DV issuance process is to verify that the requester has effective control of the domain\" and adds \"The CA is not required to attempt to verify the requester's real-world identity."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    },
+    {
+      "id": "acme-r139-used",
+      "entryId": "acme-details",
+      "section": "used",
+      "statement": {
+        "zh": "授权流程确认两件事，§7.5 列为「That the client controls the private key of the account key pair」与「That the client controls the identifier in question.」授权对象状态在 §7.1.4 枚举：「Possible values are “pending”, “valid”, “invalid”, “deactivated”, “expired”, and “revoked”.」§8.3 的 http-01 挑战要求「With HTTP validation, the client in an ACME transaction proves its control over a domain name by proving that it can provision HTTP resources on a server accessible under that domain name.」并解释为何走明文端口——「the challenge must be completed over HTTP, not HTTPS.」§8.4 的 dns-01 则「prove control of that domain by provisioning a TXT resource record containing a designated value for a specific validation domain name.」§6.",
+        "en": "Authorization asserts two facts, listed in §7.5 as \"That the client controls the private key of the account key pair\" and \"That the client controls the identifier in question.\" §7.1.4 enumerates the states: \"Possible values are “pending”, “valid”, “invalid”, “deactivated”, “expired”, and “revoked”.\" §8.3's http-01 challenge works because \"With HTTP validation, the client in an ACME transaction proves its control over a domain name by proving that it can provision HTTP resources on a server accessible under that domain name.\" and explains the cleartext port — \"the challenge must be completed over HTTP, not HTTPS.\" §8."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    },
+    {
+      "id": "acme-r139-broken",
+      "entryId": "acme-details",
+      "section": "broken",
+      "statement": {
+        "zh": "nonce 是一次性的：§6.5 规定「Once a nonce value has appeared in an ACME request, the server MUST consider it invalid, in the same way as a value it had never issued.」令牌必须有足够熵，§8.3 要求「This value MUST have at least 128 bits of entropy.」§11.3 解释两个目的，其中之一是让未被逐条配置的朴素校验服务器难以实现。§10.4 记录服务端请求伪造：校验用的 GET「This request is made before the server has verified that the client controls the domain, so any client can cause a query to any domain.」并且攻击者可借重定向扩大影响——「then they can send the server an HTTP redirect (e.g., a 302 response) which will cause the server to query an arbitrary URL.」§10.3 也承认这类出站连接代价与风险，§6.6 用速率限制兜底：「Creation of resources can be rate limited by ACME servers to ensure fair usage and prevent abuse.」。",
+        "en": "Nonces are single use: §6.5 requires \"Once a nonce value has appeared in an ACME request, the server MUST consider it invalid, in the same way as a value it had never issued.\" Tokens need entropy — §8.3 states \"This value MUST have at least 128 bits of entropy.\" and §11.3 explains the two purposes, one being to make an unconfigured “naive” validation server hard to build.§10.4 records the SSRF exposure: the validation GET \"This request is made before the server has verified that the client controls the domain, so any client can cause a query to any domain.\" and a redirect widens it — \"then they can send the server an HTTP redirect (e.g."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    },
+    {
+      "id": "acme-r139-history",
+      "entryId": "acme-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 8555 署名 R.Barnes（Cisco）、J.Hoffman-Andrews（EFF）、D.McCarney（Let's Encrypt）与 J.Kasten（University of Michigan），2019 年 3 月发布，Category: Standards Track，头部无 Obsoletes 行。§1 描述它要替代的现状：「Existing Web PKI certification authorities tend to use a set of ad hoc protocols for certificate issuance and identity verification.」§2 交代此前的部署体验：「Prior to ACME, when deploying an HTTPS server, a server operator typically gets a prompt to generate a self-signed certificate.」。",
+        "en": "RFC 8555 is signed by R.Barnes (Cisco), J."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    },
+    {
+      "id": "acme-r139-refs",
+      "entryId": "acme-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ACME 证书自动管理.https://zh.wikipedia.org/w/index.php?search=ACME%20%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8555: Automatic Certificate Management Environment.https://www.rfc-editor.org/rfc/rfc8555\n- Published standard/RFC for ACME 证书自动管理.https://www.rfc-editor.org/rfc/rfc8555。",
+        "en": "- Wikipedia search entry for ACME 证书自动管理.https://zh.wikipedia.org/w/index.php?search=ACME%20%E8%AF%81%E4%B9%A6%E8%87%AA%E5%8A%A8%E7%AE%A1%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "acme-reference-ref",
+        "acme-specific",
+        "acme-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

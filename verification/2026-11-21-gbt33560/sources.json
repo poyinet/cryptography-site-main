@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gbt33560-details",
+  "sources": [
+    {
+      "id": "gbt33560-wikipedia",
+      "title": "Wikipedia search entry for 密码应用标识规范",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%A0%87%E8%AF%86%E8%A7%84%E8%8C%83",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 密码应用标识规范",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gbt33560-r139-principle",
+          "entryId": "gbt33560-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：密码应用标识规范（Coding Rules for Cryptography Application Identifiers）。GB/T 33560-2017 把密码应用标识定义为 32 位无符号整数，跨平台按网络字节序（大端）传输；算法、数据、协议、角色、密钥、系统/设备标识都落在同一编号空间。位域不是随意拼字符串：分组算法低 8 位与高 8 位表示模式、8-31 位表示算法；杂凑低 8 位；签名=非对称|杂凑；数据编码在高 8 位；管理类第 8 位为 1。",
+            "en": "**Standard**: Coding Rules for Cryptography Application Identifiers (密码应用标识规范).GB/T 33560-2017 defines cryptographic application identifiers as 32-bit unsigned integers, transmitted in network byte order (big-endian)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt33560-r139-why",
+          "entryId": "gbt33560-details",
+          "section": "why",
+          "statement": {
+            "zh": "统一编号让密码设备、接口和协议能互操作；位域复用让算法套件可组合，例如 SM3_SM2=0x00020201。但标识只表达“是什么”，不表达“多安全”；32 位空间、预留段和自定义段必须按标准分配，跨平台序列化必须固定字节序。",
+            "en": "A common numbering scheme lets devices, interfaces and protocols interoperate; bit-field composition lets suites combine, e.g.SM3_SM2=0x00020201."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt33560-r139-used",
+          "entryId": "gbt33560-details",
+          "section": "used",
+          "statement": {
+            "zh": "对接密码设备时先确认版本（2017 现行 / 2026 即将实施），再按位域解析算法、数据、协议和管理标识；跨平台传输用大端，不要直接把本机整数写入报文。典型值：SM4-ECB 0x00000401、SM3 0x00000001、SM2 0x00020100、SM3_SM2 0x00020201、DER 0x01000000；管理类第 8 位为 1，SGD_MAIN_KEY 为 0x00000101。",
+            "en": "When integrating a cryptographic device, first confirm the edition (2017 current / 2026 upcoming), then decode algorithm, data, protocol and management identifiers by bit field; use big-endian on the wire instead of writing host integers directly.Typical values: SM4-ECB 0x00000401, SM3 0x00000001, SM2 0x00020100, SM3_SM2 0x00020201, DER 0x01000000; management bit 8 is 1, SGD_MAIN_KEY is 0x00000101."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt33560-r139-broken",
+          "entryId": "gbt33560-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误：小端直传、把 OID 当 32 位标识、把算法标识当强度、混用 2017/2026 表、占用预留段、把自定义编码当成标准编码。2026 版 2026-12-01 实施；实施前仍按 2017，换版要并列保留。标准只规定表示，不规定算法实现或密钥管理流程。### 形式模型。",
+            "en": "Common errors: little-endian transmission, treating an OID as a 32-bit identifier, treating an algorithm ID as strength, mixing 2017/2026 tables, occupying reserved ranges, or treating custom encoding as standard encoding.The 2026 edition takes effect on 2026-12-01; until then the 2017 edition applies, and both must be kept side by side."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt33560-r139-history",
+          "entryId": "gbt33560-details",
+          "section": "history",
+          "statement": {
+            "zh": "GB/T 33560-2017 于 2017-05-12 发布、2017-12-01 实施，对应行标 GM/T 0006-2012；2026 版于 2026-05-25 发布、2026-12-01 实施。按 2026-11-24 计算，2017 版还剩 7 天现行期。换版不是简单改版本号：算法表、数据编码表、协议表和设备管理表都要重新核对，旧系统要保留兼容映射。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：密码应用标识规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GB/T 33560-2017 was published on 2017-05-12 and took effect on 2017-12-01, corresponding to GM/T 0006-2012; the 2026 edition was published on 2026-05-25 and takes effect on 2026-12-01.On 2026-11-24, the 2017 edition has seven days left as current."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        },
+        {
+          "id": "gbt33560-r139-refs",
+          "entryId": "gbt33560-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 密码应用标识规范.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%A0%87%E8%AF%86%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 密码应用标识规范.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%A0%87%E8%AF%86%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gbt33560-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gbt33560-wikipedia"
+      ]
+    },
+    {
+      "id": "gbt33560-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gbt33560-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gbt33560-r139-principle",
+      "entryId": "gbt33560-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：密码应用标识规范（Coding Rules for Cryptography Application Identifiers）。GB/T 33560-2017 把密码应用标识定义为 32 位无符号整数，跨平台按网络字节序（大端）传输；算法、数据、协议、角色、密钥、系统/设备标识都落在同一编号空间。位域不是随意拼字符串：分组算法低 8 位与高 8 位表示模式、8-31 位表示算法；杂凑低 8 位；签名=非对称|杂凑；数据编码在高 8 位；管理类第 8 位为 1。",
+        "en": "**Standard**: Coding Rules for Cryptography Application Identifiers (密码应用标识规范).GB/T 33560-2017 defines cryptographic application identifiers as 32-bit unsigned integers, transmitted in network byte order (big-endian)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt33560-r139-why",
+      "entryId": "gbt33560-details",
+      "section": "why",
+      "statement": {
+        "zh": "统一编号让密码设备、接口和协议能互操作；位域复用让算法套件可组合，例如 SM3_SM2=0x00020201。但标识只表达“是什么”，不表达“多安全”；32 位空间、预留段和自定义段必须按标准分配，跨平台序列化必须固定字节序。",
+        "en": "A common numbering scheme lets devices, interfaces and protocols interoperate; bit-field composition lets suites combine, e.g.SM3_SM2=0x00020201."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt33560-r139-used",
+      "entryId": "gbt33560-details",
+      "section": "used",
+      "statement": {
+        "zh": "对接密码设备时先确认版本（2017 现行 / 2026 即将实施），再按位域解析算法、数据、协议和管理标识；跨平台传输用大端，不要直接把本机整数写入报文。典型值：SM4-ECB 0x00000401、SM3 0x00000001、SM2 0x00020100、SM3_SM2 0x00020201、DER 0x01000000；管理类第 8 位为 1，SGD_MAIN_KEY 为 0x00000101。",
+        "en": "When integrating a cryptographic device, first confirm the edition (2017 current / 2026 upcoming), then decode algorithm, data, protocol and management identifiers by bit field; use big-endian on the wire instead of writing host integers directly.Typical values: SM4-ECB 0x00000401, SM3 0x00000001, SM2 0x00020100, SM3_SM2 0x00020201, DER 0x01000000; management bit 8 is 1, SGD_MAIN_KEY is 0x00000101."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt33560-r139-broken",
+      "entryId": "gbt33560-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误：小端直传、把 OID 当 32 位标识、把算法标识当强度、混用 2017/2026 表、占用预留段、把自定义编码当成标准编码。2026 版 2026-12-01 实施；实施前仍按 2017，换版要并列保留。标准只规定表示，不规定算法实现或密钥管理流程。### 形式模型。",
+        "en": "Common errors: little-endian transmission, treating an OID as a 32-bit identifier, treating an algorithm ID as strength, mixing 2017/2026 tables, occupying reserved ranges, or treating custom encoding as standard encoding.The 2026 edition takes effect on 2026-12-01; until then the 2017 edition applies, and both must be kept side by side."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt33560-r139-history",
+      "entryId": "gbt33560-details",
+      "section": "history",
+      "statement": {
+        "zh": "GB/T 33560-2017 于 2017-05-12 发布、2017-12-01 实施，对应行标 GM/T 0006-2012；2026 版于 2026-05-25 发布、2026-12-01 实施。按 2026-11-24 计算，2017 版还剩 7 天现行期。换版不是简单改版本号：算法表、数据编码表、协议表和设备管理表都要重新核对，旧系统要保留兼容映射。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：密码应用标识规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GB/T 33560-2017 was published on 2017-05-12 and took effect on 2017-12-01, corresponding to GM/T 0006-2012; the 2026 edition was published on 2026-05-25 and takes effect on 2026-12-01.On 2026-11-24, the 2017 edition has seven days left as current."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    },
+    {
+      "id": "gbt33560-r139-refs",
+      "entryId": "gbt33560-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 密码应用标识规范.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%A0%87%E8%AF%86%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 密码应用标识规范.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%A0%87%E8%AF%86%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gbt33560-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

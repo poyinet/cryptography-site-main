@@ -1,0 +1,285 @@
+{
+  "results": [
+    {
+      "id": "des-known-answer",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "NIST SP 800-17 Appendix B Table 1 (commonly cited as Table B.1) variable-plaintext KAT #0 and the FIPS 81 Table B1 ECB example; encryption and decryption in the teaching implementation and OpenSSL 3DES equal-key mode",
+      "expected": "Both vectors match, decryption restores the plaintext, and the two independent implementations agree",
+      "observed": {
+        "id": "des-known-answer",
+        "passed": true,
+        "officialKAT": {
+          "key": "0101010101010101",
+          "plaintext": "8000000000000000",
+          "ciphertext": "95F8A5E5DD31D900",
+          "source": "NIST SP 800-17 Appendix B, Table 1 (commonly cited as Table B.1), variable-plaintext KAT #0"
+        },
+        "fips81Example": {
+          "key": "0123456789ABCDEF",
+          "plaintext": "4E6F772069732074",
+          "ciphertext": "3FA40E8A984D4815",
+          "source": "FIPS 81 Table B1, ECB example (not a known-answer test)"
+        },
+        "implementations": [
+          "original teaching DES",
+          "Node/OpenSSL 3DES in equal-key mode"
+        ],
+        "negativeControl": "encrypting the ciphertext instead of decrypting it does not return the plaintext for the non-weak example key",
+        "limit": "Two fixed vectors; not CAVP validation and not a security evaluation."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-key-schedule",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "The standard PC-1, shift and PC-2 tables applied to the fixed key 0101010101010101 and a deterministic sample",
+      "expected": "PC-1 excludes all eight parity positions and yields 56 bits; sixteen subkeys of 48 bits are produced; the halves return to their starting state after 16 rounds",
+      "observed": {
+        "id": "des-key-schedule",
+        "passed": true,
+        "pc1": {
+          "input": 64,
+          "output": 56,
+          "parityBitsDropped": [
+            8,
+            16,
+            24,
+            32,
+            40,
+            48,
+            56,
+            64
+          ]
+        },
+        "subkeys": {
+          "count": 16,
+          "bitsEach": 48,
+          "totalBits": 768
+        },
+        "rotationTotal": 28,
+        "halvesReturnToStart": true
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-exhaustion-bound",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "2^56 and assumed search rates of 10^9 and 10^12 keys per second",
+      "expected": "2^56 = 72,057,594,037,927,936; about 834 days (2.2834 years) at 10^9/s and about 20.02 hours at 10^12/s",
+      "observed": {
+        "id": "des-exhaustion-bound",
+        "passed": true,
+        "keySpace": "72057594037927936",
+        "atOneBillionPerSecond": {
+          "seconds": 72057594.03792794,
+          "days": 833.9999309945364,
+          "years": 2.283414254897873
+        },
+        "atOneTrillionPerSecond": {
+          "seconds": 72057.59403792793,
+          "hours": 20.01599834386887
+        },
+        "limit": "Arithmetic bound only; no hardware measurement and no candidate-filtering overhead."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-weak-keys",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "The four published DES weak keys and 65,536 fixed 64-bit blocks built from repeating a 16-bit counter",
+      "expected": "Each weak key satisfies E(E(P))=P for every tested block, and the four keys are distinct",
+      "observed": {
+        "id": "des-weak-keys",
+        "passed": true,
+        "weakKeys": [
+          "0101010101010101",
+          "FEFEFEFEFEFEFEFE",
+          "E0E0E0E0F1F1F1F1",
+          "1F1F1F1F0E0E0E0E"
+        ],
+        "blocksPerKey": 65536,
+        "cases": 262144,
+        "limit": "Finite structured sample; involution follows from identical subkeys."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-complement",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "128 deterministic keys, each applied to 128 deterministic blocks (16,384 cases)",
+      "expected": "E with the bitwise-complemented key maps the bitwise-complemented plaintext to the bitwise complement of E(K,P)",
+      "observed": {
+        "id": "des-complement",
+        "passed": true,
+        "deterministicKeyBlockPairs": 16384,
+        "keys": 128,
+        "blocksPerKey": 128,
+        "samples": [
+          {
+            "key": "BDA55F3E8E9500B6",
+            "plain": "38410B579DDC050E",
+            "complementCipher": "CBA1AEB0E3C5D8C2"
+          },
+          {
+            "key": "BDA55F3E8E9500B6",
+            "plain": "1D492F4A50E84B02",
+            "complementCipher": "FD3D9618D4739A0A"
+          },
+          {
+            "key": "BDA55F3E8E9500B6",
+            "plain": "CFEDBADEFFE4ECE7",
+            "complementCipher": "E4346D7E6ABE522B"
+          }
+        ],
+        "limit": "Structural identity on a finite sample; not an attack."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-sbox-rows",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "All eight S-boxes and their four rows",
+      "expected": "Each of the 32 rows is a permutation of 0…15; each S-box has 64 entries",
+      "observed": {
+        "id": "des-sbox-rows",
+        "passed": true,
+        "boxes": 8,
+        "rows": 32,
+        "entries": 512,
+        "eachRowPermutation": true,
+        "limit": "Table shape only; not a differential/linear security proof."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "des-ip-fp-inverse",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "4,096 deterministic 64-bit blocks",
+      "expected": "FP(IP(x))=x and IP(FP(x))=x for every tested block",
+      "observed": {
+        "id": "des-ip-fp-inverse",
+        "passed": true,
+        "blocks": 4096,
+        "limit": "Positional permutation identity only."
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:04:09.317Z"
+    },
+    {
+      "id": "algorithm--des-r139-formal",
+      "entryId": "des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "544ea8dc85ea59fa65a21a05cbe472c2a2eb0a0b11f5ac65088f5a6c11a1a8f6",
+      "dependencyHashes": {
+        "des-teaching.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "496904ca4a7806dcf25f0f96e734835b06c0c739ae413773cf4bba257b3dac45",
+        "article.en.md": "66ae532ce79cd5db52e1da5546d1727df45bd96e13b097ea282b6b263302aa0b",
+        "meta.json": "ca33bf4544a44178e87d5939cae9d295f9f3c2185cb02b056cab07d7a60fda79",
+        "glossary.json": "55c22e9764e0f9eb705793b4e4c0e5d16b8dc057d714fdf84091f7b8ff985aca",
+        "calculations.json": "eddcbaa30f1a377d4afc75ad9ed53fc79a6117dc36106509555741a8ea4b0d59"
+      },
+      "inputs": "DES 数据加密标准 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "algorithm--des-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64"
+      },
+      "contentSha256": "55a87fd6087354b1d5cee97f539b32cd46fb12f1b056fbcfa9066dfacca711a5",
+      "sourcesSha256": "3631e5e5bb5add5d466a484e7b7dc5753a12726b739c1f127ae673b19eb4cbad",
+      "executedOn": "2026-11-25T07:29:50.440Z"
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "serpent-calc-set1",
+    "entryId": "serpent-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All 576 NESSIE Set 1 vectors (128 for 128-bit keys, 192 for 192-bit keys, 256 for 256-bit keys), their Iterated 100 results, and the Iterated 1000 result of the first vector of each key length",
+    "expected": "Every encryption matches the printed ciphertext, every decryption returns the printed plaintext, all 576 Iterated 100 results match, and the three Iterated 1000 results match",
+    "sourceIds": [
+      "serpent-nessie-128",
+      "serpent-nessie-192",
+      "serpent-nessie-256"
+    ],
+    "dependencies": [
+      "serpent-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Set 1 varies one key bit per vector but uses a fixed zero plaintext; it tests key avalanche and conformance, not cryptanalytic security."
+  },
+  {
+    "id": "serpent-calc-sets",
+    "entryId": "serpent-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The first 32 Set 2 vectors, the first 32 Set 3 vectors and both Set 4 vectors for each of the 128/192/256-bit key lengths (198 vectors)",
+    "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; the Set 2 vectors use a zero key with variable plaintext, Set 3 uses key equal to repeated plaintext byte, and Set 4 uses fixed incrementing key/plaintext",
+    "sourceIds": [
+      "serpent-nessie-128",
+      "serpent-nessie-192",
+      "serpent-nessie-256"
+    ],
+    "dependencies": [
+      "serpent-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Only the first 32 of the printed Set 2 and Set 3 vectors are used; the remaining vectors are not transcribed."
+  },
+  {
+    "id": "serpent-calc-key-schedule",
+    "entryId": "serpent-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 128/192/256-bit key-padding samples, the eight padded words, the 132-prekey recurrence with phi=0x9e3779b9 and rotl 11, and the 33 S-box-derived subkeys",
+    "expected": "padKey places the 1 bit at position 128/192 (256 unchanged), keySchedule returns 132 prekeys and 33 four-word subkeys, independently recomputing the recurrence and K_i reproduces the schedule, and the 128-bit key 80000000000000000000000000000000 gives K0=6F539CD2 A7A3A3CE D29591ED 8EDF7292",
+    "sourceIds": [
+      "serpent-paper"
+    ],
+    "dependencies": [
+      "serpent-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The paper does not print subkey values; K0 is computed from the specified padding, recurrence and S-box, and the schedule is verified indirectly through all NESSIE ciphertexts."
+  },
+  {
+    "id": "serpent-calc-structure",
+    "entryId": "serpent-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The eight 4-bit S-box tables, their differential/linear distributions and nonlinear order, the LT and inverse LT, three keys and eight deterministic plaintexts, and byte-order/padding samples",
+    "expected": "All S-boxes are permutations with maximum differential probability at most 1/4, no one-bit to one-bit differential, linear bias at most 1/4 (one-bit at most 1/8) and maximum nonlinear order 3; LT and inverse LT invert; all 24 round trips succeed; the 128-bit key pads with a 1 at position 128; a non-zero big-endian negative control gives a different ciphertext",
+    "sourceIds": [
+      "serpent-paper"
+    ],
+    "dependencies": [
+      "serpent-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The S-box and LT checks are structural; round trips are deterministic and do not test modes, protocols, key management, side channels or randomness."
+  }
+]

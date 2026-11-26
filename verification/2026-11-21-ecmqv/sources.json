@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ecmqv-details",
+  "sources": [
+    {
+      "id": "ecmqv-wikipedia",
+      "title": "Wikipedia search entry for ECMQV 椭圆曲线 Menezes-Qu-Vanstone",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ECMQV%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%20Menezes-Qu-Vanstone",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ECMQV 椭圆曲线 Menezes-Qu-Vanstone",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ecmqv-r139-principle",
+          "entryId": "ecmqv-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ECMQV 椭圆曲线 Menezes-Qu-Vanstone（Elliptic Curve Menezes-Qu-Vanstone）。### 共享秘密\n\nA 用静态 a 与临时 x 计算 s_A=x+X̄·a，B 用 b 与 y 计算 s_B=y+Ȳ·b；双方共享 K=h·s_A·(Y+Ȳ·B)=h·s_B·(X+X̄·A)=h·s_A·s_B·P。### 静态与临时密钥\n\nA 有静态 (a,A=aP) 和临时 (x,X=xP)，B 有 (b,B)、(y,Y)；双方交换 X,Y。X̄=2^ℓ+(X mod 2^ℓ)，ℓ=|q|/2，Ȳ 同理；h 是余因子，K 经 KDF 派生会话密钥。### 隐式认证\n\n静态私钥把身份绑进共享秘密；只有持有 a 且知道 x 的一方能算出 K。协议本身不做密钥确认，需另加 MAC 或确认消息。",
+            "en": "**Algorithm**: Elliptic Curve Menezes-Qu-Vanstone (ECMQV 椭圆曲线 Menezes-Qu-Vanstone).### Shared secret\n\nA computes s_A=x+X̄·a from its static a and ephemeral x, and B computes s_B=y+Ȳ·b; both share K=h·s_A·(Y+Ȳ·B)=h·s_B·(X+X̄·A)=h·s_A·s_B·P."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        },
+        {
+          "id": "ecmqv-r139-why",
+          "entryId": "ecmqv-details",
+          "section": "why",
+          "statement": {
+            "zh": "ECMQV 在一轮、两条消息内完成认证 DH，计算只比普通 DH 多半次标量乘；不需要签名，也不需要逐成员验证证书链，适合资源受限设备。它提供隐式密钥认证和前向保密（临时私钥删除后）；是 MQV 的椭圆曲线版本，也是“高效认证密钥交换”的经典设计。",
+            "en": "ECMQV completes authenticated DH in one round and two messages, with only about half an extra scalar multiplication over plain DH; it needs no signatures and no per-member certificate-chain verification, suiting constrained devices.It provides implicit key authentication and forward secrecy once ephemeral keys are erased; it is the elliptic-curve version of MQV and a classic design for efficient authenticated key exchange."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        },
+        {
+          "id": "ecmqv-r139-used",
+          "entryId": "ecmqv-details",
+          "section": "used",
+          "statement": {
+            "zh": "进入 SEC 1、IEEE 1363、ANSI X9.63、NIST SP 800-56A 和 ISO/IEC 11770-3；用于无线、VPN、支付终端和嵌入式安全通道。部署受专利和实现复杂度影响；TLS 生态更常用 ECDHE 加签名，而不是 ECMQV；需要显式确认的协议会在共享密钥上再加 MAC。",
+            "en": "It appears in SEC 1, IEEE 1363, ANSI X9.63, NIST SP 800-56A and ISO/IEC 11770-3; it is used in wireless, VPN, payment terminals and embedded secure channels.Deployment is limited by patents and implementation complexity; TLS favors ECDHE plus signatures rather than ECMQV, and protocols needing explicit confirmation add a MAC over the shared key."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        },
+        {
+          "id": "ecmqv-r139-broken",
+          "entryId": "ecmqv-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Kaliski 2001 给出 unknown key-share 攻击：若攻击者能让自己的公钥被绑定到受害者身份，受害者可能与非预期方共享密钥。必须做公钥验证并绑定身份。原 MQV 长期缺乏完整形式化证明；HMQV 通过哈希身份和 transcript 修复，并证明安全性。静态密钥泄露、临时随机数重用或泄漏都要按边界处理。",
+            "en": "Kaliski’s 2001 unknown key-share attack applies if an attacker can bind its own public key to the victim’s identity, so the victim may share a key with an unintended party.Public-key validation and identity binding are mandatory."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        },
+        {
+          "id": "ecmqv-r139-history",
+          "entryId": "ecmqv-details",
+          "section": "history",
+          "statement": {
+            "zh": "1995 年 Menezes、Qu 与 Vanstone 提出 MQV；1998 年 Law 与 Solinas 改进；2003 年 Law–Menezes–Qu–Solinas–Vanstone 发表期刊论文；2005 年 Krawczyk 提出 HMQV；随后进入 NIST SP 800-56A 与 ISO/IEC 11770-3。它影响了后续的 HMQV、FHMQV 和高效 AKE 设计。**技术参数与复算边界**\n\n本条的形式模型是 \\(K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G\\)。输入：输入：ECMQV 椭圆曲线 Menezes-Qu-Vanstone的公开参数、密钥/随机数与消息；变量说明：a,b 私有随机数，g 生成元，p 模数，G 椭圆曲线基点。",
+            "en": "Menezes, Qu and Vanstone proposed MQV in 1995; Law and Solinas refined it in 1998; Law–Menezes–Qu–Solinas–Vanstone published the journal version in 2003; Krawczyk proposed HMQV in 2005; it later entered NIST SP 800-56A and ISO/IEC 11770-3.It influenced HMQV, FHMQV and later efficient AKE designs."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        },
+        {
+          "id": "ecmqv-r139-refs",
+          "entryId": "ecmqv-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ECMQV 椭圆曲线 Menezes-Qu-Vanstone.https://zh.wikipedia.org/w/index.php?search=ECMQV%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%20Menezes-Qu-Vanstone\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ECMQV 椭圆曲线 Menezes-Qu-Vanstone.https://zh.wikipedia.org/w/index.php?search=ECMQV%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%20Menezes-Qu-Vanstone\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ecmqv-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ecmqv-wikipedia"
+      ]
+    },
+    {
+      "id": "ecmqv-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ecmqv-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ecmqv-r139-principle",
+      "entryId": "ecmqv-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ECMQV 椭圆曲线 Menezes-Qu-Vanstone（Elliptic Curve Menezes-Qu-Vanstone）。### 共享秘密\n\nA 用静态 a 与临时 x 计算 s_A=x+X̄·a，B 用 b 与 y 计算 s_B=y+Ȳ·b；双方共享 K=h·s_A·(Y+Ȳ·B)=h·s_B·(X+X̄·A)=h·s_A·s_B·P。### 静态与临时密钥\n\nA 有静态 (a,A=aP) 和临时 (x,X=xP)，B 有 (b,B)、(y,Y)；双方交换 X,Y。X̄=2^ℓ+(X mod 2^ℓ)，ℓ=|q|/2，Ȳ 同理；h 是余因子，K 经 KDF 派生会话密钥。### 隐式认证\n\n静态私钥把身份绑进共享秘密；只有持有 a 且知道 x 的一方能算出 K。协议本身不做密钥确认，需另加 MAC 或确认消息。",
+        "en": "**Algorithm**: Elliptic Curve Menezes-Qu-Vanstone (ECMQV 椭圆曲线 Menezes-Qu-Vanstone).### Shared secret\n\nA computes s_A=x+X̄·a from its static a and ephemeral x, and B computes s_B=y+Ȳ·b; both share K=h·s_A·(Y+Ȳ·B)=h·s_B·(X+X̄·A)=h·s_A·s_B·P."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    },
+    {
+      "id": "ecmqv-r139-why",
+      "entryId": "ecmqv-details",
+      "section": "why",
+      "statement": {
+        "zh": "ECMQV 在一轮、两条消息内完成认证 DH，计算只比普通 DH 多半次标量乘；不需要签名，也不需要逐成员验证证书链，适合资源受限设备。它提供隐式密钥认证和前向保密（临时私钥删除后）；是 MQV 的椭圆曲线版本，也是“高效认证密钥交换”的经典设计。",
+        "en": "ECMQV completes authenticated DH in one round and two messages, with only about half an extra scalar multiplication over plain DH; it needs no signatures and no per-member certificate-chain verification, suiting constrained devices.It provides implicit key authentication and forward secrecy once ephemeral keys are erased; it is the elliptic-curve version of MQV and a classic design for efficient authenticated key exchange."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    },
+    {
+      "id": "ecmqv-r139-used",
+      "entryId": "ecmqv-details",
+      "section": "used",
+      "statement": {
+        "zh": "进入 SEC 1、IEEE 1363、ANSI X9.63、NIST SP 800-56A 和 ISO/IEC 11770-3；用于无线、VPN、支付终端和嵌入式安全通道。部署受专利和实现复杂度影响；TLS 生态更常用 ECDHE 加签名，而不是 ECMQV；需要显式确认的协议会在共享密钥上再加 MAC。",
+        "en": "It appears in SEC 1, IEEE 1363, ANSI X9.63, NIST SP 800-56A and ISO/IEC 11770-3; it is used in wireless, VPN, payment terminals and embedded secure channels.Deployment is limited by patents and implementation complexity; TLS favors ECDHE plus signatures rather than ECMQV, and protocols needing explicit confirmation add a MAC over the shared key."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    },
+    {
+      "id": "ecmqv-r139-broken",
+      "entryId": "ecmqv-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Kaliski 2001 给出 unknown key-share 攻击：若攻击者能让自己的公钥被绑定到受害者身份，受害者可能与非预期方共享密钥。必须做公钥验证并绑定身份。原 MQV 长期缺乏完整形式化证明；HMQV 通过哈希身份和 transcript 修复，并证明安全性。静态密钥泄露、临时随机数重用或泄漏都要按边界处理。",
+        "en": "Kaliski’s 2001 unknown key-share attack applies if an attacker can bind its own public key to the victim’s identity, so the victim may share a key with an unintended party.Public-key validation and identity binding are mandatory."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    },
+    {
+      "id": "ecmqv-r139-history",
+      "entryId": "ecmqv-details",
+      "section": "history",
+      "statement": {
+        "zh": "1995 年 Menezes、Qu 与 Vanstone 提出 MQV；1998 年 Law 与 Solinas 改进；2003 年 Law–Menezes–Qu–Solinas–Vanstone 发表期刊论文；2005 年 Krawczyk 提出 HMQV；随后进入 NIST SP 800-56A 与 ISO/IEC 11770-3。它影响了后续的 HMQV、FHMQV 和高效 AKE 设计。**技术参数与复算边界**\n\n本条的形式模型是 \\(K=g^{ab}\\bmod p\\quad\\text{或}\\quad K=[ab]G\\)。输入：输入：ECMQV 椭圆曲线 Menezes-Qu-Vanstone的公开参数、密钥/随机数与消息；变量说明：a,b 私有随机数，g 生成元，p 模数，G 椭圆曲线基点。",
+        "en": "Menezes, Qu and Vanstone proposed MQV in 1995; Law and Solinas refined it in 1998; Law–Menezes–Qu–Solinas–Vanstone published the journal version in 2003; Krawczyk proposed HMQV in 2005; it later entered NIST SP 800-56A and ISO/IEC 11770-3.It influenced HMQV, FHMQV and later efficient AKE designs."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    },
+    {
+      "id": "ecmqv-r139-refs",
+      "entryId": "ecmqv-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ECMQV 椭圆曲线 Menezes-Qu-Vanstone.https://zh.wikipedia.org/w/index.php?search=ECMQV%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%20Menezes-Qu-Vanstone\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ECMQV 椭圆曲线 Menezes-Qu-Vanstone.https://zh.wikipedia.org/w/index.php?search=ECMQV%20%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%20Menezes-Qu-Vanstone\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ecmqv-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

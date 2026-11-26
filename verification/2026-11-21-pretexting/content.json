@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-24",
+  "scope": "r135 formula-level deepening for pretexting-details.",
+  "entries": [
+    {
+      "id": "pretexting-details",
+      "inventoryIds": [
+        "pretexting"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "把 pretexting 写成社会工程风险链：剧本接受、目标是否掌握信息、验证是否被绕过，以及独立验证门如何把成功率指数压低；同时保留 FTC 的法律定义与边界。",
+        "en": "Formalizes pretexting as a social-engineering risk chain: pretext acceptance, whether the target holds the information, whether verification is bypassed, and how independent gates reduce success exponentially; it keeps the FTC legal definition and boundaries."
+      },
+      "title": {
+        "zh": "借口欺诈",
+        "en": "Pretexting"
+      },
+      "claimIds": [
+        "pretexting-r139-principle",
+        "pretexting-r139-why",
+        "pretexting-r139-used",
+        "pretexting-r139-broken",
+        "pretexting-r139-history",
+        "pretexting-r139-refs"
+      ],
+      "sourceIds": [
+        "pretexting-wikipedia",
+        "pretexting-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "attack--canary-trap",
+        "shoulder-surfing"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [
+          "pretext：攻击者构造的虚假身份、理由或情境。",
+          "验证门：回拨、工单、双人复核等独立检查。",
+          "带外验证：不通过攻击者提供的渠道，改用公开号码或独立系统确认。",
+          "信息充分性：目标自认为掌握足够信息，因而不继续核查。"
+        ],
+        "en": [
+          "Pretext: the false identity, reason or situation constructed by the attacker.",
+          "Verification gate: an independent check such as callback, ticket or dual review.",
+          "Out-of-band verification: confirmation through a public number or separate system, not the attacker's channel.",
+          "Information sufficiency: the target believes it knows enough and stops checking."
+        ]
+      },
+      "figures": [
+        {
+          "id": "pretexting-formula",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "借口欺诈：剧本接受、信息掌握与验证绕过",
+            "en": "Pretexting: acceptance, information possession and verification bypass"
+          },
+          "alt": {
+            "zh": "借口欺诈：剧本接受、信息掌握与验证绕过",
+            "en": "Pretexting: acceptance, information possession and verification bypass"
+          },
+          "files": {
+            "zh": "assets/pretexting-formula.zh.svg",
+            "en": "assets/pretexting-formula.en.svg"
+          },
+          "credit": {
+            "zh": "poyi knowledge · 原创 SVG 示意图 · CC BY 4.0",
+            "en": "poyi knowledge · original SVG schematic · CC BY 4.0"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-24"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "80cac465894ba46ae84dbeebdb89bbf6e3aa1d9f75c40a97a1d8900c89d7a9a0",
+            "en": "640928ecca8b6dd1ca0b0afdd7195a964f06be42c024309245f695f469053673"
+          }
+        },
+        {
+          "id": "pretexting-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "借口欺诈 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Pretexting: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "借口欺诈 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Pretexting, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/pretexting-details-r138-model.zh.svg",
+            "en": "assets/pretexting-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2448cc8c40204a060f6acb50e0ae8b9abfc169ae4e777a7fc989f23f8b859bba",
+            "en": "4b5c02fb3676408687d59520aca025bc990719d1d6e4a56039abd8a746fb891d"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：借口欺诈（Pretexting）。借口欺诈（pretexting）是用虚假身份、虚构情境或伪造理由获取信息或操作权限的社会工程。它不是单纯说谎，而是构造一个让目标愿意降低验证门槛的“剧本”：我是 IT 支持、我是银行风控、我是新同事、我在处理一笔紧急转账。把成功拆成三项：P_success=P(剧本被接受)·P(目标掌握所需信息|接受)·P(验证被绕过|接受且掌握)。若目标要过 n 道独立验证，每道被识破或拦截的概率 v_i，则 P_bypass=∏(1-v_i)；只要增加一道高可靠的带外回拨，乘积会显著下降。行为侧可用 logistic 近似：P(accept)=σ(β0+β1·可信度+β2·权威感+β3·紧迫感-β4·验证显著度)。这是该条目整理的行为模型，不是 FTC 或任何标准给出的公式；它的用途是解释为什么“紧急+权威+看似内部”最容易成功。",
+          "why": "技术边界被绕过时，人是最薄弱环节。pretexting 可获取电话记录、银行信息、云账号、客户数据，甚至为后续入侵铺路。它把“身份验证”从一次检查变成攻击链：先获取小事实建立可信度，再逐步索取更大权限。防御价值在于把验证从“对方说了什么”转到“我通过独立渠道确认了什么”。所有敏感操作都应有回拨、工单、双人复核和最小权限。",
+          "used": "步骤：侦察（公开信息、组织架构、话术）→ 剧本（身份/理由/情绪）→ 接触（电话/邮件/短信/当面）→ 提取（问题拆小、逐步升级）→ 变现或持续。控制：对来电显示不信任、用公开号码回拨、要求工单号、对转账/改密/查记录设双人复核；对员工做情景演练，而不是只发安全邮件。FTC 案例显示，电话记录 pretexting 曾形成完整交易市场；CISA 明确把 vishing 归入社会工程，并提醒 VoIP 可改号。",
+          "broken": "失效：目标坚持带外验证、回拨官方号码、不透露内部结构；组织有工单或双人复核；法律上 pretexting 可能违反 GLBA、FCRA、计算机欺诈法等；攻击者话术被安全文化识别。",
+          "history": "1999 年 FTC 对 Touch Tone 采取执法，投诉书描述其冒充账户持有人、诱导金融机构披露私人金融信息；2007 年 FTC 证词把 pretexting 定义为“以虚假借口获取个人信息”，并指出 GLBA 不覆盖电话记录、FTC 可用 Section 5 处理。2020 年代 vishing、deepfake 语音和呼叫中心外包让剧本更逼真，但“独立回拨”仍是最有效的断链点。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：借口欺诈的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 借口欺诈 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for 借口欺诈. https://zh.wikipedia.org/w/index.php?search=%E5%80%9F%E5%8F%A3%E6%AC%BA%E8%AF%88\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n借口欺诈的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Pretexting (借口欺诈). Pretexting is social engineering that uses a false identity, invented situation or fabricated reason to obtain information or access. It is not simply lying; it builds a script that makes the target willing to lower the verification threshold: “I am IT support”, “I am bank risk”, “I am a new colleague”, “I am handling an urgent transfer”. Success decomposes into three factors: P_success=P(pretext accepted)·P(target holds the information|accepted)·P(verification bypassed|accepted and informed). If the target has n independent checks, each with block probability v_i, then P_bypass=∏(1-v_i). Adding one reliable out-of-band callback sharply lowers the product. A logistic approximation can describe the behavioral side: P(accept)=σ(β0+β1·credibility+β2·authority+β3·urgency-β4·verification salience). This is this card's behavioral model, not a formula published by the FTC or any standard; it explains why “urgent + authoritative + seemingly internal” works so often.",
+          "why": "When technical boundaries are bypassed, people are the weakest link. Pretexting can obtain phone records, bank information, cloud accounts and customer data, or prepare a later intrusion. It turns identity verification from a single check into an attack chain: obtain a small fact to build credibility, then ask for more access.\n\nThe defensive value is shifting verification from “what the caller says” to “what I confirmed through an independent channel”. Every sensitive action should have callback, ticket, dual review and least privilege.",
+          "used": "Steps: reconnaissance (public information, org chart, scripts) → pretext (identity/reason/emotion) → contact (phone/email/SMS/in person) → extraction (split requests, escalate gradually) → monetize or persist.\n\nControls: distrust caller ID, call back on a public number, require a ticket number, use dual review for transfers, password changes and record lookups; run scenario drills, not only security emails. FTC cases show phone-record pretexting once supported a whole market; CISA classifies vishing as social engineering and warns that VoIP makes caller-ID spoofing easy.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Failure: the target insists on out-of-band verification, calls the official number, does not reveal internal structure; the organization has tickets or dual review; pretexting may violate GLBA, FCRA, computer-fraud law or other rules; security culture recognizes the script.",
+          "history": "The FTC acted against Touch Tone in 1999; the complaint describes impersonating account holders to induce financial institutions to disclose private information. FTC testimony in 2007 defined pretexting as obtaining personal information under false pretenses, noted that GLBA did not cover phone records, and used Section 5. In the 2020s, vishing, deepfake voice and outsourced call centers make scripts more convincing, but independent callback remains the strongest break point.",
+          "refs": "- Wikipedia search entry for 借口欺诈. https://zh.wikipedia.org/w/index.php?search=%E5%80%9F%E5%8F%A3%E6%AC%BA%E8%AF%88\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nPretexting: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculationIds": [
+        "pretexting-r139-formal"
+      ],
+      "verificationStatus": "independently-reviewed-detailed-article",
+      "calculations": [
+        {
+          "id": "pretexting-r139-formal",
+          "entryId": "pretexting-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：借口欺诈的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 借口欺诈 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "pretexting-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "sources": [
+        "pretexting-wikipedia",
+        "pretexting-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "pretexting-r139-formal",
+      "entryId": "pretexting-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：借口欺诈的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 借口欺诈 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "pretexting-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

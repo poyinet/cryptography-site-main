@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gmt0128-details",
+  "sources": [
+    {
+      "id": "gmt0128-wikipedia",
+      "title": "Wikipedia search entry for 数据报传输层密码协议规范",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 数据报传输层密码协议规范",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gmt0128-r139-principle",
+          "entryId": "gmt0128-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：数据报传输层密码协议规范（Specification of Datagram Transport Layer Cryptography Protocol）。GM/T 0128-2023 定义 DTLCP：在 TLCP 的记录层、握手协议族和密钥计算之上，针对 UDP 的丢包、乱序、重复与放大攻击做改造。记录头增加 epoch 与 48 位 seq_num，握手消息增加 message_seq、fragment_offset、fragment_length；大消息按路径 MTU 分片，接收端重组。",
+            "en": "**Standard**: Specification of Datagram Transport Layer Cryptography Protocol (数据报传输层密码协议规范).GM/T 0128-2023 defines DTLCP: it adapts the TLCP record layer, handshake family and key calculation to UDP loss, reordering, duplication and amplification attacks."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0128-r139-why",
+          "entryId": "gmt0128-details",
+          "section": "why",
+          "statement": {
+            "zh": "UDP 没有 TCP 的连接状态与字节流语义，不能直接套用 TLS 记录层。Cookie 让服务端在消耗状态前验证源地址；显式序号让接收端在无连接状态下仍能做重放判断。epoch 在换密钥时递增，把“旧密钥下的序号”和“新密钥下的序号”分开，避免跨密钥重放。",
+            "en": "UDP has no TCP connection state or byte-stream semantics, so TLS record rules cannot be copied directly.Cookies let the server validate the source before spending state; explicit sequence numbers let the receiver make replay decisions without a connection."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0128-r139-used",
+          "entryId": "gmt0128-details",
+          "section": "used",
+          "statement": {
+            "zh": "握手先 ClientHello，服务端回 HelloVerifyRequest 带 cookie，客户端带 cookie 重发；随后协商参数、交换证书、完成 ClientKeyExchange 与 Finished。密钥材料按预主密钥→主密钥→工作密钥三级派生；工作密钥拆成客户端/服务端加密键、完整性键和 IV，记录层按方向选键。",
+            "en": "The handshake starts with ClientHello; the server returns HelloVerifyRequest with a cookie, and the client resends with the cookie.Parameters, certificates, ClientKeyExchange and Finished follow."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0128-r139-broken",
+          "entryId": "gmt0128-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误是把 DTLCP 当“TLCP over UDP”：DTLCP 的记录层有显式序号、分片与重组，和 TLS 的隐式序号/字节流不同。Cookie 只防伪造源和放大，不证明身份；防重放窗口大小也不是标准固定值。证书、信任链、吊销与 Finished 仍要按 PKI 与协议完成。### 形式模型。",
+            "en": "A common error is treating DTLCP as “TLCP over UDP”: DTLCP records carry explicit sequence numbers, fragmentation and reassembly, unlike TLS implicit sequence numbers and byte streams.Cookies stop spoofed sources and amplification, not identity; replay-window size is not a fixed standard value."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0128-r139-history",
+          "entryId": "gmt0128-details",
+          "section": "history",
+          "statement": {
+            "zh": "GM/T 0128-2023 于 2023-12-04 发布、2024-06-01 实施，正文 18 页；全国标准信息公共服务平台记为 CCS L80、ICS 35.030，引用 GM/Z 4001 与 GB/T 38636-2020。它补齐了国密协议栈在 UDP 数据报场景的空白：TLCP 解决面向连接的传输层，DTLCP 解决数据报传输层。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GM/T 0128-2023 was published on 2023-12-04 and took effect on 2024-06-01; it has 18 pages.The national standards platform records CCS L80 and ICS 35.030, and it references GM/Z 4001 and GB/T 38636-2020."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0128-r139-refs",
+          "entryId": "gmt0128-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 数据报传输层密码协议规范.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 数据报传输层密码协议规范.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gmt0128-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gmt0128-wikipedia"
+      ]
+    },
+    {
+      "id": "gmt0128-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gmt0128-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gmt0128-r139-principle",
+      "entryId": "gmt0128-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：数据报传输层密码协议规范（Specification of Datagram Transport Layer Cryptography Protocol）。GM/T 0128-2023 定义 DTLCP：在 TLCP 的记录层、握手协议族和密钥计算之上，针对 UDP 的丢包、乱序、重复与放大攻击做改造。记录头增加 epoch 与 48 位 seq_num，握手消息增加 message_seq、fragment_offset、fragment_length；大消息按路径 MTU 分片，接收端重组。",
+        "en": "**Standard**: Specification of Datagram Transport Layer Cryptography Protocol (数据报传输层密码协议规范).GM/T 0128-2023 defines DTLCP: it adapts the TLCP record layer, handshake family and key calculation to UDP loss, reordering, duplication and amplification attacks."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0128-r139-why",
+      "entryId": "gmt0128-details",
+      "section": "why",
+      "statement": {
+        "zh": "UDP 没有 TCP 的连接状态与字节流语义，不能直接套用 TLS 记录层。Cookie 让服务端在消耗状态前验证源地址；显式序号让接收端在无连接状态下仍能做重放判断。epoch 在换密钥时递增，把“旧密钥下的序号”和“新密钥下的序号”分开，避免跨密钥重放。",
+        "en": "UDP has no TCP connection state or byte-stream semantics, so TLS record rules cannot be copied directly.Cookies let the server validate the source before spending state; explicit sequence numbers let the receiver make replay decisions without a connection."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0128-r139-used",
+      "entryId": "gmt0128-details",
+      "section": "used",
+      "statement": {
+        "zh": "握手先 ClientHello，服务端回 HelloVerifyRequest 带 cookie，客户端带 cookie 重发；随后协商参数、交换证书、完成 ClientKeyExchange 与 Finished。密钥材料按预主密钥→主密钥→工作密钥三级派生；工作密钥拆成客户端/服务端加密键、完整性键和 IV，记录层按方向选键。",
+        "en": "The handshake starts with ClientHello; the server returns HelloVerifyRequest with a cookie, and the client resends with the cookie.Parameters, certificates, ClientKeyExchange and Finished follow."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0128-r139-broken",
+      "entryId": "gmt0128-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误是把 DTLCP 当“TLCP over UDP”：DTLCP 的记录层有显式序号、分片与重组，和 TLS 的隐式序号/字节流不同。Cookie 只防伪造源和放大，不证明身份；防重放窗口大小也不是标准固定值。证书、信任链、吊销与 Finished 仍要按 PKI 与协议完成。### 形式模型。",
+        "en": "A common error is treating DTLCP as “TLCP over UDP”: DTLCP records carry explicit sequence numbers, fragmentation and reassembly, unlike TLS implicit sequence numbers and byte streams.Cookies stop spoofed sources and amplification, not identity; replay-window size is not a fixed standard value."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0128-r139-history",
+      "entryId": "gmt0128-details",
+      "section": "history",
+      "statement": {
+        "zh": "GM/T 0128-2023 于 2023-12-04 发布、2024-06-01 实施，正文 18 页；全国标准信息公共服务平台记为 CCS L80、ICS 35.030，引用 GM/Z 4001 与 GB/T 38636-2020。它补齐了国密协议栈在 UDP 数据报场景的空白：TLCP 解决面向连接的传输层，DTLCP 解决数据报传输层。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：数据报传输层密码协议规范的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GM/T 0128-2023 was published on 2023-12-04 and took effect on 2024-06-01; it has 18 pages.The national standards platform records CCS L80 and ICS 35.030, and it references GM/Z 4001 and GB/T 38636-2020."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0128-r139-refs",
+      "entryId": "gmt0128-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 数据报传输层密码协议规范.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 数据报传输层密码协议规范.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E6%8D%AE%E6%8A%A5%E4%BC%A0%E8%BE%93%E5%B1%82%E5%AF%86%E7%A0%81%E5%8D%8F%E8%AE%AE%E8%A7%84%E8%8C%83\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gmt0128-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

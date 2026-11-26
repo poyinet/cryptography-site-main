@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sp800-56c-details",
+  "sources": [
+    {
+      "id": "sp800-56c-wikipedia",
+      "title": "Wikipedia search entry for 密钥建立方案中的密钥派生方法（SP 800-56C Rev. 1）",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A1%88%E4%B8%AD%E7%9A%84%E5%AF%86%E9%92%A5%E6%B4%BE%E7%94%9F%E6%96%B9%E6%B3%95%EF%BC%88SP%20800-56C%20Rev.%201%EF%BC%89",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 密钥建立方案中的密钥派生方法（SP 800-56C Rev. 1）",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sp800-56c-r139-principle",
+          "entryId": "sp800-56c-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）（Recommendation for Key-Derivation Methods in Key-Establishment Schemes (SP 800-56C Rev.摘要用一句限定对象与来源：「This Recommendation specifies techniques for the derivation of keying material from a shared secret established during a key-establishment scheme defined in NIST Special Publications 800-56A or 800-56B.」。§2 说明它给出两类做法：「This Recommendation specifies two categories of key-derivation methods that can be employed, as required, as part of a key-establishment scheme specified in [SP 800-56A] or [SP 800-56B].」它的输入是协商得到的共享秘密，不是口令，也不是既有密钥；派生方法本身分单步与两步两类。",
+            "en": "**Standard**: Recommendation for Key-Derivation Methods in Key-Establishment Schemes (SP 800-56C Rev.1) (密钥建立方案中的密钥派生方法（SP 800-56C Rev."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-56c-r139-why",
+          "entryId": "sp800-56c-details",
+          "section": "why",
+          "statement": {
+            "zh": "§1 交出缺口所在：公钥密钥建立跑完只得到共享秘密，此时「a key-derivation method may be required to obtain secret cryptographic keying material.」§2 解释两步做法为何分两步，第一步只是将共享秘密压成一把派生密钥：「Randomness extraction, to obtain a single cryptographic key-derivation key from a shared secret generated during the execution of a key-establishment scheme」。协商产出的秘密长度与分布并不适合直接当密钥，故派生步骤不可省。",
+            "en": "Section 1 names the gap: running a public-key scheme yields a shared secret, and only then \"a key-derivation method may be required to obtain secret cryptographic keying material.\" Section 2 explains why the two-step category is split at all, the first step reducing the agreed secret to a single key: \"Randomness extraction, to obtain a single cryptographic key-derivation key from a shared secret generated during the execution of a key-establishment scheme\".What key establishment produces is not shaped to be a key, so derivation is not optional."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-56c-r139-used",
+          "entryId": "sp800-56c-details",
+          "section": "used",
+          "statement": {
+            "zh": "义务写在编号章节里，层级是 shall。§4 对实现者限定辅助函数的选取：「H shall be chosen in accordance with the selection requirements specified in Section 7.」§7 把它展开为四条硬性选型：「Whenever a hash function is employed (including as the primitive used by HMAC), an approved hash function shall be used.」§1 则限定派生结果的算出与用途：「The keying material derived using these methods shall be computed in its entirety before outputting any portion of it」。三句的主语都是实现与配置方：先按 §7 选定 H，再整块算完，然后只当秘密密钥材料使用。",
+            "en": "The obligations sit in numbered sections at shall level.Section 4 bounds the implementer’s choice of the auxiliary function: \"H shall be chosen in accordance with the selection requirements specified in Section 7.\" Section 7 expands that into hard selection rules: \"Whenever a hash function is employed (including as the primitive used by HMAC), an approved hash function shall be used.\" Section 1 bounds how the result is computed and used: \"The keying material derived using these methods shall be computed in its entirety before outputting any portion of it\"."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-56c-r139-broken",
+          "entryId": "sp800-56c-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度分三层。用途上 §1 直接禁止一类用法：「The derived keying material shall not be used as a key stream for a stream cipher.」参数上 §8.2 承认最敏感的一项可以不随机：「This Recommendation does not require the use of a randomly selected salt value.」，§8.3 又把两步法的一种组合排除在外：「At this time, KMAC has not been specified for use in the implementation of a two-step key derivation procedure.」可验证性上，符合性测试一节写明部分要求「may be out-of-scope for CAVP or CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation」。",
+            "en": "The limits work at three levels.On use, §1 forbids one application outright: \"The derived keying material shall not be used as a key stream for a stream cipher.\" On parameters, §8.2 concedes that the most sensitive input may be non-random: \"This Recommendation does not require the use of a randomly selected salt value.\" and §8.3 excludes one combination from the two-step method: \"At this time, KMAC has not been specified for use in the implementation of a two-step key derivation procedure."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-56c-r139-history",
+          "entryId": "sp800-56c-details",
+          "section": "history",
+          "statement": {
+            "zh": "这份副本的版本事实只来自它自己的扉页与横幅：「NIST Special Publication 800-56C Revision 1」与「Recommendation for Key-Derivation Methods in Key-Establishment Schemes」，作者栏「Elaine Barker Lily Chen Rich Davis」；引用行给「Natl.Inst.Stand.Technol.Spec.Publ.800-56C Rev.1, 37 pages (April 2018) CODEN: NSPUE2」，免费获取行后接 DOI 10.6028/NIST.SP.800-56Cr1。顶部废止横幅写「The attached publication has been withdrawn (archived), and is provided solely for historical purposes.」并记「SP 800-56C Rev.1 is superseded in its entirety by the publication of SP 800-56C Rev.2.」。",
+            "en": "The version facts come from this copy itself.The title block reads \"NIST Special Publication 800-56C Revision 1\" and \"Recommendation for Key-Derivation Methods in Key-Establishment Schemes\", with the author line \"Elaine Barker Lily Chen Rich Davis\"; the citation line gives \"Natl."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-56c-r139-refs",
+          "entryId": "sp800-56c-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A1%88%E4%B8%AD%E7%9A%84%E5%AF%86%E9%92%A5%E6%B4%BE%E7%94%9F%E6%96%B9%E6%B3%95%EF%BC%88SP%20800-56C%20Rev.%201%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sp800-56c-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sp800-56c-wikipedia"
+      ]
+    },
+    {
+      "id": "sp800-56c-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sp800-56c-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sp800-56c-r139-principle",
+      "entryId": "sp800-56c-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）（Recommendation for Key-Derivation Methods in Key-Establishment Schemes (SP 800-56C Rev.摘要用一句限定对象与来源：「This Recommendation specifies techniques for the derivation of keying material from a shared secret established during a key-establishment scheme defined in NIST Special Publications 800-56A or 800-56B.」。§2 说明它给出两类做法：「This Recommendation specifies two categories of key-derivation methods that can be employed, as required, as part of a key-establishment scheme specified in [SP 800-56A] or [SP 800-56B].」它的输入是协商得到的共享秘密，不是口令，也不是既有密钥；派生方法本身分单步与两步两类。",
+        "en": "**Standard**: Recommendation for Key-Derivation Methods in Key-Establishment Schemes (SP 800-56C Rev.1) (密钥建立方案中的密钥派生方法（SP 800-56C Rev."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-56c-r139-why",
+      "entryId": "sp800-56c-details",
+      "section": "why",
+      "statement": {
+        "zh": "§1 交出缺口所在：公钥密钥建立跑完只得到共享秘密，此时「a key-derivation method may be required to obtain secret cryptographic keying material.」§2 解释两步做法为何分两步，第一步只是将共享秘密压成一把派生密钥：「Randomness extraction, to obtain a single cryptographic key-derivation key from a shared secret generated during the execution of a key-establishment scheme」。协商产出的秘密长度与分布并不适合直接当密钥，故派生步骤不可省。",
+        "en": "Section 1 names the gap: running a public-key scheme yields a shared secret, and only then \"a key-derivation method may be required to obtain secret cryptographic keying material.\" Section 2 explains why the two-step category is split at all, the first step reducing the agreed secret to a single key: \"Randomness extraction, to obtain a single cryptographic key-derivation key from a shared secret generated during the execution of a key-establishment scheme\".What key establishment produces is not shaped to be a key, so derivation is not optional."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-56c-r139-used",
+      "entryId": "sp800-56c-details",
+      "section": "used",
+      "statement": {
+        "zh": "义务写在编号章节里，层级是 shall。§4 对实现者限定辅助函数的选取：「H shall be chosen in accordance with the selection requirements specified in Section 7.」§7 把它展开为四条硬性选型：「Whenever a hash function is employed (including as the primitive used by HMAC), an approved hash function shall be used.」§1 则限定派生结果的算出与用途：「The keying material derived using these methods shall be computed in its entirety before outputting any portion of it」。三句的主语都是实现与配置方：先按 §7 选定 H，再整块算完，然后只当秘密密钥材料使用。",
+        "en": "The obligations sit in numbered sections at shall level.Section 4 bounds the implementer’s choice of the auxiliary function: \"H shall be chosen in accordance with the selection requirements specified in Section 7.\" Section 7 expands that into hard selection rules: \"Whenever a hash function is employed (including as the primitive used by HMAC), an approved hash function shall be used.\" Section 1 bounds how the result is computed and used: \"The keying material derived using these methods shall be computed in its entirety before outputting any portion of it\"."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-56c-r139-broken",
+      "entryId": "sp800-56c-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度分三层。用途上 §1 直接禁止一类用法：「The derived keying material shall not be used as a key stream for a stream cipher.」参数上 §8.2 承认最敏感的一项可以不随机：「This Recommendation does not require the use of a randomly selected salt value.」，§8.3 又把两步法的一种组合排除在外：「At this time, KMAC has not been specified for use in the implementation of a two-step key derivation procedure.」可验证性上，符合性测试一节写明部分要求「may be out-of-scope for CAVP or CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation」。",
+        "en": "The limits work at three levels.On use, §1 forbids one application outright: \"The derived keying material shall not be used as a key stream for a stream cipher.\" On parameters, §8.2 concedes that the most sensitive input may be non-random: \"This Recommendation does not require the use of a randomly selected salt value.\" and §8.3 excludes one combination from the two-step method: \"At this time, KMAC has not been specified for use in the implementation of a two-step key derivation procedure."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-56c-r139-history",
+      "entryId": "sp800-56c-details",
+      "section": "history",
+      "statement": {
+        "zh": "这份副本的版本事实只来自它自己的扉页与横幅：「NIST Special Publication 800-56C Revision 1」与「Recommendation for Key-Derivation Methods in Key-Establishment Schemes」，作者栏「Elaine Barker Lily Chen Rich Davis」；引用行给「Natl.Inst.Stand.Technol.Spec.Publ.800-56C Rev.1, 37 pages (April 2018) CODEN: NSPUE2」，免费获取行后接 DOI 10.6028/NIST.SP.800-56Cr1。顶部废止横幅写「The attached publication has been withdrawn (archived), and is provided solely for historical purposes.」并记「SP 800-56C Rev.1 is superseded in its entirety by the publication of SP 800-56C Rev.2.」。",
+        "en": "The version facts come from this copy itself.The title block reads \"NIST Special Publication 800-56C Revision 1\" and \"Recommendation for Key-Derivation Methods in Key-Establishment Schemes\", with the author line \"Elaine Barker Lily Chen Rich Davis\"; the citation line gives \"Natl."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-56c-r139-refs",
+      "entryId": "sp800-56c-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%BB%BA%E7%AB%8B%E6%96%B9%E6%A1%88%E4%B8%AD%E7%9A%84%E5%AF%86%E9%92%A5%E6%B4%BE%E7%94%9F%E6%96%B9%E6%B3%95%EF%BC%88SP%20800-56C%20Rev.%201%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 密钥建立方案中的密钥派生方法（SP 800-56C Rev.1）."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sp800-56c-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

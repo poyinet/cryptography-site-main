@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for dnssec-nsec3: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "dnssec-nsec3-details",
+      "inventoryIds": [
+        "dnssec-nsec3"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释NSEC3 哈希化否定证明的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of NSEC3: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "NSEC3 哈希化否定证明",
+        "en": "NSEC3"
+      },
+      "claimIds": [
+        "dnssec-nsec3-r139-principle",
+        "dnssec-nsec3-r139-why",
+        "dnssec-nsec3-r139-used",
+        "dnssec-nsec3-r139-broken",
+        "dnssec-nsec3-r139-history",
+        "dnssec-nsec3-r139-refs"
+      ],
+      "sourceIds": [
+        "dnssec-nsec3-wikipedia",
+        "dnssec-nsec3-reference-ref"
+      ],
+      "related": [
+        "protocol--dnssec",
+        "sha1",
+        "digital-signature"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：NSEC3 哈希化否定证明（NSEC3）。RFC 5155 §3 定义该资源记录：「The NSEC3 Resource Record (RR) provides authenticated denial of existence for DNS Resource Record Sets.」它回答`某名称/类型不存在`这一命题，并带上签名。",
+          "why": "动机是旧记录的副作用：§1.1 说明「Though the NSEC RR meets the requirements for authenticated denial of existence, it introduces a side-effect in that the contents of a zone can be enumerated.」§3 的对策是改用哈希名：「To provide protection against zone enumeration, the owner names used in the NSEC3 RR are cryptographic hashes of the original owner name prepended as a single label to the name of the zone.」",
+          "used": "三个参数决定行为：迭代次数「defines the number of additional times the hash function has been performed」并换取对字典攻击的韧性；盐值「is appended to the original owner name before hashing in order to defend against pre-calculated dictionary attacks」；Opt-Out 标志则「If the Opt-Out flag is set, the NSEC3 record covers zero or more unsigned delegations.」",
+          "broken": "它提高成本而非消除风险：§12.1.1 承认「The NSEC3 RRs are still susceptible to dictionary attacks」，并建议「The salt SHOULD be at least 64 bits long and unpredictable」且定期更换；§12.1.2 指出哈希碰撞时「it will be impossible to prove the non-existence of the colliding QNAME」。哈希算法只有 SHA-1 一种被定义。",
+          "history": "RFC 5155 于 2008 年 3 月发布为 Standards Track（作者 Laurie、Sisson、Arends、Blacka），头部既无 Obsoletes 也无 Updates 行；摘要说明它是「an alternative resource record, NSEC3」，在保持认证否定的同时「provides measures against zone enumeration and permits gradual expansion of delegation-centric zones」，NSEC3 的类型号为 50。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：NSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 NSEC3 哈希化否定证明 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for NSEC3 哈希化否定证明. https://zh.wikipedia.org/w/index.php?search=NSEC3%20%E5%93%88%E5%B8%8C%E5%8C%96%E5%90%A6%E5%AE%9A%E8%AF%81%E6%98%8E\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nNSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: NSEC3 (NSEC3 哈希化否定证明). Section 3 defines the record: \"The NSEC3 Resource Record (RR) provides authenticated denial of existence for DNS Resource Record Sets.\" It answers the claim that a name or type is absent, signed like the rest of DNSSEC.",
+          "why": "The motive is a side effect of the older record: §1.1 says \"Though the NSEC RR meets the requirements for authenticated denial of existence, it introduces a side-effect in that the contents of a zone can be enumerated.\" Section 3 answers with hashed names: \"To provide protection against zone enumeration, the owner names used in the NSEC3 RR are cryptographic hashes of the original owner name prepended as a single label to the name of the zone.\"",
+          "used": "Three parameters set the behaviour. Iterations \"defines the number of additional times the hash function has been performed\", buying resilience against dictionary attacks; the salt \"is appended to the original owner name before hashing in order to defend against pre-calculated dictionary attacks\"; and \"If the Opt-Out flag is set, the NSEC3 record covers zero or more unsigned delegations.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Cost is raised, not risk removed: §12.1.1 concedes \"The NSEC3 RRs are still susceptible to dictionary attacks\", advising that \"The salt SHOULD be at least 64 bits long and unpredictable\" and be changed regularly; §12.1.2 notes that on a collision \"it will be impossible to prove the non-existence of the colliding QNAME\". SHA-1 is the only hash algorithm defined.",
+          "history": "RFC 5155 is a March 2008 Standards Track document (Laurie, Sisson, Arends and Blacka) with neither an Obsoletes nor an Updates line. The abstract presents NSEC3 as \"an alternative resource record\" that keeps authenticated denial while it \"provides measures against zone enumeration and permits gradual expansion of delegation-centric zones\"; its type number is 50.",
+          "refs": "- Wikipedia search entry for NSEC3 哈希化否定证明. https://zh.wikipedia.org/w/index.php?search=NSEC3%20%E5%93%88%E5%B8%8C%E5%8C%96%E5%90%A6%E5%AE%9A%E8%AF%81%E6%98%8E\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nNSEC3: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "认证否定：证明某名称或类型不存在。",
+          "区域枚举：把区内所有名称列出的行为。",
+          "哈希所有者名：把原名哈希后作为单标签前置。",
+          "Iterations：哈希额外执行的次数。",
+          "Salt：加在原名后一起哈希的随机值。",
+          "Opt-Out：覆盖未签名委托的简化模式。"
+        ],
+        "en": [
+          "Authenticated denial: proving a name or type does not exist.",
+          "Zone enumeration: listing every name in a zone.",
+          "Hashed owner name: the original name hashed into one label.",
+          "Iterations: extra rounds of the hash function.",
+          "Salt: a random value hashed with the owner name.",
+          "Opt-Out: the simplified coverage of unsigned delegations."
+        ]
+      },
+      "figures": [
+        {
+          "id": "dnssec-nsec3-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "NSEC3 哈希化否定证明：为什么需要 → 核心机制 → 边界。",
+            "en": "NSEC3: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "NSEC3 哈希化否定证明 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for NSEC3, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/dnssec-nsec3-details-flow.zh.svg",
+            "en": "assets/dnssec-nsec3-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "875b3ff54fd35735895898956301e50945a7bc58614d6c5d44d87077e340f6f4",
+            "en": "b5ee64571c797fc1b09b2c51f33482dd6c57545a32e0ea63cce7a9b4858b0d30"
+          }
+        },
+        {
+          "id": "dnssec-nsec3-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "NSEC3 哈希化否定证明 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for NSEC3: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "NSEC3 哈希化否定证明 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for NSEC3, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/dnssec-nsec3-details-r138-model.zh.svg",
+            "en": "assets/dnssec-nsec3-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "16cc5b8da1b0ed991b32c54b6f7a1a588c4be0149d34523badd7d509d655f93d",
+            "en": "fae828352263454b57f0c4a7d555202ce20b508945785f16b7b34df66de0d2a7"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "dnssec-nsec3-r139-formal",
+          "entryId": "dnssec-nsec3-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：NSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 NSEC3 哈希化否定证明 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "dnssec-nsec3-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "dnssec-nsec3-r139-formal"
+      ],
+      "sources": [
+        "dnssec-nsec3-wikipedia",
+        "dnssec-nsec3-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "dnssec-nsec3-r139-formal",
+      "entryId": "dnssec-nsec3-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：NSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 NSEC3 哈希化否定证明 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "dnssec-nsec3-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

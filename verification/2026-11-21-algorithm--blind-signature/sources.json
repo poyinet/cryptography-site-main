@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--blind-signature-details",
+  "sources": [
+    {
+      "id": "algorithm--blind-signature-wikipedia",
+      "title": "Wikipedia search entry for 盲签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E7%9B%B2%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 盲签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--blind-signature-r139-principle",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：盲签名（Blind Signature）。### 盲化—签名—去盲\n\n盲签名让签名者在看不到消息的情况下签名，用户再去盲得到对原消息的有效签名；RSA 版本用盲化因子 r 计算 m′=r^eH(m)，再解盲 s=s′r^−1。完整流程：用户把 m′ 发给签名者，签名者返回 s′=(m′)^d，用户计算 s=s′r^−1，验证 s^e=H(m)。### 三个性质\n\n盲性：签名者不能从签名过程恢复消息；不可链接性：签名者不能把一次签名会话与后来出现的签名/消息对应；不可伪造性：用户不能在一次授权之外多得到有效签名，即 one-more forgery 安全。### 变体\n\nRSA-FDH/RSABSSA 用 PSS 编码，RFC 9474 定义了可互操作的 RSA 盲签名；Schnorr/BLS 盲签名更短，但并发会话要防 ROS 攻击。",
+            "en": "**Algorithm**: Blind Signature (盲签名).### Blind—sign—unblind\n\nA blind signature lets a signer sign without seeing the message; the user later unblinds the signature into a valid signature on the original message."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--blind-signature-r139-why",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "why",
+          "statement": {
+            "zh": "盲签名解决“签名者不该知道内容，但验证者要能验证签名”的矛盾，是电子现金、匿名凭证、Privacy Pass、匿名投票和盲签名令牌的基础原语。发行方只签盲化后的令牌，用户出示时无人能链接到发行会话。它把认证和匿名性拆开：签名证明授权，盲化切断签名者与使用者的关联。",
+            "en": "Blind signatures resolve the tension between “the signer must not know the content” and “verifiers must be able to verify the signature”.They underlie electronic cash, anonymous credentials, Privacy Pass, anonymous voting and blind tokens."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--blind-signature-r139-used",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "used",
+          "statement": {
+            "zh": "典型用途：电子现金/央行数字货币的隐私保护、Privacy Pass 类匿名令牌、匿名凭证、电子投票、许可证/时间戳令牌。RFC 9474 的 RSABSSA 可直接用标准 RSA-PSS 验签，适合部署在已有 PKI 中。工程要点：盲化因子必须高熵且一次性；RSA 私钥操作要做 blinding 防侧信道；签名者要限制并发会话和签名次数；消息要加域分离/结构化校验，防止盲签名 oracle 被跨协议滥用。",
+            "en": "Typical uses include electronic cash/central-bank digital currency privacy, Privacy Pass-style anonymous tokens, anonymous credentials, electronic voting and license/timestamp tokens.RFC 9474 RSABSSA verifies with standard RSA-PSS, which fits existing PKIs."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--blind-signature-r139-broken",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "broken",
+          "statement": {
+            "zh": "盲签名不是绝对匿名：如果盲化因子可预测、签名者与验证者合谋、消息空间低熵，匿名性会被关联攻击破坏。RSA 盲签名还依赖 RSA 假设和 FDH/PSS 编码；签名者若对任意盲消息签名，会变成签名 oracle。",
+            "en": "Blind signatures are not absolute anonymity: predictable blinding, a colluding signer and verifier, or a low-entropy message space enables linking attacks.RSA blind signatures also rely on the RSA assumption and FDH/PSS encoding; a signer willing to sign any blinded message becomes a signing oracle."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--blind-signature-r139-history",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "history",
+          "statement": {
+            "zh": "盲签名由 David Chaum 在 1982 年 CRYPTO 论文 “Blind Signatures for Untraceable Payments” 提出，最初用于不可追踪电子支付；会议论文集 1983 年出版，pp.199–203。Chaum 后来用它做 eCash。2001 年 Bellare–Namprempre–Pointcheval–Semanko 分析 one-more RSA inversion；2023 年 RFC 9474 标准化 RSABSSA。它至今仍是隐私协议的基础原语，但部署形态从 eCash 扩展到 Privacy Pass、匿名凭证和令牌服务。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：盲签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "David Chaum introduced blind signatures in the 1982 CRYPTO paper “Blind Signatures for Untraceable Payments”, initially for untraceable electronic payments; the proceedings appeared in 1983, pp.199–203."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--blind-signature-r139-refs",
+          "entryId": "algorithm--blind-signature-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 盲签名.https://zh.wikipedia.org/w/index.php?search=%E7%9B%B2%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 盲签名.https://zh.wikipedia.org/w/index.php?search=%E7%9B%B2%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--blind-signature-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--blind-signature-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--blind-signature-r139-principle",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：盲签名（Blind Signature）。### 盲化—签名—去盲\n\n盲签名让签名者在看不到消息的情况下签名，用户再去盲得到对原消息的有效签名；RSA 版本用盲化因子 r 计算 m′=r^eH(m)，再解盲 s=s′r^−1。完整流程：用户把 m′ 发给签名者，签名者返回 s′=(m′)^d，用户计算 s=s′r^−1，验证 s^e=H(m)。### 三个性质\n\n盲性：签名者不能从签名过程恢复消息；不可链接性：签名者不能把一次签名会话与后来出现的签名/消息对应；不可伪造性：用户不能在一次授权之外多得到有效签名，即 one-more forgery 安全。### 变体\n\nRSA-FDH/RSABSSA 用 PSS 编码，RFC 9474 定义了可互操作的 RSA 盲签名；Schnorr/BLS 盲签名更短，但并发会话要防 ROS 攻击。",
+        "en": "**Algorithm**: Blind Signature (盲签名).### Blind—sign—unblind\n\nA blind signature lets a signer sign without seeing the message; the user later unblinds the signature into a valid signature on the original message."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-r139-why",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "why",
+      "statement": {
+        "zh": "盲签名解决“签名者不该知道内容，但验证者要能验证签名”的矛盾，是电子现金、匿名凭证、Privacy Pass、匿名投票和盲签名令牌的基础原语。发行方只签盲化后的令牌，用户出示时无人能链接到发行会话。它把认证和匿名性拆开：签名证明授权，盲化切断签名者与使用者的关联。",
+        "en": "Blind signatures resolve the tension between “the signer must not know the content” and “verifiers must be able to verify the signature”.They underlie electronic cash, anonymous credentials, Privacy Pass, anonymous voting and blind tokens."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-r139-used",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "used",
+      "statement": {
+        "zh": "典型用途：电子现金/央行数字货币的隐私保护、Privacy Pass 类匿名令牌、匿名凭证、电子投票、许可证/时间戳令牌。RFC 9474 的 RSABSSA 可直接用标准 RSA-PSS 验签，适合部署在已有 PKI 中。工程要点：盲化因子必须高熵且一次性；RSA 私钥操作要做 blinding 防侧信道；签名者要限制并发会话和签名次数；消息要加域分离/结构化校验，防止盲签名 oracle 被跨协议滥用。",
+        "en": "Typical uses include electronic cash/central-bank digital currency privacy, Privacy Pass-style anonymous tokens, anonymous credentials, electronic voting and license/timestamp tokens.RFC 9474 RSABSSA verifies with standard RSA-PSS, which fits existing PKIs."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-r139-broken",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "broken",
+      "statement": {
+        "zh": "盲签名不是绝对匿名：如果盲化因子可预测、签名者与验证者合谋、消息空间低熵，匿名性会被关联攻击破坏。RSA 盲签名还依赖 RSA 假设和 FDH/PSS 编码；签名者若对任意盲消息签名，会变成签名 oracle。",
+        "en": "Blind signatures are not absolute anonymity: predictable blinding, a colluding signer and verifier, or a low-entropy message space enables linking attacks.RSA blind signatures also rely on the RSA assumption and FDH/PSS encoding; a signer willing to sign any blinded message becomes a signing oracle."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-r139-history",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "history",
+      "statement": {
+        "zh": "盲签名由 David Chaum 在 1982 年 CRYPTO 论文 “Blind Signatures for Untraceable Payments” 提出，最初用于不可追踪电子支付；会议论文集 1983 年出版，pp.199–203。Chaum 后来用它做 eCash。2001 年 Bellare–Namprempre–Pointcheval–Semanko 分析 one-more RSA inversion；2023 年 RFC 9474 标准化 RSABSSA。它至今仍是隐私协议的基础原语，但部署形态从 eCash 扩展到 Privacy Pass、匿名凭证和令牌服务。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：盲签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "David Chaum introduced blind signatures in the 1982 CRYPTO paper “Blind Signatures for Untraceable Payments”, initially for untraceable electronic payments; the proceedings appeared in 1983, pp.199–203."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--blind-signature-r139-refs",
+      "entryId": "algorithm--blind-signature-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 盲签名.https://zh.wikipedia.org/w/index.php?search=%E7%9B%B2%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 盲签名.https://zh.wikipedia.org/w/index.php?search=%E7%9B%B2%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--blind-signature-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

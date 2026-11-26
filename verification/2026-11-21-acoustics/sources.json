@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "acoustics-details",
+  "sources": [
+    {
+      "id": "acoustics-wikipedia",
+      "title": "Wikipedia search entry for 声学侧信道",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 声学侧信道",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "acoustics-r139-principle",
+          "entryId": "acoustics-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：声学侧信道（Acoustic Side Channel）。### 声音从哪里来\n\n计算机运行时，CPU 的功耗随指令与数据变化。主板上的电压调节电路要维持稳定电压，电容和线圈会因电流变化发生微小机械振动，振动传入空气就是人耳或麦克风能收到的声音。这里的关键不是风扇或扬声器，而是供电电路本身的振动。### 带宽极低，不等于没有信息\n\n普通麦克风能收到 20 kHz 以下的声音，超声麦克风可到几百 kHz；这比 CPU 的 GHz 时钟低几个数量级。单条指令的噪声完全埋在背景里，但如果同一种依赖密钥的操作被重复数千次，泄漏会累积成持续数百毫秒、在频谱上可分辨的包络。",
+            "en": "**Attack**: Acoustic Side Channel (声学侧信道).### Where the sound comes from\n\nWhen a computer runs, CPU power draw changes with instructions and data."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        },
+        {
+          "id": "acoustics-r139-why",
+          "entryId": "acoustics-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 绕过数学，直接看实现\n\n声学侧信道不攻击 RSA 或 AES 的数学结构，而是攻击实现：分支、查表、乘法的执行路径会随秘密数据变化，功耗和声音随之变化。只要攻击者能靠近机器、让机器做选定密文的解密，并知道实现细节，数学证明的“安全”就不能覆盖这条物理路径。### 为什么 GnuPG 成为样本\n\nGnuPG 1.4.14 的 RSA 模幂使用窗口算法，某些中间字为零时会走不同分支。Genkin–Shamir–Tromer 用选择密文诱发大量全零字，把“一个极短分支”放大成“数百毫秒的可听差异”，从而逐位恢复 4096 位 RSA 私钥。",
+            "en": "### Bypass the mathematics, look at the implementation\n\nAn acoustic side channel does not attack the mathematical structure of RSA or AES; it attacks the implementation.Branches, table lookups and multiplication paths change with secret data, and power and sound change with them."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        },
+        {
+          "id": "acoustics-r139-used",
+          "entryId": "acoustics-details",
+          "section": "used",
+          "statement": {
+            "zh": "2014 年的演示用一部普通手机贴在笔记本旁，或用灵敏麦克风在数米外录音；完整 4096 位 RSA 密钥约一小时恢复。它需要攻击者能选择密文并让目标解密，通常是本地或近场场景，不是对任意 HTTPS 服务器的远程攻击。### 防御位置\n\n工程上应使用常数时间、无分支的模幂，启用 RSA blinding，避免秘密数据决定控制流；物理侧可做隔音、随机噪声和机箱屏蔽。对高价值机器，声学屏蔽要与电源、电磁和缓存侧信道一起考虑，不能只换算法。",
+            "en": "### Demonstration and real boundary\n\nThe 2014 demonstration used an ordinary mobile phone next to a laptop, or a sensitive microphone several metres away; full 4096-bit RSA key recovery took about an hour.It needs chosen ciphertexts and a decryption operation, usually a local or near-field setting, not a remote attack against an arbitrary HTTPS server."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        },
+        {
+          "id": "acoustics-r139-broken",
+          "entryId": "acoustics-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 攻击成立的条件\n\n这条攻击链要求：目标运行易受影响的 GnuPG 版本；攻击者能提交任意密文并观察解密；麦克风能收到目标的声音；攻击者知道实现和密钥长度。缺少任一条件，演示中的一小时恢复就不成立。### 不是“听键盘”\n\n声学侧信道恢复的是 RSA 解密过程中的密钥位，不是敲键盘的声音，也不是风扇噪声。它的带宽低、信号弱，但对气隙机器仍有意义：声音可以穿过空气和部分隔板，而网络攻击做不到这一点。",
+            "en": "### Conditions for the attack\n\nThe chain requires a target running an affected GnuPG version, an attacker who can submit arbitrary ciphertexts and observe decryption, a microphone that can hear the machine, and knowledge of the implementation and key size.Remove any one and the one-hour demonstration no longer holds."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        },
+        {
+          "id": "acoustics-r139-history",
+          "entryId": "acoustics-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 2004 预演，2014 成文\n\nShamir 与 Tromer 在 Eurocrypt 2004 rump session 先展示“不同 RSA 密钥有不同声纹”。2013 年 12 月 ePrint 2013/857 给出完整密钥提取，2014 年 CRYPTO 论文与 2017 年《Journal of Cryptology》期刊版完善了实验与方法。### 后续位置\n\n这类工作把侧信道从“电磁、功耗、缓存”扩展到“声音与底盘电位”，也推动 GnuPG 等实现加入 blinding、常数时间路径和更强的物理防护。它仍是研究型攻击，不是批量工具。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### 2004 preview, 2014 paper\n\nShamir and Tromer first showed at the Eurocrypt 2004 rump session that different RSA keys have different acoustic fingerprints.IACR ePrint 2013/857 in December 2013 gave full key extraction; the 2014 CRYPTO paper and the 2017 Journal of Cryptology version refined the experiment and method."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        },
+        {
+          "id": "acoustics-r139-refs",
+          "entryId": "acoustics-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 声学侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 声学侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "acoustics-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "acoustics-wikipedia"
+      ]
+    },
+    {
+      "id": "acoustics-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "acoustics-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "acoustics-r139-principle",
+      "entryId": "acoustics-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：声学侧信道（Acoustic Side Channel）。### 声音从哪里来\n\n计算机运行时，CPU 的功耗随指令与数据变化。主板上的电压调节电路要维持稳定电压，电容和线圈会因电流变化发生微小机械振动，振动传入空气就是人耳或麦克风能收到的声音。这里的关键不是风扇或扬声器，而是供电电路本身的振动。### 带宽极低，不等于没有信息\n\n普通麦克风能收到 20 kHz 以下的声音，超声麦克风可到几百 kHz；这比 CPU 的 GHz 时钟低几个数量级。单条指令的噪声完全埋在背景里，但如果同一种依赖密钥的操作被重复数千次，泄漏会累积成持续数百毫秒、在频谱上可分辨的包络。",
+        "en": "**Attack**: Acoustic Side Channel (声学侧信道).### Where the sound comes from\n\nWhen a computer runs, CPU power draw changes with instructions and data."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    },
+    {
+      "id": "acoustics-r139-why",
+      "entryId": "acoustics-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 绕过数学，直接看实现\n\n声学侧信道不攻击 RSA 或 AES 的数学结构，而是攻击实现：分支、查表、乘法的执行路径会随秘密数据变化，功耗和声音随之变化。只要攻击者能靠近机器、让机器做选定密文的解密，并知道实现细节，数学证明的“安全”就不能覆盖这条物理路径。### 为什么 GnuPG 成为样本\n\nGnuPG 1.4.14 的 RSA 模幂使用窗口算法，某些中间字为零时会走不同分支。Genkin–Shamir–Tromer 用选择密文诱发大量全零字，把“一个极短分支”放大成“数百毫秒的可听差异”，从而逐位恢复 4096 位 RSA 私钥。",
+        "en": "### Bypass the mathematics, look at the implementation\n\nAn acoustic side channel does not attack the mathematical structure of RSA or AES; it attacks the implementation.Branches, table lookups and multiplication paths change with secret data, and power and sound change with them."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    },
+    {
+      "id": "acoustics-r139-used",
+      "entryId": "acoustics-details",
+      "section": "used",
+      "statement": {
+        "zh": "2014 年的演示用一部普通手机贴在笔记本旁，或用灵敏麦克风在数米外录音；完整 4096 位 RSA 密钥约一小时恢复。它需要攻击者能选择密文并让目标解密，通常是本地或近场场景，不是对任意 HTTPS 服务器的远程攻击。### 防御位置\n\n工程上应使用常数时间、无分支的模幂，启用 RSA blinding，避免秘密数据决定控制流；物理侧可做隔音、随机噪声和机箱屏蔽。对高价值机器，声学屏蔽要与电源、电磁和缓存侧信道一起考虑，不能只换算法。",
+        "en": "### Demonstration and real boundary\n\nThe 2014 demonstration used an ordinary mobile phone next to a laptop, or a sensitive microphone several metres away; full 4096-bit RSA key recovery took about an hour.It needs chosen ciphertexts and a decryption operation, usually a local or near-field setting, not a remote attack against an arbitrary HTTPS server."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    },
+    {
+      "id": "acoustics-r139-broken",
+      "entryId": "acoustics-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 攻击成立的条件\n\n这条攻击链要求：目标运行易受影响的 GnuPG 版本；攻击者能提交任意密文并观察解密；麦克风能收到目标的声音；攻击者知道实现和密钥长度。缺少任一条件，演示中的一小时恢复就不成立。### 不是“听键盘”\n\n声学侧信道恢复的是 RSA 解密过程中的密钥位，不是敲键盘的声音，也不是风扇噪声。它的带宽低、信号弱，但对气隙机器仍有意义：声音可以穿过空气和部分隔板，而网络攻击做不到这一点。",
+        "en": "### Conditions for the attack\n\nThe chain requires a target running an affected GnuPG version, an attacker who can submit arbitrary ciphertexts and observe decryption, a microphone that can hear the machine, and knowledge of the implementation and key size.Remove any one and the one-hour demonstration no longer holds."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    },
+    {
+      "id": "acoustics-r139-history",
+      "entryId": "acoustics-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 2004 预演，2014 成文\n\nShamir 与 Tromer 在 Eurocrypt 2004 rump session 先展示“不同 RSA 密钥有不同声纹”。2013 年 12 月 ePrint 2013/857 给出完整密钥提取，2014 年 CRYPTO 论文与 2017 年《Journal of Cryptology》期刊版完善了实验与方法。### 后续位置\n\n这类工作把侧信道从“电磁、功耗、缓存”扩展到“声音与底盘电位”，也推动 GnuPG 等实现加入 blinding、常数时间路径和更强的物理防护。它仍是研究型攻击，不是批量工具。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### 2004 preview, 2014 paper\n\nShamir and Tromer first showed at the Eurocrypt 2004 rump session that different RSA keys have different acoustic fingerprints.IACR ePrint 2013/857 in December 2013 gave full key extraction; the 2014 CRYPTO paper and the 2017 Journal of Cryptology version refined the experiment and method."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    },
+    {
+      "id": "acoustics-r139-refs",
+      "entryId": "acoustics-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 声学侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 声学侧信道.https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "acoustics-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

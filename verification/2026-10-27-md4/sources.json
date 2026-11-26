@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "md4-details",
+  "sources": [
+    {
+      "id": "md4-wikipedia",
+      "title": "Wikipedia search entry for MD4 散列",
+      "url": "https://zh.wikipedia.org/w/index.php?search=MD4%20%E6%95%A3%E5%88%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: MD4 散列",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "md4-r139-principle",
+          "entryId": "md4-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：MD4 散列（MD4）。MD4 是 Ronald L.Rivest 设计的消息摘要算法：输入任意长度的消息（位数 b 可以是 0，也可以是任意大的非负整数），输出固定的 128 位（16 字节）\"fingerprint\"或\"message digest\"（指纹／消息摘要）。RFC 1320 把它描述为面向数字签名应用的压缩工具——先由摘要把大文件安全地做成 \"compressed\" 形态，再交给 RSA 之类的公钥密码体制签名（源文对 compressed 自己也加了引号）。MD4 的基本参数：以 512 位（16 个 32 位字）为一个消息块处理；状态是 A、B、C、D 四个 32 位寄存器；输出 128 位。RFC 1320 第 2 节约定：一个\"word\"（字）是 32 位量，字节序列按\"low-order (least significant) byte given first\"（低序字节在前）解释成字（小端）；\"+\"表示模 2^32 加法；`X <<< s` 表示 32 位循环左移 s 位；`not(X)`、`X v Y`、`X xor Y`、`XY` 分别是按位非、按位或、按位异或、按位与。计算摘要分五步（RFC 1320 第 3 节）：\n\n1.**填充**（§3.",
+            "en": "**Algorithm**: MD4 (MD4 散列).MD4 is a message-digest algorithm designed by Ronald L."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        },
+        {
+          "id": "md4-r139-why",
+          "entryId": "md4-details",
+          "section": "why",
+          "statement": {
+            "zh": "RFC 1320 §1 明确列出了 MD4 的设计取向：\n\n- **速度优先**：\"The MD4 algorithm is designed to be quite fast on 32-bit machines.\"（在 32 位机器上相当快）整个压缩函数每 512 位块只有 48 次操作，每次操作只有两三条模 2^32 加法（函数值、消息字、可选轮常量）、一条按位函数、一条循环左移，全部落在 32 位通用指令上。- **紧凑、无大表**：\"the MD4 algorithm does not require any large substitution tables; the algorithm can be coded quite compactly.\"（不需要大的替换表，算法可以写得相当紧凑）MD4 只用三个一行就能写出的按位函数。- **公有领域**：\"The MD4 algorithm is being placed in the public domain for review and possible adoption as a standard.\"——注意置于公有领域的是算法本身，附录参考代码仍带 RSA Data Security 的版权与许可声明。",
+            "en": "RFC 1320 §1 states the design goals explicitly:\n\n- **Speed first**: \"The MD4 algorithm is designed to be quite fast on 32-bit machines.\" The whole compression function is 48 operations per 512-bit block, each with two or three mod-2^32 adds (function value, message word, optional round constant), a bitwise function and a rotation—all native 32-bit instructions.- **Compact, no big tables**: \"the MD4 algorithm does not require any large substitution tables; the algorithm can be coded quite compactly.\" MD4 uses three one-line bitwise functions."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        },
+        {
+          "id": "md4-r139-used",
+          "entryId": "md4-details",
+          "section": "used",
+          "statement": {
+            "zh": "RFC 1320 §1 给出 MD4 的官方身份标识：对象标识符\n\n```\nmd4 OBJECT IDENTIFIER ::= {iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 4}\n```\n\n即 OID 1.2.840.113549.2.4；在 X.509 的 AlgorithmIdentifier 类型中，MD4 的参数应为 NULL 类型。历史上，PKCS #1 v1.5 曾允许在 RSA 签名方案中使用 MD4。RFC 2437（PKCS #1 v2.0，1998 年 10 月）§10.1 的注记明确记录了这一点，并写明 \"Because of these results and others (e.g.[9]), MD4 is no longer recommended.\"（因为这些结果及其他结果，MD4 不再被推荐）。MD4 今天仍在运行的最重要场景是 Windows 的 NTLM 认证。微软开放规范 MS-NLMP §3.3.1 定义 NTLM v1 的 NT 单向函数：\n\n```\nDefine NTOWFv1(Passwd, User, UserDom) as MD4(UNICODE(Passwd))\n```\n\n即 NT 哈希（NTLM 里那条哈希值，ms-nlmp 写作 NTLM (NT) hash）就是密码的 UTF-16LE 编码的 MD4 摘要；§5.2 的安全参数索引把\"MD4/MD5 usage in NTLM v1\"指向 §3.3.",
+            "en": "RFC 1320 §1 gives MD4's official identity: the object identifier\n\n```\nmd4 OBJECT IDENTIFIER ::= {iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 4}\n```\n\nthat is, OID 1.2.840.113549.2.4; in the X.509 AlgorithmIdentifier type the MD4 parameters should have type NULL.Historically, PKCS #1 v1.5 allowed MD4 in RSA signature schemes."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        },
+        {
+          "id": "md4-r139-broken",
+          "entryId": "md4-details",
+          "section": "broken",
+          "statement": {
+            "zh": "MD4 的破译史几乎就是现代哈希密码分析的发展史：\n\n- **1991 年**：den Boer 与 Bosselaers 在 CRYPTO '91（第 194-203 页，Springer-Verlag 1992）发表\"An Attack on the Last Two Rounds of MD4\"，攻破 MD4 压缩函数的最后两轮。RFC 2437 参考文献 [9] 记录了这一结果。- **1996 年**：Hans Dobbertin 在 FSE 1996（LNCS 1039，第 55-72 页）发表\"Cryptanalysis of MD4\"，给出针对完整算法的 128 位碰撞（此前的 den Boer-Bosselaers 攻击只针对削减轮数的压缩函数）。RFC 2437 §10.1 据此宣布 MD4 不再被推荐；王小云等 2005 年论文的摘要把 Dobbertin 攻击的复杂度记为约 2^20 次 MD4 哈希计算。- **1998 年**：Dobbertin 又在 FSE 1998（LNCS 1372，第 284-292 页）证明\"The First Two Rounds of MD4 are Not One-Way\"——前两轮也不单向。RFC 2437 §10.1 也引用了这一结果（该论文在其参考文献表中列为 [12]）。",
+            "en": "The cryptanalysis of MD4 is close to a history of modern hash cryptanalysis:\n\n- **1991**: den Boer and Bosselaers published \"An Attack on the Last Two Rounds of MD4\" at CRYPTO '91 (pp.194-203, Springer-Verlag 1992), breaking the last two rounds of the MD4 compression function."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        },
+        {
+          "id": "md4-r139-history",
+          "entryId": "md4-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1990 年 10 月**：Rivest 发布 RFC 1186《The MD4 Message Digest Algorithm》，首次公开 MD4 定义。- **1990 年**：MD4 论文在 CRYPTO '90（Advances in Cryptology – CRYPTO '90，LNCS 537，第 303-311 页，Springer-Verlag 1991，DOI 10.1007/3-540-38424-3_22）报告。RFC 1320 参考文献 [1] 即引此文。- **1992 年 4 月**：RFC 1320《The MD4 Message-Digest Algorithm》发布，取代 RFC 1186；§1 说明主要差别是附录参考实现更可移植。RFC 1320 声明算法置于公有领域，并致谢 Don Coppersmith、Burt Kaliski、Ralph Merkle、Noam Nisan 的评论与建议。其 Status 一节写明：这份备忘录为互联网社区提供信息，不指定任何互联网标准。- **1992 年 4 月**：同一作者发布 RFC 1321《The MD5 Message-Digest Algorithm》；RFC 1320 参考文献 [4] 已预告 MD5。",
+            "en": "- **October 1990**: Rivest published RFC 1186, \"The MD4 Message Digest Algorithm\", the first public definition of MD4.- **1990**: the MD4 paper was presented at CRYPTO '90 (Advances in Cryptology – CRYPTO '90, LNCS 537, pp."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        },
+        {
+          "id": "md4-r139-refs",
+          "entryId": "md4-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for MD4 散列.https://zh.wikipedia.org/w/index.php?search=MD4%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for MD4 散列.https://zh.wikipedia.org/w/index.php?search=MD4%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "md4-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "md4-wikipedia"
+      ]
+    },
+    {
+      "id": "md4-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "md4-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "md4-r139-principle",
+      "entryId": "md4-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：MD4 散列（MD4）。MD4 是 Ronald L.Rivest 设计的消息摘要算法：输入任意长度的消息（位数 b 可以是 0，也可以是任意大的非负整数），输出固定的 128 位（16 字节）\"fingerprint\"或\"message digest\"（指纹／消息摘要）。RFC 1320 把它描述为面向数字签名应用的压缩工具——先由摘要把大文件安全地做成 \"compressed\" 形态，再交给 RSA 之类的公钥密码体制签名（源文对 compressed 自己也加了引号）。MD4 的基本参数：以 512 位（16 个 32 位字）为一个消息块处理；状态是 A、B、C、D 四个 32 位寄存器；输出 128 位。RFC 1320 第 2 节约定：一个\"word\"（字）是 32 位量，字节序列按\"low-order (least significant) byte given first\"（低序字节在前）解释成字（小端）；\"+\"表示模 2^32 加法；`X <<< s` 表示 32 位循环左移 s 位；`not(X)`、`X v Y`、`X xor Y`、`XY` 分别是按位非、按位或、按位异或、按位与。计算摘要分五步（RFC 1320 第 3 节）：\n\n1.**填充**（§3.",
+        "en": "**Algorithm**: MD4 (MD4 散列).MD4 is a message-digest algorithm designed by Ronald L."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    },
+    {
+      "id": "md4-r139-why",
+      "entryId": "md4-details",
+      "section": "why",
+      "statement": {
+        "zh": "RFC 1320 §1 明确列出了 MD4 的设计取向：\n\n- **速度优先**：\"The MD4 algorithm is designed to be quite fast on 32-bit machines.\"（在 32 位机器上相当快）整个压缩函数每 512 位块只有 48 次操作，每次操作只有两三条模 2^32 加法（函数值、消息字、可选轮常量）、一条按位函数、一条循环左移，全部落在 32 位通用指令上。- **紧凑、无大表**：\"the MD4 algorithm does not require any large substitution tables; the algorithm can be coded quite compactly.\"（不需要大的替换表，算法可以写得相当紧凑）MD4 只用三个一行就能写出的按位函数。- **公有领域**：\"The MD4 algorithm is being placed in the public domain for review and possible adoption as a standard.\"——注意置于公有领域的是算法本身，附录参考代码仍带 RSA Data Security 的版权与许可声明。",
+        "en": "RFC 1320 §1 states the design goals explicitly:\n\n- **Speed first**: \"The MD4 algorithm is designed to be quite fast on 32-bit machines.\" The whole compression function is 48 operations per 512-bit block, each with two or three mod-2^32 adds (function value, message word, optional round constant), a bitwise function and a rotation—all native 32-bit instructions.- **Compact, no big tables**: \"the MD4 algorithm does not require any large substitution tables; the algorithm can be coded quite compactly.\" MD4 uses three one-line bitwise functions."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    },
+    {
+      "id": "md4-r139-used",
+      "entryId": "md4-details",
+      "section": "used",
+      "statement": {
+        "zh": "RFC 1320 §1 给出 MD4 的官方身份标识：对象标识符\n\n```\nmd4 OBJECT IDENTIFIER ::= {iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 4}\n```\n\n即 OID 1.2.840.113549.2.4；在 X.509 的 AlgorithmIdentifier 类型中，MD4 的参数应为 NULL 类型。历史上，PKCS #1 v1.5 曾允许在 RSA 签名方案中使用 MD4。RFC 2437（PKCS #1 v2.0，1998 年 10 月）§10.1 的注记明确记录了这一点，并写明 \"Because of these results and others (e.g.[9]), MD4 is no longer recommended.\"（因为这些结果及其他结果，MD4 不再被推荐）。MD4 今天仍在运行的最重要场景是 Windows 的 NTLM 认证。微软开放规范 MS-NLMP §3.3.1 定义 NTLM v1 的 NT 单向函数：\n\n```\nDefine NTOWFv1(Passwd, User, UserDom) as MD4(UNICODE(Passwd))\n```\n\n即 NT 哈希（NTLM 里那条哈希值，ms-nlmp 写作 NTLM (NT) hash）就是密码的 UTF-16LE 编码的 MD4 摘要；§5.2 的安全参数索引把\"MD4/MD5 usage in NTLM v1\"指向 §3.3.",
+        "en": "RFC 1320 §1 gives MD4's official identity: the object identifier\n\n```\nmd4 OBJECT IDENTIFIER ::= {iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 4}\n```\n\nthat is, OID 1.2.840.113549.2.4; in the X.509 AlgorithmIdentifier type the MD4 parameters should have type NULL.Historically, PKCS #1 v1.5 allowed MD4 in RSA signature schemes."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    },
+    {
+      "id": "md4-r139-broken",
+      "entryId": "md4-details",
+      "section": "broken",
+      "statement": {
+        "zh": "MD4 的破译史几乎就是现代哈希密码分析的发展史：\n\n- **1991 年**：den Boer 与 Bosselaers 在 CRYPTO '91（第 194-203 页，Springer-Verlag 1992）发表\"An Attack on the Last Two Rounds of MD4\"，攻破 MD4 压缩函数的最后两轮。RFC 2437 参考文献 [9] 记录了这一结果。- **1996 年**：Hans Dobbertin 在 FSE 1996（LNCS 1039，第 55-72 页）发表\"Cryptanalysis of MD4\"，给出针对完整算法的 128 位碰撞（此前的 den Boer-Bosselaers 攻击只针对削减轮数的压缩函数）。RFC 2437 §10.1 据此宣布 MD4 不再被推荐；王小云等 2005 年论文的摘要把 Dobbertin 攻击的复杂度记为约 2^20 次 MD4 哈希计算。- **1998 年**：Dobbertin 又在 FSE 1998（LNCS 1372，第 284-292 页）证明\"The First Two Rounds of MD4 are Not One-Way\"——前两轮也不单向。RFC 2437 §10.1 也引用了这一结果（该论文在其参考文献表中列为 [12]）。",
+        "en": "The cryptanalysis of MD4 is close to a history of modern hash cryptanalysis:\n\n- **1991**: den Boer and Bosselaers published \"An Attack on the Last Two Rounds of MD4\" at CRYPTO '91 (pp.194-203, Springer-Verlag 1992), breaking the last two rounds of the MD4 compression function."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    },
+    {
+      "id": "md4-r139-history",
+      "entryId": "md4-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1990 年 10 月**：Rivest 发布 RFC 1186《The MD4 Message Digest Algorithm》，首次公开 MD4 定义。- **1990 年**：MD4 论文在 CRYPTO '90（Advances in Cryptology – CRYPTO '90，LNCS 537，第 303-311 页，Springer-Verlag 1991，DOI 10.1007/3-540-38424-3_22）报告。RFC 1320 参考文献 [1] 即引此文。- **1992 年 4 月**：RFC 1320《The MD4 Message-Digest Algorithm》发布，取代 RFC 1186；§1 说明主要差别是附录参考实现更可移植。RFC 1320 声明算法置于公有领域，并致谢 Don Coppersmith、Burt Kaliski、Ralph Merkle、Noam Nisan 的评论与建议。其 Status 一节写明：这份备忘录为互联网社区提供信息，不指定任何互联网标准。- **1992 年 4 月**：同一作者发布 RFC 1321《The MD5 Message-Digest Algorithm》；RFC 1320 参考文献 [4] 已预告 MD5。",
+        "en": "- **October 1990**: Rivest published RFC 1186, \"The MD4 Message Digest Algorithm\", the first public definition of MD4.- **1990**: the MD4 paper was presented at CRYPTO '90 (Advances in Cryptology – CRYPTO '90, LNCS 537, pp."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    },
+    {
+      "id": "md4-r139-refs",
+      "entryId": "md4-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for MD4 散列.https://zh.wikipedia.org/w/index.php?search=MD4%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for MD4 散列.https://zh.wikipedia.org/w/index.php?search=MD4%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "md4-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

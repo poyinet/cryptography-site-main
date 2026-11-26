@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-30",
+  "scope": "Compact attack-model article for attack--differential-cryptanalysis: definition, role, boundaries and source attribution. It does not duplicate a cipher algorithm or protocol entity.",
+  "entries": [
+    {
+      "id": "attack--differential-cryptanalysis-details",
+      "inventoryIds": [
+        "attack--differential-cryptanalysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 差分密码分析 这一攻击模型：定义、作用、边界和来源；不复制具体密码算法或协议实体。",
+        "en": "A compact definition of the attack model Differential Cryptanalysis: definition, role, boundaries and source attribution; it does not duplicate a cipher algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "差分密码分析",
+        "en": "Differential Cryptanalysis"
+      },
+      "claimIds": [
+        "attack--differential-cryptanalysis-r139-principle",
+        "attack--differential-cryptanalysis-r139-why",
+        "attack--differential-cryptanalysis-r139-used",
+        "attack--differential-cryptanalysis-r139-broken",
+        "attack--differential-cryptanalysis-r139-history",
+        "attack--differential-cryptanalysis-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--differential-cryptanalysis-wikipedia",
+        "attack--differential-cryptanalysis-reference-ref"
+      ],
+      "related": [
+        "attack--linear-cryptanalysis",
+        "block-cipher",
+        "attack--chosen-plaintext-attack"
+      ],
+      "relatedPolicy": "Related entries are separate concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：差分密码分析（Differential Cryptanalysis）。差分密码分析是 HAC 称为针对现代迭代分组密码的通用密码分析工具之一。",
+          "why": "HAC 把差分密码分析描述为对 DES、Lucifer、FEAL 等迭代密码的通用工具。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "HAC 把差分密码分析主要视为选择明文攻击。",
+          "broken": "HAC 的 Table 7.7 给出对 DES 的数据/处理复杂度；具体参数影响成本。",
+          "history": "HAC 在 §7.4.3(iv) 讨论 DES 的差分密码分析。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「差分密码分析」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：差分密码分析的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。 预期输出：按 差分密码分析 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 构造输入差分 2. 统计输出差分概率 3. 与随机置换概率 2^{-n} 比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 差分密码分析 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 差分密码分析 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。\n\n**来源、版本与复现**\n\n差分密码分析的结论必须绑定具体版本：标准号、草案/正式版、实现版本、测试向量来源。复现记录要写运行环境与字节级输出；只写“通过”不写参数，无法复核。",
+          "refs": "- Wikipedia search entry for 差分密码分析. https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E5%AF%86%E7%A0%81%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\n差分密码分析的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。1.构造输入差分。2.统计输出差分概率。3.与随机置换概率 2^{-n} 比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Differential Cryptanalysis (差分密码分析). Differential cryptanalysis is one of the most general cryptanalytic tools against modern iterated block ciphers, as described by HAC.",
+          "why": "HAC describes differential cryptanalysis as a general tool against iterated ciphers such as DES, Lucifer and FEAL.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "HAC treats differential cryptanalysis as primarily a chosen-plaintext attack.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "HAC Table 7.7 gives the data and processing complexity against DES; specific parameters affect cost.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "HAC discusses differential cryptanalysis of DES in §7.4.3(iv).\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 差分密码分析. https://zh.wikipedia.org/w/index.php?search=%E5%B7%AE%E5%88%86%E5%AF%86%E7%A0%81%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\nDifferential Cryptanalysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "差分密码分析",
+          "选择明文",
+          "迭代分组密码",
+          "数据复杂度",
+          "DES",
+          "复杂度"
+        ],
+        "en": [
+          "Differential cryptanalysis",
+          "Chosen plaintext",
+          "Iterated block cipher",
+          "Data complexity",
+          "DES",
+          "Complexity"
+        ]
+      },
+      "subtopicIds": [
+        "differential-cryptanalysis"
+      ],
+      "figures": [
+        {
+          "id": "attack--differential-cryptanalysis-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "差分密码分析：为什么需要 → 核心机制 → 边界。",
+            "en": "Differential Cryptanalysis: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "差分密码分析 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Differential Cryptanalysis, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--differential-cryptanalysis-details-flow.zh.svg",
+            "en": "assets/attack--differential-cryptanalysis-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6764661715c95c7f6a7b4aac6f8647088d41ce8513edda60b4dfd8ac376b8b13",
+            "en": "c89f5c18f190a4ed5120708c073c39a1e3ed98e130ae11bc056727cd0326ad56"
+          }
+        },
+        {
+          "id": "attack--differential-cryptanalysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "差分密码分析 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Differential Cryptanalysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "差分密码分析 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Differential Cryptanalysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--differential-cryptanalysis-details-r138-model.zh.svg",
+            "en": "assets/attack--differential-cryptanalysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b7a3c69e0be744e779f7697d55f1cd68cbe68e0d62fba82ef5a8c0fcf62a6bd1",
+            "en": "1f0d869218713b57a2d82f492ce86ee1f6b43a04eb78f12ecacfb1d3fd5b41ba"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--differential-cryptanalysis-r139-formal",
+          "entryId": "attack--differential-cryptanalysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+          "inputs": "输入：差分密码分析的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+          "expected": "按 差分密码分析 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "构造输入差分",
+            "统计输出差分概率",
+            "与随机置换概率 2^{-n} 比较"
+          ],
+          "sourceIds": [
+            "attack--differential-cryptanalysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--differential-cryptanalysis-r139-formal"
+      ],
+      "sources": [
+        "attack--differential-cryptanalysis-wikipedia",
+        "attack--differential-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--differential-cryptanalysis-r139-formal",
+      "entryId": "attack--differential-cryptanalysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+      "inputs": "输入：差分密码分析的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+      "expected": "按 差分密码分析 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "构造输入差分",
+        "统计输出差分概率",
+        "与随机置换概率 2^{-n} 比较"
+      ],
+      "sourceIds": [
+        "attack--differential-cryptanalysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for masque-connect-udp: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "masque-connect-udp-details",
+      "inventoryIds": [
+        "masque-connect-udp"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「MASQUE CONNECT-UDP」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of MASQUE CONNECT-UDP: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "MASQUE CONNECT-UDP",
+        "en": "MASQUE CONNECT-UDP"
+      },
+      "claimIds": [
+        "masque-connect-udp-r139-principle",
+        "masque-connect-udp-r139-why",
+        "masque-connect-udp-r139-used",
+        "masque-connect-udp-r139-broken",
+        "masque-connect-udp-r139-history",
+        "masque-connect-udp-r139-refs"
+      ],
+      "sourceIds": [
+        "masque-connect-udp-wikipedia",
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ],
+      "related": [
+        "quic",
+        "tlsgreasing",
+        "ech"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：MASQUE CONNECT-UDP（MASQUE Proxying UDP over HTTP）。RFC 9298 的定义句写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」并立刻限定形状——「More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」即它约定的是 HTTP 之下的 UDP 隧道，不是新的传输协议。",
+          "why": "要补的缺口写在摘要：「This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.」§1 说明承载方式并不绑在某个 HTTP 版本上——「This protocol supports all existing versions of HTTP by using HTTP Datagrams」，HTTP/2 与 HTTP/3 用 Extended CONNECT，HTTP/1.x 用 Upgrade。文首的状态声明自陈它是共识产物：「This document is a product of the Internet Engineering Task Force (IETF).It represents the consensus of the IETF community.」",
+          "used": "使用形态是客户端经服务器建一条 UDP 隧道：摘要写「this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.」§3 起给出的是协议与消息格式，被转发内容的安全由上层协议负责——§1 预期「UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.」",
+          "broken": "限度一是它只规定隧道本身，转发内容是否机密取决于上层协议（§1 的 QUIC 句），本文件不给被转发负载添加机密性或完整性。限度二是代理位置的滥用风险，安全考量在 §7（§9 是参考文献）：「There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.」并建议「HTTP servers that support UDP proxying ought to restrict its use to authenticated users.」",
+          "history": "版本史在页眉与版权块：作者栏 D.Schinazi（Google LLC），页眉日期 August 2022，Category 为 Standards Track，版权行为「Copyright (c) 2022 IETF Trust and the persons identified as the document authors.」其后续件 RFC 9484（CONNECT-IP，2023 年 10 月）在自己的页眉标注 Updates: 9298，即本文件是那轮更新的底座；本文件自身未声明更新任何 RFC。",
+          "refs": "- Wikipedia search entry for MASQUE CONNECT-UDP. https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9298: Proxying UDP in HTTP. https://www.rfc-editor.org/rfc/rfc9298",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nMASQUE CONNECT-UDP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: MASQUE Proxying UDP over HTTP (MASQUE CONNECT-UDP). The defining sentence sits in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — quoted exactly as \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" — and it is immediately narrowed: \"More specifically, this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" The subject is a UDP tunnel carried by HTTP, not a new transport.",
+          "why": "The gap is stated in the abstract: \"This document describes how to proxy UDP in HTTP, similar to how the HTTP CONNECT method allows proxying TCP in HTTP.\" Clause 1 shows the carriage is not tied to one HTTP version — \"This protocol supports all existing versions of HTTP by using HTTP Datagrams\", with Extended CONNECT for HTTP/2 and HTTP/3 and Upgrade for HTTP/1.x. The status statement in the front matter records the consensus provenance: \"This document is a product of the Internet Engineering Task Force (IETF). It represents the consensus of the IETF community.\"",
+          "used": "The usage shape is a client building a UDP tunnel through a proxying server: the abstract says \"this document defines a protocol that allows an HTTP client to create a tunnel for UDP communications through an HTTP server that acts as a proxy.\" From §3 onward the document gives the protocol and message formats, while the safety of the carried content is left to the upper layer — §1 expects that \"UDP tunnels are commonly used to create an end-to-end virtual connection, which can then be secured using QUIC [QUIC] or another protocol running over UDP.\"",
+          "broken": "The first limit is that only the tunnel is specified: whether the forwarded payload is confidential depends on the protocol run above UDP (§1), and this document adds no confidentiality or integrity to the payload. The second is the abuse risk of the proxy position, handled in §7 (§9 is the References): \"There are significant risks in allowing arbitrary clients to establish a tunnel to arbitrary targets, as that could allow bad actors to send traffic and have it attributed to the UDP proxy.\" together with the advice that \"HTTP servers that support UDP proxying ought to restrict its use to authenticated users.\"",
+          "history": "The history sits in the masthead and copyright block: D. Schinazi (Google LLC), dated August 2022, Category Standards Track, under \"Copyright (c) 2022 IETF Trust and the persons identified as the document authors.\" The successor RFC 9484 (CONNECT-IP, October 2023) carries Updates: 9298 in its own masthead, making this the base of that update; this document claims no update of its own.",
+          "refs": "- Wikipedia search entry for MASQUE CONNECT-UDP. https://zh.wikipedia.org/w/index.php?search=MASQUE%20CONNECT-UDP\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9298: Proxying UDP in HTTP. https://www.rfc-editor.org/rfc/rfc9298",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nMASQUE Proxying UDP over HTTP: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CONNECT-UDP：在 HTTP 之上代理 UDP 流量的方法。",
+          "proxy：此处指转发并按需维持会话的 HTTP 服务器。",
+          "tunnel：把一种传输封装进另一种承载的通道。",
+          "HTTP CONNECT：TCP 隧道的既有方法。",
+          "MASQUE：两份文件所属的代理族名；本文只注册 masque 这一 URI 后缀。",
+          "Standards Track：IETF 标准化轨道类别。"
+        ],
+        "en": [
+          "CONNECT-UDP: proxying UDP over HTTP.",
+          "Proxy: the HTTP server that forwards traffic and maintains the session.",
+          "Tunnel: one transport encapsulated in another carriage.",
+          "HTTP CONNECT: the existing TCP tunnel method.",
+          "MASQUE: the proxy family these documents belong to; RFC 9298 registers only the masque URI suffix.",
+          "Standards Track: the IETF publication category."
+        ]
+      },
+      "figures": [
+        {
+          "id": "masque-connect-udp-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "MASQUE CONNECT-UDP：为什么需要 → 核心机制 → 边界。",
+            "en": "MASQUE CONNECT-UDP: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "MASQUE CONNECT-UDP 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for MASQUE CONNECT-UDP, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/masque-connect-udp-details-flow.zh.svg",
+            "en": "assets/masque-connect-udp-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2218fd11d0adb5b6244793dce24c50316bca4b1086d584ce8f90d551bdc520f2",
+            "en": "d3cbc78053181ab895a4cfabcde9aa229307a631c4405e6822ff864ea35abf7f"
+          }
+        },
+        {
+          "id": "masque-connect-udp-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "MASQUE CONNECT-UDP 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for MASQUE CONNECT-UDP: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "MASQUE CONNECT-UDP 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for MASQUE CONNECT-UDP, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/masque-connect-udp-details-r138-model.zh.svg",
+            "en": "assets/masque-connect-udp-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5bbb4d535903c341cef615b93794e60feec81b1f928a5ce74bf6feffbf7326b7",
+            "en": "e2db172445a8022bdca6a92bea3e248452c09aa97816627384d53d0deb3128fb"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "masque-connect-udp-r139-formal",
+          "entryId": "masque-connect-udp-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：MASQUE CONNECT-UDP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 MASQUE CONNECT-UDP 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "masque-connect-udp-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "masque-connect-udp-r139-formal"
+      ],
+      "sources": [
+        "masque-connect-udp-wikipedia",
+        "masque-connect-udp-reference-ref",
+        "masque-connect-udp-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "masque-connect-udp-r139-formal",
+      "entryId": "masque-connect-udp-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：MASQUE CONNECT-UDP的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 MASQUE CONNECT-UDP 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "masque-connect-udp-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

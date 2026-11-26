@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R109 stream-cipher batch for xsalsa20-details.",
+  "entries": [
+    {
+      "id": "xsalsa20-details",
+      "inventoryIds": [
+        "xsalsa20"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R109 流密码批次：把 GRAIN、HC-128、Rabbit、Trivium 与 XSalsa20 的目录身份卡改写为来源可核的机制、参数、标准、用途与边界正文；保留目录坐标、前置关系与子主题链接。",
+        "en": "R109 stream-cipher batch: replaced the catalog identity cards for GRAIN, HC-128, Rabbit, Trivium and XSalsa20 with source-backed mechanism, parameters, standards, use and boundary text while retaining catalog position, prerequisites and subtopic links."
+      },
+      "title": {
+        "zh": "XSalsa20 流密码",
+        "en": "XSalsa20 Stream Cipher"
+      },
+      "claimIds": [
+        "xsalsa20-r139-principle",
+        "xsalsa20-r139-why",
+        "xsalsa20-r139-used",
+        "xsalsa20-r139-broken",
+        "xsalsa20-r139-history",
+        "xsalsa20-r139-refs"
+      ],
+      "sourceIds": [
+        "xsalsa20-wikipedia",
+        "xsalsa20-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "salsa20"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "xsalsa20-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XSalsa20：先派生，再出流：密钥/IV 路径、核心状态与输出。",
+            "en": "XSalsa20: derive a subkey, then stream: key/IV path, core state and output."
+          },
+          "alt": {
+            "zh": "XSalsa20：先派生，再出流 的机制示意图，含参数、用途与边界。",
+            "en": "Mechanism schematic for XSalsa20: derive a subkey, then stream, with parameters, use and boundaries."
+          },
+          "files": {
+            "zh": "assets/xsalsa20-details-mechanism.zh.svg",
+            "en": "assets/xsalsa20-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据规格与正文绘制）",
+            "en": "Original mechanism diagram (drawn from the specification and article)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "5776dc317062147a36ed094dbfff32e9b8933dbfa768c141d671930150789d61",
+            "en": "3c39c7ec2262fecdaf1e8c5e7b75189c97a267ad89a40130372ed19a7ba6d302"
+          }
+        },
+        {
+          "id": "xsalsa20-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "XSalsa20 流密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for XSalsa20 Stream Cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "XSalsa20 流密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for XSalsa20 Stream Cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/xsalsa20-details-r138-model.zh.svg",
+            "en": "assets/xsalsa20-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f28bc761b30ccd17d6f0ddef36d2f27a14c4323bc5946e289eae338ef70726bf",
+            "en": "fff95ac5f24f9a904fac902f85b23e4faf3ff3f35bb754a3d5f4ab4bb816ef46"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：XSalsa20 流密码（XSalsa20）。### Salsa20 的 512 位状态\n\nSalsa20 把 256 位密钥、64 位 nonce、64 位块计数器和 128 位常量排成 16 个 32 位字的 4×4 矩阵。20 轮 ARX（32 位加、旋转、异或）后，把结果加回输入，得到 64 字节密钥流块。它没有 S 盒，也没有秘密下标查表。### XSalsa20 先派生子密钥\n\nXSalsa20 把 nonce 扩到 192 位：先用密钥和前 128 位 nonce 跑 HSalsa20。HSalsa20 与 Salsa20 共用 20 轮核心，但省略最后的输入加法，取 8 个特定字组成 256 位子密钥；再用该子密钥、剩余 64 位 nonce 和 64 位块计数器运行标准 Salsa20/20 生成密钥流。### 长 nonce 的意义\n\n64 位 nonce 在同一密钥下随机生成时，约 2^32 条消息就会出现生日碰撞；192 位 nonce 把碰撞风险推到约 2^96 条消息。对“每条消息随机 nonce”的协议，这比维护全局计数器更简单。",
+          "why": "XSalsa20 的动机是 nonce 管理，而不是新的轮函数。NaCl 的 crypto_box 用 X25519 协商密钥、XSalsa20 加密、Poly1305 认证；每条消息可以独立随机 192 位 nonce，不需要跨会话共享计数器。它保持 Salsa20 的速度和 ARX 的侧信道特性，只增加一次 HSalsa20 子密钥派生，成本小于一个 Salsa20 输出块。SKEW 2011 的论文证明：对 XSalsa20 的快速攻击可以转化为对 Salsa20 的攻击，因此它的安全性归约到 Salsa20。",
+          "used": "libsodium 把 XSalsa20/20 暴露为 crypto_stream 和 crypto_stream_xor；NaCl 的 crypto_box 组合 XSalsa20 与 Poly1305；许多语言绑定和消息加密库沿用这一组合。它适合需要长 nonce、随机 nonce、软件高速的协议。它不是 TLS 标准套件；TLS 1.3 采用 ChaCha20-Poly1305 或 AES-GCM，XSalsa20 更多出现在 NaCl 生态和自定义协议中。",
+          "broken": "XSalsa20 只提供机密性，不提供完整性；必须配 Poly1305 或上层 AEAD。nonce 仍然必须唯一：同一 key/nonce 重用会让两条密钥流相同，密文异或即明文异或。192 位 nonce 只是把碰撞概率降到可接受水平，不是允许重复使用。64 位块计数器给单对 key/nonce 约 2^64 个 64 字节块的上限；超过后计数器回绕，必须换 key 或 nonce。ARX 软件实现天然抵抗计时攻击，但硬件功耗/电磁分析仍可能恢复状态；HSalsa20 也不是通用 KDF，不应把同一密钥跨用途复用。",
+          "history": "Salsa20 由 Bernstein 在 2005 年设计，Salsa20/12 进入 eSTREAM 软件 portfolio。2008 年 Bernstein 提出 XSalsa20，把 nonce 扩到 192 位并给出安全归约；NaCl 随后把 XSalsa20+Poly1305 用于 crypto_box，libsodium 延续这一组合。它是 ARX 流密码和“随机 nonce”设计的重要节点。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：XSalsa20 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 XSalsa20 流密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for XSalsa20 流密码. https://zh.wikipedia.org/w/index.php?search=XSalsa20%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nXSalsa20 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: XSalsa20 (XSalsa20 流密码). ### Salsa20’s 512-bit state\n\nSalsa20 arranges a 256-bit key, a 64-bit nonce, a 64-bit block counter and 128 bits of constants into sixteen 32-bit words in a 4×4 matrix. Twenty ARX rounds (32-bit addition, rotation and XOR) are followed by adding the input back, producing a 64-byte keystream block. There are no S-boxes or secret-index table lookups. ### XSalsa20 derives a subkey first\n\nXSalsa20 extends the nonce to 192 bits. It first runs HSalsa20 with the key and the first 128 nonce bits. HSalsa20 shares the 20-round core but omits the final input addition and selects eight words to form a 256-bit subkey; standard Salsa20/20 then uses that subkey, the remaining 64 nonce bits and a 64-bit block counter to generate the stream. ### Why the longer nonce matters\n\nWith a 64-bit nonce, random nonces under one key collide around 2^32 messages; a 192-bit nonce pushes that risk to about 2^96 messages. For protocols that choose a fresh random nonce per message, this is simpler than maintaining a global counter.",
+          "why": "XSalsa20 is about nonce management, not a new round function. NaCl crypto_box uses X25519 for key agreement, XSalsa20 for encryption and Poly1305 for authentication; each message can carry an independent random 192-bit nonce without a cross-session counter.\n\nIt keeps Salsa20’s speed and ARX side-channel behavior, adding only one HSalsa20 subkey derivation whose cost is below one Salsa20 output block. The SKEW 2011 paper proves that a fast attack on XSalsa20 converts into an attack on Salsa20, so its security reduces to Salsa20.",
+          "used": "libsodium exposes XSalsa20/20 as crypto_stream and crypto_stream_xor; NaCl crypto_box combines XSalsa20 with Poly1305; many language bindings and message-encryption libraries follow that combination.\n\nIt fits protocols that want long random nonces and high software speed. It is not a TLS cipher suite; TLS 1.3 uses ChaCha20-Poly1305 or AES-GCM, while XSalsa20 lives mainly in the NaCl ecosystem and custom protocols.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "XSalsa20 provides confidentiality only, not integrity; it must be paired with Poly1305 or a higher-level AEAD. The nonce must still be unique: reusing the same key/nonce reproduces the same keystream, and ciphertext XOR reveals plaintext XOR.\n\nA 192-bit nonce lowers the collision probability to an acceptable level; it does not permit reuse. The 64-bit block counter bounds one key/nonce pair to about 2^64 blocks of 64 bytes; after that the counter wraps and the key or nonce must change.\n\nARX software resists timing attacks, but hardware power and electromagnetic analysis can still recover state; HSalsa20 is not a general KDF, and the same key should not be reused across unrelated purposes.",
+          "history": "Bernstein designed Salsa20 in 2005, and Salsa20/12 entered the eSTREAM software portfolio. In 2008 he proposed XSalsa20, extending the nonce to 192 bits with a security reduction; NaCl then combined XSalsa20 with Poly1305 in crypto_box, and libsodium continued the construction. It is a key node in ARX stream ciphers and in random-nonce design.",
+          "refs": "- Wikipedia search entry for XSalsa20 流密码. https://zh.wikipedia.org/w/index.php?search=XSalsa20%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nXSalsa20: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "xsalsa20-r139-formal",
+          "entryId": "xsalsa20-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：XSalsa20 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 XSalsa20 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "xsalsa20-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "xsalsa20-r139-formal"
+      ],
+      "sources": [
+        "xsalsa20-wikipedia",
+        "xsalsa20-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "xsalsa20-r139-formal",
+      "entryId": "xsalsa20-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：XSalsa20 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 XSalsa20 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "xsalsa20-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for bilinear: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "bilinear-details",
+      "inventoryIds": [
+        "bilinear"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释双线性对（Tate 与修正 Tate）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Bilinear Pairing (Tate and Modified Tate): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "双线性对（Tate 与修正 Tate）",
+        "en": "Bilinear Pairing (Tate and Modified Tate)"
+      },
+      "claimIds": [
+        "bilinear-r139-principle",
+        "bilinear-r139-why",
+        "bilinear-r139-used",
+        "bilinear-r139-broken",
+        "bilinear-r139-history",
+        "bilinear-r139-refs"
+      ],
+      "sourceIds": [
+        "bilinear-wikipedia",
+        "bilinear-reference-ref"
+      ],
+      "related": [
+        "algorithm--ecdsa",
+        "term--identity-based-encryption",
+        "algorithm--ecc"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：双线性配对（Bilinear Pairing）。留存件的 §2.1 给出对象的定义性三性：「a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].」三要件是可高效计算、双变量线性、以及被认为难以求逆——双线性对的全部用途都建立在这三条的组合上。",
+          "why": "为什么要专门规范它，§1 一句话点出下游：文件服务于「identity-based encryption (IBE) systems based on bilinear pairings」。而能不能用，取决于曲线是否给出额外结构：「If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed」（该句在留存件里跨页，省略号只标示被跳过的页眉页脚）——有了这个自同态才有修正版配对，才有可用于标识加密的群配对。",
+          "used": "命名与选型规则印在留存件的 §2.1（本文件的目录用另一套编号，正文节号以留存件为准）：「called the modified Tate pairing.We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.」也即工程上没有自由选项——用哪一版本由所选曲线的性质决定，实现在两条路里被曲线二选一。",
+          "broken": "限度写在用词与记号里。求逆难度在本文件里的措辞是「believed hard to invert」——是被相信的困难性，不是被证明的困难性。记号表把底域阶 p 规定为 512 位到 7680 位的素数（该量级按原样复述、不逐字引用），说明这一族构造的规模远大于普通 ECC 群。合起来的结论是：安全假设立在猜测之上，且曲线与域参数必须按文件挑，不能随手替换成别的群。",
+          "history": "沿革与身份：本文件把 Tate 与修正 Tate 两种配对连同曲线实现写成可被标识加密体系引用的规范，动机句是服务于「identity-based encryption (IBE) systems based on bilinear pairings」。头部印作 Request for Comments: 5091、Category: Informational、December 2007，作者行是 Boyen、Martin 与 Wang（头部按项目口径复述于引号外）。其数学对象本身来自更早的配对研究线，本文不做史学叙述，只交代可用构造的边界。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 双线性配对 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 双线性配对. https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\n双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Bilinear Pairing (双线性配对). Section 2.1 of the retained text gives the defining trio: \"a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].\" The three requirements are efficient computability, linearity in both arguments and conjectured inversion hardness - every use of pairings rests on that combination.",
+          "why": "Why it needs specifying at all: §1 of the retained text names the downstream purpose in one phrase - the document serves \"identity-based encryption (IBE) systems based on bilinear pairings\". Whether a curve can serve depends on extra structure printed in §2.1: \"If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed\" (the sentence straddles a page break in the retained file; the ellipsis marks only the skipped header and footer). That endomorphism is what yields the modified pairing identity-based schemes use.",
+          "used": "Naming and selection are printed in §2.1 of the retained text: \"called the modified Tate pairing. We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.\" Engineering-wise the choice is not free: the curve decides which of the two constructions an implementation can use.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The limits are in the wording and the notation. Inversion hardness is phrased as \"believed hard to invert\" - a conjecture, not a theorem. The notation list fixes the base field order p as a prime of 512 to 7680 bits (restated, not quoted, to keep one citation span per sentence), an order of magnitude beyond ordinary ECC groups. Together: the assumption rests on belief, and the curve and field parameters must be chosen as the document specifies rather than swapped for another group at will.",
+          "history": "Lineage and identity: this document specifies the Tate and modified Tate pairings together with curve implementations so identity-based systems can cite them, and its motive sentence names \"identity-based encryption (IBE) systems based on bilinear pairings\". The header prints Request for Comments: 5091, Category: Informational, December 2007, by Boyen, Martin and Wang (restated outside quotes per house rule). The mathematical objects come from an earlier line of pairing research; the document offers no history, only the boundary of what is usable.",
+          "refs": "- Wikipedia search entry for 双线性配对. https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nBilinear Pairing: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "双线性对：对两个变量都线性、且被认为难以求逆的可高效计算映射。",
+          "Tate pairing：在曲线子群与扩域目标群之间构造的那一版本。",
+          "修正 Tate 配对：对第二个变量施加非有理自同态后得到的 e'。",
+          "G1' 与 G1''：配对的两个输入子群。",
+          "G2：配对输出所在的扩域目标子群。",
+          "非有理自同态：使 e' 可构造的曲线附加结构。"
+        ],
+        "en": [
+          "Bilinear pairing: an efficiently computable map linear in both arguments and believed hard to invert.",
+          "Tate pairing: the construction between elliptic-curve subgroups and a target group in an extension field.",
+          "Modified Tate pairing: the map e' obtained by applying a non-rational endomorphism to the second argument.",
+          "G1' and G1'': the two input subgroups of the pairing.",
+          "G2: the target subgroup where pairing outputs live.",
+          "Non-rational endomorphism: the extra curve structure that makes e' constructible."
+        ]
+      },
+      "figures": [
+        {
+          "id": "bilinear-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "双线性对（Tate 与修正 Tate）：为什么需要 → 核心机制 → 边界。",
+            "en": "Bilinear Pairing (Tate and Modified Tate): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "双线性对（Tate 与修正 Tate） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Bilinear Pairing (Tate and Modified Tate), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/bilinear-details-flow.zh.svg",
+            "en": "assets/bilinear-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1db838d1d2ef32f116be7344b072bb8777f0a6b7cbf87562e238a9449cee052d",
+            "en": "0edd0b36c2dd0e5b203f4071a5f5ccc1bbd749ca8b385cf0d8b9e2b653871bad"
+          }
+        },
+        {
+          "id": "bilinear-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "双线性对（Tate 与修正 Tate） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Bilinear Pairing (Tate and Modified Tate): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "双线性对（Tate 与修正 Tate） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Bilinear Pairing (Tate and Modified Tate), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bilinear-details-r138-model.zh.svg",
+            "en": "assets/bilinear-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ebda558b5c1939fbf44ab32595cd24f4d4d7a7c5a1aad6db7d71e98c5fd6f626",
+            "en": "a738a68fb45aa19c29fcc744d1a01701398c9e59cb7a020429702c34dcd85f7b"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "bilinear-r139-formal",
+          "entryId": "bilinear-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 双线性配对 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "bilinear-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bilinear-r139-formal"
+      ],
+      "sources": [
+        "bilinear-wikipedia",
+        "bilinear-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bilinear-r139-formal",
+      "entryId": "bilinear-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 双线性配对 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "bilinear-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

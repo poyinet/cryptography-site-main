@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full Blowfish algorithm article only; no completion claim for Twofish, DES, AES, bcrypt, modes of operation or the whole library.",
+  "entries": [
+    {
+      "id": "blowfish-details",
+      "inventoryIds": [
+        "blowfish"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 Blowfish 这一种 64 位分组密码：16 轮 Feistel 网络、18 项（P1–P18）32 位 P 数组与四个 256 项 S-box、由 pi 十六进制数字初始化的密钥扩展、可变密钥长度、34 条 ECB 向量和 64 位块边界；不把 Twofish、DES、AES、bcrypt 或工作模式并入本实体。",
+        "en": "Covers the Blowfish 64-bit block cipher: 16-round Feistel network, 18-entry P-array and four 256-entry S-boxes, pi-derived key expansion, variable key length, 34 ECB vectors and the 64-bit block bound. It does not absorb Twofish, DES, AES, bcrypt or a mode of operation."
+      },
+      "title": {
+        "zh": "Blowfish：用 pi 初始化子密钥的 64 位 Feistel 分组密码",
+        "en": "Blowfish: a 64-bit Feistel block cipher with pi-derived subkeys"
+      },
+      "claimIds": [
+        "blowfish-r139-principle",
+        "blowfish-r139-why",
+        "blowfish-r139-used",
+        "blowfish-r139-broken",
+        "blowfish-r139-history",
+        "blowfish-r139-refs"
+      ],
+      "calculationIds": [
+        "blowfish-calc-vectors",
+        "blowfish-calc-roundtrip-keys",
+        "blowfish-calc-pi-table",
+        "blowfish-calc-diffusion",
+        "blowfish-calc-key-equivalence",
+        "blowfish-r139-formal"
+      ],
+      "sourceIds": [
+        "blowfish-wikipedia",
+        "blowfish-reference-ref"
+      ],
+      "related": [
+        "algorithm--des",
+        "algorithm--aes",
+        "rc5",
+        "xtea",
+        "tea"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Blowfish 分组密码（Blowfish）。Blowfish 是 Bruce Schneier 在 1993 年提出的 64 位分组密码。它使用 16 轮 Feistel 网络，密钥长度最多 448 位；子密钥由 18 项（P1–P18）32 位 P 数组和四个 256 项 32 位 S-box 组成。F 函数把 32 位输入分成四个 8 位字节 a、b、c、d：\n\n```text\nF(x) = ((S1[a] + S2[b] mod 2^32) XOR S3[c]) + S4[d] mod 2^32\n```\n\n加密把 64 位块分成 xL、xR。16 轮中每轮做：\n\n```text\nxL = xL XOR Pi\nxR = xR XOR F(xL)\n交换 xL 和 xR\n```\n\n16 轮后撤销最后一次交换，再做白化：\n\n```text\nxR = xR XOR P17\nxL = xL XOR P18\n```\n\n解密与加密相同，但按相反顺序使用 P18..P1。P 数组和四个 S-box 的初始值来自 pi 的十六进制数字——源文的原话是「the hexadecimal digits of pi (less the initial 3」。例如 P1=243f6a88、P2=85a308d3、P3=13198a2e、P4=03707344；完整的 P/S 表共 1042 个 32 位字，即 4168 字节。密钥扩展先用循环重复的密钥字异或 P 数组，再用当前算法反复加密全零块，依次替换 P1..P18 和四个 S-box；总共 521 次迭代。论文还指出，测试一个密钥需要 522 次加密，给暴力搜索增加约 2^9 步。Blowfish 的密钥可从 32 位到 448 位。密钥循环使用，因此短密钥「at least one equivalent longer key」（至少存在一个等价的更长密钥）：若 A 是 64 位密钥，则 AA、AAA 等产生相同子密钥。",
+          "why": "Blowfish 的设计目标是快速、免费、无专利、简单、使用可变长度密钥（32–448 位），并用密钥相关 S-box 抵抗差分和线性分析；论文还要求平坦密钥空间和没有弱密钥。它不使用 DES 的位级置换，而是在 32 位字上使用异或、加法和表查找，适合 32 位处理器。它的数据加密很快，但密钥扩展很重：每个新密钥要执行 521 次加密。论文把它定位为公开、无专利的候选算法，而不是已发布标准；本文分析认为，需要频繁更换密钥的场景要权衡这一初始化成本。Blowfish 仍然是 64 位块。生日碰撞边界约为 2^32 个块，处理大量数据时会限制安全使用量。本文判断它适合作为历史和教学案例，不应默认用于新设计；新设计通常需要更大的块和 AEAD。",
+          "used": "论文说 Blowfish 只适合「where the key does not change often」（密钥不常变化）的场景，例如「a communications link or an automatic file encryptor」（通信链路或自动文件加密器）；在具备较大数据缓存的 32 位处理器（如 Pentium 和 PowerPC）上，它明显快于 DES，但不满足所有新标准需求。Internet-Draft 的 §4 给出 34 条 8 字节密钥的 ECB 向量。零密钥、零明文向量是：\n\n```text\nK = 0000000000000000\nP = 0000000000000000\nC = 4ef997456198dd78\n```\n\n```text\nK = 3000000000000000\nP = 1000000000000001\nC = 7d856f9a613063f2\n```\n\n34 条向量用于加密检查；本文对每条都执行加密，并验证解密回到原明文。由于密钥循环，短密钥和它的重复形式等价：\n\n```text\nK = 01234567\nK = 0123456701234567\nP = 1111111111111111\nC = ea55f49044fe2b24\n```",
+          "broken": "Blowfish 的块只有 64 位。HAC 的生日碰撞分析指出，n 位块在约 2^(n/2) 个块后出现匹配；对 64 位块约为 2^32 个块。本文分析认为，大量数据下这限制了 Blowfish 的安全使用量。### 密钥扩展成本\n\n521 次加密的密钥扩展让更换密钥变得昂贵。论文把它视为对暴力搜索的额外成本；本文分析认为，在高密钥周转的系统中这也是实际负担，子密钥应按密钥材料保护，不能把 4168 字节的表当成公开数据。### 密钥相关 S-box 与侧信道\n\n密钥相关 S-box 提高了差分和线性分析的难度，但实现仍要按字节索引四个表；本文分析认为，缓存、时序或故障注入可能泄露与密钥相关的访问模式。本文的教学实现不是常量时间，也不测试侧信道。### 无完整性\n\nBlowfish 只定义分组密码，不提供完整性或认证。翻转密文会改变对应明文，但 Blowfish 本身无法检测；本文建议需要认证时使用 AEAD 或加密后再 MAC。本文的教学实现演示固定向量；本批次验证脚本执行 34 条 ECB 向量、4/8/16/24/32/56 字节密钥往返、pi 表检查和一位差异。它不生成密钥、不做常量时间处理、不实现工作模式、协议、密钥管理或侧信道防护，不能用于生产环境。",
+          "history": "Blowfish 在 1993 年 FSE 论文中提出，1994 年由 Springer 出版，并以 Dr.Dobb's Journal 1994 年文章和公有领域发布。论文把 DES 视为「nearing the end of its useful life」（接近其有效寿命的终点），目标是提供一个免费、无专利、可在 32 位处理器上快速运行的新标准候选。后来的 Twofish 是另一个算法，不是 Blowfish；Twofish、DES、AES 和 Blowfish 都是各自独立的实体。",
+          "refs": "- Wikipedia search entry for Blowfish 分组密码. https://zh.wikipedia.org/w/index.php?search=Blowfish%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Blowfish (Blowfish 分组密码). Blowfish is a 64-bit block cipher proposed by Bruce Schneier in 1993. It uses a 16-round Feistel network with keys up to 448 bits; its subkeys are an 18-entry (P1–P18) 32-bit P-array and four 256-entry 32-bit S-boxes. The F function splits its 32-bit input into four 8-bit bytes a, b, c and d:\n\n```text\nF(x) = ((S1[a] + S2[b] mod 2^32) XOR S3[c]) + S4[d] mod 2^32\n```\n\nEncryption splits the 64-bit block into xL and xR. Each of the 16 rounds does:\n\n```text\nxL = xL XOR Pi\nxR = xR XOR F(xL)\nswap xL and xR\n```\n\nAfter 16 rounds, the last swap is undone and the block is whitened:\n\n```text\nxR = xR XOR P17\nxL = xL XOR P18\n```\n\nDecryption is the same as encryption but uses P18..P1 in reverse order. The P-array and the four S-boxes are initialized with \"the hexadecimal digits of pi (less the initial 3\"). For example P1=243f6a88, P2=85a308d3, P3=13198a2e and P4=03707344; the complete P/S table has 1042 32-bit words, or 4168 bytes. Key expansion first XORs the cyclically repeated key words into the P-array, then repeatedly encrypts the all-zero block with the current algorithm to replace P1..P18 and all four S-boxes; 521 iterations are required. The paper also notes that testing one key requires 522 encryptions, effectively adding about 2^9 steps to a brute-force attack. Blowfish keys range from 32 to 448 bits. The key is cycled, so a short key has \"at least one equivalent longer key\": if A is a 64-bit key, then AA, AAA and so on produce the same subkeys.",
+          "why": "Blowfish was designed to be fast, free, unpatented and simple, with variable-length keys (32–448 bits) and key-dependent S-boxes to resist differential and linear cryptanalysis; the paper also calls for a flat keyspace and no weak keys. Instead of DES-style bit permutations, it uses XOR, addition and table lookups on 32-bit words, which suits 32-bit processors.\n\nData encryption is fast, but key expansion is heavy: every new key requires 521 encryptions. The paper positions Blowfish as a public, unpatented candidate rather than a published standard; in this article's analysis, applications that rekey frequently must weigh this setup cost.\n\nBlowfish still has a 64-bit block. Its birthday-collision bound is about 2^32 blocks, which limits safe data volume in large deployments. In this article's assessment it is best treated as a historical and teaching case, not as a default for new designs; new designs usually need a larger block and AEAD.",
+          "used": "The paper says Blowfish is only suitable \"where the key does not change often\", such as \"a communications link or an automatic file encryptor\"; on 32-bit processors with large data caches, such as the Pentium and PowerPC, it is significantly faster than DES, but it does not meet all new-standard requirements.\n\nThe Internet-Draft's §4 lists 34 ECB vectors with 8-byte keys. The zero-key, zero-plaintext vector is:\n\n```text\nK = 0000000000000000\nP = 0000000000000000\nC = 4ef997456198dd78\n```\n\nThe third vector is:\n\n```text\nK = 3000000000000000\nP = 1000000000000001\nC = 7d856f9a613063f2\n```\n\nThe 34 vectors are encryption checks; this article encrypts each one and verifies that decryption returns the original plaintext. Because the key is cycled, a short key and its repeated form are equivalent:\n\n```text\nK = 01234567\nK = 0123456701234567\nP = 1111111111111111\nC = ea55f49044fe2b24\n```",
+          "broken": "Blowfish has only a 64-bit block. HAC's birthday analysis notes that an n-bit block reaches a matching pair after about 2^(n/2) blocks; for 64 bits this is about 2^32 blocks. In this article's analysis, this limits safe use in large data volumes.\n\nA 521-encryption key schedule makes rekeying expensive. The paper treats it as an extra cost for brute-force search; in this article's analysis, it is also a practical burden in systems with high key turnover, and the 4168-byte subkey table should be protected as key material, not treated as public data.\n\nKey-dependent S-boxes make differential and linear analysis harder, but an implementation still indexes four tables by input bytes; in this article's analysis, cache, timing or fault injection may leak key-dependent access patterns. This article's teaching implementation is not constant-time and does not measure side channels.\n\nBlowfish defines only a block cipher and provides no integrity or authentication. Flipping ciphertext changes the corresponding plaintext, but Blowfish cannot detect it; this article recommends AEAD or encrypt-then-MAC when authentication is needed.\n\nThis article's teaching implementation demonstrates fixed vectors only; the batch verification script runs 34 ECB vectors, 4/8/16/24/32/56-byte key round trips, a pi-table check and one-bit diffusion. It does not generate keys, run in constant time, implement a mode of operation, protocol, key management or side-channel defenses, and must not be used in production.",
+          "history": "Blowfish was proposed in the 1993 FSE paper, published by Springer in 1994, and released in the public domain with a Dr. Dobb's Journal article in 1994. The paper treats DES as \"nearing the end of its useful life\" and aims at a free, unpatented candidate for a new standard that runs quickly on 32-bit processors.\n\nTwofish is a separate algorithm, not Blowfish; Twofish, DES, AES and Blowfish are separate entities.",
+          "refs": "- Wikipedia search entry for Blowfish 分组密码. https://zh.wikipedia.org/w/index.php?search=Blowfish%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Blowfish：Schneier 1993 年设计的 64 位 Feistel 分组密码，密钥最多 448 位。",
+          "Feistel 网络：每轮交换左右半区并由 F 函数混合的迭代结构。",
+          "P 数组：18 个 32 位子密钥，参与每轮异或和白化。",
+          "S-box：四个 256 项的 32 位查找表，F 函数按输入字节索引。",
+          "F 函数：((S1[a] + S2[b]) XOR S3[c]) + S4[d]，所有加法模 2^32。",
+          "pi 初始化：P 数组和 S-box 的初始值来自 pi 的十六进制数字（去掉初始的 3）。",
+          "密钥扩展：把密钥异或进 P，再用算法自身反复加密全零块以替换 P 和 S。",
+          "521 次迭代：9 次替换 P 数组和 512 次替换四个 S-box。",
+          "64 位块：生日碰撞边界约为 2^32 个块。",
+          "可变密钥：32 到 448 位；密钥循环使用。",
+          "密钥等价：短密钥循环后与某个更长密钥产生相同子密钥。",
+          "Twofish：另一个独立的分组密码实体，不是 Blowfish。"
+        ],
+        "en": [
+          "Blowfish: a 64-bit Feistel block cipher designed by Schneier in 1993, with keys up to 448 bits.",
+          "Feistel network: an iterated structure that swaps halves each round and mixes them through the F function.",
+          "P-array: 18 32-bit subkeys used in per-round XORs and whitening.",
+          "S-box: one of four 256-entry 32-bit lookup tables indexed by bytes of the F input.",
+          "F function: ((S1[a] + S2[b]) XOR S3[c]) + S4[d], with additions modulo 2^32.",
+          "Pi initialization: the initial P-array and S-box values come from the hexadecimal digits of pi (less the initial 3).",
+          "Key expansion: XOR the key into P, then repeatedly encrypt the all-zero block with the cipher to replace P and S.",
+          "521 iterations: 9 replacements for the P-array and 512 for the four S-boxes.",
+          "64-bit block: a birthday-collision bound of about 2^32 blocks.",
+          "Variable key: 32 to 448 bits, cycled through the P-array.",
+          "Key equivalence: a short key cycled to a longer key can produce the same subkeys.",
+          "Twofish: a separate block-cipher entity, not Blowfish."
+        ]
+      },
+      "figures": [
+        {
+          "id": "blowfish-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Blowfish：用 pi 初始化子密钥的 64 位 Feistel 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Blowfish: a 64-bit Feistel block cipher with pi-derived subkeys: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Blowfish：用 pi 初始化子密钥的 64 位 Feistel 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Blowfish: a 64-bit Feistel block cipher with pi-derived subkeys, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/blowfish-details-flow.zh.svg",
+            "en": "assets/blowfish-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ce37edf0c47af03427f3e6ab03d403035c862983887f629841623fdbf219041e",
+            "en": "1a32986e3f0339b1914340f1fb1bb9c42e761fb40bc119b14e41baed4c946b47"
+          }
+        },
+        {
+          "id": "blowfish-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Blowfish：用 pi 初始化子密钥的 64 位 Feistel 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Blowfish: a 64-bit Feistel block cipher with pi-derived subkeys: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Blowfish：用 pi 初始化子密钥的 64 位 Feistel 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Blowfish: a 64-bit Feistel block cipher with pi-derived subkeys, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/blowfish-details-r138-model.zh.svg",
+            "en": "assets/blowfish-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b9694341ae798b8919b77befe9933f251cf8cabe4dd9bb68bd0f3fdb9ebc720d",
+            "en": "a356b72686345da70b0c507f9eceb5c6ee0c5c21fd0f3290a24c53acac18622b"
+          }
+        }
+      ],
+      "sources": [
+        "blowfish-wikipedia",
+        "blowfish-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "blowfish-calc-vectors",
+          "entryId": "blowfish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "All 34 8-byte-key Blowfish ECB vectors from draft-schneier-blowfish-00 §4",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext",
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "dependencies": [
+            "blowfish-teaching.mjs"
+          ],
+          "limitations": "34 fixed vectors with 8-byte keys only; two rows are the same zero key/plaintext, so there are 33 distinct input pairs. They do not cover every key length or plaintext."
+        },
+        {
+          "id": "blowfish-calc-roundtrip-keys",
+          "entryId": "blowfish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Fixed plaintext 1111111111111111 and keys of 4, 8, 16, 24, 32 and 56 bytes",
+          "expected": "Every ciphertext decrypts back to the plaintext",
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "dependencies": [
+            "blowfish-teaching.mjs"
+          ],
+          "limitations": "Fixed data and six key lengths; not a random or exhaustive key-length test. 56 bytes is the 448-bit maximum."
+        },
+        {
+          "id": "blowfish-calc-pi-table",
+          "entryId": "blowfish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The pi-derived initial P-array and S-boxes generated by the teaching script",
+          "expected": "P1..P4=243f6a88,85a308d3,13198a2e,03707344; P17=9216d5d9; P18=8979fb1b; S1[0..3]=d1310ba6,98dfb5ac,2ffd72db,d01adfb7",
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "dependencies": [
+            "blowfish-teaching.mjs"
+          ],
+          "limitations": "Checks selected initial entries; the 34 known-answer vectors validate the full tables indirectly."
+        },
+        {
+          "id": "blowfish-calc-diffusion",
+          "entryId": "blowfish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Zero key, plaintext 0000000000000000 and the same plaintext with the low bit of its right 32-bit word flipped (0000000000000001)",
+          "expected": "The ciphertexts differ in 28 bits",
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "dependencies": [
+            "blowfish-teaching.mjs"
+          ],
+          "limitations": "One fixed one-bit difference; it is a diffusion observation, not a differential probability or a security proof."
+        },
+        {
+          "id": "blowfish-calc-key-equivalence",
+          "entryId": "blowfish-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Keys 01234567 and 0123456701234567, plaintext 1111111111111111",
+          "expected": "Both keys produce ciphertext ea55f49044fe2b24",
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "dependencies": [
+            "blowfish-teaching.mjs"
+          ],
+          "limitations": "One short key and its doubled form; the general equivalence follows from key cycling, not from testing every key."
+        },
+        {
+          "id": "blowfish-r139-formal",
+          "entryId": "blowfish-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "Blowfish 分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "blowfish-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "blowfish-calc-vectors",
+      "entryId": "blowfish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "All 34 8-byte-key Blowfish ECB vectors from draft-schneier-blowfish-00 §4",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext",
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "dependencies": [
+        "blowfish-teaching.mjs"
+      ],
+      "limitations": "34 fixed vectors with 8-byte keys only; two rows are the same zero key/plaintext, so there are 33 distinct input pairs. They do not cover every key length or plaintext."
+    },
+    {
+      "id": "blowfish-calc-roundtrip-keys",
+      "entryId": "blowfish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Fixed plaintext 1111111111111111 and keys of 4, 8, 16, 24, 32 and 56 bytes",
+      "expected": "Every ciphertext decrypts back to the plaintext",
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "dependencies": [
+        "blowfish-teaching.mjs"
+      ],
+      "limitations": "Fixed data and six key lengths; not a random or exhaustive key-length test. 56 bytes is the 448-bit maximum."
+    },
+    {
+      "id": "blowfish-calc-pi-table",
+      "entryId": "blowfish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The pi-derived initial P-array and S-boxes generated by the teaching script",
+      "expected": "P1..P4=243f6a88,85a308d3,13198a2e,03707344; P17=9216d5d9; P18=8979fb1b; S1[0..3]=d1310ba6,98dfb5ac,2ffd72db,d01adfb7",
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "dependencies": [
+        "blowfish-teaching.mjs"
+      ],
+      "limitations": "Checks selected initial entries; the 34 known-answer vectors validate the full tables indirectly."
+    },
+    {
+      "id": "blowfish-calc-diffusion",
+      "entryId": "blowfish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Zero key, plaintext 0000000000000000 and the same plaintext with the low bit of its right 32-bit word flipped (0000000000000001)",
+      "expected": "The ciphertexts differ in 28 bits",
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "dependencies": [
+        "blowfish-teaching.mjs"
+      ],
+      "limitations": "One fixed one-bit difference; it is a diffusion observation, not a differential probability or a security proof."
+    },
+    {
+      "id": "blowfish-calc-key-equivalence",
+      "entryId": "blowfish-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Keys 01234567 and 0123456701234567, plaintext 1111111111111111",
+      "expected": "Both keys produce ciphertext ea55f49044fe2b24",
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "dependencies": [
+        "blowfish-teaching.mjs"
+      ],
+      "limitations": "One short key and its doubled form; the general equivalence follows from key cycling, not from testing every key."
+    },
+    {
+      "id": "blowfish-r139-formal",
+      "entryId": "blowfish-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "Blowfish 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "blowfish-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

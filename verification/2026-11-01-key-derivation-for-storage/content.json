@@ -1,0 +1,141 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for key-derivation-for-storage: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "key-derivation-for-storage-details",
+      "inventoryIds": [
+        "key-derivation-for-storage"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释存储口令派生的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Password-Based Key Derivation for Storage: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "存储口令派生",
+        "en": "Password-Based Key Derivation for Storage"
+      },
+      "claimIds": [
+        "key-derivation-for-storage-r139-principle",
+        "key-derivation-for-storage-r139-why",
+        "key-derivation-for-storage-r139-used",
+        "key-derivation-for-storage-r139-broken",
+        "key-derivation-for-storage-r139-history",
+        "key-derivation-for-storage-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "key-derivation-for-storage-wikipedia",
+        "key-derivation-for-storage-standard-ref"
+      ],
+      "related": [
+        "key-derivation-function",
+        "salt",
+        "attack--password-spraying",
+        "attack--rainbow-table"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：存储口令派生（Key Derivation for Storage）。SP 800-132 的出发点是「Due to the low entropy and possibly poor randomness of those passwords, they are not suitable to be used directly as cryptographic keys」，并且「these passwords shall not be used directly as cryptographic keys」。派生式 mk = PBKDF(PRF, C)(P, S, kLen) 得到主密钥 MK；MK 或者用于生成保护数据的数据保护密钥 DPK，包括把 MK（或其片段）直接用作 DPK 的选项，或者经批准的密钥派生函数生成中间密钥，且「The MK shall not be used for other purposes」。",
+          "why": "代价参数用来压制离线猜测：迭代次数「shall be selected as large as possible, as long as the time required ...is acceptable」，文档推荐最少 1,000 次，并说明对于特别关键的密钥、算力很强的系统或不在乎用户感知性能的系统，10,000,000 次也可能合适。salt 的全部或部分「shall be generated using an approved Random Bit Generator」，随机部分至少 128 位；§A.2.1 说明由此可能的密钥数约为 2^sLen。",
+          "used": "该建议「approves PBKDF2 as the PBKDF using HMAC with any approved hash function as the PRF」。派生长度 kLen 至少 112 位，并受 PBKDF2 的 (2^32 - 1)·hLen 上限约束。§5.4 要求数据保护密钥的保护「shall use an approved authenticated encryption mode」，或采用批准的加密算法与批准的认证方案组合。",
+          "broken": "派生不能弥补口令本身的弱点：附录 A 说少于 10 个字符的口令通常被视为弱，少于 20 个字符的口令短语亦弱。迭代把猜测代价从约 2^t 提高到 C·2^t 量级（§A.2.2），只是放慢离线攻击；§A.3 指出错误口令「it is impossible to generate the correct MK」，因此方案依赖口令本身，一旦存储数据泄露，离线破解仍然可行。",
+          "history": "SP 800-132 第一部分由 Turán、Barker、Burr 与 Chen 撰写，2010 年 12 月发布；标题与摘要把范围限定在电子存储数据的保护，§4 引用的密钥派生函数规范为 SP 800-108。",
+          "refs": "- Wikipedia search entry for 存储口令派生. https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Key Derivation for Storage. It is registered under key management, applied security engineering. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in key management, applied security engineering, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 存储口令派生. https://zh.wikipedia.org/w/index.php?search=%E5%AD%98%E5%82%A8%E5%8F%A3%E4%BB%A4%E6%B4%BE%E7%94%9F\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "主密钥（MK）：由口令派生、只用于数据保护密钥或再派生的密钥。",
+          "数据保护密钥（DPK）：直接保护存储数据的密钥。",
+          "PBKDF2：以 PRF 与迭代计数工作的口令基密钥派生函数。",
+          "salt：为派生加入的公开随机值，用于区分同口令的派生结果。",
+          "迭代计数：PRF 重复执行的次数，用作代价参数。",
+          "离线猜测：攻击者取得存储数据后自行尝试口令。"
+        ],
+        "en": [
+          "Master Key (MK): key material derived from a password and used only for data protection keys or further derivation.",
+          "Data Protection Key (DPK): the key that directly protects stored data.",
+          "PBKDF2: a password-based KDF built from a PRF and an iteration count.",
+          "Salt: a public random value added to a derivation so same passwords differ.",
+          "Iteration count: the number of PRF repetitions, used as a cost parameter.",
+          "Offline guessing: trying passwords after an attacker obtains the stored data."
+        ]
+      },
+      "subtopicIds": [
+        "key-derivation-for-storage"
+      ],
+      "figures": [
+        {
+          "id": "key-derivation-for-storage-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "存储口令派生：为什么需要 → 核心机制 → 边界。",
+            "en": "Password-Based Key Derivation for Storage: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "存储口令派生 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Password-Based Key Derivation for Storage, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/key-derivation-for-storage-details-flow.zh.svg",
+            "en": "assets/key-derivation-for-storage-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "76bb71f4c023539839d2b35cbff85aeadcd11bbc3431de73ecb377a6f2da95bf",
+            "en": "bd220331816a814c5e91ccdcdb4439d1e9ed2a0717de303127c0cb9a78319de6"
+          }
+        }
+      ],
+      "sources": [
+        "key-derivation-for-storage-wikipedia",
+        "key-derivation-for-storage-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

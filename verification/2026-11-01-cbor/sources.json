@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cbor-details",
+  "sources": [
+    {
+      "id": "cbor-wikipedia",
+      "title": "Wikipedia search entry for CBOR 二进制编码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CBOR 二进制编码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cbor-r139-principle",
+          "entryId": "cbor-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：CBOR 二进制编码（Concise Binary Object Representation）。摘要定义目标：「The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.」§1 交代数据模型——「The underlying data model is an extended version of the JSON data model [RFC8259].」§3.1 列出主类型，例如「Major type 0: An unsigned integer in the range 0..2^(64)-1 inclusive.」「Major type 2: A byte string.」「Major type 5: A map of pairs of data items.」§3.2.1 说明终止符性质：「It is not itself a data item: it is just a syntactic feature to close an indefinite-length item.」§3.",
+            "en": "**Protocol**: Concise Binary Object Representation (CBOR 二进制编码).The abstract states the aim: \"The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.\" §1 sets the model — \"The underlying data model is an extended version of the JSON data model [RFC8259].\" §3.1 enumerates the major types, e.g."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        },
+        {
+          "id": "cbor-r139-why",
+          "entryId": "cbor-details",
+          "section": "why",
+          "statement": {
+            "zh": "它针对的是既有格式没满足的目标。§1 承认 IETF 里最知名的通用二进制格式是「In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].」§1.1 按重要性递减列出目标：「The representation must be able to unambiguously encode most common data formats used in Internet standards.」「The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.」「Data must be able to be decoded without a schema description.」以及「The format must be extensible, and the extended data must be decodable by earlier decoders.」。",
+            "en": "It targets goals earlier formats miss.§1 notes \"In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].\" §1.1 lists the objectives in decreasing importance: \"The representation must be able to unambiguously encode most common data formats used in Internet standards.\", \"The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.\", \"Data must be able to be decoded without a schema description.\" and \"The format must be extensible, and the extended data must be decodable by earlier decoders.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        },
+        {
+          "id": "cbor-r139-used",
+          "entryId": "cbor-details",
+          "section": "used",
+          "statement": {
+            "zh": "同一数据可有多种合法编码，§4.1 说明取舍：「it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.」扩展由注册表管理，§9.2 记录「IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry」。摘要还交代版本策略：「It does not create a new version of the format.」——它与 RFC 7049 的交换格式完全兼容，因此部署里的 CBOR 报文不需要协商版本。",
+            "en": "One value admits several legal encodings, and §4.1 sets the trade-off: \"it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.\" Extension is managed by registry — §9.2 records \"IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry\".The abstract also settles versioning: \"It does not create a new version of the format.\" — it stays fully compatible with the RFC 7049 interchange format, so deployed CBOR needs no version negotiation."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        },
+        {
+          "id": "cbor-r139-broken",
+          "entryId": "cbor-details",
+          "section": "broken",
+          "statement": {
+            "zh": "歧义编码是可被利用的面，因此确定性格式给出三条限制：§4.2.1 要求「Preferred serialization MUST be used.」「Indefinite-length items MUST NOT appear.」以及「The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.」§5.3 指出合法但无效的数据项必须交由理解语义的那一层处理：「A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model.」§10 把风险落到解析器：「Complex parsers are well known as a likely source of such vulnerabilities, such as the ability to remotely crash a node, or even remotely execute arbitrary code on it.",
+            "en": "Encoding ambiguity is an exploitable surface, so the deterministic profile imposes three restrictions: §4.2.1 requires \"Preferred serialization MUST be used.\", \"Indefinite-length items MUST NOT appear.\" and \"The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.\" §5.3 puts malformed-but-valid items on the layer that understands them: \"A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        },
+        {
+          "id": "cbor-r139-history",
+          "entryId": "cbor-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 8949 署名 C.Bormann（Universität Bremen TZI）与 P.Hoffman（ICANN），2020 年 12 月发布，头部标「STD: 94」与「Obsoletes: 7049」。摘要说明替换的性质：「This document obsoletes RFC 7049, providing editorial improvements, new details, and errata fixes while keeping full compatibility with the interchange format of RFC 7049.」。",
+            "en": "RFC 8949 is signed by C.Bormann (Universität Bremen TZI) and P."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        },
+        {
+          "id": "cbor-r139-refs",
+          "entryId": "cbor-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CBOR 二进制编码.https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8949: Concise Binary Object Representation.https://www.rfc-editor.org/rfc/rfc8949\n- Published standard/RFC for CBOR 二进制编码.https://www.rfc-editor.org/rfc/rfc8949。",
+            "en": "- Wikipedia search entry for CBOR 二进制编码.https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cbor-reference-ref",
+            "cbor-specific",
+            "cbor-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "cbor-wikipedia"
+      ]
+    },
+    {
+      "id": "cbor-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cbor-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "cbor-specific",
+      "title": "RFC 8949: Concise Binary Object Representation",
+      "url": "https://www.rfc-editor.org/rfc/rfc8949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cbor-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "cbor-standard",
+      "title": "Published standard/RFC for CBOR 二进制编码",
+      "url": "https://www.rfc-editor.org/rfc/rfc8949",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for CBOR 二进制编码",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cbor-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "cbor-r139-principle",
+      "entryId": "cbor-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：CBOR 二进制编码（Concise Binary Object Representation）。摘要定义目标：「The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.」§1 交代数据模型——「The underlying data model is an extended version of the JSON data model [RFC8259].」§3.1 列出主类型，例如「Major type 0: An unsigned integer in the range 0..2^(64)-1 inclusive.」「Major type 2: A byte string.」「Major type 5: A map of pairs of data items.」§3.2.1 说明终止符性质：「It is not itself a data item: it is just a syntactic feature to close an indefinite-length item.」§3.",
+        "en": "**Protocol**: Concise Binary Object Representation (CBOR 二进制编码).The abstract states the aim: \"The Concise Binary Object Representation (CBOR) is a data format whose design goals include the possibility of extremely small code size, fairly small message size, and extensibility without the need for version negotiation.\" §1 sets the model — \"The underlying data model is an extended version of the JSON data model [RFC8259].\" §3.1 enumerates the major types, e.g."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    },
+    {
+      "id": "cbor-r139-why",
+      "entryId": "cbor-details",
+      "section": "why",
+      "statement": {
+        "zh": "它针对的是既有格式没满足的目标。§1 承认 IETF 里最知名的通用二进制格式是「In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].」§1.1 按重要性递减列出目标：「The representation must be able to unambiguously encode most common data formats used in Internet standards.」「The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.」「Data must be able to be decoded without a schema description.」以及「The format must be extensible, and the extended data must be decodable by earlier decoders.」。",
+        "en": "It targets goals earlier formats miss.§1 notes \"In the IETF, probably the best-known formats in the latter category are ASN.1's BER and DER [ASN.1].\" §1.1 lists the objectives in decreasing importance: \"The representation must be able to unambiguously encode most common data formats used in Internet standards.\", \"The code for an encoder or decoder must be able to be compact in order to support systems with very limited memory, processor power, and instruction sets.\", \"Data must be able to be decoded without a schema description.\" and \"The format must be extensible, and the extended data must be decodable by earlier decoders.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    },
+    {
+      "id": "cbor-r139-used",
+      "entryId": "cbor-details",
+      "section": "used",
+      "statement": {
+        "zh": "同一数据可有多种合法编码，§4.1 说明取舍：「it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.」扩展由注册表管理，§9.2 记录「IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry」。摘要还交代版本策略：「It does not create a new version of the format.」——它与 RFC 7049 的交换格式完全兼容，因此部署里的 CBOR 报文不需要协商版本。",
+        "en": "One value admits several legal encodings, and §4.1 sets the trade-off: \"it is desirable that an encoder always chooses a preferred serialization (preferred encoding); however, the present specification does not put the burden of enforcing this preference on either the encoder or decoder.\" Extension is managed by registry — §9.2 records \"IANA has created the “Concise Binary Object Representation (CBOR) Tags” registry\".The abstract also settles versioning: \"It does not create a new version of the format.\" — it stays fully compatible with the RFC 7049 interchange format, so deployed CBOR needs no version negotiation."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    },
+    {
+      "id": "cbor-r139-broken",
+      "entryId": "cbor-details",
+      "section": "broken",
+      "statement": {
+        "zh": "歧义编码是可被利用的面，因此确定性格式给出三条限制：§4.2.1 要求「Preferred serialization MUST be used.」「Indefinite-length items MUST NOT appear.」以及「The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.」§5.3 指出合法但无效的数据项必须交由理解语义的那一层处理：「A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model.」§10 把风险落到解析器：「Complex parsers are well known as a likely source of such vulnerabilities, such as the ability to remotely crash a node, or even remotely execute arbitrary code on it.",
+        "en": "Encoding ambiguity is an exploitable surface, so the deterministic profile imposes three restrictions: §4.2.1 requires \"Preferred serialization MUST be used.\", \"Indefinite-length items MUST NOT appear.\" and \"The keys in every map MUST be sorted in the bytewise lexicographic order of their deterministic encodings.\" §5.3 puts malformed-but-valid items on the layer that understands them: \"A well-formed but invalid CBOR data item (Section 1.2) presents a problem with interpreting the data encoded in it in the CBOR data model."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    },
+    {
+      "id": "cbor-r139-history",
+      "entryId": "cbor-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 8949 署名 C.Bormann（Universität Bremen TZI）与 P.Hoffman（ICANN），2020 年 12 月发布，头部标「STD: 94」与「Obsoletes: 7049」。摘要说明替换的性质：「This document obsoletes RFC 7049, providing editorial improvements, new details, and errata fixes while keeping full compatibility with the interchange format of RFC 7049.」。",
+        "en": "RFC 8949 is signed by C.Bormann (Universität Bremen TZI) and P."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    },
+    {
+      "id": "cbor-r139-refs",
+      "entryId": "cbor-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CBOR 二进制编码.https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 8949: Concise Binary Object Representation.https://www.rfc-editor.org/rfc/rfc8949\n- Published standard/RFC for CBOR 二进制编码.https://www.rfc-editor.org/rfc/rfc8949。",
+        "en": "- Wikipedia search entry for CBOR 二进制编码.https://zh.wikipedia.org/w/index.php?search=CBOR%20%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%BC%96%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cbor-reference-ref",
+        "cbor-specific",
+        "cbor-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "xts-cavp-vector",
+    "entryId": "xts-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "NIST CAVP XTSGenAES128.rsp COUNT 101: XTS-AES-128, 256-bit data unit, 128-bit tweak",
+    "expected": "Ciphertext matches 22e6a3c6...2e19; decryption recovers the original plaintext",
+    "sourceIds": ["cavp-xts"],
+    "dependencies": ["xts-teaching.mjs"],
+    "limitations": "One official full-block data-unit case; not the CAVP 130-bit or 200-bit ciphertext-stealing cases."
+  },
+  {
+    "id": "xts-tweak-sensitivity",
+    "entryId": "xts-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The CAVP key and plaintext with the original tweak and a different fixed tweak",
+    "expected": "The two ciphertexts differ and each decrypts correctly under its own tweak",
+    "sourceIds": ["sp800-38e", "ieee1619"],
+    "dependencies": ["xts-teaching.mjs"],
+    "limitations": "One fixed pair of tweaks; it demonstrates dependence, not tweak uniqueness or a full key-scope policy."
+  },
+  {
+    "id": "xts-cts-roundtrip",
+    "entryId": "xts-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "A 39-byte data unit (two complete blocks plus a 7-byte partial block) and a 17-byte data unit",
+    "expected": "Ciphertext length equals plaintext length in both cases and decryption recovers the original bytes",
+    "sourceIds": ["sp800-38e", "ieee1619"],
+    "dependencies": ["xts-teaching.mjs"],
+    "limitations": "Byte-aligned partial blocks only; not the CAVP 130-bit or 200-bit bit-level ciphertext-stealing vectors."
+  },
+  {
+    "id": "xts-tamper-no-auth",
+    "entryId": "xts-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The CAVP vector ciphertext with the first byte changed",
+    "expected": "Decryption returns a different plaintext without raising an authentication error",
+    "sourceIds": ["sp800-38e"],
+    "dependencies": ["xts-teaching.mjs"],
+    "limitations": "One flipped byte; it demonstrates the absence of a tag, not a complete manipulation or replay attack."
+  }
+]

@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R119 full-library mechanism-structure closure for cn-luxianhui-details.",
+  "entries": [
+    {
+      "id": "cn-luxianhui-details",
+      "inventoryIds": [
+        "cn-luxianhui"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出 LAC 环 LWE 样本、PKE 两项密文、解码阈值、FO 重加密与 q=251/n=512-1024 参数，并区分第二轮候选、标准与实现审计。",
+        "en": "This entry gives LAC’s ring-LWE sample, two-component PKE ciphertext, decoding threshold, FO re-encryption and q=251/n=512-1024 parameters, separating a second-round candidate from a standard and an implementation audit."
+      },
+      "title": {
+        "zh": "路献辉与格密码",
+        "en": "Lu Xianhui and Lattice Cryptography"
+      },
+      "claimIds": [
+        "cn-luxianhui-r139-principle",
+        "cn-luxianhui-r139-why",
+        "cn-luxianhui-r139-used",
+        "cn-luxianhui-r139-broken",
+        "cn-luxianhui-r139-history",
+        "cn-luxianhui-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按原始论文或来源重算。",
+        "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the papers or sources."
+      },
+      "sourceIds": [
+        "cn-luxianhui-wikipedia",
+        "cn-luxianhui-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "cn-lindongdai"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-luxianhui-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "路献辉格密码：LAC 的环 LWE 样本、两项密文、解码阈值与 FO 封装。",
+            "en": "Lu Xianhui and lattice cryptography: LAC ring-LWE sample, two ciphertext components, decoding threshold and FO encapsulation."
+          },
+          "alt": {
+            "zh": "路献辉格密码：LAC 的环 LWE 样本、两项密文、解码阈值与 FO 封装。",
+            "en": "Lu Xianhui and lattice cryptography: LAC ring-LWE sample, two ciphertext components, decoding threshold and FO encapsulation."
+          },
+          "files": {
+            "zh": "assets/cn-luxianhui-mechanism.zh.svg",
+            "en": "assets/cn-luxianhui-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据 LAC 技术文档、UCAS 简介与 NIST IR 8309 绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the LAC technical document, UCAS profile and NIST IR 8309)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "be142bcbf9e651ea89ebb501a4944dc87859e132094a619098cddb4e5b57993d",
+            "en": "9c212209f300625f7031f3721569fb2eca556821a4dd4198e80a44cbf3d78716"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：路献辉与格密码（Lu Xianhui and Lattice Cryptography）。### 环 LWE 的一个具体样本\n\nLAC 不直接写“格上的 LWE”，而是把样本放到环 \\(R_q=\\mathbb{Z}_q[x]/(x^n+1)\\)：公钥 \\(b=as+e\\)，其中 \\(a\\) 由种子展开，\\(s,e\\) 从中心二项分布采样。加密取随机掩码 \\(r\\)，得到 \\(c_1=ar+e_1\\)，并把第二项写成 \\(c_2=(br)_{l_v}+e_2+\\lfloor q/2\\rfloor m\\)。### 解密为什么能消掉共享项\n\n解密先算 \\(u=c_1s\\)，再用 \\(c_2-(u)_{l_v}\\) 去掉 \\(ars\\) 这一共享项；剩下的噪声被 \\(\\lfloor q/2\\rfloor m\\) 的两端编码隔开，于是按 \\(q/4\\le m_i<3q/4\\) 逐位判定 0/1。KEM 层再用 FO 变换重加密校验密文，才从 IND-CPA 的 PKE 走到 IND-CCA。",
+          "why": "环 LWE 是后量子公钥密码的一条主线，LAC 把“环、模数、分布、编码、FO”这些抽象参数落成可执行算法。它选 \\(q=251\\) 的字节模数，牺牲常规 NTT 的加速，换取字节级实现和带宽；这类取舍是公式级读法，不是“格密码一定安全”的口号。",
+          "used": "1.先确定安全级别，再选 n 与 q；不同 n/q/分布不能拼成同一个参数集。2.核对公钥是否只含种子和 b，私钥是否是 s；不要把种子当秘密。3.加密时检查两项密文与 \\(\\lfloor q/2\\rfloor m\\) 的编码，解密时检查 q/4 与 3q/4 的阈值。4.KEM 必须检查 FO 的 G/H 域分离与重加密比较，不能只跑 PKE。5.记录版本、参数、错误率和实现路径；历史候选的参数不能直接搬到今日部署。### 不能怎么用\n\n不能把 q=251 说成“越小越安全”；不能把 LAC 的第二轮结果说成 NIST 标准；不能把公式当成侧信道或解码错误的证明；不能在没有重加密检查时声称 KEM 是 IND-CCA。",
+          "broken": "1.参数不匹配：n、q、秘密/误差分布、纠错码与哈希域分离任一改变，安全性都要重算。2.解码边界：阈值依赖噪声上界；错误率升高会让解密失败或泄漏信息。3.实现相关：NIST 报告指出 LAC 第一轮的纠错码和变时实现曾被攻击，后续修改并不等于所有实现都安全。4.版本相关：第二轮候选、修改版和最终标准不是同一对象。5.模型相关：FO 的随机 oracle/QROM 假设、侧信道模型与故障模型都要单独声明。",
+          "history": "路献辉 2009 年获西南交通大学信息安全博士，2009–2012 在中国科学院研究生院信息安全国家重点实验室做博士后，2013 年起在中国科学院信息工程研究所工作，2020 年起任研究员。LAC 于 2019 年 1 月进入 NIST PQC 第二轮，提交团队包括路献辉、贾丁丁、薛海洋、何静楠、张振飞、刘哲、杨浩；NIST IR 8309 记录它在第二轮后未进入第三轮。\n\n**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是后量子中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 路献辉与格密码；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。\n\n不要把“发生过”写成“已证明”，也不要把事件标题扩写成机制结论；没有日期的节点只作逻辑位置。",
+          "refs": "- Wikipedia search entry for 路献辉与格密码. https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Lu Xianhui and Lattice Cryptography. It is registered under post-quantum cryptography. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in post-quantum cryptography, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: China's Parallel Line. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 路献辉与格密码. https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "calculationIds": [],
+      "sources": [
+        "cn-luxianhui-wikipedia",
+        "cn-luxianhui-reference-ref"
+      ],
+      "calculations": []
+    }
+  ],
+  "calculations": []
+}

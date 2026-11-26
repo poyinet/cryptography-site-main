@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--impossible-differential-details",
+  "sources": [
+    {
+      "id": "attack--impossible-differential-wikipedia",
+      "title": "Wikipedia search entry for 不可能差分",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 不可能差分",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--impossible-differential-r139-principle",
+          "entryId": "attack--impossible-differential-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：不可能差分（Impossible Differential Attack）。不可能差分是概率为零的差分：某些输入差经过若干轮后不可能产生某个输出差。攻击者利用这种`不可能`事件排除提出该差分的错误密钥。",
+            "en": "**Attack**: Impossible Differential Attack (不可能差分).An impossible differential is a differential with probability zero: some input difference cannot produce a particular output difference after a number of rounds."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--impossible-differential-r139-why",
+          "entryId": "attack--impossible-differential-details",
+          "section": "why",
+          "statement": {
+            "zh": "传统差分分析依赖高概率差分；当整体差分概率很低时，不可能差分仍能提供强过滤条件，因此它扩展了差分分析适用的密码范围。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Traditional differential cryptanalysis relies on high-probability differentials; when whole-cipher differentials have low probability, impossible differentials still provide strong filters, extending the range of ciphers to which differential techniques apply.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--impossible-differential-r139-used",
+          "entryId": "attack--impossible-differential-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文给出 Skipjack 的 24 轮不可能差分，并把 32 轮 Skipjack 减到 31 轮后攻破：使用 2^34 个选择明文和 2^64 存储，复杂度略优于穷举搜索。",
+            "en": "The paper gives a 24-round impossible differential for Skipjack and breaks 31-round Skipjack (one round removed from 32) with 2^34 chosen plaintexts and 2^64 memory, slightly faster than exhaustive search.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--impossible-differential-r139-broken",
+          "entryId": "attack--impossible-differential-details",
+          "section": "broken",
+          "statement": {
+            "zh": "攻击需要足够多的选择明文对和大量存储来过滤错误密钥；它针对缩减轮数的密码，数据、时间和存储之间存在权衡，并非对所有密码通用。",
+            "en": "The attack needs enough chosen plaintext pairs and large memory to filter wrong keys; it targets reduced-round ciphers, involves data/time/memory trade-offs, and is not universal.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--impossible-differential-r139-history",
+          "entryId": "attack--impossible-differential-details",
+          "section": "history",
+          "statement": {
+            "zh": "Biham、Biryukov 和 Shamir 在 1999 年 EUROCRYPT 论文中把不可能差分发展为一种系统的密码分析技术，并用于 Skipjack。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「不可能差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 不可能差分 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Biham, Biryukov and Shamir developed impossible differentials into a systematic cryptanalytic technique in their 1999 EUROCRYPT paper and applied it to Skipjack.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--impossible-differential-r139-refs",
+          "entryId": "attack--impossible-differential-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 不可能差分.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 不可能差分.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--impossible-differential-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--impossible-differential-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--impossible-differential-r139-principle",
+      "entryId": "attack--impossible-differential-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：不可能差分（Impossible Differential Attack）。不可能差分是概率为零的差分：某些输入差经过若干轮后不可能产生某个输出差。攻击者利用这种`不可能`事件排除提出该差分的错误密钥。",
+        "en": "**Attack**: Impossible Differential Attack (不可能差分).An impossible differential is a differential with probability zero: some input difference cannot produce a particular output difference after a number of rounds."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-r139-why",
+      "entryId": "attack--impossible-differential-details",
+      "section": "why",
+      "statement": {
+        "zh": "传统差分分析依赖高概率差分；当整体差分概率很低时，不可能差分仍能提供强过滤条件，因此它扩展了差分分析适用的密码范围。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Traditional differential cryptanalysis relies on high-probability differentials; when whole-cipher differentials have low probability, impossible differentials still provide strong filters, extending the range of ciphers to which differential techniques apply.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-r139-used",
+      "entryId": "attack--impossible-differential-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文给出 Skipjack 的 24 轮不可能差分，并把 32 轮 Skipjack 减到 31 轮后攻破：使用 2^34 个选择明文和 2^64 存储，复杂度略优于穷举搜索。",
+        "en": "The paper gives a 24-round impossible differential for Skipjack and breaks 31-round Skipjack (one round removed from 32) with 2^34 chosen plaintexts and 2^64 memory, slightly faster than exhaustive search.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-r139-broken",
+      "entryId": "attack--impossible-differential-details",
+      "section": "broken",
+      "statement": {
+        "zh": "攻击需要足够多的选择明文对和大量存储来过滤错误密钥；它针对缩减轮数的密码，数据、时间和存储之间存在权衡，并非对所有密码通用。",
+        "en": "The attack needs enough chosen plaintext pairs and large memory to filter wrong keys; it targets reduced-round ciphers, involves data/time/memory trade-offs, and is not universal.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-r139-history",
+      "entryId": "attack--impossible-differential-details",
+      "section": "history",
+      "statement": {
+        "zh": "Biham、Biryukov 和 Shamir 在 1999 年 EUROCRYPT 论文中把不可能差分发展为一种系统的密码分析技术，并用于 Skipjack。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「不可能差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：不可能差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 不可能差分 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Biham, Biryukov and Shamir developed impossible differentials into a systematic cryptanalytic technique in their 1999 EUROCRYPT paper and applied it to Skipjack.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--impossible-differential-r139-refs",
+      "entryId": "attack--impossible-differential-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 不可能差分.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 不可能差分.https://zh.wikipedia.org/w/index.php?search=%E4%B8%8D%E5%8F%AF%E8%83%BD%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--impossible-differential-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gmt0044-details",
+  "sources": [
+    {
+      "id": "gmt0044-wikipedia",
+      "title": "Wikipedia search entry for GM/T 0044 SM9 标识密码算法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=GM%2FT%200044%20SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: GM/T 0044 SM9 标识密码算法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gmt0044-r139-principle",
+          "entryId": "gmt0044-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：GM/T 0044 SM9 标识密码算法（GM/T 0044 SM9 Identity-based Cryptographic Algorithms）。SM9 用定义在 BN 曲线上的双线性对 e:G1×G2→GT。签名系统的主私钥 ks 由 KGC 保存，主公钥 P_pub-s=[ks]P2 公开；用户 A 的签名私钥由标识决定：ds_A=[ks/(H1(ID_A)+ks)]P1。签名先算 g=e(P1,P_pub-s)，选 r，令 w=g^r、h=H2(M‖w,N)，再算 l=(r-h) mod N、S=[l]ds_A，输出 (h,S)。验签算 t=g^h、P=[H1(ID_A)]P2+P_pub-s、u=e(S,P)，令 w′=u·t，检查 H2(M‖w′,N)=h。KEM 则用加密主公钥 P_pub-e 构造 Q_B=[H1(ID_B‖hid,N)]P1+P_pub-e，选 r，算 C=[r]Q_B、g=e(P_pub-e,P2)、w=g^r、K=KDF(C‖w‖ID_B,klen)。",
+            "en": "**Standard**: GM/T 0044 SM9 Identity-based Cryptographic Algorithms (GM/T 0044 SM9 标识密码算法).SM9 uses a bilinear pairing e:G1×G2→GT on a BN curve."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0044-r139-why",
+          "entryId": "gmt0044-details",
+          "section": "why",
+          "statement": {
+            "zh": "SM9 把公钥从证书里“拿掉”：用户公钥由标识直接算，KGC 用主私钥发私钥。代价是 KGC 成为单点信任，主私钥泄露会影响整个标识域；签名主密钥与加密主密钥又必须分离，避免一个域的泄露拖垮另一个域。把配对、ds_A、g/w/h 和验签再杂凑写清，才能解释为什么 (h,S) 不能拆开，以及为什么验签必须检查 S∈G1、再做配对和再杂凑，而不能只比较 h。",
+            "en": "SM9 removes certificates from public keys: a user public key is derived from the identity, and the KGC issues private keys with its master secret.The cost is a single point of trust: master-key compromise affects the whole identity domain, and signing and encryption master keys must be separated so one domain does not drag down the other."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0044-r139-used",
+          "entryId": "gmt0044-details",
+          "section": "used",
+          "statement": {
+            "zh": "部署时先定系统参数组、BN 曲线、P1/P2 与哈希 H1/H2；KGC 生成签名主密钥和加密主密钥，分别保管。用户注册时用 ID 派生签名/加密私钥，私钥分发必须走可信信道。签名端按 g→r→w→h→l→S 落盘中间值；验签端先验证 S∈G1，再算 t、P、u、w′、h′。KEM/加密端用接收方 ID 构造 Q_B，按 C=[r]Q_B、w、KDF 生成 K，再用 SM4 等对称算法封装数据。",
+            "en": "Deployment fixes the system parameters, BN curve, P1/P2 and hash functions H1/H2; the KGC generates separate signing and encryption master keys and protects them.User registration derives signing/encryption keys from the ID, and private keys must be delivered over a trusted channel."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0044-r139-broken",
+          "entryId": "gmt0044-details",
+          "section": "broken",
+          "statement": {
+            "zh": "KGC 是信任单点：主私钥泄露、KGC 伪造私钥或标识注册被抢注，都会破坏签名与加密的归属。标识隐私也要评估，ID 直接进入公钥推导，不能假设匿名。签名 (h,S) 不能只发布 h 或把 S 当密钥；验签必须检查 S∈G1、拒绝无穷远点和错误子群。配对运算、KDF 输出全零、随机数 r 复用都要处理；KEM 只给密钥封装，不自动给消息保密性。",
+            "en": "The KGC is a single point of trust: master-key compromise, a forged private key or identity-registration takeover breaks the ownership of signatures and ciphertexts.Identity privacy also needs assessment: the ID directly enters public-key derivation and is not anonymous by default."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0044-r139-history",
+          "entryId": "gmt0044-details",
+          "section": "history",
+          "statement": {
+            "zh": "标识密码由 Shamir 于 1984 年提出；SM9 于 2016-03-28 以 GM/T 0044-2016 五部分发布，覆盖总则、签名、密钥交换、KEM/加密和参数。2020 年 GB/T 38635 系列把 SM9 上升为国家标准。2025 年修订的 GM/T 0044.1—0044.5-2025 于 2026-07-01 实施，2016 五部分同日废止；使用时应按当前版本核对参数、签名与 KEM 流程。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：GM/T 0044 SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "Identity-based cryptography was proposed by Shamir in 1984.SM9 was published on 2016-03-28 as the five-part GM/T 0044-2016, covering general, signature, key exchange, KEM/encryption and parameters."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0044-r139-refs",
+          "entryId": "gmt0044-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for GM/T 0044 SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=GM%2FT%200044%20SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for GM/T 0044 SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=GM%2FT%200044%20SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gmt0044-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gmt0044-wikipedia"
+      ]
+    },
+    {
+      "id": "gmt0044-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gmt0044-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gmt0044-r139-principle",
+      "entryId": "gmt0044-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：GM/T 0044 SM9 标识密码算法（GM/T 0044 SM9 Identity-based Cryptographic Algorithms）。SM9 用定义在 BN 曲线上的双线性对 e:G1×G2→GT。签名系统的主私钥 ks 由 KGC 保存，主公钥 P_pub-s=[ks]P2 公开；用户 A 的签名私钥由标识决定：ds_A=[ks/(H1(ID_A)+ks)]P1。签名先算 g=e(P1,P_pub-s)，选 r，令 w=g^r、h=H2(M‖w,N)，再算 l=(r-h) mod N、S=[l]ds_A，输出 (h,S)。验签算 t=g^h、P=[H1(ID_A)]P2+P_pub-s、u=e(S,P)，令 w′=u·t，检查 H2(M‖w′,N)=h。KEM 则用加密主公钥 P_pub-e 构造 Q_B=[H1(ID_B‖hid,N)]P1+P_pub-e，选 r，算 C=[r]Q_B、g=e(P_pub-e,P2)、w=g^r、K=KDF(C‖w‖ID_B,klen)。",
+        "en": "**Standard**: GM/T 0044 SM9 Identity-based Cryptographic Algorithms (GM/T 0044 SM9 标识密码算法).SM9 uses a bilinear pairing e:G1×G2→GT on a BN curve."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0044-r139-why",
+      "entryId": "gmt0044-details",
+      "section": "why",
+      "statement": {
+        "zh": "SM9 把公钥从证书里“拿掉”：用户公钥由标识直接算，KGC 用主私钥发私钥。代价是 KGC 成为单点信任，主私钥泄露会影响整个标识域；签名主密钥与加密主密钥又必须分离，避免一个域的泄露拖垮另一个域。把配对、ds_A、g/w/h 和验签再杂凑写清，才能解释为什么 (h,S) 不能拆开，以及为什么验签必须检查 S∈G1、再做配对和再杂凑，而不能只比较 h。",
+        "en": "SM9 removes certificates from public keys: a user public key is derived from the identity, and the KGC issues private keys with its master secret.The cost is a single point of trust: master-key compromise affects the whole identity domain, and signing and encryption master keys must be separated so one domain does not drag down the other."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0044-r139-used",
+      "entryId": "gmt0044-details",
+      "section": "used",
+      "statement": {
+        "zh": "部署时先定系统参数组、BN 曲线、P1/P2 与哈希 H1/H2；KGC 生成签名主密钥和加密主密钥，分别保管。用户注册时用 ID 派生签名/加密私钥，私钥分发必须走可信信道。签名端按 g→r→w→h→l→S 落盘中间值；验签端先验证 S∈G1，再算 t、P、u、w′、h′。KEM/加密端用接收方 ID 构造 Q_B，按 C=[r]Q_B、w、KDF 生成 K，再用 SM4 等对称算法封装数据。",
+        "en": "Deployment fixes the system parameters, BN curve, P1/P2 and hash functions H1/H2; the KGC generates separate signing and encryption master keys and protects them.User registration derives signing/encryption keys from the ID, and private keys must be delivered over a trusted channel."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0044-r139-broken",
+      "entryId": "gmt0044-details",
+      "section": "broken",
+      "statement": {
+        "zh": "KGC 是信任单点：主私钥泄露、KGC 伪造私钥或标识注册被抢注，都会破坏签名与加密的归属。标识隐私也要评估，ID 直接进入公钥推导，不能假设匿名。签名 (h,S) 不能只发布 h 或把 S 当密钥；验签必须检查 S∈G1、拒绝无穷远点和错误子群。配对运算、KDF 输出全零、随机数 r 复用都要处理；KEM 只给密钥封装，不自动给消息保密性。",
+        "en": "The KGC is a single point of trust: master-key compromise, a forged private key or identity-registration takeover breaks the ownership of signatures and ciphertexts.Identity privacy also needs assessment: the ID directly enters public-key derivation and is not anonymous by default."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0044-r139-history",
+      "entryId": "gmt0044-details",
+      "section": "history",
+      "statement": {
+        "zh": "标识密码由 Shamir 于 1984 年提出；SM9 于 2016-03-28 以 GM/T 0044-2016 五部分发布，覆盖总则、签名、密钥交换、KEM/加密和参数。2020 年 GB/T 38635 系列把 SM9 上升为国家标准。2025 年修订的 GM/T 0044.1—0044.5-2025 于 2026-07-01 实施，2016 五部分同日废止；使用时应按当前版本核对参数、签名与 KEM 流程。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：GM/T 0044 SM9 标识密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "Identity-based cryptography was proposed by Shamir in 1984.SM9 was published on 2016-03-28 as the five-part GM/T 0044-2016, covering general, signature, key exchange, KEM/encryption and parameters."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0044-r139-refs",
+      "entryId": "gmt0044-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for GM/T 0044 SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=GM%2FT%200044%20SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for GM/T 0044 SM9 标识密码算法.https://zh.wikipedia.org/w/index.php?search=GM%2FT%200044%20SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gmt0044-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

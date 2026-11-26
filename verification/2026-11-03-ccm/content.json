@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-03",
+  "scope": "Compact reference entry for ccm: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ccm-details",
+      "inventoryIds": [
+        "ccm"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释CCM 计数器与 CBC-MAC 组合模式的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Counter with CBC-MAC (CCM): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "CCM 计数器与 CBC-MAC 组合模式",
+        "en": "Counter with CBC-MAC (CCM)"
+      },
+      "claimIds": [
+        "ccm-r139-principle",
+        "ccm-r139-why",
+        "ccm-r139-used",
+        "ccm-r139-broken",
+        "ccm-r139-history",
+        "ccm-r139-refs"
+      ],
+      "sourceIds": [
+        "ccm-wikipedia",
+        "ccm-reference-ref"
+      ],
+      "related": [
+        "block-cipher-mode",
+        "algorithm--aes",
+        "term--aead"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：CCM 计数器 CBC 模式（Counter with CBC-MAC）。CCM 的构造要点是原语复用同一把密钥（§5.2）：「The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.」。它保护两类对象：「The data that CCM protects consists of a message, i.e., a bit string, called the payload, denoted P, of bit length denoted Plen, and a bit string, called the associated data」——payload 加密、关联数据只认证，二者一起进 MAC。",
+          "why": "为什么要把两者合起来：§3 把 CCM 写成两个过程的组合，「CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives」」（跨页处以省略号标示）。合起来的动机是同一条分组密码同时提供机密性与真实性，不必再各跑一套；§5.2 的同一密钥句正是这一取舍的落地方式。",
+          "used": "部署面在 §3 的适用范围里以互操作意图给出：「This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].」也即这份建议是为对齐无线局域网标准里的既有用法。长度参数在附录 B 里被提升为安全量：「The length, Tlen, of the MAC within CCM is an important security parameter.」——截断多长在文件里被明确当作安全量看待。",
+          "broken": "限度系于两个参数。其一是 nonce 的唯一性：文件把 nonce 写成「a unique value, called a nonce, that is assigned to the payload and the associated data」——唯一性是规定条件，重用即把组合模式的机密性与真实性一起置于风险。其二是 Tlen：既然它被称作「an important security parameter」，把它截得过短就等于自己降低认证强度，而不是省下一笔无害的字节。",
+          "history": "版本事实：文件自陈是分组密码模式系列建议的一部分，并把动机落在与 IEEE 802.11 修正案草案的兼容性上（§1 所引）。留存件的扉页日期为 2004 年 5 月。也就是说，CCM 作为国家建议的规范化时间晚于它在无线标准草案里的使用——这份文件的工作是把既有的组合构造写成通用建议，而不是从零发明。头部信息按项目口径复述于引号外。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 CCM 计数器 CBC 模式 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for CCM 计数器 CBC 模式. https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nCCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Counter with CBC-MAC (CCM 计数器 CBC 模式). CCM's construction reuses one key across both primitives, printed in §5.2 as the same key: \"The same key, K, is used for both the CTR and CBC-MAC mechanisms within CCM.\". It protects two kinds of input: \"The data that CCM protects consists of a message, i.e., a bit string, called the payload, denoted P, of bit length denoted Plen, and a bit string, called the associated data\" - the payload is encrypted, the associated data is only authenticated, and both enter the MAC.",
+          "why": "Why combine them: §3 specifies CCM as a pairing of processes - \"CCM consists of two related processes: generation-encryption and decryption-verification, which combine two cryptographic primitives\". One block cipher therefore delivers both confidentiality and authenticity instead of two separate machinery sets, and the shared-key sentence in §5.2 is how that choice is realised.",
+          "used": "The deployment motive is stated in §3 as interoperability: \"This specification of CCM is intended to be compatible with the use of CCM within the draft amendment [4] to the IEEE Standard 802.11 for wireless local area networks [5].\" The recommendation exists to align with how CCM was already used in wireless LAN standardisation. Truncation is a mandatory design decision, stated in Appendix B: \"The length, Tlen, of the MAC within CCM is an important security parameter.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The limits hang on two parameters. Nonce uniqueness: the document requires \"a unique value, called a nonce, that is assigned to the payload and the associated data\" - repeating it puts both the confidentiality and the authenticity of the combined mode at risk. Tag length: since Tlen is named \"an important security parameter\", truncating it hard is a self-inflicted reduction of authentication strength, not a harmless byte saving.",
+          "history": "Version facts: the document presents itself as part of the block cipher modes series and grounds its motive in compatibility with the IEEE 802.11 draft amendment (quoted from §1). The retained copy is dated May 2004. So CCM was already in use in wireless standardisation before it became a federal recommendation; this publication generalises an existing combined construction rather than inventing one. Header furniture is restated outside quotes per house rule.",
+          "refs": "- Wikipedia search entry for CCM 计数器 CBC 模式. https://zh.wikipedia.org/w/index.php?search=CCM%20%E8%AE%A1%E6%95%B0%E5%99%A8%20CBC%20%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nCounter with CBC-MAC: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CCM：把计数器加密与 CBC-MAC 合成一个模式的组合构造。",
+          "payload：CCM 保护的消息本体。",
+          "associated data：需要认证但不加密的附加比特串。",
+          "nonce：CCM 赋给一次 payload 与关联数据的唯一值。",
+          "Tlen：CCM 内 MAC 的长度参数，被视为重要安全参数。",
+          "generation-encryption / decryption-verification：CCM 的两个相关过程。"
+        ],
+        "en": [
+          "CCM: the combined mode pairing counter mode encryption with CBC-MAC.",
+          "Payload: the message body CCM protects.",
+          "Associated data: the bit string authenticated but not encrypted.",
+          "Nonce: the unique value CCM assigns to one payload and its associated data.",
+          "Tlen: the MAC length parameter, treated as an important security parameter.",
+          "Generation-encryption and decryption-verification: the two related processes of CCM."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ccm-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CCM 计数器与 CBC-MAC 组合模式：为什么需要 → 核心机制 → 边界。",
+            "en": "Counter with CBC-MAC (CCM): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CCM 计数器与 CBC-MAC 组合模式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Counter with CBC-MAC (CCM), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ccm-details-flow.zh.svg",
+            "en": "assets/ccm-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "410c70c00ae0295f50be30d3778594950b03e1393a5bca0be3d96f3514304ff5",
+            "en": "9f0d9788bc8785f6e01ded6cf206a97f6005e84f87e272ba67cc5715e24ede19"
+          }
+        },
+        {
+          "id": "ccm-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CCM 计数器与 CBC-MAC 组合模式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Counter with CBC-MAC (CCM): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CCM 计数器与 CBC-MAC 组合模式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Counter with CBC-MAC (CCM), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ccm-details-r138-model.zh.svg",
+            "en": "assets/ccm-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "53a3e30b63257a818f4ad448154e8cbc5d68ed3d3e075dc83e8342f263064532",
+            "en": "998687a9539aecb1908547fa74f8cfee18122ca012cb710d8485b1f2fb842424"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ccm-r139-formal",
+          "entryId": "ccm-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：CCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 CCM 计数器 CBC 模式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "ccm-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ccm-r139-formal"
+      ],
+      "sources": [
+        "ccm-wikipedia",
+        "ccm-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ccm-r139-formal",
+      "entryId": "ccm-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：CCM 计数器 CBC 模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 CCM 计数器 CBC 模式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "ccm-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

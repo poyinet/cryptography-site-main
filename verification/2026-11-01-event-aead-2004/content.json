@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for event-aead-2004: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "event-aead-2004-details",
+      "inventoryIds": [
+        "event-aead-2004"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释GCM 进入 TLS 与 NIST 标准化的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of GCM Standardized in TLS: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "GCM 进入 TLS 与 NIST 标准化",
+        "en": "GCM Standardized in TLS"
+      },
+      "claimIds": [
+        "event-aead-2004-r139-principle",
+        "event-aead-2004-r139-why",
+        "event-aead-2004-r139-used",
+        "event-aead-2004-r139-broken",
+        "event-aead-2004-r139-history",
+        "event-aead-2004-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "event-aead-2004-wikipedia",
+        "event-aead-2004-reference-ref"
+      ],
+      "related": [
+        "gcm",
+        "block-cipher",
+        "tls12",
+        "tls13"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**事件**：GCM 进入 TLS 与 NIST 标准化（GCM Standardized in TLS and by NIST）。把 GCM 带进 TLS 的文档是 RFC 5288：§1「This document describes the use of AES [AES] in Galois Counter Mode (GCM) [GCM] (AES-GCM) with various key exchange mechanisms as a cipher suite for TLS.」并说明它是一次性提供机密性与来源认证的 AEAD——「AES-GCM is an authenticated encryption with associated data (AEAD) cipher (as defined in TLS 1.2 [RFC5246]) providing both confidentiality and data origin authentication.」§3 列出十二个套件常量（从 TLS_RSA_WITH_AES_128_GCM_SHA256 到 DH_anon 变体），并规定 nonce 长度为 12 字节、由 4 字节 salt 加 8 字节显式部分组成；基于椭圆曲线的套件不在本文范围内，§1 说明它们「are defined in a separate document [RFC5289]」。",
+          "why": "性能是明写的推动力：§1 指出「AES-GCM is not only efficient and secure, but hardware implementations can achieve high speeds with low cost and low latency, because the mode can be pipelined.」§1 只记录该模式已被指定用于 IPsec ESP 与 802.1AE MAC 安全（原句见历史节），未给出复用硬件这类理由。§4 则解释为何必须先升级到 TLS 1.2：这些套件「make use of the authenticated encryption with additional data defined in TLS 1.2」，因此「They MUST NOT be negotiated in older versions of TLS.」",
+          "used": "NIST 侧的标准化文本是 SP 800-38D（2007 年 11 月），标题即「Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC」，把 GCM 作为分组密码工作模式纳入建议；该文本只定义模式本身，不涉及 TLS 套件命名。其参考文献[7] 给出更早的设计来源：「D.McGrew and J.Viega.The Security and Performance of the Galois/Counter Mode (GCM) of Operation.Proceedings of INDOCRYPT '04, Springer-Verlag, 2004.」",
+          "broken": "GCM 的失效条件被写进规范。§6.1 直接说「AES-GCM security requires that the counter is never reused.」§3 把这条转成逐记录要求：「Each value of the nonce_explicit MUST be distinct for each distinct invocation of the GCM encrypt function for any fixed key.」并警告「Failure to meet this uniqueness requirement can significantly degrade security.」§4 还留了一个兼容性陷阱：TLS 没有让客户端表达`支持 1.2 但不接受更早版本`的办法，于是「a non-compliant server might potentially negotiate TLS 1.1 or earlier and select one of the cipher suites in this document」，规范要求客户端检出版本不符并回「illegal_parameter」致命告警。",
+          "history": "时间线经核证更正：该条目库存原写 `SP 800-38D(2007)`并把事件标在 2004 年，但 GCM 进入 TLS 是 RFC 5288（J.Salowey、A.Choudhury、D.McGrew，Cisco Systems，2008 年 8 月，Standards Track），NIST 标准化是 SP 800-38D（2007 年 11 月）；2004 只是 SP 800-38D 参考文献所引的 McGrew 与 Viega 设计论文（见用途节），不是任一标准文本本身。§1 还记录该模式的适用面早于 TLS：「AES-GCM has been specified as a mode that can be used with IPsec ESP [RFC4106] and 802.1AE Media Access Control (MAC) Security [IEEE8021AE].」",
+          "refs": "- Wikipedia search entry for GCM 进入 TLS 与 NIST 标准化. https://zh.wikipedia.org/w/index.php?search=GCM%20%E8%BF%9B%E5%85%A5%20TLS%20%E4%B8%8E%20NIST%20%E6%A0%87%E5%87%86%E5%8C%96\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Event**: GCM Standardized in TLS and by NIST. It is registered under authentication and AEAD, dated 2004. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in authentication and AEAD, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Web & Protocol Era. The registered date is 2004; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for GCM 进入 TLS 与 NIST 标准化. https://zh.wikipedia.org/w/index.php?search=GCM%20%E8%BF%9B%E5%85%A5%20TLS%20%E4%B8%8E%20NIST%20%E6%A0%87%E5%87%86%E5%8C%96\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "AEAD：带附加数据的认证加密。",
+          "nonce_explicit：记录内显式携带的 8 字节部分。",
+          "salt：握手派生的 4 字节隐式部分。",
+          "counter reuse：计数器重复，GCM 的致命条件。",
+          "MACsec：802.1AE 链路层安全。",
+          "illegal_parameter：版本与套件不匹配的致命告警。"
+        ],
+        "en": [
+          "AEAD: authenticated encryption with associated data.",
+          "nonce_explicit: the 8-byte per-record part on the wire.",
+          "salt: the 4-byte implicit part derived in the handshake.",
+          "Counter reuse: the fatal condition for GCM.",
+          "MACsec: 802.1AE link-layer security.",
+          "illegal_parameter: the fatal alert for version/suite mismatch."
+        ]
+      },
+      "figures": [
+        {
+          "id": "event-aead-2004-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "GCM 进入 TLS 与 NIST 标准化：为什么需要 → 核心机制 → 边界。",
+            "en": "GCM Standardized in TLS: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "GCM 进入 TLS 与 NIST 标准化 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for GCM Standardized in TLS, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/event-aead-2004-details-flow.zh.svg",
+            "en": "assets/event-aead-2004-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b3c92460414a14db7c2db7223cb6e8b12c3b7f51fd2effb8486fddf3f8534a4b",
+            "en": "d4d4a3c89cdd6785d4cb2d0f7d4d0bb25f4664f3e7ba351e4eca1c59ed5e527b"
+          }
+        }
+      ],
+      "sources": [
+        "event-aead-2004-wikipedia",
+        "event-aead-2004-reference-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

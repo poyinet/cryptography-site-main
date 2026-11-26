@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "kw-details",
+  "sources": [
+    {
+      "id": "kw-wikipedia",
+      "title": "Wikipedia search entry for KW 密钥包装",
+      "url": "https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: KW 密钥包装",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "kw-r139-principle",
+          "entryId": "kw-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：KW 密钥包装（Key Wrap）。§5.1 给出结构与密钥命名：「The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher.The key for the underlying block cipher is called the key encryption key (KEK), denoted K.」§4.1 对完整性校验值的定义说明了为什么包装不是普通加密：「A fixed string that is prepended to the plaintext within the authenticated-encryption function of a key-wrap algorithm, in order to enable the verification of the integrity of the plaintext within the authenticated-decryption function.」。",
+            "en": "**Algorithm**: Key Wrap (KW 密钥包装).Section 5.1 gives the structure and the key name: \"The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        },
+        {
+          "id": "kw-r139-why",
+          "entryId": "kw-details",
+          "section": "why",
+          "statement": {
+            "zh": "§1 直接写明目的：「The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.」保护的对象是密钥本身，而 §3.1 又把适用面扩展开：「Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.」两条合起来给出动机：密钥在存储与传输时需要同时得到机密性与完整性保护，普通加密只给前者。",
+            "en": "Section 1 states the purpose outright: \"The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.\" The protected object is a key, and §3.1 widens the scope: \"Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.\" Together these give the motive: keys at rest and in transit need confidentiality and integrity together, which ordinary encryption supplies only half of."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        },
+        {
+          "id": "kw-r139-used",
+          "entryId": "kw-details",
+          "section": "used",
+          "statement": {
+            "zh": "用法由两句确定：§3.1 说「KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys」，即三种变体都可用于一般数据；§5.1 说「each variant is a mode of operation (mode, for short) of the block cipher」，即实现上以分组密码模式的方式接入。故密钥库、HSM 与密钥分发链路里用 KEK 包装待保护的密钥，KWP 与 TKW 分别覆盖需填充与非 AES 的情形。",
+            "en": "Usage follows from two sentences.§3.1 says \"KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys\", so all three variants serve general data too; §5.1 says \"each variant is a mode of operation (mode, for short) of the block cipher\", so implementations plug them in as block cipher modes."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        },
+        {
+          "id": "kw-r139-broken",
+          "entryId": "kw-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在解密函数的定义里：「A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data.The output is either the plaintext or an indication that the plaintext is not authentic.」即包装方案不提供`尽力解密`：校验失败就不返回明文，攻击者无法借部分解密结果试探；同一节还给出「authenticity」在密钥包装语境下的含义——来源是能持有该 KEK 认证加密实现的实体。",
+            "en": "The limit is printed in the definition of the decryption function: \"A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data.The output is either the plaintext or an indication that the plaintext is not authentic.\" Wrapping offers no best-effort decryption: verification failure returns no plaintext, so an attacker cannot probe with partially decrypted output."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        },
+        {
+          "id": "kw-r139-history",
+          "entryId": "kw-details",
+          "section": "history",
+          "statement": {
+            "zh": "§1 说明它在系列里的位置与年份口径：「This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.」§3.1 给出与更早规范的接界：「In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.」即 2002 年的 RFC 3394 与 2009 年的 RFC 5649 先于本份 2012 年建议。",
+            "en": "Section 1 places the document in its series: \"This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.\" Section 3.1 fixes the boundary with earlier specifications: \"In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.\" RFC 3394 (2002) and RFC 5649 (2009) therefore precede this December 2012 recommendation."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        },
+        {
+          "id": "kw-r139-refs",
+          "entryId": "kw-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for KW 密钥包装.https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for KW 密钥包装.https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "kw-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "kw-wikipedia"
+      ]
+    },
+    {
+      "id": "kw-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "kw-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "kw-r139-principle",
+      "entryId": "kw-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：KW 密钥包装（Key Wrap）。§5.1 给出结构与密钥命名：「The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher.The key for the underlying block cipher is called the key encryption key (KEK), denoted K.」§4.1 对完整性校验值的定义说明了为什么包装不是普通加密：「A fixed string that is prepended to the plaintext within the authenticated-encryption function of a key-wrap algorithm, in order to enable the verification of the integrity of the plaintext within the authenticated-decryption function.」。",
+        "en": "**Algorithm**: Key Wrap (KW 密钥包装).Section 5.1 gives the structure and the key name: \"The transformations of the variants of KW feature a block cipher as the main component; thus, each variant is a mode of operation (mode, for short) of the block cipher."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    },
+    {
+      "id": "kw-r139-why",
+      "entryId": "kw-details",
+      "section": "why",
+      "statement": {
+        "zh": "§1 直接写明目的：「The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.」保护的对象是密钥本身，而 §3.1 又把适用面扩展开：「Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.」两条合起来给出动机：密钥在存储与传输时需要同时得到机密性与完整性保护，普通加密只给前者。",
+        "en": "Section 1 states the purpose outright: \"The purpose of this part is to provide approved methods for key wrapping, i.e., the protection of cryptographic keys.\" The protected object is a key, and §3.1 widens the scope: \"Similarly, KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys.\" Together these give the motive: keys at rest and in transit need confidentiality and integrity together, which ordinary encryption supplies only half of."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    },
+    {
+      "id": "kw-r139-used",
+      "entryId": "kw-details",
+      "section": "used",
+      "statement": {
+        "zh": "用法由两句确定：§3.1 说「KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys」，即三种变体都可用于一般数据；§5.1 说「each variant is a mode of operation (mode, for short) of the block cipher」，即实现上以分组密码模式的方式接入。故密钥库、HSM 与密钥分发链路里用 KEK 包装待保护的密钥，KWP 与 TKW 分别覆盖需填充与非 AES 的情形。",
+        "en": "Usage follows from two sentences.§3.1 says \"KW, KWP, and TKW are each approved for the protection of general data, as well as cryptographic keys\", so all three variants serve general data too; §5.1 says \"each variant is a mode of operation (mode, for short) of the block cipher\", so implementations plug them in as block cipher modes."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    },
+    {
+      "id": "kw-r139-broken",
+      "entryId": "kw-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在解密函数的定义里：「A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data.The output is either the plaintext or an indication that the plaintext is not authentic.」即包装方案不提供`尽力解密`：校验失败就不返回明文，攻击者无法借部分解密结果试探；同一节还给出「authenticity」在密钥包装语境下的含义——来源是能持有该 KEK 认证加密实现的实体。",
+        "en": "The limit is printed in the definition of the decryption function: \"A function that decrypts purported ciphertext into corresponding plaintext and verifies the authenticity and, therefore, the integrity of the data.The output is either the plaintext or an indication that the plaintext is not authentic.\" Wrapping offers no best-effort decryption: verification failure returns no plaintext, so an attacker cannot probe with partially decrypted output."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    },
+    {
+      "id": "kw-r139-history",
+      "entryId": "kw-details",
+      "section": "history",
+      "statement": {
+        "zh": "§1 说明它在系列里的位置与年份口径：「This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.」§3.1 给出与更早规范的接界：「In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.」即 2002 年的 RFC 3394 与 2009 年的 RFC 5649 先于本份 2012 年建议。",
+        "en": "Section 1 places the document in its series: \"This publication is the sixth part in a series of Recommendations regarding the modes of operation of block ciphers.\" Section 3.1 fixes the boundary with earlier specifications: \"In 2009, a different padding scheme was specified in RFC 5649 [4], referencing elements of the specification in [11].The resulting algorithm, called AES Key Wrap With Padding, is essentially equivalent to KWP as specified in this Recommendation.\" RFC 3394 (2002) and RFC 5649 (2009) therefore precede this December 2012 recommendation."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    },
+    {
+      "id": "kw-r139-refs",
+      "entryId": "kw-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for KW 密钥包装.https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for KW 密钥包装.https://zh.wikipedia.org/w/index.php?search=KW%20%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "kw-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,445 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full RIPEMD-160 article: the FSE 1996 paper's definition, the five-word state, MD4-style padding, the two parallel 80-step lines, the five Boolean functions and round constants, the r/r'/s/s' schedules, the cross-feed-forward, the 160-bit output, the paper's performance and design claims, the Appendix B test values, the length-extension boundary and the 2004 ePrint title's scope. No completion claim for RIPEMD-128, RIPEMD-256/320, the original RIPEMD, MD4, SHA-1, Bitcoin or any protocol/implementation.",
+  "entries": [
+    {
+      "id": "ripemd160-details",
+      "inventoryIds": [
+        "ripemd160"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 FSE 1996 的 RIPEMD-160：5 字状态、512 位块、与 MD4 相同的填充、两条并行 80 步线路、五轮 f/K/r/s 与右线 f(79−j)/r'/s'/K'、ROTL10、五路交叉回加、160 位小端输出；覆盖 RIPE 项目与 1996 年加强版背景、RIPEMD-128 替代关系、论文的性能与安全设计主张、附录 B 测试值、长度扩展边界，以及 2004 年 ePrint 标题只写 RIPEMD 而非 RIPEMD-160 的范围说明。不把 RIPEMD-128、RIPEMD-256/320、原始 RIPEMD、MD4、SHA-1 或整个哈希家族并入本实体。",
+        "en": "Covers the FSE 1996 RIPEMD-160: the five-word state, 512-bit blocks, MD4-identical padding, two parallel 80-step lines, the five-round f/K/r/s and right-line f(79−j)/r'/s'/K', ROTL10, the five-way cross-feed-forward and the 160-bit little-endian output; the RIPE project and 1996 strengthening, the RIPEMD-128 substitute, the paper's performance and design claims, Appendix B test values, the length-extension boundary, and the 2004 ePrint title's RIPEMD-not-RIPEMD-160 scope. It does not absorb RIPEMD-128, RIPEMD-256/320, the original RIPEMD, MD4, SHA-1 or the whole hash family."
+      },
+      "title": {
+        "zh": "RIPEMD-160：双线结构的 160 位哈希",
+        "en": "RIPEMD-160: the two-line 160-bit hash"
+      },
+      "claimIds": [
+        "ripemd160-r139-principle",
+        "ripemd160-r139-why",
+        "ripemd160-r139-used",
+        "ripemd160-r139-broken",
+        "ripemd160-r139-history",
+        "ripemd160-r139-refs"
+      ],
+      "calculationIds": [
+        "ripemd-calc-paper-vectors",
+        "ripemd-calc-abc-trace",
+        "ripemd-calc-crosscheck",
+        "ripemd-calc-structure",
+        "ripemd-calc-length-extension",
+        "ripemd160-r139-formal"
+      ],
+      "sourceIds": [
+        "ripemd160-wikipedia",
+        "ripemd160-reference-ref"
+      ],
+      "related": [
+        "md4",
+        "sha1",
+        "algorithm--md5",
+        "ripemd-whirlpool",
+        "whirlpool"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. RIPEMD-128 and RIPEMD-256/320 are variants mentioned by the same paper but not separate catalog entries here; RIPEMD-whirlpool is a different combined entity; MD4 is the direct design ancestor; SHA-1 and MD5 are the better-known MD-family hashes.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：RIPEMD-160 散列（RIPEMD-160）。RIPEMD-160 是输出 160 位摘要的迭代哈希函数，处理 32 位字与 512 位消息块；状态是 5 个 32 位字 h0…h4。初始值是 h0=67452301、h1=efcdab89、h2=98badcfe、h3=10325476、h4=c3d2e1f0。填充与 MD4 相同：先追加 0x80，再补 0 位到长度对 512 同余于 448，最后追加 64 位小端消息长度。以 \"abc\" 为例，填充块是 `61 62 63 80` 后跟 52 个 `00`，再跟 8 字节长度 `18 00 00 00 00 00 00 00`；按小端读成 X[0]=0x80636261、X[14]=0x00000018、X[15]=0。每个消息块要经过两条并行的 80 步线路；每条线路分成五个 16 步的轮次，使用不同的布尔函数与常量。五轮依次使用：\n\n- f1 = x xor y xor z\n- f2 = (x and y) or (not x and z)\n- f3 = (x or not y) xor z\n- f4 = (x and z) or (y and not z)\n- f5 = x xor (y or not z)\n\n左线五轮常量是 00000000、5a827999、6ed9eba1、8f1bbcdc、a953fd4e；右线是 50a28be6、5c4dd124、6d703ef3、7a6d76e9、00000000。两条线路使用不同的消息字顺序 r、r' 和不同的循环左移量 s、s'；这正是 RIPEMD-160 与单线 MD4/SHA-1 结构的主要区别。每一步计算 `T = ROTL(A + f(B,C,D) + X[r(j)] + K(j), s(j)) + E`，然后 A←E、E←D、D←ROTL10(C)、C←B、B←T；右线用 f(79−j)、r'、s'、K' 同步执行。每条线路的寄存器更新都包含 D←ROTL10(C)：C 循环左移 10 位后成为新的 D。80 步后，两条线路的寄存器与输入链接值交叉相加：h0←h1+C+D'、h1←h2+D+E'、h2←h3+E+A'、h3←h4+A+B'、h4←h0+B+C'。最终摘要是 h0…h4 的 160 位小端字节串。",
+          "why": "RIPEMD 是在欧盟 RIPE（RACE Integrity Primitives Evaluation）项目中开发的；RIPEMD-160 是 1996 年提出的加强版本。论文同时提出 160 位的 RIPEMD-160 和作为 RIPEMD 替代的 128 位 RIPEMD-128；160 位版本的设计目标是把 RIPEMD 已积累的信任转移到新算法上。两条线路使用相同的五个函数但顺序相反（右线用 f(79−j)），并使用不同的常量、消息顺序和旋转量；攻击者要同时控制两条线才能构造碰撞，这提高了差分攻击的难度。设计目标是让两条线路尽可能不同，而不是让它们各自独立运行。160 位摘要的理想碰撞复杂度约为 2^80，原像/第二原像约为 2^160；论文把 160 位结果作为对原 128 位 RIPEMD 的安全加强。论文的 Pentium 90 MHz 实测显示 RIPEMD-160 比 SHA-1 约慢 15%，约为 RIPEMD 的一半速度、MD4 的四分之一速度；增强安全性以约两倍性能为代价。论文的设计目标是提高安全余量，但没有给出数学安全性证明；作者在结论中邀请同行对 RIPEMD-160 进行进一步的安全分析。",
+          "used": "论文列出的用途包括数字指纹、消息认证、密钥派生和口令保护；这些用途依赖哈希的原像、第二原像或碰撞抗性。消息认证（MAC）是其中一项用途，但哈希本身不是 MAC，MAC 还需要密钥化构造；密钥派生与口令保护则分别依赖哈希的输出不可预测性和原像抗性。RIPEMD-160 是 160 位哈希；论文把它定位为 RIPEMD 的加强版，并同时给出 128 位 RIPEMD-128 作为原 RIPEMD 的替代。具体协议是否采用要看协议自己的规范。",
+          "broken": "RIPEMD-160 采用 Merkle-Damgård 迭代：每块处理后的链接值就是下一块的输入，最终输出也是链接值；因此给定 H(M) 与 M 的长度，可以做长度扩展，得到 H(M || pad(M) || X)，这不是碰撞。本批次演示：已知 RIPEMD-160(abc) 的结果与 64 字节填充长度，不知道原消息也能计算 RIPEMD-160(`abc` || pad || `extra`) = `1f35150185a2c3cfc80d435934579261c99da3e0`。160 位摘要的生日碰撞界约为 2^80；这一数字是通用攻击的上界，不代表对 RIPEMD-160 的具体密码分析结果。2004 年 Wang、Feng、Lai、Yu 的 ePrint 2004/199 标题列出 MD4、MD5、HAVAL-128 与 RIPEMD；标题只写 RIPEMD，没有写 RIPEMD-160。两者不是同一算法，不能把原始 RIPEMD 的结果直接套到 RIPEMD-160 上。双线结构也带来性能代价：RIPEMD-160 比 SHA-1 约慢 15%，约为 RIPEMD 的一半速度；如果应用原本使用 RIPEMD 并需要 128 位摘要，RIPEMD-128 是论文给出的 128 位替代。选择算法时应按协议要求、输出长度和安全余量权衡。",
+          "history": "- **1996 年之前**：RIPEMD 在欧盟 RIPE 项目中开发，作为 MD4 风格的哈希函数。- **1996 年**：Dobbertin、Bosselaers 与 Preneel 在 FSE 1996（LNCS 1039，pp.71-82）发表 RIPEMD-160 与 RIPEMD-128。- **2004 年**：Wang、Feng、Lai、Yu 的 ePrint 2004/199 标题列出 MD4、MD5、HAVAL-128 与 RIPEMD；标题只写 RIPEMD，没有写 RIPEMD-160。",
+          "refs": "- Wikipedia search entry for RIPEMD-160 散列. https://zh.wikipedia.org/w/index.php?search=RIPEMD-160%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: RIPEMD-160 (RIPEMD-160 散列). RIPEMD-160 is an iterative hash function with a 160-bit digest; it processes 32-bit words in 512-bit message blocks and keeps a five-word state h0…h4. The initial value is h0=67452301, h1=efcdab89, h2=98badcfe, h3=10325476 and h4=c3d2e1f0. Padding is identical to MD4: append 0x80, zero-pad until the length is congruent to 448 modulo 512, and append the 64-bit little-endian message length. For \"abc\", the padded block is `61 62 63 80` followed by 52 `00` bytes and the 8-byte length `18 00 00 00 00 00 00 00`; read little-endian, X[0]=0x80636261, X[14]=0x00000018 and X[15]=0. Each message block goes through two parallel 80-step lines; each line has five 16-step rounds with different Boolean functions and constants. The five rounds use:\n\n- f1 = x xor y xor z\n- f2 = (x and y) or (not x and z)\n- f3 = (x or not y) xor z\n- f4 = (x and z) or (y and not z)\n- f5 = x xor (y or not z)\n\nThe left-line constants are 00000000, 5a827999, 6ed9eba1, 8f1bbcdc and a953fd4e; the right-line constants are 50a28be6, 5c4dd124, 6d703ef3, 7a6d76e9 and 00000000. The two lines use different message-word orders r and r' and different left-rotation amounts s and s'; this is the main structural difference from the single-line MD4/SHA-1 design. Each step computes `T = ROTL(A + f(B,C,D) + X[r(j)] + K(j), s(j)) + E`, then A←E, E←D, D←ROTL10(C), C←B and B←T; the right line runs the same shape with f(79−j), r', s' and K'. Every line's register update includes D←ROTL10(C): C is rotated left by 10 to become the new D. After 80 steps the two lines' registers are cross-added to the incoming chaining value: h0←h1+C+D', h1←h2+D+E', h2←h3+E+A', h3←h4+A+B' and h4←h0+B+C'. The final digest is the 160-bit little-endian byte string of h0…h4.",
+          "why": "RIPEMD was developed in the EU RIPE (RACE Integrity Primitives Evaluation) project; RIPEMD-160 is the strengthened version proposed in 1996. The paper proposes both the 160-bit RIPEMD-160 and a 128-bit RIPEMD-128 plug-in substitute for RIPEMD; the 160-bit design aims to transfer the confidence built up with RIPEMD to the new algorithm.\n\nThe two lines use the same five functions in opposite order (the right line uses f(79−j)), with different constants, message orders and rotation amounts; an attacker must control both lines to build a collision, raising the difficulty of differential attacks. The design goal is to make the two lines as different as possible, not to run them independently.\n\nA 160-bit digest gives an ideal collision cost of about 2^80 and preimage/second-preimage costs of about 2^160; the paper presents the 160-bit result as the security strengthening over 128-bit RIPEMD. The paper's 90 MHz Pentium measurements show RIPEMD-160 is about 15% slower than SHA-1, about half RIPEMD's speed and about a quarter of MD4's; the security increase costs about a factor of two in performance.\n\nThe paper aims to increase the security margin but gives no mathematical security proof; the authors invite further security analysis of RIPEMD-160 in the conclusion.",
+          "used": "The paper lists digital fingerprinting, message authentication, key derivation and password protection as uses; these rely on preimage, second-preimage or collision resistance. Message authentication (MAC) is one of them, but the hash itself is not a MAC, which requires a keyed construction; key derivation and password protection rely on output unpredictability and preimage resistance.\n\nRIPEMD-160 is a 160-bit hash; the paper positions it as the strengthened RIPEMD and also offers 128-bit RIPEMD-128 as the original RIPEMD's replacement. Whether a protocol adopts it depends on that protocol's own specification.",
+          "broken": "RIPEMD-160 uses Merkle-Damgård iteration: the chaining value after each block is the next block's input, and the final output is the chaining value; given H(M) and the length of M, one can length-extend to H(M || pad(M) || X), which is not a collision. This batch demonstrates it: given the digest of RIPEMD-160(abc) and the 64-byte padded length, it computes RIPEMD-160(`abc` || pad || `extra`) = `1f35150185a2c3cfc80d435934579261c99da3e0` without the original message.\n\nThe birthday collision bound for a 160-bit digest is about 2^80; this is a generic-attack bound, not a specific cryptanalytic result against RIPEMD-160. The 2004 Wang, Feng, Lai and Yu ePrint 2004/199 lists MD4, MD5, HAVAL-128 and RIPEMD in its title; the title says RIPEMD, not RIPEMD-160. The two are not the same algorithm, and the original RIPEMD results cannot be carried over directly to RIPEMD-160.\n\nThe two-line structure also has a performance cost: RIPEMD-160 is about 15% slower than SHA-1 and about half RIPEMD's speed; if an application already uses RIPEMD and needs a 128-bit digest, RIPEMD-128 is the paper's 128-bit substitute. Algorithm choice should weigh the protocol requirement, output length and security margin.",
+          "history": "- **Before 1996**: RIPEMD is developed in the EU RIPE project as an MD4-style hash function. - **1996**: Dobbertin, Bosselaers and Preneel publish RIPEMD-160 and RIPEMD-128 at FSE 1996 (LNCS 1039, pp. 71-82). - **2004**: Wang, Feng, Lai and Yu's ePrint 2004/199 lists MD4, MD5, HAVAL-128 and RIPEMD in its title; the title says RIPEMD, not RIPEMD-160.",
+          "refs": "- Wikipedia search entry for RIPEMD-160 散列. https://zh.wikipedia.org/w/index.php?search=RIPEMD-160%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "RIPEMD：RACE Integrity Primitives Evaluation Message Digest，欧盟 RIPE 项目中开发的 MD4 风格哈希函数族。",
+          "RIPEMD-160：RIPEMD 的 160 位加强版，输出 160 位摘要，使用两条并行的 80 步线路。",
+          "RIPEMD-128：RIPEMD 的 128 位替代版本，用来替换原始 RIPEMD。",
+          "压缩函数：把 5 字链接值与一个 512 位消息块混合成新链接值的核心迭代。",
+          "Merkle-Damgård 迭代：先填充、再逐块调用压缩函数、最后输出链接值的哈希结构。",
+          "双线结构：RIPEMD-160 同时运行左右两条 80 步线路，最后交叉回加。",
+          "左线：使用函数 f(j)、常量 K、消息顺序 r、旋转量 s 的一条线路。",
+          "右线：使用函数 f(79−j)、常量 K'、消息顺序 r'、旋转量 s' 的一条线路。",
+          "f1–f5：五轮使用的布尔函数：异或、条件选择、或非异或、条件选择变体、异或或非。",
+          "K/K'：左右线的五轮常量；左线为 00000000、5a827999、6ed9eba1、8f1bbcdc、a953fd4e，右线为 50a28be6、5c4dd124、6d703ef3、7a6d76e9、00000000。",
+          "r/r'：左右线的消息字读取顺序，每轮是 0..15 的一个排列。",
+          "s/s'：左右线的循环左移量，每轮按四个值循环。",
+          "ROTL10：把 32 位字循环左移 10 位；每条线路的 D←ROTL10(C) 都使用它。",
+          "交叉回加：80 步后把左右线寄存器与输入链接值五路交叉相加。",
+          "初始值（IV）：h0=67452301、h1=efcdab89、h2=98badcfe、h3=10325476、h4=c3d2e1f0。",
+          "填充：追加 0x80、补 0 到 56 mod 64，再追加 64 位小端长度；与 MD4 相同。",
+          "小端序：块字、长度字段和输出都按低序字节在前解释。",
+          "160 位摘要：RIPEMD-160 的输出长度，对应约 2^80 的生日碰撞界。",
+          "生日界：通用碰撞搜索的复杂度约为 2^(n/2)；160 位摘要给出 2^80。",
+          "长度扩展：已知 H(M) 与 M 的长度时，可在不知道 M 的情况下计算 H(M || pad(M) || X)。",
+          "MAC：带密钥的消息认证码；哈希本身不是 MAC，需要 HMAC 等密钥化构造。",
+          "密钥派生：从共享秘密或口令派生密钥的用途；依赖哈希的输出不可预测性。",
+          "口令保护：用哈希保护口令的用途；依赖原像抗性和盐等额外机制。",
+          "设计信心转移：RIPEMD-160 论文希望通过加强版延续 RIPEMD 已积累的分析信心。"
+        ],
+        "en": [
+          "RIPEMD: RACE Integrity Primitives Evaluation Message Digest, an MD4-style hash family developed in the EU RIPE project.",
+          "RIPEMD-160: the 160-bit strengthened version of RIPEMD, with a 160-bit digest and two parallel 80-step lines.",
+          "RIPEMD-128: the 128-bit replacement version of RIPEMD, intended to replace the original RIPEMD.",
+          "Compression function: the core iteration mixing a five-word chaining value with one 512-bit message block.",
+          "Merkle-Damgård iteration: pad, call the compression function block by block, then output the chaining value.",
+          "Two-line structure: RIPEMD-160 runs left and right 80-step lines simultaneously and cross-adds them at the end.",
+          "Left line: the line using f(j), constants K, message order r and rotations s.",
+          "Right line: the line using f(79−j), constants K', message order r' and rotations s'.",
+          "f1–f5: the Boolean functions of the five rounds: XOR, conditional select, OR-NOT-XOR, a conditional-select variant, and XOR-OR-NOT.",
+          "K/K': the five round constants of the left/right lines; left is 00000000, 5a827999, 6ed9eba1, 8f1bbcdc, a953fd4e and right is 50a28be6, 5c4dd124, 6d703ef3, 7a6d76e9, 00000000.",
+          "r/r': the left/right message-word orders, each round a permutation of 0..15.",
+          "s/s': the left/right rotation amounts, cycling through four values per round.",
+          "ROTL10: rotate a 32-bit word left by 10; every line's D←ROTL10(C) uses it.",
+          "Cross feed-forward: after 80 steps, cross-add the left/right registers with the incoming chaining value in five ways.",
+          "Initial value (IV): h0=67452301, h1=efcdab89, h2=98badcfe, h3=10325476, h4=c3d2e1f0.",
+          "Padding: append 0x80, zero-pad to 56 mod 64 and append the 64-bit little-endian length; identical to MD4.",
+          "Little-endian: block words, the length field and the output all use low-order byte first.",
+          "160-bit digest: the output length of RIPEMD-160, corresponding to a birthday bound of about 2^80.",
+          "Birthday bound: generic collision search costs about 2^(n/2); a 160-bit digest gives 2^80.",
+          "Length extension: given H(M) and the length of M, compute H(M || pad(M) || X) without knowing M.",
+          "MAC: a keyed message authentication code; a hash alone is not a MAC and needs a keyed construction such as HMAC.",
+          "Key derivation: deriving keys from a shared secret or password; relies on output unpredictability.",
+          "Password protection: using a hash to protect passwords; relies on preimage resistance plus salt and other mechanisms.",
+          "Design-confidence transfer: the RIPEMD-160 paper aims to carry the analysis confidence built up with RIPEMD into the strengthened version."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ripemd160-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RIPEMD-160：双线结构的 160 位哈希：为什么需要 → 核心机制 → 边界。",
+            "en": "RIPEMD-160: the two-line 160-bit hash: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RIPEMD-160：双线结构的 160 位哈希 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RIPEMD-160: the two-line 160-bit hash, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ripemd160-details-flow.zh.svg",
+            "en": "assets/ripemd160-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "bd113867d74b75990dabff22f0e4e283b199936b1970578677e1875205e9fa4d",
+            "en": "2f1b716427096855b5b775d0a4b91823d803be76b3a3d643bd11bdea80332b8b"
+          }
+        },
+        {
+          "id": "ripemd160-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RIPEMD-160：双线结构的 160 位哈希 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RIPEMD-160: the two-line 160-bit hash: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RIPEMD-160：双线结构的 160 位哈希 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RIPEMD-160: the two-line 160-bit hash, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ripemd160-details-r138-model.zh.svg",
+            "en": "assets/ripemd160-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2aed5a647f9d7b5868691ed226db907222cb89d73219835a93e6c5056c3245d0",
+            "en": "53c5745dfde9d09a2dce279446667db85b503b9c61b3defef9ca7578fdf9a4ac"
+          }
+        }
+      ],
+      "sources": [
+        "ripemd160-wikipedia",
+        "ripemd160-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "ripemd-calc-paper-vectors",
+          "entryId": "ripemd160-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The eight Appendix B test values of the RIPEMD-160 paper (empty, a, abc, message digest, alphabet, alphanumeric, eight times 1234567890, 56-byte abcdbcde... string), plus an external one-million-a check, stored in vectors.json",
+          "expected": "The teaching implementation reproduces all eight Appendix B digests exactly, including empty=9c1185a5c5e9fc54612808977ee8f548b2258d31, abc=8eb208f7e05d987a9b044a8e98c6b087f15a0bfc and the 56-byte string=12a053384a9c0c88e405a06c27dcf49ada62eb2b; it also reproduces the external million-a value 52783243c1697bdbe16d37f97f68f08325dc1528",
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "dependencies": [
+            "ripemd160-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Eight Appendix B vectors plus one external Node/OpenSSL check; they check the algorithm, not any security property. The million-a value is not an Appendix B vector."
+        },
+        {
+          "id": "ripemd-calc-abc-trace",
+          "entryId": "ripemd160-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The abc single-block trace: block words, the first five left/right step values, the registers after steps 16/32/48/64/80, the cross-feed-forward values and the digest stored in vectors.json",
+          "expected": "The block words are X[0]=0x80636261 and X[14]=0x00000018; the left first step has f=0x67452301 and T=0x3115fc67; the right first step has T=0xddd63fb8; the 80-step register groups and cross-add values match the implementation; the digest is 8eb208f7e05d987a9b044a8e98c6b087f15a0bfc",
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "dependencies": [
+            "ripemd160-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One single-block trace; the per-group registers are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+        },
+        {
+          "id": "ripemd-calc-crosscheck",
+          "entryId": "ripemd160-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "19 deterministic cases produced with an external oracle (Node's OpenSSL-backed RIPEMD-160): lengths 0, 1, 8, 31, 32, 33, 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, plus a UTF-8 CJK input and eight NUL bytes",
+          "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths and the UTF-8/NUL cases",
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "dependencies": [
+            "ripemd160-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system RIPEMD-160 in Node/OpenSSL, a different codebase but not an independently certified one."
+        },
+        {
+          "id": "ripemd-calc-structure",
+          "entryId": "ripemd160-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The IV; K/K'; the r/r'/s/s' tables; padding boundaries; and negative controls for big-endian block parsing, a missing cross-feed-forward and swapped constant tables",
+          "expected": "The IV and tables match the paper; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; the big-endian, no-combine and wrong-constant digests all differ from the paper abc digest; the article js code block is a substring of ripemd160-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "dependencies": [
+            "ripemd160-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural invariants and negative controls only; they show the implementation follows the paper's shape and that the shape is load-bearing, but they prove nothing about security."
+        },
+        {
+          "id": "ripemd-calc-length-extension",
+          "entryId": "ripemd160-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The RIPEMD-160 digest of abc, the 64-byte padded length and the suffix extra; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+          "expected": "The state-based extension equals the direct RIPEMD-160 of the 69-byte extended message: 1f35150185a2c3cfc80d435934579261c99da3e0; the demo shows length extension, not a collision",
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "dependencies": [
+            "ripemd160-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "One structural demonstration on RIPEMD-160; it does not claim a collision, key recovery or a break of the full function."
+        },
+        {
+          "id": "ripemd160-r139-formal",
+          "entryId": "ripemd160-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "RIPEMD-160 散列 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "ripemd160-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ripemd-calc-paper-vectors",
+      "entryId": "ripemd160-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The eight Appendix B test values of the RIPEMD-160 paper (empty, a, abc, message digest, alphabet, alphanumeric, eight times 1234567890, 56-byte abcdbcde... string), plus an external one-million-a check, stored in vectors.json",
+      "expected": "The teaching implementation reproduces all eight Appendix B digests exactly, including empty=9c1185a5c5e9fc54612808977ee8f548b2258d31, abc=8eb208f7e05d987a9b044a8e98c6b087f15a0bfc and the 56-byte string=12a053384a9c0c88e405a06c27dcf49ada62eb2b; it also reproduces the external million-a value 52783243c1697bdbe16d37f97f68f08325dc1528",
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "dependencies": [
+        "ripemd160-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Eight Appendix B vectors plus one external Node/OpenSSL check; they check the algorithm, not any security property. The million-a value is not an Appendix B vector."
+    },
+    {
+      "id": "ripemd-calc-abc-trace",
+      "entryId": "ripemd160-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The abc single-block trace: block words, the first five left/right step values, the registers after steps 16/32/48/64/80, the cross-feed-forward values and the digest stored in vectors.json",
+      "expected": "The block words are X[0]=0x80636261 and X[14]=0x00000018; the left first step has f=0x67452301 and T=0x3115fc67; the right first step has T=0xddd63fb8; the 80-step register groups and cross-add values match the implementation; the digest is 8eb208f7e05d987a9b044a8e98c6b087f15a0bfc",
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "dependencies": [
+        "ripemd160-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One single-block trace; the per-group registers are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+    },
+    {
+      "id": "ripemd-calc-crosscheck",
+      "entryId": "ripemd160-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "19 deterministic cases produced with an external oracle (Node's OpenSSL-backed RIPEMD-160): lengths 0, 1, 8, 31, 32, 33, 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, plus a UTF-8 CJK input and eight NUL bytes",
+      "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths and the UTF-8/NUL cases",
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "dependencies": [
+        "ripemd160-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system RIPEMD-160 in Node/OpenSSL, a different codebase but not an independently certified one."
+    },
+    {
+      "id": "ripemd-calc-structure",
+      "entryId": "ripemd160-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The IV; K/K'; the r/r'/s/s' tables; padding boundaries; and negative controls for big-endian block parsing, a missing cross-feed-forward and swapped constant tables",
+      "expected": "The IV and tables match the paper; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; the big-endian, no-combine and wrong-constant digests all differ from the paper abc digest; the article js code block is a substring of ripemd160-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "dependencies": [
+        "ripemd160-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural invariants and negative controls only; they show the implementation follows the paper's shape and that the shape is load-bearing, but they prove nothing about security."
+    },
+    {
+      "id": "ripemd-calc-length-extension",
+      "entryId": "ripemd160-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The RIPEMD-160 digest of abc, the 64-byte padded length and the suffix extra; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+      "expected": "The state-based extension equals the direct RIPEMD-160 of the 69-byte extended message: 1f35150185a2c3cfc80d435934579261c99da3e0; the demo shows length extension, not a collision",
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "dependencies": [
+        "ripemd160-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "One structural demonstration on RIPEMD-160; it does not claim a collision, key recovery or a break of the full function."
+    },
+    {
+      "id": "ripemd160-r139-formal",
+      "entryId": "ripemd160-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "RIPEMD-160 散列 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "ripemd160-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

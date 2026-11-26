@@ -1,0 +1,63 @@
+[
+  {
+    "id": "caesar-known-examples",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "HELLO, VENI VIDI VICI and a pangram with k=3; decryption of each ciphertext",
+    "expected": "All three fixed examples match their independent known answers, including non-letter preservation",
+    "sourceIds": ["trinity-caesar", "hac-ch7"],
+    "dependencies": ["caesar-teaching.mjs"],
+    "limitations": "Fixed public examples only; not a security evaluation."
+  },
+  {
+    "id": "caesar-keyspace-enumeration",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All integers 0…25 applied to a fixed test alphabet",
+    "expected": "26 distinct transformations, 25 non-identity shifts, one identity, and exhaustive coverage",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["caesar-teaching.mjs"],
+    "limitations": "Counts the modern 26-letter key space only; other alphabets change the count."
+  },
+  {
+    "id": "caesar-exhaustive-recovery",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "600-letter public-domain plaintext, encrypted with k=17; all 26 candidate keys",
+    "expected": "The correct k=17 candidate is the unique candidate containing the letter sequence THE (no word boundaries), with 9 occurrences",
+    "expectedCipherSha256": "d25a018c36f3e43ef2eabb73d16e018cb1e72b56200c72d91063763088c6ce25",
+    "sourceIds": ["hac-ch7", "gutenberg-1342"],
+    "dependencies": ["caesar-teaching.mjs", "plaintext-en.txt"],
+    "limitations": "One fixed English corpus and one letter-sequence clue; substring counts are not standalone word counts, and success is not a proof that every short text is uniquely decrypted."
+  },
+  {
+    "id": "caesar-frequency-invariance",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "BANANA and its k=3 ciphertext; complete letter counts",
+    "expected": "The count multiset is permuted but unchanged, and the index of coincidence is identical",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["caesar-teaching.mjs"],
+    "limitations": "A finite hand-checkable example; it demonstrates structural preservation, not language identification."
+  },
+  {
+    "id": "caesar-short-ambiguity",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "One-letter ciphertext A and three-letter ciphertext WKH under all 26 shifts",
+    "expected": "The one-letter case yields 26 distinct plaintext candidates; WKH yields THE at k=3 among 26 candidates",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["caesar-teaching.mjs"],
+    "limitations": "Shows candidate multiplicity only; it does not claim that every three-letter candidate is a word."
+  },
+  {
+    "id": "caesar-rot13",
+    "entryId": "caesar-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "A fixed mixed-case sentence under k=13, applied twice",
+    "expected": "Two applications restore the input exactly, while one application changes every letter",
+    "sourceIds": ["hac-ch7"],
+    "dependencies": ["caesar-teaching.mjs"],
+    "limitations": "Arithmetic self-inverse demonstration only; ROT13 is not presented as security."
+  }
+]

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "puf-details",
+  "sources": [
+    {
+      "id": "puf-wikipedia",
+      "title": "Wikipedia search entry for 物理不可克隆函数",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 物理不可克隆函数",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "puf-r139-principle",
+          "entryId": "puf-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：物理不可克隆函数（Physically Unclonable Function）。### 挑战—响应与延时机制\n\nPUF 把制造随机性映射为挑战—响应：R=PUF(C)，同一芯片可重复、不同芯片不可克隆。Arbiter PUF 让两条路径在 k 级开关中赛跑，锁存器比较到达先后；响应带噪声，需纠错与模糊提取器恢复稳定密钥。### 延时与存储型\n\nArbiter PUF 的延迟差可写成 Δ=w^TΦ(C)；RO PUF 比较振荡器频率，SRAM PUF 用上电初值，蝶形 PUF 用交叉耦合锁存器。强 PUF 有指数级 CRP 空间，弱 PUF 只有少量 CRP。### 密钥派生\n\nenrollment 时采集多个 CRP，生成 helper data 与稳定密钥；重建时用 helper data 纠错。helper data 不能泄露密钥，通常配合模糊提取器和强提取器。",
+            "en": "**Algorithm**: Physically Unclonable Function (物理不可克隆函数).### Challenge–response and delay mechanism\n\nA PUF maps fabrication randomness to a challenge–response pair R=PUF(C): the same chip is repeatable and another chip cannot be cloned."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        },
+        {
+          "id": "puf-r139-why",
+          "entryId": "puf-details",
+          "section": "why",
+          "statement": {
+            "zh": "PUF 不把长期密钥存进 NVM，掉电即消失，能抵抗克隆和读出；成本低，适合 RFID、FPGA、IoT 和芯片根信任。它把“物理不可克隆”变成可测量的数值，用于设备身份、许可绑定和防伪；与安全元件不同，PUF 是密钥来源而不是完整协议。",
+            "en": "A PUF keeps no long-term key in NVM: the secret disappears when power is removed, resisting cloning and readout at low cost for RFID, FPGA, IoT and chip roots of trust.It turns “physically unclonable” into a measurable value for device identity, license binding and anti-counterfeiting."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        },
+        {
+          "id": "puf-r139-used",
+          "entryId": "puf-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于 FPGA IP 保护、设备认证、防伪标签、安全启动密钥释放和 TPM/root-of-trust；SRAM PUF 已商用，Arbiter/RO PUF 用于轻量认证。强 PUF 提供指数级 CRP 空间，适合无状态认证；弱 PUF 只有少量 CRP，适合密钥生成。",
+            "en": "PUFs are used for FPGA IP protection, device authentication, anti-counterfeiting labels, secure-boot key release and TPM/root-of-trust functions; SRAM PUFs are commercial, while arbiter and RO PUFs serve lightweight authentication.Strong PUFs offer an exponential CRP space for stateless authentication; weak PUFs have few CRPs and suit key generation."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        },
+        {
+          "id": "puf-r139-broken",
+          "entryId": "puf-details",
+          "section": "broken",
+          "statement": {
+            "zh": "延时 PUF 可用逻辑回归/机器学习建模：普通 Arbiter PUF 约 640 个 CRP 即可学习，XOR/Feed-Forward 变体需要更多但并非不可破；可靠性受温度、电压、老化影响。helper data 可能泄漏信息，故障注入和侵入式读取可破坏假设；PUF 不是加密算法，必须绑定挑战—响应协议、限速和防重放。### 形式模型。",
+            "en": "Delay PUFs are learnable with logistic regression and machine learning: a plain arbiter PUF falls at about 640 CRPs, while XOR and feed-forward variants need more but are not unbreakable.Reliability varies with temperature, voltage and aging."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        },
+        {
+          "id": "puf-r139-history",
+          "entryId": "puf-details",
+          "section": "history",
+          "statement": {
+            "zh": "2002 年 optical PUF 与 silicon PUF 提出；Suh–Devadas 2007 给出 Ring Oscillator PUF 与密钥生成；Rührmair 2010 系统展示建模攻击；此后 XOR PUF、轻量 PUF 与标准化讨论推进。它从硬件指纹发展为设备根信任，但安全证明仍依赖具体物理实现。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Optical and silicon PUFs appeared in 2002; Suh and Devadas gave a ring-oscillator PUF and key generation in 2007; Rührmair et al.systematically demonstrated modeling attacks in 2010; XOR PUFs, lightweight PUFs and standardization discussions followed."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        },
+        {
+          "id": "puf-r139-refs",
+          "entryId": "puf-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 物理不可克隆函数.https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 物理不可克隆函数.https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "puf-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "puf-wikipedia"
+      ]
+    },
+    {
+      "id": "puf-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "puf-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "puf-r139-principle",
+      "entryId": "puf-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：物理不可克隆函数（Physically Unclonable Function）。### 挑战—响应与延时机制\n\nPUF 把制造随机性映射为挑战—响应：R=PUF(C)，同一芯片可重复、不同芯片不可克隆。Arbiter PUF 让两条路径在 k 级开关中赛跑，锁存器比较到达先后；响应带噪声，需纠错与模糊提取器恢复稳定密钥。### 延时与存储型\n\nArbiter PUF 的延迟差可写成 Δ=w^TΦ(C)；RO PUF 比较振荡器频率，SRAM PUF 用上电初值，蝶形 PUF 用交叉耦合锁存器。强 PUF 有指数级 CRP 空间，弱 PUF 只有少量 CRP。### 密钥派生\n\nenrollment 时采集多个 CRP，生成 helper data 与稳定密钥；重建时用 helper data 纠错。helper data 不能泄露密钥，通常配合模糊提取器和强提取器。",
+        "en": "**Algorithm**: Physically Unclonable Function (物理不可克隆函数).### Challenge–response and delay mechanism\n\nA PUF maps fabrication randomness to a challenge–response pair R=PUF(C): the same chip is repeatable and another chip cannot be cloned."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    },
+    {
+      "id": "puf-r139-why",
+      "entryId": "puf-details",
+      "section": "why",
+      "statement": {
+        "zh": "PUF 不把长期密钥存进 NVM，掉电即消失，能抵抗克隆和读出；成本低，适合 RFID、FPGA、IoT 和芯片根信任。它把“物理不可克隆”变成可测量的数值，用于设备身份、许可绑定和防伪；与安全元件不同，PUF 是密钥来源而不是完整协议。",
+        "en": "A PUF keeps no long-term key in NVM: the secret disappears when power is removed, resisting cloning and readout at low cost for RFID, FPGA, IoT and chip roots of trust.It turns “physically unclonable” into a measurable value for device identity, license binding and anti-counterfeiting."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    },
+    {
+      "id": "puf-r139-used",
+      "entryId": "puf-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于 FPGA IP 保护、设备认证、防伪标签、安全启动密钥释放和 TPM/root-of-trust；SRAM PUF 已商用，Arbiter/RO PUF 用于轻量认证。强 PUF 提供指数级 CRP 空间，适合无状态认证；弱 PUF 只有少量 CRP，适合密钥生成。",
+        "en": "PUFs are used for FPGA IP protection, device authentication, anti-counterfeiting labels, secure-boot key release and TPM/root-of-trust functions; SRAM PUFs are commercial, while arbiter and RO PUFs serve lightweight authentication.Strong PUFs offer an exponential CRP space for stateless authentication; weak PUFs have few CRPs and suit key generation."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    },
+    {
+      "id": "puf-r139-broken",
+      "entryId": "puf-details",
+      "section": "broken",
+      "statement": {
+        "zh": "延时 PUF 可用逻辑回归/机器学习建模：普通 Arbiter PUF 约 640 个 CRP 即可学习，XOR/Feed-Forward 变体需要更多但并非不可破；可靠性受温度、电压、老化影响。helper data 可能泄漏信息，故障注入和侵入式读取可破坏假设；PUF 不是加密算法，必须绑定挑战—响应协议、限速和防重放。### 形式模型。",
+        "en": "Delay PUFs are learnable with logistic regression and machine learning: a plain arbiter PUF falls at about 640 CRPs, while XOR and feed-forward variants need more but are not unbreakable.Reliability varies with temperature, voltage and aging."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    },
+    {
+      "id": "puf-r139-history",
+      "entryId": "puf-details",
+      "section": "history",
+      "statement": {
+        "zh": "2002 年 optical PUF 与 silicon PUF 提出；Suh–Devadas 2007 给出 Ring Oscillator PUF 与密钥生成；Rührmair 2010 系统展示建模攻击；此后 XOR PUF、轻量 PUF 与标准化讨论推进。它从硬件指纹发展为设备根信任，但安全证明仍依赖具体物理实现。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：物理不可克隆函数的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Optical and silicon PUFs appeared in 2002; Suh and Devadas gave a ring-oscillator PUF and key generation in 2007; Rührmair et al.systematically demonstrated modeling attacks in 2010; XOR PUFs, lightweight PUFs and standardization discussions followed."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    },
+    {
+      "id": "puf-r139-refs",
+      "entryId": "puf-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 物理不可克隆函数.https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 物理不可克隆函数.https://zh.wikipedia.org/w/index.php?search=%E7%89%A9%E7%90%86%E4%B8%8D%E5%8F%AF%E5%85%8B%E9%9A%86%E5%87%BD%E6%95%B0\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "puf-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

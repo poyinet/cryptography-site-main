@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ascon-details",
+  "sources": [
+    {
+      "id": "ascon-wikipedia",
+      "title": "Wikipedia search entry for ASCON 轻量级密码族",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ASCON 轻量级密码族",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ascon-r139-principle",
+          "entryId": "ascon-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ASCON 轻量级密码族（ASCON）。### 320 位状态与 SPN 置换\n\nAscon 的所有模式共用一个 320 位状态，分成 5 个 64 位字。每轮做三步：S2 异或轮常数、64 个 5 位 S 盒并行替换、每个字内异或旋转副本做线性扩散。AEAD 初始化/收尾用 12 轮 p[12]，处理数据块用 8 轮 p[8]。### 双工 AEAD\n\nAscon-AEAD128 的 key、nonce、tag 都是 128 位，rate 128 位、capacity 192 位。初始化注入 K||N，AD 和明文按 128 位块注入并提取密文，每块后跑 p[8]；收尾再注入 K，输出 128 位标签。### 哈希与 XOF\n\nAscon-Hash256 用 64 位块吸收、256 位输出；Ascon-XOF128 可任意长度输出；它们与 AEAD 共享同一个置换。",
+            "en": "**Algorithm**: ASCON (ASCON 轻量级密码族).### 320-bit state and SPN permutation\n\nAll Ascon modes share a 320-bit state split into five 64-bit words."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        },
+        {
+          "id": "ascon-r139-why",
+          "entryId": "ascon-details",
+          "section": "why",
+          "statement": {
+            "zh": "ASCON 是 NIST 轻量密码标准：在 IoT、RFID、传感器和 8/16/32 位 MCU 上，AES-GCM 的查表或指令开销可能太大，而 Ascon 只用 AND/XOR/旋转和 5 位 S 盒，硬件面积小、软件可位切片。一个置换同时覆盖 AEAD、哈希和 XOF，减少芯片和固件里的密码原语数量。",
+            "en": "ASCON is NIST’s lightweight cryptography standard: on IoT, RFID, sensors and 8/16/32-bit MCUs, AES-GCM table or instruction overhead can be too high, while Ascon uses only AND/XOR/rotations and a 5-bit S-box, giving a small hardware footprint and bitsliced software.One permutation covers AEAD, hashing and XOF, reducing the number of cryptographic primitives in a chip or firmware image."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        },
+        {
+          "id": "ascon-r139-used",
+          "entryId": "ascon-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于 Ascon-AEAD128、Ascon-Hash256、Ascon-XOF128、Ascon-CXOF128；NIST SP 800-232 于 2025-08 正式发布。适合短消息、低功耗、硬件面积受限的设备。工程要点：nonce 必须唯一；标签可截断但至少 96/128 位；初始化/收尾用 p[12]，数据用 p[8]，不能混；侧信道防护要用 masked 实现；不要把它当 AES-GCM 的高吞吐替代。",
+            "en": "It is used for Ascon-AEAD128, Ascon-Hash256, Ascon-XOF128 and Ascon-CXOF128; NIST SP 800-232 was published in August 2025.It suits short messages, low power and area-constrained devices."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        },
+        {
+          "id": "ascon-r139-broken",
+          "entryId": "ascon-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Ascon-AEAD128 是 nonce-based AEAD：同一 key/nonce 加密不同消息会破坏机密性和认证；nonce 复用是最直接攻击面。",
+            "en": "Ascon-AEAD128 is a nonce-based AEAD: encrypting different messages under the same key and nonce breaks confidentiality and authenticity; nonce reuse is the most direct attack surface.Boundaries: 128-bit security is not 256-bit; tag truncation lowers forgery cost; power/EM side channels on low-power devices need masking; Ascon software is slower than AES-NI on 64-bit servers, so choose by platform."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        },
+        {
+          "id": "ascon-r139-history",
+          "entryId": "ascon-details",
+          "section": "history",
+          "statement": {
+            "zh": "ASCON 由 Dobraunig、Eichlseder、Mendel、Schläffer 设计，2014 年提交 CAESAR，2019 年入选 CAESAR 轻量 AEAD 组合；2023 年 2 月 NIST 宣布选择 Ascon 家族作为轻量密码标准；2024-11 发布 SP 800-232 初始草案，2025-08 正式发布。它的设计目标是低面积、位切片友好和在线认证，标准化主要使用 12/8 轮置换。**技术参数与复算边界**\n\n本条的形式模型是 \\(S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\)。输入：输入：ASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。",
+            "en": "ASCON was designed by Dobraunig, Eichlseder, Mendel and Schläffer, submitted to CAESAR in 2014 and selected for the CAESAR lightweight AEAD portfolio in 2019.NIST announced the Ascon family as its lightweight cryptography standard in February 2023, released the initial SP 800-232 draft in November 2024 and the final standard in August 2025."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        },
+        {
+          "id": "ascon-r139-refs",
+          "entryId": "ascon-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ASCON 轻量级密码族.https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ASCON 轻量级密码族.https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ascon-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ascon-wikipedia"
+      ]
+    },
+    {
+      "id": "ascon-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ascon-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ascon-r139-principle",
+      "entryId": "ascon-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ASCON 轻量级密码族（ASCON）。### 320 位状态与 SPN 置换\n\nAscon 的所有模式共用一个 320 位状态，分成 5 个 64 位字。每轮做三步：S2 异或轮常数、64 个 5 位 S 盒并行替换、每个字内异或旋转副本做线性扩散。AEAD 初始化/收尾用 12 轮 p[12]，处理数据块用 8 轮 p[8]。### 双工 AEAD\n\nAscon-AEAD128 的 key、nonce、tag 都是 128 位，rate 128 位、capacity 192 位。初始化注入 K||N，AD 和明文按 128 位块注入并提取密文，每块后跑 p[8]；收尾再注入 K，输出 128 位标签。### 哈希与 XOF\n\nAscon-Hash256 用 64 位块吸收、256 位输出；Ascon-XOF128 可任意长度输出；它们与 AEAD 共享同一个置换。",
+        "en": "**Algorithm**: ASCON (ASCON 轻量级密码族).### 320-bit state and SPN permutation\n\nAll Ascon modes share a 320-bit state split into five 64-bit words."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    },
+    {
+      "id": "ascon-r139-why",
+      "entryId": "ascon-details",
+      "section": "why",
+      "statement": {
+        "zh": "ASCON 是 NIST 轻量密码标准：在 IoT、RFID、传感器和 8/16/32 位 MCU 上，AES-GCM 的查表或指令开销可能太大，而 Ascon 只用 AND/XOR/旋转和 5 位 S 盒，硬件面积小、软件可位切片。一个置换同时覆盖 AEAD、哈希和 XOF，减少芯片和固件里的密码原语数量。",
+        "en": "ASCON is NIST’s lightweight cryptography standard: on IoT, RFID, sensors and 8/16/32-bit MCUs, AES-GCM table or instruction overhead can be too high, while Ascon uses only AND/XOR/rotations and a 5-bit S-box, giving a small hardware footprint and bitsliced software.One permutation covers AEAD, hashing and XOF, reducing the number of cryptographic primitives in a chip or firmware image."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    },
+    {
+      "id": "ascon-r139-used",
+      "entryId": "ascon-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于 Ascon-AEAD128、Ascon-Hash256、Ascon-XOF128、Ascon-CXOF128；NIST SP 800-232 于 2025-08 正式发布。适合短消息、低功耗、硬件面积受限的设备。工程要点：nonce 必须唯一；标签可截断但至少 96/128 位；初始化/收尾用 p[12]，数据用 p[8]，不能混；侧信道防护要用 masked 实现；不要把它当 AES-GCM 的高吞吐替代。",
+        "en": "It is used for Ascon-AEAD128, Ascon-Hash256, Ascon-XOF128 and Ascon-CXOF128; NIST SP 800-232 was published in August 2025.It suits short messages, low power and area-constrained devices."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    },
+    {
+      "id": "ascon-r139-broken",
+      "entryId": "ascon-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Ascon-AEAD128 是 nonce-based AEAD：同一 key/nonce 加密不同消息会破坏机密性和认证；nonce 复用是最直接攻击面。",
+        "en": "Ascon-AEAD128 is a nonce-based AEAD: encrypting different messages under the same key and nonce breaks confidentiality and authenticity; nonce reuse is the most direct attack surface.Boundaries: 128-bit security is not 256-bit; tag truncation lowers forgery cost; power/EM side channels on low-power devices need masking; Ascon software is slower than AES-NI on 64-bit servers, so choose by platform."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    },
+    {
+      "id": "ascon-r139-history",
+      "entryId": "ascon-details",
+      "section": "history",
+      "statement": {
+        "zh": "ASCON 由 Dobraunig、Eichlseder、Mendel、Schläffer 设计，2014 年提交 CAESAR，2019 年入选 CAESAR 轻量 AEAD 组合；2023 年 2 月 NIST 宣布选择 Ascon 家族作为轻量密码标准；2024-11 发布 SP 800-232 初始草案，2025-08 正式发布。它的设计目标是低面积、位切片友好和在线认证，标准化主要使用 12/8 轮置换。**技术参数与复算边界**\n\n本条的形式模型是 \\(S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\)。输入：输入：ASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。",
+        "en": "ASCON was designed by Dobraunig, Eichlseder, Mendel and Schläffer, submitted to CAESAR in 2014 and selected for the CAESAR lightweight AEAD portfolio in 2019.NIST announced the Ascon family as its lightweight cryptography standard in February 2023, released the initial SP 800-232 draft in November 2024 and the final standard in August 2025."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    },
+    {
+      "id": "ascon-r139-refs",
+      "entryId": "ascon-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ASCON 轻量级密码族.https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ASCON 轻量级密码族.https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ascon-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

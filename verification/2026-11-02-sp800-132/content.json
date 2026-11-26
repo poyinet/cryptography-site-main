@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for sp800-132: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-132-details",
+      "inventoryIds": [
+        "sp800-132"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释口令基密钥派生·存储应用（SP 800-132）的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "口令基密钥派生·存储应用（SP 800-132）",
+        "en": "Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132)"
+      },
+      "claimIds": [
+        "sp800-132-r139-principle",
+        "sp800-132-r139-why",
+        "sp800-132-r139-used",
+        "sp800-132-r139-broken",
+        "sp800-132-r139-history",
+        "sp800-132-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-132-wikipedia",
+        "sp800-132-reference-ref"
+      ],
+      "related": [
+        "pbkdf2",
+        "salt",
+        "key-derivation-function"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：口令基密钥派生·存储应用（SP 800-132）（Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132)）。摘要一句话说明规定对象：「This Recommendation specifies techniques for the derivation of master keys from passwords or passphrases to protect stored electronic data or data protection keys.」扉页把范围钉在存储：「Part 1: Storage Applications」，关键词行同样如此：「Password-Based Key Derivation Functions, Salt, Iteration Count, Protection of data in storage」。派生结果是主密钥，而不是直接当密钥使用的口令。引文中的 master keys 与 stored 两个词界定对象与用途：它规定把口令加工成主密钥的技术，而不是把口令直接当密钥使用。",
+          "why": "§1 给出的缺口是口令不够随机：「Due to the low entropy and possibly poor randomness of those passwords, they are not suitable to be used directly as cryptographic keys.」附录 A.1 把对手模型写实，假设离线穷举且算力占优：「When passwords are used to generate cryptographic keys, it is assumed that an attacker is able to perform an offline search attack on the key derivation process using a system of his own choosing, which may be much more powerful than the system used by the authorized user to generate the key from the password.」A.2 说明对策的原理：「The main idea of a PBKDF is to slow dictionary or brute force attacks on the passwords by increasing the time needed to test each password.」三段引文给出同一个理由：输入熵低，对手可在离线穷举且算力占优，可用的对策是提高每次测试所需的计算量。",
+          "used": "义务以 shall 写成。§4 限定派生结果的用途：「The MK shall not be used for other purposes.」§5 规定盐与迭代次数：「All or a portion of the salt shall be generated using an approved Random Bit Generator (e.g., see [5]).」、「The length of the randomly-generated portion of the salt shall be at least 128 bits.」与「The iteration count shall be selected as large as possible, as long as the time required to generate the key using the entered password is acceptable for the users.」§5.3 只批准一种构造：「This Recommendation approves PBKDF2 as the PBKDF using HMAC with any approved hash function as the PRF.」另有一条只到建议级：「A minimum iteration count of 1,000 is recommended.」。措辞层级因此不同：盐的来源与随机部分长度、迭代次数的选取是 shall，一千次只是 recommended，而被批准的构造只有一种。",
+          "broken": "限度一是对象与用途的划定。§5 直说「Since most user-chosen passwords have low entropy and weak randomness properties, as discussed in Appendix A.1, these passwords shall not be used directly as cryptographic keys.」派生步骤因此不可省略，本文件不提供把口令当密钥的捷径；扉页的分册名「Part 1: Storage Applications」把用途限定在被存储的数据与数据保护密钥。限度二是可验证性：附录 B 直说「However, some requirements are out-of-scope for such testing.」并把责任交出去：「This appendix lists those requirements whose conformance is the responsibility of entities using, implementing, installing or configuring applications or protocols that incorporate this Recommendation.」",
+          "history": "页眉行给出年份：「SP 800-132 Recommendation for Password-Based Key Derivation December 2010」，扉页另写「NIST Special Publication 800-132」与「Part 1: Storage Applications」，即 2010 年 12 月初版且无修订号。致谢页列出作者与所在部门，作者姓名在留存件里带变音符号（Sönmez），为使每段引文都能逐字核验，姓名写在引号外而不是并入引文；可核的部分为「Elaine Barker, William Burr, and Lily Chen of the National Institute of Standards and Technology (NIST)」与「would like to thank their colleagues at NIST, Shu-jen H.Chang, Morris Dworkin, Allen Roginsky, and John Kelsey」。本份文本亦无 DOI 行。",
+          "refs": "- Wikipedia search entry for 口令基密钥派生·存储应用（SP 800-132）. https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%9F%BA%E5%AF%86%E9%92%A5%E6%B4%BE%E7%94%9F%C2%B7%E5%AD%98%E5%82%A8%E5%BA%94%E7%94%A8%EF%BC%88SP%20800-132%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n口令基密钥派生·存储应用（SP 800-132）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132) (口令基密钥派生·存储应用（SP 800-132）). The abstract states the object in one sentence: \"This Recommendation specifies techniques for the derivation of master keys from passwords or passphrases to protect stored electronic data or data protection keys.\" The title block pins the range to storage, \"Part 1: Storage Applications\", and the keyword line agrees: \"Password-Based Key Derivation Functions, Salt, Iteration Count, Protection of data in storage\". The output is a master key, not a password used directly as a key. The words master keys and stored in those quotations fix the object and the use: the technique turns a password into a master key, and the range is data already in storage.",
+          "why": "Section 1 names the gap: passwords are not random enough, \"Due to the low entropy and possibly poor randomness of those passwords, they are not suitable to be used directly as cryptographic keys.\" Appendix A.1 makes the attacker model concrete, an offline exhaustive search on superior hardware: \"When passwords are used to generate cryptographic keys, it is assumed that an attacker is able to perform an offline search attack on the key derivation process using a system of his own choosing, which may be much more powerful than the system used by the authorized user to generate the key from the password.\" Appendix A.2 gives the countermeasure principle: \"The main idea of a PBKDF is to slow dictionary or brute force attacks on the passwords by increasing the time needed to test each password.\" The three quotations give one argument: the input is low-entropy, the attacker can search offline on hardware of their own choosing, and the available countermeasure is to raise the cost of each test.",
+          "used": "The obligations are written with shall. Section 4 bounds the use of the result: \"The MK shall not be used for other purposes.\" Section 5 fixes the salt and the iteration count: \"All or a portion of the salt shall be generated using an approved Random Bit Generator (e.g., see [5]).\", \"The length of the randomly-generated portion of the salt shall be at least 128 bits.\" and \"The iteration count shall be selected as large as possible, as long as the time required to generate the key using the entered password is acceptable for the users.\" Section 5.3 approves a single construction: \"This Recommendation approves PBKDF2 as the PBKDF using HMAC with any approved hash function as the PRF.\" One further value is advice rather than a requirement: \"A minimum iteration count of 1,000 is recommended.\" The wording levels differ: the salt source, the random-portion length and the iteration-count selection are shall requirements, the count of one thousand is stated as recommended, and a single construction is approved.",
+          "broken": "The first limit is how the document fixes its own object. Section 5 states it plainly: \"Since most user-chosen passwords have low entropy and weak randomness properties, as discussed in Appendix A.1, these passwords shall not be used directly as cryptographic keys.\" Derivation is therefore not optional and no shortcut for using a password as a key is offered; the part title on the title block, \"Part 1: Storage Applications\", confines the use to stored data and data protection keys. The second limit is testability: Appendix B states \"However, some requirements are out-of-scope for such testing.\" and hands those requirements over: \"This appendix lists those requirements whose conformance is the responsibility of entities using, implementing, installing or configuring applications or protocols that incorporate this Recommendation.\"",
+          "history": "The running head carries the date: \"SP 800-132 Recommendation for Password-Based Key Derivation December 2010\", and the title block reads \"NIST Special Publication 800-132\" with \"Part 1: Storage Applications\", a first edition dated December 2010 with no revision number. The acknowledgements list the authors and their affiliation; the first author's surname carries a diacritic in the retained text, so the name is given outside the quotation to keep every quoted span verbatim-checkable, while the checkable part reads \"Elaine Barker, William Burr, and Lily Chen of the National Institute of Standards and Technology (NIST)\" and \"would like to thank their colleagues at NIST, Shu-jen H. Chang, Morris Dworkin, Allen Roginsky, and John Kelsey\". This copy contains no DOI line.",
+          "refs": "- Wikipedia search entry for 口令基密钥派生·存储应用（SP 800-132）. https://zh.wikipedia.org/w/index.php?search=%E5%8F%A3%E4%BB%A4%E5%9F%BA%E5%AF%86%E9%92%A5%E6%B4%BE%E7%94%9F%C2%B7%E5%AD%98%E5%82%A8%E5%BA%94%E7%94%A8%EF%BC%88SP%20800-132%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nRecommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132): the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "PBKDF：以口令或密码短语为输入的密钥派生函数。",
+          "master key：由口令派生出的主密钥，缩写为 MK。",
+          "DPK：数据保护密钥，由 MK 生成或受 MK 保护。",
+          "salt：与口令一同进入派生的随机值，用来扩大可能的密钥集合。",
+          "iteration count：为派生一块密钥材料而重复调用 PRF 的次数。",
+          "PRF：伪随机函数，决定 PBKDF 家族中的每一个成员。"
+        ],
+        "en": [
+          "PBKDF: a password-based key derivation function taking a password or passphrase as input.",
+          "Master key: the key derived from the password, denoted MK.",
+          "DPK: data protection key, generated by or protected under the master key.",
+          "Salt: the value combined with the password during derivation, widening the set of possible keys.",
+          "Iteration count: the number of PRF calls used to generate one block of keying material.",
+          "PRF: pseudorandom function, which defines each member of the PBKDF family."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-132-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "口令基密钥派生·存储应用（SP 800-132）：为什么需要 → 核心机制 → 边界。",
+            "en": "Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "口令基密钥派生·存储应用（SP 800-132） 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-132-details-flow.zh.svg",
+            "en": "assets/sp800-132-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6c2e8d0f5676312282fd4e7cea1e604bbb48a67b7f43e7e876fa5a20e0b0d011",
+            "en": "bfbb9d2658acfb77ebe86a39a0d1ba5fc2d7dddbfb9291f7a6d21e05ab245a72"
+          }
+        },
+        {
+          "id": "sp800-132-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "口令基密钥派生·存储应用（SP 800-132） 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "口令基密钥派生·存储应用（SP 800-132） 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Recommendation for Password-Based Key Derivation Part 1 Storage Applications (SP 800-132), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-132-details-r138-model.zh.svg",
+            "en": "assets/sp800-132-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "35f032eba3926020dfa9f633924044a3e86efafc5c9b24b2c0f65ccbf4f6ba03",
+            "en": "cf5426e1de3bb69a324510bc8cb2bef039a2b734646ac9c4dd1ab414cf667727"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-132-r139-formal",
+          "entryId": "sp800-132-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：口令基密钥派生·存储应用（SP 800-132）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 口令基密钥派生·存储应用（SP 800-132） 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-132-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-132-r139-formal"
+      ],
+      "sources": [
+        "sp800-132-wikipedia",
+        "sp800-132-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-132-r139-formal",
+      "entryId": "sp800-132-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：口令基密钥派生·存储应用（SP 800-132）的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 口令基密钥派生·存储应用（SP 800-132） 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-132-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ripemd-calc-paper-vectors",
+    "entryId": "ripemd160-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The eight Appendix B test values of the RIPEMD-160 paper (empty, a, abc, message digest, alphabet, alphanumeric, eight times 1234567890, 56-byte abcdbcde... string), plus an external one-million-a check, stored in vectors.json",
+    "expected": "The teaching implementation reproduces all eight Appendix B digests exactly, including empty=9c1185a5c5e9fc54612808977ee8f548b2258d31, abc=8eb208f7e05d987a9b044a8e98c6b087f15a0bfc and the 56-byte string=12a053384a9c0c88e405a06c27dcf49ada62eb2b; it also reproduces the external million-a value 52783243c1697bdbe16d37f97f68f08325dc1528",
+    "sourceIds": [
+      "ripemd160-paper"
+    ],
+    "dependencies": [
+      "ripemd160-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Eight Appendix B vectors plus one external Node/OpenSSL check; they check the algorithm, not any security property. The million-a value is not an Appendix B vector."
+  },
+  {
+    "id": "ripemd-calc-abc-trace",
+    "entryId": "ripemd160-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The abc single-block trace: block words, the first five left/right step values, the registers after steps 16/32/48/64/80, the cross-feed-forward values and the digest stored in vectors.json",
+    "expected": "The block words are X[0]=0x80636261 and X[14]=0x00000018; the left first step has f=0x67452301 and T=0x3115fc67; the right first step has T=0xddd63fb8; the 80-step register groups and cross-add values match the implementation; the digest is 8eb208f7e05d987a9b044a8e98c6b087f15a0bfc",
+    "sourceIds": [
+      "ripemd160-paper"
+    ],
+    "dependencies": [
+      "ripemd160-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One single-block trace; the per-group registers are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+  },
+  {
+    "id": "ripemd-calc-crosscheck",
+    "entryId": "ripemd160-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "19 deterministic cases produced with an external oracle (Node's OpenSSL-backed RIPEMD-160): lengths 0, 1, 8, 31, 32, 33, 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, plus a UTF-8 CJK input and eight NUL bytes",
+    "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths and the UTF-8/NUL cases",
+    "sourceIds": [
+      "ripemd160-paper"
+    ],
+    "dependencies": [
+      "ripemd160-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system RIPEMD-160 in Node/OpenSSL, a different codebase but not an independently certified one."
+  },
+  {
+    "id": "ripemd-calc-structure",
+    "entryId": "ripemd160-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The IV; K/K'; the r/r'/s/s' tables; padding boundaries; and negative controls for big-endian block parsing, a missing cross-feed-forward and swapped constant tables",
+    "expected": "The IV and tables match the paper; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; the big-endian, no-combine and wrong-constant digests all differ from the paper abc digest; the article js code block is a substring of ripemd160-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+    "sourceIds": [
+      "ripemd160-paper",
+      "rfc1320"
+    ],
+    "dependencies": [
+      "ripemd160-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the implementation follows the paper's shape and that the shape is load-bearing, but they prove nothing about security."
+  },
+  {
+    "id": "ripemd-calc-length-extension",
+    "entryId": "ripemd160-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The RIPEMD-160 digest of abc, the 64-byte padded length and the suffix extra; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+    "expected": "The state-based extension equals the direct RIPEMD-160 of the 69-byte extended message: 1f35150185a2c3cfc80d435934579261c99da3e0; the demo shows length extension, not a collision",
+    "sourceIds": [
+      "ripemd160-paper"
+    ],
+    "dependencies": [
+      "ripemd160-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One structural demonstration on RIPEMD-160; it does not claim a collision, key recovery or a break of the full function."
+  }
+]

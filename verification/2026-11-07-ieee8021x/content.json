@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-07",
+  "scope": "Compact reference entry for ieee8021x: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ieee8021x-details",
+      "inventoryIds": [
+        "ieee8021x"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 基于端口的网络访问控制 的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Port-Based Network Access Control: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "基于端口的网络访问控制",
+        "en": "Port-Based Network Access Control"
+      },
+      "claimIds": [
+        "ieee8021x-r139-principle",
+        "ieee8021x-r139-why",
+        "ieee8021x-r139-used",
+        "ieee8021x-r139-broken",
+        "ieee8021x-r139-history",
+        "ieee8021x-r139-refs"
+      ],
+      "sourceIds": [
+        "ieee8021x-wikipedia",
+        "ieee8021x-reference-ref"
+      ],
+      "related": [
+        "eap",
+        "eap-tls",
+        "eap-ttls",
+        "radius",
+        "ieee8021ae",
+        "ieee8021ar"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：基于端口的网络访问控制（Port-Based Network Access Control）。基于端口的访问控制是一套角色模型，并在这个模型上挂着一个准入决定；而本行登记的文本是引用 IEEE 802.1X 的 EAP 规范，不是该标准本身，因此模型按这些 RFC 印出的样子描述。RFC 3748 第 1.2 节直接定义链路两端。认证器是 「The end of the link initiating EAP authentication.」（发起 EAP 认证的链路一端）（第 188 行），对端是 「The end of the link that responds to the authenticator.」（响应认证器的链路一端）（第 193 行）；同一条目接着说在该 IEEE 标准的词汇里 「this end is known as the Supplicant.」（这一端被称为 Supplicant）（第 194 行），而 Supplicant 条目在第 196-199 行把这一对应关系再说回去。第三个角色是后端认证服务器，即向认证器提供认证服务的实体（第 201-205 行）。承载这次交互、把它送过 IEEE 802 链路的封装方式是以引用而非复制来确定的：「The encapsulation of EAP over IEEE 802 is defined in [IEEE-802.1X].」（EAP 在 IEEE 802 之上的封装由 [IEEE-802.1X] 定义）（第 1035 行）。端口所执行的那个决定的定义很谨慎，它不只是密码学上的成功：一次成功认证是这样一段 「exchange of EAP messages, as a result of which the authenticator       decides to allow access by the peer, and the peer decides to use       this access.」（EAP 消息交换，其结果是认证器决定允许该对端接入，而对端也决定使用这一接入）（第 246-249 行，引文中的两处多空格是该文件自身的换行缩进）；文本还提醒已通过认证的对端仍可能被拒，接入可 「denied by the authenticator due to policy reasons.」（因策略原因被认证器拒绝）（第 252 行）。最后，执行点并不是一个二值闸门。RFC 3748 在第 2787-2790 行写道：「authentication failure will result in denied access to the controlled    port in [IEEE-802.1X], limited traffic may be permitted on the    uncontrolled port.」（认证失败会使对端被拒绝访问受控端口，而非受控端口上仍可能允许有限流量）。正是这一区分——一个端口被拒、另一个仍在承载有限流量——使 802.1X 端口的状态成为策略问题，而不是开关档位问题。",
+          "why": "这一设计选择先以优点的形式写出来：「One of the advantages of the EAP architecture is its flexibility.」（EAP 架构的优点之一是它的灵活性）（rfc3748.txt:152）。灵活性是用什么换来的，写在紧接着的段落第 155-160 行：与其要求认证器为每一种新的认证方法升级，EAP 允许使用一个可实现部分或全部方法的后端认证服务器，认证器对部分或全部方法与对端只作直通转发。于是一台端口控制设备不必为了支持新方法而变成密码学端点。代价在同一列表中点明（第 464-466 行）：把服务器与认证器分开会使安全性分析复杂化，也在需要时使密钥分发的分析复杂化。该架构还收窄了端口能够协商的内容。第 3.3 节 EAP Usage Within IEEE 802 说 「The IEEE 802 encapsulation of EAP does not involve PPP, and IEEE    802.1X does not include support for link or network layer    negotiations.」（EAP 在 IEEE 802 上的封装不涉及 PPP，而 IEEE 802.1X 不包含对链路层或网络层协商的支持）（第 1036-1038 行）；第 1038-1040 行由此推出的结论是，在 802.1X 之内无法协商 PAP 或 CHAP 等非 EAP 机制。这不是线路的限制，而是有意划定的范围：该层承载一次认证交换，别的都不承载。而这一层之所以被选中，取决于链路类型：第 144-150 行记录 EAP 可用于专用链路、交换电路、有线与无线介质，已在用 IEEE 802 的交换机与接入点上实现，且有线封装由该 IEEE 标准描述——把 EAP 直接放到局域网上的代价，就是接受这套基于端口的模型。",
+          "used": "802.1X 端口周围的部署图景，在 RFC 5281 里画得最清楚。它先从承载方式本已存在这一事实出发：「For example, PPP [RFC1661] or EAPOL [802.1X] may be used to    transport EAP between client and access point; RADIUS [RFC2865] or    Diameter [RFC3588] are used to transport EAP between access point and    TTLS server.」（例如可以用 PPP 或 EAPOL 在客户端与接入点之间承载 EAP，用 RADIUS 或 Diameter 在接入点与 TTLS 服务器之间承载 EAP）（rfc5281.txt:680-683；引文内部的四空格连续是该文件自身的换行缩进，未作抹平）。这一句在四行之间给出了完整拓扑——接入侧用局域网上的 EAP，服务器侧用 AAA 协议——而 EAPOL 正是那部 IEEE 标准所提供的封装。RFC 5281 自己定义的方法，「EAP-TTLS is an EAP (Extensible Authentication Protocol) method」（EAP-TTLS 是一种 EAP 方法）（第 25 行），又显示这一端口在实践中被用来做什么：它隧道化一个 TLS 会话，其数据阶段承载任意一种认证机制，第 33-40 行点名可能是 PAP、CHAP、MS-CHAP 或 MS-CHAP-V2，摘要在第 37-40 行把这说成让遗留的口令类协议仍能对上现有认证数据库，同时保护它们免受窃听与中间人攻击。与这条断言一并交代两点诚实说明。其一，本文档类别是 Informational（第 9 行），所以它是架构的证据，不是要求的证据。其二，本行登记的三份文件都不含 IEEE 标准的任何正文：它们复现的是该标准的角色名称与书目身份，而 rfc5281.txt:2710-2712 给出的身份是 「IEEE Standard 802.1X-2004, December 2004.」（IEEE Standard 802.1X-2004，2004 年 12 月），即这些文档写作时所依据的那个版本。",
+          "broken": "本文档陈明的限制是结构性的，其中最锋利的一条关乎对端究竟在向谁完成认证。当 EAP 服务器位于与认证器不同的机器上时，认证 「server, not between the peer and the authenticator.」（发生在对端与认证服务器之间，而不是发生在对端与认证器之间），因此正如第 3003-3006 行所说，对端不可能仅凭 EAP 来验证它正在对话的那个 「the authenticator that it is speaking to, using EAP alone.」（认证器的身份）（rfc3748.txt:3003-3006）。掌控端口的设备于是基于别的理由被信任，方法本身并不为它担保。第二个后果是结果令牌本身不属于认证方法：若正在运行的方法并不允许在此结束，则 「Success and Failure packets MUST NOT be sent by an EAP authenticator」（Success 与 Failure 分组不得由 EAP 认证器发送）（第 1300-1302 行）；默认情形下对端会静默丢弃一连接就发来的现成 Success 分组，这正是阻止假冒认证器靠提前宣告成功绕过相互认证的做法（第 1304-1309 行；canned 一词在原文里带文件自己的引号）。这些令牌不被确认，因而可能丢失，所以文本要求对端把下层成功指示当作 Success 分组丢失的证据来处理（第 1311-1315 行、第 1049-1053 行）。第三，协商本身是攻击面：「In a negotiation attack, the attacker attempts to convince the peer」（协商攻击中，攻击者试图说服对端） 与认证器去协商一个更弱的 EAP 方法，而 EAP 不为 Nak Response 分组提供任何保护（第 2762-2766 行）。第 2768-2776 行给出的对策是管理性的而非密码学的——每个具名对端身份只对应一种认证方法，于是可供挑选的方法集合根本不存在。第四，执行边界在设计上就会漏：「authentication failure will result in denied access to the controlled    port in [IEEE-802.1X], limited traffic may be permitted on the    uncontrolled port.」（认证失败会使对端被拒绝访问受控端口，而非受控端口上仍可能允许有限流量）（第 2787-2790 行）。非受控端口之所以存在，是为了承载认证本身，但它同时也是模型中攻击者始终能够接触的那一部分。",
+          "history": "RFC 5216 对这个模型做了两次定年，一次靠它自己的报头，一次靠它引用的版本。其报头（第 7-14 行）给出 2008 年 3 月，并印着 「Obsoletes: 2716」（取代 2716）。它的资料性参考文献（第 1615-1618 行）把该标准列为 「IEEE Standard 802.1X-2004」（IEEE Standard 802.1X-2004）、「December 2004.」（2004 年 12 月）——也就是说本行证据的留存件引用的是 2004 版，而这三个文件里没有印出任何更晚的版本；目录自身的来源行提到 2020 年修订，本行任何登记文本都不为它作证，因此不作断言。除书目之外，RFC 5216 自带一份角色模型，值得与 RFC 3748 对照：认证器是 「The entity initiating EAP authentication.」（发起 EAP 认证的实体）（第 147 行），对端是 「The entity that responds to the authenticator.」（响应认证器的实体）（第 150 行），而在该 IEEE 标准的词汇里 「this entity is known as the Supplicant.」（这一实体被称为 Supplicant）（第 151 行）——同一套对应关系由另一份文件再述一次，这正是本文把该术语视为共享词汇、而非 EAP 发明物的理由。两份 RFC 之间的变化记在 RFC 5216 自己的变更清单第 1749-1752 行：「As EAP is now in use with a variety of lower layers, not just PPP」（由于 EAP 如今已用于多种下层，而不只是它最初为之设计的 PPP），文本据此把 PPP 的提法收缩到 PPP 特有行为，并改而引用其他下层；第 1 节所列的其他下层里包括 「IEEE 802 wired networks」（IEEE 802 有线网络）（第 100-106 行），而那句话在第 105 行之前收住，因为第 105 行把一个 IEEE 802.11 的记号在行尾带连字符处断开。另有一条带日期的技术说明可以为这段历史收尾：EAP-TLS 自己的安全声明表（第 1302-1315 行）主张相互认证与抗字典攻击，同时把 channel binding 一栏印为 No，而这正是 RFC 3748 第 7.15 节就直通认证器所描述的那个缺口。",
+          "refs": "- Wikipedia search entry for 基于端口的网络访问控制. https://zh.wikipedia.org/w/index.php?search=%E5%9F%BA%E4%BA%8E%E7%AB%AF%E5%8F%A3%E7%9A%84%E7%BD%91%E7%BB%9C%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n基于端口的网络访问控制的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Port-Based Network Access Control (基于端口的网络访问控制). Port-based access control is a role model with a decision attached to it, and the registered texts here are the EAP specifications that reference IEEE 802.1X rather than the standard itself, so the model is described as those RFCs print it. RFC 3748 section 1.2 defines the two ends directly. The authenticator is “The end of the link initiating EAP authentication.” (line 188), and the peer is “The end of the link that responds to the authenticator.” (line 193); the same entry adds that in the IEEE standard's vocabulary “this end is known as the Supplicant.” (line 194), and the Supplicant entry reverses the mapping back at lines 196-199. A third role, the backend authentication server, is the entity that supplies the authentication service to an authenticator (lines 201-205). The encapsulation that carries the exchange over an IEEE 802 link is fixed by reference, not by reproduction: “The encapsulation of EAP over IEEE 802 is defined in [IEEE-802.1X].” (line 1035). The decision the port enforces is defined carefully, and it is not merely a cryptographic success: a successful authentication is an “exchange of EAP messages, as a result of which the authenticator       decides to allow access by the peer, and the peer decides to use       this access.” (lines 246-249), and the text warns that an authenticated peer may still be refused, with access “denied by the authenticator due to policy reasons.” (line 252). Finally the enforcement point is not a single binary gate. RFC 3748 describes it at lines 2787-2790: “authentication failure will result in denied access to the controlled    port in [IEEE-802.1X], limited traffic may be permitted on the    uncontrolled port.” That distinction - one port denied, another still carrying limited traffic - is what makes the state of an 802.1X port a policy question rather than a switch position.",
+          "why": "The design choice is stated as an advantage first: “One of the advantages of the EAP architecture is its flexibility.” (rfc3748.txt:152). What the flexibility is bought with is spelled out in the next paragraph, at lines 155-160: instead of requiring the authenticator to be updated for every new authentication method, EAP permits a backend authentication server that may implement some or all of the methods, with the authenticator acting as a pass-through for some or all methods and peers. A port-control device therefore does not have to become a cryptographic endpoint to support a new method. The cost is named in the same list, at lines 464-466: placing the server apart from the authenticator complicates the security analysis and, if needed, key distribution. The architecture also narrows what the port can negotiate. Section 3.3, EAP Usage Within IEEE 802, says “The IEEE 802 encapsulation of EAP does not involve PPP, and IEEE    802.1X does not include support for link or network layer    negotiations.” (lines 1036-1038); the consequence drawn at lines 1038-1040 is that non-EAP mechanisms such as PAP or CHAP cannot be negotiated inside 802.1X. This is not a limitation of the wire, it is a deliberate scoping decision: the layer carries an authentication exchange and nothing else. And the layer is chosen because the link type is: lines 144-150 record that EAP runs on dedicated links, switched circuits, wired and wireless media, that it has been implemented with switches and access points using IEEE 802, and that wired encapsulation is described in the IEEE standard, so the port-based model is the price of putting EAP directly onto a LAN.",
+          "used": "The deployment picture around an 802.1X port is drawn most clearly in RFC 5281. It starts from the fact that the carrier choices already exist: “For example, PPP [RFC1661] or EAPOL [802.1X] may be used to    transport EAP between client and access point; RADIUS [RFC2865] or    Diameter [RFC3588] are used to transport EAP between access point and    TTLS server.” (rfc5281.txt:680-683, with the four-space runs inside the quotation being the file's own line-wrap indentation). That sentence is the whole topology in one line pair - EAP over LANs on the access side, an AAA protocol on the server side - and EAPOL is the encapsulation the IEEE standard supplies. The method that RFC 5281 itself defines, “EAP-TTLS is an EAP (Extensible Authentication Protocol) method” (line 25), then shows what the port is used for in practice: it tunnels a TLS session whose data phase carries an arbitrary authentication mechanism, named at lines 33-40 as possibly PAP, CHAP, MS-CHAP or MS-CHAP-V2, which the abstract at lines 37-40 describes as allowing legacy password-based protocols to be used against existing authentication databases while protecting them against eavesdropping and man-in-the-middle attacks. Two honesty notes belong with this claim. First, this document is Informational (line 9), so it is evidence of the architecture, not of a requirement. Second, none of the three registered files contains any text of the IEEE standard itself: what they reproduce is its role names and its bibliographic identity, and rfc5281.txt:2710-2712 gives that identity as “IEEE Standard 802.1X-2004, December 2004.” - the edition these documents were written against.",
+          "broken": "The limits this document states are structural, and the sharpest one is about who the peer actually finishes authenticating to. Where the EAP server sits on a machine apart from the authenticator, “server, not between the peer and the authenticator.” and therefore, as lines 3003-3006 put it, it is not possible for the peer to validate the identity of “the authenticator that it is speaking to, using EAP alone.” (rfc3748.txt:3003-3006). The port-controlling device is thus trusted on other grounds; the method does not vouch for it. A second consequence is that the result tokens themselves are not a method: “Success and Failure packets MUST NOT be sent by an EAP authenticator” if the running method does not permit it to finish there (rfc3748.txt:1300-1302), and by default a peer silently discards a canned Success sent immediately on connection, which is what stops a rogue authenticator from bypassing mutual authentication by asserting success early (lines 1304-1309, where the word canned appears in the file's own quotation marks). The tokens are not acknowledged and may be lost, which is why a peer is told to treat a lower-layer success indication as evidence that a Success packet went missing (lines 1311-1315, 1049-1053). Third, negotiation is an attack surface: “In a negotiation attack, the attacker attempts to convince the peer” and to do it by pushing toward a weaker method, since EAP provides no protection for Nak Response packets (rfc3748.txt:2762-2766). The countermeasure in lines 2768-2776 is administrative rather than cryptographic - one authentication method per named peer identity, so a choice of methods never exists to be exploited. Fourth, the enforcement boundary leaks by design: “authentication failure will result in denied access to the controlled    port in [IEEE-802.1X], limited traffic may be permitted on the    uncontrolled port.” (lines 2787-2790). The uncontrolled port exists to carry the authentication itself, but it is also the part of the model an attacker always reaches.",
+          "history": "RFC 5216 dates the model twice, once by its own header and once by the edition it cites. Its own header (lines 7-14) gives March 2008 and prints “Obsoletes: 2716”. Its informative reference list (lines 1615-1618) names the standard as “IEEE Standard 802.1X-2004”, “December 2004.” - so the retained copy of this row's evidence cites the 2004 edition, and nothing in these three files prints any later edition; the catalogue's own source line mentions a 2020 revision, which no registered text here attests, so it is not asserted. Independently of the bibliography, RFC 5216 carries its own copy of the role model, and it is worth comparing with RFC 3748: the authenticator is “The entity initiating EAP authentication.” (line 147), the peer is “The entity that responds to the authenticator.” (line 150), and in the IEEE standard's vocabulary “this entity is known as the Supplicant.” (line 151) - the same mapping, stated again by a different document, which is why the terminology is treated here as shared rather than as an EAP invention. What changed between the two RFCs is recorded in RFC 5216's own change list at lines 1749-1752: “As EAP is now in use with a variety of lower layers, not just PPP”, for which it was first designed, has been widened and reference is now made to other lower layers (lines 1749-1752); section 1 states that list to include “IEEE 802 wired networks” among them (lines 100-106), and the sentence stops before line 105 because line 105 breaks the token IEEE 802.11 across a hyphenated line end. One dated technical note rounds this out: EAP-TLS's own security claims table at lines 1302-1315 asserts mutual authentication and dictionary-attack protection while printing channel binding as No, which is the same gap RFC 3748 section 7.15 describes for pass-through authenticators.",
+          "refs": "- Wikipedia search entry for 基于端口的网络访问控制. https://zh.wikipedia.org/w/index.php?search=%E5%9F%BA%E4%BA%8E%E7%AB%AF%E5%8F%A3%E7%9A%84%E7%BD%91%E7%BB%9C%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nPort-Based Network Access Control: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "认证器（authenticator）：链路上发起认证的一端，负责执行端口的开与关；RFC 3748 第 188 行与 RFC 5216 第 147 行都给出该定义。",
+          "对端与 Supplicant：响应认证器的一端；前者是 EAP 文件的用词，后者是该 IEEE 标准对该端的称呼。",
+          "后端认证服务器：向认证器提供认证服务、通常实际执行认证方法的实体，三处定义都注明该术语也用于该 IEEE 标准。",
+          "受控端口与非受控端口：认证失败时前者被拒绝访问，后者仍可能允许有限流量，以便认证交换本身能够进行。",
+          "EAPOL：在 IEEE 802 链路上承载认证交换的封装方式，RFC 3748 第 1035 行把它的定义交给该 IEEE 标准。",
+          "直通认证器：不自行结束认证方法、把消息转发给后端服务器的认证器；其代价是安全性分析与密钥分发变复杂。"
+        ],
+        "en": [
+          "authenticator: the end of the link that initiates the authentication and enforces the port; defined at rfc3748.txt:188 and again at rfc5216.txt:147.",
+          "peer and Supplicant: the end that responds to the authenticator; the first name is the one these RFCs use, the second is the name the IEEE standard uses for the same entity.",
+          "backend authentication server: the entity providing the authentication service to an authenticator and usually running the method; each definition notes the term is also used in the standard.",
+          "controlled and uncontrolled port: on a failed authentication the controlled port denies access while the uncontrolled port may still carry limited traffic, including the exchange itself.",
+          "EAPOL: the encapsulation that carries the authentication exchange over an IEEE 802 link; rfc3748.txt:1035 assigns its definition to the IEEE standard.",
+          "pass-through authenticator: an authenticator that forwards messages to a backend server instead of terminating the method, which is what complicates the security analysis."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ieee8021x-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "基于端口的网络访问控制：为什么需要 → 核心机制 → 边界。",
+            "en": "Port-Based Network Access Control: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "基于端口的网络访问控制 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Port-Based Network Access Control, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ieee8021x-details-flow.zh.svg",
+            "en": "assets/ieee8021x-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "427216a2d51d10deb054783b5ca042f977b9ac17ce237f8e79daab12be90abfd",
+            "en": "bd1e4685a55bfcf182281997beadb8652a4197ff610aab5195ab446ef03e6af6"
+          }
+        },
+        {
+          "id": "ieee8021x-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "基于端口的网络访问控制 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Port-Based Network Access Control: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "基于端口的网络访问控制 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Port-Based Network Access Control, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ieee8021x-details-r138-model.zh.svg",
+            "en": "assets/ieee8021x-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "fbbfbb2c59fb718bb1b9f4748952719286e0f48aaaae393cae4eb14ba8e96428",
+            "en": "e7738dadb886172fe499021ccf9577ab2ac49755ce42aad4967b17324ea4f626"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ieee8021x-r139-formal",
+          "entryId": "ieee8021x-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：基于端口的网络访问控制的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 基于端口的网络访问控制 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "ieee8021x-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ieee8021x-r139-formal"
+      ],
+      "sources": [
+        "ieee8021x-wikipedia",
+        "ieee8021x-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ieee8021x-r139-formal",
+      "entryId": "ieee8021x-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：基于端口的网络访问控制的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 基于端口的网络访问控制 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "ieee8021x-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

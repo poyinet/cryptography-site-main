@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 820" width="1240" height="820" role="img" aria-labelledby="fig-title fig-desc">
+<title id="fig-title">CTR 计数器模式：把分组密码变成密钥流</title>
+<desc id="fig-desc">术语 · 为什么—怎么做—哪里失效</desc>
+<rect x="0" y="0" width="1240" height="820" fill="#F7F5EF"/>
+<text x="60" y="54" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="16" font-weight="700" fill="#6B655C">术语</text>
+<text x="60" y="108" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="38" font-weight="800" fill="#1F1D1A">CTR 计数器模式：把分组密码变成密钥流</text>
+<text x="60" y="150" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#6B655C">从正文提炼的一条解释线：先看问题，再看机制，最后看失效条件。</text>
+<rect x="50" y="205" width="350" height="405" rx="22" fill="#FFFFFF" stroke="#4B3F9E" stroke-width="2"/>
+<rect x="72" y="227" width="42" height="42" rx="13" fill="#ECE9FA"/><text x="93" y="257" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="21" font-weight="800" fill="#4B3F9E" text-anchor="middle">1</text>
+<text x="74" y="310" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="22" font-weight="800" fill="#4B3F9E">定义</text>
+<text x="74" y="358" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">CTR 把分组密码从一次一个块的</text>
+<text x="74" y="389" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">链接结构里解放出来：没有填充、</text>
+<text x="74" y="420" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">没有串行依赖、可以并行、可以随</text>
+<text x="74" y="451" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">机访问。这使它在高吞吐存储、网</text>
+<text x="74" y="482" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">络处理和需要按块定位的场景中很</text>
+<text x="74" y="513" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">有吸引力。CTR 也是现代 AEAD</text>
+<text x="74" y="544" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">的加密核心。</text>
+<line x1="410" y1="400" x2="475" y2="400" stroke="#4B3F9E" stroke-width="3"/><path d="M465 393 L475 400 L465 407" fill="none" stroke="#4B3F9E" stroke-width="3"/>
+<rect x="445" y="205" width="350" height="405" rx="22" fill="#FFFFFF" stroke="#1F7A6A" stroke-width="2"/>
+<rect x="467" y="227" width="42" height="42" rx="13" fill="#E2F3EE"/><text x="488" y="257" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="21" font-weight="800" fill="#1F7A6A" text-anchor="middle">2</text>
+<text x="469" y="310" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="22" font-weight="800" fill="#1F7A6A">机制</text>
+<text x="469" y="358" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">CTR（Counter，计数器模式）不</text>
+<text x="469" y="389" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">直接加密明文，而是加密一串计数</text>
+<text x="469" y="420" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">器块，得到密钥流，再与明文异或：</text>
+<text x="469" y="451" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">其中 T_i 是第 i 个计数器块，</text>
+<text x="469" y="482" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">O_i 是密钥流块。加密和解密使</text>
+<text x="469" y="513" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="19" font-weight="500" fill="#1F1D1A">用同一个 E_K 操作，不需要 D_K。</text>
+<line x1="805" y1="400" x2="870" y2="400" stroke="#1F7A6A" stroke-width="3"/><path d="M860 393 L870 400 L860 407" fill="none" stroke="#1F7A6A" stroke-width="3"/>
+<rect x="840" y="205" width="350" height="405" rx="22" fill="#FFFFFF" stroke="#8A6100" stroke-width="2"/>
+<rect x="862" y="227" width="42" height="42" rx="13" fill="#FFF3CD"/><text x="883" y="257" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="21" font-weight="800" fill="#8A6100" text-anchor="middle">3</text>
+<text x="864" y="310" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="22" font-weight="800" fill="#8A6100">误用</text>
+<text x="864" y="358" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">同一密钥下重用初始计数器块，会</text>
+<text x="864" y="385" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">重复整段密钥流。两条消息的密文</text>
+<text x="864" y="412" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">异或等于两条明文的异或，攻击者</text>
+<text x="864" y="439" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">不需要密钥就能得到明文关系；如</text>
+<text x="864" y="466" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">果一条明文已知，另一条就可以恢</text>
+<text x="864" y="493" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">复。这不是泄露一个块，而是整段</text>
+<text x="864" y="520" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">消息的机密性失效。计数器字段是</text>
+<text x="864" y="547" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">有限的。</text>
+<rect x="60" y="650" width="1120" height="95" rx="18" fill="#ECE9FA"/>
+<text x="84" y="685" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="14" font-weight="800" fill="#4B3F9E">怎么用这张图</text>
+<text x="84" y="718" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="18" font-weight="500" fill="#1F1D1A">先读第一栏确认它解决的问题，再看中间一栏的机制，最后用第三栏的失效条件检验任何“绝对安全”的说法。</text>
+<line x1="60" y1="774" x2="1180" y2="774" stroke="#DED9CE" stroke-width="1.5"/><text x="60" y="800" font-family="'Noto Sans SC','Microsoft YaHei',Arial,sans-serif" font-size="14" fill="#6B655C">原创示意图 · CC BY 4.0 · poyi knowledge · 2026-11-21 · 文字摘自本篇正文</text>
+</svg>

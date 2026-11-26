@@ -1,0 +1,203 @@
+{
+  "results": [
+    {
+      "id": "clefia-calc-rfc-vectors",
+      "entryId": "clefia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5632fc6cec2dc6197ab4c950e062ae15730fd3551a6c451d5e6b6ee769729ad7",
+      "dependencyHashes": {
+        "clefia-teaching.mjs": "f8551a84394fad99580242a170c4a1c364ca1c506faf597cbdca6ef56eafa874",
+        "sboxes.json": "c59cfcc7ff7b0ca437a49b5fe11942e85e4e80ded63e1e24797ee1b3cd560377",
+        "vectors.json": "9fb0b18392e41fe2b7b5c5a8365722b4b9e342f17eda0671531a5c5d9ecb278a",
+        "article.zh.md": "a8f69312eb5cd1a64b45a2d2c2bb5a713f0e8452f084b2125633240ee10fc1a2",
+        "article.en.md": "dfec6834c9a839c1e598fe4ff92a67eb926afd5675e170dcff0daee1e1aef4a9",
+        "meta.json": "d1b3d79f96cb4aec596566690bd728ced44a9241f5512779c51f04b35b8708ec",
+        "glossary.json": "8db460917e019bb9eb3505612250e436b5bf049d2aebb937dd3c266076693636",
+        "calculations.json": "4a1340343f66f30d31bcc0fc47ed37c6dd3264fd0aff4362dd0117cc97fb59f2"
+      },
+      "inputs": "The three RFC 6114 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 000102030405060708090a0b0c0d0e0f",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix B L, WK, all 36 RK values, the whitened state, the round-1 F0/F1 details and the round-2 input also match",
+      "observed": {
+        "id": "clefia-calc-rfc-vectors",
+        "passed": true,
+        "vectors": 3,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "rounds": [
+          18,
+          22,
+          26
+        ],
+        "roundKeys": 36,
+        "limit": "Three fixed vectors with one plaintext each; a match does not establish security against cryptanalysis."
+      },
+      "contentSha256": "1f582f8f361d957e0ab1afd912e8344bded2dbead5c8e9c5b1fa64633fe9c2af",
+      "sourcesSha256": "e15c62e7831504e334a9f70370ea5083dabaf41429b0c552ab05b7180b07f08d",
+      "executedOn": "2026-11-25T07:04:17.026Z"
+    },
+    {
+      "id": "clefia-calc-key-schedule",
+      "entryId": "clefia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5632fc6cec2dc6197ab4c950e062ae15730fd3551a6c451d5e6b6ee769729ad7",
+      "dependencyHashes": {
+        "clefia-teaching.mjs": "f8551a84394fad99580242a170c4a1c364ca1c506faf597cbdca6ef56eafa874",
+        "sboxes.json": "c59cfcc7ff7b0ca437a49b5fe11942e85e4e80ded63e1e24797ee1b3cd560377",
+        "vectors.json": "9fb0b18392e41fe2b7b5c5a8365722b4b9e342f17eda0671531a5c5d9ecb278a",
+        "article.zh.md": "a8f69312eb5cd1a64b45a2d2c2bb5a713f0e8452f084b2125633240ee10fc1a2",
+        "article.en.md": "dfec6834c9a839c1e598fe4ff92a67eb926afd5675e170dcff0daee1e1aef4a9",
+        "meta.json": "d1b3d79f96cb4aec596566690bd728ced44a9241f5512779c51f04b35b8708ec",
+        "glossary.json": "8db460917e019bb9eb3505612250e436b5bf049d2aebb937dd3c266076693636",
+        "calculations.json": "4a1340343f66f30d31bcc0fc47ed37c6dd3264fd0aff4362dd0117cc97fb59f2"
+      },
+      "inputs": "The 128-bit test key, the CON_128/192/256 generation, the GFN4/GFN8 schedules and the Sigma double-swap",
+      "expected": "L=8f89a61b9db9d0f393e65627da0d027e; WK=ffeeddcc bbaa9988 77665544 33221100; all 36 RK values match Appendix B; the 128/192/256-bit schedules produce 36/44/52 round keys and 60/84/92 CON constants; CON_128[0..3]=f56b7aeb 994a8a42 96a4bd75 fa854521; Sigma(000102030405060708090a0b0c0d0e0f)=008101820283038f0010121416181a1c",
+      "observed": {
+        "id": "clefia-calc-key-schedule",
+        "passed": true,
+        "L": "8f89a61b9db9d0f393e65627da0d027e",
+        "WK": [
+          "ffeeddcc",
+          "bbaa9988",
+          "77665544",
+          "33221100"
+        ],
+        "firstRK": [
+          "f3e6cef9",
+          "8df75e38",
+          "41c06256",
+          "640ac51b"
+        ],
+        "lastRK": [
+          "a34a20f5",
+          "33265d14",
+          "b19d0554",
+          "5142f434"
+        ],
+        "roundKeyCounts": [
+          36,
+          44,
+          52
+        ],
+        "conCounts": [
+          60,
+          84,
+          92
+        ],
+        "sigma": "008101820283038f0010121416181a1c",
+        "limit": "Only the 128-bit key has published L/WK/RK intermediates; the 192/256-bit schedules are checked by their vectors and structural counts."
+      },
+      "contentSha256": "1f582f8f361d957e0ab1afd912e8344bded2dbead5c8e9c5b1fa64633fe9c2af",
+      "sourcesSha256": "e15c62e7831504e334a9f70370ea5083dabaf41429b0c552ab05b7180b07f08d",
+      "executedOn": "2026-11-25T07:04:17.026Z"
+    },
+    {
+      "id": "clefia-calc-components",
+      "entryId": "clefia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5632fc6cec2dc6197ab4c950e062ae15730fd3551a6c451d5e6b6ee769729ad7",
+      "dependencyHashes": {
+        "clefia-teaching.mjs": "f8551a84394fad99580242a170c4a1c364ca1c506faf597cbdca6ef56eafa874",
+        "sboxes.json": "c59cfcc7ff7b0ca437a49b5fe11942e85e4e80ded63e1e24797ee1b3cd560377",
+        "vectors.json": "9fb0b18392e41fe2b7b5c5a8365722b4b9e342f17eda0671531a5c5d9ecb278a",
+        "article.zh.md": "a8f69312eb5cd1a64b45a2d2c2bb5a713f0e8452f084b2125633240ee10fc1a2",
+        "article.en.md": "dfec6834c9a839c1e598fe4ff92a67eb926afd5675e170dcff0daee1e1aef4a9",
+        "meta.json": "d1b3d79f96cb4aec596566690bd728ced44a9241f5512779c51f04b35b8708ec",
+        "glossary.json": "8db460917e019bb9eb3505612250e436b5bf049d2aebb937dd3c266076693636",
+        "calculations.json": "4a1340343f66f30d31bcc0fc47ed37c6dd3264fd0aff4362dd0117cc97fb59f2"
+      },
+      "inputs": "RFC 6114 S0/S1, the F0/F1 round-1 details and the M0/M1 diffusion operation",
+      "expected": "S0 and S1 each have 256 entries; S0(0xAB)=0x7E; the round-1 F0 key-add/S/M values are F3E7CCFA/290246E1/547A3193 and the F1 values are 85FE5433/777DE8E8/ABF12070; GF(2^8) multiplication uses polynomial 0x1D",
+      "observed": {
+        "id": "clefia-calc-components",
+        "passed": true,
+        "sboxes": 2,
+        "entriesPerBox": 256,
+        "s0AB": "7e",
+        "f0AtZero": "bb80bb80",
+        "f1AtZero": "1a211a21",
+        "limit": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+      },
+      "contentSha256": "1f582f8f361d957e0ab1afd912e8344bded2dbead5c8e9c5b1fa64633fe9c2af",
+      "sourcesSha256": "e15c62e7831504e334a9f70370ea5083dabaf41429b0c552ab05b7180b07f08d",
+      "executedOn": "2026-11-25T07:04:17.026Z"
+    },
+    {
+      "id": "clefia-calc-roundtrip",
+      "entryId": "clefia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5632fc6cec2dc6197ab4c950e062ae15730fd3551a6c451d5e6b6ee769729ad7",
+      "dependencyHashes": {
+        "clefia-teaching.mjs": "f8551a84394fad99580242a170c4a1c364ca1c506faf597cbdca6ef56eafa874",
+        "sboxes.json": "c59cfcc7ff7b0ca437a49b5fe11942e85e4e80ded63e1e24797ee1b3cd560377",
+        "vectors.json": "9fb0b18392e41fe2b7b5c5a8365722b4b9e342f17eda0671531a5c5d9ecb278a",
+        "article.zh.md": "a8f69312eb5cd1a64b45a2d2c2bb5a713f0e8452f084b2125633240ee10fc1a2",
+        "article.en.md": "dfec6834c9a839c1e598fe4ff92a67eb926afd5675e170dcff0daee1e1aef4a9",
+        "meta.json": "d1b3d79f96cb4aec596566690bd728ced44a9241f5512779c51f04b35b8708ec",
+        "glossary.json": "8db460917e019bb9eb3505612250e436b5bf049d2aebb937dd3c266076693636",
+        "calculations.json": "4a1340343f66f30d31bcc0fc47ed37c6dd3264fd0aff4362dd0117cc97fb59f2"
+      },
+      "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+      "observed": {
+        "id": "clefia-calc-roundtrip",
+        "passed": true,
+        "roundTrips": 24,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "first": {
+          "keyBits": 128,
+          "plaintext": "00000000000000000000000000000000",
+          "ciphertext": "c5aaae9307f1f6926f66ae96e5f0607b"
+        },
+        "last": {
+          "keyBits": 256,
+          "plaintext": "ffeeddccbbaa99887766554433221100",
+          "ciphertext": "a5a4165d10a1adf4e15e3503df08fd7c"
+        },
+        "limit": "Deterministic round trips only; no modes, protocols, key management, side channels or randomness are tested."
+      },
+      "contentSha256": "1f582f8f361d957e0ab1afd912e8344bded2dbead5c8e9c5b1fa64633fe9c2af",
+      "sourcesSha256": "e15c62e7831504e334a9f70370ea5083dabaf41429b0c552ab05b7180b07f08d",
+      "executedOn": "2026-11-25T07:04:17.026Z"
+    },
+    {
+      "id": "clefia-r139-formal",
+      "entryId": "clefia-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5632fc6cec2dc6197ab4c950e062ae15730fd3551a6c451d5e6b6ee769729ad7",
+      "dependencyHashes": {
+        "clefia-teaching.mjs": "f8551a84394fad99580242a170c4a1c364ca1c506faf597cbdca6ef56eafa874",
+        "sboxes.json": "c59cfcc7ff7b0ca437a49b5fe11942e85e4e80ded63e1e24797ee1b3cd560377",
+        "vectors.json": "9fb0b18392e41fe2b7b5c5a8365722b4b9e342f17eda0671531a5c5d9ecb278a",
+        "article.zh.md": "a8f69312eb5cd1a64b45a2d2c2bb5a713f0e8452f084b2125633240ee10fc1a2",
+        "article.en.md": "dfec6834c9a839c1e598fe4ff92a67eb926afd5675e170dcff0daee1e1aef4a9",
+        "meta.json": "d1b3d79f96cb4aec596566690bd728ced44a9241f5512779c51f04b35b8708ec",
+        "glossary.json": "8db460917e019bb9eb3505612250e436b5bf049d2aebb937dd3c266076693636",
+        "calculations.json": "4a1340343f66f30d31bcc0fc47ed37c6dd3264fd0aff4362dd0117cc97fb59f2"
+      },
+      "inputs": "CLEFIA 轻量级分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "clefia-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "1f582f8f361d957e0ab1afd912e8344bded2dbead5c8e9c5b1fa64633fe9c2af",
+      "sourcesSha256": "e15c62e7831504e334a9f70370ea5083dabaf41429b0c552ab05b7180b07f08d",
+      "executedOn": "2026-11-25T07:29:57.704Z"
+    }
+  ]
+}

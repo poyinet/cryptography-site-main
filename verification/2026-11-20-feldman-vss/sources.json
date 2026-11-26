@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "feldman-vss-details",
+  "sources": [
+    {
+      "id": "feldman-vss-wikipedia",
+      "title": "Wikipedia search entry for Feldman 可验证秘密共享",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Feldman%20%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Feldman 可验证秘密共享",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "feldman-vss-r139-principle",
+          "entryId": "feldman-vss-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Feldman 可验证秘密共享（Verifiable Secret Sharing）。Feldman VSS 在 Shamir 秘密共享上增加公开承诺：分发者选择一个 t 次多项式 f，秘密是 f(0)，第 i 个份额是 f(i)。分发者公开 g^{a_j}（各系数的离散对数承诺）；每个参与者用自己的份额 i 检查 g^{f(i)} 是否等于承诺的组合。这样不用暴露份额，就能发现分发者给的份额是否来自同一个多项式。",
+            "en": "**Algorithm**: Verifiable Secret Sharing (Feldman 可验证秘密共享).Feldman VSS adds public commitments to Shamir secret sharing."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        },
+        {
+          "id": "feldman-vss-r139-why",
+          "entryId": "feldman-vss-details",
+          "section": "why",
+          "statement": {
+            "zh": "普通 Shamir 共享假设分发者诚实；一旦分发者给不同参与者不一致的份额，重构就会失败，而且很难判断谁在撒谎。Feldman 把“验证”变成非交互的公开检查，是阈值签名、分布式密钥生成和 MPC 的基础组件。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Plain Shamir sharing assumes an honest dealer.If the dealer gives inconsistent shares, reconstruction fails and it is hard to tell who lied."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        },
+        {
+          "id": "feldman-vss-r139-used",
+          "entryId": "feldman-vss-details",
+          "section": "used",
+          "statement": {
+            "zh": "分布式密钥生成、阈值签名、门限解密、区块链验证者集合的密钥分享。工程上常与 DKG 协议组合，先验证份额再重构或签名。",
+            "en": "Distributed key generation, threshold signatures, threshold decryption and key sharing among blockchain validators.Deployments combine it with DKG protocols: verify shares first, then reconstruct or sign."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        },
+        {
+          "id": "feldman-vss-r139-broken",
+          "entryId": "feldman-vss-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Feldman 的承诺是公开的，会泄露份额之间的代数关系；它不提供零知识，也不隐藏份额值。它只能检查分发者的一致性，不能阻止恶意参与者之后合谋或拒绝参与。承诺基于离散对数假设，群参数选错会破坏安全性。### 形式模型。",
+            "en": "Feldman commitments are public and leak algebraic relations among shares; the scheme is not zero-knowledge and does not hide share values.It detects dealer inconsistency but cannot stop malicious participants from colluding or refusing to participate later."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        },
+        {
+          "id": "feldman-vss-r139-history",
+          "entryId": "feldman-vss-details",
+          "section": "history",
+          "statement": {
+            "zh": "Feldman 在 1987 年 FOCS 提出该方案，把 Verifiable Secret Sharing 从交互式协议推向实用。此后 Pedersen VSS 用 Pedersen 承诺补上零知识隐藏，Gennaro 等人的 DKG 协议把 VSS 用于阈值密钥生成。它是 Shamir 共享最常被搭配的验证层。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Feldman 可验证秘密共享的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Feldman proposed the scheme at FOCS 1987, moving verifiable secret sharing from interactive protocols toward practical use.Pedersen VSS later added zero-knowledge hiding through Pedersen commitments, and Gennaro et al."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        },
+        {
+          "id": "feldman-vss-r139-refs",
+          "entryId": "feldman-vss-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Feldman 可验证秘密共享.https://zh.wikipedia.org/w/index.php?search=Feldman%20%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Feldman 可验证秘密共享.https://zh.wikipedia.org/w/index.php?search=Feldman%20%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "feldman-vss-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "feldman-vss-wikipedia"
+      ]
+    },
+    {
+      "id": "feldman-vss-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "feldman-vss-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "feldman-vss-r139-principle",
+      "entryId": "feldman-vss-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Feldman 可验证秘密共享（Verifiable Secret Sharing）。Feldman VSS 在 Shamir 秘密共享上增加公开承诺：分发者选择一个 t 次多项式 f，秘密是 f(0)，第 i 个份额是 f(i)。分发者公开 g^{a_j}（各系数的离散对数承诺）；每个参与者用自己的份额 i 检查 g^{f(i)} 是否等于承诺的组合。这样不用暴露份额，就能发现分发者给的份额是否来自同一个多项式。",
+        "en": "**Algorithm**: Verifiable Secret Sharing (Feldman 可验证秘密共享).Feldman VSS adds public commitments to Shamir secret sharing."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    },
+    {
+      "id": "feldman-vss-r139-why",
+      "entryId": "feldman-vss-details",
+      "section": "why",
+      "statement": {
+        "zh": "普通 Shamir 共享假设分发者诚实；一旦分发者给不同参与者不一致的份额，重构就会失败，而且很难判断谁在撒谎。Feldman 把“验证”变成非交互的公开检查，是阈值签名、分布式密钥生成和 MPC 的基础组件。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Plain Shamir sharing assumes an honest dealer.If the dealer gives inconsistent shares, reconstruction fails and it is hard to tell who lied."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    },
+    {
+      "id": "feldman-vss-r139-used",
+      "entryId": "feldman-vss-details",
+      "section": "used",
+      "statement": {
+        "zh": "分布式密钥生成、阈值签名、门限解密、区块链验证者集合的密钥分享。工程上常与 DKG 协议组合，先验证份额再重构或签名。",
+        "en": "Distributed key generation, threshold signatures, threshold decryption and key sharing among blockchain validators.Deployments combine it with DKG protocols: verify shares first, then reconstruct or sign."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    },
+    {
+      "id": "feldman-vss-r139-broken",
+      "entryId": "feldman-vss-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Feldman 的承诺是公开的，会泄露份额之间的代数关系；它不提供零知识，也不隐藏份额值。它只能检查分发者的一致性，不能阻止恶意参与者之后合谋或拒绝参与。承诺基于离散对数假设，群参数选错会破坏安全性。### 形式模型。",
+        "en": "Feldman commitments are public and leak algebraic relations among shares; the scheme is not zero-knowledge and does not hide share values.It detects dealer inconsistency but cannot stop malicious participants from colluding or refusing to participate later."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    },
+    {
+      "id": "feldman-vss-r139-history",
+      "entryId": "feldman-vss-details",
+      "section": "history",
+      "statement": {
+        "zh": "Feldman 在 1987 年 FOCS 提出该方案，把 Verifiable Secret Sharing 从交互式协议推向实用。此后 Pedersen VSS 用 Pedersen 承诺补上零知识隐藏，Gennaro 等人的 DKG 协议把 VSS 用于阈值密钥生成。它是 Shamir 共享最常被搭配的验证层。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Feldman 可验证秘密共享的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Feldman proposed the scheme at FOCS 1987, moving verifiable secret sharing from interactive protocols toward practical use.Pedersen VSS later added zero-knowledge hiding through Pedersen commitments, and Gennaro et al."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    },
+    {
+      "id": "feldman-vss-r139-refs",
+      "entryId": "feldman-vss-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Feldman 可验证秘密共享.https://zh.wikipedia.org/w/index.php?search=Feldman%20%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Feldman 可验证秘密共享.https://zh.wikipedia.org/w/index.php?search=Feldman%20%E5%8F%AF%E9%AA%8C%E8%AF%81%E7%A7%98%E5%AF%86%E5%85%B1%E4%BA%AB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "feldman-vss-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

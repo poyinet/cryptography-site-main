@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R121 formula-level deepening for gbt32907-details.",
+  "entries": [
+    {
+      "id": "gbt32907-details",
+      "inventoryIds": [
+        "gbt32907"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R121 公式级深化：把“SM4 分组密码算法”从机制结构条提升为公式级条目，给出轮函数/签名/密钥流/配对方程、参数、用途与失效边界；具体数值算例仍不冒充标准测试向量。",
+        "en": "R121 formula-level deepening: upgrades “SM4 Block Cipher Algorithm” from a mechanism-structure card to a formula-level entry with round/signature/keystream/pairing equations, parameters, use and failure boundary; numeric examples are not claimed as standard test vectors."
+      },
+      "title": {
+        "zh": "SM4 分组密码算法",
+        "en": "SM4 Block Cipher Algorithm"
+      },
+      "claimIds": [
+        "gbt32907-r139-principle",
+        "gbt32907-r139-why",
+        "gbt32907-r139-used",
+        "gbt32907-r139-broken",
+        "gbt32907-r139-history",
+        "gbt32907-r139-refs"
+      ],
+      "sourceIds": [
+        "gbt32907-wikipedia",
+        "gbt32907-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "des"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "gbt32907-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM4 公式级机制图：密钥扩展、32 轮、轮函数 T/L/τ、逆序解密与模式边界。",
+            "en": "SM4 formula-level mechanism: key schedule, 32 rounds, T/L/τ round function, reverse decryption and mode boundary."
+          },
+          "alt": {
+            "zh": "四步公式级机制：128 位密钥扩展 → 32 轮非线性迭代 → 128 位密文 → 逆序轮密钥解密；核心公式与参数边界。",
+            "en": "Four formula-level steps: 128-bit key schedule → 32 nonlinear rounds → 128-bit ciphertext → reverse-key decryption; core formulas and parameter boundary."
+          },
+          "files": {
+            "zh": "assets/gbt32907-mechanism.zh.svg",
+            "en": "assets/gbt32907-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引标准绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited standard)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "ff029d3110f6add95204d579780a45619c21fd6eeb3b1f53916c93a81ee97f43",
+            "en": "5ecfc5fb94318ff655fed8cc7b559a6be41a53e055bb4a3bc420962d0e19a8cd"
+          }
+        },
+        {
+          "id": "gbt32907-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM4 分组密码算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SM4 Block Cipher Algorithm: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SM4 分组密码算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SM4 Block Cipher Algorithm, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/gbt32907-details-r138-model.zh.svg",
+            "en": "assets/gbt32907-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cbbce8862fb5a554ead3414406b82d205c0aa53f37aac885c8315d9aa47e344e",
+            "en": "b58123ea4d3f759090e5863a194508fc9ab5575ed6607a08a451dae485ffad33"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**标准**：SM4 分组密码算法（SM4 Block Cipher Algorithm）。### 分组与轮函数\n\nSM4 使用 128 位分组和 128 位密钥，32 轮迭代。记第 i 轮状态为 X_i…X_{i+3}，则\n\nX_{i+4}=X_i⊕T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rk_i)，\n\n其中 T(B)=L(τ(B))：τ 对 4 个字节并行应用 S 盒，L(B)=B⊕(B≪2)⊕(B≪10)⊕(B≪18)⊕(B≪24)。### 密钥扩展\n\n初始 K0…K3 由 FK 常量与密钥异或得到；轮密钥按\n\nrk_i=K_{i+4}=K_i⊕T′(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i)\n\n生成，T′ 使用 L′(B)=B⊕(B≪13)⊕(B≪23)。解密与加密结构相同，只把 rk0…rk31 逆序使用。### 模式与认证\n\nSM4 本身只提供分组置换；ECB 不隐藏模式，CBC 需要独立 MAC，CTR 必须保证计数器/IV 不重用。TLS 1.3 的 AEAD_SM4_GCM 与 AEAD_SM4_CCM 把 SM4 作为底层分组密码，按 GCM/CCM 规则构造认证加密。",
+          "why": "SM4 以 32 轮非线性迭代获得扩散与混淆，128 位分组适合与 SM3、SM2 组成 TLS、IPSec 与密码模块套件。它的公开标准与测试向量使其成为可互操作的基线算法。SM4 是分组密码；SM3 是杂凑，SM2 是椭圆曲线公钥算法。三者常在同一协议中组合，但安全目标不同，不能互相替代。",
+          "used": "1.选模式：需要机密性且无认证时用 CBC+MAC 或 CTR+MAC；需要认证加密时用 GCM/CCM。2.管 IV：GCM 的 IV 必须唯一；CBC 的 IV 可公开但需不可预测；CTR 计数器不得回绕。3.管密钥：轮密钥由主密钥扩展，主密钥进入密码模块的保护边界。4.验向量：实现必须跑标准测试向量，并检查解密逆序轮密钥。### 不能怎么用\n\n不能把 ECB 用于多块消息；不能把 SM4 直接当 MAC；不能用固定 IV 复用 GCM 密钥。",
+          "broken": "1.模式误用：ECB 泄露块结构，CBC 无 MAC 可被填充/重放攻击，CTR/GCM 复用 IV 会破坏机密性或认证。2.实现泄漏：查表 S 盒与缓存访问可被侧信道；故障注入可跳过轮或破坏最后一轮。3.密钥管理：主密钥明文驻留、轮密钥未隔离、调试接口未关闭，都会绕过算法强度。4.过度声明：SM4 没有已知实用的全轮经典攻击，但这不等于所有实现都安全；该条目不给实现认证。",
+          "history": "SM4 最初以 SMS4 名称进入国内标准，2012 年进入 GM/T 序列，2016 年发布 GB/T 32907—2016；随后进入 ISO/IEC 18033-3，并在 RFC 8998（2021）中作为 TLS 1.3 的 SM4 套件底层分组密码。不同标准版本的测试向量、模式和接口要求可能不同；实现应以所声明版本为准，不能把该条目公式当作条款号替代。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：SM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 SM4 分组密码算法 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 读取标准规定的密钥/分组/模式参数 2. 按标准表换算等效强度 3. 取最弱分量作为系统强度。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for SM4 分组密码算法. https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: SM4 Block Cipher Algorithm (SM4 分组密码算法). ### Block and round function\n\nSM4 uses a 128-bit block and 128-bit key over 32 rounds. Let the round state be X_i…X_{i+3}; then\n\nX_{i+4}=X_i⊕T(X_{i+1}⊕X_{i+2}⊕X_{i+3}⊕rk_i),\n\nwhere T(B)=L(τ(B)): τ applies the S-box to four bytes in parallel, and L(B)=B⊕(B≪2)⊕(B≪10)⊕(B≪18)⊕(B≪24). ### Key schedule\n\nThe initial K0…K3 is formed from FK constants and the key; round keys follow\n\nrk_i=K_{i+4}=K_i⊕T′(K_{i+1}⊕K_{i+2}⊕K_{i+3}⊕CK_i),\n\nwith L′(B)=B⊕(B≪13)⊕(B≪23). Decryption uses the same structure with rk0…rk31 reversed. ### Modes and authentication\n\nSM4 is only a block permutation; ECB hides no pattern, CBC needs a separate MAC, and CTR requires a non-repeating counter/IV. TLS 1.3 AEAD_SM4_GCM and AEAD_SM4_CCM use SM4 as the underlying block cipher under GCM/CCM rules.",
+          "why": "SM4 obtains diffusion and confusion through 32 nonlinear rounds; its 128-bit block fits TLS, IPsec and cryptographic-module suites together with SM3 and SM2. Public standards and test vectors make it an interoperable baseline.\n\nSM4 is a block cipher; SM3 is a hash and SM2 is an elliptic-curve public-key scheme. They are combined in protocols but have different security goals and are not substitutes.",
+          "used": "1. Choose a mode: use CBC+MAC or CTR+MAC for confidentiality without built-in authentication; use GCM/CCM for authenticated encryption. 2. Manage IVs: GCM IVs must be unique; CBC IVs may be public but should be unpredictable; CTR counters must not wrap. 3. Manage keys: round keys are expanded from the master key, which stays inside the module boundary. 4. Verify vectors: run standard test vectors and check reverse-key decryption.\n\nDo not use ECB for multi-block messages; do not treat SM4 itself as a MAC; do not reuse a GCM key with a fixed IV.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Mode misuse: ECB leaks block structure, CBC without a MAC permits padding/replay attacks, and CTR/GCM IV reuse breaks confidentiality or authentication. 2. Implementation leakage: table-based S-boxes and cache access are side-channel targets; fault injection can skip rounds or corrupt the last round. 3. Key management: plaintext master keys, unisolated round keys and open debug interfaces bypass algorithmic strength. 4. Overclaiming: SM4 has no known practical full-round classical attack, but that does not make every implementation secure; this entry is not implementation certification.",
+          "history": "SM4 entered the domestic standard sequence as SMS4, moved into GM/T in 2012 and was published as GB/T 32907—2016 in 2016; it later entered ISO/IEC 18033-3 and became the block cipher behind the TLS 1.3 SM4 suites in RFC 8998 (2021).\n\nTest vectors, modes and interface requirements can differ between editions; implementations follow the edition they claim, and this entry is not a clause-number substitute.",
+          "refs": "- Wikipedia search entry for SM4 分组密码算法. https://zh.wikipedia.org/w/index.php?search=SM4%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nSM4 Block Cipher Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "gbt32907-r139-formal",
+          "entryId": "gbt32907-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：SM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 SM4 分组密码算法 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "gbt32907-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "gbt32907-r139-formal"
+      ],
+      "sources": [
+        "gbt32907-wikipedia",
+        "gbt32907-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "gbt32907-r139-formal",
+      "entryId": "gbt32907-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：SM4 分组密码算法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 SM4 分组密码算法 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "gbt32907-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

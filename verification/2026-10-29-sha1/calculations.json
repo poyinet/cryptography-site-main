@@ -1,0 +1,106 @@
+[
+  {
+    "id": "sha1-calc-rfc-suite",
+    "entryId": "sha1-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 3174 section 7.3's four test messages and printed digests, stored in vectors.json",
+    "expected": "The teaching implementation reproduces all four digests exactly: abc=a9993e364706816aba3e25717850c26c9cd0d89d, the 56-byte abcdbcde... string=84983e441c3bd26ebaae4aa1f95129e5e54670f1, one million 'a'=34aa973cd4c4daa4f61eeb2bdbad27316534016f and the 640-byte 01234567... string=dea356a2cddd90c7a7ecedc5ebb563934f460452",
+    "sourceIds": [
+      "rfc3174"
+    ],
+    "dependencies": [
+      "sha1-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Four unkeyed test messages only; they check conformance, not collision resistance or any security property."
+  },
+  {
+    "id": "sha1-calc-abc-trace",
+    "entryId": "sha1-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The single-block computation of abc: the padded block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first five step traces, the registers after each 20-step group, the feed-forward values and the final digest stored in vectors.json",
+    "expected": "The block words are derived from pad(abc); the first step has Ch(B,C,D)=0x98badcfe, ROTL5(A)=0xe8a4602c and T=0x0116fc33; the group registers and feed-forward values in vectors.json equal the teaching implementation's trace; the digest is a9993e364706816aba3e25717850c26c9cd0d89d",
+    "sourceIds": [
+      "fips180-4",
+      "rfc3174"
+    ],
+    "dependencies": [
+      "sha1-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+  },
+  {
+    "id": "sha1-calc-crosscheck",
+    "entryId": "sha1-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "18 deterministic cases produced with an external oracle (Node's OpenSSL-backed crypto.createHash('sha1')): empty, abc, the RFC 56-byte string, eight NUL bytes, a UTF-8 CJK string, one million 'a', the RFC 640-byte string, and LCG byte strings of lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129",
+    "expected": "Every stored oracle digest matches the teaching implementation, including all block-boundary lengths, the million-character input and the 640-byte RFC input",
+    "sourceIds": [
+      "fips180-4",
+      "rfc3174"
+    ],
+    "dependencies": [
+      "sha1-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-1 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+  },
+  {
+    "id": "sha1-calc-structure",
+    "entryId": "sha1-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The IV words; the 80 round constants; the message schedule formula; padding boundary cases; the abc block words; the published code block; and negative controls for a SHA-0-style schedule without the ROTL1, a schedule rotation by 2, a missing feed-forward and little-endian block parsing",
+    "expected": "The IV and the four constant groups match FIPS 180-4; the schedule's first expanded word is 0xc2c4c700; padding lengths 0/55/56/57/63/64/65 map to 64/64/128/128/128/128/128 bytes; each negative control fails to reproduce the RFC abc digest; the article's js code block is a substring of sha1-teaching.mjs; the Chinese and English articles expose the same hex-token set",
+    "sourceIds": [
+      "fips180-4",
+      "rfc3174"
+    ],
+    "dependencies": [
+      "sha1-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The SHA-0-style, rotation-2, no-feed-forward and little-endian digests are batch-generated controls; the calculation asserts only that each differs from the official RFC digest."
+  },
+  {
+    "id": "sha1-calc-hmac",
+    "entryId": "sha1-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 2202 section 3's seven HMAC-SHA-1 test cases (keys, messages and digests), stored in vectors.json",
+    "expected": "The teaching hmacSha1 reproduces all seven RFC 2202 digests, including Jefe/what do ya want for nothing?=effcdf6ae5eb2fa2d27416d5f184df9c259a7c79 and the 80-byte key case aa4ae5e15272d00e95705637ce8a3b55ed402112",
+    "sourceIds": [
+      "rfc2202",
+      "rfc6194"
+    ],
+    "dependencies": [
+      "sha1-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Seven HMAC-SHA-1 conformance vectors only; they do not establish the security of HMAC-SHA-1 in any particular protocol or key-management setting."
+  }
+]

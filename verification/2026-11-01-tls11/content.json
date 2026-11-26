@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for tls11: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "tls11-details",
+      "inventoryIds": [
+        "tls11"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「TLS 1.1」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of TLS 1.1: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "TLS 1.1",
+        "en": "TLS 1.1"
+      },
+      "claimIds": [
+        "tls11-r139-principle",
+        "tls11-r139-why",
+        "tls11-r139-used",
+        "tls11-r139-broken",
+        "tls11-r139-history",
+        "tls11-r139-refs"
+      ],
+      "sourceIds": [
+        "tls11-wikipedia",
+        "tls11-reference-ref",
+        "tls11-specific"
+      ],
+      "related": [
+        "tls10",
+        "tls12",
+        "initialization-vector",
+        "manger-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：TLS 1.1（TLS 1.1）。摘要只声明版本与用途：「This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol.The TLS protocol provides communications security over the Internet.」注意用词已是 communications security 而非 1.0 的 privacy；分层不变，但块加密记录的 IV 处理按本版改动（见 §6.2.3.2）。",
+          "why": "改动清单在 §1.1，头两条就是本版的目的：「The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].」与「Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.」前言自陈这只是「some small security improvements, clarifications, and editorial improvements」。",
+          "used": "记录层写下两条义务：接收方「MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.」；面对 Canvel 等人的计时攻击，「implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.」§9 的强制套件此时已是 TLS_RSA_WITH_3DES_EDE_CBC_SHA，附录 F.3 则说明本版「uses an explicit IV in order to protect against this attack.」",
+          "broken": "降级与静态密钥只剩部分处置：§7.4.7.1 写明版本回退检查是不对称的——「Client implementations, MUST and Server implementations MAY, check the version number.」，并把风险轻描淡写为「since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk」；填充错误的告警仍只是 SHOULD。压缩顺序也与 1.0 相同，未作禁止。",
+          "history": "RFC 4346 头部为 T.Dierks 与 E.Rescorla（RTFM, Inc.），类别 Standards Track，2006 年 4 月，标注「Obsoletes: 2246」，没有 Updates 行；§1.1 自陈是 TLS 1.0 的修订版。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：TLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 TLS 1.1 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for TLS 1.1. https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4346: The Transport Layer Security (TLS) Protocol Version 1.1. https://www.rfc-editor.org/rfc/rfc4346",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nTLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: TLS 1.1 (TLS 1.1). The abstract states version and purpose: \"This document specifies Version 1.1 of the Transport Layer Security (TLS) protocol. The TLS protocol provides communications security over the Internet.\" The wording is now security rather than the 1.0 privacy phrasing; the two-layer structure stays, while the IV handling inside block-ciphered records changes as described in §6.2.3.2.",
+          "why": "The change list sits in §1.1 and its first two items are the point of the release: \"The implicit Initialization Vector (IV) is replaced with an explicit IV to protect against CBC attacks [CBCATT].\" and \"Handling of padding errors is changed to use the bad_record_mac alert rather than the decryption_failed alert to protect against CBC attacks.\" The introduction describes itself as carrying \"some small security improvements, clarifications, and editorial improvements\".",
+          "used": "The record layer states two duties: the receiver \"MUST check this padding and SHOULD use the bad_record_mac alert to indicate padding errors.\", and against the Canvel timing work \"implementations MUST ensure that record processing time is essentially the same whether or not the padding is correct.\" The §9 mandatory suite is now TLS_RSA_WITH_3DES_EDE_CBC_SHA, and Appendix F.3 says this version \"uses an explicit IV in order to protect against this attack.\"\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Downgrade and static-key exposure are only partly handled here: §7.4.7.1 makes the version check asymmetric — \"Client implementations, MUST and Server implementations MAY, check the version number.\" — and plays down the risk, \"since the TLS handshake MACs prevent downgrade and no good attacks are known on those MACs, ambiguity is not considered a serious security risk\". The padding-error alert is still only a SHOULD, and the record order still compresses before encryption without forbidding compression.",
+          "history": "The RFC 4346 header lists T. Dierks and E. Rescorla (RTFM, Inc.), Category: Standards Track, April 2006, marked \"Obsoletes: 2246\" with no Updates line; §1.1 presents the document as a revision of TLS 1.0.",
+          "refs": "- Wikipedia search entry for TLS 1.1. https://zh.wikipedia.org/w/index.php?search=TLS%201.1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4346: The Transport Layer Security (TLS) Protocol Version 1.1. https://www.rfc-editor.org/rfc/rfc4346",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nTLS 1.1: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "显式 IV：每记录自带 IV，取代 CBC 残值。",
+          "bad_record_mac：填充错误改用的单一告警。",
+          "[CBCATT]：本版本针对的 CBC 攻击类别。",
+          "等时处理：填充对错须花相同时间。",
+          "回退版本检查：客户端 MUST、服务器 MAY。",
+          "Obsoletes: 2246：取代 TLS 1.0 记录。"
+        ],
+        "en": [
+          "Explicit IV: each record carries its own IV instead of the CBC residue.",
+          "bad_record_mac: the single alert now used for padding errors.",
+          "[CBCATT]: the class of CBC attacks this version targets.",
+          "Constant-time handling: padding validity must not change timing.",
+          "Rollback check asymmetric: MUST for clients, MAY for servers.",
+          "Obsoletes: 2246: the record that supersedes TLS 1.0."
+        ]
+      },
+      "figures": [
+        {
+          "id": "tls11-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 1.1：为什么需要 → 核心机制 → 边界。",
+            "en": "TLS 1.1: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TLS 1.1 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for TLS 1.1, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/tls11-details-flow.zh.svg",
+            "en": "assets/tls11-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ff5db6cc30acdee3c9a8012ab2f8e4cf15b958a15541b1a342b47e2d6c55bda2",
+            "en": "6bc8625e0d5c8fa5fefa48349389c6b689d252109b10558e7616a8eb117a4879"
+          }
+        },
+        {
+          "id": "tls11-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 1.1 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for TLS 1.1: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "TLS 1.1 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for TLS 1.1, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/tls11-details-r138-model.zh.svg",
+            "en": "assets/tls11-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1dc646cd6fb29ead4d7e4788c606ec71ca8189789c8687596d03b13b7b28c79d",
+            "en": "7cf09427d7990a79128df42d796b8db1374d63a563426b55e030061f7f8e3d85"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "tls11-r139-formal",
+          "entryId": "tls11-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：TLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 TLS 1.1 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "tls11-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "tls11-r139-formal"
+      ],
+      "sources": [
+        "tls11-wikipedia",
+        "tls11-reference-ref",
+        "tls11-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tls11-r139-formal",
+      "entryId": "tls11-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：TLS 1.1的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 TLS 1.1 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "tls11-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

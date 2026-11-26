@@ -1,0 +1,352 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full CLEFIA algorithm article only; no completion claim for PRESENT, LEA, AES, Camellia, ISO/IEC 29192-2 as a whole, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "clefia-details",
+      "inventoryIds": [
+        "clefia"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 CLEFIA 这一种 128 位轻量级分组密码：128/192/256 位密钥、18/22/26 轮、4 分支广义 Feistel、F0/F1、S0/S1、M0/M1、Sigma、CON 常量、128/192/256 位密钥调度、RFC 6114 附录 A 的三组向量和附录 B 的中间值；不把 PRESENT、LEA、AES、Camellia、ISO/IEC 29192-2 整体或工作模式并入本实体。",
+        "en": "Covers the CLEFIA 128-bit lightweight block cipher: 128/192/256-bit keys, 18/22/26 rounds, the 4-branch generalized Feistel network, F0/F1, S0/S1, M0/M1, Sigma, the CON constants, the 128/192/256-bit key schedules, the three Appendix A vectors and the Appendix B intermediates. It does not absorb PRESENT, LEA, AES, Camellia, ISO/IEC 29192-2 as a whole, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "CLEFIA：4 分支广义 Feistel 轻量级分组密码",
+        "en": "CLEFIA: a 4-branch generalized Feistel lightweight block cipher"
+      },
+      "claimIds": [
+        "clefia-r139-principle",
+        "clefia-r139-why",
+        "clefia-r139-used",
+        "clefia-r139-broken",
+        "clefia-r139-history",
+        "clefia-r139-refs"
+      ],
+      "calculationIds": [
+        "clefia-calc-rfc-vectors",
+        "clefia-calc-key-schedule",
+        "clefia-calc-components",
+        "clefia-calc-roundtrip",
+        "clefia-r139-formal"
+      ],
+      "sourceIds": [
+        "clefia-wikipedia",
+        "clefia-reference-ref"
+      ],
+      "related": [
+        "present",
+        "lea",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：CLEFIA 轻量级分组密码（CLEFIA）。CLEFIA 是 128 位分组密码，密钥长度为 128、192 或 256 位，分别使用 18、22、26 轮。它采用 4 分支广义 Feistel 网络（GFN4），接口与 AES 兼容：固定 128 位块，三种密钥长度。数据随机化部分把 128 位明文分成四个 32 位字 P0..P3。加密先用 WK0、WK1 对 P1、P3 做白化，再执行 GFN4，最后用 WK2、WK3 做白化：\n\n```text\nT0 = P0\nT1 = P1 XOR WK0\nT2 = P2\nT3 = P3 XOR WK1\nY = GFN4(RK0..RK(2r-1), T)\nC0 = Y0\nC1 = Y1 XOR WK2\nC2 = Y2\nC3 = Y3 XOR WK3\n```\n\n```text\nT1 = T1 XOR F0(RK(2i), T0)\nT3 = T3 XOR F1(RK(2i+1), T2)\n(T0, T1, T2, T3) = (T1, T2, T3, T0)\n```\n\nr 轮之后输出 `T3 | T0 | T1 | T2`。解密使用 GFNINV4,r：轮密钥按相反顺序使用，每轮后把四个字循环右移，最后用 WK0、WK1 去白化。F0 和 F1 是两种 32 位轮函数。F0 先计算 `T = RK XOR x`，把 T 的四个字节依次送入 S0、S1、S0、S1，再乘 M0；F1 依次送入 S1、S0、S1、S0，再乘 M1：\n\n```text\nF0: T = RK XOR x; T0=S0(T0), T1=S1(T1), T2=S0(T2), T3=S1(T3); y = M0(T)\nF1: T = RK XOR x; T0=S1(T0), T1=S0(T1), T2=S1(T2), T3=S0(T3); y = M1(T)\n```\n\nS0 和 S1 是两个 8 位 S-box，各 256 项。S0 基于四个 4 位 S-box，S1 基于 GF(2^8) 上的求逆；规范给出的样例是 `S0(0xAB)=0x7E`。M0 和 M1 是 4x4 扩散矩阵：\n\n```text\nM0:\ny0 = T0 ^ 02*T1 ^ 04*T2 ^ 06*T3\ny1 = 02*T0 ^ T1 ^ 06*T2 ^ 04*T3\ny2 = 04*T0 ^ 06*T1 ^ T2 ^ 02*T3\ny3 = 06*T0 ^ 04*T1 ^ 02*T2 ^ T3\n\nM1:\ny0 = T0 ^ 08*T1 ^ 02*T2 ^ 0A*T3\ny1 = 08*T0 ^ T1 ^ 0A*T2 ^ 02*T3\ny2 = 02*T0 ^ 0A*T1 ^ T2 ^ 08*T3\ny3 = 0A*T0 ^ 02*T1 ^ 08*T2 ^ T3\n```\n\n乘法在 GF(2^8) 中进行，域多项式是 `z^8 + z^4 + z^3 + z^2 + 1`（低 8 位 0x1D）。密钥调度分三种长度。128 位密钥先用 GFN4,12 和 24 个 CON 常量生成 128 位中间密钥 L，再生成 WK 和 36 个 RK：\n\n```text\nL = GFN4,12(CON_128[0..23], K0..K3)\nWK0..WK3 = K0..K3\nfor i = 0..8:\n  T = L XOR (CON_128[24+4i] | CON_128[25+4i] | CON_128[26+4i] | CON_128[27+4i])\n  L = Sigma(L)\n  if i is odd: T = T XOR K\n  RK[4i..4i+3] = T\n```\n\nSigma 是 128 位 DoubleSwap 位重排：\n\n```text\nY = Sigma(X) = X[7..63] | X[121..127] | X[0..6] | X[64..120]\n```\n\n192 和 256 位密钥先构造 KL、KR：192 位时 `KR = K4|K5|~K0|~K1`，256 位时 `KR = K4|K5|K6|K7`。然后用 GFN8,10 和 40 个 CON 常量生成 LL、LR：\n\n```text\nLL | LR = GFN8,10(CON_k[0..39], KL0..KL3, KR0..KR3)\nWK = KL XOR KR\nfor i = 0..10 (192) 或 0..12 (256):\n  if i mod 4 = 0 or 1:\n    T = LL XOR CON_k[40+4i..43+4i]; LL = Sigma(LL); if i is odd: T = T XOR KR\n  else:\n    T = LR XOR CON_k[40+4i..43+4i]; LR = Sigma(LR); if i is odd: T = T XOR KL\n  RK[4i..4i+3] = T\n```\n\nGFN8,r 对八个 32 位字做 r 轮，每轮更新 T1、T3、T5、T7（分别用 F0、F1、F0、F1），然后把八个字循环左移一位。它只用于 192/256 位密钥调度，不用于数据随机化。CON_k 常量由 P=0xB7E1 和 Q=0x243F 生成：\n\n```text\nCON_k[2i]   = (T_i XOR P) | (~T_i <<< 1)\nCON_k[2i+1] = (~T_i XOR Q) | (T_i <<< 8)\nT_(i+1)     = T_i * (0x0002^-1)\n```\n\n乘法在 GF(2^16) 中，域多项式是 `z^16+z^15+z^13+z^11+z^5+z^4+1`。128/192/256 位分别需要 60/84/92 个常量，初始值 T_0 是 0x428A、0x7137、0xB5C0。",
+          "why": "RFC 6114 说 CLEFIA 是 2007 年基于当时最新技术设计的轻量级 128 位分组密码。它能在 0.13 微米标准 CMOS ASIC 库中实现于 3 Kgates 以内，同时提供 128/192/256 位安全强度和较高的软硬件性能；许多轻量级算法牺牲安全性或速度，CLEFIA 试图在两者之间取得平衡。它被提议纳入 ISO/IEC 29192-2 和日本 CRYPTREC 的电子政务推荐密码修订。RFC 6114 第 7 节说，CLEFIA 的完整轮在公开评审中没有发现安全弱点，设计者和独立密码学家都没有报告。这是 2011 年 RFC 的评估，不是对全部攻击模型的形式化证明。",
+          "used": "CLEFIA 的标准化位置是 ISO/IEC 29192-2。该标准 2019 年第二版把 CLEFIA 与 PRESENT、LEA 一起列为适合轻量密码实现的分组密码：PRESENT 是 64 位块、80/128 位密钥；CLEFIA 是 128 位块、128/192/256 位密钥；LEA 也是 128 位块、128/192/256 位密钥。ISO 页面显示该版本在 2025 年 3 月仍被确认有效。RFC 6114 附录 A 给出三组向量，明文都是 `000102030405060708090A0B0C0D0E0F`：\n\n```text\n128 位密钥 = FFEEDDCCBBAA99887766554433221100\n密文       = DE2BF2FD9B74AACDF1298555459494FD\n\n192 位密钥 = FFEEDDCCBBAA99887766554433221100F0E0D0C0B0A09080\n密文       = E2482F649F028DC480DDA184FDE181AD\n\n256 位密钥 = FFEEDDCCBBAA99887766554433221100F0E0D0C0B0A090807060504030201000\n密文       = A1397814289DE80C10DA46D1FA48B38A\n```\n\n附录 B 还给出 128 位密钥的完整中间值：`L=8F89A61B9DB9D0F393E65627DA0D027E`，`WK0..3=FFEEDDCC BBAA9988 77665544 33221100`，以及 `RK0..35` 共 36 个 32 位轮密钥。它还列出白化后的状态和每轮 F 函数的 key add、S、M 值。本文的实现逐项复现这些值，因此不仅校验最终密文，也校验密钥调度和轮函数。",
+          "broken": "RFC 6114 的「no security weaknesses have been found for full-round CLEFIA to date」（完整轮未发现弱点）是 2011 年文档中的公开评审总结，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把它扩大成绝对安全结论，也不引用未经本文核实的攻击论文来宣称 CLEFIA 已被攻破。CLEFIA 的部署位置需要区分：它是 Sony 设计的轻量级算法，2007 年发表，被提议纳入 ISO/IEC 29192-2 和 CRYPTREC 的电子政务推荐密码修订；ISO/IEC 29192-2:2019 正式把它与 PRESENT、LEA 并列为轻量级分组密码。本文不把它说成通用协议的默认算法；`被标准化`不等于`在所有协议中默认可用`。实现层面，本文的教学实现按字节查 S0/S1 并做 32 位异或和 GF(2^8) 乘法，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。CLEFIA 只定义分组密码，协议层必须自己处理这些事项。",
+          "history": "CLEFIA 的算法在 2007 年发表，由 Sony 设计，目标是面向资源受限设备的轻量级密码。RFC 6114 由 M.Katagi 和 S.Moriai（Sony Corporation）在 2011 年 3 月发表，类别是 Informational，属于 Independent Submission；它给出算法、组件、密钥调度、测试向量和中间值。RFC 6114 说 CLEFIA 自发表以来经过公开评审，没有被报告安全弱点，并被提议纳入 ISO/IEC 29192-2 和日本 CRYPTREC 的电子政务推荐密码修订。ISO/IEC 29192-2:2019 第二版把 CLEFIA 与 PRESENT、LEA 一起列为适合轻量密码实现的三种分组密码，该版本在 2025 年 3 月仍被确认有效。本文的 CLEFIA 实体只指这一种 128 位分组密码；PRESENT、LEA、AES、Camellia 是其他实体，ISO/IEC 29192-2 是把 CLEFIA 与 PRESENT、LEA 并列标准化的文件，不是算法本身。",
+          "refs": "- Wikipedia search entry for CLEFIA 轻量级分组密码. https://zh.wikipedia.org/w/index.php?search=CLEFIA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: CLEFIA (CLEFIA 轻量级分组密码). CLEFIA is a 128-bit block cipher with 128-, 192- or 256-bit keys using 18, 22 or 26 rounds. It uses a 4-branch generalized Feistel network (GFN4) and is compatible with the AES interface: a fixed 128-bit block and three key lengths. The data randomizing part splits the 128-bit plaintext into four 32-bit words P0..P3. Encryption whitens P1 and P3 with WK0 and WK1, runs GFN4, and whitens the output with WK2 and WK3:\n\n```text\nT0 = P0\nT1 = P1 XOR WK0\nT2 = P2\nT3 = P3 XOR WK1\nY = GFN4(RK0..RK(2r-1), T)\nC0 = Y0\nC1 = Y1 XOR WK2\nC2 = Y2\nC3 = Y3 XOR WK3\n```\n\nEach round of GFN4,r is:\n\n```text\nT1 = T1 XOR F0(RK(2i), T0)\nT3 = T3 XOR F1(RK(2i+1), T2)\n(T0, T1, T2, T3) = (T1, T2, T3, T0)\n```\n\nAfter r rounds the output is `T3 | T0 | T1 | T2`. Decryption uses GFNINV4,r with the round keys in reverse order and a right word rotation after each round, then removes whitening with WK0 and WK1. F0 and F1 are the two 32-bit round functions. F0 computes `T = RK XOR x`, sends the four bytes of T through S0, S1, S0 and S1, and multiplies by M0; F1 sends them through S1, S0, S1 and S0 and multiplies by M1:\n\n```text\nF0: T = RK XOR x; T0=S0(T0), T1=S1(T1), T2=S0(T2), T3=S1(T3); y = M0(T)\nF1: T = RK XOR x; T0=S1(T0), T1=S0(T1), T2=S1(T2), T3=S0(T3); y = M1(T)\n```\n\nS0 and S1 are two 8-bit S-boxes with 256 entries each. S0 is based on four 4-bit S-boxes, and S1 is based on inversion over GF(2^8); the specification's example is `S0(0xAB)=0x7E`. M0 and M1 are 4x4 diffusion matrices:\n\n```text\nM0:\ny0 = T0 ^ 02*T1 ^ 04*T2 ^ 06*T3\ny1 = 02*T0 ^ T1 ^ 06*T2 ^ 04*T3\ny2 = 04*T0 ^ 06*T1 ^ T2 ^ 02*T3\ny3 = 06*T0 ^ 04*T1 ^ 02*T2 ^ T3\n\nM1:\ny0 = T0 ^ 08*T1 ^ 02*T2 ^ 0A*T3\ny1 = 08*T0 ^ T1 ^ 0A*T2 ^ 02*T3\ny2 = 02*T0 ^ 0A*T1 ^ T2 ^ 08*T3\ny3 = 0A*T0 ^ 02*T1 ^ 08*T2 ^ T3\n```\n\nMultiplication is in GF(2^8) with polynomial `z^8 + z^4 + z^3 + z^2 + 1` (low eight bits 0x1D). The key schedule has three variants. A 128-bit key first uses GFN4,12 with 24 CON constants to generate the 128-bit intermediate L, then produces WK and 36 RK values:\n\n```text\nL = GFN4,12(CON_128[0..23], K0..K3)\nWK0..WK3 = K0..K3\nfor i = 0..8:\n  T = L XOR (CON_128[24+4i] | CON_128[25+4i] | CON_128[26+4i] | CON_128[27+4i])\n  L = Sigma(L)\n  if i is odd: T = T XOR K\n  RK[4i..4i+3] = T\n```\n\nSigma is the 128-bit DoubleSwap bit permutation:\n\n```text\nY = Sigma(X) = X[7..63] | X[121..127] | X[0..6] | X[64..120]\n```\n\nBit 0 is the most significant bit. For 192- and 256-bit keys, KL and KR are formed first: for 192 bits `KR = K4|K5|~K0|~K1`, and for 256 bits `KR = K4|K5|K6|K7`. GFN8,10 with 40 CON constants then generates LL and LR:\n\n```text\nLL | LR = GFN8,10(CON_k[0..39], KL0..KL3, KR0..KR3)\nWK = KL XOR KR\nfor i = 0..10 (192) or 0..12 (256):\n  if i mod 4 = 0 or 1:\n    T = LL XOR CON_k[40+4i..43+4i]; LL = Sigma(LL); if i is odd: T = T XOR KR\n  else:\n    T = LR XOR CON_k[40+4i..43+4i]; LR = Sigma(LR); if i is odd: T = T XOR KL\n  RK[4i..4i+3] = T\n```\n\nGFN8,r runs r rounds over eight 32-bit words, updating T1, T3, T5 and T7 with F0, F1, F0 and F1 and rotating the eight words left by one position each round. It is used only in the 192/256-bit key schedule, not in the data randomizing part. The CON_k constants are generated from P=0xB7E1 and Q=0x243F:\n\n```text\nCON_k[2i]   = (T_i XOR P) | (~T_i <<< 1)\nCON_k[2i+1] = (~T_i XOR Q) | (T_i <<< 8)\nT_(i+1)     = T_i * (0x0002^-1)\n```\n\nMultiplication is in GF(2^16) with polynomial `z^16+z^15+z^13+z^11+z^5+z^4+1`. The 128/192/256-bit schedules need 60/84/92 constants, with T_0 initialized to 0x428A, 0x7137 and 0xB5C0.",
+          "why": "RFC 6114 says CLEFIA is a lightweight 128-bit block cipher designed in 2007 with state-of-the-art techniques. It can be implemented within 3 Kgates using a 0.13-micron standard CMOS ASIC library while offering 128/192/256-bit security and high software and hardware performance; many lightweight algorithms sacrifice security or speed, and CLEFIA aims at a balance. It is proposed for ISO/IEC 29192-2 and the CRYPTREC revision of Japan's e-Government recommended ciphers.\n\nRFC 6114 Section 7 says no security weakness has been found for full-round CLEFIA in public scrutiny, neither by the designers nor by independent cryptographers. This is a 2011 RFC assessment, not a formal proof against every attack model.",
+          "used": "CLEFIA's standardization position is ISO/IEC 29192-2. Edition 2 (2019) lists CLEFIA with PRESENT and LEA as block ciphers suitable for lightweight cryptographic implementations: PRESENT has a 64-bit block and 80/128-bit keys; CLEFIA has a 128-bit block and 128/192/256-bit keys; LEA also has a 128-bit block and 128/192/256-bit keys. The ISO page shows that the edition was confirmed as current in March 2025.\n\nRFC 6114 Appendix A gives three vectors, all with plaintext `000102030405060708090A0B0C0D0E0F`:\n\n```text\n128-bit key = FFEEDDCCBBAA99887766554433221100\nciphertext  = DE2BF2FD9B74AACDF1298555459494FD\n\n192-bit key = FFEEDDCCBBAA99887766554433221100F0E0D0C0B0A09080\nciphertext  = E2482F649F028DC480DDA184FDE181AD\n\n256-bit key = FFEEDDCCBBAA99887766554433221100F0E0D0C0B0A090807060504030201000\nciphertext  = A1397814289DE80C10DA46D1FA48B38A\n```\n\nAppendix B also gives the full 128-bit intermediates: `L=8F89A61B9DB9D0F393E65627DA0D027E`, `WK0..3=FFEEDDCC BBAA9988 77665544 33221100`, and all 36 32-bit `RK0..35` values. It also lists the whitened state and each round's F-function key-add, S and M values. The implementation reproduces these values, so it checks the key schedule and round functions rather than only the final ciphertext.",
+          "broken": "RFC 6114's \"no security weaknesses have been found for full-round CLEFIA to date\" is a summary of public scrutiny in a 2011 document, not a formal proof against every attack model, and it does not guarantee that no better analysis will appear. This article does not expand it into an absolute security claim, and it does not cite unverified attack papers to claim that CLEFIA has been broken.\n\nCLEFIA's deployment position needs to be stated carefully: it is a lightweight algorithm designed by Sony, published in 2007, and proposed for ISO/IEC 29192-2 and the CRYPTREC revision of Japan's e-Government recommended ciphers; ISO/IEC 29192-2:2019 formally lists it with PRESENT and LEA as lightweight block ciphers. This article does not present it as a default algorithm for general protocols; being standardized does not mean it is available by default in every protocol.\n\nAt the implementation level, this article's teaching code performs byte-indexed lookups in S0/S1 and 32-bit XORs and GF(2^8) multiplications and is not constant-time; caches and timing may leak key-dependent access patterns. It does not generate keys and implements no mode of operation, IV management, padding, integrity protection or side-channel defence, so it must not be used to protect real data. CLEFIA defines only a block cipher; the protocol layer must handle those matters.",
+          "history": "The CLEFIA algorithm was published in 2007 and designed by Sony for lightweight cryptography on resource-constrained devices. RFC 6114 was published by M. Katagi and S. Moriai (Sony Corporation) in March 2011 with Informational category as an Independent Submission; it provides the algorithm, components, key schedule, test vectors and intermediate values.\n\nRFC 6114 says CLEFIA has been publicly scrutinized since publication with no reported security weaknesses, and was proposed for ISO/IEC 29192-2 and the CRYPTREC revision of Japan's e-Government recommended ciphers. ISO/IEC 29192-2:2019 Edition 2 lists CLEFIA with PRESENT and LEA as three block ciphers suitable for lightweight implementations, and that edition was confirmed as current in March 2025.\n\nThis article's CLEFIA entity is the 128-bit block cipher only; PRESENT, LEA, AES and Camellia are separate entities, and ISO/IEC 29192-2 is the standardization document that lists CLEFIA with PRESENT and LEA, not the algorithm itself.",
+          "refs": "- Wikipedia search entry for CLEFIA 轻量级分组密码. https://zh.wikipedia.org/w/index.php?search=CLEFIA%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "CLEFIA：Sony 2007 年发表的 128 位轻量级分组密码，ISO/IEC 29192-2 收录。",
+          "128 位块：CLEFIA 的明文和密文单位，分成四个 32 位字。",
+          "128/192/256 位密钥：CLEFIA 的三种密钥长度。",
+          "18/22/26 轮：三种密钥长度对应的轮数。",
+          "GFN4：4 分支广义 Feistel 网络，用于数据随机化和 128 位密钥调度。",
+          "GFN8：8 分支广义 Feistel 网络，仅用于 192/256 位密钥调度。",
+          "F0/F1：两种轮函数，分别使用 S0/S1 的不同顺序和 M0/M1 矩阵。",
+          "S0/S1：两个 256 项 8 位 S-box；S0 基于四个 4 位 S-box，S1 基于 GF(2^8) 求逆。",
+          "M0/M1：两个 4x4 扩散矩阵，系数在 GF(2^8) 中运算。",
+          "GF(2^8)：由 z^8+z^4+z^3+z^2+1 定义的有限域。",
+          "WK：四个 32 位白化密钥，首尾各用两个。",
+          "RK：32 位轮密钥，128/192/256 位分别需要 36/44/52 个。",
+          "L：128 位密钥调度中的 128 位中间密钥。",
+          "Sigma：128 位 DoubleSwap 位重排函数。",
+          "CON_k：由 P=0xB7E1、Q=0x243F 和 GF(2^16) 递推生成的密钥调度常量。",
+          "KL/KR 与 LL/LR：192/256 位密钥调度中的四个 128 位中间值。",
+          "ISO/IEC 29192-2：把 CLEFIA 与 PRESENT、LEA 并列为轻量级分组密码的标准。",
+          "轻量级密码：面向资源受限设备的密码实现方向。"
+        ],
+        "en": [
+          "CLEFIA: the 128-bit lightweight block cipher published by Sony in 2007 and standardized in ISO/IEC 29192-2.",
+          "128-bit block: CLEFIA's plaintext and ciphertext unit, split into four 32-bit words.",
+          "128/192/256-bit keys: CLEFIA's three key lengths.",
+          "18/22/26 rounds: the round counts for the three key lengths.",
+          "GFN4: the 4-branch generalized Feistel network used in data randomizing and the 128-bit key schedule.",
+          "GFN8: the 8-branch generalized Feistel network used only in the 192/256-bit key schedule.",
+          "F0/F1: the two round functions, using S0/S1 in different orders and the M0/M1 matrices.",
+          "S0/S1: two 256-entry 8-bit S-boxes; S0 is based on four 4-bit S-boxes and S1 on GF(2^8) inversion.",
+          "M0/M1: two 4x4 diffusion matrices with coefficients in GF(2^8).",
+          "GF(2^8): the finite field defined by z^8+z^4+z^3+z^2+1.",
+          "WK: four 32-bit whitening keys, two at each end.",
+          "RK: the 32-bit round keys; 128/192/256-bit keys need 36/44/52 of them.",
+          "L: the 128-bit intermediate key in the 128-bit key schedule.",
+          "Sigma: the 128-bit DoubleSwap bit permutation.",
+          "CON_k: key-schedule constants generated from P=0xB7E1, Q=0x243F and a GF(2^16) recurrence.",
+          "KL/KR and LL/LR: the four 128-bit intermediates in the 192/256-bit key schedule.",
+          "ISO/IEC 29192-2: the standard that lists CLEFIA with PRESENT and LEA as lightweight block ciphers.",
+          "Lightweight cryptography: the direction of cryptographic implementations for resource-constrained devices."
+        ]
+      },
+      "figures": [
+        {
+          "id": "clefia-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CLEFIA：4 分支广义 Feistel 轻量级分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "CLEFIA: a 4-branch generalized Feistel lightweight block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "CLEFIA：4 分支广义 Feistel 轻量级分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for CLEFIA: a 4-branch generalized Feistel lightweight block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/clefia-details-flow.zh.svg",
+            "en": "assets/clefia-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ceefcd8df59cd782e965b9bdb6715072ee823295ce9131787e90d50b64fe0cb7",
+            "en": "7c5f607b9170f76f01c2bde71ee2e8388589c2b12d3755a187404695b5f15c31"
+          }
+        },
+        {
+          "id": "clefia-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CLEFIA：4 分支广义 Feistel 轻量级分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for CLEFIA: a 4-branch generalized Feistel lightweight block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "CLEFIA：4 分支广义 Feistel 轻量级分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for CLEFIA: a 4-branch generalized Feistel lightweight block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/clefia-details-r138-model.zh.svg",
+            "en": "assets/clefia-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a4a73262768c58a9d81f9ff4181bac6d3ce0a61840b635ad68ae05f18abc7959",
+            "en": "844dac70e16b30a14e3eb0b54b2d27877d5334f0dc7b66ec541c2ffa5e901dc5"
+          }
+        }
+      ],
+      "sources": [
+        "clefia-wikipedia",
+        "clefia-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "clefia-calc-rfc-vectors",
+          "entryId": "clefia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The three RFC 6114 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 000102030405060708090a0b0c0d0e0f",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix B L, WK, all 36 RK values, the whitened state, the round-1 F0/F1 details and the round-2 input also match",
+          "sourceIds": [
+            "clefia-wikipedia"
+          ],
+          "dependencies": [
+            "clefia-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Three fixed vectors; they cover all key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+        },
+        {
+          "id": "clefia-calc-key-schedule",
+          "entryId": "clefia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 128-bit test key, the CON_128/192/256 generation, the GFN4/GFN8 schedules and the Sigma double-swap",
+          "expected": "L=8f89a61b9db9d0f393e65627da0d027e; WK=ffeeddcc bbaa9988 77665544 33221100; all 36 RK values match Appendix B; the 128/192/256-bit schedules produce 36/44/52 round keys and 60/84/92 CON constants; CON_128[0..3]=f56b7aeb 994a8a42 96a4bd75 fa854521; Sigma(000102030405060708090a0b0c0d0e0f)=008101820283038f0010121416181a1c",
+          "sourceIds": [
+            "clefia-wikipedia"
+          ],
+          "dependencies": [
+            "clefia-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Only the 128-bit key has published L/WK/RK intermediates; the 192/256-bit schedules are checked indirectly through their vectors and structural counts."
+        },
+        {
+          "id": "clefia-calc-components",
+          "entryId": "clefia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 6114 S0/S1, the F0/F1 round-1 details and the M0/M1 diffusion operation",
+          "expected": "S0 and S1 each have 256 entries; S0(0xAB)=0x7E; the round-1 F0 key-add/S/M values are F3E7CCFA/290246E1/547A3193 and the F1 values are 85FE5433/777DE8E8/ABF12070; GF(2^8) multiplication uses polynomial 0x1D",
+          "sourceIds": [
+            "clefia-wikipedia"
+          ],
+          "dependencies": [
+            "clefia-teaching.mjs",
+            "sboxes.json",
+            "vectors.json"
+          ],
+          "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+        },
+        {
+          "id": "clefia-calc-roundtrip",
+          "entryId": "clefia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+          "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+          "sourceIds": [
+            "clefia-wikipedia"
+          ],
+          "dependencies": [
+            "clefia-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "clefia-r139-formal",
+          "entryId": "clefia-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "CLEFIA 轻量级分组密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "clefia-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "clefia-calc-rfc-vectors",
+      "entryId": "clefia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The three RFC 6114 Appendix A vectors with 128-, 192- and 256-bit keys and the common plaintext 000102030405060708090a0b0c0d0e0f",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the 128-bit Appendix B L, WK, all 36 RK values, the whitened state, the round-1 F0/F1 details and the round-2 input also match",
+      "sourceIds": [
+        "clefia-wikipedia"
+      ],
+      "dependencies": [
+        "clefia-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Three fixed vectors; they cover all key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+    },
+    {
+      "id": "clefia-calc-key-schedule",
+      "entryId": "clefia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 128-bit test key, the CON_128/192/256 generation, the GFN4/GFN8 schedules and the Sigma double-swap",
+      "expected": "L=8f89a61b9db9d0f393e65627da0d027e; WK=ffeeddcc bbaa9988 77665544 33221100; all 36 RK values match Appendix B; the 128/192/256-bit schedules produce 36/44/52 round keys and 60/84/92 CON constants; CON_128[0..3]=f56b7aeb 994a8a42 96a4bd75 fa854521; Sigma(000102030405060708090a0b0c0d0e0f)=008101820283038f0010121416181a1c",
+      "sourceIds": [
+        "clefia-wikipedia"
+      ],
+      "dependencies": [
+        "clefia-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Only the 128-bit key has published L/WK/RK intermediates; the 192/256-bit schedules are checked indirectly through their vectors and structural counts."
+    },
+    {
+      "id": "clefia-calc-components",
+      "entryId": "clefia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 6114 S0/S1, the F0/F1 round-1 details and the M0/M1 diffusion operation",
+      "expected": "S0 and S1 each have 256 entries; S0(0xAB)=0x7E; the round-1 F0 key-add/S/M values are F3E7CCFA/290246E1/547A3193 and the F1 values are 85FE5433/777DE8E8/ABF12070; GF(2^8) multiplication uses polynomial 0x1D",
+      "sourceIds": [
+        "clefia-wikipedia"
+      ],
+      "dependencies": [
+        "clefia-teaching.mjs",
+        "sboxes.json",
+        "vectors.json"
+      ],
+      "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+    },
+    {
+      "id": "clefia-calc-roundtrip",
+      "entryId": "clefia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Three key sizes (128, 192 and 256 bits) times eight deterministic plaintext patterns, including the official plaintext",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce three distinct schedules",
+      "sourceIds": [
+        "clefia-wikipedia"
+      ],
+      "dependencies": [
+        "clefia-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "clefia-r139-formal",
+      "entryId": "clefia-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "CLEFIA 轻量级分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "clefia-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

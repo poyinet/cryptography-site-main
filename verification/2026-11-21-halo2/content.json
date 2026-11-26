@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R110 wide-block/hash/AEAD/proof batch for halo2-details.",
+  "entries": [
+    {
+      "id": "halo2-details",
+      "inventoryIds": [
+        "halo2"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R110 证明系统批次：把 Halo2 的目录身份卡改写为 PLONKish 矩阵、permutation/lookup、IPA、透明设置、Orchard 部署、验证成本与历史脉络的来源可核正文。",
+        "en": "R110 proof-system batch: replaced Halo2's catalog identity card with source-backed text on the PLONKish matrix, permutation/lookup, IPA, transparent setup, Orchard deployment, verifier cost and history."
+      },
+      "title": {
+        "zh": "Halo2 零知识证明系统",
+        "en": "Halo2 zero-knowledge proof system"
+      },
+      "claimIds": [
+        "halo2-r139-principle",
+        "halo2-r139-why",
+        "halo2-r139-used",
+        "halo2-r139-broken",
+        "halo2-r139-history",
+        "halo2-r139-refs"
+      ],
+      "sourceIds": [
+        "halo2-wikipedia",
+        "halo2-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "groth16"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "halo2-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Halo2 机制图：advice/fixed/instance 矩阵、copy 约束与 lookup 表，承诺经 IPA 打开，无需 trusted setup。",
+            "en": "Halo2 mechanism: an advice/fixed/instance matrix, copy constraints and lookup tables, with commitments opened by IPA and no trusted setup."
+          },
+          "alt": {
+            "zh": "图中左侧为三列五行电路矩阵与绿色 copy 约束，中部为 lookup 表，右侧为 Pedersen 承诺、IPA 打开与验证者检查，底部标注无 trusted setup。",
+            "en": "Diagram shows a three-column circuit matrix with green copy constraints, a lookup table in the middle, and Pedersen commitments, IPA opening and verifier checks on the right, with a no-trusted-setup badge."
+          },
+          "files": {
+            "zh": "assets/halo2-details-mechanism.zh.svg",
+            "en": "assets/halo2-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "5ed1eb4799995e3f0684ace388e88e2a8083601957296a69c40d5743a6b80c64",
+            "en": "6a41cce9de4f7ee1e39f8a8634243be72a86874bdb72225b8633c2b646faeb23"
+          }
+        },
+        {
+          "id": "halo2-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Halo2 零知识证明系统 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Halo2 zero-knowledge proof system: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Halo2 零知识证明系统 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Halo2 zero-knowledge proof system, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/halo2-details-r138-model.zh.svg",
+            "en": "assets/halo2-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4a21d55d108073d13a148a0618eb33c900ba55767c45a721ea24714cd738ab81",
+            "en": "23d3d0408dba301e2c55771ceab1c6c4cd76cf6eaede0f04a55c927f00e1e737"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Halo2 证明系统（Halo2）。### PLONKish 矩阵\n\nHalo2 把电路写成矩阵：列分 advice、fixed、instance 三类，行是门。每个门用多项式约束把相邻行、多个列连起来；custom gate 允许一个门同时读多列，lookup argument 把某列的值约束到一张表里。行数取 2^k，在单位根域上做多项式插值，约束在整域上为零。### 置换、lookup 与 IPA\n\ncopy constraint 用 permutation argument 强制两格相等；range check 用 lookup 查表。证明端对列多项式做 Pedersen 承诺，用内积论证（IPA）在 Pallas/Vesta 上打开；没有配对，也没有可信设置。Fiat–Shamir 把交互变成非交互证明，验证者只查承诺、采样点和商多项式。",
+          "why": "Halo2 不需要 trusted setup：公共参数由固定曲线生成，不存在“toxic waste”。PLONKish 的列和门可以按电路定制，lookup 让 8 位/16 位范围检查不必写成一长串约束；IPA 只依赖离散对数，不引入配对曲线。递归组合让证明可以验证证明，适合 rollup 和隐私池这类多层电路。### 代价\n\n透明设置不是免费的：IPA 的证明和验证比 Groth16 重，递归验证器本身要占不少行。Halo2 把“设置阶段的一次性风险”换成“证明阶段的持续计算成本”，适合电路多、迭代快、无法办可信仪式的团队。",
+          "used": "Zcash 的 Orchard shielded pool 用 Halo2 证明“我知道注记的见证，且资金满足禁令”。PSE 的 halo2-lib 把 EVM 兼容电路搬进 Halo2，用于 zkEVM 的证明层；递归聚合把多个应用证明压成一个外层证明。### 库与生态\n\nHalo2 的 Rust 实现提供 halo2_proofs 与 halo2_gadgets，后者包含 Sinsemilla、ECC、lookup 等常用芯片。它也被若干隐私应用和 rollup 用作证明后端；具体部署要核电路版本和参数，而不是只看“用了 Halo2”这一句。",
+          "broken": "Halo2 没有可信设置，不等于没有信任：约束系统、lookup 表和公开输入由应用方定义，门写错或漏约束会让证明“证明了一个错误陈述”。IPA 的验证不是常数大小，递归验证器要吃掉不少行；证明时间与电路规模、列数和 lookup 数量线性相关。它也不自动提供“输入隐私”，公开输入仍然公开。### 工程风险\n\nHalo2 的电路需要手工安排列、行和门，列数不足会让电路膨胀，lookup 表过大会拖慢证明。参数（k、列数、lookup 位宽）选错会造成性能断崖；升级库版本也可能改变 transcript 或参数，必须重新做可信度评估。",
+          "history": "Halo 在 2019 年提出用 IPA 替代可信设置，论文是 ePrint 2019/1021；Halo2 在 2020 年把 PLONK 的 arithmetization 与 Halo 的递归思路合成 PLONKish 矩阵，随后进入 Zcash Orchard。2022 年 NU5 升级让 Orchard 在主网上线，Halo2 也从一条链的内部工具变成通用证明库。### 命名\n\nHalo 与 Halo2 不是“第二版协议”那么简单：Halo2 的核心变化是 PLONKish 的列式 arithmetization 和 lookup，IPA 仍来自 Halo。读旧论文时要区分 Halo 的 R1CS 表述与 Halo2 的矩阵表述。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Halo2 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Halo2 证明系统 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for Halo2 证明系统. https://zh.wikipedia.org/w/index.php?search=Halo2%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nHalo2 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Halo2 (Halo2 证明系统). ### The PLONKish matrix\n\nHalo2 writes a circuit as a matrix: columns are advice, fixed or instance, and rows are gates. Each gate is a polynomial constraint linking neighboring rows and multiple columns; a custom gate can read several columns at once, and a lookup argument constrains a column's values to a table. The row count is a power of two, column polynomials are interpolated over a roots-of-unity domain, and constraints vanish on the whole domain. ### Permutation, lookup and IPA\n\nCopy constraints use a permutation argument to force two cells to be equal; range checks use a lookup table. The prover commits to column polynomials with Pedersen commitments and opens them with an inner-product argument (IPA) over Pallas/Vesta. There is no pairing and no trusted setup. Fiat–Shamir turns the interaction non-interactive; the verifier checks commitments, challenge points and quotient polynomials.",
+          "why": "Halo2 needs no trusted setup: public parameters come from fixed curves, so there is no “toxic waste”. PLONKish columns and gates are customized to the circuit, lookups make 8-bit/16-bit range checks cheaper than long constraint chains, and IPA relies only on discrete logarithms, not pairing curves. Recursive composition lets a proof verify another proof, which suits rollups and privacy pools with multiple circuit layers.\n\nTransparent setup is not free: IPA proofs and verification are heavier than Groth16, and the recursive verifier itself consumes rows. Halo2 trades “one-time risk at setup” for “ongoing compute at proving time”, which fits teams with many circuits, fast iteration and no way to run a trusted ceremony.",
+          "used": "Zcash's Orchard shielded pool uses Halo2 to prove “I know the note witness and the funds satisfy the rules”. PSE's halo2-lib moves EVM-compatible circuits into Halo2 for zkEVM proving layers; recursive aggregation compresses several application proofs into one outer proof.\n\nHalo2's Rust implementation provides halo2_proofs and halo2_gadgets; the latter includes chips for Sinsemilla, ECC and lookups. It is used as a proving backend by several privacy applications and rollups. A deployment should check the circuit version and parameters, not just the phrase “built with Halo2”.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "No trusted setup does not mean no trust: the constraint system, lookup tables and public inputs are defined by the application. A missing or wrong gate can let a proof “prove” a false statement. IPA verification is not constant-size, and a recursive verifier consumes many rows; proving time scales with circuit size, column count and lookup count. Halo2 also does not automatically provide input privacy; public inputs stay public.\n\nHalo2 circuits require manual column, row and gate layout. Too few columns bloat the circuit; oversized lookup tables slow proving. Wrong parameters (k, column count, lookup width) can cause a performance cliff, and a library upgrade may change the transcript or parameters, requiring a fresh trust assessment.",
+          "history": "Halo proposed replacing trusted setup with IPA in 2019 (ePrint 2019/1021). Halo2 in 2020 combined PLONK's arithmetization with Halo's recursion into the PLONKish matrix, then entered Zcash Orchard. The 2022 NU5 upgrade brought Orchard to mainnet, and Halo2 grew from an internal chain tool into a general proving library.\n\nHalo and Halo2 are not merely “protocol version two”: Halo2's core change is PLONKish column arithmetization and lookups, while IPA still comes from Halo. When reading older papers, distinguish Halo's R1CS presentation from Halo2's matrix presentation.",
+          "refs": "- Wikipedia search entry for Halo2 证明系统. https://zh.wikipedia.org/w/index.php?search=Halo2%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nHalo2: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "halo2-r139-formal",
+          "entryId": "halo2-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Halo2 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Halo2 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "halo2-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "halo2-r139-formal"
+      ],
+      "sources": [
+        "halo2-wikipedia",
+        "halo2-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "halo2-r139-formal",
+      "entryId": "halo2-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Halo2 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Halo2 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "halo2-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

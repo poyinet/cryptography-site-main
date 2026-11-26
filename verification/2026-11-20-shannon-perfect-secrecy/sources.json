@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "shannon-perfect-secrecy-details",
+  "sources": [
+    {
+      "id": "shannon-perfect-secrecy-wikipedia",
+      "title": "Wikipedia search entry for 香农完美保密定理",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E9%A6%99%E5%86%9C%E5%AE%8C%E7%BE%8E%E4%BF%9D%E5%AF%86%E5%AE%9A%E7%90%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 香农完美保密定理",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "shannon-perfect-secrecy-r139-principle",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：香农完美保密定理（Shannon's Perfect Secrecy Theorem）。**完美保密的定义只有一句话：密文不泄露明文的任何信息。香农在 1949 年给它下了严格的数学定义，并且证明了一件事——只有一次性密码能达到这个天花板，而代价是密钥必须和消息一样长。**\n\n先说设定。一个保密系统由明文空间 `M`、密钥空间 `K`、密文空间 `C` 组成；密钥 `k` 与明文 `m` 独立抽取（这是前提，不能省）；加密算法 `Enc_k` 把明文映到密文，解密算法 `Dec_k` 映回去。**定义（完美保密，perfect secrecy）**：对任意明文分布、任意明文 `m` 与任意密文 `c`，都有\n\n`P(M = m | C = c) = P(M = m)`\n\n也就是拿到密文之后，你对明文的信念一点都不变。等价的另一种写法是香农自己的那一个：任意两条明文 `m1`、`m2`，用同一把密钥加密后产生任一给定密文的概率必须相等（`Pr_k[Enc_k(m1) = c] = Pr_k[Enc_k(m2) = c]`）。中文教材常把它写成 `C(K) = C(P)`：密文的统计分布与明文无关，密钥对明文到密文的映射是\"任意重分配\"——重分配成什么样都行，只要跟明文内容无关。用信息论的语言，就是互信息 `I(M; C) = 0`，也就是 `H(M|C) = H(M)`。香农在 1949 年证明了这几种写法互相等价，所以它们常被混着叫。",
+            "en": "**Theorem**: Shannon's Perfect Secrecy Theorem (香农完美保密定理).**Perfect secrecy means one thing: the ciphertext tells you nothing about the plaintext."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        },
+        {
+          "id": "shannon-perfect-secrecy-r139-why",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "why",
+          "statement": {
+            "zh": "**因为它给了密码学一把绝对刻度。在这条定理之前，\"安全\"这个词是没有数学含义的。**\n\n在那之前，人们说一个密码\"够硬\"，靠的是试、靠的是经验、靠的是设计者自己的信誉。香农做的是把安全性从\"感觉\"变成\"可证明的界\"：他不但给出了一个安全的定义，还给出了这个定义下能做到的上限，并且证明上限之外的一切方案都是浪费。1.**它决定了\"一次性密码为什么在数学上无可挑剔、在工程上却用不了\"。** 密钥长度必须等于消息长度，这一条就把绝大多数场景挡在门外——密钥怎么分发、怎么存、怎么销毁，光是想想就头疼。2.**它逼出了\"可计算安全\"这条出路。** 既然允许攻击者算力有限，就可以用短得多的密钥去换取\"破不起\"。Diffie 与 Hellman 在 1976 年把这个取舍说得很直白：一个系统\"安全\"是因为破译代价太高（computationally secure），还是因为再强的算力也破不了（unconditionally secure），这是两条完全不同的路。**现代密码学几乎全押在第一条路上。**\n\n它还是后面一切的坐标原点。Goldwasser 与 Micali 1982 年做的事，说白了就是一句话：**把\"零信息\"换成\"计算上零信息\"**。香农说\"密文对明文的互信息必须是零\"，他们说\"互信息可以非零，只要攻击者算不出来\"。语义安全、IND-CPA、IND-CCA、非可延拓性、UC 安全性，全都是这条定理的\"计算版本\"的下一代后代。再往前看一层：今天所有\"可证明安全\"的论文，最终都要归约到某个**困难假设**（分解整数、离散对数、格问题……）。",
+            "en": "**Because it handed cryptography an absolute ruler.Before this theorem, the word \"secure\" had no mathematical content.**\n\nBefore it, people said a cipher was \"strong enough\" on the strength of testing, experience and the designer's own reputation."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        },
+        {
+          "id": "shannon-perfect-secrecy-r139-used",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "used",
+          "statement": {
+            "zh": "**今天没有哪套主流系统敢宣称\"完美保密\"，但这条定理的东西在真实世界里有好几种活法。**\n\n**一、它真的服役过，而且服役了很久。** 1917 年 AT&T 的 Gilbert Vernam 提出把两卷穿孔纸带做模 2 加的想法，1919 年拿到专利，这就是\"一次性纸带\"（one-time tape）。美军把它做成了 SIGTOT 系统，用于高等级的电传流量；苏联人更彻底——他们把随机数印成整本整本的册子，通过外交邮袋送到各国大使馆，用一页撕一页，用完销毁。**这是完美保密唯一大规模成功的工程形态。**\n\n**二、它教给现代密码学最贵的一课：前提一旦被破坏，一切归零。** \"维诺纳计划\"（Venona）破的就是苏联的一次性密码——不是因为数学被攻破，而是因为纳粹德国逼近莫斯科时，苏联的密码纸生产商赶工，**印出了约 35000 页重复的密钥**。重复的那些页里，`c1 ⊕ c2 = m1 ⊕ m2`，两条明文的异或就露出来了。1943 年分析员 Richard Hallock 发现了\"深度\"（depth，即同一页密钥被用两次），1944 年 Genevieve Feinstein 发现苏联人甚至把密钥组明文发在电报里，1946 年 2 月 Meredith Gardner 读出第一条电报。这项工程一直做到 1980 年 10 月 1 日才停，几千条电报里只有一部分被解出——**它是完美保密最好的广告，也是最好的警告。**\n\n**三、它活在量子密钥分发里。",
+            "en": "**No mainstream system today claims perfect secrecy, but the theorem's ideas live on in several distinct forms.**\n\n**One: it really was deployed, and for a long time.** In 1917 Gilbert Vernam at AT&T came up with the idea of adding two punched paper tapes modulo 2, and patented it in 1919 — the \"one-time tape\".The US military turned it into the SIGTOT system, used for high-level teletype traffic."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        },
+        {
+          "id": "shannon-perfect-secrecy-r139-broken",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "broken",
+          "statement": {
+            "zh": "**这条定理本身没被推翻，它被\"绕过\"了。真正的攻击面在它的三个前提上，每一个都极易碎。**\n\n- **它只管机密性，不管完整性。** 一次性密码是可以篡改的：攻击者把密文里的一位翻过来，收信方解出来的是一条被翻转过的明文，而且**完全看不出被动过手脚**。所以 OTP 不提供认证、不抗选择密文攻击。香农的定义里根本没有\"完整性\"这一栏——这是定义本身的边界，不是实现的 bug。- **它泄露长度。** 完美保密系统必然泄露明文长度（否则密文空间是无限的），除非你用固定长度的填充或分块协议去补。真实流量分析靠的就是长度、时序、流量大小。- **前提在实务里极脆。** 密钥必须真随机、长度 ≥ 消息、绝不复用、绝不泄露。Venona 就是\"复用\"这一条翻的车。而\"真随机\"这一条到今天依然能翻车：伪随机数生成器被攻破、随机数种子从熵池里重复取、虚拟机快照导致随机状态回滚——任何一条都能把完美保密打回原形。- **密钥分发是无解的死结。** 要保密就得先把一条和消息一样长的秘密安全送到对方手里；如果这条信道能被监听，你已经在第一步把秘密交出去了。Diffie–Hellman、QKD 都是为了绕开这个死结而生，代价是复杂性。- **它给出的\"唯一解\"是严格的、也是无情的。** 香农的定理意味着：任何不满足\"密钥 ≥ 消息\"的方案，**在信息论意义上都是不安全的**——DES 的 56 位密钥在理论上就是裸奔，AES 的 128 位也是。今天所有真实系统都是\"可破但太贵\"。**所以在工程语境里，\"我的系统是完美保密的\"这句话基本等于\"我的系统有 bug\"。",
+            "en": "**The theorem was never overturned — it was routed around.Its real attack surface is its three premises, and every one of them breaks easily.**\n\n- **It covers confidentiality and nothing else.** A one-time pad is malleable: flip one bit of the ciphertext and the recipient decrypts a flipped plaintext, with **no way to tell that anything was touched**."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        },
+        {
+          "id": "shannon-perfect-secrecy-r139-history",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1945 年**：香农在贝尔实验室写完战时报告《A Mathematical Theory of Communication》，当时是绝密，1949 年才解密。- **1948 年**：《Bell System Technical Journal》刊出《A Mathematical Theory of Communication》（第 27 卷第 3 期，379–423 页），信息论正式诞生，也带来了\"熵\"这把尺子。- **1949 年 10 月**：《Communication Theory of Secrecy Systems》发表在《Bell System Technical Journal》第 28 卷第 4 期，656–715 页。完美保密的定义、香农界（密钥数不少于明文数）、一次性密码的最优性、以及\"唯一解距离\"（衡量一个方案离完美保密还有多远），全部出自这一篇。- **1976 年**：Diffie 与 Hellman 在《New Directions in Cryptography》里明确区分 computationally secure 与 unconditionally secure，并指出一次性密码是当时唯一在用的无条件安全系统、但因为密钥太长而不实用。**\"可计算安全\"这条路是从这一篇开的。**\n- **1982 / 1984 年**：Goldwasser 与 Micali 发表《Probabilistic Encryption》，把香农的\"零信息\"翻译成\"计算上零信息\"，现代定义范式开始；香农的定理从\"要达到的目标\"变成了\"出发点\"。",
+            "en": "- **1945**: Shannon finished his wartime report *A Mathematical Theory of Communication* at Bell Labs.It was classified, and declassified in 1949."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        },
+        {
+          "id": "shannon-perfect-secrecy-r139-refs",
+          "entryId": "shannon-perfect-secrecy-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 香农完美保密定理.https://zh.wikipedia.org/w/index.php?search=%E9%A6%99%E5%86%9C%E5%AE%8C%E7%BE%8E%E4%BF%9D%E5%AF%86%E5%AE%9A%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 香农完美保密定理.https://zh.wikipedia.org/w/index.php?search=%E9%A6%99%E5%86%9C%E5%AE%8C%E7%BE%8E%E4%BF%9D%E5%AF%86%E5%AE%9A%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "shannon-perfect-secrecy-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "shannon-perfect-secrecy-wikipedia"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "shannon-perfect-secrecy-r139-principle",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：香农完美保密定理（Shannon's Perfect Secrecy Theorem）。**完美保密的定义只有一句话：密文不泄露明文的任何信息。香农在 1949 年给它下了严格的数学定义，并且证明了一件事——只有一次性密码能达到这个天花板，而代价是密钥必须和消息一样长。**\n\n先说设定。一个保密系统由明文空间 `M`、密钥空间 `K`、密文空间 `C` 组成；密钥 `k` 与明文 `m` 独立抽取（这是前提，不能省）；加密算法 `Enc_k` 把明文映到密文，解密算法 `Dec_k` 映回去。**定义（完美保密，perfect secrecy）**：对任意明文分布、任意明文 `m` 与任意密文 `c`，都有\n\n`P(M = m | C = c) = P(M = m)`\n\n也就是拿到密文之后，你对明文的信念一点都不变。等价的另一种写法是香农自己的那一个：任意两条明文 `m1`、`m2`，用同一把密钥加密后产生任一给定密文的概率必须相等（`Pr_k[Enc_k(m1) = c] = Pr_k[Enc_k(m2) = c]`）。中文教材常把它写成 `C(K) = C(P)`：密文的统计分布与明文无关，密钥对明文到密文的映射是\"任意重分配\"——重分配成什么样都行，只要跟明文内容无关。用信息论的语言，就是互信息 `I(M; C) = 0`，也就是 `H(M|C) = H(M)`。香农在 1949 年证明了这几种写法互相等价，所以它们常被混着叫。",
+        "en": "**Theorem**: Shannon's Perfect Secrecy Theorem (香农完美保密定理).**Perfect secrecy means one thing: the ciphertext tells you nothing about the plaintext."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-r139-why",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "why",
+      "statement": {
+        "zh": "**因为它给了密码学一把绝对刻度。在这条定理之前，\"安全\"这个词是没有数学含义的。**\n\n在那之前，人们说一个密码\"够硬\"，靠的是试、靠的是经验、靠的是设计者自己的信誉。香农做的是把安全性从\"感觉\"变成\"可证明的界\"：他不但给出了一个安全的定义，还给出了这个定义下能做到的上限，并且证明上限之外的一切方案都是浪费。1.**它决定了\"一次性密码为什么在数学上无可挑剔、在工程上却用不了\"。** 密钥长度必须等于消息长度，这一条就把绝大多数场景挡在门外——密钥怎么分发、怎么存、怎么销毁，光是想想就头疼。2.**它逼出了\"可计算安全\"这条出路。** 既然允许攻击者算力有限，就可以用短得多的密钥去换取\"破不起\"。Diffie 与 Hellman 在 1976 年把这个取舍说得很直白：一个系统\"安全\"是因为破译代价太高（computationally secure），还是因为再强的算力也破不了（unconditionally secure），这是两条完全不同的路。**现代密码学几乎全押在第一条路上。**\n\n它还是后面一切的坐标原点。Goldwasser 与 Micali 1982 年做的事，说白了就是一句话：**把\"零信息\"换成\"计算上零信息\"**。香农说\"密文对明文的互信息必须是零\"，他们说\"互信息可以非零，只要攻击者算不出来\"。语义安全、IND-CPA、IND-CCA、非可延拓性、UC 安全性，全都是这条定理的\"计算版本\"的下一代后代。再往前看一层：今天所有\"可证明安全\"的论文，最终都要归约到某个**困难假设**（分解整数、离散对数、格问题……）。",
+        "en": "**Because it handed cryptography an absolute ruler.Before this theorem, the word \"secure\" had no mathematical content.**\n\nBefore it, people said a cipher was \"strong enough\" on the strength of testing, experience and the designer's own reputation."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-r139-used",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "used",
+      "statement": {
+        "zh": "**今天没有哪套主流系统敢宣称\"完美保密\"，但这条定理的东西在真实世界里有好几种活法。**\n\n**一、它真的服役过，而且服役了很久。** 1917 年 AT&T 的 Gilbert Vernam 提出把两卷穿孔纸带做模 2 加的想法，1919 年拿到专利，这就是\"一次性纸带\"（one-time tape）。美军把它做成了 SIGTOT 系统，用于高等级的电传流量；苏联人更彻底——他们把随机数印成整本整本的册子，通过外交邮袋送到各国大使馆，用一页撕一页，用完销毁。**这是完美保密唯一大规模成功的工程形态。**\n\n**二、它教给现代密码学最贵的一课：前提一旦被破坏，一切归零。** \"维诺纳计划\"（Venona）破的就是苏联的一次性密码——不是因为数学被攻破，而是因为纳粹德国逼近莫斯科时，苏联的密码纸生产商赶工，**印出了约 35000 页重复的密钥**。重复的那些页里，`c1 ⊕ c2 = m1 ⊕ m2`，两条明文的异或就露出来了。1943 年分析员 Richard Hallock 发现了\"深度\"（depth，即同一页密钥被用两次），1944 年 Genevieve Feinstein 发现苏联人甚至把密钥组明文发在电报里，1946 年 2 月 Meredith Gardner 读出第一条电报。这项工程一直做到 1980 年 10 月 1 日才停，几千条电报里只有一部分被解出——**它是完美保密最好的广告，也是最好的警告。**\n\n**三、它活在量子密钥分发里。",
+        "en": "**No mainstream system today claims perfect secrecy, but the theorem's ideas live on in several distinct forms.**\n\n**One: it really was deployed, and for a long time.** In 1917 Gilbert Vernam at AT&T came up with the idea of adding two punched paper tapes modulo 2, and patented it in 1919 — the \"one-time tape\".The US military turned it into the SIGTOT system, used for high-level teletype traffic."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-r139-broken",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "broken",
+      "statement": {
+        "zh": "**这条定理本身没被推翻，它被\"绕过\"了。真正的攻击面在它的三个前提上，每一个都极易碎。**\n\n- **它只管机密性，不管完整性。** 一次性密码是可以篡改的：攻击者把密文里的一位翻过来，收信方解出来的是一条被翻转过的明文，而且**完全看不出被动过手脚**。所以 OTP 不提供认证、不抗选择密文攻击。香农的定义里根本没有\"完整性\"这一栏——这是定义本身的边界，不是实现的 bug。- **它泄露长度。** 完美保密系统必然泄露明文长度（否则密文空间是无限的），除非你用固定长度的填充或分块协议去补。真实流量分析靠的就是长度、时序、流量大小。- **前提在实务里极脆。** 密钥必须真随机、长度 ≥ 消息、绝不复用、绝不泄露。Venona 就是\"复用\"这一条翻的车。而\"真随机\"这一条到今天依然能翻车：伪随机数生成器被攻破、随机数种子从熵池里重复取、虚拟机快照导致随机状态回滚——任何一条都能把完美保密打回原形。- **密钥分发是无解的死结。** 要保密就得先把一条和消息一样长的秘密安全送到对方手里；如果这条信道能被监听，你已经在第一步把秘密交出去了。Diffie–Hellman、QKD 都是为了绕开这个死结而生，代价是复杂性。- **它给出的\"唯一解\"是严格的、也是无情的。** 香农的定理意味着：任何不满足\"密钥 ≥ 消息\"的方案，**在信息论意义上都是不安全的**——DES 的 56 位密钥在理论上就是裸奔，AES 的 128 位也是。今天所有真实系统都是\"可破但太贵\"。**所以在工程语境里，\"我的系统是完美保密的\"这句话基本等于\"我的系统有 bug\"。",
+        "en": "**The theorem was never overturned — it was routed around.Its real attack surface is its three premises, and every one of them breaks easily.**\n\n- **It covers confidentiality and nothing else.** A one-time pad is malleable: flip one bit of the ciphertext and the recipient decrypts a flipped plaintext, with **no way to tell that anything was touched**."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-r139-history",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1945 年**：香农在贝尔实验室写完战时报告《A Mathematical Theory of Communication》，当时是绝密，1949 年才解密。- **1948 年**：《Bell System Technical Journal》刊出《A Mathematical Theory of Communication》（第 27 卷第 3 期，379–423 页），信息论正式诞生，也带来了\"熵\"这把尺子。- **1949 年 10 月**：《Communication Theory of Secrecy Systems》发表在《Bell System Technical Journal》第 28 卷第 4 期，656–715 页。完美保密的定义、香农界（密钥数不少于明文数）、一次性密码的最优性、以及\"唯一解距离\"（衡量一个方案离完美保密还有多远），全部出自这一篇。- **1976 年**：Diffie 与 Hellman 在《New Directions in Cryptography》里明确区分 computationally secure 与 unconditionally secure，并指出一次性密码是当时唯一在用的无条件安全系统、但因为密钥太长而不实用。**\"可计算安全\"这条路是从这一篇开的。**\n- **1982 / 1984 年**：Goldwasser 与 Micali 发表《Probabilistic Encryption》，把香农的\"零信息\"翻译成\"计算上零信息\"，现代定义范式开始；香农的定理从\"要达到的目标\"变成了\"出发点\"。",
+        "en": "- **1945**: Shannon finished his wartime report *A Mathematical Theory of Communication* at Bell Labs.It was classified, and declassified in 1949."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    },
+    {
+      "id": "shannon-perfect-secrecy-r139-refs",
+      "entryId": "shannon-perfect-secrecy-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 香农完美保密定理.https://zh.wikipedia.org/w/index.php?search=%E9%A6%99%E5%86%9C%E5%AE%8C%E7%BE%8E%E4%BF%9D%E5%AF%86%E5%AE%9A%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 香农完美保密定理.https://zh.wikipedia.org/w/index.php?search=%E9%A6%99%E5%86%9C%E5%AE%8C%E7%BE%8E%E4%BF%9D%E5%AF%86%E5%AE%9A%E7%90%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "shannon-perfect-secrecy-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

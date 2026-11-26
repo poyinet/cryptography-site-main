@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cwc-details",
+  "sources": [
+    {
+      "id": "cwc-wikipedia",
+      "title": "Wikipedia search entry for CWC 认证加密模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: CWC 认证加密模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cwc-r139-principle",
+          "entryId": "cwc-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：CWC 认证加密模式（CWC authenticated encryption mode）。### CTR 加密 + Carter–Wegman 哈希\n\nCWC 是认证加密（AEAD）：用 CTR 模式把明文变成密文，用 Carter–Wegman 多项式通用哈希把密文、关联数据和 nonce 压成一个标签。分组密码 128 位，nonce 88 位，计数器 40 位，消息最多 2^32−1 个块；标签长度可截到 tl 位，最长 128 位。### GF(2^127−1) 上的多项式\n\nCWC-HASH 把输入切成 96 位块，当作 GF(2^127−1) 上的多项式系数，用 Horner 规则在秘密点 Z 上求值；Z 由分组密码加密一个常量并截掉最高位得到。哈希输出再经一次分组密码加密，形成最终标签。整数模 2^127−1 的乘法可以并行归约，这是 CWC 硬件吞吐的关键。",
+            "en": "**Algorithm**: CWC authenticated encryption mode (CWC 认证加密模式).### CTR encryption + Carter–Wegman hash\n\nCWC is authenticated encryption (AEAD): CTR mode turns plaintext into ciphertext, and a Carter–Wegman polynomial universal hash compresses ciphertext, associated data and nonce into a tag."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        },
+        {
+          "id": "cwc-r139-why",
+          "entryId": "cwc-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 一把密钥、两条并行链\n\nCWC 的设计特点是加密和认证共用同一把分组密码密钥：CTR 的密钥流和多项式哈希的密钥材料都从这把密钥派生，避免在高速硬件里为两把密钥做额外内存访问。CTR 块之间独立，多项式哈希可以并行归约，所以整条流水线能跑满 10 Gbps。### 为 10 Gbps IPsec 设计\n\n2003 年前后，IPsec 路由器需要一条能线速处理、又没有专利负担的 AEAD。CWC 同时满足可证明安全、可并行、硬件 10 Gbps、软件快、无知识产权主张五个条件；它把 Carter–Wegman 的短标签优势带进高吞吐场景，设计者因此把它送进 IETF CFRG。",
+            "en": "### One key, two parallel chains\n\nCWC's signature choice is to share one block-cipher key between encryption and authentication: the CTR keystream and the polynomial hash key material both derive from it, avoiding extra key memory in high-speed hardware.CTR blocks are independent and the polynomial hash can reduce in parallel, so the pipeline can sustain 10 Gbps."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        },
+        {
+          "id": "cwc-r139-used",
+          "entryId": "cwc-details",
+          "section": "used",
+          "statement": {
+            "zh": "### IETF 草案与 GCM 的前身\n\nCWC 以 draft-irtf-cfrg-cwc-01 的形式进入 IETF CFRG，目标是 IPsec 的高速认证加密；GCM 的设计者在论文里把 CWC 列为 Carter–Wegman 计数器模式的先行方案。最终 NIST 选中 GCM，CWC 没有成为广泛部署的标准，但它的“CTR + 多项式哈希”路线被 GCM 继承。### 适用面\n\nCWC 适合“高吞吐、可并行、能保证 nonce 唯一”的链路加密原型；不适合 nonce 难以管理的无状态设备，也不适合需要长期密钥、频繁换钥的协议。它的标签可以截短，但截得越短，伪造概率越高。",
+            "en": "### IETF draft and GCM's predecessor\n\nCWC entered IETF CFRG as draft-irtf-cfrg-cwc-01, targeting high-speed IPsec authenticated encryption.GCM's designers cite CWC as the prior Carter–Wegman counter-mode scheme."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        },
+        {
+          "id": "cwc-r139-broken",
+          "entryId": "cwc-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### nonce 重用是致命的\n\nCTR 要求 nonce 唯一：同一密钥下重用 nonce，两条密钥流相同，异或两条密文就能恢复明文异或。多项式哈希的认证密钥也依赖 nonce，重用会让标签的可伪造性上升。标签截断到 tl 位会把伪造概率抬高到约 2^-tl；消息上限 2^32−1 块，超过就必须换密钥。CWC 没有内置密钥派生或 nonce 管理，部署方要自己保证。### 标准生态\n\nCWC 停留在 IETF 草案和 FSE 论文，没有 NIST 标准、没有广泛的 AES-NI 优化、也没有协议默认套件。它不是“被攻破”，而是“没有被标准化生态接住”；这使它在工程选型中天然处于劣势。",
+            "en": "### Nonce reuse is fatal\n\nCTR requires a unique nonce: reusing one under the same key repeats the keystream, so XORing two ciphertexts recovers the XOR of the plaintexts.The polynomial hash key also depends on the nonce, and reuse raises tag-forgery risk."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        },
+        {
+          "id": "cwc-r139-history",
+          "entryId": "cwc-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 2003 草案、2004 FSE、2007 GCM\n\nKohno、Viega 与 Whiting 在 2003 年把 CWC 提交 IETF CFRG，2004 年在 FSE 发表完整论文。它赶上了 IPsec 对高速 AEAD 的需求，却输给了 2007 年 NIST 标准化的 GCM；后者同样基于 CTR 和GF(2^128) 多项式哈希，但实现和标准生态更顺。CWC 现在是理解 GCM 设计谱系的重要中间站。### 名称澄清\n\nCWC 不是“携带式工作组密码”，而是 Carter–Wegman + Counter 的缩写。把它误读成组织或产品名，会完全错过它的 AEAD 结构；这也是该条目目从目录身份卡升级为机制正文的原因之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "### 2003 draft, 2004 FSE, 2007 GCM\n\nKohno, Viega and Whiting submitted CWC to IETF CFRG in 2003 and published the full paper at FSE 2004.It met IPsec's need for a high-speed AEAD but lost to GCM, standardized by NIST in 2007; GCM also combines CTR with a GF(2^128) polynomial hash, but its implementation and standards ecosystem were smoother."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        },
+        {
+          "id": "cwc-r139-refs",
+          "entryId": "cwc-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for CWC 认证加密模式.https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for CWC 认证加密模式.https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cwc-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cwc-wikipedia"
+      ]
+    },
+    {
+      "id": "cwc-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cwc-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cwc-r139-principle",
+      "entryId": "cwc-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：CWC 认证加密模式（CWC authenticated encryption mode）。### CTR 加密 + Carter–Wegman 哈希\n\nCWC 是认证加密（AEAD）：用 CTR 模式把明文变成密文，用 Carter–Wegman 多项式通用哈希把密文、关联数据和 nonce 压成一个标签。分组密码 128 位，nonce 88 位，计数器 40 位，消息最多 2^32−1 个块；标签长度可截到 tl 位，最长 128 位。### GF(2^127−1) 上的多项式\n\nCWC-HASH 把输入切成 96 位块，当作 GF(2^127−1) 上的多项式系数，用 Horner 规则在秘密点 Z 上求值；Z 由分组密码加密一个常量并截掉最高位得到。哈希输出再经一次分组密码加密，形成最终标签。整数模 2^127−1 的乘法可以并行归约，这是 CWC 硬件吞吐的关键。",
+        "en": "**Algorithm**: CWC authenticated encryption mode (CWC 认证加密模式).### CTR encryption + Carter–Wegman hash\n\nCWC is authenticated encryption (AEAD): CTR mode turns plaintext into ciphertext, and a Carter–Wegman polynomial universal hash compresses ciphertext, associated data and nonce into a tag."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    },
+    {
+      "id": "cwc-r139-why",
+      "entryId": "cwc-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 一把密钥、两条并行链\n\nCWC 的设计特点是加密和认证共用同一把分组密码密钥：CTR 的密钥流和多项式哈希的密钥材料都从这把密钥派生，避免在高速硬件里为两把密钥做额外内存访问。CTR 块之间独立，多项式哈希可以并行归约，所以整条流水线能跑满 10 Gbps。### 为 10 Gbps IPsec 设计\n\n2003 年前后，IPsec 路由器需要一条能线速处理、又没有专利负担的 AEAD。CWC 同时满足可证明安全、可并行、硬件 10 Gbps、软件快、无知识产权主张五个条件；它把 Carter–Wegman 的短标签优势带进高吞吐场景，设计者因此把它送进 IETF CFRG。",
+        "en": "### One key, two parallel chains\n\nCWC's signature choice is to share one block-cipher key between encryption and authentication: the CTR keystream and the polynomial hash key material both derive from it, avoiding extra key memory in high-speed hardware.CTR blocks are independent and the polynomial hash can reduce in parallel, so the pipeline can sustain 10 Gbps."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    },
+    {
+      "id": "cwc-r139-used",
+      "entryId": "cwc-details",
+      "section": "used",
+      "statement": {
+        "zh": "### IETF 草案与 GCM 的前身\n\nCWC 以 draft-irtf-cfrg-cwc-01 的形式进入 IETF CFRG，目标是 IPsec 的高速认证加密；GCM 的设计者在论文里把 CWC 列为 Carter–Wegman 计数器模式的先行方案。最终 NIST 选中 GCM，CWC 没有成为广泛部署的标准，但它的“CTR + 多项式哈希”路线被 GCM 继承。### 适用面\n\nCWC 适合“高吞吐、可并行、能保证 nonce 唯一”的链路加密原型；不适合 nonce 难以管理的无状态设备，也不适合需要长期密钥、频繁换钥的协议。它的标签可以截短，但截得越短，伪造概率越高。",
+        "en": "### IETF draft and GCM's predecessor\n\nCWC entered IETF CFRG as draft-irtf-cfrg-cwc-01, targeting high-speed IPsec authenticated encryption.GCM's designers cite CWC as the prior Carter–Wegman counter-mode scheme."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    },
+    {
+      "id": "cwc-r139-broken",
+      "entryId": "cwc-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### nonce 重用是致命的\n\nCTR 要求 nonce 唯一：同一密钥下重用 nonce，两条密钥流相同，异或两条密文就能恢复明文异或。多项式哈希的认证密钥也依赖 nonce，重用会让标签的可伪造性上升。标签截断到 tl 位会把伪造概率抬高到约 2^-tl；消息上限 2^32−1 块，超过就必须换密钥。CWC 没有内置密钥派生或 nonce 管理，部署方要自己保证。### 标准生态\n\nCWC 停留在 IETF 草案和 FSE 论文，没有 NIST 标准、没有广泛的 AES-NI 优化、也没有协议默认套件。它不是“被攻破”，而是“没有被标准化生态接住”；这使它在工程选型中天然处于劣势。",
+        "en": "### Nonce reuse is fatal\n\nCTR requires a unique nonce: reusing one under the same key repeats the keystream, so XORing two ciphertexts recovers the XOR of the plaintexts.The polynomial hash key also depends on the nonce, and reuse raises tag-forgery risk."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    },
+    {
+      "id": "cwc-r139-history",
+      "entryId": "cwc-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 2003 草案、2004 FSE、2007 GCM\n\nKohno、Viega 与 Whiting 在 2003 年把 CWC 提交 IETF CFRG，2004 年在 FSE 发表完整论文。它赶上了 IPsec 对高速 AEAD 的需求，却输给了 2007 年 NIST 标准化的 GCM；后者同样基于 CTR 和GF(2^128) 多项式哈希，但实现和标准生态更顺。CWC 现在是理解 GCM 设计谱系的重要中间站。### 名称澄清\n\nCWC 不是“携带式工作组密码”，而是 Carter–Wegman + Counter 的缩写。把它误读成组织或产品名，会完全错过它的 AEAD 结构；这也是该条目目从目录身份卡升级为机制正文的原因之一。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：CWC 认证加密模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "### 2003 draft, 2004 FSE, 2007 GCM\n\nKohno, Viega and Whiting submitted CWC to IETF CFRG in 2003 and published the full paper at FSE 2004.It met IPsec's need for a high-speed AEAD but lost to GCM, standardized by NIST in 2007; GCM also combines CTR with a GF(2^128) polynomial hash, but its implementation and standards ecosystem were smoother."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    },
+    {
+      "id": "cwc-r139-refs",
+      "entryId": "cwc-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for CWC 认证加密模式.https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for CWC 认证加密模式.https://zh.wikipedia.org/w/index.php?search=CWC%20%E8%AE%A4%E8%AF%81%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cwc-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

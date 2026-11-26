@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sp800-38f-details",
+  "sources": [
+    {
+      "id": "sp800-38f-wikipedia",
+      "title": "Wikipedia search entry for 密钥包装方法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 密钥包装方法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sp800-38f-r139-principle",
+          "entryId": "sp800-38f-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：密钥包装方法（Methods for Key Wrapping）。摘要第一句给出主题与两面服务：「This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.」第二句列出新增的模式：「this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode.」第三句为遗留用途保留一项：「An analogous mode with the Triple Data Encryption Algorithm (TDEA) as the underlying block cipher, called TKW, is also specified, to support legacy applications.",
+            "en": "**Standard**: Methods for Key Wrapping (密钥包装方法).The abstract opens with the subject and both services: \"This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.\" The second sentence names what is new: \"this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38f-r139-why",
+          "entryId": "sp800-38f-details",
+          "section": "why",
+          "statement": {
+            "zh": "§3.1 先给设计目标：「KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.」再给出理由本身：「Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.」与「Segregating keys from general data can provide an extra layer of protection.」但同一节立刻取消必要性：「there is no requirement to protect cryptographic keys with a distinct cryptographic method.」鲁棒性的代价也写在这里：「each bit of output can be expected to depend in a nontrivial fashion on each bit of input」，其下一句指出这是以吞吐率为代价换得。故本文件补足的是可分离保护密钥的批准方法，不是把密钥保护变成单独方法的义务。",
+            "en": "Section 3.1 gives the design aim first: \"KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.\" Then the reasoning: \"Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.\" and \"Segregating keys from general data can provide an extra layer of protection.\" The same subsection immediately withdraws any necessity: \"there is no requirement to protect cryptographic keys with a distinct cryptographic method."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38f-r139-used",
+          "entryId": "sp800-38f-details",
+          "section": "used",
+          "statement": {
+            "zh": "§5.1 把底层密码与密钥写成 shall：「For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.」与「The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.」§5.3.1 给出长度上限：「the plaintext for KW-AE shall be limited to fewer than 254 semiblocks」（此处 254 为 2 的 54 次方丢上标所得）。符合性按函数申报，共六项：§8「An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD.",
+            "en": "Section 5.1 sets the cipher and the key at shall level: \"For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.\" and \"The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.\" Section 5.3.1 sets the length ceiling: \"the plaintext for KW-AE shall be limited to fewer than 254 semiblocks\" (254 here is 2 to the power 54, superscript lost).Conformance is claimed per function, six in all: §8 lists \"An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38f-r139-broken",
+          "entryId": "sp800-38f-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度一是遗留算法的现在时态：§8「TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.」同段还排除内部构件单独使用：「The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.」限度二是密钥管理不在范围内：§5.1「The management of KEKs is outside the scope of this publication.」验证也有覆盖不到处：§2「Some of these requirements may be out-of-scope for CMVP or CAVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.」限度三是确定性带来的信息泄露：附录 A.",
+            "en": "The first limit is the standing of the legacy variant: §8 states \"TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.\" and excludes the internals on their own: \"The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.\" The second is scope: §5.1 says \"The management of KEKs is outside the scope of this publication."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38f-r139-history",
+          "entryId": "sp800-38f-details",
+          "section": "history",
+          "statement": {
+            "zh": "页眉首行为「NIST Special Publication 800-38F December 2012」，扉页日期同为 December 2012，作者 Morris Dworkin；引用行「Natl.Inst.Stand.Technol.Spec.Publ.800-38F, 30 pages (December 2012) CODEN: NSPUE2」，本份文本无 DOI 行，分册标题作 Methods for Key Wrapping。致谢页列出评审同事与早期草稿的参与者：「The author wishes to thank his colleagues who reviewed drafts of this publication and contributed to its development, especially Elaine Barker, Meltem Turan, Allen Roginsky, Lily Chen, Donghoon Chang, Sharon Keller, Tim Polk, John Kelsey, Ray Perlner, Tim Hall, and Souradyuti Paul.」以及「Heather Pearce worked extensively on early drafts of this publication.」§3.",
+            "en": "The running head reads \"NIST Special Publication 800-38F December 2012\", the title block carries the same December 2012 date with Morris Dworkin as author, and the citation line is \"Natl.Inst."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-38f-r139-refs",
+          "entryId": "sp800-38f-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 密钥包装方法.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 密钥包装方法.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sp800-38f-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sp800-38f-wikipedia"
+      ]
+    },
+    {
+      "id": "sp800-38f-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sp800-38f-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sp800-38f-r139-principle",
+      "entryId": "sp800-38f-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：密钥包装方法（Methods for Key Wrapping）。摘要第一句给出主题与两面服务：「This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.」第二句列出新增的模式：「this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode.」第三句为遗留用途保留一项：「An analogous mode with the Triple Data Encryption Algorithm (TDEA) as the underlying block cipher, called TKW, is also specified, to support legacy applications.",
+        "en": "**Standard**: Methods for Key Wrapping (密钥包装方法).The abstract opens with the subject and both services: \"This publication describes cryptographic methods that are approved for “key wrapping,” i.e., the protection of the confidentiality and integrity of cryptographic keys.\" The second sentence names what is new: \"this publication specifies two new, deterministic authenticated-encryption modes of operation of the Advanced Encryption Standard (AES) algorithm: the AES Key Wrap (KW) mode and the AES Key Wrap With Padding (KWP) mode."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38f-r139-why",
+      "entryId": "sp800-38f-details",
+      "section": "why",
+      "statement": {
+        "zh": "§3.1 先给设计目标：「KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.」再给出理由本身：「Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.」与「Segregating keys from general data can provide an extra layer of protection.」但同一节立刻取消必要性：「there is no requirement to protect cryptographic keys with a distinct cryptographic method.」鲁棒性的代价也写在这里：「each bit of output can be expected to depend in a nontrivial fashion on each bit of input」，其下一句指出这是以吞吐率为代价换得。故本文件补足的是可分离保护密钥的批准方法，不是把密钥保护变成单独方法的义务。",
+        "en": "Section 3.1 gives the design aim first: \"KW, KWP, and TKW were designed to protect the confidentiality and the authenticity/integrity of cryptographic keys.\" Then the reasoning: \"Each provides an option for protecting keys in a manner that is distinct from the methods that protect general data.\" and \"Segregating keys from general data can provide an extra layer of protection.\" The same subsection immediately withdraws any necessity: \"there is no requirement to protect cryptographic keys with a distinct cryptographic method."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38f-r139-used",
+      "entryId": "sp800-38f-details",
+      "section": "used",
+      "statement": {
+        "zh": "§5.1 把底层密码与密钥写成 shall：「For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.」与「The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.」§5.3.1 给出长度上限：「the plaintext for KW-AE shall be limited to fewer than 254 semiblocks」（此处 254 为 2 的 54 次方丢上标所得）。符合性按函数申报，共六项：§8「An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD.",
+        "en": "Section 5.1 sets the cipher and the key at shall level: \"For KW and KWP, the underlying block cipher shall be approved, and the block size shall be 128 bits.\" and \"The KEK shall be secret, i.e., disclosed only to parties that are authorized to know the protected information.\" Section 5.3.1 sets the length ceiling: \"the plaintext for KW-AE shall be limited to fewer than 254 semiblocks\" (254 here is 2 to the power 54, superscript lost).Conformance is claimed per function, six in all: §8 lists \"An implementation may claim conformance to one or more of the following six functions: KWAE, KW-AD, KWP-AE, KWP-AD, TKW-AE, and TKW-AD."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38f-r139-broken",
+      "entryId": "sp800-38f-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度一是遗留算法的现在时态：§8「TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.」同段还排除内部构件单独使用：「The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.」限度二是密钥管理不在范围内：§5.1「The management of KEKs is outside the scope of this publication.」验证也有覆盖不到处：§2「Some of these requirements may be out-of-scope for CMVP or CAVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.」限度三是确定性带来的信息泄露：附录 A.",
+        "en": "The first limit is the standing of the legacy variant: §8 states \"TKW-AE and TKW-AD are approved to support legacy systems but should not be used for new applications.\" and excludes the internals on their own: \"The associated wrapping and unwrapping functions, W, W-1, TW, and TW-1, are not approved for use independently of these six functions.\" The second is scope: §5.1 says \"The management of KEKs is outside the scope of this publication."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38f-r139-history",
+      "entryId": "sp800-38f-details",
+      "section": "history",
+      "statement": {
+        "zh": "页眉首行为「NIST Special Publication 800-38F December 2012」，扉页日期同为 December 2012，作者 Morris Dworkin；引用行「Natl.Inst.Stand.Technol.Spec.Publ.800-38F, 30 pages (December 2012) CODEN: NSPUE2」，本份文本无 DOI 行，分册标题作 Methods for Key Wrapping。致谢页列出评审同事与早期草稿的参与者：「The author wishes to thank his colleagues who reviewed drafts of this publication and contributed to its development, especially Elaine Barker, Meltem Turan, Allen Roginsky, Lily Chen, Donghoon Chang, Sharon Keller, Tim Polk, John Kelsey, Ray Perlner, Tim Hall, and Souradyuti Paul.」以及「Heather Pearce worked extensively on early drafts of this publication.」§3.",
+        "en": "The running head reads \"NIST Special Publication 800-38F December 2012\", the title block carries the same December 2012 date with Morris Dworkin as author, and the citation line is \"Natl.Inst."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-38f-r139-refs",
+      "entryId": "sp800-38f-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 密钥包装方法.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 密钥包装方法.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E9%92%A5%E5%8C%85%E8%A3%85%E6%96%B9%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sp800-38f-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

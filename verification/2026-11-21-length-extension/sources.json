@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "length-extension-details",
+  "sources": [
+    {
+      "id": "length-extension-wikipedia",
+      "title": "Wikipedia search entry for 长度扩展攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 长度扩展攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "length-extension-r139-principle",
+          "entryId": "length-extension-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：长度扩展攻击（Length Extension Attack）。### Merkle–Damgård 状态\n\nMerkle–Damgård 哈希把消息分块，用压缩函数 f 迭代链接值：h_i=f(h_{i−1},m_i)。最终摘要就是最后一轮的链接值；填充 pad=0x80||0…||len 把消息长度编码进最后一块。### 长度扩展伪造\n\n给定 H(K||m) 和 K 的长度，攻击者把摘要当作链接值，直接继续压缩 m′，得到 H(K||m||pad||m′)，无需知道 K。若协议用 MAC=H(K||m) 且比较摘要，攻击者可追加任意消息并伪造有效 MAC。### HMAC 与海绵结构\n\nHMAC 用 H((K⊕opad)||H((K⊕ipad)||m))，外层哈希遮蔽内层链接值，因而抗长度扩展；SHA-3 的海绵结构输出不是可直接续用的链接值，也不受影响。",
+            "en": "**Attack**: Length Extension Attack (长度扩展攻击).### Merkle–Damgård state\n\nA Merkle–Damgård hash splits the message into blocks and iterates a compression function f over a chaining value: h_i=f(h_{i−1},m_i)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        },
+        {
+          "id": "length-extension-r139-why",
+          "entryId": "length-extension-details",
+          "section": "why",
+          "statement": {
+            "zh": "这是“把哈希当 MAC”的经典错误：H(K||m) 看似密钥在前，实际把内部状态暴露给攻击者。它解释了为什么 HMAC 不是多此一举，也说明协议必须区分 hash、MAC、KDF 和签名原语。",
+            "en": "This is the classic “hash as MAC” mistake: H(K||m) looks like a keyed hash but exposes the internal state to the attacker.It explains why HMAC is not redundant and why protocols must distinguish hash, MAC, KDF and signature primitives."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        },
+        {
+          "id": "length-extension-r139-used",
+          "entryId": "length-extension-details",
+          "section": "used",
+          "statement": {
+            "zh": "给定 MAC=H(K||m) 与摘要，攻击者先猜 K 的长度、计算 pad，把摘要当作 IV 继续压缩 m′，得到 H(K||m||pad||m′)；把新消息与新摘要一起发给验证者即可通过。旧版 Flickr API、自定义 token 与“密钥前缀”文件完整性方案都出现过该问题。现代做法：HMAC、KMAC、BLAKE3 keyed mode、AEAD；若必须用 hash 构造 MAC，使用 HMAC 或先做长度编码与域分离。",
+            "en": "Given MAC=H(K||m) and its digest, an attacker guesses the length of K, computes the padding, treats the digest as an IV and continues compressing m′ to obtain H(K||m||pad||m′); sending the new message with the new digest passes verification.The old Flickr API, custom tokens and “key-prefix” file-integrity schemes exhibited the flaw."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        },
+        {
+          "id": "length-extension-r139-broken",
+          "entryId": "length-extension-details",
+          "section": "broken",
+          "statement": {
+            "zh": "受影响：MD5、SHA-1、SHA-256/512 等 Merkle–Damgård 哈希；不受影响：SHA-3/SHAKE、BLAKE2/3、HMAC、KMAC。SHA-384/512-256 的截断输出也不可直接扩展。",
+            "en": "Affected: MD5, SHA-1 and Merkle–Damgård SHA-256/512; unaffected: SHA-3/SHAKE, BLAKE2/3, HMAC and KMAC.Truncated SHA-384/512-256 outputs also cannot be extended directly."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        },
+        {
+          "id": "length-extension-r139-history",
+          "entryId": "length-extension-details",
+          "section": "history",
+          "statement": {
+            "zh": "Merkle 1989 与 Damgård 1989 独立给出 MD 构造；1997 年 RFC 2104 标准化 HMAC 以修复密钥前缀 MAC 的缺陷；NIST SP 800-107r1 规范 HMAC 使用；SHA-3 海绵结构从根本上改变状态输出。它成为密码协议设计课的必修反例，也推动了 MAC 原语标准化。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "Merkle and Damgård independently introduced the MD construction in 1989; RFC 2104 standardized HMAC in 1997 to fix key-prefix MACs; NIST SP 800-107r1 regulates HMAC usage; SHA-3’s sponge changed the state-output model.It became a required counterexample in protocol-design courses and pushed MAC primitives toward standardization."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        },
+        {
+          "id": "length-extension-r139-refs",
+          "entryId": "length-extension-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 长度扩展攻击.https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 长度扩展攻击.https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "length-extension-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "length-extension-wikipedia"
+      ]
+    },
+    {
+      "id": "length-extension-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "length-extension-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "length-extension-r139-principle",
+      "entryId": "length-extension-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：长度扩展攻击（Length Extension Attack）。### Merkle–Damgård 状态\n\nMerkle–Damgård 哈希把消息分块，用压缩函数 f 迭代链接值：h_i=f(h_{i−1},m_i)。最终摘要就是最后一轮的链接值；填充 pad=0x80||0…||len 把消息长度编码进最后一块。### 长度扩展伪造\n\n给定 H(K||m) 和 K 的长度，攻击者把摘要当作链接值，直接继续压缩 m′，得到 H(K||m||pad||m′)，无需知道 K。若协议用 MAC=H(K||m) 且比较摘要，攻击者可追加任意消息并伪造有效 MAC。### HMAC 与海绵结构\n\nHMAC 用 H((K⊕opad)||H((K⊕ipad)||m))，外层哈希遮蔽内层链接值，因而抗长度扩展；SHA-3 的海绵结构输出不是可直接续用的链接值，也不受影响。",
+        "en": "**Attack**: Length Extension Attack (长度扩展攻击).### Merkle–Damgård state\n\nA Merkle–Damgård hash splits the message into blocks and iterates a compression function f over a chaining value: h_i=f(h_{i−1},m_i)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    },
+    {
+      "id": "length-extension-r139-why",
+      "entryId": "length-extension-details",
+      "section": "why",
+      "statement": {
+        "zh": "这是“把哈希当 MAC”的经典错误：H(K||m) 看似密钥在前，实际把内部状态暴露给攻击者。它解释了为什么 HMAC 不是多此一举，也说明协议必须区分 hash、MAC、KDF 和签名原语。",
+        "en": "This is the classic “hash as MAC” mistake: H(K||m) looks like a keyed hash but exposes the internal state to the attacker.It explains why HMAC is not redundant and why protocols must distinguish hash, MAC, KDF and signature primitives."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    },
+    {
+      "id": "length-extension-r139-used",
+      "entryId": "length-extension-details",
+      "section": "used",
+      "statement": {
+        "zh": "给定 MAC=H(K||m) 与摘要，攻击者先猜 K 的长度、计算 pad，把摘要当作 IV 继续压缩 m′，得到 H(K||m||pad||m′)；把新消息与新摘要一起发给验证者即可通过。旧版 Flickr API、自定义 token 与“密钥前缀”文件完整性方案都出现过该问题。现代做法：HMAC、KMAC、BLAKE3 keyed mode、AEAD；若必须用 hash 构造 MAC，使用 HMAC 或先做长度编码与域分离。",
+        "en": "Given MAC=H(K||m) and its digest, an attacker guesses the length of K, computes the padding, treats the digest as an IV and continues compressing m′ to obtain H(K||m||pad||m′); sending the new message with the new digest passes verification.The old Flickr API, custom tokens and “key-prefix” file-integrity schemes exhibited the flaw."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    },
+    {
+      "id": "length-extension-r139-broken",
+      "entryId": "length-extension-details",
+      "section": "broken",
+      "statement": {
+        "zh": "受影响：MD5、SHA-1、SHA-256/512 等 Merkle–Damgård 哈希；不受影响：SHA-3/SHAKE、BLAKE2/3、HMAC、KMAC。SHA-384/512-256 的截断输出也不可直接扩展。",
+        "en": "Affected: MD5, SHA-1 and Merkle–Damgård SHA-256/512; unaffected: SHA-3/SHAKE, BLAKE2/3, HMAC and KMAC.Truncated SHA-384/512-256 outputs also cannot be extended directly."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    },
+    {
+      "id": "length-extension-r139-history",
+      "entryId": "length-extension-details",
+      "section": "history",
+      "statement": {
+        "zh": "Merkle 1989 与 Damgård 1989 独立给出 MD 构造；1997 年 RFC 2104 标准化 HMAC 以修复密钥前缀 MAC 的缺陷；NIST SP 800-107r1 规范 HMAC 使用；SHA-3 海绵结构从根本上改变状态输出。它成为密码协议设计课的必修反例，也推动了 MAC 原语标准化。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：长度扩展攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "Merkle and Damgård independently introduced the MD construction in 1989; RFC 2104 standardized HMAC in 1997 to fix key-prefix MACs; NIST SP 800-107r1 regulates HMAC usage; SHA-3’s sponge changed the state-output model.It became a required counterexample in protocol-design courses and pushed MAC primitives toward standardization."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    },
+    {
+      "id": "length-extension-r139-refs",
+      "entryId": "length-extension-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 长度扩展攻击.https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 长度扩展攻击.https://zh.wikipedia.org/w/index.php?search=%E9%95%BF%E5%BA%A6%E6%89%A9%E5%B1%95%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "length-extension-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

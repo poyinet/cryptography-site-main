@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening batch for ascon-details.",
+  "entries": [
+    {
+      "id": "ascon-details",
+      "inventoryIds": [
+        "ascon"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R106 后量子签名/KEM、轻量 AEAD、配对签名与门限签名深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "ASCON 轻量级密码族",
+        "en": "ASCON Lightweight AEAD and Hash"
+      },
+      "claimIds": [
+        "ascon-r139-principle",
+        "ascon-r139-why",
+        "ascon-r139-used",
+        "ascon-r139-broken",
+        "ascon-r139-history",
+        "ascon-r139-refs"
+      ],
+      "sourceIds": [
+        "ascon-wikipedia",
+        "ascon-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "present"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "ascon-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ASCON 轻量级密码族：为什么需要 → 核心机制 → 边界。",
+            "en": "ASCON Lightweight AEAD and Hash: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ASCON 轻量级密码族 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ASCON Lightweight AEAD and Hash, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ascon-details-flow.zh.svg",
+            "en": "assets/ascon-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d9863c085f8a1b28f17b75295252b4ad3d68d16599b0313cbb27f9407d4167b7",
+            "en": "f728e685c556fda6add2b0953ff0a79d048df38d2278ec01e27bce90f817df08"
+          }
+        },
+        {
+          "id": "ascon-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ASCON 轻量级密码族 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ASCON Lightweight AEAD and Hash: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ASCON 轻量级密码族 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ASCON Lightweight AEAD and Hash, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ascon-details-r138-model.zh.svg",
+            "en": "assets/ascon-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7149ed8de5c7adad42cb0024b65b1d91ac691c208dd1e220c15728f217bc5a23",
+            "en": "cce77739c92b43e07e0835fc38a041373690c34f17e7e109cf7129a3af9fcd92"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：ASCON 轻量级密码族（ASCON）。### 320 位状态与 SPN 置换\n\nAscon 的所有模式共用一个 320 位状态，分成 5 个 64 位字。每轮做三步：S2 异或轮常数、64 个 5 位 S 盒并行替换、每个字内异或旋转副本做线性扩散。AEAD 初始化/收尾用 12 轮 p[12]，处理数据块用 8 轮 p[8]。### 双工 AEAD\n\nAscon-AEAD128 的 key、nonce、tag 都是 128 位，rate 128 位、capacity 192 位。初始化注入 K||N，AD 和明文按 128 位块注入并提取密文，每块后跑 p[8]；收尾再注入 K，输出 128 位标签。### 哈希与 XOF\n\nAscon-Hash256 用 64 位块吸收、256 位输出；Ascon-XOF128 可任意长度输出；它们与 AEAD 共享同一个置换。",
+          "why": "ASCON 是 NIST 轻量密码标准：在 IoT、RFID、传感器和 8/16/32 位 MCU 上，AES-GCM 的查表或指令开销可能太大，而 Ascon 只用 AND/XOR/旋转和 5 位 S 盒，硬件面积小、软件可位切片。一个置换同时覆盖 AEAD、哈希和 XOF，减少芯片和固件里的密码原语数量。",
+          "used": "用于 Ascon-AEAD128、Ascon-Hash256、Ascon-XOF128、Ascon-CXOF128；NIST SP 800-232 于 2025-08 正式发布。适合短消息、低功耗、硬件面积受限的设备。工程要点：nonce 必须唯一；标签可截断但至少 96/128 位；初始化/收尾用 p[12]，数据用 p[8]，不能混；侧信道防护要用 masked 实现；不要把它当 AES-GCM 的高吞吐替代。",
+          "broken": "Ascon-AEAD128 是 nonce-based AEAD：同一 key/nonce 加密不同消息会破坏机密性和认证；nonce 复用是最直接攻击面。",
+          "history": "ASCON 由 Dobraunig、Eichlseder、Mendel、Schläffer 设计，2014 年提交 CAESAR，2019 年入选 CAESAR 轻量 AEAD 组合；2023 年 2 月 NIST 宣布选择 Ascon 家族作为轻量密码标准；2024-11 发布 SP 800-232 初始草案，2025-08 正式发布。它的设计目标是低面积、位切片友好和在线认证，标准化主要使用 12/8 轮置换。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\)。输入：输入：ASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。 预期输出：按 ASCON 轻量级密码族 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 吸收阶段把消息块异或进状态并置换 2. 进入挤压阶段输出摘要 3. 按需要重复挤压。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for ASCON 轻量级密码族. https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\]\n\nASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。1.吸收阶段把消息块异或进状态并置换。2.进入挤压阶段输出摘要。3.按需要重复挤压。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: ASCON (ASCON 轻量级密码族). ### 320-bit state and SPN permutation\n\nAll Ascon modes share a 320-bit state split into five 64-bit words. Each round has three steps: XOR a round constant into S2, apply 64 parallel 5-bit S-boxes, and diffuse within each word by XORing rotated copies. AEAD initialization/finalization use 12 rounds (p[12]); data blocks use 8 rounds (p[8]). ### Duplex AEAD\n\nAscon-AEAD128 uses 128-bit keys, nonces and tags, with a 128-bit rate and 192-bit capacity. Initialization injects K||N; AD and plaintext are injected in 128-bit blocks while ciphertext is extracted, with p[8] after each block; finalization injects K again and outputs a 128-bit tag. ### Hash and XOF\n\nAscon-Hash256 absorbs 64-bit blocks and outputs 256 bits; Ascon-XOF128 produces arbitrary-length output. They share the same permutation as the AEAD mode.",
+          "why": "ASCON is NIST’s lightweight cryptography standard: on IoT, RFID, sensors and 8/16/32-bit MCUs, AES-GCM table or instruction overhead can be too high, while Ascon uses only AND/XOR/rotations and a 5-bit S-box, giving a small hardware footprint and bitsliced software.\n\nOne permutation covers AEAD, hashing and XOF, reducing the number of cryptographic primitives in a chip or firmware image.",
+          "used": "It is used for Ascon-AEAD128, Ascon-Hash256, Ascon-XOF128 and Ascon-CXOF128; NIST SP 800-232 was published in August 2025. It suits short messages, low power and area-constrained devices.\n\nRequirements: unique nonces; truncation only down to 96/128 bits; p[12] for initialization/finalization and p[8] for data, never mixed; masked implementations for side channels; do not treat it as a high-throughput replacement for AES-GCM.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Ascon-AEAD128 is a nonce-based AEAD: encrypting different messages under the same key and nonce breaks confidentiality and authenticity; nonce reuse is the most direct attack surface.\n\nBoundaries: 128-bit security is not 256-bit; tag truncation lowers forgery cost; power/EM side channels on low-power devices need masking; Ascon software is slower than AES-NI on 64-bit servers, so choose by platform.",
+          "history": "ASCON was designed by Dobraunig, Eichlseder, Mendel and Schläffer, submitted to CAESAR in 2014 and selected for the CAESAR lightweight AEAD portfolio in 2019. NIST announced the Ascon family as its lightweight cryptography standard in February 2023, released the initial SP 800-232 draft in November 2024 and the final standard in August 2025.\n\nIts design targets low area, bitsliced friendliness and online authentication; the standard mainly uses the 12/8-round permutations.",
+          "refs": "- Wikipedia search entry for ASCON 轻量级密码族. https://zh.wikipedia.org/w/index.php?search=ASCON%20%E8%BD%BB%E9%87%8F%E7%BA%A7%E5%AF%86%E7%A0%81%E6%97%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)\\]\n\nASCON: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "ascon-r139-formal",
+          "entryId": "ascon-details",
+          "kind": "formal-model",
+          "formula": "S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)",
+          "inputs": "输入：ASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。",
+          "expected": "按 ASCON 轻量级密码族 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "吸收阶段把消息块异或进状态并置换",
+            "进入挤压阶段输出摘要",
+            "按需要重复挤压"
+          ],
+          "sourceIds": [
+            "ascon-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ascon-r139-formal"
+      ],
+      "sources": [
+        "ascon-wikipedia",
+        "ascon-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ascon-r139-formal",
+      "entryId": "ascon-details",
+      "kind": "formal-model",
+      "formula": "S_{i+1}=f(S_i\\oplus (M_i\\,\\|\\,0^{*})),\\quad h=\\mathrm{Squeeze}(S)",
+      "inputs": "输入：ASCON 轻量级密码族的公开参数、密钥/随机数与消息；变量说明：S 海绵状态，f 置换，M_i 消息块。",
+      "expected": "按 ASCON 轻量级密码族 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "吸收阶段把消息块异或进状态并置换",
+        "进入挤压阶段输出摘要",
+        "按需要重复挤压"
+      ],
+      "sourceIds": [
+        "ascon-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

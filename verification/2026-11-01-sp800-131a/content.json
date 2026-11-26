@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for sp800-131a: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-131a-details",
+      "inventoryIds": [
+        "sp800-131a"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释密码算法与密钥长度过渡的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Transitioning the Use of Cryptographic Algorithms and Key Lengths: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "密码算法与密钥长度过渡",
+        "en": "Transitioning the Use of Cryptographic Algorithms and Key Lengths"
+      },
+      "claimIds": [
+        "sp800-131a-r139-principle",
+        "sp800-131a-r139-why",
+        "sp800-131a-r139-used",
+        "sp800-131a-r139-broken",
+        "sp800-131a-r139-history",
+        "sp800-131a-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-131a-wikipedia",
+        "sp800-131a-reference-ref"
+      ],
+      "related": [
+        "nist",
+        "fips186-5",
+        "sp800-186",
+        "fips140-3"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：密码算法与密钥长度过渡（Transitioning the Use of Cryptographic Algorithms and Key Lengths）。这份文件的度量单位是`安全强度`：「In SP 800-57, the security strength provided by an algorithm with a particular key length … is measured in bits and is a measure of the difficulty of subverting the cryptographic protection that is provided by the algorithm and key.」并且强调「Note that the length of the cryptographic keys is an integral part of these determinations.」——算法与密钥长度必须一起判定。",
+          "why": "过渡之所以要成文，是因为算法会随算力失效：文件为联邦政府设定当下下限——「For the Federal Government, a security strength of at least 112 bits is required at this time for applying cryptographic protection (e.g., for encrypting or signing data).」，并把未来变数写进定义——「When post-quantum cryptography is introduced in NIST standards, quantum security strength, i.e.the difficulty of subverting the protection using quantum computers, will be defined.」，术语注释把口径本身一并给出：「The term \"security strength\" refers to the classical security strength - a measure of the difficulty of subverting the cryptographic protection (e.g., discovering the key) using classical computers.」。",
+          "used": "落地面是逐个算法清点：§2 从分组密码开始——「Encryption is a cryptographic operation that is used to provide confidentiality for sensitive information, and decryption is the inverse operation.」并列出联邦用过的算法族，如「The Triple Data Encryption Algorithm (TDEA) (often referred to as Triple DES) is specified in SP 800-67, and has two variations, known as two-key TDEA and three-key TDEA.」。",
+          "broken": "限度一是身份：它是建议性指南而非 FIPS，权威声明写「such standards and guidelines shall not apply to national security systems without the express approval of appropriate federal officials exercising policy authority over such systems」，并加一句「Nothing in this publication should be taken to contradict the standards and guidelines made mandatory and binding on federal agencies by the Secretary of Commerce under statutory authority.」，权威声明还说它是「may be used by nongovernmental organizations on a voluntary basis and is not subject to copyright in the United States」的公开指南。限度二是时效：它把 128 位强度交给别处的时间表——「SP 800-57, Part 1 includes a transition to a security strength of 128 bits in 2030」，并自陈「However, this revision of SP 800-131A does not address this transition, but a future revision will include these considerations as well as transitions to post-quantum algorithms.」——128 位强度与后量子过渡都留给未来修订。",
+          "history": "版本史可从自身与引用中读出：这是 Revision 2，标题行写「NIST Special Publication 800-131A Revision 2 Transitioning the Use of Cryptographic Algorithms and Key Lengths」；脚注 13 还把椭圆曲线批准口径挂到别处——「Until SP 800-186 is published, approved elliptic curves are specified in FIPS 186-4.」，把 TDEA 的弃用计划链接到 2017 年的 NIST 公告。该曲线指针只是 2019 年时的临时安排：本语料库内的 SP 800-186 标题日期为 2023 年 2 月，FIPS 186-5 亦于 2023 年 2 月 3 日取代 186-4，因此「approved elliptic curves are specified in FIPS 186-4」在今天已不成立。",
+          "refs": "- Wikipedia search entry for 密码算法与密钥长度过渡. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E4%B8%8E%E5%AF%86%E9%92%A5%E9%95%BF%E5%BA%A6%E8%BF%87%E6%B8%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\n密码算法与密钥长度过渡的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Transitioning the Use of Cryptographic Algorithms and Key Lengths (密码算法与密钥长度过渡). The unit of this publication is security strength: \"In SP 800-57, the security strength provided by an algorithm with a particular key length … is measured in bits and is a measure of the difficulty of subverting the cryptographic protection that is provided by the algorithm and key.\" It stresses that \"Note that the length of the cryptographic keys is an integral part of these determinations.\" — algorithm and key length are judged together.",
+          "why": "Transitions need a written schedule because algorithms decay with computing power: the publication sets a floor for the federal government today — \"For the Federal Government, a security strength of at least 112 bits is required at this time for applying cryptographic protection (e.g., for encrypting or signing data).\" — and flags the future change in its own definitions, \"When post-quantum cryptography is introduced in NIST standards, quantum security strength, i.e. the difficulty of subverting the protection using quantum computers, will be defined.\" while the note supplies the meaning itself, defining the measure as \"a measure of the difficulty of subverting the cryptographic protection (e.g., discovering the key) using classical computers.\"",
+          "used": "The work is an algorithm-by-algorithm inventory: §2 opens with block ciphers — \"Encryption is a cryptographic operation that is used to provide confidentiality for sensitive information, and decryption is the inverse operation.\" — and lists the families used federally, for instance \"The Triple Data Encryption Algorithm (TDEA) (often referred to as Triple DES) is specified in SP 800-67, and has two variations, known as two-key TDEA and three-key TDEA.\"",
+          "broken": "The first limit is its standing: it is a recommendation, not a FIPS — the authority block says \"such standards and guidelines shall not apply to national security systems without the express approval of appropriate federal officials exercising policy authority over such systems\" and adds \"Nothing in this publication should be taken to contradict the standards and guidelines made mandatory and binding on federal agencies by the Secretary of Commerce under statutory authority.\", and the same block describes the publication as one that \"may be used by nongovernmental organizations on a voluntary basis and is not subject to copyright in the United States\". The second is timing: the 128-bit move is booked elsewhere — \"SP 800-57, Part 1 includes a transition to a security strength of 128 bits in 2030\" — and the text concedes its own scope — \"However, this revision of SP 800-131A does not address this transition, but a future revision will include these considerations as well as transitions to post-quantum algorithms.\"",
+          "history": "Its history is legible from itself and its citations: this is Revision 2, titled \"NIST Special Publication 800-131A Revision 2 Transitioning the Use of Cryptographic Algorithms and Key Lengths\"; footnote 13 outsources curve approval — \"Until SP 800-186 is published, approved elliptic curves are specified in FIPS 186-4.\" — and ties TDEA deprecation to a 2017 NIST announcement; that curve pointer was a 2019 placeholder only — SP 800-186 in this corpus is dated February 2023 and FIPS 186-5 superseded 186-4 on 3 February 2023, so the sentence no longer holds today.",
+          "refs": "- Wikipedia search entry for 密码算法与密钥长度过渡. https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E7%AE%97%E6%B3%95%E4%B8%8E%E5%AF%86%E9%92%A5%E9%95%BF%E5%BA%A6%E8%BF%87%E6%B8%A1\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nTransitioning the Use of Cryptographic Algorithms and Key Lengths: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "安全强度：以比特衡量、破解保护难度的度量。",
+          "经典安全强度：不考虑量子算法的强度口径。",
+          "TDEA：三重数据加密算法，常称 Triple DES。",
+          "密钥长度：与安全强度共同决定的参数位数。",
+          "deprecation：算法被宣布逐步停用。",
+          "national security system：需另行批准才适用的系统类别。"
+        ],
+        "en": [
+          "Security strength: a bit measure of the difficulty of subverting protection.",
+          "Classical security strength: the strength measure ignoring quantum attacks.",
+          "TDEA: the Triple Data Encryption Algorithm, commonly Triple DES.",
+          "Key length: the bit size judged together with strength.",
+          "Deprecation: the announced phase-out of an algorithm.",
+          "National security system: the category needing separate approval."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-131a-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密码算法与密钥长度过渡：为什么需要 → 核心机制 → 边界。",
+            "en": "Transitioning the Use of Cryptographic Algorithms and Key Lengths: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "密码算法与密钥长度过渡 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Transitioning the Use of Cryptographic Algorithms and Key Lengths, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-131a-details-flow.zh.svg",
+            "en": "assets/sp800-131a-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "9f029a90fc54432ce10c7f2f451520eeb3896608484be70f219c56bcfc34fca6",
+            "en": "cd8b44c1343b6f9eeb761987a94de8e137558dadb8f15deeec2fd19f0d4b5976"
+          }
+        },
+        {
+          "id": "sp800-131a-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "密码算法与密钥长度过渡 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Transitioning the Use of Cryptographic Algorithms and Key Lengths: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "密码算法与密钥长度过渡 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Transitioning the Use of Cryptographic Algorithms and Key Lengths, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-131a-details-r138-model.zh.svg",
+            "en": "assets/sp800-131a-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "8746010330254411b824965f6b46f957e41abce334b77614987ec21cab076199",
+            "en": "34ea0c5b8905856ebc6824b5bc6d736107cb4f7e79eba79219f6d3f639c3fb06"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-131a-r139-formal",
+          "entryId": "sp800-131a-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：密码算法与密钥长度过渡的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 密码算法与密钥长度过渡 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-131a-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-131a-r139-formal"
+      ],
+      "sources": [
+        "sp800-131a-wikipedia",
+        "sp800-131a-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-131a-r139-formal",
+      "entryId": "sp800-131a-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：密码算法与密钥长度过渡的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 密码算法与密钥长度过渡 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-131a-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-07",
+  "scope": "Compact reference entry for homophonic-substitution: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "homophonic-substitution-details",
+      "inventoryIds": [
+        "homophonic-substitution"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 同音替换 的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Homophonic Substitution: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "同音替换",
+        "en": "Homophonic Substitution"
+      },
+      "claimIds": [
+        "homophonic-substitution-r139-principle",
+        "homophonic-substitution-r139-why",
+        "homophonic-substitution-r139-used",
+        "homophonic-substitution-r139-broken",
+        "homophonic-substitution-r139-history",
+        "homophonic-substitution-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "homophonic-substitution-wikipedia",
+        "homophonic-substitution-standard-ref"
+      ],
+      "related": [
+        "d03-polyalphabetic",
+        "d02-monoalphabetic",
+        "vigen-re"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：同音替换（Homophonic Substitution）。HAC 的 1.28 定义给每个明文符号 a 配置一个由 t 个符号组成的串集合 H(a)，并要求这些集合两两不相交；那句里的属于记号在文本抽取后丢失，所以这里用自己的话陈述而不引用。加密过程印在 hac1.txt:530，原文是 「A homophonic substitution cipher replaces each symbol a in a plaintext message block with a randomly chosen string from H(a).」（把明文块中的每个符号 a 替换为从 H(a) 中随机选取的一个串）；同一行结尾还有 「The key for the cipher consists of the sets H(a).」（该密码的密钥就是这些 H(a) 集合）。因此需要保密的对象是整套码字集合，而加密是在 H(a) 里随机挑一个，不是固定映射到一个像。",
+          "why": "多码字的意义在于压平频率。hac1.txt:540 把机制和代价写在一处：「A homophonic cipher can be used to make the frequency of occurrence of ciphertext symbols more uniform, at the expense of data expansion.」（同音密码可使密文符号的出现频率更均匀，代价是数据膨胀），紧接着同一行说 「Decryption is not as easily performed as it is for simple substitution ciphers.」（解密不如单表代替那样容易）。由文本可直接读出两件事：密文符号的计数不再是明文符号计数的重排（这正是单表代替里频率表能一一对照的原因），而同音化要付出消息长度与解密工作量。",
+          "used": "HAC 把同音替换放在第 1 章的对称密钥加密综述里：本章在 hac1.txt:529 给它单独设了小标题，紧接在贯穿 hac1.txt:528 的单表代替材料之后，两行之后的例 1.29 就是随后用来推理的具体实例。文中的一个实例小到能手算，原文为 「Consider A = {a, b}, H(a) = {00, 10}, and H(b) = {01, 11}.The plaintext message block ab encrypts to one of the following: 0001, 0011, 1001, 1011.」（设 A={a,b}，H(a)={00,10}，H(b)={01,11}，明文块 ab 加密为 0001、0011、1001、1011 之一）。hac1.txt:532 列出 aa、ab、ba、bb 四个互不相交的集合，hac1.txt:533 给出这一构造想要的结论：「Any 4-bitstring uniquely identifies a codomain element, and hence a plaintext message.」（任一 4 位串都能唯一确定一个值域元素，从而唯一确定一条明文）。该条目只陈述这一教学位置；该留存件没有给出部署史，本文不作部署史断言。",
+          "broken": "留存文本自己给出的两条边界就是那两项代价：数据膨胀，以及整句引用的 「Decryption is not as easily performed as it is for simple substitution ciphers.」（解密不如单表代替那样容易）（hac1.txt:540）。解密必须判断收到的串属于哪个 H(a)，这就是 1.28 里两两不相交条件承重的地方——集合一旦重叠，密文串就会出现歧义。除此之外，该条目沿用章内对密钥空间规模的告诫，不自造强度结论。hac1.txt:709 的 Fact 1.40 原文是 「A necessary, but usually not sufficient, condition for an encryption scheme to be secure is that the key space be large enough to preclude exhaustive search.」（加密方案要安全的一个必要但通常不充分的条件，是密钥空间大到无法穷举）。因此一张很大的 H(a) 表并不构成安全性证据；该留存件没有给出这一构造的攻击复杂度，本文也不给出。",
+          "history": "能从留存件本身定年的只有这份文献，而且这里有一处值得记录的矛盾。第 1 行印着 「This is a Chapter from the Handbook of Applied Cryptography, by A.Menezes, P.van Oorschot, and S.Vanstone, CRC Press, 1996.」（本件取自应用密码学手册第 1 章，作者 A.Menezes、P.van Oorschot、S.Vanstone，CRC Press，1996 年），而第 6 行的版权行首符号被抽取成裸字母 c、年份写作 1997。两处都按行号引用，不合并成一个统一的年份，因为第二行的首字形已损坏，而且两行本身并不同意。同音构造在本章出现在第 529 行之后的古典代替材料中；本章的注释与进一步参考一节（1.14，小标题在 hac1.txt:1618）在 hac1.txt:1636 说明对称密钥加密有很长的历史、由 Kahn 记载，并把 Denning 第 2 章列为进一步的来源；那条注释没有给出同音构造的提出者或年代，本留存件其它行同样没有，因此该条目不谈发明者。",
+          "refs": "- Wikipedia search entry for 同音替换. https://zh.wikipedia.org/w/index.php?search=%E5%90%8C%E9%9F%B3%E6%9B%BF%E6%8D%A2\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Homophonic Substitution. It is registered under monoalphabetic substitution. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in monoalphabetic substitution, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Classical Greece & Rome. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 同音替换. https://zh.wikipedia.org/w/index.php?search=%E5%90%8C%E9%9F%B3%E6%9B%BF%E6%8D%A2\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "同音替换（homophonic substitution）：为每个明文符号配置多个码字、加密时随机选一个的代替密码。",
+          "码字集合 H(a)：符号 a 可用的全部密文串，按 1.28 要求各集合两两不相交。",
+          "数据膨胀（data expansion）：为压平频率而让密文长于明文的代价，hac1.txt:540 明确列为代价。",
+          "两两不相交：任一密文串最多落在一个 H(a) 中，这是解密可唯一还原的前提。",
+          "频率压平：使密文符号出现频率更接近均匀，从而破坏单表频率对照。",
+          "例 1.29：本留存件里小到能手算的一个实例，A={a,b}、H(a)={00,10}、H(b)={01,11}。"
+        ],
+        "en": [
+          "homophonic substitution: a substitution cipher giving each plaintext symbol several codewords and choosing one at random.",
+          "codeword set H(a): the strings available for symbol a, required by 1.28 to be pairwise disjoint.",
+          "data expansion: the length cost of flattening frequencies, named as the price at hac1.txt:540.",
+          "pairwise disjoint: any ciphertext string lies in at most one H(a), which is what makes decryption unambiguous.",
+          "frequency flattening: making ciphertext symbol counts more uniform so a single-frequency table no longer matches.",
+          "Example 1.29: an instance in this excerpt small enough to check by hand, A={a,b}, H(a)={00,10}, H(b)={01,11}."
+        ]
+      },
+      "subtopicIds": [
+        "homophonic-substitution"
+      ],
+      "figures": [
+        {
+          "id": "homophonic-substitution-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "同音替换：为什么需要 → 核心机制 → 边界。",
+            "en": "Homophonic Substitution: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "同音替换 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Homophonic Substitution, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/homophonic-substitution-details-flow.zh.svg",
+            "en": "assets/homophonic-substitution-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e26e5211e86347e5f3e0bdd64b187d20ecbca30d07a479c8186ca42a649da131",
+            "en": "ab7b6be4588228f82efde7c54a68f31ec0473a885417928e520a5324073457c0"
+          }
+        }
+      ],
+      "sources": [
+        "homophonic-substitution-wikipedia",
+        "homophonic-substitution-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

@@ -1,0 +1,401 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-27",
+  "scope": "Full BLAKE2b/BLAKE2s sequential-mode article only; no completion claim for SHA-2, SHA-3, BLAKE3, BLAKE2bp/BLAKE2sp, Argon2, the BLAKE2 paper's salt/personalization/tree modes, modes of operation, protocols, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "blake2-details",
+      "inventoryIds": [
+        "blake2"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 RFC 7693 定义的 BLAKE2b 与 BLAKE2s 顺序模式：64/32 位字、12/10 轮、128/64 字节块、参数块、IV、SIGMA、G/F 压缩、计数器与最后块标志、密钥块、有密钥 MAC、摘要长度截取、OID、附录 A/B 逐轮向量与附录 E 自检；不把 SHA-2、SHA-3、BLAKE3、并行 BLAKE2bp/BLAKE2sp、Argon2、论文的 salt/personalization/树散列、工作模式或整个库并入本实体。",
+        "en": "Covers RFC 7693's BLAKE2b and BLAKE2s sequential mode: 64/32-bit words, 12/10 rounds, 128/64-byte blocks, the parameter block, IV, SIGMA, G/F compression, counter and last-block flag, key block, keyed MAC, digest truncation, OIDs, the Appendix A/B worked traces and the Appendix E self-test. It does not absorb SHA-2, SHA-3, BLAKE3, parallel BLAKE2bp/BLAKE2sp, Argon2, the paper's salt/personalization/tree modes, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "BLAKE2：BLAKE2b/BLAKE2s 顺序模式的 ARX 散列与有密钥 MAC",
+        "en": "BLAKE2: BLAKE2b/BLAKE2s sequential-mode ARX hashing and keyed MAC"
+      },
+      "claimIds": [
+        "blake2-r139-principle",
+        "blake2-r139-why",
+        "blake2-r139-used",
+        "blake2-r139-broken",
+        "blake2-r139-history",
+        "blake2-r139-refs"
+      ],
+      "calculationIds": [
+        "blake2-calc-rfc-traces",
+        "blake2-calc-selftest",
+        "blake2-calc-crosscheck",
+        "blake2-calc-structure",
+        "blake2-r139-formal"
+      ],
+      "sourceIds": [
+        "blake2-wikipedia",
+        "blake2-reference-ref"
+      ],
+      "related": [
+        "blake3",
+        "sha2",
+        "sha3",
+        "algorithm--argon2"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. BLAKE3 is a later independent design; SHA-2 and SHA-3 are comparison and contrast targets; Argon2 is a password-derivation construction that uses BLAKE2b as an underlying primitive but is not covered here.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：BLAKE2 散列（BLAKE2）。BLAKE2 是一个密码散列函数族，源自 2008 年 SHA-3 候选算法 BLAKE，由 Aumasson、Neves、Wilcox-O'Hearn 和 Winnerlein 设计。它有两种基本变体：BLAKE2b 面向 64 位平台，BLAKE2s 面向 8 到 32 位平台。两者的结构相同，只是字长、轮数、块大小和参数范围不同。| 参数 | BLAKE2b | BLAKE2s |\n| --- | --- | --- |\n| 字长 w | 64 位 | 32 位 |\n| 压缩轮数 r | 12 | 10 |\n| 块字节 bb | 128 | 64 |\n| 摘要字节 nn | 1 到 64 | 1 到 32 |\n| 密钥字节 kk | 0 到 64 | 0 到 32 |\n| 输入字节 ll | 小于 2^128 | 小于 2^64 |\n| G 的旋转常量 (R1,R2,R3,R4) | (32,24,16,63) | (16,12,8,7) |\n\n散列的内部状态是 8 个字 `h[0..7]`。初始值 IV 由素数平方根的小数部分定义：`IV[i] = floor(2^w * frac(sqrt(prime(i+1))))`，其中 prime(i) 是第 i 个素数 2、3、5、7、11、13、17、19。BLAKE2b 的 IV 与 SHA-512 的 IV 相同，BLAKE2s 的 IV 与 SHA-256 的 IV 相同。所有输入、密钥和输出都按小端序解释：字节流从低地址开始填入字的低位。参数块只有一个字参与 RFC 7693 的顺序模式：\n\n```text\np[0] = 0x0101kknn      p[1..7] = 0\nh[0] = IV[0] XOR p[0]\n```\n\n其中 `nn` 是摘要字节数，`kk` 是密钥字节数；`kk=0` 表示无密钥散列。参数块把摘要长度和密钥长度直接绑进初始状态，因此同一段消息用不同输出长度或不同密钥长度计算，得到的是不同的函数，而不是同一摘要的前缀。压缩函数 F 接收状态 `h`、一个 16 字消息块 `m`、字节计数器 `t` 和最后一块标志 `f`：\n\n```text\nv[0..7]  = h[0..7]\nv[8..15] = IV[0..7]\nv[12] ^= (t mod 2^w)\nv[13] ^= (t >> w)\nif f = true: v[14] ^= 0xFF..FF\nrepeat r rounds:\n  s = SIGMA[round mod 10]\n  G(v, 0, 4,  8, 12, m[s[0]],  m[s[1]])\n  G(v, 1, 5,  9, 13, m[s[2]],  m[s[3]])\n  G(v, 2, 6, 10, 14, m[s[4]],  m[s[5]])\n  G(v, 3, 7, 11, 15, m[s[6]],  m[s[7]])\n  G(v, 0, 5, 10, 15, m[s[8]],  m[s[9]])\n  G(v, 1, 6, 11, 12, m[s[10]], m[s[11]])\n  G(v, 2, 7,  8, 13, m[s[12]], m[s[13]])\n  G(v, 3, 4,  9, 14, m[s[14]], m[s[15]])\nh[i] ^= v[i] ^ v[i+8]     i = 0..7\n```\n\nG 是 BLAKE 的混合原语，每个 G 做两次加—异或—旋转的循环：\n\n```text\nv[a] = (v[a] + v[b] + x) mod 2^w\nv[d] = (v[d] XOR v[a]) >>> R1\nv[c] = (v[c] + v[d])     mod 2^w\nv[b] = (v[b] XOR v[c]) >>> R2\nv[a] = (v[a] + v[b] + y) mod 2^w\nv[d] = (v[d] XOR v[a]) >>> R3\nv[c] = (v[c] + v[d])     mod 2^w\nv[b] = (v[b] XOR v[c]) >>> R4\n```\n\n`>>>` 是循环右移。BLAKE2b 使用 (32,24,16,63)，BLAKE2s 使用 (16,12,8,7)。这些旋转选择来自对常见处理器的优化：24 位旋转可以用 SSSE3 的 `pshufb` 一条指令完成，63 位旋转等价于左旋 1 位。消息调度由 10 个置换 SIGMA[0..9] 定义，每一行是 0 到 15 的一个排列：\n\n```text\nSIGMA[0] =  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15\nSIGMA[1] = 14 10  4  8  9 15 13  6  1 12  0  2 11  7  5  3\nSIGMA[2] = 11  8 12  0  5  2 15 13 10 14  3  6  7  1  9  4\nSIGMA[3] =  7  9  3  1 13 12 11 14  2  6  5 10  4  0 15  8\nSIGMA[4] =  9  0  5  7  2  4 10 15 14  1 11 12  6  8  3 13\nSIGMA[5] =  2 12  6 10  0 11  8  3  4 13  7  5 15 14  1  9\nSIGMA[6] = 12  5  1 15 14 13  4 10  0  7  6  3  9  2  8 11\nSIGMA[7] = 13 11  7 14 12  1  3  9  5  0 15  4  8  6  2 10\nSIGMA[8] =  6 15 14  9 11  3  0  8 12  2 13  7  1  4 10  5\nSIGMA[9] = 10  2  8  4  7  6  1  5 15 11  9 14  3 12 13  0\n```\n\nBLAKE2b 有 12 轮，第 10、11 轮分别重复 SIGMA[0]、SIGMA[1]；BLAKE2s 的 10 轮正好用完 10 个置换。消息被切成 `bb` 字节的块，块数按 `dd = ceil(kk/bb) + ceil(ll/bb)` 计算。有密钥时，密钥补零到 `bb` 字节作为 `d[0]`，消息块从 `d[1]` 开始；无密钥时 `d[0]` 就是第一块消息。最后一块补零到 `bb` 字节。一个特殊情形是无密钥空消息：仍然处理一个全零块，`dd=1`。压缩时，除最后一块外，第 i 块使用 `t=(i+1)*bb`；最后一块在无密钥时使用 `t=ll`，有密钥时使用 `t=ll+bb`。最后一块的 `f` 为真，输出取 `h[0..7]` 的小端字节流的前 `nn` 字节。有密钥模式不需要 HMAC 外层结构：密钥被当作第一个数据块，计数器也把这一块计算在内，因此它同时是 MAC 和 PRF 的构造。空消息加密钥时只调用一次压缩函数，`t=bb`。RFC 7693 只定义顺序模式的参数块（摘要长度和密钥长度）。BLAKE2 论文还定义了 salt、personalization 和树散列参数，它们占用参数块中 RFC 未定义的字段；使用这些扩展的实现与只实现 RFC 顺序模式的实现不能直接互操作。",
+          "why": "BLAKE2 的设计目标是给软件提供一种比 SHA-2、SHA-3 更快、又不像 MD5 那样已被攻破的散列函数。论文的出发点是：SHA-3 在硬件上很快，但在当时常见的处理器上并没有全面超过 SHA-2；许多系统为了性能继续使用 MD5、SHA-1 或自定义函数。BLAKE2 以 SHA-3 候选 BLAKE 为基础，保留其安全结构，同时针对软件实现做减法。与 BLAKE 相比，论文列出的主要改动是：\n\n- 轮数从 BLAKE-512 的 16 轮降到 12 轮，从 BLAKE-256 的 14 轮降到 10 轮；论文称这在长数据上直接带来约 25% 和 29% 的加速；\n- G 的旋转从 (32,25,16,11) 改为 (32,24,16,63)，以利用 SSSE3 的字节混洗和左旋 1 位的廉价实现；\n- 去掉 G 内的额外常量，每个 G 省下两次异或和两次加载，约占算术指令的 16%；\n- 最小化填充，用最后一块标志替代部分填充的安全作用；\n- 改用小端序，计数器按字节而不是按位计数；\n- 用参数块编码摘要长度和密钥长度，并支持 BLAKE2 论文中的 salt、personalization 和树散列；\n- 常量从 24 个字减少到 8 个，论文称 BLAKE2 比 BLAKE 少用 32% 的 RAM。论文报告的 2012 年 eBACS “sandy” 测量中，BLAKE2b 约为 890 MiB/s，BLAKE2s 约为 554 MiB/s，MD5 约为 550 MiB/s，SHA-256 约为 169 MiB/s；在 64 位 Intel 平台上 BLAKE2 常常快于 MD5。这些数字属于当时的平台和实现，不是今天任何机器的性能承诺。论文还定义了并行变体 BLAKE2bp 和 BLAKE2sp，利用 SIMD 或多核可获得数倍加速。安全强度方面，RFC 7693 为常用参数集列出了碰撞强度：BLAKE2b 的 160/256/384/512 位摘要对应 2^80、2^128、2^192、2^256；BLAKE2s 的 128/160/224/256 位摘要对应 2^64、2^80、2^112、2^128。RFC 明确说它不对 BLAKE2 的安全性作独立断言，安全论证应参考 BLAKE 与 BLAKE2 的论文。标准地位需要区分：RFC 7693 是 Informational 文档，不是 IETF 标准轨道规范，也不是 NIST 的 FIPS 标准。它为 ASN.1 使用给出了 OID，并为常用摘要长度给出互操作参数集；这使 BLAKE2 可以被协议引用，但不等于它获得了与 SHA-2、SHA-3 相同的标准化地位。从教学角度看，BLAKE2 是一个紧凑的 ARX 压缩函数：没有 S-box 查表，核心只有 32 位或 64 位加法、异或和循环旋转，参数块、计数器、最后块标志和密钥块的处理都可以用少量代码完整实现。它适合用来观察参数化散列和带密钥散列的区别，也适合作为实现正确性检查的样本，因为 RFC 给出了逐轮中间值和自检模块。",
+          "used": "RFC 7693 为常用参数集规定了 ASN.1 OID 后缀，同一个 OID 同时用于有密钥和无密钥模式，因为密钥长度是参数而不是另一种算法：\n\n| 标识 | 目标平台 | 碰撞强度 | 摘要字节 | OID 后缀 |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64 位 | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64 位 | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64 位 | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64 位 | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32 位 | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32 位 | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32 位 | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32 位 | 2^128 | 32 | x.2.8 |\n\n其中 `x = 1.3.6.1.4.1.1722.12.2`。RFC 7693 没有给出完整测试向量集，但给出了两组逐轮示例和一套自检模块。附录 A 计算 BLAKE2b-512(\"abc\")，附录 B 计算 BLAKE2s-256(\"abc\")：\n\n```text\nBLAKE2b-512(\"abc\") =\nBA80A53F981C4D0D6A2797B69F12F6E94C212F14685AC4B74B12BB6FDBFFA2D1\n7D87C5392AAB792DC252D5DE4533CC9518D38AA8DBF1925AB92386EDD4009923\n\nBLAKE2s-256(\"abc\") =\n508C5E8C327C14E2E1A72BA34EEB452F37458B209ED63A294D999B4C86675982\n```\n\n自检模块（附录 E）不是单一向量：它用确定性的 Fibonacci 序列生成 48 组输入，覆盖 4 种摘要长度、6 种消息长度（0、3、128、129、255、1024 字节；BLAKE2s 为 0、3、64、65、255、1024）和有密钥/无密钥两种情况，再把 48 个摘要串起来求一个 32 字节的「grand hash」（大散列）：\n\n```text\nBLAKE2b 自检大散列 =\nC23A7800D98123BD10F506C61E29DA5603D763B8BBAD2E737F5E765A7BCCD475\n\nBLAKE2s 自检大散列 =\n6A411F08CE25ADCDFB02ABA641451CEC53C598B24F4FC787FBDC88797F4C1DFE\n```\n\n这套自检的价值在于覆盖了摘要长度、消息长度、块边界（128/129、64/65）和密钥块的组合，而不是只验证一条加密后能解密式的自洽关系。有密钥模式可以直接当作 MAC 使用：密钥长度 1 到 64 字节（BLAKE2b）或 1 到 32 字节（BLAKE2s），不需要 HMAC 的两次散列和外层填充。但它是确定性的，不接收 nonce，也不提供加密或重放保护；需要这些性质时要放在上层协议中构造。BLAKE2b 还是 Argon2 的底层原语。RFC 9106 规定 Argon2 的 H 与可变长散列 H' 使用 BLAKE2b，压缩函数 G 建立在其置换 P 上，而 P 基于 BLAKE2b 的轮函数并加入 64 位乘法；这意味着 BLAKE2b 的正确实现是 Argon2 实现的前置条件。本文不展开 Argon2 的内存硬参数、并行度和侧信道问题，它们属于另一个实体。本文的教学实现覆盖 RFC 7693 的顺序模式：无密钥散列、有密钥散列、1 到 64/1 到 32 字节的输出、分块更新和一次性散列。它不实现 BLAKE2 论文中的 salt、personalization、树散列和 BLAKE2bp/BLAKE2sp 并行模式。",
+          "broken": "BLAKE2 的安全结论必须按来源限定。RFC 7693 明确说「We wish to make no independent assertion to its security in this document」（它不对 BLAKE2 的安全性作独立断言），只描述算法；设计论证在 BLAKE 与 BLAKE2 的论文中。本文不复述未经核实的第三方攻击，也不把没有公开的完整轮攻击写成绝对安全。输出长度直接决定碰撞强度。按 RFC 的参数表，BLAKE2b-512 的碰撞强度是 2^256，BLAKE2b-256 降到 2^128，BLAKE2b-160 只有 2^80；BLAKE2s-256 是 2^128，BLAKE2s-128 只有 2^64。把长摘要截短成短摘要并不能保持长摘要的强度，因为摘要长度是参数块的一部分：`BLAKE2b(nn=20)` 与 `BLAKE2b(nn=64)` 的前 20 字节是两个不同的函数。选择参数集时要按目标安全级别，而不是越长越好、截短也无所谓。BLAKE2 是快速散列，不是口令派生函数。它的设计目标是吞吐量，单次计算成本很低；用 BLAKE2 直接散列口令不能抵抗大规模离线猜测。Argon2 之所以以 BLAKE2b 为底层原语，是为了在快速压缩函数之上再构造内存硬和可并行的时间成本，而不是因为 BLAKE2 本身适合存口令。有密钥的 BLAKE2 是 MAC/PRF，不是认证加密。它不提供保密性，不接收 nonce，不隐藏消息长度，也不防止重放；协议需要这些性质时，必须另行使用加密、随机数或序列号。把 keyed BLAKE2 当作加密使用是范畴错误。RFC 7693 的范围也有限制：它只定义顺序模式的两个参数字段（摘要长度和密钥长度）。BLAKE2 论文中的 salt、personalization 和树散列使用 RFC 未定义的参数块字段；两个实现如果对这些字段的处理不同，即使都实现了 BLAKE2，也不能保证互操作。跨实现部署时应明确约定参数集，并只用该参数集的测试向量验收。- 64 位字不能用 JavaScript 的 Number 精确表示。BLAKE2b 的加法、异或和旋转必须在 BigInt 或 32 位双字上完成；用 Number 会丢失高位，得到错误摘要。- 旋转方向、旋转量和加法顺序必须与规范一致；BLAKE2b 的 24 位和 63 位旋转、BLAKE2s 的 8 位和 7 位旋转都不是任意选择。- 计数器的语义是「Message byte offset at the end of the current block.」（当前块结束时的消息字节偏移），最后一块还要按有无密钥加上 `bb`；填充、空消息和整块边界（64/128 的倍数）是最容易差一块的位置。- 有密钥时密钥块也是第一个数据块，空消息只压缩密钥块；忘记这一步会把密钥当成普通前缀而算错计数器。- 小端序必须贯穿消息、密钥、计数器和输出；混用大端序会得到完全不同的结果。侧信道方面，BLAKE2 的核心是加法、异或和旋转，没有 S-box 表查找，因此不存在 AES 式的高速缓存表访问模式。但这不等于任何实现都自动是常量时间的：BigInt、内存分配、分支和编译器优化都可能引入与数据相关的行为；RFC 还提醒其参考 C 实现可能不会立即擦除密钥等敏感数据。生产实现需要独立的常量时间审查和密钥生命周期管理。最后，BLAKE2 不是 NIST 标准，也没有形式化的安全证明。RFC 的 Informational 地位和无独立安全断言是最重要的边界：它适合作为协议中的散列/MAC 原语，但选择和部署理由必须来自具体的安全分析，而不是RFC 已发布这一事实。",
+          "history": "BLAKE2 由 Jean-Philippe Aumasson、Samuel Neves、Zooko Wilcox-O'Hearn 和 Christian Winnerlein 设计。设计论文《BLAKE2: simpler, smaller, fast as MD5》标注日期为 2013 年 1 月 29 日，论文说明它是对 SHA-3 最终候选 BLAKE 的改进，目标是在软件上更快，同时保持与 SHA-3 相近的安全水平。BLAKE 参加了 NIST 的 SHA-3 竞赛并进入最终候选名单。论文回顾说，BLAKE 最初提交时使用 14 轮（BLAKE-512）和 10 轮（BLAKE-256），后来的增加是受 BLAKE 的高速度推动，达到 16 轮和 14 轮；BLAKE2 又把轮数降回 12 轮和 10 轮，理由是已有的密码分析和对未来进展的合理假设表明，增加的四轮并没有带来有意义的安全提升。论文还说明 BLAKE2 去掉了 G 内的常量、简化了填充、改用小端序和按字节计数，并引入参数块和有密钥模式。2015 年 11 月，RFC 7693 以 Independent Submission 的 Informational 文档发布，作者是 J.-P.Aumasson 和 M-J.Saarinen（编辑）。RFC 把 BLAKE2b 和 BLAKE2s 的顺序模式、参数块、压缩函数、OID 和自检模块固定下来，并明确它不作独立的安全断言。RFC 的附录 C 和 D 给出 BLAKE2b 与 BLAKE2s 的参考 C 实现，附录 E 给出自检模块；论文则提供公开领域的 C 和 C# 实现与 `b2sum` 工具的设想。在应用侧，BLAKE2b 成为 Argon2 的底层原语。RFC 9106（2021 年 9 月）规定 Argon2 使用 BLAKE2b 构造 H、H' 与置换 P，这使 BLAKE2b 进入口令派生和内存硬函数的规范文本。BLAKE2 也被多种软件库和协议采用，但本文只对 RFC 7693 和 RFC 9106 直接支持的使用作断言，不逐一列举第三方部署。BLAKE2 不是 NIST FIPS 标准，也不是 IETF 标准轨道规范；它的规范地位是 Informational RFC 加设计论文。BLAKE3 是后来另一个独立设计，本文不把它与 BLAKE2 混为同一实体，也不引用 BLAKE3 的材料来证明 BLAKE2 的性质。",
+          "refs": "- Wikipedia search entry for BLAKE2 散列. https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: BLAKE2 (BLAKE2 散列). BLAKE2 is a family of cryptographic hash functions derived from BLAKE, a 2008 SHA-3 candidate. It was designed by Aumasson, Neves, Wilcox-O'Hearn and Winnerlein and comes in two basic variants: BLAKE2b for 64-bit platforms and BLAKE2s for 8- to 32-bit platforms. Both share one structure; word size, round count, block size and parameter ranges differ. | Parameter | BLAKE2b | BLAKE2s |\n| --- | --- | --- |\n| Word size w | 64 bits | 32 bits |\n| Compression rounds r | 12 | 10 |\n| Block bytes bb | 128 | 64 |\n| Digest bytes nn | 1 to 64 | 1 to 32 |\n| Key bytes kk | 0 to 64 | 0 to 32 |\n| Input bytes ll | below 2^128 | below 2^64 |\n| G rotation constants (R1,R2,R3,R4) | (32,24,16,63) | (16,12,8,7) |\n\nThe internal state is eight words `h[0..7]`. The initial value IV comes from the fractional parts of square roots of primes: `IV[i] = floor(2^w * frac(sqrt(prime(i+1))))`, where prime(i) is the i-th prime \"2, 3, 5, 7, 11, 13, 17, 19\". BLAKE2b's IV equals SHA-512's IV and BLAKE2s's IV equals SHA-256's IV. Input, key and output are interpreted little-endian: bytes fill a word starting from its least significant position. Only one parameter word is used in RFC 7693's sequential mode:\n\n```text\np[0] = 0x0101kknn      p[1..7] = 0\nh[0] = IV[0] XOR p[0]\n```\n\nHere `nn` is the digest length in bytes and `kk` is the key length in bytes; `kk=0` means unkeyed hashing. The parameter block binds digest length and key length into the initial state, so the same message hashed with a different output length or key length is a different function, not a prefix of the same digest. The compression function F takes the state `h`, one 16-word message block `m`, the byte counter `t` and a last-block flag `f`:\n\n```text\nv[0..7]  = h[0..7]\nv[8..15] = IV[0..7]\nv[12] ^= (t mod 2^w)\nv[13] ^= (t >> w)\nif f = true: v[14] ^= 0xFF..FF\nrepeat r rounds:\n  s = SIGMA[round mod 10]\n  G(v, 0, 4,  8, 12, m[s[0]],  m[s[1]])\n  G(v, 1, 5,  9, 13, m[s[2]],  m[s[3]])\n  G(v, 2, 6, 10, 14, m[s[4]],  m[s[5]])\n  G(v, 3, 7, 11, 15, m[s[6]],  m[s[7]])\n  G(v, 0, 5, 10, 15, m[s[8]],  m[s[9]])\n  G(v, 1, 6, 11, 12, m[s[10]], m[s[11]])\n  G(v, 2, 7,  8, 13, m[s[12]], m[s[13]])\n  G(v, 3, 4,  9, 14, m[s[14]], m[s[15]])\nh[i] ^= v[i] ^ v[i+8]     i = 0..7\n```\n\nG is BLAKE's mixing primitive; each G performs two add-xor-rotate cycles:\n\n```text\nv[a] = (v[a] + v[b] + x) mod 2^w\nv[d] = (v[d] XOR v[a]) >>> R1\nv[c] = (v[c] + v[d])     mod 2^w\nv[b] = (v[b] XOR v[c]) >>> R2\nv[a] = (v[a] + v[b] + y) mod 2^w\nv[d] = (v[d] XOR v[a]) >>> R3\nv[c] = (v[c] + v[d])     mod 2^w\nv[b] = (v[b] XOR v[c]) >>> R4\n```\n\n`>>>` is a right rotation. BLAKE2b uses (32,24,16,63) and BLAKE2s uses (16,12,8,7). The rotation choices are processor optimisations: a 24-bit rotation can be done with one SSSE3 `pshufb` instruction, and a 63-bit rotation is a left rotation by one bit. The message schedule is defined by ten permutations SIGMA[0..9], each a permutation of 0 to 15:\n\n```text\nSIGMA[0] =  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15\nSIGMA[1] = 14 10  4  8  9 15 13  6  1 12  0  2 11  7  5  3\nSIGMA[2] = 11  8 12  0  5  2 15 13 10 14  3  6  7  1  9  4\nSIGMA[3] =  7  9  3  1 13 12 11 14  2  6  5 10  4  0 15  8\nSIGMA[4] =  9  0  5  7  2  4 10 15 14  1 11 12  6  8  3 13\nSIGMA[5] =  2 12  6 10  0 11  8  3  4 13  7  5 15 14  1  9\nSIGMA[6] = 12  5  1 15 14 13  4 10  0  7  6  3  9  2  8 11\nSIGMA[7] = 13 11  7 14 12  1  3  9  5  0 15  4  8  6  2 10\nSIGMA[8] =  6 15 14  9 11  3  0  8 12  2 13  7  1  4 10  5\nSIGMA[9] = 10  2  8  4  7  6  1  5 15 11  9 14  3 12 13  0\n```\n\nBLAKE2b has 12 rounds, with rounds 10 and 11 repeating SIGMA[0] and SIGMA[1]; BLAKE2s's 10 rounds use all ten permutations exactly once. The message is split into `bb`-byte blocks, with block count `dd = ceil(kk/bb) + ceil(ll/bb)`. With a key, the key is zero-padded to `bb` bytes and becomes `d[0]`, with message blocks starting at `d[1]`; without a key, `d[0]` is the first message block. The last block is zero-padded to `bb` bytes. One special case is an unkeyed empty message: a single all-zero block is still processed, with `dd=1`. Every non-final block i is compressed with `t=(i+1)*bb`; the final block uses `t=ll` when unkeyed and `t=ll+bb` when keyed. The final block sets `f` true, and the output is the first `nn` bytes of the little-endian byte stream of `h[0..7]`. Keyed mode needs no HMAC construction: the key is treated as the first data block and the counter includes it, so the construction is both a MAC and a PRF. Hashing an empty message with a key makes a single compression call with `t=bb`. RFC 7693 defines only the sequential-mode parameter fields (digest length and key length). The BLAKE2 paper additionally defines salt, personalization and tree-hashing parameters in parameter-block fields that RFC 7693 leaves undefined; an implementation using those extensions cannot be assumed to interoperate with an implementation of the RFC's sequential mode alone.",
+          "why": "BLAKE2's design goal was a software hash function faster than SHA-2 and SHA-3 but not carrying MD5's known breaks. The paper's premise was that SHA-3 is fast in hardware but did not comprehensively beat SHA-2 on the processors of the time, while many systems kept using MD5, SHA-1 or custom functions for speed. BLAKE2 starts from the SHA-3 candidate BLAKE, keeps its security structure and removes cost.\n\nThe paper lists the main changes from BLAKE:\n\n- rounds drop from 16 in BLAKE-512 to 12, and from 14 in BLAKE-256 to 10; the paper reports about 25% and 29% speed-up on long data;\n- G rotations change from (32,25,16,11) to (32,24,16,63) to exploit SSSE3 byte shuffles and a cheap rotate-left-by-one;\n- the extra constants inside G are removed, saving two xors and two loads per G, about 16% of arithmetic instructions;\n- padding is minimal, with a last-block flag carrying part of the padding's security role;\n- the design is little-endian and the counter counts bytes rather than bits;\n- a parameter block encodes digest length and key length and supports the paper's salt, personalization and tree hashing;\n- constants drop from 24 words to 8, which the paper says saves 32% of RAM compared with BLAKE.\n\nIn the paper's 2012 eBACS \"sandy\" measurements, BLAKE2b reaches about 890 MiB/s, BLAKE2s about 554 MiB/s, MD5 about 550 MiB/s and SHA-256 about 169 MiB/s; on 64-bit Intel platforms BLAKE2 is often faster than MD5. These are platform- and implementation-specific figures from that time, not a performance promise for any current machine. The paper also defines parallel variants BLAKE2bp and BLAKE2sp, which use SIMD or multiple cores for several-fold speed-ups.\n\nFor security strength, RFC 7693 lists collision security for its common parameter sets: BLAKE2b with 160/256/384/512-bit digests gives 2^80, 2^128, 2^192 and 2^256; BLAKE2s with 128/160/224/256-bit digests gives 2^64, 2^80, 2^112 and 2^128. The RFC explicitly makes no independent assertion about BLAKE2's security; the security argument belongs to the BLAKE and BLAKE2 papers.\n\nStandardisation status must be separated from deployment. RFC 7693 is an Informational document, not an IETF Standards Track specification, and BLAKE2 is not a NIST FIPS standard. The RFC supplies OIDs for ASN.1 use and interoperable parameter sets for common digest lengths; this lets protocols reference BLAKE2, but it does not give it the same standardisation standing as SHA-2 or SHA-3.\n\nFor teaching, BLAKE2 is a compact ARX compression function: there are no S-box lookups, and the core is only 32-bit or 64-bit addition, xor and rotation. The parameter block, counter, last-block flag and key block can all be implemented in a small amount of code. It is a good subject for observing the difference between a parameterised hash and a keyed hash, and it is a good correctness sample because the RFC provides per-round intermediate values and a self-test module.",
+          "used": "RFC 7693 assigns ASN.1 OID suffixes for common parameter sets; the same OID serves keyed and unkeyed hashing because key length is a parameter, not a different algorithm:\n\n| Identifier | Target | Collision security | Digest bytes | OID suffix |\n| --- | --- | --- | --- | --- |\n| id-blake2b160 | 64-bit | 2^80 | 20 | x.1.5 |\n| id-blake2b256 | 64-bit | 2^128 | 32 | x.1.8 |\n| id-blake2b384 | 64-bit | 2^192 | 48 | x.1.12 |\n| id-blake2b512 | 64-bit | 2^256 | 64 | x.1.16 |\n| id-blake2s128 | 32-bit | 2^64 | 16 | x.2.4 |\n| id-blake2s160 | 32-bit | 2^80 | 20 | x.2.5 |\n| id-blake2s224 | 32-bit | 2^112 | 28 | x.2.7 |\n| id-blake2s256 | 32-bit | 2^128 | 32 | x.2.8 |\n\nHere `x = \"1.3.6.1.4.1.1722.12.2\"`.\n\nRFC 7693 does not provide a full test-vector set, but it provides two worked traces and a self-test module. Appendix A computes BLAKE2b-512(\"abc\") and Appendix B computes BLAKE2s-256(\"abc\"):\n\n```text\nBLAKE2b-512(\"abc\") =\nBA80A53F981C4D0D6A2797B69F12F6E94C212F14685AC4B74B12BB6FDBFFA2D1\n7D87C5392AAB792DC252D5DE4533CC9518D38AA8DBF1925AB92386EDD4009923\n\nBLAKE2s-256(\"abc\") =\n508C5E8C327C14E2E1A72BA34EEB452F37458B209ED63A294D999B4C86675982\n```\n\nThe self-test module (Appendix E) is not a single vector. It generates 48 inputs from a deterministic Fibonacci sequence covering four digest lengths, six message lengths (0, 3, 128, 129, 255 and 1024 bytes; 0, 3, 64, 65, 255 and 1024 for BLAKE2s) and both keyed and unkeyed hashing, then hashes the concatenated 48 digests into a 32-byte \"grand hash\":\n\n```text\nBLAKE2b self-test grand hash =\nC23A7800D98123BD10F506C61E29DA5603D763B8BBAD2E737F5E765A7BCCD475\n\nBLAKE2s self-test grand hash =\n6A411F08CE25ADCDFB02ABA641451CEC53C598B24F4FC787FBDC88797F4C1DFE\n```\n\nThe value of this self-test is that it combines digest lengths, message lengths, block boundaries (128/129, 64/65) and the key block, rather than checking one self-consistent encrypt then decrypt relation.\n\nKeyed mode can be used directly as a MAC: key lengths are 1 to 64 bytes for BLAKE2b and 1 to 32 bytes for BLAKE2s, with no HMAC double hashing or outer padding. It is deterministic, accepts no nonce and provides neither encryption nor replay protection; protocols needing those properties must add them.\n\nBLAKE2b is also the primitive underneath Argon2. RFC 9106 specifies BLAKE2b for Argon2's H and variable-length hash H'; compression function G builds on its permutation P, and P is based on BLAKE2b's round function with 64-bit multiplications added. A correct BLAKE2b implementation is therefore a prerequisite for an Argon2 implementation. This article does not cover Argon2's memory-hard parameters, parallelism or side-channel issues; those belong to another entity.\n\nThis article's teaching implementation covers RFC 7693's sequential mode: unkeyed hashing, keyed hashing, output lengths 1 to 64 and 1 to 32 bytes, incremental updates and one-shot hashing. It does not implement the BLAKE2 paper's salt, personalization, tree hashing or the BLAKE2bp/BLAKE2sp parallel modes.",
+          "broken": "BLAKE2's security claims must be bounded by their sources. RFC 7693 explicitly states that it makes no independent assertion about BLAKE2's security; the design argument is in the BLAKE and BLAKE2 papers. This article does not repeat unverified third-party attacks and does not turn the absence of a published full-round attack into a claim of absolute security.\n\nOutput length directly determines collision strength. According to the RFC's parameter table, BLAKE2b-512 has 2^256 collision security, BLAKE2b-256 drops to 2^128 and BLAKE2b-160 to 2^80; BLAKE2s-256 has 2^128 and BLAKE2s-128 only 2^64. Truncating a long digest does not preserve the long digest's strength, because digest length is part of the parameter block: `BLAKE2b(nn=20)` and the first 20 bytes of `BLAKE2b(nn=64)` are two different functions. Parameter sets should be chosen by target security level, not by the assumption that a longer output is always better or that truncation is free.\n\nBLAKE2 is a fast hash, not a password-derivation function. It is designed for throughput and has a low per-call cost; hashing a password directly with BLAKE2 cannot resist large-scale offline guessing. Argon2 uses BLAKE2b as a fast primitive underneath a memory-hard, parallel time-cost construction; that is not because BLAKE2 itself is suitable for storing passwords.\n\nKeyed BLAKE2 is a MAC/PRF, not authenticated encryption. It provides no confidentiality, accepts no nonce, hides no message length and prevents no replay; a protocol needing those properties must add encryption, randomness or sequence numbers. Using keyed BLAKE2 as \"encryption\" is a category error.\n\nRFC 7693's scope is also limited: it defines only the two sequential-mode parameter fields (digest length and key length). The BLAKE2 paper's salt, personalization and tree hashing use parameter-block fields that the RFC leaves undefined; two implementations that handle those fields differently are not guaranteed to interoperate even if both implement BLAKE2. Cross-implementation deployments should pin a parameter set and accept it only with that set's test vectors.\n\nImplementation has several common failure sources:\n\n- 64-bit words cannot be represented exactly by JavaScript's Number. BLAKE2b's additions, xors and rotations must use BigInt or a pair of 32-bit words; Number loses high bits and produces a wrong digest. - Rotation direction, rotation amounts and addition order must match the specification; BLAKE2b's 24- and 63-bit rotations and BLAKE2s's 8- and 7-bit rotations are not arbitrary choices. - The counter means \"Message byte offset at the end of the current block.\", and the final block adds `bb` when keyed; padding, empty messages and exact block boundaries (multiples of 64/128) are where an off-by-one-block error appears. - With a key, the key block is also the first data block, and an empty message compresses only the key block; omitting this step treats the key as an ordinary prefix and gets the counter wrong. - Little-endian order must be used consistently for message, key, counter and output; mixing in big-endian produces a completely different result.\n\nOn side channels, BLAKE2's core is addition, xor and rotation with no S-box table lookups, so it does not have AES-style cache-table access patterns. That does not make every implementation constant-time automatically: BigInt, memory allocation, branches and compiler optimisations can introduce data-dependent behaviour, and the RFC notes that its reference C implementations may not erase sensitive data such as keys immediately. Production implementations need independent constant-time review and key-lifecycle management.\n\nFinally, BLAKE2 is not a NIST standard and has no formal security proof. The RFC's Informational status and its sentence \"We wish to make no independent assertion to its security in this document\" are the important boundary: it is usable as a protocol hash/MAC primitive, but the reason to choose and deploy it must come from a concrete security analysis, not from the fact that an RFC exists.",
+          "history": "BLAKE2 was designed by Jean-Philippe Aumasson, Samuel Neves, Zooko Wilcox-O'Hearn and Christian Winnerlein. The design paper \"BLAKE2: simpler, smaller, fast as MD5\" is dated 29 January 2013 and describes an improved version of BLAKE, a SHA-3 finalist, targeting faster software while keeping security similar to SHA-3.\n\nBLAKE competed in NIST's SHA-3 competition and reached the finalist list. The paper recalls that BLAKE's initial submission used 14 rounds (BLAKE-512) and 10 rounds (BLAKE-256), with a later increase to 16 and 14 motivated by BLAKE's high speed; BLAKE2 reduced them to 12 and 10, arguing that the existing cryptanalysis and reasonable assumptions about future progress made the extra four rounds offer no meaningful security benefit. The paper also describes removing G's inner constants, simplifying padding, switching to little-endian and byte counting, and introducing the parameter block and keyed mode.\n\nIn November 2015, RFC 7693 was published as an Informational Independent Submission, authored by J.-P. Aumasson and M-J. Saarinen (Ed.). The RFC fixes BLAKE2b's and BLAKE2s's sequential mode, parameter block, compression function, OIDs and self-test module, and explicitly does not make an independent security assertion. Appendices C and D of the RFC give reference C implementations of BLAKE2b and BLAKE2s, and Appendix E gives the self-test module; the paper provides public-domain C and C# code and outlines the `b2sum` tool.\n\nOn the application side, BLAKE2b became Argon2's underlying primitive. RFC 9106 (September 2021) specifies BLAKE2b for Argon2's H, H' and permutation P, which brings BLAKE2b into the specification literature for password hashing and memory-hard functions. BLAKE2 has also been adopted by many software libraries and protocols, but this article asserts only the uses directly supported by RFC 7693 and RFC 9106 and does not enumerate third-party deployments.\n\nBLAKE2 is neither a NIST FIPS standard nor an IETF Standards Track specification; its normative standing is an Informational RFC plus a design paper. BLAKE3 is a separate later design; this article does not merge it with BLAKE2 and does not use BLAKE3 material to prove BLAKE2 properties.",
+          "refs": "- Wikipedia search entry for BLAKE2 散列. https://zh.wikipedia.org/w/index.php?search=BLAKE2%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "BLAKE2b：面向 64 位平台的 BLAKE2 变体，64 位字、12 轮、128 字节块，摘要 1-64 字节、密钥 0-64 字节。",
+          "BLAKE2s：面向 8-32 位平台的 BLAKE2 变体，32 位字、10 轮、64 字节块，摘要 1-32 字节、密钥 0-32 字节。",
+          "ARX：只使用加法（Addition）、循环旋转（Rotation）和异或（Xor）的密码结构；BLAKE2 的压缩核心是纯 ARX，没有 S-box 查表。",
+          "参数块（parameter block）：把摘要长度、密钥长度以及论文中的 salt、personalization、树参数编码进初始状态的字段；RFC 7693 的顺序模式只用 p[0]=0x0101kknn。",
+          "初始向量（IV）：由前八个素数的平方根小数部分定义的八个常量字；BLAKE2b 的 IV 等于 SHA-512 的 IV，BLAKE2s 的 IV 等于 SHA-256 的 IV。",
+          "SIGMA：十个消息字置换，每轮取 SIGMA[round mod 10]；BLAKE2b 的 12 轮会重复前两个置换，BLAKE2s 的 10 轮正好用完十个。",
+          "G：BLAKE2 的混合函数，对四个状态字做两次加—异或—循环右移，每次使用一个消息字。",
+          "F：压缩函数，把当前状态 h、一个消息块 m、计数器 t 和最后块标志 f 混合成新的 h。",
+          "计数器 t：记录当前块结束时的消息字节偏移；无密钥最后一块为 ll，有密钥最后一块为 ll+bb。",
+          "最后块标志 f：压缩最后一块时置真，把 v[14] 与全 1 异或，替代部分填充的安全作用。",
+          "密钥块（key block）：有密钥时补零到 bb 字节的密钥，作为第一个数据块参与压缩并计入计数器。",
+          "有密钥模式（keyed mode）：把密钥当作第一块的 BLAKE2 用法，可直接作为 MAC 和 PRF，不需要 HMAC 的外层构造。",
+          "MAC：消息认证码，用密钥验证消息完整性与来源；有密钥 BLAKE2 是其中一种构造。",
+          "PRF：伪随机函数，在密钥控制下把输入映射为不可区分于随机的输出；有密钥 BLAKE2 同时用作 MAC 与 PRF。",
+          "小端序（little-endian）：字节流的第一个字节是字的最低有效字节；BLAKE2 的消息、密钥、计数器和输出都使用小端序。",
+          "摘要长度 nn：输出字节数，是参数块的一部分；不同 nn 是两个不同函数，不是同一摘要的前缀截取。",
+          "密钥长度 kk：密钥字节数，也是参数块的一部分；kk=0 表示无密钥散列。",
+          "块大小 bb：压缩函数一次处理的消息字节数；BLAKE2b 为 128，BLAKE2s 为 64。",
+          "轮数 r：压缩函数内执行的轮数；BLAKE2b 为 12，BLAKE2s 为 10，每轮包含八个 G。",
+          "填充（padding）：把最后一块补零到 bb 字节；填充本身不改变计数器，计数器仍按实际消息字节数计算。",
+          "碰撞强度：找到两条不同消息具有同一摘要所需的工作量；RFC 7693 的参数表按摘要长度列出 2^64 到 2^256 的级别。",
+          "自检（self-test）：RFC 7693 附录 E 的确定性测试，用 48 组输入生成摘要并比较一个 32 字节总散列。",
+          "对象标识符（OID）：ASN.1 使用的数字标识；RFC 7693 在 1.3.6.1.4.1.1722.12.2 下为常用摘要长度分配后缀。"
+        ],
+        "en": [
+          "BLAKE2b: the 64-bit-platform BLAKE2 variant with 64-bit words, 12 rounds and 128-byte blocks, digests of 1-64 bytes and keys of 0-64 bytes.",
+          "BLAKE2s: the 8- to 32-bit-platform BLAKE2 variant with 32-bit words, 10 rounds and 64-byte blocks, digests of 1-32 bytes and keys of 0-32 bytes.",
+          "ARX: a design using only addition, rotation and xor; BLAKE2's compression core is pure ARX with no S-box lookups.",
+          "Parameter block: fields that encode digest length, key length and the paper's salt, personalization and tree parameters into the initial state; RFC 7693's sequential mode uses only p[0]=0x0101kknn.",
+          "Initialisation vector (IV): eight constant words derived from the fractional parts of square roots of the first eight primes; BLAKE2b's IV equals SHA-512's and BLAKE2s's equals SHA-256's.",
+          "SIGMA: ten message-word permutations, with each round taking SIGMA[round mod 10]; BLAKE2b's 12 rounds repeat the first two permutations, while BLAKE2s's 10 rounds use all ten.",
+          "G: BLAKE2's mixing function, performing two add-xor-rotate cycles on four state words with one message word each.",
+          "F: the compression function that mixes the current state h, one message block m, counter t and last-block flag f into a new h.",
+          "Counter t: the number of message bytes consumed through the current block; the final block uses ll when unkeyed and ll+bb when keyed.",
+          "Last-block flag f: set when compressing the final block, xoring v[14] with all ones and carrying part of padding's security role.",
+          "Key block: the zero-padded key, bb bytes long, used as the first data block and counted by the counter in keyed mode.",
+          "Keyed mode: BLAKE2 used with a key as its first block, directly serving as a MAC and PRF without an outer HMAC construction.",
+          "MAC: message authentication code, using a key to verify message integrity and origin; keyed BLAKE2 is one such construction.",
+          "PRF: pseudorandom function mapping inputs to outputs indistinguishable from random under a key; keyed BLAKE2 serves as both MAC and PRF.",
+          "Little-endian: the first byte of a stream is the least significant byte of a word; BLAKE2 uses it for message, key, counter and output.",
+          "Digest length nn: the number of output bytes and part of the parameter block; different nn values are different functions, not prefixes of one digest.",
+          "Key length kk: the number of key bytes and part of the parameter block; kk=0 means unkeyed hashing.",
+          "Block size bb: the number of message bytes compressed at once; 128 for BLAKE2b and 64 for BLAKE2s.",
+          "Round count r: the number of rounds inside compression; 12 for BLAKE2b and 10 for BLAKE2s, each round containing eight G calls.",
+          "Padding: zero-filling the final block to bb bytes; padding does not change the counter, which still counts actual message bytes.",
+          "Collision security: the work needed to find two different messages with the same digest; RFC 7693's table lists levels from 2^64 to 2^256 by digest length.",
+          "Self-test: RFC 7693 Appendix E's deterministic test that hashes 48 inputs and compares one 32-byte overall hash.",
+          "Object identifier (OID): an ASN.1 numeric identifier; RFC 7693 assigns suffixes under 1.3.6.1.4.1.1722.12.2 for common digest lengths."
+        ]
+      },
+      "figures": [
+        {
+          "id": "blake2-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLAKE2：BLAKE2b/BLAKE2s 顺序模式的 ARX 散列与有密钥 MAC：为什么需要 → 核心机制 → 边界。",
+            "en": "BLAKE2: BLAKE2b/BLAKE2s sequential-mode ARX hashing and keyed MAC: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "BLAKE2：BLAKE2b/BLAKE2s 顺序模式的 ARX 散列与有密钥 MAC 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for BLAKE2: BLAKE2b/BLAKE2s sequential-mode ARX hashing and keyed MAC, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/blake2-details-flow.zh.svg",
+            "en": "assets/blake2-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "48362f37613505658e62d877442d6178acfbe6abe912a00f40c3f13350983023",
+            "en": "e17d3460e5e85794995e7eb5edda851561f9c8efc98fcfa6f416c56ef5c28c5b"
+          }
+        },
+        {
+          "id": "blake2-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLAKE2：BLAKE2b/BLAKE2s 顺序模式的 ARX 散列与有密钥 MAC 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for BLAKE2: BLAKE2b/BLAKE2s sequential-mode ARX hashing and keyed MAC: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "BLAKE2：BLAKE2b/BLAKE2s 顺序模式的 ARX 散列与有密钥 MAC 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for BLAKE2: BLAKE2b/BLAKE2s sequential-mode ARX hashing and keyed MAC, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/blake2-details-r138-model.zh.svg",
+            "en": "assets/blake2-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "099c47005f7345bfd634ceaa380dd520efde1ec9a146551be7908154bff0787f",
+            "en": "bc2283bb4ae3e3011d3ee01cc36d453a318bdff2d359e94c2346b4ed2031d7dd"
+          }
+        }
+      ],
+      "sources": [
+        "blake2-wikipedia",
+        "blake2-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "blake2-calc-rfc-traces",
+          "entryId": "blake2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 7693 Appendix A's message block, 13 working vectors and final h[8] for BLAKE2b-512(\"abc\"), plus Appendix B's message block, 11 working vectors and final h[8] for BLAKE2s-256(\"abc\")",
+          "expected": "Every printed v[16] vector after initialisation and after each round matches word for word; both final h[8] states and both digests match the RFC",
+          "sourceIds": [
+            "blake2-wikipedia"
+          ],
+          "dependencies": [
+            "blake2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Two single-block unkeyed traces only; they do not exercise keyed mode, multi-block padding or the full self-test matrix."
+        },
+        {
+          "id": "blake2-calc-selftest",
+          "entryId": "blake2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "RFC 7693 Appendix E's Fibonacci generator, four digest lengths, six message lengths, keyed and unkeyed cases, and a 32-byte overall BLAKE2b/BLAKE2s hash over the 48 digests",
+          "expected": "All 96 digests are produced by the teaching implementation and the two 32-byte grand hashes equal C23A7800D98123BD10F506C61E29DA5603D763B8BBAD2E737F5E765A7BCCD475 and 6A411F08CE25ADCDFB02ABA641451CEC53C598B24F4FC787FBDC88797F4C1DFE",
+          "sourceIds": [
+            "blake2-wikipedia"
+          ],
+          "dependencies": [
+            "blake2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "The printed grand hash is the only stored oracle; it is a correctness check, not a security test, and it does not test incremental updates."
+        },
+        {
+          "id": "blake2-calc-crosscheck",
+          "entryId": "blake2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "60 deterministic cases covering message lengths 0-4096, output lengths 1-64/1-32, key lengths 0-64/0-32, and separately Node/OpenSSL BLAKE2b-512 and BLAKE2s-256 for unkeyed full-length inputs",
+          "expected": "Every stored CPython hashlib digest matches the teaching implementation, and every unkeyed full-length digest matches Node/OpenSSL",
+          "sourceIds": [
+            "blake2-wikipedia"
+          ],
+          "dependencies": [
+            "blake2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Cross-implementation agreement checks conformance, not security; Node/OpenSSL covers only unkeyed full-length digests, while keyed and truncated cases use CPython hashlib."
+        },
+        {
+          "id": "blake2-calc-structure",
+          "entryId": "blake2-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "IV derivation from prime square roots, the ten SIGMA permutations, parameter-block effects, incremental split points, keyed-empty semantics, truncation, and negative controls for the last-block flag, rotation constants and byte order",
+          "expected": "IV_B and IV_S are reproduced from primes; all SIGMA rows are permutations; nn and kk change the function; every split point equals one-shot hashing; the final flag and little-endian order are necessary; altered rotations and byte order do not reproduce the RFC digest",
+          "sourceIds": [
+            "blake2-wikipedia"
+          ],
+          "dependencies": [
+            "blake2-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural and algebraic checks only; no modes, protocols, key management, side channels or formal security proof are tested."
+        },
+        {
+          "id": "blake2-r139-formal",
+          "entryId": "blake2-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "BLAKE2 散列 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "blake2-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "blake2-calc-rfc-traces",
+      "entryId": "blake2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 7693 Appendix A's message block, 13 working vectors and final h[8] for BLAKE2b-512(\"abc\"), plus Appendix B's message block, 11 working vectors and final h[8] for BLAKE2s-256(\"abc\")",
+      "expected": "Every printed v[16] vector after initialisation and after each round matches word for word; both final h[8] states and both digests match the RFC",
+      "sourceIds": [
+        "blake2-wikipedia"
+      ],
+      "dependencies": [
+        "blake2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Two single-block unkeyed traces only; they do not exercise keyed mode, multi-block padding or the full self-test matrix."
+    },
+    {
+      "id": "blake2-calc-selftest",
+      "entryId": "blake2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "RFC 7693 Appendix E's Fibonacci generator, four digest lengths, six message lengths, keyed and unkeyed cases, and a 32-byte overall BLAKE2b/BLAKE2s hash over the 48 digests",
+      "expected": "All 96 digests are produced by the teaching implementation and the two 32-byte grand hashes equal C23A7800D98123BD10F506C61E29DA5603D763B8BBAD2E737F5E765A7BCCD475 and 6A411F08CE25ADCDFB02ABA641451CEC53C598B24F4FC787FBDC88797F4C1DFE",
+      "sourceIds": [
+        "blake2-wikipedia"
+      ],
+      "dependencies": [
+        "blake2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "The printed grand hash is the only stored oracle; it is a correctness check, not a security test, and it does not test incremental updates."
+    },
+    {
+      "id": "blake2-calc-crosscheck",
+      "entryId": "blake2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "60 deterministic cases covering message lengths 0-4096, output lengths 1-64/1-32, key lengths 0-64/0-32, and separately Node/OpenSSL BLAKE2b-512 and BLAKE2s-256 for unkeyed full-length inputs",
+      "expected": "Every stored CPython hashlib digest matches the teaching implementation, and every unkeyed full-length digest matches Node/OpenSSL",
+      "sourceIds": [
+        "blake2-wikipedia"
+      ],
+      "dependencies": [
+        "blake2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Cross-implementation agreement checks conformance, not security; Node/OpenSSL covers only unkeyed full-length digests, while keyed and truncated cases use CPython hashlib."
+    },
+    {
+      "id": "blake2-calc-structure",
+      "entryId": "blake2-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "IV derivation from prime square roots, the ten SIGMA permutations, parameter-block effects, incremental split points, keyed-empty semantics, truncation, and negative controls for the last-block flag, rotation constants and byte order",
+      "expected": "IV_B and IV_S are reproduced from primes; all SIGMA rows are permutations; nn and kk change the function; every split point equals one-shot hashing; the final flag and little-endian order are necessary; altered rotations and byte order do not reproduce the RFC digest",
+      "sourceIds": [
+        "blake2-wikipedia"
+      ],
+      "dependencies": [
+        "blake2-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural and algebraic checks only; no modes, protocols, key management, side channels or formal security proof are tested."
+    },
+    {
+      "id": "blake2-r139-formal",
+      "entryId": "blake2-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "BLAKE2 散列 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "blake2-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

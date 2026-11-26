@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R112 side-channel/standards/theory batch for acoustics-details.",
+  "entries": [
+    {
+      "id": "acoustics-details",
+      "inventoryIds": [
+        "acoustics"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R112 侧信道批次：把“声学侧信道”的目录身份卡改写为供电电路振动来源、GnuPG 选择密文放大机制、4096 位 RSA 实验、近场边界与防御。",
+        "en": "R112 side-channel batch: replaced the acoustic side-channel catalog identity card with source-backed text on regulator vibration, the GnuPG chosen-ciphertext amplification, the 4096-bit RSA experiment, near-field boundaries and defences."
+      },
+      "title": {
+        "zh": "声学侧信道",
+        "en": "Acoustic side channel"
+      },
+      "claimIds": [
+        "acoustics-r139-principle",
+        "acoustics-r139-why",
+        "acoustics-r139-used",
+        "acoustics-r139-broken",
+        "acoustics-r139-history",
+        "acoustics-r139-refs"
+      ],
+      "sourceIds": [
+        "acoustics-wikipedia",
+        "acoustics-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "side-channel-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "acoustics-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "声学侧信道机制图：CPU 功耗随秘密分支变化，供电电路振动产生声音，麦克风采样与 FFT 把数百毫秒包络变成 0/1 判决。",
+            "en": "Acoustic side-channel mechanism: CPU power varies with secret branches, regulator vibration produces sound, and microphone sampling plus FFT turns a hundreds-millisecond envelope into a 0/1 decision."
+          },
+          "alt": {
+            "zh": "图中左侧为 CPU 与供电电路，中部为声波、麦克风、ADC 与 FFT，右侧为 0/1 判决；下方注明 GnuPG 1.4.14、4096 位 RSA 与近场条件。",
+            "en": "Diagram shows CPU and regulator on the left, sound waves, microphone, ADC and FFT in the middle, and a 0/1 decision on the right; the footer notes GnuPG 1.4.14, 4096-bit RSA and near-field conditions."
+          },
+          "files": {
+            "zh": "assets/acoustics-details-mechanism.zh.svg",
+            "en": "assets/acoustics-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引规格绘制）",
+            "en": "Original mechanism diagram (drawn from the cited specifications)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "fc02a8b6678cfe8ce69bc0885dc5e6bc0c15b3865d2ef77a57ff0e974c4b368c",
+            "en": "e202ecdb575a6053f90067db26cf87b3e7f27aa69a1d7c8997c98abd7f5e5d67"
+          }
+        },
+        {
+          "id": "acoustics-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "声学侧信道 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Acoustic side channel: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "声学侧信道 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Acoustic side channel, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/acoustics-details-r138-model.zh.svg",
+            "en": "assets/acoustics-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6521d420f282b99b78dcfdf0e353e77762ae9a6a9df68e49a7d46e75a3281111",
+            "en": "f95ff443913420135ba7b638f16f50e2f58bd8cd8f53bed116565e76f04282a2"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：声学侧信道（Acoustic Side Channel）。### 声音从哪里来\n\n计算机运行时，CPU 的功耗随指令与数据变化。主板上的电压调节电路要维持稳定电压，电容和线圈会因电流变化发生微小机械振动，振动传入空气就是人耳或麦克风能收到的声音。这里的关键不是风扇或扬声器，而是供电电路本身的振动。### 带宽极低，不等于没有信息\n\n普通麦克风能收到 20 kHz 以下的声音，超声麦克风可到几百 kHz；这比 CPU 的 GHz 时钟低几个数量级。单条指令的噪声完全埋在背景里，但如果同一种依赖密钥的操作被重复数千次，泄漏会累积成持续数百毫秒、在频谱上可分辨的包络。",
+          "why": "声学侧信道不攻击 RSA 或 AES 的数学结构，而是攻击实现：分支、查表、乘法的执行路径会随秘密数据变化，功耗和声音随之变化。只要攻击者能靠近机器、让机器做选定密文的解密，并知道实现细节，数学证明的“安全”就不能覆盖这条物理路径。### 为什么 GnuPG 成为样本\n\nGnuPG 1.4.14 的 RSA 模幂使用窗口算法，某些中间字为零时会走不同分支。Genkin–Shamir–Tromer 用选择密文诱发大量全零字，把“一个极短分支”放大成“数百毫秒的可听差异”，从而逐位恢复 4096 位 RSA 私钥。",
+          "used": "2014 年的演示用一部普通手机贴在笔记本旁，或用灵敏麦克风在数米外录音；完整 4096 位 RSA 密钥约一小时恢复。它需要攻击者能选择密文并让目标解密，通常是本地或近场场景，不是对任意 HTTPS 服务器的远程攻击。### 防御位置\n\n工程上应使用常数时间、无分支的模幂，启用 RSA blinding，避免秘密数据决定控制流；物理侧可做隔音、随机噪声和机箱屏蔽。对高价值机器，声学屏蔽要与电源、电磁和缓存侧信道一起考虑，不能只换算法。",
+          "broken": "这条攻击链要求：目标运行易受影响的 GnuPG 版本；攻击者能提交任意密文并观察解密；麦克风能收到目标的声音；攻击者知道实现和密钥长度。缺少任一条件，演示中的一小时恢复就不成立。### 不是“听键盘”\n\n声学侧信道恢复的是 RSA 解密过程中的密钥位，不是敲键盘的声音，也不是风扇噪声。它的带宽低、信号弱，但对气隙机器仍有意义：声音可以穿过空气和部分隔板，而网络攻击做不到这一点。",
+          "history": "Shamir 与 Tromer 在 Eurocrypt 2004 rump session 先展示“不同 RSA 密钥有不同声纹”。2013 年 12 月 ePrint 2013/857 给出完整密钥提取，2014 年 CRYPTO 论文与 2017 年《Journal of Cryptology》期刊版完善了实验与方法。### 后续位置\n\n这类工作把侧信道从“电磁、功耗、缓存”扩展到“声音与底盘电位”，也推动 GnuPG 等实现加入 blinding、常数时间路径和更强的物理防护。它仍是研究型攻击，不是批量工具。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 声学侧信道 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 声学侧信道. https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Acoustic Side Channel (声学侧信道). ### Where the sound comes from\n\nWhen a computer runs, CPU power draw changes with instructions and data. The voltage-regulator circuit on the motherboard tries to hold a stable voltage; its capacitors and coils vibrate slightly as currents change, and that vibration reaches the air as sound. The relevant source is the regulator itself, not the fan or the speaker. ### Low bandwidth is not the same as no information\n\nA common microphone hears below 20 kHz; an ultrasound microphone can reach a few hundred kHz. That is orders of magnitude below the GHz clock. The noise of a single instruction is buried in the background, but when the same key-dependent operation is repeated thousands of times, the leakage accumulates into an envelope lasting hundreds of milliseconds and separable in the spectrum.",
+          "why": "An acoustic side channel does not attack the mathematical structure of RSA or AES; it attacks the implementation. Branches, table lookups and multiplication paths change with secret data, and power and sound change with them. If the attacker can get close, make the machine decrypt chosen ciphertexts and know the implementation, a mathematical security proof does not cover this physical path.\n\nGnuPG 1.4.14's RSA modular exponentiation used a window algorithm in which some all-zero intermediate words took a different branch. Genkin–Shamir–Tromer crafted ciphertexts that produced many all-zero words, amplifying a tiny branch into an audible difference lasting hundreds of milliseconds and recovering a 4096-bit RSA private key bit by bit.",
+          "used": "The 2014 demonstration used an ordinary mobile phone next to a laptop, or a sensitive microphone several metres away; full 4096-bit RSA key recovery took about an hour. It needs chosen ciphertexts and a decryption operation, usually a local or near-field setting, not a remote attack against an arbitrary HTTPS server.\n\nEngineering should use constant-time, branchless modular exponentiation, enable RSA blinding and keep secret data out of control flow. Physical defences include acoustic shielding, masking noise and chassis damping. For high-value machines, acoustic shielding belongs with power, electromagnetic and cache side-channel controls, not instead of them.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The chain requires a target running an affected GnuPG version, an attacker who can submit arbitrary ciphertexts and observe decryption, a microphone that can hear the machine, and knowledge of the implementation and key size. Remove any one and the one-hour demonstration no longer holds.\n\nThe acoustic side channel recovers RSA key bits from the decryption process, not keystrokes, not fan noise. Its bandwidth is low and its signal weak, but it still matters for air-gapped machines: sound crosses air and some partitions where a network attack cannot reach.",
+          "history": "Shamir and Tromer first showed at the Eurocrypt 2004 rump session that different RSA keys have different acoustic fingerprints. IACR ePrint 2013/857 in December 2013 gave full key extraction; the 2014 CRYPTO paper and the 2017 Journal of Cryptology version refined the experiment and method.\n\nThis work extended side channels from “electromagnetic, power and cache” to “sound and chassis potential”, and pushed GnuPG and similar implementations toward blinding, constant-time paths and stronger physical protection. It remains a research attack, not a mass-market tool.",
+          "refs": "- Wikipedia search entry for 声学侧信道. https://zh.wikipedia.org/w/index.php?search=%E5%A3%B0%E5%AD%A6%E4%BE%A7%E4%BF%A1%E9%81%93\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nAcoustic Side Channel: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "acoustics-r139-formal",
+          "entryId": "acoustics-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 声学侧信道 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "acoustics-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "acoustics-r139-formal"
+      ],
+      "sources": [
+        "acoustics-wikipedia",
+        "acoustics-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "acoustics-r139-formal",
+      "entryId": "acoustics-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：声学侧信道的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 声学侧信道 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "acoustics-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

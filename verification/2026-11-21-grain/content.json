@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R109 stream-cipher batch for grain-details.",
+  "entries": [
+    {
+      "id": "grain-details",
+      "inventoryIds": [
+        "grain"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R109 流密码批次：把 GRAIN、HC-128、Rabbit、Trivium 与 XSalsa20 的目录身份卡改写为来源可核的机制、参数、标准、用途与边界正文；保留目录坐标、前置关系与子主题链接。",
+        "en": "R109 stream-cipher batch: replaced the catalog identity cards for GRAIN, HC-128, Rabbit, Trivium and XSalsa20 with source-backed mechanism, parameters, standards, use and boundary text while retaining catalog position, prerequisites and subtopic links."
+      },
+      "title": {
+        "zh": "GRAIN 流密码",
+        "en": "GRAIN Stream Cipher"
+      },
+      "claimIds": [
+        "grain-r139-principle",
+        "grain-r139-why",
+        "grain-r139-used",
+        "grain-r139-broken",
+        "grain-r139-history",
+        "grain-r139-refs"
+      ],
+      "sourceIds": [
+        "grain-wikipedia",
+        "grain-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "salsa20"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "grain-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "GRAIN：双寄存器加非线性滤波：密钥/IV 路径、核心状态与输出。",
+            "en": "GRAIN: two registers and one nonlinear filter: key/IV path, core state and output."
+          },
+          "alt": {
+            "zh": "GRAIN：双寄存器加非线性滤波 的机制示意图，含参数、用途与边界。",
+            "en": "Mechanism schematic for GRAIN: two registers and one nonlinear filter, with parameters, use and boundaries."
+          },
+          "files": {
+            "zh": "assets/grain-details-mechanism.zh.svg",
+            "en": "assets/grain-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据规格与正文绘制）",
+            "en": "Original mechanism diagram (drawn from the specification and article)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "b9833b297118ba8e6ec4ae2c6bdd6fe3c708993eb13a6a8fd41bf52feedfda11",
+            "en": "98cc17e4e2a43ba882fe2b6690e9dc1217a5ebeb78988fd88ac9dd1ec1f5efb9"
+          }
+        },
+        {
+          "id": "grain-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "GRAIN 流密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for GRAIN Stream Cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "GRAIN 流密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for GRAIN Stream Cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/grain-details-r138-model.zh.svg",
+            "en": "assets/grain-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "25a9da80feb2aef9c81741256c4cda1ee67ecd252a1a201b5805ac531b8117f0",
+            "en": "29b52be5ac708217d95e067df697f4c2a41ac2af28ad3505a101e3332cb92dd3"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：GRAIN 流密码（GRAIN）。### 80 位密钥加 64 位 IV 的硬件流密码\n\nGRAIN 把 80 位密钥 K 装入 80 位非线性反馈移位寄存器（NFSR）B，把 64 位 IV 与 16 位全 1 常量装入 80 位线性反馈移位寄存器（LFSR）S。LFSR 的线性递推保证长周期，NFSR 的二次、三次项提供非线性，输出函数再把两边抽头混合成一位密钥流。### 160 拍初始化\n\n装载后先空转 160 拍：每拍照常更新 B 和 S，但把输出位异或回两个反馈端，使 K 与 IV 的每一位扩散到整个 160 位状态。160 拍后才开始输出：\n\nz_t = ⊕_{i∈A} b_{t+i} ⊕ h(s_{t+3}, s_{t+25}, s_{t+46}, s_{t+64}, b_{t+63})，A={1,2,4,10,31,43,56}。### 家族与标准\n\nGrain-128 把密钥/IV 扩到 128/96 位、初始化 256 拍；Grain-128a 增加可选认证，进入 ISO/IEC 29167-13 的 RFID 密码套件；Grain-128AEAD v2 参加 NIST 轻量密码竞赛，是决赛中唯一的流密码。",
+          "why": "GRAIN 的设计目标不是软件吞吐，而是门数、功耗和存储的极小化。一个 80 位 LFSR、一个 80 位 NFSR 和组合滤波函数就能产生密钥流，不需要 AES 的 S 盒或大块查找表；最简实现每拍只输出 1 位，也可以通过展开到 16 位/拍换取速度。这使它适合 RFID 标签、无线传感器和功耗预算极紧的嵌入式安全启动。Grain v1 入选 eSTREAM 硬件 portfolio，Grain-128a 被 ISO/IEC 29167-13 采纳，说明它的定位是“约束环境中的专用流密码”，而不是通用服务器加密。",
+          "used": "Grain-128A 在 ISO/IEC 18000 系列空中接口上提供 RFID 标签与读写器之间的认证和加密，认证服务是可选项；Grain-128AEAD 面向需要同时保护机密性与完整性的轻量物联网链路。Grain v1 更多出现在硬件加密核、传感器节点和密码学教学/分析中。它也可以作为伪随机位发生器，但一旦用于加密，就必须把密钥流与明文异或并严格遵守 IV 规则。",
+          "broken": "GRAIN 是同步流密码：同一密钥与同一 IV 重复使用，两条密钥流相同，密文的异或就是明文的异或。Grain v1 本身不提供认证；Grain-128a 的认证是协议可选能力，部署时必须真正启用并校验标签，否则攻击者可以篡改密文而不被发现。初始化轮数是安全边界的一部分。Grain v1 用 160 拍、Grain-128 用 256 拍，都是为了充分扩散；把初始化缩减到几十拍会暴露立方攻击、猜测确定攻击和近碰撞分析。公开结果主要针对缩减轮或弱化初始化，完整 Grain v1 还没有实用破译，但这不等于可以削减轮数。位串行硬件实现的功耗和电磁泄漏还会泄露状态；在物理对手面前，需要掩码、双轨或恒定功耗设计。算法安全与实现安全要分开验收。",
+          "history": "Hell、Johansson 与 Meier 在 2005 年提交 eSTREAM，Grain v1 进入硬件 portfolio。Grain-128 在 2006 年把密钥扩到 128 位；Grain-128a 在 2011 年加入可选认证，随后成为 ISO/IEC 29167-13 的 RFID 密码套件。Grain-128AEAD v2 进入 NIST 轻量密码标准化决赛，是最后一轮唯一的流密码。这条线展示了“极小硬件”设计的演进：先解决门数，再补密钥长度，最后补认证与 AEAD。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：GRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 GRAIN 流密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for GRAIN 流密码. https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nGRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: GRAIN (GRAIN 流密码). ### A hardware stream cipher with an 80-bit key and 64-bit IV\n\nGRAIN loads an 80-bit key K into an 80-bit nonlinear feedback shift register (NFSR) B, and a 64-bit IV plus a 16-bit all-ones constant into an 80-bit linear feedback shift register (LFSR) S. The LFSR recurrence guarantees a long period; the quadratic and cubic terms of the NFSR supply nonlinearity; an output filter mixes taps from both registers into one keystream bit. ### 160 initialization clocks\n\nAfter loading, the cipher runs 160 blank clocks. Each clock still updates B and S, but the output bit is XORed back into both feedback inputs, so every key and IV bit diffuses through the 160-bit state. Only then does output begin:\n\nz_t = ⊕_{i∈A} b_{t+i} ⊕ h(s_{t+3}, s_{t+25}, s_{t+46}, s_{t+64}, b_{t+63}), A={1,2,4,10,31,43,56}. ### Family and standards\n\nGrain-128 extends the key/IV to 128/96 bits and uses 256 initialization clocks; Grain-128a adds optional authentication and enters the ISO/IEC 29167-13 RFID crypto suite; Grain-128AEAD v2 reached the final of the NIST lightweight cryptography competition as the only stream cipher in that round.",
+          "why": "GRAIN targets gate count, power and memory, not software throughput. One 80-bit LFSR, one 80-bit NFSR and a combinational filter produce the keystream without AES S-boxes or large lookup tables. The simplest implementation emits one bit per clock; unrolling to 16 bits per clock trades area for speed.\n\nThat makes it suitable for RFID tags, wireless sensors and extremely tight embedded secure boot. Grain v1 is in the eSTREAM hardware portfolio and Grain-128a is standardized in ISO/IEC 29167-13, so its role is a dedicated stream cipher for constrained environments, not general server encryption.",
+          "used": "Grain-128A provides authentication and encryption between RFID tags and interrogators over ISO/IEC 18000 air interfaces, with authentication as an optional service. Grain-128AEAD targets lightweight IoT links that need confidentiality and integrity together.\n\nGrain v1 appears mostly in hardware crypto cores, sensor nodes and cryptographic teaching and analysis. It can also serve as a pseudorandom bit generator, but encryption use requires XOR with plaintext and strict IV discipline.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "GRAIN is a synchronous stream cipher: reusing the same key and IV reproduces the same keystream, and the XOR of two ciphertexts reveals the XOR of the plaintexts. Grain v1 has no built-in authentication. Grain-128a authentication is an optional protocol capability; a deployment must actually enable and verify the tag, or an attacker can alter ciphertext undetected.\n\nInitialization depth is part of the security boundary. Grain v1 uses 160 clocks and Grain-128 uses 256 to achieve diffusion; cutting initialization to a few dozen clocks exposes cube attacks, guess-and-determine attacks and near-collision analysis. Published results mostly target reduced rounds or weakened initialization, but that is not permission to reduce the round count.\n\nBit-serial hardware also leaks power and electromagnetic information. A physical adversary requires masking, dual-rail logic or constant-power design. Algorithmic security and implementation security are separate acceptance criteria.",
+          "history": "Hell, Johansson and Meier submitted Grain to eSTREAM in 2005, and Grain v1 entered the hardware portfolio. Grain-128 moved to a 128-bit key in 2006; Grain-128a added optional authentication in 2011 and later became the ISO/IEC 29167-13 RFID crypto suite. Grain-128AEAD v2 reached the final of the NIST lightweight cryptography process as the only stream cipher in the last round.\n\nThe line shows the evolution of minimal hardware design: first gate count, then key size, then authentication and AEAD.",
+          "refs": "- Wikipedia search entry for GRAIN 流密码. https://zh.wikipedia.org/w/index.php?search=GRAIN%20%E6%B5%81%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nGRAIN: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "grain-r139-formal",
+          "entryId": "grain-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：GRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 GRAIN 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "grain-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "grain-r139-formal"
+      ],
+      "sources": [
+        "grain-wikipedia",
+        "grain-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "grain-r139-formal",
+      "entryId": "grain-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：GRAIN 流密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 GRAIN 流密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "grain-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

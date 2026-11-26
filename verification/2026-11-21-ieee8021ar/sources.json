@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ieee8021ar-details",
+  "sources": [
+    {
+      "id": "ieee8021ar-wikipedia",
+      "title": "Wikipedia search entry for 安全设备标识",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 安全设备标识",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ieee8021ar-r139-principle",
+          "entryId": "ieee8021ar-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：安全设备标识（Secure Device Identity）。IEEE 802.1AR-2018 给网络设备定义 Secure Device Identifier（DevID）：一张绑定设备私钥的 X.509 证书。IDevID 由厂商在出厂时提供、全局唯一、防修改；LDevID 由本地管理员或域 CA 在设备入域时签发。DevID 的目标是让设备在没有用户登录的情况下，仍能用 EAP-TLS、BRSKI/EST 等协议证明“我是哪一台设备”。",
+            "en": "**Standard**: Secure Device Identity (安全设备标识).IEEE 802.1AR-2018 defines a Secure Device Identifier (DevID) for network devices: an X.509 certificate bound to a device private key."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee8021ar-r139-why",
+          "entryId": "ieee8021ar-details",
+          "section": "why",
+          "statement": {
+            "zh": "设备身份的核心不是证书文件名，而是私钥持有证明。IDevID 私钥通常放在安全元件，不能导出；LDevID 必须绑定到同一设备的 IDevID，否则把 LDevID 拷到另一台设备就能冒充。绑定关系用 IDevID 证书指纹/公钥与注册证明维持；验证方还要验证 LDevID 到域信任锚的证书链和吊销状态。",
+            "en": "Device identity is not a certificate filename but proof of private-key possession.The IDevID private key normally sits in a secure element and cannot be exported; LDevID must bind to the same device IDevID, otherwise copying an LDevID to another device would impersonate it."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee8021ar-r139-used",
+          "entryId": "ieee8021ar-details",
+          "section": "used",
+          "statement": {
+            "zh": "典型流程：厂商烧录 IDevID 与私钥；设备入域时向注册商出示 IDevID 证书，用 IDevID 私钥签 nonce/域标识；域 CA 验证后签发 LDevID；后续 EAP-TLS 用 LDevID 做设备认证。证书字段按 RFC 5280；设备序列号、厂商、型号可放 subject 或 SAN otherName；2018 版新增 ECDSA P-384/SHA-384 套件以对齐 Suite B。",
+            "en": "Typical flow: the manufacturer burns in IDevID and private key; at domain join the device presents the IDevID certificate and signs a nonce/domain ID with the IDevID key; the domain CA verifies and issues LDevID; later EAP-TLS uses LDevID for device authentication.Certificate fields follow RFC 5280; serial, vendor and model can sit in subject or SAN otherName; the 2018 revision adds the ECDSA P-384/SHA-384 suite for Suite B alignment."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee8021ar-r139-broken",
+          "entryId": "ieee8021ar-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误包括：把证书当授权令牌；只验 LDevID 不验 IDevID 绑定；忽略吊销与时钟；把 IDevID 私钥当普通文件拷贝；把 802.1AR 当 EAP 本身。802.1AR 只定义身份与绑定，不定义业务角色、访问控制策略或具体 EAP 方法；这些由 802.1X、RADIUS/AAA、BRSKI 与本地策略完成。### 形式模型。",
+            "en": "Common errors include treating a certificate as an authorization token, validating LDevID without the IDevID binding, ignoring revocation and time, copying the IDevID private key like a normal file, or treating 802.1AR as EAP itself.802.1AR defines identity and binding only; business roles, access policy and the EAP method are supplied by 802.1X, RADIUS/AAA, BRSKI and local policy."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee8021ar-r139-history",
+          "entryId": "ieee8021ar-details",
+          "section": "history",
+          "statement": {
+            "zh": "IEEE 802.1AR-2018 于 2018-06-14 董事会批准、2018-08-02 发布，替代 802.1AR-2009；2018 版增加 ECDSA P-384/SHA-384 签名套件，并对 IDevID/LDevID 证书字段与供应商信息做细化。IEEE GET 计划提供免费标准 PDF；后续 802.1AReg 修订仍在推进，不能把草案当现行。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "IEEE 802.1AR-2018 was approved by the IEEE SA Board on 2018-06-14 and published on 2018-08-02, superseding 802.1AR-2009.The 2018 revision adds the ECDSA P-384/SHA-384 signature suite and refines IDevID/LDevID certificate fields and supplier information."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        },
+        {
+          "id": "ieee8021ar-r139-refs",
+          "entryId": "ieee8021ar-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 安全设备标识.https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 安全设备标识.https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ieee8021ar-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ieee8021ar-wikipedia"
+      ]
+    },
+    {
+      "id": "ieee8021ar-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ieee8021ar-r139-principle",
+      "entryId": "ieee8021ar-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：安全设备标识（Secure Device Identity）。IEEE 802.1AR-2018 给网络设备定义 Secure Device Identifier（DevID）：一张绑定设备私钥的 X.509 证书。IDevID 由厂商在出厂时提供、全局唯一、防修改；LDevID 由本地管理员或域 CA 在设备入域时签发。DevID 的目标是让设备在没有用户登录的情况下，仍能用 EAP-TLS、BRSKI/EST 等协议证明“我是哪一台设备”。",
+        "en": "**Standard**: Secure Device Identity (安全设备标识).IEEE 802.1AR-2018 defines a Secure Device Identifier (DevID) for network devices: an X.509 certificate bound to a device private key."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee8021ar-r139-why",
+      "entryId": "ieee8021ar-details",
+      "section": "why",
+      "statement": {
+        "zh": "设备身份的核心不是证书文件名，而是私钥持有证明。IDevID 私钥通常放在安全元件，不能导出；LDevID 必须绑定到同一设备的 IDevID，否则把 LDevID 拷到另一台设备就能冒充。绑定关系用 IDevID 证书指纹/公钥与注册证明维持；验证方还要验证 LDevID 到域信任锚的证书链和吊销状态。",
+        "en": "Device identity is not a certificate filename but proof of private-key possession.The IDevID private key normally sits in a secure element and cannot be exported; LDevID must bind to the same device IDevID, otherwise copying an LDevID to another device would impersonate it."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee8021ar-r139-used",
+      "entryId": "ieee8021ar-details",
+      "section": "used",
+      "statement": {
+        "zh": "典型流程：厂商烧录 IDevID 与私钥；设备入域时向注册商出示 IDevID 证书，用 IDevID 私钥签 nonce/域标识；域 CA 验证后签发 LDevID；后续 EAP-TLS 用 LDevID 做设备认证。证书字段按 RFC 5280；设备序列号、厂商、型号可放 subject 或 SAN otherName；2018 版新增 ECDSA P-384/SHA-384 套件以对齐 Suite B。",
+        "en": "Typical flow: the manufacturer burns in IDevID and private key; at domain join the device presents the IDevID certificate and signs a nonce/domain ID with the IDevID key; the domain CA verifies and issues LDevID; later EAP-TLS uses LDevID for device authentication.Certificate fields follow RFC 5280; serial, vendor and model can sit in subject or SAN otherName; the 2018 revision adds the ECDSA P-384/SHA-384 suite for Suite B alignment."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee8021ar-r139-broken",
+      "entryId": "ieee8021ar-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误包括：把证书当授权令牌；只验 LDevID 不验 IDevID 绑定；忽略吊销与时钟；把 IDevID 私钥当普通文件拷贝；把 802.1AR 当 EAP 本身。802.1AR 只定义身份与绑定，不定义业务角色、访问控制策略或具体 EAP 方法；这些由 802.1X、RADIUS/AAA、BRSKI 与本地策略完成。### 形式模型。",
+        "en": "Common errors include treating a certificate as an authorization token, validating LDevID without the IDevID binding, ignoring revocation and time, copying the IDevID private key like a normal file, or treating 802.1AR as EAP itself.802.1AR defines identity and binding only; business roles, access policy and the EAP method are supplied by 802.1X, RADIUS/AAA, BRSKI and local policy."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee8021ar-r139-history",
+      "entryId": "ieee8021ar-details",
+      "section": "history",
+      "statement": {
+        "zh": "IEEE 802.1AR-2018 于 2018-06-14 董事会批准、2018-08-02 发布，替代 802.1AR-2009；2018 版增加 ECDSA P-384/SHA-384 签名套件，并对 IDevID/LDevID 证书字段与供应商信息做细化。IEEE GET 计划提供免费标准 PDF；后续 802.1AReg 修订仍在推进，不能把草案当现行。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：安全设备标识的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "IEEE 802.1AR-2018 was approved by the IEEE SA Board on 2018-06-14 and published on 2018-08-02, superseding 802.1AR-2009.The 2018 revision adds the ECDSA P-384/SHA-384 signature suite and refines IDevID/LDevID certificate fields and supplier information."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    },
+    {
+      "id": "ieee8021ar-r139-refs",
+      "entryId": "ieee8021ar-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 安全设备标识.https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 安全设备标识.https://zh.wikipedia.org/w/index.php?search=%E5%AE%89%E5%85%A8%E8%AE%BE%E5%A4%87%E6%A0%87%E8%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ieee8021ar-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

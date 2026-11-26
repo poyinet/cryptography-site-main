@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening batch for ocb-details.",
+  "entries": [
+    {
+      "id": "ocb-details",
+      "inventoryIds": [
+        "ocb"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R105 AEAD、流密码、标识密码与盲签名深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "OCB 偏移密码块模式",
+        "en": "OCB Authenticated Encryption Mode"
+      },
+      "claimIds": [
+        "ocb-r139-principle",
+        "ocb-r139-why",
+        "ocb-r139-used",
+        "ocb-r139-broken",
+        "ocb-r139-history",
+        "ocb-r139-refs"
+      ],
+      "sourceIds": [
+        "ocb-wikipedia",
+        "ocb-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "ctr"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "ocb-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "OCB 偏移密码块模式：为什么需要 → 核心机制 → 边界。",
+            "en": "OCB Authenticated Encryption Mode: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "OCB 偏移密码块模式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for OCB Authenticated Encryption Mode, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ocb-details-flow.zh.svg",
+            "en": "assets/ocb-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c4cb292f509af4c4c3dd6572b89ef675f8578ed260a778acf7486320ab112bc4",
+            "en": "a7d692b4d01e4677222db2f99b1f121baab98f32d759741d883cdaf11185e979"
+          }
+        },
+        {
+          "id": "ocb-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "OCB 偏移密码块模式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for OCB Authenticated Encryption Mode: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "OCB 偏移密码块模式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for OCB Authenticated Encryption Mode, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ocb-details-r138-model.zh.svg",
+            "en": "assets/ocb-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7a82f82607697a99df57800316a08ae8adf6f06076b29493408a9bddba2baa22",
+            "en": "222144d8705f88d6549f1abf88a196253c44717ec2a6aa5c09ed06fd64170700"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：OCB 偏移密码块模式（Offset Codebook）。### 偏移与一次通过\n\nOCB3 用 nonce N 派生一串偏移 Δ[i]，每个明文块先 XOR 偏移，再过分组密码，得到密文块；同时把明文块累加进校验和。最后一个块用特殊偏移和长度处理，最终标签由校验和再加密并 XOR 偏移得到。### 关联数据\n\nAD 不加密，但会被带偏移的 MAC 结构压成一个值，最后并入标签。OCB 只需要分组密码的加密方向，所有块可以并行；一个密钥、一次通过，密文只增加标签长度。### 参数\n\nRFC 7253 要求 128 位分组，nonce 最长为 120 位（实际推荐 96 位），标签长度可配；AES-OCB 常用 128 位标签，TLS 草案用 96 位。nonce 必须在同一密钥下唯一。",
+          "why": "OCB 的卖点是一次通过、单密钥、可并行：认证嵌进加密，避免 Encrypt-then-MAC 的两次遍历和两把密钥。在支持 AES 指令的 CPU 上，OCB 的吞吐接近 CTR，适合低延迟网络和嵌入式设备。它也是 AEAD 历史上的关键方案：OCB1 2001，OCB3 2011，RFC 7253 2014；OCB2 在 2019 年被证明完全不安全，说明“版本”必须写清楚，不能把 OCB2 当 OCB3 用。",
+          "used": "OCB 用于低延迟网络、磁盘/文件加密、嵌入式协议和部分 TLS 1.2 草案；OCB1 曾是 IEEE 802.11i 的可选 WRAP，OCB2 进入 ISO/IEC 19772:2009，OCB3 是 RFC 7253。工程要点：nonce 唯一；单密钥最多加密 2^48 个块；标签至少 96/128 位；不要把 OCB2 当 OCB3；解密必须先验标签再释放明文。",
+          "broken": "OCB 是 nonce-respecting AEAD：同一 key/nonce 加密两条不同消息会同时破坏机密性和认证，攻击者可恢复认证密钥并伪造后续消息。RFC 7253 明确说这种场景应改用 SIV。实现边界：nonce 计数器分区；标签长度绑定；密钥用量上限 2^48 块；解密先验标签；OCB2 的 2019 攻击说明版本和实现必须锁定 OCB3。",
+          "history": "OCB1 由 Rogaway、Bellare、Black、Krovetz 在 2001 年提出；OCB2 2004；OCB3 由 Krovetz 与 Rogaway 在 2011 年提出；RFC 7253 于 2014 年发布。OCB2 曾进入 ISO/IEC 19772:2009，但 2019 年被 Inoue–Iwata–Minematsu–Poettering 的论文证明可伪造、可恢复明文。专利：Rogaway 曾持有四项美国专利，后主动让专利失效并把相关 IP 放入公共领域；但其他 AE 专利是否适用仍难以判断，商用前应做 IP 审查。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：OCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 OCB 偏移密码块模式 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for OCB 偏移密码块模式. https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nOCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Offset Codebook (OCB 偏移密码块模式). ### Offsets and one pass\n\nOCB3 derives a sequence of offsets Δ[i] from nonce N. Each plaintext block is XORed with an offset, encrypted by the block cipher and becomes a ciphertext block; the plaintext block is also accumulated into a checksum. The final block uses a special offset and length handling, and the tag is the encrypted checksum XORed with an offset. ### Associated data\n\nAD is authenticated but not encrypted: an offset-based MAC compresses it into a value that is folded into the tag. OCB needs only the encryption direction of the block cipher, all blocks can be parallelized, and one key with one pass adds only the tag length to the ciphertext. ### Parameters\n\nRFC 7253 requires a 128-bit block, allows nonces up to 120 bits (96 bits recommended), and supports configurable tag lengths; AES-OCB commonly uses a 128-bit tag, while TLS drafts use 96 bits. A nonce must be unique under one key.",
+          "why": "OCB’s selling point is one pass, one key and parallelism: authentication is woven into encryption, avoiding the two passes and two keys of Encrypt-then-MAC. On CPUs with AES instructions, OCB throughput approaches CTR, which suits low-latency networks and embedded devices.\n\nIt is also a key name in AEAD history: OCB1 in 2001, OCB3 in 2011, RFC 7253 in 2014. OCB2 was completely broken in 2019, which shows why the version must be stated explicitly and OCB2 must never be used as OCB3.",
+          "used": "OCB is used in low-latency networking, disk/file encryption, embedded protocols and some TLS 1.2 drafts; OCB1 was an optional WRAP in IEEE 802.11i, OCB2 entered ISO/IEC 19772:2009, and OCB3 is RFC 7253.\n\nRequirements: unique nonces; at most 2^48 blocks under one key; tags of at least 96/128 bits; never treat OCB2 as OCB3; verify the tag before releasing plaintext.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "OCB is a nonce-respecting AEAD: encrypting two different messages with the same key and nonce breaks both confidentiality and authenticity, and an attacker can recover authentication secrets and forge later messages. RFC 7253 explicitly points such settings to SIV.\n\nImplementation boundaries: partition nonce counters; bind tag length; cap key usage at 2^48 blocks; verify before decrypting; the 2019 OCB2 attack shows why the version and implementation must be locked to OCB3.",
+          "history": "OCB1 was proposed by Rogaway, Bellare, Black and Krovetz in 2001; OCB2 followed in 2004; OCB3 was proposed by Krovetz and Rogaway in 2011; RFC 7253 appeared in 2014. OCB2 entered ISO/IEC 19772:2009 but was shown forgeable and decryptable by Inoue–Iwata–Minematsu–Poettering in 2019.\n\nPatents: Rogaway held four US patents, then intentionally let them lapse and placed his OCB-related IP in the public domain. Whether other AE patents apply is still hard to determine, so commercial deployments should perform an IP review.",
+          "refs": "- Wikipedia search entry for OCB 偏移密码块模式. https://zh.wikipedia.org/w/index.php?search=OCB%20%E5%81%8F%E7%A7%BB%E5%AF%86%E7%A0%81%E5%9D%97%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nOffset Codebook: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "ocb-r139-formal",
+          "entryId": "ocb-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：OCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 OCB 偏移密码块模式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "ocb-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ocb-r139-formal"
+      ],
+      "sources": [
+        "ocb-wikipedia",
+        "ocb-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ocb-r139-formal",
+      "entryId": "ocb-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：OCB 偏移密码块模式的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 OCB 偏移密码块模式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "ocb-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

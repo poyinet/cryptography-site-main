@@ -1,0 +1,127 @@
+[
+  {
+    "id": "sha2-calc-rfc-suite",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "RFC 6234's SHA-224, SHA-256, SHA-384 and SHA-512 test vectors (abc, the 56-/112-byte strings and one million 'a'), plus the SHA-512/224 and SHA-512/256 abc vectors generated with the FIPS 180-4 IVs, stored in vectors.json",
+    "expected": "The teaching implementation reproduces every stored digest exactly, including SHA-256(abc)=ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad, SHA-512(abc)=ddaf35a1…, SHA-512/224(abc)=4634270f… and SHA-512/256(abc)=53048e26…",
+    "sourceIds": [
+      "rfc6234",
+      "fips180-4"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "The RFC vectors are conformance checks, not security tests. The SHA-512/224 and SHA-512/256 abc values are implementation checks generated from the FIPS IVs, not RFC-published vectors."
+  },
+  {
+    "id": "sha2-calc-abc-trace",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The SHA-256 single-block computation of abc: block words (X[0]=0x61626380, X[15]=0x00000018), W0..W19, the first four round traces, the registers after rounds 16/32/48/64, the feed-forward values and the final digest stored in vectors.json",
+    "expected": "The block words are derived from pad(abc); W16=0x61626380, W17=0x000f0000, W18=0x7da86405, W19=0x600003c6; the first step has T1=0x54da50e8, T2=0x08909ae5 and a=0x5d6aebcd; the group registers and feed-forward values match the implementation; the digest is ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
+    "sourceIds": [
+      "fips180-4",
+      "rfc6234"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One single-block trace; the per-group intermediates are produced by the teaching implementation itself, so this calculation pins the worked example but is not an external oracle for those intermediates."
+  },
+  {
+    "id": "sha2-calc-crosscheck",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "70 deterministic cases produced with an external oracle (Node's OpenSSL-backed SHA-224/256/384/512/512-224/512-256): empty and abc for each variant, 32-bit boundary lengths 55, 56, 57, 63, 64, 65, 119, 120, 127, 128 and 129, and 64-bit boundary lengths 111, 112, 113, 127, 128, 129, 239, 240 and 241",
+    "expected": "Every stored oracle digest matches the teaching implementation for all six variants, including all block-boundary lengths",
+    "sourceIds": [
+      "fips180-4",
+      "rfc6234"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Cross-implementation agreement checks conformance, not security; the oracle is the system SHA-2 in Node/OpenSSL, which is a different codebase but not an independently certified implementation."
+  },
+  {
+    "id": "sha2-calc-structure",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The six IVs; the 64 32-bit and 80 64-bit constants; the message schedule; padding boundaries for 512/1024-bit blocks; the SHA-512/t IV generation; negative controls for little-endian parsing, missing feed-forward and a rotated constant table; the published code block; and the article hex vectors",
+    "expected": "The IVs and constants match the FIPS values generated from square/cube roots of primes; the SHA-512/t IVs match the FIPS 180-4 values; padding boundaries map correctly; the negative controls fail to reproduce the RFC digest; the article's js code block is a substring of sha2-teaching.mjs; the Chinese and English articles expose the same 100 hex-token set",
+    "sourceIds": [
+      "fips180-4",
+      "rfc6234"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Structural invariants and negative controls only; they show the implementation follows the standard's shape and that the shape is load-bearing, but they prove nothing about security. The negative-control digests are batch-generated; the calculation asserts only that they differ from the official digest."
+  },
+  {
+    "id": "sha2-calc-hmac",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Four RFC 4231 HMAC-SHA-2 test cases: the Hi There and Jefe cases for HMAC-SHA-256 and HMAC-SHA-512, stored in vectors.json",
+    "expected": "The teaching hmacSha2 reproduces all four RFC 4231 digests, including HMAC-SHA-256(Jefe)=5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843 and HMAC-SHA-512(Jefe)=164b7a7b…",
+    "sourceIds": [
+      "rfc4231",
+      "rfc6234"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "Four HMAC-SHA-2 conformance vectors only; they do not establish the security of HMAC-SHA-2 in any particular protocol or key-management setting."
+  },
+  {
+    "id": "sha2-calc-length-extension",
+    "entryId": "sha2-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The SHA-256 digest of abc, the 64-byte padded length, and the suffix \"extra\"; the demonstration reconstructs H(abc || pad(abc) || extra) from the digest and the length without rereading the original message",
+    "expected": "The state-based extension equals the direct SHA-256 of the 69-byte extended message: f4566a6bc1df12da948d3d1da5e67458ff0cb761d456bd7382438a8903b433b4; the demo shows length extension, not a collision",
+    "sourceIds": [
+      "fips180-4"
+    ],
+    "dependencies": [
+      "sha2-teaching.mjs",
+      "vectors.json",
+      "article.zh.md",
+      "article.en.md",
+      "meta.json",
+      "glossary.json",
+      "calculations.json"
+    ],
+    "limitations": "One structural demonstration on SHA-256; it does not claim a collision, a key recovery or a break of HMAC-SHA-2."
+  }
+]

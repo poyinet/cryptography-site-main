@@ -1,0 +1,547 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "Full frequency-analysis method article only; no completion claim for Kasiski's method, index of coincidence as a separate entity, homophonic substitution, modern cipher attacks or the whole library.",
+  "entries": [
+    {
+      "id": "frequency-details",
+      "inventoryIds": [
+        "attack--frequency-analysis"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 attack--frequency-analysis 这一古典统计破译方法的计数、IC、卡方、适用条件与失败边界；不把 Kasiski 方法、同音替换、现代分组密码攻击或整个分类体系并入本实体。",
+        "en": "Covers the classical statistical cryptanalysis method recorded as attack--frequency-analysis: counts, IC, chi-square, applicability and failure boundaries. It does not absorb Kasiski's method, homophonic substitution, modern block-cipher attacks or the whole taxonomy."
+      },
+      "title": {
+        "zh": "频率分析：从字母计数到可检验的统计推断",
+        "en": "Frequency analysis: from letter counts to testable statistical inference"
+      },
+      "claimIds": [
+        "attack--frequency-analysis-r139-principle",
+        "attack--frequency-analysis-r139-why",
+        "attack--frequency-analysis-r139-used",
+        "attack--frequency-analysis-r139-broken",
+        "attack--frequency-analysis-r139-history",
+        "attack--frequency-analysis-r139-refs"
+      ],
+      "calculationIds": [
+        "frequency-corpus-counts",
+        "frequency-ioc",
+        "frequency-chi-square-recovery",
+        "frequency-chi-square-failure",
+        "frequency-digrams",
+        "frequency-vigenere-boundary",
+        "attack--frequency-analysis-r139-formal"
+      ],
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia",
+        "attack--frequency-analysis-reference-ref"
+      ],
+      "related": [
+        "attack--kasiski-test",
+        "attack--index-of-coincidence",
+        "homophonic-substitution",
+        "term--index-of-coincidence",
+        "attack--contact-analysis",
+        "attack--probable-plaintext",
+        "attack--unicity-distance"
+      ],
+      "relatedPolicy": "These are distinct methods or background concepts. They are linked for context only and are not aliases or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：频率分析（Frequency Analysis）。频率分析先统计密文中的符号，再把统计结果与候选语言的已知分布比较，提出并检验字母映射的猜测。对单表替换，若 π 是明文字母到密文字母的映射，则密文符号 y 的出现次数等于明文字母 π⁻¹(y) 的出现次数。也就是说，映射只是给每个字母的出现次数换了标签，并没有改变次数的多重集。最基本的统计量是频数与相对频率。频数 f_i 是符号 i 在样本中出现的次数，样本总长度为 L 时，相对频率是 f_i/L。单字母统计看每个符号；双字母和三字母统计看相邻组合，例如英文中的 TH、HE、ER、IN、AN。组合统计能提供比单字母更多的结构信息，但样本必须足够长，且预处理规则必须一致。对于长度 L 的文本，索引重合度（index of coincidence, IC）定义为\n\n`IC = Σ f_i(f_i − 1) / (L(L − 1))`。它估计从文本中随机取两个字母，它们相同的概率。对 26 个等概率字母，理论值是 1/26≈0.03846；对自然英文，HAC 给出的估计值约为 0.0667。IC 不需要知道具体映射，因此可以先用来判断文本更像单表替换、多表替换还是随机文本。卡方拟合优度统计量用于比较观测频数与期望频数：\n\n`χ² = Σ (O_i − E_i)² / E_i`，\n\n其中 O_i 是观测次数，E_i = L·p_i 是按候选语言频率 p_i 计算的期望次数。对 26 个字母、期望分布由外部表固定且没有从样本估计参数时，自由度是 26−1=25。卡方值越小，观测分布与期望分布越接近。把 26 个凯撒移位分别解密并计算 χ²，取最小者，是一种常见的自动化候选排序方法。但 χ² 不是`频率分析`的全部，也不是一条自动给出正确答案的定律。它依赖字母独立性、样本长度、语言和预处理等假设；它比较的是整体分布，不直接验证双字母、词形和语义。把 χ² 当作整个方法的同义词，会掩盖这些条件。一个可操作的工作顺序是：明确计数单位和预处理；统计单字母、重复字母、双字母和三字母；对照候选语言的频率表提出映射假设；把假设放回整段文本，检查词形、语境和自洽性；必要时用多个统计量交叉检验。每一步都可能产生多个候选，而不是一个唯一答案。",
+          "why": "自然语言有冗余：字母、组合和词的出现并不均匀。单表替换保留这种不均匀性，只是换了符号名称。频率分析利用的正是密文仍然携带语言统计结构这一点，而不是某个密钥的代数弱点。它把密钥空间很大和结构被隐藏区分开。一般单表替换有 26!种可能，远大于凯撒密码的 26 种；但攻击者不必枚举 26!，因为语言统计可以把大量无意义候选排除。这个思路后来发展为更一般的统计密码分析：先找不变量，再缩小候选空间。频率分析也是统计推断的教学入口：先观察，提出假设，再用更多证据检验，而不是看到最高的柱形就宣布答案。它同时提醒读者，密码设计者可以通过改变统计结构来对抗分析，例如使用多表替换、同音替换或更大的分组。",
+          "used": "频率分析适用于古典单表替换和简单移位密码的分析与教学。对凯撒密码，因为所有候选只差一个整体偏移，频率分布的形状不变，只需比较哪个偏移最符合语言分布；对一般单表替换，则要同时确定多个字母的映射。对换位密码，频率分析的作用不同。换位改变字母位置，不改变每个字母身份的总次数，因此单字母频率仍然保留；这可以帮助识别文本的语言和性质，但单凭计数不能恢复排列。HAC 把这一点作为识别简单换位的依据之一。对多表替换，同一个明文字母在不同位置可能变成不同密文字母，单字母频率被 `摊平`。这时直接对照单字母表通常失效，需要先估计周期，再按周期分列。Kasiski 方法和 IC 自相关是两条独立但相关的路线；它们不是频率分析的同义词，而是处理多表结构的不同工具。本文在示例中演示：对一个周期为 5 的维吉尼亚密文，整体 IC 接近随机值，而按 5 列拆开后每一列的 IC 又接近英文。对现代分组密码，频率分析不能被直接套用。分组长度很大时，统计所有可能的分组单元不可行；HAC 在讨论分组大小时明确把这一点作为阻止简单统计分析的条件之一。现代密码的安全性论证和攻击模型也比古典单表分析复杂得多。",
+          "broken": "频率是统计量，不是每个字母的固定标签。样本不足或文本高度重复时，频率估计不稳定，最高频字母未必是语言中的最高频字母。一个 15 字母的 `ZEBRAZEBRAZEBRA` 中，Z、E、B、R、A 各出现 3 次，IC 高达 0.1429，明显高于英文的 0.0667；这不是因为文本更像英文，而是因为重复模式太强。用卡方对这段文本做凯撒移位排序时，正确密钥甚至可能排在很后面。本文的计算示例会展示这种失败。### 文本题材或语言不匹配\n\n频率表来自特定语言和语料。技术文本、人名列表、缩写、代码、混合语言或经过特殊预处理的文本，分布可能偏离通用频率表。语言选错，整张表的比较就失去意义。即使是英文，不同年代和体裁的字母分布也有差异；HAC 的 Figure 7.5 明确标注其估计来自 1964 年英文文本。### 映射不是单表\n\n同音替换用多个符号表示同一个高频字母，刻意把分布压平；多表替换让同一字母在不同位置使用不同映射；两者都会破坏一个密文符号固定对应一个明文字母的前提。HAC 指出同音替换会增加分析难度，但足够长的密文仍可能结合其他统计性质；它不是绝对免疫。### 预处理会改变计数\n\n是否转为大写、是否保留空格、是否删除标点、是否把重音字母折叠，都会改变频数和样本长度。两个看起来相同的「letter frequencies」（字母频率）可能来自不同预处理。报告结果时必须说明规则，否则数字不可比。### 卡方不是唯一判据\n\n卡方只比较整体分布。两个不同的移位可能给出相近的 χ²；短文本可能让错误候选胜出；文本的真实分布也可能与期望表有系统偏差。把最小 χ² 直接当成`已破解`是过度推断。正确做法是把 χ² 作为候选排序，再用词形、双字母、语境和已知明文交叉验证。对 AES、RSA 等现代构造，不能因为`频率分析`在古典密码上有效，就宣称它能直接破译。现代分组密码的分组空间、轮函数和密钥规模都不同；HAC 对大分组阻止统计分析的说明正是这个边界的一部分。频率分析在侧信道、流量分析或统计测试中可能有类比，但那些是不同攻击模型，不能混为一谈。",
+          "history": "al-Kindi（约 9 世纪）的 Risāla fī Istikhrāj al-muʿammā 通常被视为现存最早的密码分析专著之一（本批所查综述把它印作「Risalah fi Istikhraj al Mu'amma」）。本文所查阅的阿拉伯密码学历史综述称，al-Kindi 用一篇 3667 字母的文本统计阿拉伯语字母频率，随后提出后来被称为频率分析的方法。该综述还提到 KACST/KFCRI 2003 年出版的《Arabic Origins of Cryptology》第一卷是对该专著的整理与研究。本文把这部分写成据该综述介绍，因为本轮直接阅读的是综述和引用信息，而不是手稿原件。HAC 的脚注把现代密码分析术语和 IC 的部分历史归到 Friedman：1920 年的 Riverbank Publication no.22 讨论用 IC 进行密码分析，Friedman 在 1920 年提出“cryptanalysis”一词。Kasiski 方法最初发表于 1863 年。HAC 第 7 章把这些方法放在古典密码的结构比较中，而不是把它们当成彼此等价的技术。这段历史说明，频率分析不是某一天突然完成的单点发明，而是多语言、多世纪的统计实践。本文只写来源能够支持的归属和年代；不把 `最早`、`发明者` 之类的优先权争论扩大成未经核证的断言。",
+          "refs": "- Wikipedia search entry for 频率分析. https://zh.wikipedia.org/w/index.php?search=%E9%A2%91%E7%8E%87%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n对凯撒移位密文 `WKH TXLFN EURZQ IRA MXPSV RYHU WKH ODCB GRJ` 统计字母频率，E/T/A 最高；试移 3 位得到 `THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG`。频率分析利用的是自然语言分布，不是密钥空间枚举。"
+        },
+        "en": {
+          "principle": "**Attack**: Frequency Analysis (频率分析). Frequency analysis first counts symbols in a ciphertext, then compares the result with the known distribution of a candidate language and proposes and tests letter mappings. For a monoalphabetic substitution, if π maps plaintext letters to ciphertext letters, the count of ciphertext symbol y equals the count of plaintext letter π⁻¹(y). The mapping only renames the counts; it does not change their multiset. The basic quantities are counts and relative frequencies. The count f_i is the number of occurrences of symbol i; for a sample of length L, the relative frequency is f_i/L. Unigram statistics look at individual symbols; digram and trigram statistics look at adjacent pairs and triples, such as TH, HE, ER, IN and AN in English. Combination statistics can provide more structure than single letters, but the sample must be long enough and the preprocessing rule must stay fixed. For a text of length L, the index of coincidence (IC) is\n\n`IC = Σ f_i(f_i − 1) / (L(L − 1))`. It estimates the probability that two letters drawn at random from the text are equal. For 26 equally likely letters the theoretical value is 1/26≈0.03846; for natural English, HAC gives an estimate of about 0.0667. IC does not require knowing the mapping, so it can first indicate whether a text looks monoalphabetic, polyalphabetic or random. The chi-square goodness-of-fit statistic compares observed and expected counts:\n\n`χ² = Σ (O_i − E_i)² / E_i`,\n\nwhere O_i is the observed count and E_i = L·p_i is the expected count under candidate-language frequencies p_i. For 26 letters, with the expected distribution fixed by an external table and no parameters estimated from the sample, the degrees of freedom are 26−1=25. A smaller chi-square means the observed distribution is closer to the expected one. Decrypting under each of the 26 Caesar shifts and choosing the smallest χ² is a common automatic candidate-ranking method. But χ² is not the whole of frequency analysis, and it is not a law that automatically returns the right answer. It depends on assumptions about letter independence, sample length, language and preprocessing. It compares an overall distribution; it does not directly verify digrams, word shapes or meaning. Treating χ² as a synonym for the method hides those conditions. A workable order is: declare the counting unit and preprocessing; count single letters, repeated letters, digrams and trigrams; compare with a candidate language's frequency table and propose mappings; put the hypothesis back into the full text and check word shapes, context and consistency; use several statistics where needed. Every step can produce multiple candidates rather than one unique answer.",
+          "why": "Natural language is redundant: letters, combinations and words do not occur uniformly. A monoalphabetic substitution preserves that non-uniformity and only renames the symbols. Frequency analysis exploits the fact that the ciphertext still carries statistical structure, not an algebraic weakness in one key.\n\nIt separates the size of the key space from whether the structure is hidden. A general monoalphabetic substitution has 26! possibilities, far more than the 26 keys of a Caesar cipher; yet an attacker need not enumerate 26!, because language statistics discard many meaningless candidates. This idea later grew into statistical cryptanalysis more generally: find an invariant, then shrink the candidate space.\n\nFrequency analysis is also a teaching entry to statistical inference: observe, form a hypothesis, then test it with more evidence rather than declaring an answer from the tallest bar. It also reminds readers that a designer can resist analysis by changing the statistical structure, for example with polyalphabetic substitution, homophonic substitution or larger blocks.",
+          "used": "Frequency analysis applies to classical monoalphabetic substitution and simple shift ciphers, for analysis and teaching. For a Caesar cipher, because all candidates differ by one global offset, the shape of the distribution is unchanged; the analyst only has to decide which offset best matches the language. For a general monoalphabetic substitution, several letter mappings must be determined together.\n\nFor a transposition cipher the role is different. Transposition changes letter positions without changing the total count of each letter identity, so unigram frequencies survive. That can help identify the language and nature of the text, but counts alone cannot recover the permutation. HAC uses this as one way to recognize simple transposition.\n\nFor a polyalphabetic cipher, the same plaintext letter can become different ciphertext letters at different positions, flattening unigram frequencies. Direct comparison with a single-letter table usually fails; the analyst must first estimate the period and then split the text into columns. Kasiski's method and IC autocorrelation are two related but distinct routes; they are not synonyms for frequency analysis but tools for handling polyalphabetic structure. The worked example shows a period-5 Vigenère ciphertext whose global IC is near random while each of the five columns has an IC near English.\n\nFor modern block ciphers, frequency analysis cannot simply be transferred. With a large block, tabulating every possible block unit is infeasible; HAC explicitly presents large block size as a condition that precludes simple statistical analysis. Modern cipher security arguments and attack models are also much more elaborate than classical monoalphabetic analysis.",
+          "broken": "A frequency is a statistic, not a fixed label attached to each letter. With an insufficient sample or a highly repetitive text, frequency estimates are unstable, and the most frequent letter need not be the most frequent letter of the language. In the 15-letter `ZEBRAZEBRAZEBRA`, Z, E, B, R and A each occur three times, and IC is 0.1429, well above the English value of 0.0667. This is not because the text is more English; it is because repetition dominates. When chi-square ranks Caesar shifts for this text, the correct key can rank far down the list. The calculation below demonstrates this failure.\n\nFrequency tables come from a particular language and corpus. Technical prose, lists of names, abbreviations, code, mixed languages or specially preprocessed text can deviate from a general table. If the language is wrong, the whole comparison is meaningless. Even within English, genre and period change the distribution; HAC labels its Figure 7.5 estimate as coming from 1964 English text.\n\nHomophonic substitution uses several symbols for one high-frequency plaintext letter, deliberately flattening the distribution. Polyalphabetic substitution uses different mappings at different positions. Both break the premise that one ciphertext symbol corresponds to one plaintext letter forever. HAC notes that homophonic substitution complicates simple frequency analysis, while sufficient ciphertext may still permit analysis combined with other statistical properties. It is not absolute immunity.\n\nWhether text is uppercased, whether spaces remain, whether punctuation is removed and whether accented letters are folded all change counts and sample length. Two apparently identical “letter frequencies” can come from different rules. Any reported result must state the rule, or the numbers are not comparable.\n\nChi-square compares an overall distribution only. Two different shifts can produce similar χ² values; a short text can let a wrong candidate win; and the true distribution can differ systematically from the expected table. Treating the minimum χ² as already broken is overreach. Use χ² to rank candidates, then cross-check with word shapes, digrams, context and known plaintext.\n\nThe fact that frequency analysis works on classical ciphers does not mean it directly breaks AES or RSA. Modern block-cipher block spaces, round functions and key sizes are different; HAC's note on large blocks preventing statistical analysis is part of this boundary. Frequency analysis can have analogies in side channels, traffic analysis or statistical testing, but those are different attack models and must not be conflated.",
+          "history": "Al-Kindi's ninth-century Risāla fī Istikhrāj al-muʿammā (the survey prints it \"Risalah fi Istikhraj al Mu'amma\") is commonly treated as one of the earliest extant treatises on cryptanalysis. The survey of Arabic cryptology consulted for this batch states that al-Kindi counted Arabic letter frequencies in a text of 3,667 letters and then introduced the technique later known as frequency analysis. The same survey identifies the KACST/KFCRI 2003 volume Arabic Origins of Cryptology, Volume One as an edition and study of the treatise. This article reports it as a claim of the cited survey, because the direct object read in this batch was the survey and its citations, not the manuscript itself.\n\nHAC's notes attribute part of the modern terminology and IC history to Friedman: a 1920 Riverbank Publication no. 22 discussed cryptanalysis using the index of coincidence, and Friedman coined the term “cryptanalysis” in 1920. Kasiski's method was originally published in 1863. HAC places these methods within a structural comparison of classical ciphers rather than treating them as equivalent techniques.\n\nThis history shows frequency analysis as a multilingual, centuries-long statistical practice rather than a single invention on one day. This article states only the attributions and dates the sources support; it does not expand a priority dispute into unverified claims.",
+          "refs": "- Wikipedia search entry for 频率分析. https://zh.wikipedia.org/w/index.php?search=%E9%A2%91%E7%8E%87%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\nFrequency Analysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "频数：某个符号在样本中出现的次数。",
+          "相对频率：频数除以样本总长度。",
+          "单表替换：整段文本使用同一个符号映射。",
+          "多表替换：按位置轮换不同的符号映射。",
+          "索引重合度：随机取两个字母相同的估计概率。",
+          "卡方统计量：观测频数与期望频数差异的加权平方和。",
+          "自由度：卡方分布中可独立变化的维度数。",
+          "同音替换：用多个符号表示同一个明文字母。",
+          "双字母：相邻的两个字母组合。",
+          "Kasiski 方法：利用重复片段距离估计多表周期。",
+          "预处理：计数前对大小写、标点和字母表的规范化。",
+          "候选映射：根据统计线索提出的明密文字母对应关系。"
+        ],
+        "en": [
+          "Count: the number of occurrences of a symbol in a sample.",
+          "Relative frequency: count divided by total sample length.",
+          "Monoalphabetic substitution: one symbol mapping used for the whole text.",
+          "Polyalphabetic substitution: different mappings rotated by position.",
+          "Index of coincidence: an estimate of the probability that two random letters are equal.",
+          "Chi-square statistic: a weighted sum of squared observed-versus-expected differences.",
+          "Degrees of freedom: the number of independently varying dimensions in a chi-square distribution.",
+          "Homophonic substitution: several symbols used for one plaintext letter.",
+          "Digram: an adjacent pair of letters.",
+          "Kasiski's method: estimating a polyalphabetic period from distances between repeated fragments.",
+          "Preprocessing: normalizing case, punctuation and the alphabet before counting.",
+          "Candidate mapping: a proposed plaintext-to-ciphertext letter correspondence."
+        ]
+      },
+      "subtopicIds": [
+        "frequency-analysis"
+      ],
+      "figures": [
+        {
+          "id": "frequency-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "频率分析：从字母计数到可检验的统计推断：为什么需要 → 核心机制 → 边界。",
+            "en": "Frequency analysis: from letter counts to testable statistical inference: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "频率分析：从字母计数到可检验的统计推断 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Frequency analysis: from letter counts to testable statistical inference, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/frequency-details-flow.zh.svg",
+            "en": "assets/frequency-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "7fb6d01535ece79c9a1536a73cca045ebb03c8cb6ed35f0cfd2cc71ef76d0cf1",
+            "en": "eba45c4305225c4e4980dfdc137a276bb72c580433841659a2abd6e4b9494873"
+          }
+        },
+        {
+          "id": "frequency-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "频率分析：从字母计数到可检验的统计推断 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Frequency analysis: from letter counts to testable statistical inference: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "频率分析：从字母计数到可检验的统计推断 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Frequency analysis: from letter counts to testable statistical inference, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/frequency-details-r138-model.zh.svg",
+            "en": "assets/frequency-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "cb48f8621883dd617edee1d4642ec901cb4f8cecde8bf6505009d11e62508ed9",
+            "en": "be87b1620290b0a65800b8e6c3dd88058807dcdb60cf9273abf9fe0857077267"
+          }
+        }
+      ],
+      "sources": [
+        "attack--frequency-analysis-wikipedia",
+        "attack--frequency-analysis-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "frequency-corpus-counts",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "Fixed 20,000-letter public-domain English corpus; letters-only preprocessing",
+          "expected": "Total length 20000 and the recorded 26 exact counts; BANANA hand count 3/2/1",
+          "corpusSha256": "72cbb3c219effe0e3c0c31fb511dbb1ce4ac3d62101ba2506286dd27cd2c0256",
+          "expectedCounts": [
+            1542,
+            377,
+            435,
+            888,
+            2503,
+            421,
+            417,
+            1257,
+            1445,
+            24,
+            137,
+            808,
+            570,
+            1495,
+            1494,
+            251,
+            29,
+            1141,
+            1221,
+            1704,
+            590,
+            201,
+            465,
+            26,
+            534,
+            25
+          ],
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs",
+            "corpus-en.txt"
+          ],
+          "limitations": "One fixed English corpus; counts describe this fixture, not a universal language distribution."
+        },
+        {
+          "id": "frequency-ioc",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "BANANA; the fixed corpus; the uniform 26-letter value 1/26",
+          "expected": "BANANA IC=8/30; corpus IC≈0.0646968; uniform value≈0.0384615",
+          "bananaIc": 0.26666666666666666,
+          "corpusIc": 0.06469675483774188,
+          "uniformIc": 0.038461538461538464,
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs",
+            "corpus-en.txt"
+          ],
+          "limitations": "The corpus value is an estimate for one text, not a language constant."
+        },
+        {
+          "id": "frequency-chi-square-recovery",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "20,000-letter corpus encrypted with Caesar k=17; all 26 candidate decryptions; HAC Figure 7.5 expected percentages",
+          "expected": "Correct k=17 ranks first with χ²≈333.4502; runner-up k=23 has χ²≈67698.2203",
+          "correctKey": 17,
+          "correctChi": 333.4502409799538,
+          "runnerUpKey": 23,
+          "runnerUpChi": 67698.22025113195,
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs",
+            "corpus-en.txt"
+          ],
+          "limitations": "One fixed text and one expected table; ranking success is empirical, not a general proof."
+        },
+        {
+          "id": "frequency-chi-square-failure",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "ZEBRAZEBRAZEBRA encrypted with k=17; all 26 candidate decryptions",
+          "expected": "Correct k=17 ranks 22nd with χ²≈712.6890; winner k=4 has χ²≈39.6714 and decryption MROENMROENMROEN",
+          "correctKey": 17,
+          "correctRank": 22,
+          "winnerKey": 4,
+          "winnerChi": 39.67135991329805,
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs"
+          ],
+          "limitations": "A deliberately atypical short text; it demonstrates a failure mode, not a refutation of chi-square on all texts."
+        },
+        {
+          "id": "frequency-digrams",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "Adjacent digram counts in the fixed 20,000-letter corpus",
+          "expected": "Top five digrams are TH=531, HE=519, ER=397, IN=361, AN=352",
+          "topDigrams": [
+            [
+              "TH",
+              531
+            ],
+            [
+              "HE",
+              519
+            ],
+            [
+              "ER",
+              397
+            ],
+            [
+              "IN",
+              361
+            ],
+            [
+              "AN",
+              352
+            ]
+          ],
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs",
+            "corpus-en.txt"
+          ],
+          "limitations": "Counts are specific to this corpus; the ordering is compared with HAC's broad English discussion, not treated as a universal constant."
+        },
+        {
+          "id": "frequency-vigenere-boundary",
+          "entryId": "frequency-details",
+          "kind": "executable-statistical-check",
+          "inputs": "Fixed corpus encrypted with the period-5 Vigenère key LEMON; global and five column ICs",
+          "expected": "Global IC≈0.0415134; the five column ICs are approximately 0.06436–0.06567",
+          "globalIc": 0.04151337566878344,
+          "columnIcs": [
+            0.0643624656164041,
+            0.06434196049012253,
+            0.06436409102275568,
+            0.06488472118029508,
+            0.06567079269817454
+          ],
+          "period": 5,
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "dependencies": [
+            "frequency-teaching.mjs",
+            "corpus-en.txt"
+          ],
+          "limitations": "A demonstration of the period-splitting boundary; it is not a complete Vigenère solver."
+        },
+        {
+          "id": "attack--frequency-analysis-r139-formal",
+          "entryId": "frequency-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "频率分析 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "attack--frequency-analysis-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "frequency-corpus-counts",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "Fixed 20,000-letter public-domain English corpus; letters-only preprocessing",
+      "expected": "Total length 20000 and the recorded 26 exact counts; BANANA hand count 3/2/1",
+      "corpusSha256": "72cbb3c219effe0e3c0c31fb511dbb1ce4ac3d62101ba2506286dd27cd2c0256",
+      "expectedCounts": [
+        1542,
+        377,
+        435,
+        888,
+        2503,
+        421,
+        417,
+        1257,
+        1445,
+        24,
+        137,
+        808,
+        570,
+        1495,
+        1494,
+        251,
+        29,
+        1141,
+        1221,
+        1704,
+        590,
+        201,
+        465,
+        26,
+        534,
+        25
+      ],
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs",
+        "corpus-en.txt"
+      ],
+      "limitations": "One fixed English corpus; counts describe this fixture, not a universal language distribution."
+    },
+    {
+      "id": "frequency-ioc",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "BANANA; the fixed corpus; the uniform 26-letter value 1/26",
+      "expected": "BANANA IC=8/30; corpus IC≈0.0646968; uniform value≈0.0384615",
+      "bananaIc": 0.26666666666666666,
+      "corpusIc": 0.06469675483774188,
+      "uniformIc": 0.038461538461538464,
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs",
+        "corpus-en.txt"
+      ],
+      "limitations": "The corpus value is an estimate for one text, not a language constant."
+    },
+    {
+      "id": "frequency-chi-square-recovery",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "20,000-letter corpus encrypted with Caesar k=17; all 26 candidate decryptions; HAC Figure 7.5 expected percentages",
+      "expected": "Correct k=17 ranks first with χ²≈333.4502; runner-up k=23 has χ²≈67698.2203",
+      "correctKey": 17,
+      "correctChi": 333.4502409799538,
+      "runnerUpKey": 23,
+      "runnerUpChi": 67698.22025113195,
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs",
+        "corpus-en.txt"
+      ],
+      "limitations": "One fixed text and one expected table; ranking success is empirical, not a general proof."
+    },
+    {
+      "id": "frequency-chi-square-failure",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "ZEBRAZEBRAZEBRA encrypted with k=17; all 26 candidate decryptions",
+      "expected": "Correct k=17 ranks 22nd with χ²≈712.6890; winner k=4 has χ²≈39.6714 and decryption MROENMROENMROEN",
+      "correctKey": 17,
+      "correctRank": 22,
+      "winnerKey": 4,
+      "winnerChi": 39.67135991329805,
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs"
+      ],
+      "limitations": "A deliberately atypical short text; it demonstrates a failure mode, not a refutation of chi-square on all texts."
+    },
+    {
+      "id": "frequency-digrams",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "Adjacent digram counts in the fixed 20,000-letter corpus",
+      "expected": "Top five digrams are TH=531, HE=519, ER=397, IN=361, AN=352",
+      "topDigrams": [
+        [
+          "TH",
+          531
+        ],
+        [
+          "HE",
+          519
+        ],
+        [
+          "ER",
+          397
+        ],
+        [
+          "IN",
+          361
+        ],
+        [
+          "AN",
+          352
+        ]
+      ],
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs",
+        "corpus-en.txt"
+      ],
+      "limitations": "Counts are specific to this corpus; the ordering is compared with HAC's broad English discussion, not treated as a universal constant."
+    },
+    {
+      "id": "frequency-vigenere-boundary",
+      "entryId": "frequency-details",
+      "kind": "executable-statistical-check",
+      "inputs": "Fixed corpus encrypted with the period-5 Vigenère key LEMON; global and five column ICs",
+      "expected": "Global IC≈0.0415134; the five column ICs are approximately 0.06436–0.06567",
+      "globalIc": 0.04151337566878344,
+      "columnIcs": [
+        0.0643624656164041,
+        0.06434196049012253,
+        0.06436409102275568,
+        0.06488472118029508,
+        0.06567079269817454
+      ],
+      "period": 5,
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "dependencies": [
+        "frequency-teaching.mjs",
+        "corpus-en.txt"
+      ],
+      "limitations": "A demonstration of the period-splitting boundary; it is not a complete Vigenère solver."
+    },
+    {
+      "id": "attack--frequency-analysis-r139-formal",
+      "entryId": "frequency-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "频率分析 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "attack--frequency-analysis-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

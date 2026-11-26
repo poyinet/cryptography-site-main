@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "hybrid-argument-details",
+  "sources": [
+    {
+      "id": "hybrid-argument-wikipedia",
+      "title": "Wikipedia search entry for 混合论证",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E5%90%88%E8%AE%BA%E8%AF%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 混合论证",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "hybrid-argument-r139-principle",
+          "entryId": "hybrid-argument-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**定理**：混合论证（Hybrid Argument）。### 一条链，而不是一步\n\n要证明两个分布 X 与 Y 计算不可区分，混合论证不直接比较它们，而是构造 t+1 个分布 H0=X, H1, …, Ht=Y，让每个相邻对只差一个组件。只要每对相邻混合都由同一类假设保证不可区分，端点也不可区分。### 三角不等式给出界\n\n对任意区分器 D，定义优势\nAdv(H0,Ht;D) = |Pr[D(H0)=1] − Pr[D(Ht)=1]|。把中间的 H1…Ht−1 插进来，逐项相消：\nAdv(H0,Ht;D) ≤ Σ_{i=1}^{t} Adv(Hi−1,Hi;D)。这不是概率放大，而是误差相加：t 个相邻优势各为 ε/t 时，总和才是 ε。### 标准用法：一次只换一个组件\n\n多消息 IND-CPA 的证明把 H_i 定义为“前 i 条密文是真实密文，其余是随机密文”。单消息 IND-CPA 保证每一对相邻混合不可区分；t=q(n) 是多项式，所以 q 条密文仍不可区分。",
+            "en": "**Theorem**: Hybrid Argument (混合论证).### A chain, not a single step\n\nTo show that two distributions X and Y are computationally indistinguishable, the hybrid argument does not compare them directly."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        },
+        {
+          "id": "hybrid-argument-r139-why",
+          "entryId": "hybrid-argument-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 为什么几乎所有归约都用它\n\n混合论证把“整个系统不可区分”拆成“每次只替换一个组件”。PRG 的多位扩展、KEM/DEM 混合加密、理想/现实游戏、组合安全，都靠这条链把一个大跳跃拆成许多小跳跃。### 它买到了什么，没买到什么\n\n买到的是：只要相邻假设成立，端点成立；没买到的是：超过相邻假设的结论。若某个组件本身已被攻破，混合链不会自动修复它。它也不提供具体比特安全，只有渐近或带损失的界。",
+            "en": "### Why almost every reduction uses it\n\nThe hybrid argument turns “the whole system is indistinguishable” into “replace one component at a time”.Multi-bit PRG stretch, KEM/DEM hybrid encryption, ideal/real games and compositional security all use this chain to split a large jump into small ones."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        },
+        {
+          "id": "hybrid-argument-r139-used",
+          "entryId": "hybrid-argument-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 多消息、迭代与混合加密\n\n- 多消息 IND-CPA：H_i 的前 i 条为真实密文，其余为随机；把 q 次查询归约到一次查询。- PRG 迭代：H_i 的前 i 个输出来自 PRG，其余来自真随机；每扩一位只跨一个相邻混合。- KEM/DEM：先把会话密钥替换为随机密钥（KEM 安全），再把 DEM 密文替换为随机串（DEM 安全），两个优势相加。- 代码级 game hopping：每改一行代码定义一个混合，最后把相邻跳跃的差距逐个归约。",
+            "en": "### Multi-message, iteration and hybrid encryption\n\n- Multi-message IND-CPA: in H_i the first i ciphertexts are real and the rest random; q queries reduce to one query.- PRG iteration: in H_i the first i outputs come from the PRG and the rest from true randomness; each extra bit crosses one adjacent hybrid."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        },
+        {
+          "id": "hybrid-argument-r139-broken",
+          "entryId": "hybrid-argument-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.混合数不是多项式。若 t=2^n，把 ε 分成 2^n 份后每一份都可忽略，归约得不到矛盾。2.某个混合无法高效采样。概率总体只有在能被多项式时间算法采样时才适合做归约。3.相邻差距不能由假设推出。混合论证本身不产生计算假设。4.自适应状态。若第 i 个组件能读到第 i+1 个组件的秘密状态，简单“替换一个组件”不成立，需要更强的混合或模拟。### 紧致性\n\n标准混合证明通常损失 t 因子。q 次查询的方案会得到“q 倍优势”的界；要证明 128 位安全，不能只看单次优势。紧致归约需要直接论证、公共硬币或其他技术，不能靠混合论证自动获得。",
+            "en": "### When it fails\n\n1.The number of hybrids is not polynomial."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        },
+        {
+          "id": "hybrid-argument-r139-history",
+          "entryId": "hybrid-argument-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1984 年随语义安全出现\n\nGoldwasser 与 Micali 在 1984 年《Probabilistic Encryption》中把计算不可区分作为安全定义，并用混合论证证明多次采样不扩大区分优势；Goldreich 在《Foundations of Cryptography》中把它写成标准引理。### 今天的地位\n\n它已是密码学证明的基本工具，而不是某个算法的专属技巧。名称来自“混合分布”：在真实与理想之间插入中间分布，像调色一样逐层过渡。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：混合论证的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+            "en": "### Born with semantic security in 1984\n\nGoldwasser and Micali introduced computational indistinguishability as a security definition in “Probabilistic Encryption” (1984) and used a hybrid argument to show that multiple samples do not increase distinguishing advantage.Goldreich later wrote it as a standard lemma in Foundations of Cryptography."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        },
+        {
+          "id": "hybrid-argument-r139-refs",
+          "entryId": "hybrid-argument-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 混合论证.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E5%90%88%E8%AE%BA%E8%AF%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 混合论证.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E5%90%88%E8%AE%BA%E8%AF%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "hybrid-argument-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "hybrid-argument-wikipedia"
+      ]
+    },
+    {
+      "id": "hybrid-argument-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "hybrid-argument-r139-principle",
+      "entryId": "hybrid-argument-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**定理**：混合论证（Hybrid Argument）。### 一条链，而不是一步\n\n要证明两个分布 X 与 Y 计算不可区分，混合论证不直接比较它们，而是构造 t+1 个分布 H0=X, H1, …, Ht=Y，让每个相邻对只差一个组件。只要每对相邻混合都由同一类假设保证不可区分，端点也不可区分。### 三角不等式给出界\n\n对任意区分器 D，定义优势\nAdv(H0,Ht;D) = |Pr[D(H0)=1] − Pr[D(Ht)=1]|。把中间的 H1…Ht−1 插进来，逐项相消：\nAdv(H0,Ht;D) ≤ Σ_{i=1}^{t} Adv(Hi−1,Hi;D)。这不是概率放大，而是误差相加：t 个相邻优势各为 ε/t 时，总和才是 ε。### 标准用法：一次只换一个组件\n\n多消息 IND-CPA 的证明把 H_i 定义为“前 i 条密文是真实密文，其余是随机密文”。单消息 IND-CPA 保证每一对相邻混合不可区分；t=q(n) 是多项式，所以 q 条密文仍不可区分。",
+        "en": "**Theorem**: Hybrid Argument (混合论证).### A chain, not a single step\n\nTo show that two distributions X and Y are computationally indistinguishable, the hybrid argument does not compare them directly."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    },
+    {
+      "id": "hybrid-argument-r139-why",
+      "entryId": "hybrid-argument-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 为什么几乎所有归约都用它\n\n混合论证把“整个系统不可区分”拆成“每次只替换一个组件”。PRG 的多位扩展、KEM/DEM 混合加密、理想/现实游戏、组合安全，都靠这条链把一个大跳跃拆成许多小跳跃。### 它买到了什么，没买到什么\n\n买到的是：只要相邻假设成立，端点成立；没买到的是：超过相邻假设的结论。若某个组件本身已被攻破，混合链不会自动修复它。它也不提供具体比特安全，只有渐近或带损失的界。",
+        "en": "### Why almost every reduction uses it\n\nThe hybrid argument turns “the whole system is indistinguishable” into “replace one component at a time”.Multi-bit PRG stretch, KEM/DEM hybrid encryption, ideal/real games and compositional security all use this chain to split a large jump into small ones."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    },
+    {
+      "id": "hybrid-argument-r139-used",
+      "entryId": "hybrid-argument-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 多消息、迭代与混合加密\n\n- 多消息 IND-CPA：H_i 的前 i 条为真实密文，其余为随机；把 q 次查询归约到一次查询。- PRG 迭代：H_i 的前 i 个输出来自 PRG，其余来自真随机；每扩一位只跨一个相邻混合。- KEM/DEM：先把会话密钥替换为随机密钥（KEM 安全），再把 DEM 密文替换为随机串（DEM 安全），两个优势相加。- 代码级 game hopping：每改一行代码定义一个混合，最后把相邻跳跃的差距逐个归约。",
+        "en": "### Multi-message, iteration and hybrid encryption\n\n- Multi-message IND-CPA: in H_i the first i ciphertexts are real and the rest random; q queries reduce to one query.- PRG iteration: in H_i the first i outputs come from the PRG and the rest from true randomness; each extra bit crosses one adjacent hybrid."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    },
+    {
+      "id": "hybrid-argument-r139-broken",
+      "entryId": "hybrid-argument-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.混合数不是多项式。若 t=2^n，把 ε 分成 2^n 份后每一份都可忽略，归约得不到矛盾。2.某个混合无法高效采样。概率总体只有在能被多项式时间算法采样时才适合做归约。3.相邻差距不能由假设推出。混合论证本身不产生计算假设。4.自适应状态。若第 i 个组件能读到第 i+1 个组件的秘密状态，简单“替换一个组件”不成立，需要更强的混合或模拟。### 紧致性\n\n标准混合证明通常损失 t 因子。q 次查询的方案会得到“q 倍优势”的界；要证明 128 位安全，不能只看单次优势。紧致归约需要直接论证、公共硬币或其他技术，不能靠混合论证自动获得。",
+        "en": "### When it fails\n\n1.The number of hybrids is not polynomial."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    },
+    {
+      "id": "hybrid-argument-r139-history",
+      "entryId": "hybrid-argument-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1984 年随语义安全出现\n\nGoldwasser 与 Micali 在 1984 年《Probabilistic Encryption》中把计算不可区分作为安全定义，并用混合论证证明多次采样不扩大区分优势；Goldreich 在《Foundations of Cryptography》中把它写成标准引理。### 今天的地位\n\n它已是密码学证明的基本工具，而不是某个算法的专属技巧。名称来自“混合分布”：在真实与理想之间插入中间分布，像调色一样逐层过渡。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：混合论证的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+        "en": "### Born with semantic security in 1984\n\nGoldwasser and Micali introduced computational indistinguishability as a security definition in “Probabilistic Encryption” (1984) and used a hybrid argument to show that multiple samples do not increase distinguishing advantage.Goldreich later wrote it as a standard lemma in Foundations of Cryptography."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    },
+    {
+      "id": "hybrid-argument-r139-refs",
+      "entryId": "hybrid-argument-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 混合论证.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E5%90%88%E8%AE%BA%E8%AF%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 混合论证.https://zh.wikipedia.org/w/index.php?search=%E6%B7%B7%E5%90%88%E8%AE%BA%E8%AF%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "hybrid-argument-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

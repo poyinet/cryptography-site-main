@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "blake3-details",
+  "sources": [
+    {
+      "id": "blake3-wikipedia",
+      "title": "Wikipedia search entry for BLAKE3 散列",
+      "url": "https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: BLAKE3 散列",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "blake3-r139-principle",
+          "entryId": "blake3-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：BLAKE3 散列（BLAKE3）。BLAKE3 是单算法哈希函数：默认输出 256 位，支持任意长度输出（0 ≤ d < 2^64），并提供 hash、keyed_hash 与 derive_key 三种模式。它把输入按 1024 字节切成 chunk；chunk 作为二叉树的叶子，左子树满且大于等于右子树，父节点把两个子节点的链接值合并。输入按 64 字节块压缩。压缩函数的状态 v0…v15 由 8 个链接字、4 个 IV 字、64 位计数器 t0/t1、块字节数 b 和域标志 d 组成；IV0…IV7 与 BLAKE2s 相同。它基于 BLAKE2s 的 32 位混合逻辑，但只做 7 轮而不是 BLAKE2s 的 10 轮。每轮对 4×4 状态先做列 G、再做对角 G；G 内使用 16、12、8、7 位循环右移。除最后一轮外，每轮之后消息字按固定置换 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8 重排。域标志是位掩码：CHUNK_START=1、CHUNK_END=2、PARENT=4、ROOT=8、KEYED_HASH=16、DERIVE_KEY_CONTEXT=32、DERIVE_KEY_MATERIAL=64。chunk 内每个块的计数器等于 chunk 索引；块长是实际输入字节数（只有最后一个 chunk 的最后一块可短）；第一块加 CHUNK_START，最后一块加 CHUNK_END。父节点用一次压缩：消息字是左子链接值（8 字）加右子链接值（8 字），计数器 0、块长 64，并加 PARENT 标志。",
+            "en": "**Algorithm**: BLAKE3 (BLAKE3 散列).BLAKE3 is a single-algorithm hash function: its default output is 256 bits, it supports any output length 0 ≤ d < 2^64, and it provides hash, keyed_hash and derive_key modes."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        },
+        {
+          "id": "blake3-r139-why",
+          "entryId": "blake3-details",
+          "section": "why",
+          "statement": {
+            "zh": "BLAKE3 是 BLAKE2 的演进：它把 BLAKE2s 的 32 位混合逻辑保留下来，但把轮数从 10 降到 7，并用树结构获得并行性，而不是像 BLAKE2 那样提供多个面向不同平台的变体。BLAKE2 于 2012 年公布，RFC 7693 于 2015 年 11 月规定 BLAKE2b 与 BLAKE2s；本批次使用的 BLAKE3 规范版本为 20211102173700。BLAKE3 的目标安全强度是 128 位，默认输出 256 位。7 轮选择基于既有 BLAKE/BLAKE2 密码分析；规范第 4 节给出 128 位安全目标、压缩函数分析与模式论证。树结构提供无界并行度，并支持可验证流式传输与增量更新；这是 BLAKE3 相对 BLAKE2 的主要新能力。规范给出的性能数据：在 Intel Cascade Lake-SP 上单线程峰值约为 BLAKE2b 的 4 倍、SHA-512 的 8 倍、SHA-256 的 12 倍；在 32 位 ARM1176 上约为 SHA-256 的 1.3 倍。",
+            "en": "BLAKE3 is an evolution of BLAKE2: it keeps BLAKE2s's 32-bit mixing logic but reduces the round count from 10 to 7, and it gains parallelism from a tree structure rather than offering multiple platform-specific variants as BLAKE2 does.BLAKE2 was announced in 2012; RFC 7693 of November 2015 specifies BLAKE2b and BLAKE2s, and the BLAKE3 specification version used in this batch is 20211102173700."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        },
+        {
+          "id": "blake3-r139-used",
+          "entryId": "blake3-details",
+          "section": "used",
+          "statement": {
+            "zh": "BLAKE3 的统一 API 覆盖普通哈希、带密钥哈希、密钥派生与任意长度输出；同一算法可以服务 BLAKE2 的多种用途，而不需要选择不同变体。keyed_hash 可作带密钥的 PRF/MAC 使用；密钥必须保密且为 256 位，不能把普通 hash 直接当 MAC。XOF 适合需要可扩展输出的场景；树结构支持可验证流式传输与增量更新：可沿根到 chunk 的父节点路径校验单个 chunk；编辑任意位置只需重算被修改的 chunk 及其祖先父节点，而不必重算其右侧全部数据。BLAKE3 也提供官方 35 组测试向量，覆盖 0 到 102400 字节的输入长度与 131 字节输出。",
+            "en": "BLAKE3's unified API covers ordinary hashing, keyed hashing, key derivation and arbitrary-length output; one algorithm serves BLAKE2's use cases without choosing different variants.keyed_hash can be used as a keyed PRF/MAC; the key must be secret and 256 bits, and an ordinary hash must not be used directly as a MAC."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        },
+        {
+          "id": "blake3-r139-broken",
+          "entryId": "blake3-details",
+          "section": "broken",
+          "statement": {
+            "zh": "BLAKE3 的安全性建立在规范给出的 128 位安全目标、压缩函数分析与模式论证，以及现有 BLAKE/BLAKE2 分析上。实现错误（如 chunk/tree 边界或 flag 组合）会产生错误结果，而不是`接近正确`的结果。**XOF 输出长度**：BLAKE3 不对不同输出长度做域分离：较短输出是较长输出的前缀；输出长度因此不是独立的域标签。需要不同域时，应使用 keyed_hash 或 derive_key，而不是改变输出长度。**带密钥模式**：keyed_hash 的安全性依赖密钥保密与均匀随机；密钥必须是 256 位，实践中不应把无密钥 hash 直接当 MAC。derive_key 通过 context 与 material 两阶段分离不同用途；context 应硬编码、全局唯一且应用特定，不能包含盐、ID 或当前时间等可变数据。**树结构实现**：根 chunk 的最后一块必须用最后一块之前的链接值重压；父节点块长固定 64；XOF 每次根压缩计数器递增；flag 位必须按规范相加。这些是实现正确性要求，不是可选优化。",
+            "en": "BLAKE3 security rests on the specification's 128-bit security goals, compression-function analysis and mode argument, together with existing BLAKE/BLAKE2 analysis.Implementation mistakes (such as chunk/tree boundaries or flag combinations) produce wrong results, not `almost correct` results."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        },
+        {
+          "id": "blake3-r139-history",
+          "entryId": "blake3-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **2012 年**：BLAKE2 公布；BLAKE3 规范把 BLAKE2 描述为其演进来源。- **2015 年 11 月**：RFC 7693 发布，规定 BLAKE2b 与 BLAKE2s。- **2020 年 1 月 9 日**：BLAKE3 规范的首个发布版本提交发布。- **2021 年 11 月 2 日**：BLAKE3 规范更新为版本 20211102173700（本批次使用版本）。",
+            "en": "- **2012**: BLAKE2 is announced; the BLAKE3 specification describes BLAKE2 as its evolutionary source.- **November 2015**: RFC 7693 is published, specifying BLAKE2b and BLAKE2s."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        },
+        {
+          "id": "blake3-r139-refs",
+          "entryId": "blake3-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for BLAKE3 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for BLAKE3 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "blake3-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "blake3-wikipedia"
+      ]
+    },
+    {
+      "id": "blake3-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "blake3-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "blake3-r139-principle",
+      "entryId": "blake3-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：BLAKE3 散列（BLAKE3）。BLAKE3 是单算法哈希函数：默认输出 256 位，支持任意长度输出（0 ≤ d < 2^64），并提供 hash、keyed_hash 与 derive_key 三种模式。它把输入按 1024 字节切成 chunk；chunk 作为二叉树的叶子，左子树满且大于等于右子树，父节点把两个子节点的链接值合并。输入按 64 字节块压缩。压缩函数的状态 v0…v15 由 8 个链接字、4 个 IV 字、64 位计数器 t0/t1、块字节数 b 和域标志 d 组成；IV0…IV7 与 BLAKE2s 相同。它基于 BLAKE2s 的 32 位混合逻辑，但只做 7 轮而不是 BLAKE2s 的 10 轮。每轮对 4×4 状态先做列 G、再做对角 G；G 内使用 16、12、8、7 位循环右移。除最后一轮外，每轮之后消息字按固定置换 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8 重排。域标志是位掩码：CHUNK_START=1、CHUNK_END=2、PARENT=4、ROOT=8、KEYED_HASH=16、DERIVE_KEY_CONTEXT=32、DERIVE_KEY_MATERIAL=64。chunk 内每个块的计数器等于 chunk 索引；块长是实际输入字节数（只有最后一个 chunk 的最后一块可短）；第一块加 CHUNK_START，最后一块加 CHUNK_END。父节点用一次压缩：消息字是左子链接值（8 字）加右子链接值（8 字），计数器 0、块长 64，并加 PARENT 标志。",
+        "en": "**Algorithm**: BLAKE3 (BLAKE3 散列).BLAKE3 is a single-algorithm hash function: its default output is 256 bits, it supports any output length 0 ≤ d < 2^64, and it provides hash, keyed_hash and derive_key modes."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    },
+    {
+      "id": "blake3-r139-why",
+      "entryId": "blake3-details",
+      "section": "why",
+      "statement": {
+        "zh": "BLAKE3 是 BLAKE2 的演进：它把 BLAKE2s 的 32 位混合逻辑保留下来，但把轮数从 10 降到 7，并用树结构获得并行性，而不是像 BLAKE2 那样提供多个面向不同平台的变体。BLAKE2 于 2012 年公布，RFC 7693 于 2015 年 11 月规定 BLAKE2b 与 BLAKE2s；本批次使用的 BLAKE3 规范版本为 20211102173700。BLAKE3 的目标安全强度是 128 位，默认输出 256 位。7 轮选择基于既有 BLAKE/BLAKE2 密码分析；规范第 4 节给出 128 位安全目标、压缩函数分析与模式论证。树结构提供无界并行度，并支持可验证流式传输与增量更新；这是 BLAKE3 相对 BLAKE2 的主要新能力。规范给出的性能数据：在 Intel Cascade Lake-SP 上单线程峰值约为 BLAKE2b 的 4 倍、SHA-512 的 8 倍、SHA-256 的 12 倍；在 32 位 ARM1176 上约为 SHA-256 的 1.3 倍。",
+        "en": "BLAKE3 is an evolution of BLAKE2: it keeps BLAKE2s's 32-bit mixing logic but reduces the round count from 10 to 7, and it gains parallelism from a tree structure rather than offering multiple platform-specific variants as BLAKE2 does.BLAKE2 was announced in 2012; RFC 7693 of November 2015 specifies BLAKE2b and BLAKE2s, and the BLAKE3 specification version used in this batch is 20211102173700."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    },
+    {
+      "id": "blake3-r139-used",
+      "entryId": "blake3-details",
+      "section": "used",
+      "statement": {
+        "zh": "BLAKE3 的统一 API 覆盖普通哈希、带密钥哈希、密钥派生与任意长度输出；同一算法可以服务 BLAKE2 的多种用途，而不需要选择不同变体。keyed_hash 可作带密钥的 PRF/MAC 使用；密钥必须保密且为 256 位，不能把普通 hash 直接当 MAC。XOF 适合需要可扩展输出的场景；树结构支持可验证流式传输与增量更新：可沿根到 chunk 的父节点路径校验单个 chunk；编辑任意位置只需重算被修改的 chunk 及其祖先父节点，而不必重算其右侧全部数据。BLAKE3 也提供官方 35 组测试向量，覆盖 0 到 102400 字节的输入长度与 131 字节输出。",
+        "en": "BLAKE3's unified API covers ordinary hashing, keyed hashing, key derivation and arbitrary-length output; one algorithm serves BLAKE2's use cases without choosing different variants.keyed_hash can be used as a keyed PRF/MAC; the key must be secret and 256 bits, and an ordinary hash must not be used directly as a MAC."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    },
+    {
+      "id": "blake3-r139-broken",
+      "entryId": "blake3-details",
+      "section": "broken",
+      "statement": {
+        "zh": "BLAKE3 的安全性建立在规范给出的 128 位安全目标、压缩函数分析与模式论证，以及现有 BLAKE/BLAKE2 分析上。实现错误（如 chunk/tree 边界或 flag 组合）会产生错误结果，而不是`接近正确`的结果。**XOF 输出长度**：BLAKE3 不对不同输出长度做域分离：较短输出是较长输出的前缀；输出长度因此不是独立的域标签。需要不同域时，应使用 keyed_hash 或 derive_key，而不是改变输出长度。**带密钥模式**：keyed_hash 的安全性依赖密钥保密与均匀随机；密钥必须是 256 位，实践中不应把无密钥 hash 直接当 MAC。derive_key 通过 context 与 material 两阶段分离不同用途；context 应硬编码、全局唯一且应用特定，不能包含盐、ID 或当前时间等可变数据。**树结构实现**：根 chunk 的最后一块必须用最后一块之前的链接值重压；父节点块长固定 64；XOF 每次根压缩计数器递增；flag 位必须按规范相加。这些是实现正确性要求，不是可选优化。",
+        "en": "BLAKE3 security rests on the specification's 128-bit security goals, compression-function analysis and mode argument, together with existing BLAKE/BLAKE2 analysis.Implementation mistakes (such as chunk/tree boundaries or flag combinations) produce wrong results, not `almost correct` results."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    },
+    {
+      "id": "blake3-r139-history",
+      "entryId": "blake3-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **2012 年**：BLAKE2 公布；BLAKE3 规范把 BLAKE2 描述为其演进来源。- **2015 年 11 月**：RFC 7693 发布，规定 BLAKE2b 与 BLAKE2s。- **2020 年 1 月 9 日**：BLAKE3 规范的首个发布版本提交发布。- **2021 年 11 月 2 日**：BLAKE3 规范更新为版本 20211102173700（本批次使用版本）。",
+        "en": "- **2012**: BLAKE2 is announced; the BLAKE3 specification describes BLAKE2 as its evolutionary source.- **November 2015**: RFC 7693 is published, specifying BLAKE2b and BLAKE2s."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    },
+    {
+      "id": "blake3-r139-refs",
+      "entryId": "blake3-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for BLAKE3 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for BLAKE3 散列.https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "blake3-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

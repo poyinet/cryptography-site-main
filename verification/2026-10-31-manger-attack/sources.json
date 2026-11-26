@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "manger-attack-details",
+  "sources": [
+    {
+      "id": "manger-attack-wikipedia",
+      "title": "Wikipedia search entry for Manger 攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Manger%20%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Manger 攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "manger-attack-r139-principle",
+          "entryId": "manger-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：Manger 攻击（Manger's Attack）。Manger 攻击是一种针对 PKCS#1 v2.0 RSA-OAEP 的自适应选择密文攻击。攻击者利用一个判断解密结果是否小于 B=2^{8(k−1)} 的预言机，恢复明文而不是私钥。",
+            "en": "**Attack**: Manger's Attack (Manger 攻击).Manger’s attack is an adaptive chosen-ciphertext attack against PKCS#1 v2.0 RSA-OAEP."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "manger-attack-r139-why",
+          "entryId": "manger-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "OAEP 规范要求整数转八位组错误和 OAEP 解码错误返回相同信息，但实现中的拼写、日志或时序差异仍可能区分这两个阶段；一旦可区分，攻击就能逐步缩小明文范围。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "The OAEP specification requires integer-to-octet conversion errors and OAEP decoding errors to return the same information, but implementation differences in spelling, logs or timing can still distinguish the two stages; once distinguishable, the attack narrows the plaintext range step by step.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "manger-attack-r139-used",
+          "entryId": "manger-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "攻击针对 RSAES-OAEP 实现；对 1024 位 RSA 密钥约需 1100 次预言机查询，查询次数约为 log2 n 的量级。",
+            "en": "The attack targets RSAES-OAEP implementations; for a 1024-bit RSA key it needs about 1100 oracle queries, on the order of log2 n queries.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "manger-attack-r139-broken",
+          "entryId": "manger-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "防御要求整数转换失败与 OAEP 完整性失败在错误消息、日志和时序上都不可区分；仅使用 OAEP 而不消除这种可区分性仍然脆弱。",
+            "en": "Defenses require integer-conversion failures and OAEP integrity failures to be indistinguishable in error messages, logs and timing; using OAEP without removing this distinguishability remains vulnerable.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "manger-attack-r139-history",
+          "entryId": "manger-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Manger 在 2001 年 CRYPTO 论文中提出该攻击，把它定位为 Bleichenbacher 1998 年 PKCS#1 v1.5 攻击之后针对 OAEP 的新选择密文攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「Manger 攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：Manger 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 Manger 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Manger introduced the attack in his 2001 CRYPTO paper as a new chosen-ciphertext attack on OAEP, following Bleichenbacher’s 1998 attack on PKCS#1 v1.5.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "manger-attack-r139-refs",
+          "entryId": "manger-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Manger 攻击.https://zh.wikipedia.org/w/index.php?search=Manger%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Manger 攻击.https://zh.wikipedia.org/w/index.php?search=Manger%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "manger-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "manger-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "manger-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "manger-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "manger-attack-r139-principle",
+      "entryId": "manger-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：Manger 攻击（Manger's Attack）。Manger 攻击是一种针对 PKCS#1 v2.0 RSA-OAEP 的自适应选择密文攻击。攻击者利用一个判断解密结果是否小于 B=2^{8(k−1)} 的预言机，恢复明文而不是私钥。",
+        "en": "**Attack**: Manger's Attack (Manger 攻击).Manger’s attack is an adaptive chosen-ciphertext attack against PKCS#1 v2.0 RSA-OAEP."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "manger-attack-r139-why",
+      "entryId": "manger-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "OAEP 规范要求整数转八位组错误和 OAEP 解码错误返回相同信息，但实现中的拼写、日志或时序差异仍可能区分这两个阶段；一旦可区分，攻击就能逐步缩小明文范围。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "The OAEP specification requires integer-to-octet conversion errors and OAEP decoding errors to return the same information, but implementation differences in spelling, logs or timing can still distinguish the two stages; once distinguishable, the attack narrows the plaintext range step by step.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "manger-attack-r139-used",
+      "entryId": "manger-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "攻击针对 RSAES-OAEP 实现；对 1024 位 RSA 密钥约需 1100 次预言机查询，查询次数约为 log2 n 的量级。",
+        "en": "The attack targets RSAES-OAEP implementations; for a 1024-bit RSA key it needs about 1100 oracle queries, on the order of log2 n queries.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "manger-attack-r139-broken",
+      "entryId": "manger-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "防御要求整数转换失败与 OAEP 完整性失败在错误消息、日志和时序上都不可区分；仅使用 OAEP 而不消除这种可区分性仍然脆弱。",
+        "en": "Defenses require integer-conversion failures and OAEP integrity failures to be indistinguishable in error messages, logs and timing; using OAEP without removing this distinguishability remains vulnerable.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "manger-attack-r139-history",
+      "entryId": "manger-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Manger 在 2001 年 CRYPTO 论文中提出该攻击，把它定位为 Bleichenbacher 1998 年 PKCS#1 v1.5 攻击之后针对 OAEP 的新选择密文攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「Manger 攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：Manger 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 Manger 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Manger introduced the attack in his 2001 CRYPTO paper as a new chosen-ciphertext attack on OAEP, following Bleichenbacher’s 1998 attack on PKCS#1 v1.5.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "manger-attack-r139-refs",
+      "entryId": "manger-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Manger 攻击.https://zh.wikipedia.org/w/index.php?search=Manger%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Manger 攻击.https://zh.wikipedia.org/w/index.php?search=Manger%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "manger-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

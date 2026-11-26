@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "bilinear-details",
+  "sources": [
+    {
+      "id": "bilinear-wikipedia",
+      "title": "Wikipedia search entry for 双线性配对",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 双线性配对",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "bilinear-r139-principle",
+          "entryId": "bilinear-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：双线性配对（Bilinear Pairing）。留存件的 §2.1 给出对象的定义性三性：「a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].」三要件是可高效计算、双变量线性、以及被认为难以求逆——双线性对的全部用途都建立在这三条的组合上。",
+            "en": "**Algorithm**: Bilinear Pairing (双线性配对).Section 2.1 of the retained text gives the defining trio: \"a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].\" The three requirements are efficient computability, linearity in both arguments and conjectured inversion hardness - every use of pairings rests on that combination."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        },
+        {
+          "id": "bilinear-r139-why",
+          "entryId": "bilinear-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么要专门规范它，§1 一句话点出下游：文件服务于「identity-based encryption (IBE) systems based on bilinear pairings」。而能不能用，取决于曲线是否给出额外结构：「If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed」（该句在留存件里跨页，省略号只标示被跳过的页眉页脚）——有了这个自同态才有修正版配对，才有可用于标识加密的群配对。",
+            "en": "Why it needs specifying at all: §1 of the retained text names the downstream purpose in one phrase - the document serves \"identity-based encryption (IBE) systems based on bilinear pairings\".Whether a curve can serve depends on extra structure printed in §2.1: \"If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed\" (the sentence straddles a page break in the retained file; the ellipsis marks only the skipped header and footer)."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        },
+        {
+          "id": "bilinear-r139-used",
+          "entryId": "bilinear-details",
+          "section": "used",
+          "statement": {
+            "zh": "命名与选型规则印在留存件的 §2.1（本文件的目录用另一套编号，正文节号以留存件为准）：「called the modified Tate pairing.We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.」也即工程上没有自由选项——用哪一版本由所选曲线的性质决定，实现在两条路里被曲线二选一。",
+            "en": "Naming and selection are printed in §2.1 of the retained text: \"called the modified Tate pairing.We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.\" Engineering-wise the choice is not free: the curve decides which of the two constructions an implementation can use."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        },
+        {
+          "id": "bilinear-r139-broken",
+          "entryId": "bilinear-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在用词与记号里。求逆难度在本文件里的措辞是「believed hard to invert」——是被相信的困难性，不是被证明的困难性。记号表把底域阶 p 规定为 512 位到 7680 位的素数（该量级按原样复述、不逐字引用），说明这一族构造的规模远大于普通 ECC 群。合起来的结论是：安全假设立在猜测之上，且曲线与域参数必须按文件挑，不能随手替换成别的群。",
+            "en": "The limits are in the wording and the notation.Inversion hardness is phrased as \"believed hard to invert\" - a conjecture, not a theorem."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        },
+        {
+          "id": "bilinear-r139-history",
+          "entryId": "bilinear-details",
+          "section": "history",
+          "statement": {
+            "zh": "沿革与身份：本文件把 Tate 与修正 Tate 两种配对连同曲线实现写成可被标识加密体系引用的规范，动机句是服务于「identity-based encryption (IBE) systems based on bilinear pairings」。头部印作 Request for Comments: 5091、Category: Informational、December 2007，作者行是 Boyen、Martin 与 Wang（头部按项目口径复述于引号外）。其数学对象本身来自更早的配对研究线，本文不做史学叙述，只交代可用构造的边界。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Lineage and identity: this document specifies the Tate and modified Tate pairings together with curve implementations so identity-based systems can cite them, and its motive sentence names \"identity-based encryption (IBE) systems based on bilinear pairings\".The header prints Request for Comments: 5091, Category: Informational, December 2007, by Boyen, Martin and Wang (restated outside quotes per house rule)."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        },
+        {
+          "id": "bilinear-r139-refs",
+          "entryId": "bilinear-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 双线性配对.https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 双线性配对.https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "bilinear-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "bilinear-wikipedia"
+      ]
+    },
+    {
+      "id": "bilinear-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "bilinear-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "bilinear-r139-principle",
+      "entryId": "bilinear-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：双线性配对（Bilinear Pairing）。留存件的 §2.1 给出对象的定义性三性：「a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].」三要件是可高效计算、双变量线性、以及被认为难以求逆——双线性对的全部用途都建立在这三条的组合上。",
+        "en": "**Algorithm**: Bilinear Pairing (双线性配对).Section 2.1 of the retained text gives the defining trio: \"a mathematical construction known as the Tate pairing provides an efficiently computable map e: G1' x G1'' -> G2 that is linear in both arguments and believed hard to invert [BF].\" The three requirements are efficient computability, linearity in both arguments and conjectured inversion hardness - every use of pairings rests on that combination."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    },
+    {
+      "id": "bilinear-r139-why",
+      "entryId": "bilinear-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么要专门规范它，§1 一句话点出下游：文件服务于「identity-based encryption (IBE) systems based on bilinear pairings」。而能不能用，取决于曲线是否给出额外结构：「If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed」（该句在留存件里跨页，省略号只标示被跳过的页眉页脚）——有了这个自同态才有修正版配对，才有可用于标识加密的群配对。",
+        "en": "Why it needs specifying at all: §1 of the retained text names the downstream purpose in one phrase - the document serves \"identity-based encryption (IBE) systems based on bilinear pairings\".Whether a curve can serve depends on extra structure printed in §2.1: \"If an efficiently computable non-rational endomorphism phi: G1' ->…is available for the selected elliptic curve on which the Tate pairing is computed\" (the sentence straddles a page break in the retained file; the ellipsis marks only the skipped header and footer)."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    },
+    {
+      "id": "bilinear-r139-used",
+      "entryId": "bilinear-details",
+      "section": "used",
+      "statement": {
+        "zh": "命名与选型规则印在留存件的 §2.1（本文件的目录用另一套编号，正文节号以留存件为准）：「called the modified Tate pairing.We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.」也即工程上没有自由选项——用哪一版本由所选曲线的性质决定，实现在两条路里被曲线二选一。",
+        "en": "Naming and selection are printed in §2.1 of the retained text: \"called the modified Tate pairing.We generically call a pairing either the Tate pairing e or the modified Tate pairing e', depending on the chosen elliptic curve used in a particular implementation.\" Engineering-wise the choice is not free: the curve decides which of the two constructions an implementation can use."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    },
+    {
+      "id": "bilinear-r139-broken",
+      "entryId": "bilinear-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在用词与记号里。求逆难度在本文件里的措辞是「believed hard to invert」——是被相信的困难性，不是被证明的困难性。记号表把底域阶 p 规定为 512 位到 7680 位的素数（该量级按原样复述、不逐字引用），说明这一族构造的规模远大于普通 ECC 群。合起来的结论是：安全假设立在猜测之上，且曲线与域参数必须按文件挑，不能随手替换成别的群。",
+        "en": "The limits are in the wording and the notation.Inversion hardness is phrased as \"believed hard to invert\" - a conjecture, not a theorem."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    },
+    {
+      "id": "bilinear-r139-history",
+      "entryId": "bilinear-details",
+      "section": "history",
+      "statement": {
+        "zh": "沿革与身份：本文件把 Tate 与修正 Tate 两种配对连同曲线实现写成可被标识加密体系引用的规范，动机句是服务于「identity-based encryption (IBE) systems based on bilinear pairings」。头部印作 Request for Comments: 5091、Category: Informational、December 2007，作者行是 Boyen、Martin 与 Wang（头部按项目口径复述于引号外）。其数学对象本身来自更早的配对研究线，本文不做史学叙述，只交代可用构造的边界。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：双线性配对的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Lineage and identity: this document specifies the Tate and modified Tate pairings together with curve implementations so identity-based systems can cite them, and its motive sentence names \"identity-based encryption (IBE) systems based on bilinear pairings\".The header prints Request for Comments: 5091, Category: Informational, December 2007, by Boyen, Martin and Wang (restated outside quotes per house rule)."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    },
+    {
+      "id": "bilinear-r139-refs",
+      "entryId": "bilinear-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 双线性配对.https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 双线性配对.https://zh.wikipedia.org/w/index.php?search=%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "bilinear-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

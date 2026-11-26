@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening batch for algorithm--mceliece-details.",
+  "entries": [
+    {
+      "id": "algorithm--mceliece-details",
+      "inventoryIds": [
+        "algorithm--mceliece"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R106 后量子签名/KEM、轻量 AEAD、配对签名与门限签名深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R106 post-quantum signature/KEM, lightweight AEAD, pairing signature and threshold signature deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Classic McEliece 编码型公钥",
+        "en": "Classic McEliece Code-Based KEM"
+      },
+      "claimIds": [
+        "algorithm--mceliece-r139-principle",
+        "algorithm--mceliece-r139-why",
+        "algorithm--mceliece-r139-used",
+        "algorithm--mceliece-r139-broken",
+        "algorithm--mceliece-r139-history",
+        "algorithm--mceliece-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--mceliece-wikipedia",
+        "algorithm--mceliece-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "algorithm--mceliece-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Classic McEliece 编码型公钥：为什么需要 → 核心机制 → 边界。",
+            "en": "Classic McEliece Code-Based KEM: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Classic McEliece 编码型公钥 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Classic McEliece Code-Based KEM, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--mceliece-details-flow.zh.svg",
+            "en": "assets/algorithm--mceliece-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "929b138fe67ed6671c8786ddb6a089ac4a130809656b5281940d2a4198318b31",
+            "en": "87a102b41d8e4295a7f8cc87a33c977f5e3b4172c7925bed209dd9d6e5bbbc0d"
+          }
+        },
+        {
+          "id": "algorithm--mceliece-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Classic McEliece 编码型公钥 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Classic McEliece Code-Based KEM: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Classic McEliece 编码型公钥 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Classic McEliece Code-Based KEM, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--mceliece-details-r138-model.zh.svg",
+            "en": "assets/algorithm--mceliece-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ca73a5c8346419b514310c6531b45abc383ee25ed21780caf79ed908672045e6",
+            "en": "a9be95aa246d5cdc39fd2ea67e95a4d8fdc6ce1fbaeefc7f6a58c69c44d4f997"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Classic McEliece 编码型公钥（Classic McEliece）。Classic McEliece 用二元 Goppa 码实现 Niederreiter KEM：公钥是系统生成矩阵 T，私钥是 Goppa 多项式与支撑；密文是码字加权重 t 的错误向量，私钥解码恢复会话密钥。具体地，T 是随机化后的系统生成矩阵；私钥含 Goppa 多项式 g、支撑 alpha 和列置换；封装取随机 m，计算 c=T·m+e。### 解码\n\n私钥用 Patterson 解码从 c 中找出 e，恢复码字；解封装失败则输出隐式拒绝。安全依赖“解码随机线性码”难题，而不是格或数论。### 参数\n\nmceliece348864 公钥 261,120 B、私钥 6,492 B、密文 96 B；mceliece6688128 公钥 1,044,992 B、密文 208 B；会话密钥 32 B。",
+          "why": "McEliece 是最保守的后量子 KEM：1978 年提出，四十多年密码分析没有实用全参数攻击；公钥很大，但密文很小，适合长期身份密钥和“一次公钥、多次封装”的场景。它不依赖结构化格，安全假设与 ML-KEM 独立，适合做算法多样性和备份。",
+          "used": "用于长期 TLS/SSH/IPsec 身份密钥、代码与固件签名根、政府和金融的 PQC 迁移；mceliece6688128 常被推荐为长期安全默认。2026 年 6 月 ISO 已标准化 Classic McEliece。工程要点：公钥缓存和传输是主要成本；私钥解码要常量时间；封装失败要隐式拒绝；pc 变体密文多 32 B；不要把它当 PKE 加密任意消息，它是 KEM。",
+          "broken": "公钥可达 MB 级，证书链和握手会被放大；密钥生成慢且复杂；解码失败率、计时/缓存攻击和故障注入是主要实现风险。",
+          "history": "Robert McEliece 在 1978 年提出 McEliece 公钥加密；Classic McEliece 团队把它改造成 Niederreiter 形式的 KEM，参加 NIST PQC 多轮评选，并被 NIST 选为待标准化 KEM 之一；2026 年 6 月 ISO 标准化。参数从最初的 2^64 安全提升到 NIST 1/3/5 级，公钥随安全级别增大。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：Classic McEliece 编码型公钥的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。 预期输出：按 Classic McEliece 编码型公钥 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 封装方采样随机种子并生成密文 2. 解封装方用私钥恢复种子 3. 双方得到同一会话密钥并校验。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for Classic McEliece 编码型公钥. https://zh.wikipedia.org/w/index.php?search=Classic%20McEliece%20%E7%BC%96%E7%A0%81%E5%9E%8B%E5%85%AC%E9%92%A5\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nClassic McEliece 编码型公钥的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。1.封装方采样随机种子并生成密文。2.解封装方用私钥恢复种子。3.双方得到同一会话密钥并校验。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Classic McEliece (Classic McEliece 编码型公钥). Classic McEliece implements a Niederreiter KEM with binary Goppa codes: the public key is a systematic generator matrix T and the private key is a Goppa polynomial plus support; a ciphertext is a codeword plus an error vector of weight t, and private decoding recovers the session key. Concretely, T is a randomized systematic generator matrix; the private key contains the Goppa polynomial g, support alpha and a column permutation; encapsulation samples random m and computes c=T·m+e. ### Decoding\n\nThe private key uses Patterson decoding to find e in c and recover the codeword; a decapsulation failure yields an implicit rejection. Security rests on decoding random linear codes, not on lattices or number theory. ### Parameters\n\nmceliece348864 has a 261,120-byte public key, 6,492-byte private key and 96-byte ciphertext; mceliece6688128 has a 1,044,992-byte public key and 208-byte ciphertext; the session key is 32 bytes.",
+          "why": "McEliece is the most conservative post-quantum KEM: proposed in 1978, it has survived more than four decades of cryptanalysis without a practical full-parameter attack. Public keys are large but ciphertexts are small, which suits long-term identity keys and “one public key, many encapsulations”.\n\nIt does not rely on structured lattices, so its security assumption is independent of ML-KEM and useful for algorithm diversity and backup.",
+          "used": "It serves long-term TLS/SSH/IPsec identity keys, code and firmware signing roots, and government/financial PQC migration; mceliece6688128 is often recommended as a long-term default. ISO standardized Classic McEliece in June 2026.\n\nRequirements: public-key caching and transport dominate cost; constant-time private-key decoding; implicit rejection on failure; pc variants add 32 bytes to ciphertext; never use it as a PKE for arbitrary messages—it is a KEM.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Public keys can reach megabytes, amplifying certificate chains and handshakes; key generation is slow and complex; decoding failure rates, timing/cache attacks and fault injection are the main implementation risks.\n\nBoundaries: McEliece encapsulates only a random key and does not encrypt user data; public-key reuse is by design, but the private key must be protected; parameter sets are tied to security levels and public keys/ciphertexts cannot be truncated; code-based and Goppa-structure cryptanalysis remain long-term concerns.",
+          "history": "Robert McEliece proposed the McEliece public-key cryptosystem in 1978. The Classic McEliece team converted it into a Niederreiter-form KEM, entered the NIST PQC process and was selected by NIST for standardization; ISO standardized it in June 2026.\n\nParameters moved from the original 2^64 security to NIST levels 1/3/5, with public keys growing accordingly.",
+          "refs": "- Wikipedia search entry for Classic McEliece 编码型公钥. https://zh.wikipedia.org/w/index.php?search=Classic%20McEliece%20%E7%BC%96%E7%A0%81%E5%9E%8B%E5%85%AC%E9%92%A5\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nClassic McEliece: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "algorithm--mceliece-r139-formal",
+          "entryId": "algorithm--mceliece-details",
+          "kind": "formal-model",
+          "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+          "inputs": "输入：Classic McEliece 编码型公钥的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+          "expected": "按 Classic McEliece 编码型公钥 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "封装方采样随机种子并生成密文",
+            "解封装方用私钥恢复种子",
+            "双方得到同一会话密钥并校验"
+          ],
+          "sourceIds": [
+            "algorithm--mceliece-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--mceliece-r139-formal"
+      ],
+      "sources": [
+        "algorithm--mceliece-wikipedia",
+        "algorithm--mceliece-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--mceliece-r139-formal",
+      "entryId": "algorithm--mceliece-details",
+      "kind": "formal-model",
+      "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+      "inputs": "输入：Classic McEliece 编码型公钥的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+      "expected": "按 Classic McEliece 编码型公钥 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "封装方采样随机种子并生成密文",
+        "解封装方用私钥恢复种子",
+        "双方得到同一会话密钥并校验"
+      ],
+      "sourceIds": [
+        "algorithm--mceliece-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

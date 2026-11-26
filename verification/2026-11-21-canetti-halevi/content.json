@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R122 formula-level deepening for canetti-halevi-details.",
+  "entries": [
+    {
+      "id": "canetti-halevi-details",
+      "inventoryIds": [
+        "canetti-halevi"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R122 公式级深化：把 CHK 变换从机制结构条提升为公式级构造，给出 Gen/Enc/Dec、vk 身份绑定、强一次性签名与 Forge 归约；同时纠正目录名把三位作者简写为 Canetti–Halevi 的问题。",
+        "en": "R122 formula-level deepening: upgrades the CHK transform from a mechanism card to a formula-level construction with Gen/Enc/Dec, vk identity binding, strong one-time signatures and the Forge reduction; it also notes the catalogue shorthand for the three authors."
+      },
+      "title": {
+        "zh": "Canetti–Halevi–Katz（CHK）变换",
+        "en": "Canetti–Halevi–Katz (CHK) Transform"
+      },
+      "claimIds": [
+        "canetti-halevi-r139-principle",
+        "canetti-halevi-r139-why",
+        "canetti-halevi-r139-used",
+        "canetti-halevi-r139-broken",
+        "canetti-halevi-r139-history",
+        "canetti-halevi-r139-refs"
+      ],
+      "sourceIds": [
+        "canetti-halevi-wikipedia",
+        "canetti-halevi-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "canetti-halevi-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "CHK 公式级机制图：IBE 密钥、一次性签名绑定 vk、加密后签名、验签后解密的归约。",
+            "en": "CHK formula-level mechanism: IBE keys, one-time signature binding vk, encrypt-then-sign and verify-before-decrypt reduction."
+          },
+          "alt": {
+            "zh": "四步公式级机制：IBE 系统密钥 → 一次性签名绑定 vk → IBE 加密并签名 → 验签后解密；核心公式、假设与边界。",
+            "en": "Four formula-level steps: IBE system keys → one-time signature binds vk → IBE encrypt then sign → verify before decrypt; core formulas, assumptions and boundary."
+          },
+          "files": {
+            "zh": "assets/canetti-halevi-mechanism.zh.svg",
+            "en": "assets/canetti-halevi-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/说明绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/advisory)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "1b2dc508aa13362300289c24834de94555c86bfdefc5f5c7a52668c8d94afc62",
+            "en": "1d65a6797baac3c5a250a8817d8d28d2bc25a88b4a5f49d22913dfa53abfd6cb"
+          }
+        },
+        {
+          "id": "canetti-halevi-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Canetti–Halevi–Katz（CHK）变换 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Canetti–Halevi–Katz (CHK) Transform: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Canetti–Halevi–Katz（CHK）变换 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Canetti–Halevi–Katz (CHK) Transform, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/canetti-halevi-details-r138-model.zh.svg",
+            "en": "assets/canetti-halevi-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e2fbb2f8d590298bd065aa47192820c9add4b9795e3ce0f0780a4c24f6fb261a",
+            "en": "df75d7ea991b2a8c72bc289e7230fde98f23d948a3babfdb8460c36db0add9cd"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：Canetti–Halevi–Katz（CHK）变换（Canetti–Halevi–Katz (CHK) Transform）。### 构件\n\n取 IBE Π′=(Setup,Der,E′,D′)，它只需对选择性身份 CPA 安全；取强一次性签名 Sig=(G,Sign,Vrfy)。构造 PKE Π=(Gen,E,D)：\n\nGen(1^k) 运行 Setup(1^k,ℓ_s(k)) 得到 (PK,msk)，公钥 PK、私钥 msk。加密 m：先 G(1^k)→(vk,sk)，再 C←E′_PK(vk,m)，σ←Sign_sk(C)，输出 (vk,C,σ)。解密：先检查 Vrfy_vk(C,σ)=1，否则拒绝；通过后 SK_vk←Der_msk(vk)，m←D′_{SK_vk}(vk,C)。### 定理\n\n若 Π′ 选择性身份 CPA 安全，且 Sig 强一次性不可伪造，则 Π 是 CCA 安全 PKE。归约中定义 Forge 为敌手对 vk* 提交新 (C,σ) 且验签通过的事件，并有\n\nPr_{A′,Π′}[Succ]≥Pr_{A,Π}[Succ]−½Pr_A[Forge]。因为 Forge 可忽略，A 的 CCA 优势也回到 1/2 附近。",
+          "why": "CHK 变换把“身份”从用户标识改成一次性验证密钥 vk。挑战密文绑定 vk*；敌手的解密查询若 vk≠vk*，就落到另一个身份，IBE 的 CPA 安全仍可回答；若 vk=vk*，则任何新的有效 (C,σ) 都直接给出强一次性签名的伪造。",
+          "used": "1.选 IBE：确认其安全性是选择性身份 CPA，且身份空间能容纳 ℓ_s(k) 位的 vk。2.选签名：使用强一次性签名，密钥只签一个 C；不得复用 vk/sk。3.加密：先加密再签名，签名覆盖完整 C；不要把 σ 放进 IBE 明文。4.解密：先完整验签，再派生身份私钥并解密；验签失败不得泄漏任何解密信息。### 不能怎么用\n\n不能把弱一次性签名当作强一次性签名；不能让两个密文复用同一 vk；不能在验签前调用 IBE 解密；不能把选择性身份安全当成自适应身份安全。",
+          "broken": "1.安全模型：底层 IBE 只有选择性身份 CPA 安全；若需要自适应身份，必须换更强 IBE 或额外技术。2.签名强度：若签名只是弱一次性不可伪造，敌手可在同一 C 上改 σ，Forge 事件不再被排除。3.身份空间：ℓ_s(k) 太短、vk 编码不唯一或验签密钥可替换，会破坏 vk 到身份的绑定。4.归约边界：证明只给出存在性构造；不保证具体 IBE 的效率、密钥托管、侧信道或实现安全，也不声称从任意 CPA PKE 黑盒得到 CCA PKE。",
+          "history": "论文以 ePrint 2003/182 公开，作者为 Ran Canetti、Shai Halevi 与 Jonathan Katz；该条目录名沿用 Canetti–Halevi 的简称，正文按三位作者的 CHK 变换展开。论文给出从选择性身份 CPA IBE 到 CCA PKE 的标准模型构造，并扩展到 BTE/HIBE。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：Canetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。 预期输出：按 Canetti–Halevi–Katz（CHK）变换 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换. https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nCanetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Canetti–Halevi–Katz (CHK) Transform (Canetti–Halevi–Katz（CHK）变换). ### Building blocks\n\nTake an IBE Π′=(Setup,Der,E′,D′) that is only selective-identity CPA secure, and a strongly unforgeable one-time signature Sig=(G,Sign,Vrfy). Construct PKE Π=(Gen,E,D):\n\nGen(1^k) runs Setup(1^k,ℓ_s(k)) to obtain (PK,msk), with public key PK and secret key msk. Encrypt m: run G(1^k)→(vk,sk), then C←E′_PK(vk,m), σ←Sign_sk(C), and output (vk,C,σ). Decrypt: check Vrfy_vk(C,σ)=1 first, otherwise reject; then SK_vk←Der_msk(vk) and m←D′_{SK_vk}(vk,C). ### Theorem\n\nIf Π′ is selective-identity CPA secure and Sig is strongly one-time unforgeable, then Π is a CCA-secure PKE. In the reduction, let Forge be the event that the adversary submits a new (C,σ) for vk* that verifies; then\n\nPr_{A′,Π′}[Succ]≥Pr_{A,Π}[Succ]−½Pr_A[Forge]. Since Forge is negligible, A's CCA advantage is also negligibly close to 1/2.",
+          "why": "The CHK transform replaces the identity by a one-time verification key vk. The challenge ciphertext is bound to vk*; a decryption query with vk≠vk* lands at a different identity and can be answered under IBE CPA security; if vk=vk*, any new valid (C,σ) directly yields a forgery against the strong one-time signature.\n\nThis is a reduction/construction, not an IBE algorithm. It shows that CCA security can come from IBE plus a one-time signature without attaching a non-interactive zero-knowledge proof to every ciphertext; it is not the same layer as a concrete scheme such as RSA-OAEP.",
+          "used": "1. Choose IBE: confirm selective-identity CPA security and that the identity space accommodates a ℓ_s(k)-bit vk. 2. Choose signature: use a strong one-time signature and sign exactly one C; never reuse vk/sk. 3. Encrypt: encrypt then sign, with the signature covering the full C; do not put σ inside the IBE plaintext. 4. Decrypt: verify fully before deriving the identity key and decrypting; a failed verification must not leak decryption information.\n\nDo not treat a weak one-time signature as strong; do not reuse one vk across two ciphertexts; do not call IBE decryption before verification; do not present selective-identity security as adaptive-identity security.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Security model: the underlying IBE is only selective-identity CPA secure; adaptive identity needs a stronger IBE or additional techniques. 2. Signature strength: if the signature is only weakly one-time unforgeable, an adversary can change σ on the same C and the Forge event is no longer excluded. 3. Identity space: a short ℓ_s(k), non-unique vk encoding or replaceable verification key breaks the vk-to-identity binding. 4. Reduction boundary: the proof gives an existence construction; it does not guarantee concrete IBE efficiency, key escrow, side-channel or implementation security, and does not claim a black-box CCA construction from any CPA PKE.",
+          "history": "The paper was published as ePrint 2003/182 by Ran Canetti, Shai Halevi and Jonathan Katz; this catalogue keeps the Canetti–Halevi shorthand while the entry follows the three-author CHK transform. It gives a standard-model construction from selective-identity CPA IBE to CCA PKE and extends it to BTE/HIBE.",
+          "refs": "- Wikipedia search entry for Canetti–Halevi–Katz（CHK）变换. https://zh.wikipedia.org/w/index.php?search=Canetti%E2%80%93Halevi%E2%80%93Katz%EF%BC%88CHK%EF%BC%89%E5%8F%98%E6%8D%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nCanetti–Halevi–Katz (CHK) Transform: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "canetti-halevi-r139-formal",
+          "entryId": "canetti-halevi-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：Canetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 Canetti–Halevi–Katz（CHK）变换 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "canetti-halevi-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "canetti-halevi-r139-formal"
+      ],
+      "sources": [
+        "canetti-halevi-wikipedia",
+        "canetti-halevi-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "canetti-halevi-r139-formal",
+      "entryId": "canetti-halevi-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：Canetti–Halevi–Katz（CHK）变换的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 Canetti–Halevi–Katz（CHK）变换 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "canetti-halevi-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

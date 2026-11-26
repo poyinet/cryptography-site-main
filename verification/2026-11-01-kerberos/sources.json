@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "kerberos-details",
+  "sources": [
+    {
+      "id": "kerberos-wikipedia",
+      "title": "Wikipedia search entry for Kerberos 认证协议",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Kerberos%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Kerberos 认证协议",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "kerberos-r139-principle",
+          "entryId": "kerberos-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：Kerberos 认证协议（Kerberos V5）。Kerberos V5 用长期密钥做身份认证，用短期会话密钥保护后续服务请求。AS 交换里，客户端用长期密钥 K_C 认证，AS 返回 TGT 与 TGS 会话密钥；TGT 的主体 EncTicketPart 用 krbtgt 长期密钥加密，客户端无法解密，只能原样交给 TGS。TGS 交换里，客户端把 TGT 和用 K_C,TGS 加密的认证符一起发送；TGS 解开 TGT、校验认证符，再签发用服务长期密钥加密的服务票据，并把新的 K_C,S 封在客户端可解的回复里。AP 交换里，客户端把服务票据与用 K_C,S 加密的认证符送给服务，完成最终认证。",
+            "en": "**Term**: Kerberos V5.It is registered under protocols and PKI."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        },
+        {
+          "id": "kerberos-r139-why",
+          "entryId": "kerberos-details",
+          "section": "why",
+          "statement": {
+            "zh": "票据用服务长期密钥加密，会话密钥分别封在票据和回复里，形成“客户端看得见会话密钥、服务看得见票据内容”的双向封装；任何一方都无法单独伪造完整票据。认证符带时间戳与客户端身份，服务用时钟偏差窗口和重放缓存检测旧请求；AP-REP 返回 ctime+1，完成双向认证，防止客户端把响应转给别的服务。",
+            "en": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        },
+        {
+          "id": "kerberos-r139-used",
+          "entryId": "kerberos-details",
+          "section": "used",
+          "statement": {
+            "zh": "实现按 RFC 4120 的消息结构组装：Ticket 含 tkt-vno、realm、sname、enc-part；EncTicketPart 含 flags、key、crealm、cname、authtime、starttime、endtime、renew-till、caddr、authorization-data。PA-ENC-TIMESTAMP 的明文是 PA-ENC-TS-ENC，至少含 ctime 与 cusec；AES-128-CTS-HMAC-SHA1-96 用 16 字节密钥与 12 字节校验和，AES-256 用 32 字节密钥。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        },
+        {
+          "id": "kerberos-r139-broken",
+          "entryId": "kerberos-details",
+          "section": "broken",
+          "statement": {
+            "zh": "KDC 是单点信任：krbtgt 长期密钥泄漏可以伪造任意 TGT；服务长期密钥泄漏可以伪造该服务的票据。RC4-HMAC 已弃用，CBC 时代的填充 oracle 与弱校验和不应再用于新域。票据加密不等于授权；PAC、组 membership 与本地授权仍要单独校验。时钟偏差窗口太宽会放大重放面，太窄会造成可用性问题。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        },
+        {
+          "id": "kerberos-r139-history",
+          "entryId": "kerberos-details",
+          "section": "history",
+          "statement": {
+            "zh": "Kerberos 来自 MIT Athena 项目，V4 在 1980 年代使用，V5 在 1993 年由 RFC 1510 标准化；RFC 4120 在 2005 年 7 月替代 RFC 1510，成为现行 Kerberos V5 文本。RFC 3961 在 2005 年重写加密框架，RFC 3962 加入 AES 加密类型；后续 RFC 4757 定义 RC4-HMAC，但因弱算法已逐步弃用。",
+            "en": "Registered period: Web & Protocol Era.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        },
+        {
+          "id": "kerberos-r139-refs",
+          "entryId": "kerberos-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Kerberos 认证协议.https://zh.wikipedia.org/w/index.php?search=Kerberos%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949\n- RFC 4120: The Kerberos Network Authentication Service (V5).https://www.rfc-editor.org/rfc/rfc4120\n- Published standard/RFC for Kerberos 认证协议.https://www.rfc-editor.org/rfc/rfc4120。",
+            "en": "- Wikipedia search entry for Kerberos 认证协议.https://zh.wikipedia.org/w/index.php?search=Kerberos%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "kerberos-standard-ref",
+            "kerberos-specific",
+            "kerberos-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "kerberos-wikipedia"
+      ]
+    },
+    {
+      "id": "kerberos-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "kerberos-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "kerberos-specific",
+      "title": "RFC 4120: The Kerberos Network Authentication Service (V5)",
+      "url": "https://www.rfc-editor.org/rfc/rfc4120",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "kerberos-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "kerberos-standard",
+      "title": "Published standard/RFC for Kerberos 认证协议",
+      "url": "https://www.rfc-editor.org/rfc/rfc4120",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for Kerberos 认证协议",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "kerberos-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "kerberos-r139-principle",
+      "entryId": "kerberos-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：Kerberos 认证协议（Kerberos V5）。Kerberos V5 用长期密钥做身份认证，用短期会话密钥保护后续服务请求。AS 交换里，客户端用长期密钥 K_C 认证，AS 返回 TGT 与 TGS 会话密钥；TGT 的主体 EncTicketPart 用 krbtgt 长期密钥加密，客户端无法解密，只能原样交给 TGS。TGS 交换里，客户端把 TGT 和用 K_C,TGS 加密的认证符一起发送；TGS 解开 TGT、校验认证符，再签发用服务长期密钥加密的服务票据，并把新的 K_C,S 封在客户端可解的回复里。AP 交换里，客户端把服务票据与用 K_C,S 加密的认证符送给服务，完成最终认证。",
+        "en": "**Term**: Kerberos V5.It is registered under protocols and PKI."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    },
+    {
+      "id": "kerberos-r139-why",
+      "entryId": "kerberos-details",
+      "section": "why",
+      "statement": {
+        "zh": "票据用服务长期密钥加密，会话密钥分别封在票据和回复里，形成“客户端看得见会话密钥、服务看得见票据内容”的双向封装；任何一方都无法单独伪造完整票据。认证符带时间戳与客户端身份，服务用时钟偏差窗口和重放缓存检测旧请求；AP-REP 返回 ctime+1，完成双向认证，防止客户端把响应转给别的服务。",
+        "en": "It is listed because it connects concrete records, objects or procedures in protocols and PKI, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    },
+    {
+      "id": "kerberos-r139-used",
+      "entryId": "kerberos-details",
+      "section": "used",
+      "statement": {
+        "zh": "实现按 RFC 4120 的消息结构组装：Ticket 含 tkt-vno、realm、sname、enc-part；EncTicketPart 含 flags、key、crealm、cname、authtime、starttime、endtime、renew-till、caddr、authorization-data。PA-ENC-TIMESTAMP 的明文是 PA-ENC-TS-ENC，至少含 ctime 与 cusec；AES-128-CTS-HMAC-SHA1-96 用 16 字节密钥与 12 字节校验和，AES-256 用 32 字节密钥。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    },
+    {
+      "id": "kerberos-r139-broken",
+      "entryId": "kerberos-details",
+      "section": "broken",
+      "statement": {
+        "zh": "KDC 是单点信任：krbtgt 长期密钥泄漏可以伪造任意 TGT；服务长期密钥泄漏可以伪造该服务的票据。RC4-HMAC 已弃用，CBC 时代的填充 oracle 与弱校验和不应再用于新域。票据加密不等于授权；PAC、组 membership 与本地授权仍要单独校验。时钟偏差窗口太宽会放大重放面，太窄会造成可用性问题。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    },
+    {
+      "id": "kerberos-r139-history",
+      "entryId": "kerberos-details",
+      "section": "history",
+      "statement": {
+        "zh": "Kerberos 来自 MIT Athena 项目，V4 在 1980 年代使用，V5 在 1993 年由 RFC 1510 标准化；RFC 4120 在 2005 年 7 月替代 RFC 1510，成为现行 Kerberos V5 文本。RFC 3961 在 2005 年重写加密框架，RFC 3962 加入 AES 加密类型；后续 RFC 4757 定义 RC4-HMAC，但因弱算法已逐步弃用。",
+        "en": "Registered period: Web & Protocol Era.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    },
+    {
+      "id": "kerberos-r139-refs",
+      "entryId": "kerberos-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Kerberos 认证协议.https://zh.wikipedia.org/w/index.php?search=Kerberos%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949\n- RFC 4120: The Kerberos Network Authentication Service (V5).https://www.rfc-editor.org/rfc/rfc4120\n- Published standard/RFC for Kerberos 认证协议.https://www.rfc-editor.org/rfc/rfc4120。",
+        "en": "- Wikipedia search entry for Kerberos 认证协议.https://zh.wikipedia.org/w/index.php?search=Kerberos%20%E8%AE%A4%E8%AF%81%E5%8D%8F%E8%AE%AE\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "kerberos-standard-ref",
+        "kerberos-specific",
+        "kerberos-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

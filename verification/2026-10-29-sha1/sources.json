@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sha1-details",
+  "sources": [
+    {
+      "id": "sha1-wikipedia",
+      "title": "Wikipedia search entry for SHA-1 散列",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SHA-1 散列",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sha1-r139-principle",
+          "entryId": "sha1-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：SHA-1 散列（SHA-1）。SHA-1 是 FIPS 180-4 规定的安全哈希算法之一：输入任意长度小于 2^64 位的消息，输出固定的 160 位（20 字节）消息摘要。它按 512 位（16 个 32 位字）分块处理，内部状态是 5 个 32 位字 H0…H4。RFC 3174（2001 年 9 月，Informational）把同一算法、C 参考代码和测试驱动程序公开给互联网社区，并明确它不规定任何互联网标准；本轮的算法描述以 FIPS 180-4 为准，测试向量以 RFC 3174 为准。填充规则是：先追加一个 1 位（实现上是 0x80 字节），再补最少的 0 位，使消息位数对 512 同余于 448；最后追加填充前消息位数的 64 位表示（高位在前，即大端），即使消息长度已经同余也要填充。例如 \"abc\" 长 24 位，填充后成为 64 字节块：`61 62 63 80` 后跟 52 个 `00`，末尾 8 字节是 `00 00 00 00 00 00 00 18`。按 32 位字读，X[0] = 0x61626380、X[15] = 0x00000018，其余为零。填充后的消息被解析为 N 个 512 位块，每块是 16 个 32 位字 M(0)…M(15)。",
+            "en": "**Algorithm**: SHA-1 (SHA-1 散列).SHA-1 is one of the secure hash algorithms specified by FIPS 180-4: it takes a message shorter than 2^64 bits and outputs a fixed 160-bit (20-byte) message digest."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        },
+        {
+          "id": "sha1-r139-why",
+          "entryId": "sha1-details",
+          "section": "why",
+          "statement": {
+            "zh": "SHA-1 的谱系可以追溯到 MD4：RFC 3174 说 SHA-1 基于 Ronald L.Rivest 设计 MD4 时的类似原则，并以 MD4 为模型。它之前的 SHA-0 于 1993 年首次发布，SHA-1 于 1996 年首次发布；SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转，而 NIST 于 1996 年撤回了 SHA-0。RFC 6194 因此说「it is not prudent to use either」（在需要碰撞抗性时使用 SHA-0 或 SHA-1 都不明智），任何 SHA-0 用法都被强烈劝阻。160 位摘要的直接后果是生日界为 2^80：在理想哈希函数上，找到「any two messages with the same digest」（任意两条同摘要消息）约需 2^80 次计算，而 128 位摘要只有 2^64。SHA-1 的 80 步、四个 20 步阶段和消息表在每一步的参与，使局部改动在更多轮次中扩散。RFC 3174 也指出，签名「digest rather than the message often improves」（摘要而不是整条消息，通常能提高效率），因为摘要远小于消息，验证方必须使用与签名方相同的哈希算法。但标准并没有给出安全证明。RFC 3174 说 SHA-1 `被称为安全`是因为计算上难以找到给定摘要的原像或两条同摘要消息——这是当时的安全假设，不是数学定理，也不是对碰撞抗性的永久保证。后来的攻击正是从这条假设的边界上突破的。",
+            "en": "SHA-1's lineage goes back to MD4: RFC 3174 says SHA-1 is based on principles similar to those used by Ronald L.Rivest in designing MD4, and is modelled after MD4."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        },
+        {
+          "id": "sha1-r139-used",
+          "entryId": "sha1-details",
+          "section": "used",
+          "statement": {
+            "zh": "SHA-1 的典型用途是数字签名：先计算消息摘要，再把摘要交给签名算法生成或验证签名；FIPS 180-4 也把 SHA-1 列入安全哈希标准。即使到 2017 年，它仍广泛用于文档签名与 TLS 证书签名，以及 Git 等软件的完整性与备份。SHAttered 论文把 Git 版本控制系统列为当时仍广泛使用 SHA-1 的软件例子之一。HMAC-SHA-1 是另一类用途：HMAC 把 SHA-1 用作带密钥的消息认证码，而不是把 SHA-1 直接当作碰撞抗性哈希。RFC 6194 §3.3 说，截至 2011 年没有迹象表明针对 SHA-1 的攻击可以扩展到 HMAC-SHA-1。RFC 2202 §3 给出七组 HMAC-SHA-1 一致性测试向量，其中第 2 组使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，摘要为 `effcdf6ae5eb2fa2d27416d5f184df9c259a7c79`。NIST 的当前政策把用途分得很细：SP 800-131A Rev.2 的表 8 规定，SHA-1 用于数字签名生成是「disallowed」，除非「specifically allowed by NIST protocol-specific guidance」，用于数字签名验证属于「legacy use」，用于非数字签名应用属于「acceptable」；表后的说明重申了这三点。RFC 6194 的结论则是，SHA-1 的碰撞抗性低于预期，协议设计者应认真考虑支持更强的哈希，SHA-256 是当时最常被指定的替代。",
+            "en": "SHA-1's typical use is digital signatures: compute a message digest, then feed the digest to a signature algorithm for signature generation or verification; FIPS 180-4 also includes SHA-1 in the Secure Hash Standard.Even in 2017 it was still widely used for document signatures and TLS certificate signatures, and in software such as Git for integrity and backup."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        },
+        {
+          "id": "sha1-r139-broken",
+          "entryId": "sha1-details",
+          "section": "broken",
+          "statement": {
+            "zh": "碰撞是两条不同消息 x、y 满足 H(x)=H(y)。对 160 位摘要，生日攻击的通用复杂度约为 2^80；SHA-1 的碰撞抗性在 2005 年以后被一步步压到这个界以下。RFC 6194 §3.1 记载：2005 年初的第一项 SHA-1 攻击针对「reduced to 53 rounds.The very next month」（版本被缩减到 53 轮；就在下一个月）；Wang、Yin、Yu 的论文展示了「showed collisions in the full 80 rounds in」（在完整 80 轮上、约 2^69 次操作内找到）碰撞；截至 2011 年没有已发表结果改进这一复杂度。RFC 6194 同时指出，SHA-1 的「collision security strength is significantly less than」（碰撞安全强度显著低于）理想哈希函数的 2^80。2013 年，Stevens 给出完整 SHA-1 的当时最好碰撞攻击，估计约 2^61 次压缩。2017 年，Stevens、Bursztein、Karpman、Albertini 与 Markov 给出了完整 SHA-1 的第一个已知碰撞实例：两条哈希相同但显示内容不同的 PDF。该碰撞的计算量约等于 2^63.1 次 SHA-1 压缩，耗费约 6,500 CPU 年和 100 GPU 年；作者说这仍比暴力搜索快 100,000 倍以上。这个结果把 SHA-1 碰撞从`理论上可行`推到了`可以实际计算`。",
+            "en": "A collision is a pair of distinct messages x and y with H(x)=H(y).For a 160-bit digest the generic birthday attack costs about 2^80; SHA-1's collision resistance was pushed below that bound step by step after 2005."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        },
+        {
+          "id": "sha1-r139-history",
+          "entryId": "sha1-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1993 年**：SHA-0 首次发布；RFC 6194 记载 NIST 于 1996 年撤回 SHA-0。- **1995–1996 年**：SHAttered 论文称 SHA-1 是 1995 年的 NIST 标准；RFC 6194 记载 SHA-1 于 1996 年首次发布。SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转。- **2001 年 9 月**：RFC 3174 发布，把 SHA-1 的算法、C 代码和测试向量整理为 Informational 文档。- **2005 年**：Wang、Yin、Yu 展示完整 80 轮、约 2^69 次操作的碰撞攻击；此前一个月左右，第一项攻击只针对缩减到 53 轮的版本。- **2011 年 3 月**：RFC 6194 发布，汇总 SHA-0 与 SHA-1 的安全考虑，并给出协议设计建议；同年前后 NIST 正式弃用 SHA-1 用于数字签名。- **2013 年**：Stevens 给出约 2^61 次压缩的完整 SHA-1 碰撞估计。- **2017 年**：SHAttered 结果在 CRYPTO 2017（LNCS 10401，pp.570-596）发表，给出第一个实际碰撞实例。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 给出 SHA-1 在签名生成、签名验证和非签名应用中的当前状态。",
+            "en": "- **1993**: SHA-0 is first published; RFC 6194 records that NIST withdrew SHA-0 in 1996.- **1995–1996**: the SHAttered paper calls SHA-1 a 1995 NIST standard; RFC 6194 records that SHA-1 was first published in 1996."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        },
+        {
+          "id": "sha1-r139-refs",
+          "entryId": "sha1-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SHA-1 散列.https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3174: US Secure Hash Algorithm 1 (SHA1).https://www.rfc-editor.org/rfc/rfc3174。",
+            "en": "- Wikipedia search entry for SHA-1 散列.https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sha1-reference-ref",
+            "sha1-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "sha1-wikipedia"
+      ]
+    },
+    {
+      "id": "sha1-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sha1-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "sha1-specific",
+      "title": "RFC 3174: US Secure Hash Algorithm 1 (SHA1)",
+      "url": "https://www.rfc-editor.org/rfc/rfc3174",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sha1-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sha1-r139-principle",
+      "entryId": "sha1-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：SHA-1 散列（SHA-1）。SHA-1 是 FIPS 180-4 规定的安全哈希算法之一：输入任意长度小于 2^64 位的消息，输出固定的 160 位（20 字节）消息摘要。它按 512 位（16 个 32 位字）分块处理，内部状态是 5 个 32 位字 H0…H4。RFC 3174（2001 年 9 月，Informational）把同一算法、C 参考代码和测试驱动程序公开给互联网社区，并明确它不规定任何互联网标准；本轮的算法描述以 FIPS 180-4 为准，测试向量以 RFC 3174 为准。填充规则是：先追加一个 1 位（实现上是 0x80 字节），再补最少的 0 位，使消息位数对 512 同余于 448；最后追加填充前消息位数的 64 位表示（高位在前，即大端），即使消息长度已经同余也要填充。例如 \"abc\" 长 24 位，填充后成为 64 字节块：`61 62 63 80` 后跟 52 个 `00`，末尾 8 字节是 `00 00 00 00 00 00 00 18`。按 32 位字读，X[0] = 0x61626380、X[15] = 0x00000018，其余为零。填充后的消息被解析为 N 个 512 位块，每块是 16 个 32 位字 M(0)…M(15)。",
+        "en": "**Algorithm**: SHA-1 (SHA-1 散列).SHA-1 is one of the secure hash algorithms specified by FIPS 180-4: it takes a message shorter than 2^64 bits and outputs a fixed 160-bit (20-byte) message digest."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    },
+    {
+      "id": "sha1-r139-why",
+      "entryId": "sha1-details",
+      "section": "why",
+      "statement": {
+        "zh": "SHA-1 的谱系可以追溯到 MD4：RFC 3174 说 SHA-1 基于 Ronald L.Rivest 设计 MD4 时的类似原则，并以 MD4 为模型。它之前的 SHA-0 于 1993 年首次发布，SHA-1 于 1996 年首次发布；SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转，而 NIST 于 1996 年撤回了 SHA-0。RFC 6194 因此说「it is not prudent to use either」（在需要碰撞抗性时使用 SHA-0 或 SHA-1 都不明智），任何 SHA-0 用法都被强烈劝阻。160 位摘要的直接后果是生日界为 2^80：在理想哈希函数上，找到「any two messages with the same digest」（任意两条同摘要消息）约需 2^80 次计算，而 128 位摘要只有 2^64。SHA-1 的 80 步、四个 20 步阶段和消息表在每一步的参与，使局部改动在更多轮次中扩散。RFC 3174 也指出，签名「digest rather than the message often improves」（摘要而不是整条消息，通常能提高效率），因为摘要远小于消息，验证方必须使用与签名方相同的哈希算法。但标准并没有给出安全证明。RFC 3174 说 SHA-1 `被称为安全`是因为计算上难以找到给定摘要的原像或两条同摘要消息——这是当时的安全假设，不是数学定理，也不是对碰撞抗性的永久保证。后来的攻击正是从这条假设的边界上突破的。",
+        "en": "SHA-1's lineage goes back to MD4: RFC 3174 says SHA-1 is based on principles similar to those used by Ronald L.Rivest in designing MD4, and is modelled after MD4."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    },
+    {
+      "id": "sha1-r139-used",
+      "entryId": "sha1-details",
+      "section": "used",
+      "statement": {
+        "zh": "SHA-1 的典型用途是数字签名：先计算消息摘要，再把摘要交给签名算法生成或验证签名；FIPS 180-4 也把 SHA-1 列入安全哈希标准。即使到 2017 年，它仍广泛用于文档签名与 TLS 证书签名，以及 Git 等软件的完整性与备份。SHAttered 论文把 Git 版本控制系统列为当时仍广泛使用 SHA-1 的软件例子之一。HMAC-SHA-1 是另一类用途：HMAC 把 SHA-1 用作带密钥的消息认证码，而不是把 SHA-1 直接当作碰撞抗性哈希。RFC 6194 §3.3 说，截至 2011 年没有迹象表明针对 SHA-1 的攻击可以扩展到 HMAC-SHA-1。RFC 2202 §3 给出七组 HMAC-SHA-1 一致性测试向量，其中第 2 组使用密钥 \"Jefe\"、消息 \"what do ya want for nothing?\"，摘要为 `effcdf6ae5eb2fa2d27416d5f184df9c259a7c79`。NIST 的当前政策把用途分得很细：SP 800-131A Rev.2 的表 8 规定，SHA-1 用于数字签名生成是「disallowed」，除非「specifically allowed by NIST protocol-specific guidance」，用于数字签名验证属于「legacy use」，用于非数字签名应用属于「acceptable」；表后的说明重申了这三点。RFC 6194 的结论则是，SHA-1 的碰撞抗性低于预期，协议设计者应认真考虑支持更强的哈希，SHA-256 是当时最常被指定的替代。",
+        "en": "SHA-1's typical use is digital signatures: compute a message digest, then feed the digest to a signature algorithm for signature generation or verification; FIPS 180-4 also includes SHA-1 in the Secure Hash Standard.Even in 2017 it was still widely used for document signatures and TLS certificate signatures, and in software such as Git for integrity and backup."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    },
+    {
+      "id": "sha1-r139-broken",
+      "entryId": "sha1-details",
+      "section": "broken",
+      "statement": {
+        "zh": "碰撞是两条不同消息 x、y 满足 H(x)=H(y)。对 160 位摘要，生日攻击的通用复杂度约为 2^80；SHA-1 的碰撞抗性在 2005 年以后被一步步压到这个界以下。RFC 6194 §3.1 记载：2005 年初的第一项 SHA-1 攻击针对「reduced to 53 rounds.The very next month」（版本被缩减到 53 轮；就在下一个月）；Wang、Yin、Yu 的论文展示了「showed collisions in the full 80 rounds in」（在完整 80 轮上、约 2^69 次操作内找到）碰撞；截至 2011 年没有已发表结果改进这一复杂度。RFC 6194 同时指出，SHA-1 的「collision security strength is significantly less than」（碰撞安全强度显著低于）理想哈希函数的 2^80。2013 年，Stevens 给出完整 SHA-1 的当时最好碰撞攻击，估计约 2^61 次压缩。2017 年，Stevens、Bursztein、Karpman、Albertini 与 Markov 给出了完整 SHA-1 的第一个已知碰撞实例：两条哈希相同但显示内容不同的 PDF。该碰撞的计算量约等于 2^63.1 次 SHA-1 压缩，耗费约 6,500 CPU 年和 100 GPU 年；作者说这仍比暴力搜索快 100,000 倍以上。这个结果把 SHA-1 碰撞从`理论上可行`推到了`可以实际计算`。",
+        "en": "A collision is a pair of distinct messages x and y with H(x)=H(y).For a 160-bit digest the generic birthday attack costs about 2^80; SHA-1's collision resistance was pushed below that bound step by step after 2005."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    },
+    {
+      "id": "sha1-r139-history",
+      "entryId": "sha1-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1993 年**：SHA-0 首次发布；RFC 6194 记载 NIST 于 1996 年撤回 SHA-0。- **1995–1996 年**：SHAttered 论文称 SHA-1 是 1995 年的 NIST 标准；RFC 6194 记载 SHA-1 于 1996 年首次发布。SHA-0 是 SHA-1 的前身，二者只差消息扩展函数中的一次旋转。- **2001 年 9 月**：RFC 3174 发布，把 SHA-1 的算法、C 代码和测试向量整理为 Informational 文档。- **2005 年**：Wang、Yin、Yu 展示完整 80 轮、约 2^69 次操作的碰撞攻击；此前一个月左右，第一项攻击只针对缩减到 53 轮的版本。- **2011 年 3 月**：RFC 6194 发布，汇总 SHA-0 与 SHA-1 的安全考虑，并给出协议设计建议；同年前后 NIST 正式弃用 SHA-1 用于数字签名。- **2013 年**：Stevens 给出约 2^61 次压缩的完整 SHA-1 碰撞估计。- **2017 年**：SHAttered 结果在 CRYPTO 2017（LNCS 10401，pp.570-596）发表，给出第一个实际碰撞实例。- **2019 年 3 月**：NIST SP 800-131A Rev.2 发布，表 8 给出 SHA-1 在签名生成、签名验证和非签名应用中的当前状态。",
+        "en": "- **1993**: SHA-0 is first published; RFC 6194 records that NIST withdrew SHA-0 in 1996.- **1995–1996**: the SHAttered paper calls SHA-1 a 1995 NIST standard; RFC 6194 records that SHA-1 was first published in 1996."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    },
+    {
+      "id": "sha1-r139-refs",
+      "entryId": "sha1-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SHA-1 散列.https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 3174: US Secure Hash Algorithm 1 (SHA1).https://www.rfc-editor.org/rfc/rfc3174。",
+        "en": "- Wikipedia search entry for SHA-1 散列.https://zh.wikipedia.org/w/index.php?search=SHA-1%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sha1-reference-ref",
+        "sha1-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

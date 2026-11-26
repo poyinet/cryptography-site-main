@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "deal-details",
+  "sources": [
+    {
+      "id": "deal-wikipedia",
+      "title": "Wikipedia search entry for DEAL 分组密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: DEAL 分组密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "deal-r139-principle",
+          "entryId": "deal-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：DEAL 分组密码（DEAL block cipher）。### 128 位分组、64 位半块\n\nDEAL 把 128 位明文拆成左右各 64 位，做平衡 Feistel。轮函数不是新的 S 盒，而是直接用 DES 加密一个 64 位半块：y_j = y_{j-1} ⊕ E_{R_j}(x_{j-1})，下一轮交换左右。每个轮密钥名义上是 64 位 DES 密钥，实际使用 56 位，奇偶位被忽略。### 轮数与密钥编排\n\nDEAL-128 与 DEAL-192 跑 6 轮，DEAL-256 跑 8 轮。密钥编排用固定 DES 密钥 0123456789abcdef 做 E，把主密钥的 64 位块 K0、K1……链成 R0 = E(K0)，R_i = E(K_i ⊕ R_{i-1} ⊕ 常数)。解密按相反顺序使用同一套轮密钥。",
+            "en": "**Algorithm**: DEAL block cipher (DEAL 分组密码).### 128-bit block, 64-bit halves\n\nDEAL splits a 128-bit plaintext into two 64-bit halves and runs a balanced Feistel network."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        },
+        {
+          "id": "deal-r139-why",
+          "entryId": "deal-details",
+          "section": "why",
+          "statement": {
+            "zh": "### 复用 DES 的信任与硬件\n\n1990 年代 DES 仍有大量硬件和分析积累。DEAL 的目标是保留这些积累，同时把 64 位分组翻倍到 128 位，避开匹配密文攻击；128 位分组给出 2^64 的生日界。它的轮函数直接调用 DES，设计者认为这比重新造 S 盒更“保守”。### 为什么没进 AES 决赛\n\nDEAL 的速度接近 Triple DES，远慢于为 AES 竞赛优化的专用候选。NIST 要的是高吞吐、低延迟、宽平台实现，DEAL 的“复用旧硬件”反而成了性能包袱；随后 Kelsey–Schneier 与 Lucks 的分析又暴露了密钥编排和轮数余量问题。",
+            "en": "### Reusing DES trust and hardware\n\nDES still had a large installed hardware base and years of analysis in the 1990s.DEAL aimed to keep that base while doubling the 64-bit block to 128 bits, avoiding matching-ciphertext attacks; a 128-bit block gives a 2^64 birthday bound."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        },
+        {
+          "id": "deal-r139-used",
+          "entryId": "deal-details",
+          "section": "used",
+          "statement": {
+            "zh": "### AES 候选与教学样例\n\nDEAL 在 1998 年由 Richard Outerbridge 提交 AES 竞赛，没有进入五个决赛算法。它今天更适合作为“如何用现有分组密码构造更大分组”的教学样例，而不是生产算法。### 工程位置\n\n没有主流标准采用 DEAL；现代存储和协议用 AES-XTS、AES-GCM。DEAL 与 Ladder-DES 的亲缘关系让它在 Feistel 构造和安全证明文献里仍有参考价值，但工程选型不会把它当 AES 替代。",
+            "en": "### AES candidate and teaching example\n\nRichard Outerbridge submitted DEAL to the AES competition in 1998; it did not reach the five finalists.Today it is better used as a teaching example of “build a larger block from an existing block cipher” than as a production algorithm."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        },
+        {
+          "id": "deal-r139-broken",
+          "entryId": "deal-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### Lucks 的 DEAL-192 证书性攻击\n\nLucks 在 FSE 1999 给出针对 DEAL-192 的证书性攻击：利用 6 轮 Feistel 的轮密钥可分离性，在大量选择密文下把密钥搜索空间显著缩小。论文同时指出 6 轮 DEAL 的中间相遇上界约 2^168、8 轮约 2^224，说明有效密钥长度低于名义值。攻击需要巨大的选择密文量，属于“证明设计不够稳”的证书性结果，不是随手可用的破解。### 密钥编排与等价密钥\n\nKelsey–Schneier 在 SAC 1999 发现 DEAL 的密钥编排有结构性问题：DEAL-128 存在等价密钥对，找一对约需 2^64 次 DES；DEAL-192/256 只需 6 或 8 次 DES 就能构造 256 个等价密钥。他们还给出一条相关密钥攻击，约 2^33 个相关密钥、每个密钥 3 个明文。根因是轮密钥由固定密钥下的 DES 链生成，而奇偶位被忽略。DEAL 只提供 128 位分组置换；CBC、CTR 等模式、IV/nonce 和认证要另配。6/8 轮对现代分析余量偏小，不能当 AES 替代。",
+            "en": "### Lucks' certificational attack on DEAL-192\n\nLucks presented a certificational attack on DEAL-192 at FSE 1999: using the separability of the six-round Feistel round keys, a large number of chosen ciphertexts significantly narrows the key search space.The paper also notes meet-in-the-middle bounds of about 2^168 for six rounds and 2^224 for eight, showing the effective key length is below the nominal value."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        },
+        {
+          "id": "deal-r139-history",
+          "entryId": "deal-details",
+          "section": "history",
+          "statement": {
+            "zh": "### 1997 SAC，1998 AES\n\nLars Knudsen 在 SAC 1997 提出 DEAL，1998 年由 Richard Outerbridge 提交 AES 竞赛。DEAL 是 “Data Encryption Algorithm with Larger blocks” 的缩写，直说“DES 的更大分组版”。### 未标准化\n\nDEAL 没有进入 AES 决赛，也没有成为 ISO 或 NIST 标准。它的生命主要在 AES 分析文献、Feistel 教学设计和对 DES 复用路线的反思里；2000 年 AES 定案后，DEAL 退出工程视野。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：DEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "### SAC 1997, AES 1998\n\nLars Knudsen proposed DEAL at SAC 1997; Richard Outerbridge submitted it to the AES competition in 1998.DEAL stands for “Data Encryption Algorithm with Larger blocks”, literally “a larger-block version of DES”."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        },
+        {
+          "id": "deal-r139-refs",
+          "entryId": "deal-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for DEAL 分组密码.https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for DEAL 分组密码.https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "deal-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "deal-wikipedia"
+      ]
+    },
+    {
+      "id": "deal-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "deal-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "deal-r139-principle",
+      "entryId": "deal-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：DEAL 分组密码（DEAL block cipher）。### 128 位分组、64 位半块\n\nDEAL 把 128 位明文拆成左右各 64 位，做平衡 Feistel。轮函数不是新的 S 盒，而是直接用 DES 加密一个 64 位半块：y_j = y_{j-1} ⊕ E_{R_j}(x_{j-1})，下一轮交换左右。每个轮密钥名义上是 64 位 DES 密钥，实际使用 56 位，奇偶位被忽略。### 轮数与密钥编排\n\nDEAL-128 与 DEAL-192 跑 6 轮，DEAL-256 跑 8 轮。密钥编排用固定 DES 密钥 0123456789abcdef 做 E，把主密钥的 64 位块 K0、K1……链成 R0 = E(K0)，R_i = E(K_i ⊕ R_{i-1} ⊕ 常数)。解密按相反顺序使用同一套轮密钥。",
+        "en": "**Algorithm**: DEAL block cipher (DEAL 分组密码).### 128-bit block, 64-bit halves\n\nDEAL splits a 128-bit plaintext into two 64-bit halves and runs a balanced Feistel network."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    },
+    {
+      "id": "deal-r139-why",
+      "entryId": "deal-details",
+      "section": "why",
+      "statement": {
+        "zh": "### 复用 DES 的信任与硬件\n\n1990 年代 DES 仍有大量硬件和分析积累。DEAL 的目标是保留这些积累，同时把 64 位分组翻倍到 128 位，避开匹配密文攻击；128 位分组给出 2^64 的生日界。它的轮函数直接调用 DES，设计者认为这比重新造 S 盒更“保守”。### 为什么没进 AES 决赛\n\nDEAL 的速度接近 Triple DES，远慢于为 AES 竞赛优化的专用候选。NIST 要的是高吞吐、低延迟、宽平台实现，DEAL 的“复用旧硬件”反而成了性能包袱；随后 Kelsey–Schneier 与 Lucks 的分析又暴露了密钥编排和轮数余量问题。",
+        "en": "### Reusing DES trust and hardware\n\nDES still had a large installed hardware base and years of analysis in the 1990s.DEAL aimed to keep that base while doubling the 64-bit block to 128 bits, avoiding matching-ciphertext attacks; a 128-bit block gives a 2^64 birthday bound."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    },
+    {
+      "id": "deal-r139-used",
+      "entryId": "deal-details",
+      "section": "used",
+      "statement": {
+        "zh": "### AES 候选与教学样例\n\nDEAL 在 1998 年由 Richard Outerbridge 提交 AES 竞赛，没有进入五个决赛算法。它今天更适合作为“如何用现有分组密码构造更大分组”的教学样例，而不是生产算法。### 工程位置\n\n没有主流标准采用 DEAL；现代存储和协议用 AES-XTS、AES-GCM。DEAL 与 Ladder-DES 的亲缘关系让它在 Feistel 构造和安全证明文献里仍有参考价值，但工程选型不会把它当 AES 替代。",
+        "en": "### AES candidate and teaching example\n\nRichard Outerbridge submitted DEAL to the AES competition in 1998; it did not reach the five finalists.Today it is better used as a teaching example of “build a larger block from an existing block cipher” than as a production algorithm."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    },
+    {
+      "id": "deal-r139-broken",
+      "entryId": "deal-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### Lucks 的 DEAL-192 证书性攻击\n\nLucks 在 FSE 1999 给出针对 DEAL-192 的证书性攻击：利用 6 轮 Feistel 的轮密钥可分离性，在大量选择密文下把密钥搜索空间显著缩小。论文同时指出 6 轮 DEAL 的中间相遇上界约 2^168、8 轮约 2^224，说明有效密钥长度低于名义值。攻击需要巨大的选择密文量，属于“证明设计不够稳”的证书性结果，不是随手可用的破解。### 密钥编排与等价密钥\n\nKelsey–Schneier 在 SAC 1999 发现 DEAL 的密钥编排有结构性问题：DEAL-128 存在等价密钥对，找一对约需 2^64 次 DES；DEAL-192/256 只需 6 或 8 次 DES 就能构造 256 个等价密钥。他们还给出一条相关密钥攻击，约 2^33 个相关密钥、每个密钥 3 个明文。根因是轮密钥由固定密钥下的 DES 链生成，而奇偶位被忽略。DEAL 只提供 128 位分组置换；CBC、CTR 等模式、IV/nonce 和认证要另配。6/8 轮对现代分析余量偏小，不能当 AES 替代。",
+        "en": "### Lucks' certificational attack on DEAL-192\n\nLucks presented a certificational attack on DEAL-192 at FSE 1999: using the separability of the six-round Feistel round keys, a large number of chosen ciphertexts significantly narrows the key search space.The paper also notes meet-in-the-middle bounds of about 2^168 for six rounds and 2^224 for eight, showing the effective key length is below the nominal value."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    },
+    {
+      "id": "deal-r139-history",
+      "entryId": "deal-details",
+      "section": "history",
+      "statement": {
+        "zh": "### 1997 SAC，1998 AES\n\nLars Knudsen 在 SAC 1997 提出 DEAL，1998 年由 Richard Outerbridge 提交 AES 竞赛。DEAL 是 “Data Encryption Algorithm with Larger blocks” 的缩写，直说“DES 的更大分组版”。### 未标准化\n\nDEAL 没有进入 AES 决赛，也没有成为 ISO 或 NIST 标准。它的生命主要在 AES 分析文献、Feistel 教学设计和对 DES 复用路线的反思里；2000 年 AES 定案后，DEAL 退出工程视野。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：DEAL 分组密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "### SAC 1997, AES 1998\n\nLars Knudsen proposed DEAL at SAC 1997; Richard Outerbridge submitted it to the AES competition in 1998.DEAL stands for “Data Encryption Algorithm with Larger blocks”, literally “a larger-block version of DES”."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    },
+    {
+      "id": "deal-r139-refs",
+      "entryId": "deal-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for DEAL 分组密码.https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for DEAL 分组密码.https://zh.wikipedia.org/w/index.php?search=DEAL%20%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "deal-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

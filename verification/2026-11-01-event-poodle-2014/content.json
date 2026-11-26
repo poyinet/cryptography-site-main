@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for event-poodle-2014: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "event-poodle-2014-details",
+      "inventoryIds": [
+        "event-poodle-2014"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释POODLE 攻击的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of POODLE Attack: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "POODLE 攻击",
+        "en": "POODLE Attack"
+      },
+      "claimIds": [
+        "event-poodle-2014-r139-principle",
+        "event-poodle-2014-r139-why",
+        "event-poodle-2014-r139-used",
+        "event-poodle-2014-r139-broken",
+        "event-poodle-2014-r139-history",
+        "event-poodle-2014-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "event-poodle-2014-wikipedia",
+        "event-poodle-2014-reference-ref"
+      ],
+      "related": [
+        "transport-layer-security",
+        "https",
+        "attack--padding-oracle-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**事件**：POODLE 攻击（POODLE Attack）。RFC 7568 把问题的机制写在 §4.1：「The non-deterministic padding used in the Cipher Block Chaining (CBC) construction of SSLv3 trivially permits the recovery of plaintext [POODLE]」，摘要据此要求「that SSLv3 not be used」。同一节还说明 SSLv3 的 CBC 模式使用「a flawed MAC-then-encrypt construction that has subsequently been replaced in TLS versions [RFC7366]」，并且「SSLv3 cannot be updated to correct this flaw in the same way」。",
+          "why": "可被利用的是 SSL 3.0 自身的记录层与回退设计。RFC 6101 §5.2.3.2（CBC Block Cipher）描述 CBC 记录的填充，其中 padding_length 字段定义为「The length of the padding must be less than the cipher's block length and may be zero」，并说明「With CBC, the initialization vector (IV) for the first record is provided by the handshake protocol.The IV for subsequent records is the last ciphertext block from the previous record」（原文以 Note: 起句）；附录 E 则规定支持旧版的客户端必须发送旧版握手消息：「Version 3.0 clients that support version 2.0 servers must send version 2.0 client hello messages [SSL-2]」（原文如此，句首大写）。",
+          "used": "结论以规范形式表达：§3 规定「SSLv3 MUST NOT be used.Negotiation of SSLv3 from any version of TLS MUST NOT be permitted」。§1 说明为什么禁用仍然必要：「Since it was released in 1996, the SSLv3 protocol [RFC6101] has been subject to a long series of attacks」（句首大写原文保留），而且尽管 TLS 1.0（RFC 2246）在 1999 年、TLS 1.1（2002）与 TLS 1.2（2006）相继替代，「availability of these replacement versions has not been universal」。",
+          "broken": "该文档把 SSLv3 的其余防线也一并否定：§4.1 结论是「This leaves SSLv3 with no suitable record protection mechanism」；§4.2 补充「The SSLv3 key exchange is vulnerable to man-in-the-middle attacks when renegotiation [RFC5746] or session resumption [TRIPLE-HS] are used」；§4.3 则指出「all SSLv3 primitives rely on SHA-1 [RFC3174] and MD5 [RFC1321]」。该条目只采用这些成文结论，文档自己的参考文献对这次披露给出了一处归属——[POODLE] 条目是 Moeller 2014 年 10 月那篇标题即双关的披露文章；该条目不再补缩写全称，也不引入部署比例。",
+          "history": "RFC 7568 由 Barnes、Thomson、Pironti 与 Langley 撰写，2015 年 6 月发布为 Standards Track 并更新 RFC 5246；§7.2 的 [POODLE] 参考文献条目列为 Moeller 的「This POODLE bites: exploiting the SSL 3.0 fallback」，标注 October 2014 并给出网络链接。RFC 6101 则是把 SSL 3.0 作为历史文档收录：其前言写明本文描述「what is known as the last published version of the SSL 3.0 protocol, that is, the November 18, 1996, version of the protocol」。",
+          "refs": "- Wikipedia search entry for POODLE 攻击. https://zh.wikipedia.org/w/index.php?search=POODLE%20%E6%94%BB%E5%87%BB\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Event**: POODLE Attack. It is registered under cryptanalysis, dated 2014. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in cryptanalysis, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Web & Protocol Era. The registered date is 2014; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for POODLE 攻击. https://zh.wikipedia.org/w/index.php?search=POODLE%20%E6%94%BB%E5%87%BB\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013). https://link.springer.com/book/10.1007/978-3-319-01628-3",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "SSLv3：1996 年发布的第三版安全套接层协议。",
+          "POODLE：利用 SSL 3.0 CBC 填充的回退攻击。",
+          "回退：为兼容旧实现而降级到旧版本握手的机制。",
+          "MAC-then-encrypt：先算认证码再加密的记录构造。",
+          "非确定填充：填充长度可变且未被完整性覆盖的填充方式。",
+          "RFC 7568：要求禁止使用 SSLv3 的 IETF 文件。"
+        ],
+        "en": [
+          "SSLv3: the third version of the Secure Sockets Layer, released 1996.",
+          "POODLE: an attack on SSLv3 CBC padding used during fallback.",
+          "Fallback: downgrading a handshake to an older version for compatibility.",
+          "MAC-then-encrypt: computing the MAC before encryption of a record.",
+          "Non-deterministic padding: padding whose length is not integrity-protected.",
+          "RFC 7568: the IETF document requiring SSLv3 not be used."
+        ]
+      },
+      "figures": [
+        {
+          "id": "event-poodle-2014-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "POODLE 攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "POODLE Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "POODLE 攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for POODLE Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/event-poodle-2014-details-flow.zh.svg",
+            "en": "assets/event-poodle-2014-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "931d79c7936e4a1b6cd7db0b5baa5206e49e8be785ce2c738bfb85d7056453cc",
+            "en": "91d55be11c4cfe56971484167cf25d258bfbbdf0f3dba7558da683a5dc3df005"
+          }
+        }
+      ],
+      "sources": [
+        "event-poodle-2014-wikipedia",
+        "event-poodle-2014-reference-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

@@ -1,0 +1,206 @@
+{
+  "results": [
+    {
+      "id": "modes-official-vectors",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "SP 800-38A AES-128 first-block vectors for ECB, CBC, CFB, OFB and CTR",
+      "expected": "All five ciphertexts match the NIST values; decryption/round-trip where applicable",
+      "observed": {
+        "id": "modes-official-vectors",
+        "passed": true,
+        "vectors": {
+          "ecb": "3ad77bb40d7a3660a89ecaf32466ef97",
+          "cbc": "7649abac8119b246cee98e9b12e9197d",
+          "cfb": "3b3fd92eb72dad20333449f8e83cfb4a",
+          "ofb": "3b3fd92eb72dad20333449f8e83cfb4a",
+          "ctr": "874d6191b620e3261bef6864990db6ce"
+        },
+        "limit": "First-block vectors; not full-message mode validation."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-gcm-vector",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "NIST CAVP gcmEncryptExtIV128.rsp Count 0 (128-bit key, 96-bit IV, 128-bit plaintext, no AAD, 128-bit tag)",
+      "expected": "Ciphertext 2ccda4a5415cb91e135c2a0f78c9b2fd and tag b36d1df9b9d5e596f83e8b7f52971cb3; authenticated decryption succeeds",
+      "observed": {
+        "id": "modes-gcm-vector",
+        "passed": true,
+        "ciphertext": "2ccda4a5415cb91e135c2a0f78c9b2fd",
+        "tag": "b36d1df9b9d5e596f83e8b7f52971cb3",
+        "limit": "One official GCM case; no AAD or long-message coverage."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-ecb-pattern",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "AES-128 with a repeated 16-byte plaintext block under ECB, CBC and CTR",
+      "expected": "ECB produces identical ciphertext blocks; CBC and CTR do not",
+      "observed": {
+        "id": "modes-ecb-pattern",
+        "passed": true,
+        "ecbBlocksEqual": true,
+        "cbcBlocksEqual": false,
+        "ctrBlocksEqual": false,
+        "ecb": "3ad77bb40d7a3660a89ecaf32466ef973ad77bb40d7a3660a89ecaf32466ef97",
+        "limit": "Structural demonstration only."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-ctr-reuse",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "Two fixed plaintexts under the same AES-128 key and CTR nonce, then under different nonces",
+      "expected": "Same-nonce ciphertext XOR equals plaintext XOR; different nonce breaks the relation",
+      "observed": {
+        "id": "modes-ctr-reuse",
+        "passed": true,
+        "sameNonceXor": "ffffffffffffffffffffffffffffffff",
+        "plaintextXor": "ffffffffffffffffffffffffffffffff",
+        "differentNonceCipher": "57127d4034b1bebfaef466b9c7726fc6",
+        "limit": "Keystream-reuse arithmetic; not a complete protocol attack."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-cbc-bitflip",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "AES-128-CBC two-block ciphertext with one bit flipped in the first ciphertext block",
+      "expected": "The first plaintext block is corrupted and the same bit of the second plaintext block flips",
+      "observed": {
+        "id": "modes-cbc-bitflip",
+        "passed": true,
+        "tamperedCiphertext": "d0fe67cc996d32b6da0937e99bafec60b98ca59b96c68bce2b1a0ad44251c110",
+        "decrypted": "6dea2a30a67fb3a1528386e79276d8ea91111111111111111111111111111111",
+        "firstBlockCorrupted": true,
+        "secondBlockBitFlipped": true,
+        "limit": "Malleability demonstration; not a full oracle attack."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-gcm-tamper",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "The GCM test vector with a modified ciphertext and a modified tag",
+      "expected": "Authenticated decryption rejects both modifications",
+      "observed": {
+        "id": "modes-gcm-tamper",
+        "passed": true,
+        "cipherRejected": true,
+        "tagRejected": true,
+        "limit": "Tag verification behavior; not exhaustive malformed-input testing."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    },
+    {
+      "id": "modes-padding",
+      "entryId": "modes-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "aec492f34491310c9c23839f3adb77f54034210c388bea4b2d0d8954417ff087",
+      "dependencyHashes": {
+        "modes-teaching.mjs": "b41b10fd742b203fcaf6ef5ce538f0362642ea9b421587bd2183424fff2aa160",
+        "article.zh.md": "922e7ce0d20ce3d24d1192184c6a7afe86b5f932d04db7a54e9cce1dda50d235",
+        "article.en.md": "4f5effd504761b84f82d0a38b7d13e50e6ad20cb59ac7d9b3e2b63f64305ab96",
+        "meta.json": "ed7080d7204ca53dde9a2969c54e76a3f66d84db1c6591d035286aaac957cf97",
+        "glossary.json": "9543981c80cd98b35e29d3b1e1ddead83ceae884b60b6c9c09d8aef1a2bee34a",
+        "calculations.json": "30885780eaac56a3da4622de55e00a81a751874f0f738ba1cd694843797983e5"
+      },
+      "inputs": "A 20-byte plaintext padded with PKCS#7 for AES-CBC and a 20-byte plaintext under CTR",
+      "expected": "CBC input grows to 32 bytes with 12 bytes of padding 0x0c; CTR needs no padding and preserves length",
+      "observed": {
+        "id": "modes-padding",
+        "passed": true,
+        "originalBytes": 20,
+        "paddedBytes": 32,
+        "paddingBytes": 12,
+        "paddingValue": "0c",
+        "ctrBytes": 20,
+        "limit": "Padding mechanics only; no oracle behavior."
+      },
+      "contentSha256": "702dbd12eac0d2912fac567c4abf459d83ef1abd9766f76fe8d68f38fa31510d",
+      "sourcesSha256": "a821a71eddc135b86de2ab2ca18e169619966518ce49270cbb73ca2fea90f99c",
+      "executedOn": "2026-11-25T07:04:10.931Z"
+    }
+  ]
+}

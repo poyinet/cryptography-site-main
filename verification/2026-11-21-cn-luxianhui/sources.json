@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "cn-luxianhui-details",
+  "sources": [
+    {
+      "id": "cn-luxianhui-wikipedia",
+      "title": "Wikipedia search entry for 路献辉与格密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 路献辉与格密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "cn-luxianhui-r139-principle",
+          "entryId": "cn-luxianhui-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**中国密码史**：路献辉与格密码（Lu Xianhui and Lattice Cryptography）。### 环 LWE 的一个具体样本\n\nLAC 不直接写“格上的 LWE”，而是把样本放到环 \\(R_q=\\mathbb{Z}_q[x]/(x^n+1)\\)：公钥 \\(b=as+e\\)，其中 \\(a\\) 由种子展开，\\(s,e\\) 从中心二项分布采样。加密取随机掩码 \\(r\\)，得到 \\(c_1=ar+e_1\\)，并把第二项写成 \\(c_2=(br)_{l_v}+e_2+\\lfloor q/2\\rfloor m\\)。### 解密为什么能消掉共享项\n\n解密先算 \\(u=c_1s\\)，再用 \\(c_2-(u)_{l_v}\\) 去掉 \\(ars\\) 这一共享项；剩下的噪声被 \\(\\lfloor q/2\\rfloor m\\) 的两端编码隔开，于是按 \\(q/4\\le m_i<3q/4\\) 逐位判定 0/1。KEM 层再用 FO 变换重加密校验密文，才从 IND-CPA 的 PKE 走到 IND-CCA。",
+            "en": "**Cnhistory**: Lu Xianhui and Lattice Cryptography.It is registered under post-quantum cryptography."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-luxianhui-r139-why",
+          "entryId": "cn-luxianhui-details",
+          "section": "why",
+          "statement": {
+            "zh": "环 LWE 是后量子公钥密码的一条主线，LAC 把“环、模数、分布、编码、FO”这些抽象参数落成可执行算法。它选 \\(q=251\\) 的字节模数，牺牲常规 NTT 的加速，换取字节级实现和带宽；这类取舍是公式级读法，不是“格密码一定安全”的口号。",
+            "en": "It is listed because it connects concrete records, objects or procedures in post-quantum cryptography, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-luxianhui-r139-used",
+          "entryId": "cn-luxianhui-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 怎么用\n\n1.先确定安全级别，再选 n 与 q；不同 n/q/分布不能拼成同一个参数集。2.核对公钥是否只含种子和 b，私钥是否是 s；不要把种子当秘密。3.加密时检查两项密文与 \\(\\lfloor q/2\\rfloor m\\) 的编码，解密时检查 q/4 与 3q/4 的阈值。4.KEM 必须检查 FO 的 G/H 域分离与重加密比较，不能只跑 PKE。5.记录版本、参数、错误率和实现路径；历史候选的参数不能直接搬到今日部署。### 不能怎么用\n\n不能把 q=251 说成“越小越安全”；不能把 LAC 的第二轮结果说成 NIST 标准；不能把公式当成侧信道或解码错误的证明；不能在没有重加密检查时声称 KEM 是 IND-CCA。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-luxianhui-r139-broken",
+          "entryId": "cn-luxianhui-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.参数不匹配：n、q、秘密/误差分布、纠错码与哈希域分离任一改变，安全性都要重算。2.解码边界：阈值依赖噪声上界；错误率升高会让解密失败或泄漏信息。3.实现相关：NIST 报告指出 LAC 第一轮的纠错码和变时实现曾被攻击，后续修改并不等于所有实现都安全。4.版本相关：第二轮候选、修改版和最终标准不是同一对象。5.模型相关：FO 的随机 oracle/QROM 假设、侧信道模型与故障模型都要单独声明。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-luxianhui-r139-history",
+          "entryId": "cn-luxianhui-details",
+          "section": "history",
+          "statement": {
+            "zh": "路献辉 2009 年获西南交通大学信息安全博士，2009–2012 在中国科学院研究生院信息安全国家重点实验室做博士后，2013 年起在中国科学院信息工程研究所工作，2020 年起任研究员。LAC 于 2019 年 1 月进入 NIST PQC 第二轮，提交团队包括路献辉、贾丁丁、薛海洋、何静楠、张振飞、刘哲、杨浩；NIST IR 8309 记录它在第二轮后未进入第三轮。**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是后量子中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 路献辉与格密码；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。",
+            "en": "Registered period: China's Parallel Line.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        },
+        {
+          "id": "cn-luxianhui-r139-refs",
+          "entryId": "cn-luxianhui-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 路献辉与格密码.https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）.https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464。",
+            "en": "- Wikipedia search entry for 路献辉与格密码.https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "cn-luxianhui-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "cn-luxianhui-wikipedia"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-reference-ref",
+      "title": "《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）",
+      "url": "https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "中国密码史条目级书目参考；具体页码需按纸本核对。",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "cn-luxianhui-r139-principle",
+      "entryId": "cn-luxianhui-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**中国密码史**：路献辉与格密码（Lu Xianhui and Lattice Cryptography）。### 环 LWE 的一个具体样本\n\nLAC 不直接写“格上的 LWE”，而是把样本放到环 \\(R_q=\\mathbb{Z}_q[x]/(x^n+1)\\)：公钥 \\(b=as+e\\)，其中 \\(a\\) 由种子展开，\\(s,e\\) 从中心二项分布采样。加密取随机掩码 \\(r\\)，得到 \\(c_1=ar+e_1\\)，并把第二项写成 \\(c_2=(br)_{l_v}+e_2+\\lfloor q/2\\rfloor m\\)。### 解密为什么能消掉共享项\n\n解密先算 \\(u=c_1s\\)，再用 \\(c_2-(u)_{l_v}\\) 去掉 \\(ars\\) 这一共享项；剩下的噪声被 \\(\\lfloor q/2\\rfloor m\\) 的两端编码隔开，于是按 \\(q/4\\le m_i<3q/4\\) 逐位判定 0/1。KEM 层再用 FO 变换重加密校验密文，才从 IND-CPA 的 PKE 走到 IND-CCA。",
+        "en": "**Cnhistory**: Lu Xianhui and Lattice Cryptography.It is registered under post-quantum cryptography."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-r139-why",
+      "entryId": "cn-luxianhui-details",
+      "section": "why",
+      "statement": {
+        "zh": "环 LWE 是后量子公钥密码的一条主线，LAC 把“环、模数、分布、编码、FO”这些抽象参数落成可执行算法。它选 \\(q=251\\) 的字节模数，牺牲常规 NTT 的加速，换取字节级实现和带宽；这类取舍是公式级读法，不是“格密码一定安全”的口号。",
+        "en": "It is listed because it connects concrete records, objects or procedures in post-quantum cryptography, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-r139-used",
+      "entryId": "cn-luxianhui-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 怎么用\n\n1.先确定安全级别，再选 n 与 q；不同 n/q/分布不能拼成同一个参数集。2.核对公钥是否只含种子和 b，私钥是否是 s；不要把种子当秘密。3.加密时检查两项密文与 \\(\\lfloor q/2\\rfloor m\\) 的编码，解密时检查 q/4 与 3q/4 的阈值。4.KEM 必须检查 FO 的 G/H 域分离与重加密比较，不能只跑 PKE。5.记录版本、参数、错误率和实现路径；历史候选的参数不能直接搬到今日部署。### 不能怎么用\n\n不能把 q=251 说成“越小越安全”；不能把 LAC 的第二轮结果说成 NIST 标准；不能把公式当成侧信道或解码错误的证明；不能在没有重加密检查时声称 KEM 是 IND-CCA。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-r139-broken",
+      "entryId": "cn-luxianhui-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.参数不匹配：n、q、秘密/误差分布、纠错码与哈希域分离任一改变，安全性都要重算。2.解码边界：阈值依赖噪声上界；错误率升高会让解密失败或泄漏信息。3.实现相关：NIST 报告指出 LAC 第一轮的纠错码和变时实现曾被攻击，后续修改并不等于所有实现都安全。4.版本相关：第二轮候选、修改版和最终标准不是同一对象。5.模型相关：FO 的随机 oracle/QROM 假设、侧信道模型与故障模型都要单独声明。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-r139-history",
+      "entryId": "cn-luxianhui-details",
+      "section": "history",
+      "statement": {
+        "zh": "路献辉 2009 年获西南交通大学信息安全博士，2009–2012 在中国科学院研究生院信息安全国家重点实验室做博士后，2013 年起在中国科学院信息工程研究所工作，2020 年起任研究员。LAC 于 2019 年 1 月进入 NIST PQC 第二轮，提交团队包括路献辉、贾丁丁、薛海洋、何静楠、张振飞、刘哲、杨浩；NIST IR 8309 记录它在第二轮后未进入第三轮。**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是后量子中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 路献辉与格密码；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。",
+        "en": "Registered period: China's Parallel Line.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    },
+    {
+      "id": "cn-luxianhui-r139-refs",
+      "entryId": "cn-luxianhui-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 路献辉与格密码.https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）.https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464。",
+        "en": "- Wikipedia search entry for 路献辉与格密码.https://zh.wikipedia.org/w/index.php?search=%E8%B7%AF%E7%8C%AE%E8%BE%89%E4%B8%8E%E6%A0%BC%E5%AF%86%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "cn-luxianhui-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

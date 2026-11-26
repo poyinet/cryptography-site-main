@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for sp800-38g: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-38g-details",
+      "inventoryIds": [
+        "sp800-38g"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释格式保留加密模式的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of NIST SP 800-38G Methods for Format-Preserving Encryption: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "格式保留加密模式",
+        "en": "NIST SP 800-38G Methods for Format-Preserving Encryption"
+      },
+      "claimIds": [
+        "sp800-38g-r139-principle",
+        "sp800-38g-r139-why",
+        "sp800-38g-r139-used",
+        "sp800-38g-r139-broken",
+        "sp800-38g-r139-history",
+        "sp800-38g-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-38g-wikipedia",
+        "sp800-38g-reference-ref"
+      ],
+      "related": [
+        "fpe",
+        "block-cipher",
+        "algorithm--aes"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：NIST SP 800-38G 格式保留加密模式（NIST SP 800-38G Format-Preserving Encryption Modes）。摘要给出方法与定位：「This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.」并说明二者关系——「Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.」即密文保持明文格式（长度与字母表）。",
+          "why": "动机写在 §2：格式保留加密面向的不是二进制数据，而是「designed for data that is not necessarily binary」，并且「FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications」——老系统的数据字段不便改长度或格式。关键词表只给检索入口：「Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption」。",
+          "used": "使用形态是在批准分组密码之上调用 FF1/FF3；一致性测试一节把它接入验证框架，文档要求底层算法为「an underlying, approved symmetric-key block cipher algorithm」，因此在实现里通常落到 AES。",
+          "broken": "限度一是构造前提：两个模式都是建立在分组密码之上的 Feistel 置换，作用在固定进制的数字串上，而非任意格式；「an underlying, approved symmetric-key block cipher algorithm」是必要条件。限度二是参数下限的两种语气：附录区分了硬性下限与推荐值——radix^minlen 至少 100 是为了排除一类通用 meet-in-the-middle 攻击，而「the value radix minlen should generally be at least one million」在原文里是 suggested rather than required。",
+          "history": "版本与更新痕迹在标题页：日期行「March 2016」，引用行「Spec.Publ.800-38G, 28 pages (March 2016)」，页眉还留有「INCLUDES UPDATES AS OF 08-04-2016: PAGE I」，即 2016 年 8 月 4 日并入专利披露说明的版次。§2 交代历史一笔：第三模式 FF2（提交时名 VAES3）曾列入初稿，公开评审后被撤下。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：NIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 NIST SP 800-38G 格式保留加密模式 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式. https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nNIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: NIST SP 800-38G Format-Preserving Encryption Modes (NIST SP 800-38G 格式保留加密模式). The abstract gives methods and placement: \"This Recommendation specifies two methods, called FF1 and FF3, for format-preserving encryption.\" and their relation to a cipher: \"Both of these methods are modes of operation for an underlying, approved symmetric-key block cipher algorithm.\" Ciphertext keeps the plaintext’s format — length and alphabet.",
+          "why": "The motivation is in §2: format-preserving encryption is \"designed for data that is not necessarily binary\" and \"FPE facilitates the targeting of encryption to sensitive information, as well as the retrofitting of encryption technology to legacy applications\", where fields cannot easily change length or format. The keyword line is an index entry, not an argument: \"Block cipher; confidentiality; encryption; FF1; FF3; format-preserving encryption\".",
+          "used": "In use, FF1/FF3 are invoked over an approved block cipher; the conformance-testing section wires it into the validation framework, and the abstract requires \"an underlying, approved symmetric-key block cipher algorithm\", which in implementations means AES.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The first limit is the construction: both modes are Feistel permutations over digit strings in a fixed radix built on \"an underlying, approved symmetric-key block cipher algorithm\", not arbitrary formats. The second is the two registers of the parameter floors: Appendix A requires radix^minlen to be at least 100 to preclude a generic meet-in-the-middle attack, while the larger figure — \"the value radix minlen should generally be at least one million\" — is stated as suggested rather than required.",
+          "history": "The version marks are on the title page: the date line \"March 2016\", the citation \"Spec. Publ. 800-38G, 28 pages (March 2016)\", and the masthead note \"INCLUDES UPDATES AS OF 08-04-2016: PAGE I\" — the edition carrying the patent-disclosure note added on 4 August 2016. §2 records one more piece of history: a third mode, FF2 (submitted as VAES3), was in the initial draft and removed after public review.",
+          "refs": "- Wikipedia search entry for NIST SP 800-38G 格式保留加密模式. https://zh.wikipedia.org/w/index.php?search=NIST%20SP%20800-38G%20%E6%A0%BC%E5%BC%8F%E4%BF%9D%E7%95%99%E5%8A%A0%E5%AF%86%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nNIST SP 800-38G Format-Preserving Encryption Modes: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "格式保留加密：密文与明文同长同字符集。",
+          "FF1：Feistel 型格式保留加密方法。",
+          "FF3：另一支 Feistel 型方法。",
+          "radix：字母表基数。",
+          "tweak：随消息变化的公共参数。",
+          "confidentiality：本文件唯一声明的安全目标。"
+        ],
+        "en": [
+          "Format-preserving encryption: ciphertext matching the plaintext’s length and alphabet.",
+          "FF1: one Feistel-style FPE method.",
+          "FF3: the other Feistel-style FPE method.",
+          "Radix: the size of the alphabet.",
+          "Tweak: a public parameter varying per message.",
+          "Confidentiality: the only security property this document claims."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-38g-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "格式保留加密模式：为什么需要 → 核心机制 → 边界。",
+            "en": "NIST SP 800-38G Methods for Format-Preserving Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "格式保留加密模式 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for NIST SP 800-38G Methods for Format-Preserving Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-38g-details-flow.zh.svg",
+            "en": "assets/sp800-38g-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "e27679abff02ebf750fb26564265a379d93fe148e98dfa756074225c2040167d",
+            "en": "f56d28b0fc16e107407bd1896ced8d362e2cb7e90b30dfbf12c3e9c51ced5c62"
+          }
+        },
+        {
+          "id": "sp800-38g-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "格式保留加密模式 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for NIST SP 800-38G Methods for Format-Preserving Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "格式保留加密模式 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for NIST SP 800-38G Methods for Format-Preserving Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-38g-details-r138-model.zh.svg",
+            "en": "assets/sp800-38g-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0bd1ae434a3fb416eaf0351447f2af8c322a2a41d9b260db30e4ab26024d51db",
+            "en": "c433bd6790ae8296f3e58f1f23dcbfd8943f7afee164937e0b99771f89aafebb"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-38g-r139-formal",
+          "entryId": "sp800-38g-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：NIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 NIST SP 800-38G 格式保留加密模式 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-38g-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-38g-r139-formal"
+      ],
+      "sources": [
+        "sp800-38g-wikipedia",
+        "sp800-38g-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-38g-r139-formal",
+      "entryId": "sp800-38g-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：NIST SP 800-38G 格式保留加密模式的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 NIST SP 800-38G 格式保留加密模式 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-38g-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

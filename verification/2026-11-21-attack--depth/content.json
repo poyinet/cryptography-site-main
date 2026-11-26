@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R124 formula-level deepening for attack--depth-details.",
+  "entries": [
+    {
+      "id": "attack--depth-details",
+      "inventoryIds": [
+        "attack--depth"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出深度异或/模 10 相减、重合指数与期望匹配数、对齐和 crib 筛选，以及真 OTP、错位与编码变化四类失效边界。",
+        "en": "This entry gives XOR and mod 10 depth, the index of coincidence and expected matches, alignment and crib screening, and four failure boundaries: true OTP, misalignment, encoding changes and short data."
+      },
+      "title": {
+        "zh": "深度",
+        "en": "Depth"
+      },
+      "claimIds": [
+        "attack--depth-r139-principle",
+        "attack--depth-r139-why",
+        "attack--depth-r139-used",
+        "attack--depth-r139-broken",
+        "attack--depth-r139-history",
+        "attack--depth-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--depth-wikipedia",
+        "attack--depth-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography",
+        "depth"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "attack--depth-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "深度攻击：同一密钥流的两条报文相减后只剩明文差，再用重合指数和 crib 分段恢复。",
+            "en": "Depth attack: two messages under one keystream cancel to a plaintext difference, which coincidence counts and cribs resolve."
+          },
+          "alt": {
+            "zh": "四步公式级机制：收集同密钥报文 → 对齐深度 → 异或消去密钥流 → 统计与 crib 筛选；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: collect same-key messages → align the depth → cancel the keystream → statistical and crib screening; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/attack--depth-mechanism.zh.svg",
+            "en": "assets/attack--depth-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "777b21c456af215a0c3d592005c549c11eb1ffe75ff7b95c8bed61267d682660",
+            "en": "82005309c29c441733999a3dacb394ca010f9db06c390e79583644f45cd2313a"
+          }
+        },
+        {
+          "id": "attack--depth-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "深度 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Depth: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "深度 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Depth, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--depth-details-r138-model.zh.svg",
+            "en": "assets/attack--depth-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "6c2b190c271e888c573041625f147837500e29a7070ce526cfdbb1cf179c57d9",
+            "en": "4155876a364196a61ddedeb9543179f862e41c4b8b9879b7441dfe97eaf67366"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：深度（Depth）。### 密钥流抵消\n\n设两条报文使用同一密钥流 K：C_i=P_i⊕ K、C_j=P_j⊕ K。异或两密文得 C_i⊕ C_j=P_i⊕ P_j，密钥流被消去，只剩两个明文之差。对逐位模 10 的加法密码，同样有 C_i⊖ C_j=(P_i⊖ P_j)mod 10。### 对齐与统计\n\n若报文长度不同，需要先找对齐偏移。Friedman 重合指数 IC=Σ_x f_x(f_x-1)/N(N-1) 衡量文本字母分布的集中度：英语约为 0.065，随机 26 字母约为 0.038。两条自然语言文本在 N 个对齐位置上期望有 NΣ_x p_x^2 个相同字母；这个峰值帮助确认偏移，再用 crib 或语言模型恢复明文。",
+          "why": "深度说明“密钥复用”本身就是漏洞，不需要密码算法有统计缺陷。它把一次一密的安全条件——密钥只使用一次——变成可检验的攻击模型，也解释了为什么同一加法页、同一密钥流会制造大量报文对。",
+          "used": "1.确认多条报文使用同一密钥流或同一加法页。2.找对齐偏移，可用已知 crib 或 IC 峰值。3.异或/相减两条密文，得到明文差。4.用语言统计、crib 字典或候选明文分段恢复两侧文本。5.用另一对报文交叉验证，避免把偶然匹配当明文。### 不能怎么用\n\n不能把深度当“已知密钥”；不能在真正一次性且不复用的密钥上使用；不能忽略不同页、不同编码和压缩造成的错位。",
+          "broken": "1.密钥只使用一次：C_i⊕ C_j 仍是两个独立随机流之积，不泄露明文差。2.不同页/不同密钥：相减后仍含未知密钥差。3.对齐错误：一个字符的偏移就会让统计峰值消失。4.编码变化：压缩、转码、填充改变字母分布，IC 与 crib 失效。5.报文太短：可用重叠位置不足，统计不显著。",
+          "history": "Friedman 在 1922 年系统提出重合指数，用于判断多表替换的密钥长度与文本语言。二战中，同一加法页的复用制造了 JN-25 与 VENONA 的深度：JN-25 的加法簿为 300 页 × 100 组，VENONA 约有 35,000 页重复密钥。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 深度 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 深度 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 深度. https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Depth (深度). ### Cancelling the keystream\n\nLet two messages use the same keystream K: C_i=P_i⊕ K, C_j=P_j⊕ K. XORing the ciphertexts gives C_i⊕ C_j=P_i⊕ P_j: the keystream cancels and only the difference of the plaintexts remains. For a digit-wise mod 10 additive cipher, the same relation is C_i⊖ C_j=(P_i⊖ P_j)mod 10. ### Alignment and statistics\n\nIf the messages have different lengths, first find the alignment offset. The Friedman index of coincidence IC=Σ_x f_x(f_x-1)/N(N-1) measures how concentrated the letter distribution is: English is about 0.065, random 26-letter text about 0.038. Two natural-language texts over N aligned positions have an expected NΣ_x p_x^2 equal letters; this peak identifies the offset, after which cribs or a language model recover the plaintext.",
+          "why": "Depth shows that key reuse is a vulnerability by itself, without a statistical defect in the cipher. It turns the one-time-pad condition—use the key once—into a testable attack model, and explains why the same additive page or keystream creates many message pairs.\n\nThis is the generic depth mechanism; VENONA and JN-25 are historical cases. Depth is not differential cryptanalysis: differential analysis uses round-function probabilities, while depth uses keystream reuse. Both XOR or subtract, but their objects and assumptions differ.",
+          "used": "1. Confirm that several messages use the same keystream or additive page. 2. Find the alignment offset, using a known crib or an IC peak. 3. XOR or subtract two ciphertexts to obtain the plaintext difference. 4. Recover both sides with language statistics, a crib dictionary or segmented candidates. 5. Cross-check with another pair so an accidental match is not reported as plaintext.\n\nDo not treat depth as a known key; do not use it against a true one-time key that is never reused; do not ignore misalignment from different pages, encodings or compression.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. One-time use: C_i⊕ C_j is still the product of two independent random streams and leaks no plaintext difference. 2. Different pages or keys: the difference still contains an unknown key difference. 3. Wrong alignment: a one-character offset destroys the statistical peak. 4. Encoding changes: compression, transcoding or padding alter the letter distribution and break IC and cribs. 5. Short messages: too few overlapping positions make the statistic insignificant.",
+          "history": "Friedman systematised the index of coincidence in 1922 for estimating the key length and language of polyalphabetic text. In World War II, reuse of the same additive page created depth in JN-25 and VENONA: the JN-25 additive book had 300 pages × 100 groups, and VENONA had about 35,000 duplicate-key pages.",
+          "refs": "- Wikipedia search entry for 深度. https://zh.wikipedia.org/w/index.php?search=%E6%B7%B1%E5%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nDepth: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "attack--depth-r139-formal",
+          "entryId": "attack--depth-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 深度 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--depth-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--depth-r139-formal"
+      ],
+      "sources": [
+        "attack--depth-wikipedia",
+        "attack--depth-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--depth-r139-formal",
+      "entryId": "attack--depth-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：深度的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 深度 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--depth-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

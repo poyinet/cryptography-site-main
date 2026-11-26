@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "hpke-details",
+  "sources": [
+    {
+      "id": "hpke-wikipedia",
+      "title": "Wikipedia search entry for HPKE 混合公钥加密",
+      "url": "https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: HPKE 混合公钥加密",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "hpke-r139-principle",
+          "entryId": "hpke-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：HPKE 混合公钥加密（Hybrid Public Key Encryption）。RFC 9180 §5 说明各模式的共同接口：「All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.」混合即公钥封装 + 对称 AEAD的组合。",
+            "en": "**Protocol**: Hybrid Public Key Encryption (HPKE 混合公钥加密).Section 5 gives the common shape: \"All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.\" Hybrid here means a public-key encapsulation combined with a symmetric AEAD."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        },
+        {
+          "id": "hpke-r139-why",
+          "entryId": "hpke-details",
+          "section": "why",
+          "statement": {
+            "zh": "动机是既有方案不统一：§1 指出「Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)」，并说明「All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.」§5.3 另外提供从加密上下文中导出密钥的接口。",
+            "en": "The motive is fragmentation: §1 says \"Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)\" and that \"All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.\" Section 5.3 adds an interface for exporting secrets from the encryption context."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        },
+        {
+          "id": "hpke-r139-used",
+          "entryId": "hpke-details",
+          "section": "used",
+          "statement": {
+            "zh": "最常见用法是单条消息加密：§6.1 说明「In many cases, applications encrypt only a single message to a recipient's public key.」并给出无状态模板；套件标识由三部分拼接，§4 规定在 KEM 内部使用时「suite_id MUST start with」KEM 前缀，在 HPKE 其余部分「MUST start with」HPKE 前缀以标识整套密码套件。",
+            "en": "The common case is one message: §6.1 states \"In many cases, applications encrypt only a single message to a recipient's public key.\" and supplies the stateless single-shot templates.Section 4 pins the identifiers, requiring that inside a KEM \"suite_id MUST start with\" the KEM prefix while in the rest of HPKE it \"MUST start with\" the HPKE prefix identifying the whole ciphersuite."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        },
+        {
+          "id": "hpke-r139-broken",
+          "entryId": "hpke-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界写在安全分析里：§9.1 直说「HPKE does not provide forward secrecy with respect to recipient compromise.」§9.7.4 强调「HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.」文档另列非目标（不含降级与重放防护、不隐藏明文长度），且未登记任何后量子 KEM 套件。",
+            "en": "The limits are stated with the analysis: §9.1 says \"HPKE does not provide forward secrecy with respect to recipient compromise.\" and §9.7.4 that \"HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.\" The document also lists non-goals (no downgrade or replay prevention, no hiding of the plaintext length) and registers no post-quantum KEM suite."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        },
+        {
+          "id": "hpke-r139-history",
+          "entryId": "hpke-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 9180 于 2022 年 2 月发布，头部标注为 IRTF 与 Informational，并说明「This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.」；算法标识表在 §7（标题为 Algorithm Identifiers），本文没有 Obsoletes 行。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：HPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "RFC 9180 dates from February 2022, is labelled IRTF and Informational, and states \"This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.\" The algorithm identifiers table is §7, titled Algorithm Identifiers, and the document carries no Obsoletes line."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        },
+        {
+          "id": "hpke-r139-refs",
+          "entryId": "hpke-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for HPKE 混合公钥加密.https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9180: Hybrid Public Key Encryption.https://www.rfc-editor.org/rfc/rfc9180\n- Published standard/RFC for HPKE 混合公钥加密.https://www.rfc-editor.org/rfc/rfc9180。",
+            "en": "- Wikipedia search entry for HPKE 混合公钥加密.https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "hpke-reference-ref",
+            "hpke-specific",
+            "hpke-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "hpke-wikipedia"
+      ]
+    },
+    {
+      "id": "hpke-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hpke-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "hpke-specific",
+      "title": "RFC 9180: Hybrid Public Key Encryption",
+      "url": "https://www.rfc-editor.org/rfc/rfc9180",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hpke-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "hpke-standard",
+      "title": "Published standard/RFC for HPKE 混合公钥加密",
+      "url": "https://www.rfc-editor.org/rfc/rfc9180",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for HPKE 混合公钥加密",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "hpke-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "hpke-r139-principle",
+      "entryId": "hpke-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：HPKE 混合公钥加密（Hybrid Public Key Encryption）。RFC 9180 §5 说明各模式的共同接口：「All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.」混合即公钥封装 + 对称 AEAD的组合。",
+        "en": "**Protocol**: Hybrid Public Key Encryption (HPKE 混合公钥加密).Section 5 gives the common shape: \"All variants take a recipient public key and a sequence of plaintexts pt and produce an encapsulated key enc and a sequence of ciphertexts ct.\" Hybrid here means a public-key encapsulation combined with a symmetric AEAD."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    },
+    {
+      "id": "hpke-r139-why",
+      "entryId": "hpke-details",
+      "section": "why",
+      "statement": {
+        "zh": "动机是既有方案不统一：§1 指出「Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)」，并说明「All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.」§5.3 另外提供从加密上下文中导出密钥的接口。",
+        "en": "The motive is fragmentation: §1 says \"Currently, there are numerous competing and non-interoperable standards and variants for hybrid encryption, mostly variants on the Elliptic Curve Integrated Encryption Scheme (ECIES)\" and that \"All these existing schemes have problems, e.g., because they rely on outdated primitives, lack proofs of indistinguishable (adaptive) chosen-ciphertext attack (IND-CCA2) security, or fail to provide test vectors.\" Section 5.3 adds an interface for exporting secrets from the encryption context."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    },
+    {
+      "id": "hpke-r139-used",
+      "entryId": "hpke-details",
+      "section": "used",
+      "statement": {
+        "zh": "最常见用法是单条消息加密：§6.1 说明「In many cases, applications encrypt only a single message to a recipient's public key.」并给出无状态模板；套件标识由三部分拼接，§4 规定在 KEM 内部使用时「suite_id MUST start with」KEM 前缀，在 HPKE 其余部分「MUST start with」HPKE 前缀以标识整套密码套件。",
+        "en": "The common case is one message: §6.1 states \"In many cases, applications encrypt only a single message to a recipient's public key.\" and supplies the stateless single-shot templates.Section 4 pins the identifiers, requiring that inside a KEM \"suite_id MUST start with\" the KEM prefix while in the rest of HPKE it \"MUST start with\" the HPKE prefix identifying the whole ciphersuite."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    },
+    {
+      "id": "hpke-r139-broken",
+      "entryId": "hpke-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界写在安全分析里：§9.1 直说「HPKE does not provide forward secrecy with respect to recipient compromise.」§9.7.4 强调「HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.」文档另列非目标（不含降级与重放防护、不隐藏明文长度），且未登记任何后量子 KEM 套件。",
+        "en": "The limits are stated with the analysis: §9.1 says \"HPKE does not provide forward secrecy with respect to recipient compromise.\" and §9.7.4 that \"HPKE ciphertexts are not forward secret with respect to recipient compromise in any mode.\" The document also lists non-goals (no downgrade or replay prevention, no hiding of the plaintext length) and registers no post-quantum KEM suite."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    },
+    {
+      "id": "hpke-r139-history",
+      "entryId": "hpke-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 9180 于 2022 年 2 月发布，头部标注为 IRTF 与 Informational，并说明「This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.」；算法标识表在 §7（标题为 Algorithm Identifiers），本文没有 Obsoletes 行。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：HPKE 混合公钥加密的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "RFC 9180 dates from February 2022, is labelled IRTF and Informational, and states \"This document is a product of the Crypto Forum Research Group (CFRG) in the IRTF.\" The algorithm identifiers table is §7, titled Algorithm Identifiers, and the document carries no Obsoletes line."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    },
+    {
+      "id": "hpke-r139-refs",
+      "entryId": "hpke-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for HPKE 混合公钥加密.https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 9180: Hybrid Public Key Encryption.https://www.rfc-editor.org/rfc/rfc9180\n- Published standard/RFC for HPKE 混合公钥加密.https://www.rfc-editor.org/rfc/rfc9180。",
+        "en": "- Wikipedia search entry for HPKE 混合公钥加密.https://zh.wikipedia.org/w/index.php?search=HPKE%20%E6%B7%B7%E5%90%88%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "hpke-reference-ref",
+        "hpke-specific",
+        "hpke-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

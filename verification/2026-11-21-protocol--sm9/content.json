@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening batch for protocol--sm9-details.",
+  "entries": [
+    {
+      "id": "protocol--sm9-details",
+      "inventoryIds": [
+        "protocol--sm9"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R105 AEAD、流密码、标识密码与盲签名深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R105 AEAD, stream cipher, identity-based cryptography and blind-signature deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "SM9 标识密码",
+        "en": "SM9 Identity-Based Cryptography"
+      },
+      "claimIds": [
+        "protocol--sm9-r139-principle",
+        "protocol--sm9-r139-why",
+        "protocol--sm9-r139-used",
+        "protocol--sm9-r139-broken",
+        "protocol--sm9-r139-history",
+        "protocol--sm9-r139-refs"
+      ],
+      "sourceIds": [
+        "protocol--sm9-wikipedia",
+        "protocol--sm9-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography",
+        "sm9"
+      ],
+      "related": [
+        "sm2"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "protocol--sm9-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM9 标识密码：为什么需要 → 核心机制 → 边界。",
+            "en": "SM9 Identity-Based Cryptography: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "SM9 标识密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for SM9 Identity-Based Cryptography, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/protocol--sm9-details-flow.zh.svg",
+            "en": "assets/protocol--sm9-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f3630fc9596d10dbf03f832aac022da459cc3e6c69fcee90fc0cd4464894be27",
+            "en": "f78aa901f5a0016de8fa07285c836cf798442d63ea58c7106f1bfbee8ac18de2"
+          }
+        },
+        {
+          "id": "protocol--sm9-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "SM9 标识密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for SM9 Identity-Based Cryptography: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "SM9 标识密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for SM9 Identity-Based Cryptography, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/protocol--sm9-details-r138-model.zh.svg",
+            "en": "assets/protocol--sm9-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "722b6aa41d1e969493e07f43c5bafe080b03ada0f3c62c777d32b14326c43a97",
+            "en": "7bd15231abb5126242f1b8c16b86d608edb99794cc1227cbc627994eabc4a416"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**协议**：SM9 标识密码（SM9 Identity-Based Cryptography）。### 标识即公钥\n\nSM9 在 256 位 BN 曲线上用双线性对实现标识密码：公钥是身份字符串，私钥由 KGC 用主私钥派生；签名用 (h,S)，加密用 C1/C2/C3。系统有签名主密钥对和加密主密钥对，主公钥公开，主私钥由 KGC 保管；用户公钥由身份字符串唯一确定。### 双线性对与签名\n\nSM9 使用 256 位 BN 曲线上的双线性对 e: G1×G2→GT，阶为素数 N。签名私钥 dsA = [ks/(H1(IDA||hid,N)+ks)]P1；签名 (h,S) 用 g=e(P1,Ppub-s)、w=g^r、h=H2(M||w,N)、l=(r−h) mod n、S=[l]dsA。验证用 e(S, [H1(IDA||hid,N)]P2+Ppub-s) 恢复 w。### 加密与密钥交换\n\n加密用接收方标识 IDB 和加密主公钥 Ppub-e 计算共享配对值，KDF 导出密钥，密文含 C1=[r]Q、C2、C3；密钥交换用双方标识和私钥计算共享值，再导出会话密钥。",
+          "why": "SM9 的价值是去掉证书链：公钥直接是身份，KGC 派生私钥，适合 IoT、政务、邮件和企业内网等身份已存在的场景。它把签名、加密、密钥交换、KEM 放在同一套标识密码标准里，减少证书申请、分发、吊销的开销。代价是密钥托管：KGC 知道或能生成所有用户私钥；主密钥泄露会导致全系统私钥泄露。它适合“身份由中心管理”的封闭域，不适合完全去中心化的场景。",
+          "used": "用于标识认证、加密邮件、电子签章、物联网设备身份、政务/企业专网；TLCP 之外，SM9 有独立的签名、加密、密钥交换流程。标准为 GM/T 0044 系列，2020 年上升为 GB/T 38635 系列；2021 年标识加密进入 ISO/IEC 18033-5。工程要点：hid 和曲线参数固定；KGC 主密钥必须分层保护或门限化；用户私钥要安全分发；签名验证要检查 h 范围和 S 在 G1；加密要验证 C1 在 G1。",
+          "broken": "SM9 的安全性依赖双线性 DH 类难题、SM3、KGC 主密钥和用户私钥。主密钥单点泄露、KGC 作恶、私钥托管、配对实现侧信道、身份字符串歧义和私钥撤销都是现实风险。",
+          "history": "标识密码由 Shamir 在 1984 年提出；SM9 由国家密码管理局组织制定，2016 年 3 月 28 日发布 GM/T 0044 系列（5 部分），2020 年 4 月 28 日发布 GB/T 38635.1/.2-2020，2020 年 11 月实施。2018 年 SM9 数字签名进入 ISO/IEC 14888-3；2021 年 2 月 SM9 标识加密进入 ISO/IEC 18033-5 Amendment 1。SM9 的意义是把标识密码从论文概念变成可互操作的中国商用密码标准，并在国际标准中占位。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：SM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 SM9 标识密码 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 把协议消息序列写成状态机 2. 用混合论证逐个替换原语 3. 把剩余优势归约到 PRF/AEAD 安全。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for SM9 标识密码. https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nSM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: SM9 Identity-Based Cryptography (SM9 标识密码). ### Identity is the public key\n\nSM9 is identity-based cryptography: a user’s public key is determined by an identity string (email, ID number, domain name), and the private key is derived by a key generation center (KGC) from the master secret and the identity. Separate signature and encryption master key pairs exist; the master public keys are public and the master secrets are held by the KGC. ### Bilinear pairing and signatures\n\nSM9 uses a bilinear pairing e: G1×G2→GT on a 256-bit BN curve of prime order N. The signing key is dsA = [ks/(H1(IDA||hid,N)+ks)]P1. A signature (h,S) uses g=e(P1,Ppub-s), w=g^r, h=H2(M||w,N), l=(r−h) mod n and S=[l]dsA; verification recovers w from e(S, [H1(IDA||hid,N)]P2+Ppub-s). ### Encryption and key exchange\n\nEncryption uses the recipient identity IDB and encryption master public key Ppub-e to compute a shared pairing value, KDF-derives a key, and outputs C1=[r]Q, C2 and C3. Key exchange computes a shared value from both identities and private keys, then derives a session key.",
+          "why": "SM9’s value is removing certificate chains: the public key is the identity and the KGC derives private keys, which suits IoT, government, email and enterprise intranets where identities already exist. One identity-based standard family covers signatures, encryption, key exchange and KEM, reducing certificate issuance, distribution and revocation overhead.\n\nThe price is key escrow: the KGC knows or can generate every user’s private key, and master-key leakage compromises the whole system. It fits closed domains with centrally managed identities, not fully decentralized settings.",
+          "used": "It is used for identity authentication, encrypted mail, electronic seals, IoT device identity and government/enterprise networks; outside TLCP, SM9 has separate signature, encryption and key-exchange flows. The standards are the GM/T 0044 series, raised to GB/T 38635 in 2020; identity-based encryption entered ISO/IEC 18033-5 in 2021.\n\nRequirements: fix hid and curve parameters; protect or threshold-share the KGC master secret; distribute user private keys securely; check the h range and that S lies in G1; validate C1 lies in G1 during decryption.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "SM9 security rests on bilinear Diffie–Hellman-type problems, SM3, the KGC master secret and user private keys. Single-point master-key leakage, a malicious KGC, key escrow, pairing side channels, identity-string ambiguity and private-key revocation are real risks.\n\nBoundaries: SM9 is not a certificateless decentralized scheme; it concentrates trust in the KGC. Identity canonicalization (case, encoding, hid) must be consistent across systems, and one master key should not serve signature and encryption without domain separation.",
+          "history": "Identity-based cryptography was proposed by Shamir in 1984. SM9 was organized by OSCCA: the GM/T 0044 series (five parts) appeared on 28 March 2016, and GB/T 38635.1/.2-2020 was published on 28 April 2020 and took effect in November 2020. SM9 signatures entered ISO/IEC 14888-3 in 2018; identity-based encryption entered ISO/IEC 18033-5 Amendment 1 in February 2021.\n\nSM9’s significance is turning identity-based cryptography from a paper concept into an interoperable Chinese commercial standard with an international standards footprint.",
+          "refs": "- Wikipedia search entry for SM9 标识密码. https://zh.wikipedia.org/w/index.php?search=SM9%20%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nSM9 Identity-Based Cryptography: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "protocol--sm9-r139-formal",
+          "entryId": "protocol--sm9-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：SM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 SM9 标识密码 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "protocol--sm9-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "protocol--sm9-r139-formal"
+      ],
+      "sources": [
+        "protocol--sm9-wikipedia",
+        "protocol--sm9-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "protocol--sm9-r139-formal",
+      "entryId": "protocol--sm9-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：SM9 标识密码的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 SM9 标识密码 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "protocol--sm9-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

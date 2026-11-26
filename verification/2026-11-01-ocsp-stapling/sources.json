@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ocsp-stapling-details",
+  "sources": [
+    {
+      "id": "ocsp-stapling-wikipedia",
+      "title": "Wikipedia search entry for OCSP 装订",
+      "url": "https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: OCSP 装订",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ocsp-stapling-r139-principle",
+          "entryId": "ocsp-stapling-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：OCSP 装订（OCSP Stapling）。机制是把手上的证书状态信息放进 TLS 握手：RFC 6066 §8（Certificate Status Request）说明「This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.」。",
+            "en": "**Protocol**: OCSP Stapling (OCSP 装订).The mechanism carries certificate status information inside the handshake: RFC 6066 §8 (Certificate Status Request) says \"This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.\"。."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        },
+        {
+          "id": "ocsp-stapling-r139-why",
+          "entryId": "ocsp-stapling-details",
+          "section": "why",
+          "statement": {
+            "zh": "动因是带宽与往返，而不是隐私：同节写道「Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.」。",
+            "en": "The stated reason is bandwidth and round-trips, not privacy: the same section says \"Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        },
+        {
+          "id": "ocsp-stapling-r139-used",
+          "entryId": "ocsp-stapling-details",
+          "section": "used",
+          "statement": {
+            "zh": "服务端的应答是可选的：§8 规定「Servers that receive a client hello containing the \"status_request\" extension MAY return a suitable certificate status response to the client along with their certificate.」并且「Only one OCSP response may be sent.」；若真的返回 CertificateStatus，则此前必须在 ServerHello 里带上空的 status_request 扩展。",
+            "en": "The server answers optionally: §8 covers a client hello \"containing the “status_request” extension\" and says such servers \"MAY return a suitable certificate status response to the client along with their certificate.\" and that \"Only one OCSP response may be sent.\" A server that does send a CertificateStatus message must earlier have included the extension with empty data in the server hello.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        },
+        {
+          "id": "ocsp-stapling-r139-broken",
+          "entryId": "ocsp-stapling-details",
+          "section": "broken",
+          "statement": {
+            "zh": "装订不能替代校验：§11.6 警告「If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.」并建议必须做 OCSP 校验的客户端「SHOULD either contact the OCSP server directly or abort the handshake」。",
+            "en": "Stapling does not replace validation: §11.6 warns that \"If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.\" and advises a client that requires OCSP validation to \"SHOULD either contact the OCSP server directly or abort the handshake\"."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        },
+        {
+          "id": "ocsp-stapling-r139-history",
+          "entryId": "ocsp-stapling-details",
+          "section": "history",
+          "statement": {
+            "zh": "该扩展由 2011 年 1 月的 Standards Track 文档 RFC 6066 规定，头部标注「Obsoletes: 4366」，§1 说明文件多为对 RFC 4366 材料的改编与编辑；nonce 的编码在此被钉死：「for clarification, the nonce MUST be a DER-encoded OCTET STRING」。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：OCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+            "en": "The extension is specified by RFC 6066, a Standards Track document from January 2011 whose header carries “Obsoletes: 4366” and whose §1 says the text is largely an adaptation of RFC 4366 material.The nonce encoding is pinned here: \"for clarification, the nonce MUST be a DER-encoded OCTET STRING\"."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        },
+        {
+          "id": "ocsp-stapling-r139-refs",
+          "entryId": "ocsp-stapling-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for OCSP 装订.https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 6960: Online Certificate Status Protocol.https://www.rfc-editor.org/rfc/rfc6960\n- Published standard/RFC for OCSP 装订.https://www.rfc-editor.org/rfc/rfc6960。",
+            "en": "- Wikipedia search entry for OCSP 装订.https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ocsp-stapling-reference-ref",
+            "ocsp-stapling-specific",
+            "ocsp-stapling-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "ocsp-stapling-wikipedia"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ocsp-stapling-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "ocsp-stapling-specific",
+      "title": "RFC 6960: Online Certificate Status Protocol",
+      "url": "https://www.rfc-editor.org/rfc/rfc6960",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ocsp-stapling-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "ocsp-stapling-standard",
+      "title": "Published standard/RFC for OCSP 装订",
+      "url": "https://www.rfc-editor.org/rfc/rfc6960",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for OCSP 装订",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ocsp-stapling-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "ocsp-stapling-r139-principle",
+      "entryId": "ocsp-stapling-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：OCSP 装订（OCSP Stapling）。机制是把手上的证书状态信息放进 TLS 握手：RFC 6066 §8（Certificate Status Request）说明「This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.」。",
+        "en": "**Protocol**: OCSP Stapling (OCSP 装订).The mechanism carries certificate status information inside the handshake: RFC 6066 §8 (Certificate Status Request) says \"This extension allows for such information to be sent in the TLS handshake, saving roundtrips and resources.\"。."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-r139-why",
+      "entryId": "ocsp-stapling-details",
+      "section": "why",
+      "statement": {
+        "zh": "动因是带宽与往返，而不是隐私：同节写道「Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.」。",
+        "en": "The stated reason is bandwidth and round-trips, not privacy: the same section says \"Constrained clients may wish to use a certificate-status protocol such as OCSP [RFC2560] to check the validity of server certificates, in order to avoid transmission of CRLs and therefore save bandwidth on constrained networks.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-r139-used",
+      "entryId": "ocsp-stapling-details",
+      "section": "used",
+      "statement": {
+        "zh": "服务端的应答是可选的：§8 规定「Servers that receive a client hello containing the \"status_request\" extension MAY return a suitable certificate status response to the client along with their certificate.」并且「Only one OCSP response may be sent.」；若真的返回 CertificateStatus，则此前必须在 ServerHello 里带上空的 status_request 扩展。",
+        "en": "The server answers optionally: §8 covers a client hello \"containing the “status_request” extension\" and says such servers \"MAY return a suitable certificate status response to the client along with their certificate.\" and that \"Only one OCSP response may be sent.\" A server that does send a CertificateStatus message must earlier have included the extension with empty data in the server hello.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-r139-broken",
+      "entryId": "ocsp-stapling-details",
+      "section": "broken",
+      "statement": {
+        "zh": "装订不能替代校验：§11.6 警告「If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.」并建议必须做 OCSP 校验的客户端「SHOULD either contact the OCSP server directly or abort the handshake」。",
+        "en": "Stapling does not replace validation: §11.6 warns that \"If a client requests an OCSP response, it must take into account that an attacker's server using a compromised key could (and probably would) pretend not to support the extension.\" and advises a client that requires OCSP validation to \"SHOULD either contact the OCSP server directly or abort the handshake\"."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-r139-history",
+      "entryId": "ocsp-stapling-details",
+      "section": "history",
+      "statement": {
+        "zh": "该扩展由 2011 年 1 月的 Standards Track 文档 RFC 6066 规定，头部标注「Obsoletes: 4366」，§1 说明文件多为对 RFC 4366 材料的改编与编辑；nonce 的编码在此被钉死：「for clarification, the nonce MUST be a DER-encoded OCTET STRING」。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\)。输入：输入：OCSP 装订的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+        "en": "The extension is specified by RFC 6066, a Standards Track document from January 2011 whose header carries “Obsoletes: 4366” and whose §1 says the text is largely an adaptation of RFC 4366 material.The nonce encoding is pinned here: \"for clarification, the nonce MUST be a DER-encoded OCTET STRING\"."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    },
+    {
+      "id": "ocsp-stapling-r139-refs",
+      "entryId": "ocsp-stapling-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for OCSP 装订.https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 6960: Online Certificate Status Protocol.https://www.rfc-editor.org/rfc/rfc6960\n- Published standard/RFC for OCSP 装订.https://www.rfc-editor.org/rfc/rfc6960。",
+        "en": "- Wikipedia search entry for OCSP 装订.https://zh.wikipedia.org/w/index.php?search=OCSP%20%E8%A3%85%E8%AE%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ocsp-stapling-reference-ref",
+        "ocsp-stapling-specific",
+        "ocsp-stapling-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

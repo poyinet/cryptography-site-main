@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R116 public-key and hash-attack reviewed dossier for hill-hastad-details.",
+  "entries": [
+    {
+      "id": "hill-hastad-details",
+      "inventoryIds": [
+        "hill-hastad"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R116 公钥与哈希攻击批次：把“Håstad 广播攻击”从目录深度条目改写为含机制陈述、符号公式、复杂度/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R116 public-key and hash-attack batch: rewrote \"Håstad's Broadcast Attack\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, complexity/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "Håstad 广播攻击",
+        "en": "Håstad's Broadcast Attack"
+      },
+      "claimIds": [
+        "hill-hastad-r139-principle",
+        "hill-hastad-r139-why",
+        "hill-hastad-r139-used",
+        "hill-hastad-r139-broken",
+        "hill-hastad-r139-history",
+        "hill-hastad-r139-refs"
+      ],
+      "sourceIds": [
+        "hill-hastad-wikipedia",
+        "hill-hastad-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "hill-hastad-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Håstad 机制图：k 个模数下的同余式经 CRT 合成，再用整数 e 次根恢复消息。",
+            "en": "Hastad mechanism: congruences under k moduli are combined by CRT, then an integer e-th root recovers the message."
+          },
+          "alt": {
+            "zh": "三个接收者密文框汇入 CRT 合成框，下方是 C = m^e 与整数开根公式，底部列出 k≥e 与仿射阈值。",
+            "en": "Three recipient ciphertext boxes feed a CRT box, with formulas for C = m^e and the integer root below, and the k≥e and affine thresholds at the bottom."
+          },
+          "files": {
+            "zh": "assets/hill-hastad-details-mechanism.zh.svg",
+            "en": "assets/hill-hastad-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "14c485782d1165571dffb151366322b211a8a169d537cff23b19be59221d52cf",
+            "en": "9913b6896393e6c85773e11414f8068c21ca83ab9e78a9ee5582933902afa742"
+          }
+        },
+        {
+          "id": "hill-hastad-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Håstad 广播攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Håstad's Broadcast Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Håstad 广播攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Håstad's Broadcast Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/hill-hastad-details-r138-model.zh.svg",
+            "en": "assets/hill-hastad-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "49471ce13013e0ba00327abcdf2edfa19c38e9688cf13a21b0f16160d63617d0",
+            "en": "5c229408d257d992753fdf761406a05db183fa548b097a4c43d5f5df196ad99a"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：Håstad 广播攻击（Håstad's Broadcast Attack）。### 同一消息广播到多个模数\n\n设消息 m 用同一小指数 e 分别加密给 k 个接收者，模数为两两互素的 N1,…,Nk：\n\nc_i = m^e mod N_i。若 k ≥ e 且 m^e < ∏ N_i，由中国剩余定理可把这些同余式合成\n\nC ≡ m^e (mod ∏ N_i)，且 0 ≤ C < ∏ N_i。因为 m^e 也小于乘积，C 就等于整数 m^e，而不是“模意义下”的幂；对 C 取整数 e 次根即得 m。### 线性相关消息的一般定理\n\nHåstad 1988 的定理处理更一般的情形：第 i 个模数下满足次数 ≤ d 的多项式方程 P_i(x) ≡ 0 (mod n_i)。若方程数 k > d(d+1)/2 且最小模数足够大（论文条件 min n_i > 2^{d^2}），就可在关于 k 与 log n_i 的多项式时间内恢复 x。用于 RSA 时 d=e，因此“仿射相关消息”需要超过 e(e+1)/2 个接收者；这与“同一消息只需 e 个”是两条不同的阈值。### 阈值不是装饰\n\n基本广播攻击的 k≥e 来自 CRT 需要至少 e 个同余式才能把 m^e 放进一个完整乘积；一般定理的 k>d(d+1)/2 来自格与结式消元的维度。把两个阈值混写，会得到错误的安全结论。若填充随机化，m_i 不再满足同一低次多项式，CRT 与整数开根的前提同时消失。",
+          "why": "e=3 的 RSA 加密很快，适合资源受限设备；但把同一条消息广播给三个以上接收者，且不做随机化填充，等于把 m^3 放到一个比 m^3 更大的整数环里，攻击者可以用 CRT 精确重建它。Håstad 的一般化说明，即使每条消息不同，只要它们按已知仿射关系变化，足够多的接收者仍会泄露消息。### 为什么随机化填充能挡住\n\nOAEP 等随机化填充让每条消息的编码包含独立随机数，接收者之间的编码不再满足同一个低次多项式。此时 CRT 合成的是不同随机多项式的密文，整数开根不再对应明文。注意“加了填充”不等于“安全”：确定性填充、固定时间戳或可预测计数器仍可能保留关系。### 现实判断\n\n评估广播协议时，先问：是否同一消息？e 是 3 还是 65537？接收者数量是否达到 e？是否每条都独立随机化？模数是否两两互素？这些问题比“RSA 是否 2048 位”更直接。",
+          "used": "1.确认同一 e、不同 N_i，且 N_i 两两互素；若不互素，gcd(N_i,N_j) 直接分解，反而更简单。2.收集至少 e 条同一消息的密文；检查 m 是否小于 min N_i，以确保 m^e < ∏ N_i。3.用 CRT 合成 C；对 C 做整数 e 次根；验证结果是否满足所有 c_i。4.若消息是仿射相关而非相同，按 Håstad 一般定理检查 k > e(e+1)/2 与模数下界。5.记录失败原因：填充随机化、接收者不足、消息过大、模数不互素。### 协议设计中的用法\n\n在协议评审中把“广播”视为一种特殊的相关消息场景；对低指数加密要求随机化填充；对群发协议要求每条密文独立编码。测试向量应覆盖 e=3 与 e=65537 两种指数，以及 k=e、k=e+1 的边界。",
+          "broken": "1.接收者少于阈值。基本攻击需要 k≥e；一般仿射定理需要 k>e(e+1)/2。少一个接收者就可能失败。2.m^e 不小于乘积。此时 CRT 得到的 C 只是 m^e mod 乘积，整数开根不再等于 m；需要格方法或其他信息。3.模数不两两互素。CRT 条件破坏；不过这时 gcd 可能直接给出分解，是另一种攻击。4.随机化填充。每条消息的编码不同，低次关系不成立。5.e 很大。阈值和多项式次数随 e 增长；e=65537 时一般仿射攻击的接收者数量不现实。6.消息不是仿射相关。Håstad 的定理要求已知低次多项式；任意关系不保证可解。",
+          "history": "Håstad 在 1988 年的 SIAM Journal on Computing 论文中给出“低次模方程组的解”定理，并把它应用于低指数 RSA 广播。论文的条件 k > d(d+1)/2 与 min n_i > 2^{d^2} 成为后来相关消息攻击的标准参数语言。### 与 Coppersmith 路线的关系\n\n1996 年的 Franklin-Reiter 攻击处理同一模数下的相关消息；Håstad 处理不同模数下的广播与仿射关系。1997 年前后，Coppersmith 的小根方法又把“已知部分消息或小根”的问题系统化。三者常被并列，但假设与数学工具不同。",
+          "refs": "- Wikipedia search entry for Håstad 广播攻击. https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nHåstad 广播攻击的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Håstad's Broadcast Attack (Håstad 广播攻击). ### Broadcasting one message to several moduli\n\nSuppose a message m is encrypted for k recipients with the same small exponent e and pairwise coprime moduli N1,…,Nk:\n\nc_i = m^e mod N_i. If k ≥ e and m^e < ∏ N_i, the Chinese Remainder Theorem combines the congruences into\n\nC ≡ m^e (mod ∏ N_i), with 0 ≤ C < ∏ N_i. Since m^e is also below the product, C equals the integer m^e, not merely a power modulo the product. Taking the integer e-th root of C recovers m. ### The general theorem for linearly related messages\n\nHastad’s 1988 theorem handles a more general setting: under the i-th modulus, a polynomial equation P_i(x) ≡ 0 (mod n_i) of degree at most d holds. If the number of equations satisfies k > d(d+1)/2 and the smallest modulus is large enough (the paper requires min n_i > 2^{d^2}), x can be recovered in time polynomial in k and log n_i. For RSA, d=e, so “affine related messages” need more than e(e+1)/2 recipients; this is a different threshold from the e recipients needed for the same message. ### The thresholds are not decoration\n\nThe basic broadcast condition k≥e comes from CRT: at least e congruences are needed to place m^e inside a full product. The general k>d(d+1)/2 condition comes from the dimension of the lattice/resultant elimination. Mixing the two thresholds produces false security conclusions. With randomised padding, the m_i no longer satisfy one low-degree polynomial, and both CRT and integer-root premises disappear.",
+          "why": "RSA with e=3 is fast and attractive for constrained devices; but broadcasting the same message to three or more recipients without randomised padding places m^3 inside an integer ring larger than m^3, so CRT reconstructs it exactly. Hastad’s generalisation shows that even when the messages differ, enough recipients still leak the message if the messages follow a known affine relation.\n\nOAEP-style randomised padding gives every recipient an independent random encoding, so the encodings no longer satisfy one low-degree polynomial. CRT then combines ciphertexts of different random polynomials, and the integer root no longer corresponds to the plaintext. “Some padding” is not enough: deterministic padding, fixed timestamps or predictable counters may preserve the relation.\n\nWhen evaluating a broadcast protocol, ask: is the message the same, is e equal to 3 or 65537, are there at least e recipients, is every encoding independently randomised, and are the moduli pairwise coprime? These questions matter more than the nominal RSA modulus size.",
+          "used": "1. Confirm a common e and distinct N_i, with the N_i pairwise coprime; if two moduli share a factor, gcd(N_i,N_j) factors them and the attack is even simpler. 2. Collect at least e ciphertexts of the same message; check that m is below min N_i so that m^e < ∏ N_i. 3. Combine the ciphertexts by CRT to obtain C; take the integer e-th root; verify the result against every c_i. 4. If the messages are affinely related rather than equal, apply Hastad’s general theorem with k > e(e+1)/2 and the modulus lower bound. 5. Record the failure reason: randomised padding, too few recipients, message too large, or non-coprime moduli.\n\nTreat broadcast as a special case of related messages in protocol review; require randomised padding for low-exponent encryption; require independent encoding for every recipient in group messaging. Test vectors should cover e=3 and e=65537, and the boundaries k=e and k=e+1.",
+          "broken": "1. Too few recipients. The basic attack needs k≥e; the general affine theorem needs k>e(e+1)/2. One recipient short can be enough to fail. 2. m^e not below the product. CRT then yields only m^e modulo the product, and the integer root is not m; lattice methods or extra information are needed. 3. Non-coprime moduli. The CRT condition fails; however, gcd may then factor a modulus, which is a different attack. 4. Randomised padding. Every encoding differs, so the low-degree relation does not hold. 5. e too large. Thresholds and polynomial degrees grow with e; for e=65537 the general affine attack needs an unrealistic number of recipients. 6. Messages not affinely related. Hastad’s theorem requires a known low-degree polynomial; an arbitrary relation is not guaranteed to be solvable.",
+          "history": "Hastad’s 1988 SIAM Journal on Computing paper proved the “solving simultaneous modular equations of low degree” theorem and applied it to low-exponent RSA broadcast. Its conditions k > d(d+1)/2 and min n_i > 2^{d^2} became standard parameter language for later related-message attacks.\n\nThe 1996 Franklin-Reiter attack handles related messages under one modulus; Hastad handles broadcast and affine relations under distinct moduli. Around 1997, Coppersmith’s small-root method systematised “known partial message or small root” problems. The three are often listed together, but their assumptions and mathematical tools differ.",
+          "refs": "- Wikipedia search entry for Håstad 广播攻击. https://zh.wikipedia.org/w/index.php?search=H%C3%A5stad%20%E5%B9%BF%E6%92%AD%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nHåstad's Broadcast Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "hill-hastad-r139-formal",
+          "entryId": "hill-hastad-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：Håstad 广播攻击的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 Håstad 广播攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "hill-hastad-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "hill-hastad-r139-formal"
+      ],
+      "sources": [
+        "hill-hastad-wikipedia",
+        "hill-hastad-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "hill-hastad-r139-formal",
+      "entryId": "hill-hastad-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：Håstad 广播攻击的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 Håstad 广播攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "hill-hastad-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

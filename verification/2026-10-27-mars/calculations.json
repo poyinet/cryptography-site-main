@@ -1,0 +1,64 @@
+[
+  {
+    "id": "mars-calc-vk-expansion",
+    "entryId": "mars-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All 576 author-supplied VK vectors (128/192/256-bit keys), each with its printed 40-word Expanded Key and zero-plaintext ciphertext",
+    "expected": "All 576 expanded-key lists match word for word; every zero-plaintext encryption matches the printed ciphertext; every decryption returns the zero plaintext",
+    "sourceIds": [
+      "mars-vectors"
+    ],
+    "dependencies": [
+      "mars-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The VK vectors use a fixed zero plaintext and vary one key bit; they test key expansion and key avalanche, not cryptanalytic security."
+  },
+  {
+    "id": "mars-calc-vt-tbl",
+    "entryId": "mars-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "All 384 VT vectors, all 120 TBL vectors and all 6 IVT encryption/decryption blocks",
+    "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; the IVT blocks cover 128/192/256-bit encryption and decryption",
+    "sourceIds": [
+      "mars-vectors"
+    ],
+    "dependencies": [
+      "mars-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The IVT intermediate lines are not checked one by one; only their plaintext and ciphertext are used, while key expansion is covered by the 576 VK vectors."
+  },
+  {
+    "id": "mars-calc-key-schedule",
+    "entryId": "mars-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "128/192/256-bit keys, the 15-word T table, four iterations of the linear transform and sixteen stirring rounds (four per iteration), the 40-word K array and the B-table fixing of K5,K7,...,K35",
+    "expected": "key expansion produces 40 words for every key; all 576 printed Expanded Key lists match; every multiplication key has its two lowest bits set to 1 and contains no ten consecutive equal bits; different keys give different schedules",
+    "sourceIds": [
+      "mars-paper",
+      "mars-key-setup",
+      "mars-vectors"
+    ],
+    "dependencies": [
+      "mars-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The paper describes the key expansion but the 1999 tweak pseudocode is the direct source for the bit-fixing step; verification relies on the printed Expanded Key vectors."
+  },
+  {
+    "id": "mars-calc-structure",
+    "entryId": "mars-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The 512-word S-box, the E-function multiplication and data-dependent rotations, three keys and eight deterministic plaintexts, byte-order samples and the decryption inverse",
+    "expected": "The S-box has no all-zero/all-one entries, every pair within S0 and S1 differs in at least three bytes, and no pair is equal, bitwise-complement or additive-inverse; E and all three phases invert; all 24 round trips succeed; non-zero big-endian input gives a different ciphertext",
+    "sourceIds": [
+      "mars-paper"
+    ],
+    "dependencies": [
+      "mars-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "These are structural and algebraic checks; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

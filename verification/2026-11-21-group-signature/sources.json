@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "group-signature-details",
+  "sources": [
+    {
+      "id": "group-signature-wikipedia",
+      "title": "Wikipedia search entry for 组签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 组签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "group-signature-r139-principle",
+          "entryId": "group-signature-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：组签名（Group Signature）。### 群公钥与成员凭证\n\n群管理员生成群公钥 gpk 与成员凭证；BBS04 的凭证是 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}，签名用知识证明隐藏 A，打开者用 x 恢复 A。### BBS 实例\n\nBBS04 用配对群：gpk 含 g1,g2,h0,h1；管理员私钥 x；成员凭证 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}。签名是 A、e 及知识证明的 Fiat–Shamir 变换；打开者用 x 恢复 A，从而追溯成员。### 打开、链接与撤销\n\n打开权限由管理员持有；链接可选，让验证者判断两签名是否同一成员；撤销可用撤销列表或 verifier-local revocation。签名大小与群规模无关，但验证/撤销有成本。",
+            "en": "**Algorithm**: Group Signature (组签名).### Group public key and member credentials\n\nA manager generates a group public key gpk and member credentials; in BBS04 the credential is A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}, the signature hides A in a proof of knowledge, and the opener recovers A with x."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "group-signature-r139-why",
+          "entryId": "group-signature-details",
+          "section": "why",
+          "statement": {
+            "zh": "组签名把“成员资格”和“身份”分离：内部匿名、外部可验证、管理员可追溯。适合车联网、匿名凭证、电子投票、举报和 Direct Anonymous Attestation。一个群公钥让验证者不必持有每个成员证书；BBS04 把签名压到 200 B 以内，远小于早期方案，使隐私认证在带宽受限场景可用。",
+            "en": "Group signatures separate “membership” from “identity”: anonymous inside, verifiable outside, traceable by the manager.They suit vehicle networks, anonymous credentials, e-voting, whistleblowing and Direct Anonymous Attestation."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "group-signature-r139-used",
+          "entryId": "group-signature-details",
+          "section": "used",
+          "statement": {
+            "zh": "ISO/IEC 20008-2 标准化 group-public-key 匿名签名，包含打开、链接和撤销流程；BBS04 是最短的配对实现之一。用于 Intel SGX/TPM 的 Direct Anonymous Attestation、Hyperledger 匿名凭证、车联网 V2X 和隐私投票；BBS+ 被 W3C 可验证凭证社区使用，但 BBS+ 本身是可组合签名，不是完整群签名。",
+            "en": "ISO/IEC 20008-2 standardizes group-public-key anonymous signatures, including opening, linking and revocation; BBS04 is one of the shortest pairing-based instantiations.It is used in Intel SGX/TPM Direct Anonymous Attestation, Hyperledger anonymous credentials, V2X and privacy-preserving voting; BBS+ is used by the W3C verifiable-credential community, but BBS+ itself is a composable signature, not a full group signature."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "group-signature-r139-broken",
+          "entryId": "group-signature-details",
+          "section": "broken",
+          "statement": {
+            "zh": "匿名是计算性的：打开者可用主密钥去匿名；管理员被攻破则所有签名可追溯。成员合谋/凭证伪造、撤销列表过期、签名侧信道都会破坏安全。BBS 依赖 q-SDH 和 DLIN 等配对假设，不是后量子；群规模和撤销策略影响验证成本；强免责性（管理员不能伪造成员签名）需要额外构造，不能默认假设。",
+            "en": "Anonymity is computational: the opener can deanonymize with the master key, and if the manager is compromised every signature is traceable.Member collusion/credential forgery, stale revocation lists and signing side channels all break security."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "group-signature-r139-history",
+          "entryId": "group-signature-details",
+          "section": "history",
+          "statement": {
+            "zh": "Chaum 与 van Heijst 1991 年提出群签名；BBS04 用 SDH 和配对把签名缩到 200 B 内；ISO/IEC 20008-2:2013 标准化，2023 年修订；DAA 把群签名用于硬件匿名证明。后续 BBS+、LRSW、Groth 等推动匿名凭证和隐私认证。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+            "en": "Chaum and van Heijst introduced group signatures in 1991; BBS04 used SDH and pairings to shrink signatures under 200 bytes; ISO/IEC 20008-2:2013 standardized them and was amended in 2023; DAA brought group signatures to hardware anonymous attestation.BBS+, LRSW and Groth-type schemes later advanced anonymous credentials and privacy authentication."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        },
+        {
+          "id": "group-signature-r139-refs",
+          "entryId": "group-signature-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 组签名.https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 组签名.https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "group-signature-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "group-signature-wikipedia"
+      ]
+    },
+    {
+      "id": "group-signature-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "group-signature-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "group-signature-r139-principle",
+      "entryId": "group-signature-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：组签名（Group Signature）。### 群公钥与成员凭证\n\n群管理员生成群公钥 gpk 与成员凭证；BBS04 的凭证是 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}，签名用知识证明隐藏 A，打开者用 x 恢复 A。### BBS 实例\n\nBBS04 用配对群：gpk 含 g1,g2,h0,h1；管理员私钥 x；成员凭证 A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}。签名是 A、e 及知识证明的 Fiat–Shamir 变换；打开者用 x 恢复 A，从而追溯成员。### 打开、链接与撤销\n\n打开权限由管理员持有；链接可选，让验证者判断两签名是否同一成员；撤销可用撤销列表或 verifier-local revocation。签名大小与群规模无关，但验证/撤销有成本。",
+        "en": "**Algorithm**: Group Signature (组签名).### Group public key and member credentials\n\nA manager generates a group public key gpk and member credentials; in BBS04 the credential is A=(g1·h0^{sk}·h1^{m})^{1/(x+e)}, the signature hides A in a proof of knowledge, and the opener recovers A with x."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "group-signature-r139-why",
+      "entryId": "group-signature-details",
+      "section": "why",
+      "statement": {
+        "zh": "组签名把“成员资格”和“身份”分离：内部匿名、外部可验证、管理员可追溯。适合车联网、匿名凭证、电子投票、举报和 Direct Anonymous Attestation。一个群公钥让验证者不必持有每个成员证书；BBS04 把签名压到 200 B 以内，远小于早期方案，使隐私认证在带宽受限场景可用。",
+        "en": "Group signatures separate “membership” from “identity”: anonymous inside, verifiable outside, traceable by the manager.They suit vehicle networks, anonymous credentials, e-voting, whistleblowing and Direct Anonymous Attestation."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "group-signature-r139-used",
+      "entryId": "group-signature-details",
+      "section": "used",
+      "statement": {
+        "zh": "ISO/IEC 20008-2 标准化 group-public-key 匿名签名，包含打开、链接和撤销流程；BBS04 是最短的配对实现之一。用于 Intel SGX/TPM 的 Direct Anonymous Attestation、Hyperledger 匿名凭证、车联网 V2X 和隐私投票；BBS+ 被 W3C 可验证凭证社区使用，但 BBS+ 本身是可组合签名，不是完整群签名。",
+        "en": "ISO/IEC 20008-2 standardizes group-public-key anonymous signatures, including opening, linking and revocation; BBS04 is one of the shortest pairing-based instantiations.It is used in Intel SGX/TPM Direct Anonymous Attestation, Hyperledger anonymous credentials, V2X and privacy-preserving voting; BBS+ is used by the W3C verifiable-credential community, but BBS+ itself is a composable signature, not a full group signature."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "group-signature-r139-broken",
+      "entryId": "group-signature-details",
+      "section": "broken",
+      "statement": {
+        "zh": "匿名是计算性的：打开者可用主密钥去匿名；管理员被攻破则所有签名可追溯。成员合谋/凭证伪造、撤销列表过期、签名侧信道都会破坏安全。BBS 依赖 q-SDH 和 DLIN 等配对假设，不是后量子；群规模和撤销策略影响验证成本；强免责性（管理员不能伪造成员签名）需要额外构造，不能默认假设。",
+        "en": "Anonymity is computational: the opener can deanonymize with the master key, and if the manager is compromised every signature is traceable.Member collusion/credential forgery, stale revocation lists and signing side channels all break security."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "group-signature-r139-history",
+      "entryId": "group-signature-details",
+      "section": "history",
+      "statement": {
+        "zh": "Chaum 与 van Heijst 1991 年提出群签名；BBS04 用 SDH 和配对把签名缩到 200 B 内；ISO/IEC 20008-2:2013 标准化，2023 年修订；DAA 把群签名用于硬件匿名证明。后续 BBS+、LRSW、Groth 等推动匿名凭证和隐私认证。**技术参数与复算边界**\n\n本条的形式模型是 \\(s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\)。输入：输入：组签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+        "en": "Chaum and van Heijst introduced group signatures in 1991; BBS04 used SDH and pairings to shrink signatures under 200 bytes; ISO/IEC 20008-2:2013 standardized them and was amended in 2023; DAA brought group signatures to hardware anonymous attestation.BBS+, LRSW and Groth-type schemes later advanced anonymous credentials and privacy authentication."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    },
+    {
+      "id": "group-signature-r139-refs",
+      "entryId": "group-signature-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 组签名.https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 组签名.https://zh.wikipedia.org/w/index.php?search=%E7%BB%84%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "group-signature-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

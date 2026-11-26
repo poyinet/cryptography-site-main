@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "md5-details",
+  "sources": [
+    {
+      "id": "algorithm--md5-wikipedia",
+      "title": "Wikipedia search entry for MD5 散列",
+      "url": "https://zh.wikipedia.org/w/index.php?search=MD5%20%E6%95%A3%E5%88%97",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: MD5 散列",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--md5-r139-principle",
+          "entryId": "md5-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：MD5 散列（MD5）。MD5 是 Ronald L.Rivest 设计的消息摘要算法，由 RFC 1321（1992 年 4 月）描述：输入任意长度的消息（位数 b 可以是 0、「need not be a multiple of eight, and」不必是 8 的倍数、也可以任意大；本副本把该短语断在两行上），输出固定的 128 位（16 字节）\"fingerprint\"（指纹）或\"message digest\"（消息摘要）。RFC 1321 §1 的原话是：\"it is computationally infeasible to produce two messages having the same message digest, or to produce any message having a given prespecified target message digest\"，即猜测找出两条相同摘要的消息、或找出具有某个预定目标摘要的消息，在计算上都是不可行的；目标应用是数字签名——源文作「where a large file must be」\"compressed\"「in a secure manner before being encrypted with a private」，再接 key（本副本把这两处各断在两行上），即先用摘要把大文件安全地压缩，再交给 RSA 之类的公钥密码体制用私钥加密（即数字签名）。",
+            "en": "**Algorithm**: MD5 (MD5 散列).MD5 is a message-digest algorithm designed by Ronald L."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--md5-r139-why",
+          "entryId": "md5-details",
+          "section": "why",
+          "statement": {
+            "zh": "RFC 1321 §1 与 §4 给出了 MD5 的设计取向，几乎逐条可以对照 MD4 读：\n\n- **32 位机器上的速度**：原文 \"The MD5 algorithm is designed to be quite fast on 32-bit machines\"，并且 \"does not require any large substitution tables\"，\"can be coded quite compactly\"（设计为在 32 位机器上相当快，不需要任何大的替换表，可实现得相当紧凑）。每 512 位块 64 次操作，每次只有若干次模 2^32 加法、一条按位函数、一条循环左移，全部落在 32 位通用指令上。- **对 MD4 的退让**：RFC 明确说 MD5 是 MD4 的扩展，比 MD4 稍慢但设计上更 \"conservative\"。理由是 MD4 被认为 \"adopted for use more quickly than justified by the existing critical review\"，而 MD4 因为被设计得异常快，就「in terms of risking successful cryptanalytic attack」（冒着被成功密码分析攻击的风险）而言处于源文所说的 \"at the edge\"（边缘）位置——本副本把 in terms of risking successful cryptanalytic attack 断在两行上。",
+            "en": "RFC 1321 §1 and §4 state the design goals, and almost every one of them reads as a deliberate step back from MD4:\n\n- **Speed on 32-bit machines**: \"The MD5 algorithm is designed to be quite fast on 32-bit machines\", it \"does not require any large substitution tables\" and \"can be coded quite compactly\".Each 512-bit block costs 64 operations, each of which is a few mod-2^32 additions, one bitwise function and one rotation - all ordinary 32-bit instructions."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--md5-r139-used",
+          "entryId": "md5-details",
+          "section": "used",
+          "statement": {
+            "zh": "RFC 1321 §1 给出 MD5 的官方身份标识：对象标识符\n\n```\nmd5 OBJECT IDENTIFIER ::=\n  iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 5}\n```\n\n即 OID 1.2.840.113549.2.5；并规定在 X.509 的 AlgorithmIdentifier 类型中，MD5 的参数应为 NULL 类型。RFC 3370（R.Housley，2002 年 8 月，标准轨道，取代 RFC 2630 与 RFC 3211）§2.2 把这一 OID 原样写入 CMS 的约定：MD5 摘要算法定义于 RFC 1321，AlgorithmIdentifier 的 parameters 字段必须存在且必须包含 NULL，实现也可以接受 parameters 缺失或为 NULL 的写法。同文档 §3.2 原文：\"CMS implementations that include the RSA (PKCS #1 v1.5) signature algorithm MUST also implement the SHA-1 message digest algorithm.Such implementations SHOULD also support the MD5 message digest algorithm.\"（含 RSA（PKCS #1 v1.",
+            "en": "RFC 1321 §1 gives MD5's official identity: the object identifier\n\n```\nmd5 OBJECT IDENTIFIER ::=\n  iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 5}\n```\n\n(sic: the opening brace is missing in the RFC text)\n\nthat is, OID 1.2.840.113549.2.5, and it specifies that in the X.509 AlgorithmIdentifier type the parameters for MD5 should have type NULL.RFC 3370 (R."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--md5-r139-broken",
+          "entryId": "md5-details",
+          "section": "broken",
+          "statement": {
+            "zh": "MD5 的破译是分层的，RFC 6151 §2.1 给出了权威时间线：1993 年 den Boer 与 Bosselaers 描述了压缩函数的伪碰撞；1996 年 Dobbertin 原文：\"demonstrated a collision pair for the MD5 compression function with a chosen initial value\"（展示了 MD5 压缩函数在选定初值下的一对碰撞）；王小云、冯登国、Xuejia Lai、余洪波 2004 年的论文第一次给出 MD5 的两对碰撞；2005 年 EUROCRYPT 上王小云与余洪波的论文公布了详细攻击技术。王小云与余洪波（EUROCRYPT 2005，LNCS 3494，pp.19-35）的关键创新是**模差分**（modular differential）：与块密码中用异或度量差分的传统差分分析不同，该攻击用模 2^32 整数减法定义差分 `ΔX = X' − X`。论文摘要原文：\"The attack is a differential attack, which unlike most differential attacks, does not use the exclusive-or as a measure of difference, but instead uses modular integer subtraction as the measure.\"（这是一次差分攻击，但与多数差分攻击不同，它不用异或作为差分度量，而用模整数减法作为度量），作者把这类差分称作模差分。",
+            "en": "The break-in came in layers, and RFC 6151 §2.1 gives the authoritative timeline: pseudo-collisions for the compression function were first described in 1993 by den Boer and Bosselaers; in 1996 Dobbertin \"demonstrated a collision pair for the MD5 compression function with a chosen initial value\"; two collision pairs for MD5 were first published in 2004 by Wang, Feng, Lai and Yu; and the detailed attack techniques appeared at EUROCRYPT 2005 from Wang and Yu.The key innovation of Wang and Yu (EUROCRYPT 2005, LNCS 3494, pp."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--md5-r139-history",
+          "entryId": "md5-details",
+          "section": "history",
+          "statement": {
+            "zh": "- **1992 年 4 月**：RFC 1321《The MD5 Message-Digest Algorithm》发布，作者 Ronald L.Rivest（MIT Laboratory for Computer Science 与 RSA Data Security, Inc.）。状态栏原文：\"This memo provides information for the Internet community.It does not specify an Internet standard.\"（本备忘录为互联网社区提供信息，并不规定任何互联网标准）。致谢对象是 Don Coppersmith、Burt Kaliski、Ralph Merkle、David Chaum 与 Noam Nisan。参考文献只有三条：RFC 1320、MD4 的 CRYPTO '90 论文（pp.303-311, Springer-Verlag, 1991）与 CCITT Recommendation X.509 (1988)。附录 A 的参考实现取自 RSAREF。- **1993 年**：den Boer 与 Bosselaers 在 EUROCRYPT '93 发表 MD5 压缩函数的伪碰撞（同一条消息、两组初值）。- **1996 年**：Dobbertin 在 EUROCRYPT '96 的 rump session 报告 MD5 压缩函数的半自由初值碰撞，随后在 CryptoBytes 2(2) 发表一般性描述。",
+            "en": "- **April 1992**: RFC 1321, \"The MD5 Message-Digest Algorithm\", by Ronald L.Rivest (MIT Laboratory for Computer Science and RSA Data Security, Inc.)."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--md5-r139-refs",
+          "entryId": "md5-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for MD5 散列.https://zh.wikipedia.org/w/index.php?search=MD5%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for MD5 散列.https://zh.wikipedia.org/w/index.php?search=MD5%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--md5-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--md5-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--md5-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--md5-r139-principle",
+      "entryId": "md5-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：MD5 散列（MD5）。MD5 是 Ronald L.Rivest 设计的消息摘要算法，由 RFC 1321（1992 年 4 月）描述：输入任意长度的消息（位数 b 可以是 0、「need not be a multiple of eight, and」不必是 8 的倍数、也可以任意大；本副本把该短语断在两行上），输出固定的 128 位（16 字节）\"fingerprint\"（指纹）或\"message digest\"（消息摘要）。RFC 1321 §1 的原话是：\"it is computationally infeasible to produce two messages having the same message digest, or to produce any message having a given prespecified target message digest\"，即猜测找出两条相同摘要的消息、或找出具有某个预定目标摘要的消息，在计算上都是不可行的；目标应用是数字签名——源文作「where a large file must be」\"compressed\"「in a secure manner before being encrypted with a private」，再接 key（本副本把这两处各断在两行上），即先用摘要把大文件安全地压缩，再交给 RSA 之类的公钥密码体制用私钥加密（即数字签名）。",
+        "en": "**Algorithm**: MD5 (MD5 散列).MD5 is a message-digest algorithm designed by Ronald L."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--md5-r139-why",
+      "entryId": "md5-details",
+      "section": "why",
+      "statement": {
+        "zh": "RFC 1321 §1 与 §4 给出了 MD5 的设计取向，几乎逐条可以对照 MD4 读：\n\n- **32 位机器上的速度**：原文 \"The MD5 algorithm is designed to be quite fast on 32-bit machines\"，并且 \"does not require any large substitution tables\"，\"can be coded quite compactly\"（设计为在 32 位机器上相当快，不需要任何大的替换表，可实现得相当紧凑）。每 512 位块 64 次操作，每次只有若干次模 2^32 加法、一条按位函数、一条循环左移，全部落在 32 位通用指令上。- **对 MD4 的退让**：RFC 明确说 MD5 是 MD4 的扩展，比 MD4 稍慢但设计上更 \"conservative\"。理由是 MD4 被认为 \"adopted for use more quickly than justified by the existing critical review\"，而 MD4 因为被设计得异常快，就「in terms of risking successful cryptanalytic attack」（冒着被成功密码分析攻击的风险）而言处于源文所说的 \"at the edge\"（边缘）位置——本副本把 in terms of risking successful cryptanalytic attack 断在两行上。",
+        "en": "RFC 1321 §1 and §4 state the design goals, and almost every one of them reads as a deliberate step back from MD4:\n\n- **Speed on 32-bit machines**: \"The MD5 algorithm is designed to be quite fast on 32-bit machines\", it \"does not require any large substitution tables\" and \"can be coded quite compactly\".Each 512-bit block costs 64 operations, each of which is a few mod-2^32 additions, one bitwise function and one rotation - all ordinary 32-bit instructions."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--md5-r139-used",
+      "entryId": "md5-details",
+      "section": "used",
+      "statement": {
+        "zh": "RFC 1321 §1 给出 MD5 的官方身份标识：对象标识符\n\n```\nmd5 OBJECT IDENTIFIER ::=\n  iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 5}\n```\n\n即 OID 1.2.840.113549.2.5；并规定在 X.509 的 AlgorithmIdentifier 类型中，MD5 的参数应为 NULL 类型。RFC 3370（R.Housley，2002 年 8 月，标准轨道，取代 RFC 2630 与 RFC 3211）§2.2 把这一 OID 原样写入 CMS 的约定：MD5 摘要算法定义于 RFC 1321，AlgorithmIdentifier 的 parameters 字段必须存在且必须包含 NULL，实现也可以接受 parameters 缺失或为 NULL 的写法。同文档 §3.2 原文：\"CMS implementations that include the RSA (PKCS #1 v1.5) signature algorithm MUST also implement the SHA-1 message digest algorithm.Such implementations SHOULD also support the MD5 message digest algorithm.\"（含 RSA（PKCS #1 v1.",
+        "en": "RFC 1321 §1 gives MD5's official identity: the object identifier\n\n```\nmd5 OBJECT IDENTIFIER ::=\n  iso(1) member-body(2) US(840) rsadsi(113549) digestAlgorithm(2) 5}\n```\n\n(sic: the opening brace is missing in the RFC text)\n\nthat is, OID 1.2.840.113549.2.5, and it specifies that in the X.509 AlgorithmIdentifier type the parameters for MD5 should have type NULL.RFC 3370 (R."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--md5-r139-broken",
+      "entryId": "md5-details",
+      "section": "broken",
+      "statement": {
+        "zh": "MD5 的破译是分层的，RFC 6151 §2.1 给出了权威时间线：1993 年 den Boer 与 Bosselaers 描述了压缩函数的伪碰撞；1996 年 Dobbertin 原文：\"demonstrated a collision pair for the MD5 compression function with a chosen initial value\"（展示了 MD5 压缩函数在选定初值下的一对碰撞）；王小云、冯登国、Xuejia Lai、余洪波 2004 年的论文第一次给出 MD5 的两对碰撞；2005 年 EUROCRYPT 上王小云与余洪波的论文公布了详细攻击技术。王小云与余洪波（EUROCRYPT 2005，LNCS 3494，pp.19-35）的关键创新是**模差分**（modular differential）：与块密码中用异或度量差分的传统差分分析不同，该攻击用模 2^32 整数减法定义差分 `ΔX = X' − X`。论文摘要原文：\"The attack is a differential attack, which unlike most differential attacks, does not use the exclusive-or as a measure of difference, but instead uses modular integer subtraction as the measure.\"（这是一次差分攻击，但与多数差分攻击不同，它不用异或作为差分度量，而用模整数减法作为度量），作者把这类差分称作模差分。",
+        "en": "The break-in came in layers, and RFC 6151 §2.1 gives the authoritative timeline: pseudo-collisions for the compression function were first described in 1993 by den Boer and Bosselaers; in 1996 Dobbertin \"demonstrated a collision pair for the MD5 compression function with a chosen initial value\"; two collision pairs for MD5 were first published in 2004 by Wang, Feng, Lai and Yu; and the detailed attack techniques appeared at EUROCRYPT 2005 from Wang and Yu.The key innovation of Wang and Yu (EUROCRYPT 2005, LNCS 3494, pp."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--md5-r139-history",
+      "entryId": "md5-details",
+      "section": "history",
+      "statement": {
+        "zh": "- **1992 年 4 月**：RFC 1321《The MD5 Message-Digest Algorithm》发布，作者 Ronald L.Rivest（MIT Laboratory for Computer Science 与 RSA Data Security, Inc.）。状态栏原文：\"This memo provides information for the Internet community.It does not specify an Internet standard.\"（本备忘录为互联网社区提供信息，并不规定任何互联网标准）。致谢对象是 Don Coppersmith、Burt Kaliski、Ralph Merkle、David Chaum 与 Noam Nisan。参考文献只有三条：RFC 1320、MD4 的 CRYPTO '90 论文（pp.303-311, Springer-Verlag, 1991）与 CCITT Recommendation X.509 (1988)。附录 A 的参考实现取自 RSAREF。- **1993 年**：den Boer 与 Bosselaers 在 EUROCRYPT '93 发表 MD5 压缩函数的伪碰撞（同一条消息、两组初值）。- **1996 年**：Dobbertin 在 EUROCRYPT '96 的 rump session 报告 MD5 压缩函数的半自由初值碰撞，随后在 CryptoBytes 2(2) 发表一般性描述。",
+        "en": "- **April 1992**: RFC 1321, \"The MD5 Message-Digest Algorithm\", by Ronald L.Rivest (MIT Laboratory for Computer Science and RSA Data Security, Inc.)."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--md5-r139-refs",
+      "entryId": "md5-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for MD5 散列.https://zh.wikipedia.org/w/index.php?search=MD5%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for MD5 散列.https://zh.wikipedia.org/w/index.php?search=MD5%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--md5-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

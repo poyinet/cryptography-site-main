@@ -1,0 +1,329 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full electronic-codebook (ECB) concept article only; no completion claim for block-cipher-mode, AES, DES, other modes or the whole library.",
+  "entries": [
+    {
+      "id": "ecb-details",
+      "inventoryIds": [
+        "ecb"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 ecb 这一实体：独立块加密、无 IV、并行性、完整块与填充，以及确定性导致的模式泄露；不把 AES、DES、工作模式层或其他模式并入本实体。",
+        "en": "Covers the ecb entity: independent block encryption, no IV, parallelism, full blocks and padding, and determinism-driven pattern leakage. It does not absorb AES, DES, the mode layer or other modes."
+      },
+      "title": {
+        "zh": "ECB 电子密码本模式：最直接的块变换及其代价",
+        "en": "ECB mode: the most direct block transformation and its cost"
+      },
+      "claimIds": [
+        "ecb-r139-principle",
+        "ecb-r139-why",
+        "ecb-r139-used",
+        "ecb-r139-broken",
+        "ecb-r139-history",
+        "ecb-r139-refs"
+      ],
+      "calculationIds": [
+        "ecb-official-vector",
+        "ecb-repetition",
+        "ecb-independent-block",
+        "ecb-padding",
+        "ecb-r139-formal"
+      ],
+      "sourceIds": [
+        "ecb-wikipedia",
+        "ecb-reference-ref"
+      ],
+      "related": [
+        "block-cipher-mode",
+        "cipher-block-chaining",
+        "cfb",
+        "ofb",
+        "algorithm--aes",
+        "algorithm--des"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：ECB 电子密码本模式（Electronic Codebook）。ECB（Electronic Codebook，电子密码本）是定义最简单的工作模式。它把明文切成固定长度的块，对每个块独立执行分组密码的正向函数：\n\n```text\nC_j = E_K(P_j)\n```\n\n```text\nP_j = D_K(C_j)\n```\n\nECB 不使用 IV，也没有块之间的链接。每个块的加密或解密只依赖密钥和该块本身，因此多个块可以并行处理，也可以单独访问某个块。ECB 要求输入是完整块的序列。SP 800-38A 规定 ECB 的明文长度必须是块长的整数倍；不足一个块时如何填充，属于应用或协议层的选择。本文的教学实现采用 CMS 的 PKCS#7 规则：补 1 到块长个字节，每个字节的值等于补入字节数。ECB 不改变底层分组密码的块大小或密钥长度。它只是把同一个 E_K 或 D_K 独立地重复到每个块上。",
+          "why": "ECB 是理解其他模式的基线。它展示了分组密码最原始的使用方式：一个块进，一个块出，没有 IV、没有链接、没有状态。其他模式的大部分设计，都是在解决 ECB 暴露出的问题。ECB 的问题也同样基础：在同一个密钥下，相同的明文块总是得到相同的密文块。对图像、数据库记录、重复字段或任何结构化数据，攻击者可以直接看出重复模式。SP 800-38A 明确写道：如果这种性质在应用中不可接受，就不应使用 ECB。因此，ECB 适合作为教学起点和单块变换的参考，不适合作为新系统对多块数据的通用加密模式。理解 ECB 的代价，比记住 ECB 不安全这句话更重要。",
+          "used": "ECB 是 FIPS 81 在 1980 年为 DES 定义的第一种模式，也是后来 SP 800-38A 推广到通用分组密码的五种模式之一。它的历史地位来自它最直接地把分组密码用于数据，而不是来自它对多块数据的保护能力。在单块、无重复、随机性或格式本身不敏感的场景，ECB 的确定性不会额外泄露结构；但真实数据往往有重复和结构，因此不能由某个单块示例可用，推广到多块数据可以安全使用 ECB。现代系统若需要多块机密性，通常选择带 IV 的模式或 AEAD；是否仍使用 ECB，必须按具体协议和数据形态判断，不能仅凭底层是 AES 就认为安全。",
+          "broken": "ECB 对相同明文块产生相同密文块。攻击者不需要密钥，就能看出哪些块相等、哪些块重复、数据是否有固定结构。对图像，这会保留轮廓；对数据库，这会泄露字段重复；对协议记录，这会泄露相同的首部或固定字段。### 无 IV、无链接\n\nECB 没有 IV，因此也不存在IV 可预测或IV 重用的问题；但它也没有任何位置混淆。块的顺序和边界仍然可见，删除、重排或复制密文块会直接对应到明文块。### 无完整性\n\nECB 只提供机密性，不提供完整性。修改一个密文块会修改对应的明文块，攻击者可以做受控替换；ECB 本身无法检测这种修改。需要完整性时，必须使用 AEAD 或外加 MAC。### 块大小与数据量\n\nECB 不改变底层块大小。使用 64 位块的分组密码时，大量块下仍受生日界限制；使用 128 位块可以推迟这个边界。ECB 的确定性问题与块大小无关，换 AES 也不会消除重复块泄露。ECB 要求完整块；填充规则和填充错误的处理属于协议层。填充本身不能提供完整性，也不能阻止相同明文块产生相同密文块。本文教学实现只演示 AES-128-ECB 的公式、官方向量、重复块和固定数据的独立块性质。它不实现安全的填充校验、密钥管理、协议状态机或侧信道防护，不能用于生产环境。",
+          "history": "1980 年，FIPS 81 为 DES 定义了 ECB 模式。它是最早被标准化的分组密码使用方式之一，使一个块变换可以处理多块数据。2001 年，SP 800-38A 把 ECB 推广到通用分组密码，并给出 AES 测试向量。ECB 的长期使用也让它成为最典型的反面教材：算法正确、模式错误，仍然会泄露数据结构。后来的 CBC、CFB、OFB、CTR 和 AEAD，都在不同程度上回应了 ECB 的确定性问题。这段历史说明，ECB 不是错误的算法，而是一个边界极窄的模式：它只适合不需要隐藏块间关系的场景；把它用于结构化多块数据，就是把模式的性质当成系统的安全属性。",
+          "refs": "- Wikipedia search entry for ECB 电子密码本模式. https://zh.wikipedia.org/w/index.php?search=ECB%20%E7%94%B5%E5%AD%90%E5%AF%86%E7%A0%81%E6%9C%AC%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Electronic Codebook (ECB 电子密码本模式). ECB (Electronic Codebook) is the simplest mode of operation. It splits plaintext into fixed-length blocks and applies the forward block-cipher function to each block independently:\n\n```text\nC_j = E_K(P_j)\n```\n\nDecryption is equally independent:\n\n```text\nP_j = D_K(C_j)\n```\n\nECB uses no IV and has no chaining between blocks. Encrypting or decrypting a block depends only on the key and that block, so blocks can be processed in parallel and accessed individually. ECB requires a complete sequence of blocks. SP 800-38A specifies that the ECB plaintext length must be a multiple of the block size; how to pad a shorter input is an application or protocol choice. This article's teaching implementation uses CMS PKCS#7 padding: append 1 to block-size bytes, each with value equal to the number of bytes added. ECB does not change the underlying block size or key length. It simply applies the same E_K or D_K independently to every block.",
+          "why": "ECB is the baseline for understanding other modes. It shows the most primitive use of a block cipher: one block in, one block out, no IV, no chaining, no state. Most other modes exist to solve the problems ECB exposes.\n\nECB's problem is equally basic: under one key, identical plaintext blocks always produce identical ciphertext blocks. For images, database records, repeated fields or any structured data, an attacker can see repetition directly. SP 800-38A states explicitly that if this property is undesirable in an application, ECB should not be used.\n\nECB is therefore a teaching starting point and a reference for single-block transformation, not a general-purpose mode for multi-block data in new systems. Understanding ECB's cost matters more than memorizing that ECB is insecure.",
+          "used": "ECB was the first mode FIPS 81 defined for DES in 1980, and later one of the five modes SP 800-38A generalized to block ciphers. Its historical role comes from applying a block cipher directly to data, not from protecting multi-block structure.\n\nIn a single-block setting with no repetition, or when the format itself is not sensitive, ECB's determinism may not leak extra structure. Real data often contains repetition and structure, so a safe single-block example does not generalize to safe multi-block use.\n\nModern systems that need multi-block confidentiality usually choose a mode with an IV or an AEAD; whether ECB is still acceptable must be decided from the protocol and data shape, not from the underlying cipher being AES.",
+          "broken": "ECB produces identical ciphertext blocks for identical plaintext blocks. Without the key, an attacker can see which blocks are equal, which repeat and whether the data has fixed structure. For images this preserves outlines; for databases it leaks repeated fields; for protocol records it leaks repeated headers or fixed fields.\n\nECB has no IV, so it has no predictable-IV or IV-reuse problem; but it also provides no positional confusion. Block order and boundaries remain visible, and deleting, reordering or duplicating ciphertext blocks maps directly to plaintext blocks.\n\nECB provides confidentiality only, not integrity. Modifying a ciphertext block modifies the corresponding plaintext block, and an attacker can make controlled substitutions; ECB cannot detect them. When integrity is needed, use AEAD or add a MAC.\n\nECB does not change the underlying block size. With a 64-bit block cipher, large block counts remain subject to the birthday bound; a 128-bit block pushes that boundary farther away. ECB's determinism problem is independent of block size; switching to AES does not remove repeated-block leakage.\n\nECB requires complete blocks; the padding rule and padding-error handling belong to the protocol layer. Padding provides no integrity and does not stop identical plaintext blocks from producing identical ciphertext blocks.\n\nThis article's teaching implementation demonstrates only the AES-128-ECB formula, official vectors, repeated blocks and independent-block properties on fixed data. It does not implement secure padding checks, key management, protocol state machines or side-channel defenses, and it must not be used in production.",
+          "history": "In 1980, FIPS 81 defined ECB for DES. It was one of the earliest standardized ways to use a block cipher on more than one block. In 2001, SP 800-38A generalized ECB to block ciphers and supplied AES test vectors.\n\nECB's long use also made it the classic counterexample: a correct algorithm with the wrong mode still leaks data structure. CBC, CFB, OFB, CTR and AEAD each respond in different ways to ECB's determinism.\n\nThis history shows that ECB is not a wrong algorithm but a mode with a very narrow boundary: it suits settings that do not need to hide block relationships; using it for structured multi-block data turns a mode property into a system security failure.",
+          "refs": "- Wikipedia search entry for ECB 电子密码本模式. https://zh.wikipedia.org/w/index.php?search=ECB%20%E7%94%B5%E5%AD%90%E5%AF%86%E7%A0%81%E6%9C%AC%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "ECB：电子密码本模式，对每个块独立执行分组密码。",
+          "独立块：块之间不链接，也不使用 IV。",
+          "确定性：同一密钥和同一明文块总是得到同一密文块。",
+          "模式泄露：由确定性导致的块相等、重复和结构泄露。",
+          "并行性：多个块的加密或解密可以同时进行。",
+          "完整块：ECB 输入必须是分组长度的整数倍。",
+          "填充：把不足一个块的输入补到块长的规则，如 PKCS#7。",
+          "无完整性：ECB 本身不能检测密文修改。",
+          "生日界：大量块下碰撞概率的上界，与块大小有关。",
+          "教学实现：只演示公开向量和结构性质，不是生产代码。"
+        ],
+        "en": [
+          "ECB: Electronic Codebook, applying the block cipher independently to each block.",
+          "Independent blocks: no chaining between blocks and no IV.",
+          "Determinism: the same key and plaintext block always produce the same ciphertext block.",
+          "Pattern leakage: equality, repetition and structure revealed by determinism.",
+          "Parallelism: multiple blocks can be encrypted or decrypted at the same time.",
+          "Full block: ECB input must be a multiple of the block size.",
+          "Padding: a rule for extending a short input to a full block, such as PKCS#7.",
+          "No integrity: ECB alone cannot detect ciphertext modification.",
+          "Birthday bound: a collision-probability bound for large block counts, tied to block size.",
+          "Teaching implementation: demonstrates public vectors and structural properties only; not production code."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ecb-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ECB 电子密码本模式：最直接的块变换及其代价：为什么需要 → 核心机制 → 边界。",
+            "en": "ECB mode: the most direct block transformation and its cost: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ECB 电子密码本模式：最直接的块变换及其代价 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ECB mode: the most direct block transformation and its cost, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ecb-details-flow.zh.svg",
+            "en": "assets/ecb-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3ea481a0e21cc4342b6625578a00ee53735516e09fe37a2c93ecd64782039805",
+            "en": "125af39deb150a5a5d8fad1129eeaa3dd12869f83065abba38f13a4f5b2ce777"
+          }
+        },
+        {
+          "id": "ecb-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ECB 电子密码本模式：最直接的块变换及其代价 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ECB mode: the most direct block transformation and its cost: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ECB 电子密码本模式：最直接的块变换及其代价 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ECB mode: the most direct block transformation and its cost, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ecb-details-r138-model.zh.svg",
+            "en": "assets/ecb-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "90c3eedadcf2bfa3b70315384d4f160e15f4992d5184b78cc64aa3fdcfc9c289",
+            "en": "a6d34c2e30f39029f610e70048de9b9b481b5760e2e695f0a8809d88e7ab9a29"
+          }
+        }
+      ],
+      "sources": [
+        "ecb-wikipedia",
+        "ecb-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "ecb-official-vector",
+          "entryId": "ecb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "SP 800-38A Appendix F.1.1 AES-128-ECB four-block vector",
+          "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+          "sourceIds": [
+            "ecb-wikipedia"
+          ],
+          "dependencies": [
+            "ecb-teaching.mjs"
+          ],
+          "limitations": "One official four-block case; it checks the ECB formula and vector, not protocol behavior."
+        },
+        {
+          "id": "ecb-repetition",
+          "entryId": "ecb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The same 16-byte plaintext block repeated twice under AES-128-ECB",
+          "expected": "The two ciphertext blocks are identical",
+          "sourceIds": [
+            "ecb-wikipedia"
+          ],
+          "dependencies": [
+            "ecb-teaching.mjs"
+          ],
+          "limitations": "Definitional demonstration; not an attack on AES."
+        },
+        {
+          "id": "ecb-independent-block",
+          "entryId": "ecb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The third ciphertext block of the NIST ECB vector decrypted independently",
+          "expected": "Independent decryption recovers the same third plaintext block as full decryption",
+          "sourceIds": [
+            "ecb-wikipedia"
+          ],
+          "dependencies": [
+            "ecb-teaching.mjs"
+          ],
+          "limitations": "Demonstrates block independence on one fixed block; not a benchmark."
+        },
+        {
+          "id": "ecb-padding",
+          "entryId": "ecb-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "20-byte and 16-byte plaintexts padded with the CMS/PKCS#7 rule for a 16-byte block",
+          "expected": "20 bytes become 32 with twelve 0x0c bytes; 16 bytes become 32 with sixteen 0x10 bytes; unpadding restores both",
+          "sourceIds": [
+            "ecb-wikipedia"
+          ],
+          "dependencies": [
+            "ecb-teaching.mjs"
+          ],
+          "limitations": "Padding mechanics only; it does not test every malformed padding case."
+        },
+        {
+          "id": "ecb-r139-formal",
+          "entryId": "ecb-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "ECB 电子密码本模式 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "ecb-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ecb-official-vector",
+      "entryId": "ecb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "SP 800-38A Appendix F.1.1 AES-128-ECB four-block vector",
+      "expected": "All four ciphertext blocks match the NIST values; decryption recovers all four plaintext blocks",
+      "sourceIds": [
+        "ecb-wikipedia"
+      ],
+      "dependencies": [
+        "ecb-teaching.mjs"
+      ],
+      "limitations": "One official four-block case; it checks the ECB formula and vector, not protocol behavior."
+    },
+    {
+      "id": "ecb-repetition",
+      "entryId": "ecb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The same 16-byte plaintext block repeated twice under AES-128-ECB",
+      "expected": "The two ciphertext blocks are identical",
+      "sourceIds": [
+        "ecb-wikipedia"
+      ],
+      "dependencies": [
+        "ecb-teaching.mjs"
+      ],
+      "limitations": "Definitional demonstration; not an attack on AES."
+    },
+    {
+      "id": "ecb-independent-block",
+      "entryId": "ecb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The third ciphertext block of the NIST ECB vector decrypted independently",
+      "expected": "Independent decryption recovers the same third plaintext block as full decryption",
+      "sourceIds": [
+        "ecb-wikipedia"
+      ],
+      "dependencies": [
+        "ecb-teaching.mjs"
+      ],
+      "limitations": "Demonstrates block independence on one fixed block; not a benchmark."
+    },
+    {
+      "id": "ecb-padding",
+      "entryId": "ecb-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "20-byte and 16-byte plaintexts padded with the CMS/PKCS#7 rule for a 16-byte block",
+      "expected": "20 bytes become 32 with twelve 0x0c bytes; 16 bytes become 32 with sixteen 0x10 bytes; unpadding restores both",
+      "sourceIds": [
+        "ecb-wikipedia"
+      ],
+      "dependencies": [
+        "ecb-teaching.mjs"
+      ],
+      "limitations": "Padding mechanics only; it does not test every malformed padding case."
+    },
+    {
+      "id": "ecb-r139-formal",
+      "entryId": "ecb-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "ECB 电子密码本模式 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "ecb-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

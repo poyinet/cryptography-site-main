@@ -1,0 +1,131 @@
+{
+  "checkedOn": "2026-11-25",
+  "scope": "R133 formula-level deepening for ikev2-details.",
+  "entry": {
+    "id": "ikev2-details",
+    "inventoryIds": [
+      "ikev2"
+    ],
+    "coverage": "catalog-entry",
+    "sectionKeys": [
+      "principle",
+      "why",
+      "used",
+      "broken",
+      "history",
+      "refs"
+    ],
+    "coverageRationale": {
+      "zh": "把 IKEv2 从“IPsec 密钥协商协议”推进到公式级：SKEYSEED 的 nonce/DH 输入、prf+ 的链式扩展、SK_d/SK_a/SK_e/SK_p 的用途、Child SA KEYMAT 的 PFS 分支、AUTH 的 SignedOctets 绑定。",
+      "en": "Moves IKEv2 from an IPsec key-negotiation overview to formulas: SKEYSEED inputs from nonces/DH, chained prf+ expansion, the roles of SK_d/SK_a/SK_e/SK_p, the PFS branch of Child SA KEYMAT, and AUTH SignedOctets binding."
+    },
+    "title": {
+      "zh": "IKEv2 密钥交换",
+      "en": "Internet Key Exchange Version 2"
+    },
+    "claimIds": [
+      "ikev2-principle",
+      "ikev2-why",
+      "ikev2-used",
+      "ikev2-broken",
+      "ikev2-history",
+      "ikev2-details-r138-1",
+      "ikev2-details-r138-2",
+      "ikev2-details-r138-3"
+    ],
+    "calculationNotApplicable": {
+      "zh": "本条给出身份卡机制、公式与量级，不含需要逐步复算的数值算例；实现参数与应用条件按标准原文或来源重算。",
+      "en": "This entry gives the identity-card mechanism, formulas and scales, not a step-by-step numeric example; implementation parameters and application conditions must be recomputed from the standard text or sources."
+    },
+    "sourceIds": [
+      "ikev2-rfc7296",
+      "ikev2-rfc8784",
+      "ikev2-rfc7815",
+      "ikev2-rfc7383"
+    ],
+    "related": [
+      "ipsec",
+      "ikev1",
+      "esp",
+      "dh"
+    ],
+    "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+    "verificationStatus": "independently-reviewed-detailed-article",
+    "sections": {
+      "zh": {
+        "principle": "IKEv2 先做 IKE_SA_INIT：双方交换 SA 提案、Ni/Nr 与 DH 公钥，协商 PRF、加密、完整性算法和 DH 组。随后计算 SKEYSEED=prf(Ni|Nr, g^ir)，其中 g^ir 是 DH 共享秘密。\n\n再用 prf+(SKEYSEED, Ni|Nr|SPIi|SPIr) 扩展出 SK_d、SK_ai、SK_ar、SK_ei、SK_er、SK_pi、SK_pr。SK_d 是派生 Child SA 密钥材料的长期密钥，SK_a 保护完整性，SK_e 保护机密性，SK_p 保护身份信息。",
+        "why": "SKEYSEED 同时绑定双方 nonce、DH 共享秘密和 SPI，任何一项不同都会得到不同的会话密钥；prf+ 把固定长度 PRF 输出拉长成所需密钥流，避免不同用途复用同一段密钥。\n\nIKE_AUTH 用 AUTH 把真实消息、对端 nonce 和身份绑定起来，防止中间人替换 ID 或重放旧消息；Child SA 可加新 DH 实现 PFS。",
+        "used": "实现按 RFC 7296 §2.14 计算：先选 PRF（如 HMAC-SHA-256，输出 32 字节），再按密钥长度切分 prf+ 输出；SK_d 至少取 PRF 输出长度。\n\nChild SA 的 KEYMAT=prf+(SK_d, Ni|Nr)，带 PFS 时改为 prf+(SK_d, g^ir(new)|Ni|Nr)；AUTH 的 SignedOctets 包含 RealMessage、对端 nonce 和 prf(SK_p, ID)。",
+        "broken": "PFS 是可选项：不带新 DH 的 Child SA 只靠 SK_d 与 nonce，长期 SK_d 泄漏会回溯到该 SA 的密钥。nonce 重用会让 SKEYSEED 重复，直接破坏会话密钥唯一性。\n\nPSK 模式必须先做 Key Pad 内层 prf，低熵口令仍会遭受离线字典攻击；PPK 只是把额外密钥混入，不替代强共享秘密。IKEv2 保护协商与 SA，不自动保护应用数据。",
+        "history": "IKEv2 最早由 RFC 4306 在 2005 年 12 月提出，RFC 5996 在 2010 年修订，RFC 7296 在 2014 年 10 月成为 Internet Standard STD 79。\n\nRFC 8784 在 2020 年加入 PPK，用于把后量子预共享密钥混入 IKEv2；RFC 7383 加入消息分片，RFC 7815 给出最小实现示例。",
+        "refs": "- [RFC 7296: Internet Key Exchange Protocol Version 2 (IKEv2)](https://www.rfc-editor.org/rfc/rfc7296.html) — §2.14 SKEYSEED 与 prf+；§2.15 AUTH 与 SignedOctets；§2.17 Child SA KEYMAT；§5 安全考虑\n\n- [RFC 8784: Mixing Preshared Keys in IKEv2 for Post-quantum Security](https://www.rfc-editor.org/rfc/rfc8784.html) — PPK 扩展：PPK_ID、PPK 与 SKEYSEED 的混合，以及不替代强共享秘密的边界\n\n- [RFC 7815: Minimal Internet Key Exchange Version 2 (IKEv2) Initiator Implementation](https://www.rfc-editor.org/rfc/rfc7815.html) — IKE_SA_INIT、AUTH、KEYMAT=prf+(SK_d,Ni|Nr) 的最小实现路径\n\n- [RFC 7383: Internet Key Exchange Protocol Version 2 (IKEv2) Message Fragmentation](https://www.rfc-editor.org/rfc/rfc7383.html) — IKE 分片扩展：分片标志、Message ID 与重组边界"
+      },
+      "en": {
+        "principle": "IKEv2 starts with IKE_SA_INIT: both sides exchange SA proposals, Ni/Nr and DH public keys, negotiating PRF, encryption, integrity and DH group. It then computes SKEYSEED=prf(Ni|Nr, g^ir), where g^ir is the DH shared secret.\n\nprf+(SKEYSEED, Ni|Nr|SPIi|SPIr) expands into SK_d, SK_ai, SK_ar, SK_ei, SK_er, SK_pi and SK_pr. SK_d is the long-lived key that derives Child SA key material, SK_a protects integrity, SK_e protects confidentiality and SK_p protects identity.",
+        "why": "SKEYSEED binds both nonces, the DH shared secret and the SPIs, so any difference yields different session keys; prf+ stretches a fixed-length PRF output into the required key stream and avoids reusing one segment for different purposes.\n\nIKE_AUTH uses AUTH to bind the real message, the peer nonce and the identity, stopping a man-in-the-middle from replacing the ID or replaying an old message; a Child SA can add fresh DH for PFS.",
+        "used": "Implement RFC 7296 §2.14: choose the PRF, for example HMAC-SHA-256 with 32-byte output, then slice the prf+ output by key length; SK_d is at least the PRF output length.\n\nChild SA KEYMAT=prf+(SK_d, Ni|Nr), or prf+(SK_d, g^ir(new)|Ni|Nr) with PFS; AUTH SignedOctets contains RealMessage, the peer nonce and prf(SK_p, ID).",
+        "broken": "PFS is optional: a Child SA without fresh DH relies only on SK_d and nonces, so a long-lived SK_d leak reaches that SA’s keys. Nonce reuse repeats SKEYSEED and destroys session-key uniqueness.\n\nPSK mode must apply the Key Pad inner prf first, and a low-entropy password still falls to offline dictionary attacks; PPK only mixes an extra key and does not replace a strong shared secret. IKEv2 protects negotiation and SAs, not application data by itself.",
+        "history": "IKEv2 first appeared in RFC 4306 in December 2005, was revised by RFC 5996 in 2010, and became Internet Standard STD 79 in RFC 7296 in October 2014.\n\nRFC 8784 added PPK in 2020 to mix a post-quantum pre-shared key into IKEv2; RFC 7383 added message fragmentation and RFC 7815 gives a minimal implementation example.",
+        "refs": "- [RFC 7296: Internet Key Exchange Protocol Version 2 (IKEv2)](https://www.rfc-editor.org/rfc/rfc7296.html) — §2.14 SKEYSEED 与 prf+；§2.15 AUTH 与 SignedOctets；§2.17 Child SA KEYMAT；§5 安全考虑\n\n- [RFC 8784: Mixing Preshared Keys in IKEv2 for Post-quantum Security](https://www.rfc-editor.org/rfc/rfc8784.html) — PPK 扩展：PPK_ID、PPK 与 SKEYSEED 的混合，以及不替代强共享秘密的边界\n\n- [RFC 7815: Minimal Internet Key Exchange Version 2 (IKEv2) Initiator Implementation](https://www.rfc-editor.org/rfc/rfc7815.html) — IKE_SA_INIT、AUTH、KEYMAT=prf+(SK_d,Ni|Nr) 的最小实现路径\n\n- [RFC 7383: Internet Key Exchange Protocol Version 2 (IKEv2) Message Fragmentation](https://www.rfc-editor.org/rfc/rfc7383.html) — IKE 分片扩展：分片标志、Message ID 与重组边界"
+      }
+    },
+    "glossary": {
+      "zh": [
+        "SKEYSEED：IKE SA 的种子密钥，由 nonce 与 DH 共享秘密生成。",
+        "prf+：把种子扩展成所需长度密钥的链式 PRF。",
+        "SK_d：派生 Child SA 密钥材料的长期密钥。",
+        "PFS：带新 DH 的 Child SA 重钥，前向保密更强。"
+      ],
+      "en": [
+        "SKEYSEED: the IKE SA seed key, built from nonces and the DH shared secret.",
+        "prf+: a chained PRF that expands the seed to the required key length.",
+        "SK_d: the long-lived key that derives Child SA key material.",
+        "PFS: Child SA rekeying with fresh DH, giving stronger forward secrecy."
+      ]
+    },
+    "figures": [
+      {
+        "id": "ikev2-mechanism",
+        "section": "principle",
+        "kind": "diagram",
+        "caption": {
+          "zh": "IKEv2 密钥链：IKE_SA_INIT 的 Ni/Nr 与 DH 生成 SKEYSEED，prf+ 拆出 SK_d/SK_a/SK_e/SK_p，SK_d 再派生 Child SA 的 KEYMAT；IKE_AUTH 用 AUTH 绑定消息、nonce 与身份。",
+          "en": "The IKEv2 key chain: Ni/Nr and DH in IKE_SA_INIT produce SKEYSEED, prf+ splits out SK_d/SK_a/SK_e/SK_p, SK_d derives the Child SA KEYMAT, and IKE_AUTH binds message, nonce and identity with AUTH."
+        },
+        "alt": {
+          "zh": "IKEv2 密钥链：IKE_SA_INIT 的 Ni/Nr 与 DH 生成 SKEYSEED，prf+ 拆出 SK_d/SK_a/SK_e/SK_p，SK_d 再派生 Child SA 的 KEYMAT；IKE_AUTH 用 AUTH 绑定消息、nonce 与身份。",
+          "en": "The IKEv2 key chain: Ni/Nr and DH in IKE_SA_INIT produce SKEYSEED, prf+ splits out SK_d/SK_a/SK_e/SK_p, SK_d derives the Child SA KEYMAT, and IKE_AUTH binds message, nonce and identity with AUTH."
+        },
+        "files": {
+          "zh": "assets/ikev2-mechanism.zh.svg",
+          "en": "assets/ikev2-mechanism.en.svg"
+        },
+        "credit": {
+          "zh": "来源：RFC 7296 IKEv2、RFC 8784 PPK 扩展、RFC 7815 最小实现、RFC 7383 IKE 分片。",
+          "en": "Sources: RFC 7296 IKEv2, RFC 8784 PPK extension, RFC 7815 minimal implementation and RFC 7383 IKE fragmentation."
+        },
+        "license": {
+          "name": "CC BY 4.0",
+          "url": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "source": {
+          "type": "original",
+          "author": "poyi knowledge",
+          "createdOn": "2026-11-24"
+        },
+        "evidence": [
+          "content.json sections",
+          "sources.json"
+        ],
+        "sha256": {
+          "zh": "dc9c77677835ea2be89611b838f91fda1b44d0a802f77705ed5b6c5bf90b3b2c",
+          "en": "82a885fcb04e32170f4ffff9730d64b5193d7fdbd1f697a3579c0d36599b1f5f"
+        }
+      }
+    ],
+    "calculationIds": [],
+    "subtopicIds": [
+      "ipsec"
+    ]
+  }
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "venona-cryptanalysis-details",
+  "sources": [
+    {
+      "id": "venona-cryptanalysis-wikipedia",
+      "title": "Wikipedia search entry for VENONA 破译",
+      "url": "https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: VENONA 破译",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "venona-cryptanalysis-r139-principle",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：VENONA 破译（VENONA Cryptanalysis）。### 码本 + 一次性密码本\n\n苏联商务、外交与情报电文先查码本得 x_i，再用一次性密码本 k_i 逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。若 k_i 真随机、只使用一次且与 x_i 等长，则密文对消息是完美保密的；VENONA 的突破口不是算法，而是密码本页被重复使用。### 复用与深度\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。掩码被消去，剩下两个码本码组的差。重复页越多、消息越长，深度越大；分析者再借助码本频率、已知片段和英文/俄文 crib，恢复码组含义并翻译。",
+            "en": "**Attack**: VENONA Cryptanalysis (VENONA 破译).### Codebook plus one-time pad\n\nSoviet trade, diplomatic and intelligence messages were looked up in a codebook to obtain x_i, then superenciphered with a one-time-pad stream k_i by digitwise addition modulo 10:\n\nc_i=(x_i+k_i) mod 10."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "venona-cryptanalysis-r139-why",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "why",
+          "statement": {
+            "zh": "VENONA 证明一次性密码本的安全条件是不可重复使用。它把“密钥复用”从抽象禁忌变成可操作的历史案例：一旦复用，OTP 就退化为可统计分析的 running-key 问题。JN-25 的加法簿本来就会重复使用；VENONA 的 OTP 本应只用一次，却因约 35,000 页重复制造出深度。两者的制度背景与失效性质不同，不能都写成“加法簿复用”。",
+            "en": "### Why it is separate\n\nVENONA shows that the security condition of a one-time pad is non-reuse.It turns “key reuse” from an abstract prohibition into an operational case: once reused, the OTP degenerates into a statistically analyzable running-key problem."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "venona-cryptanalysis-r139-used",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "used",
+          "statement": {
+            "zh": "### 正确用法\n\n1.找重复页：用相同位置的密文序列匹配，定位同一页。2.对齐消息，逐位相减得到码本差分。3.用 depth、频率和 crib 恢复码组。4.反查码本，得到明文；对仍不通的片段做语言猜测。5.记录覆盖率和翻译置信度。### 不能怎么用\n\n不能把部分解密说成完整原文；不能忽略码本更换和抄收错误；不能把 VENONA 的结果当作 OTP 算法本身可破。",
+            "en": "### Correct use\n\n1.Find duplicate pages by matching ciphertext sequences at the same positions."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "venona-cryptanalysis-r139-broken",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "broken",
+          "statement": {
+            "zh": "### 失效条件\n\n1.正确使用 OTP 时无解：密钥真随机、不重复、不短于消息，VENONA 方法失效。2.复用页稀少：约 35,000 页重复密钥相对巨量流量仍是少数；只有部分电文可读。3.码本更换/编译错误：码组含义变化会产生系统性误读。4.翻译瓶颈：即使码组恢复，人名、缩写和俄语语法仍可能误判；不能把部分解密当成完整原文。",
+            "en": "### Failure conditions\n\n1.Correct OTP use is unbreakable: truly random, non-reused, message-length keys defeat VENONA methods."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "venona-cryptanalysis-r139-history",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "history",
+          "statement": {
+            "zh": "1943 年 2 月，美国陆军信号情报局启动后来代号 VENONA 的秘密项目；1945 年出现深度线索，1946 年 2 月由 Meredith Gardner 读出首条消息；项目持续到 1980 年 10 月。1995 年 7 月起分六批公开约 3,000 条翻译。公开资料确认约 35,000 页重复密钥，但并非所有重复页都可利用；该条目只写机制、规模与已公开的时间线，不把情报史结论扩大为密码学定理。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：VENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+            "en": "### Historical location\n\nIn February 1943 the U.S.Army Signal Intelligence Service began the secret program later codenamed VENONA; depth clues appeared in 1945, and Meredith Gardner read the first message in February 1946; the project ran until October 1980."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        },
+        {
+          "id": "venona-cryptanalysis-r139-refs",
+          "entryId": "venona-cryptanalysis-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for VENONA 破译.https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for VENONA 破译.https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "venona-cryptanalysis-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "venona-cryptanalysis-wikipedia"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "venona-cryptanalysis-r139-principle",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：VENONA 破译（VENONA Cryptanalysis）。### 码本 + 一次性密码本\n\n苏联商务、外交与情报电文先查码本得 x_i，再用一次性密码本 k_i 逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。若 k_i 真随机、只使用一次且与 x_i 等长，则密文对消息是完美保密的；VENONA 的突破口不是算法，而是密码本页被重复使用。### 复用与深度\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。掩码被消去，剩下两个码本码组的差。重复页越多、消息越长，深度越大；分析者再借助码本频率、已知片段和英文/俄文 crib，恢复码组含义并翻译。",
+        "en": "**Attack**: VENONA Cryptanalysis (VENONA 破译).### Codebook plus one-time pad\n\nSoviet trade, diplomatic and intelligence messages were looked up in a codebook to obtain x_i, then superenciphered with a one-time-pad stream k_i by digitwise addition modulo 10:\n\nc_i=(x_i+k_i) mod 10."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-r139-why",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "why",
+      "statement": {
+        "zh": "VENONA 证明一次性密码本的安全条件是不可重复使用。它把“密钥复用”从抽象禁忌变成可操作的历史案例：一旦复用，OTP 就退化为可统计分析的 running-key 问题。JN-25 的加法簿本来就会重复使用；VENONA 的 OTP 本应只用一次，却因约 35,000 页重复制造出深度。两者的制度背景与失效性质不同，不能都写成“加法簿复用”。",
+        "en": "### Why it is separate\n\nVENONA shows that the security condition of a one-time pad is non-reuse.It turns “key reuse” from an abstract prohibition into an operational case: once reused, the OTP degenerates into a statistically analyzable running-key problem."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-r139-used",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "used",
+      "statement": {
+        "zh": "### 正确用法\n\n1.找重复页：用相同位置的密文序列匹配，定位同一页。2.对齐消息，逐位相减得到码本差分。3.用 depth、频率和 crib 恢复码组。4.反查码本，得到明文；对仍不通的片段做语言猜测。5.记录覆盖率和翻译置信度。### 不能怎么用\n\n不能把部分解密说成完整原文；不能忽略码本更换和抄收错误；不能把 VENONA 的结果当作 OTP 算法本身可破。",
+        "en": "### Correct use\n\n1.Find duplicate pages by matching ciphertext sequences at the same positions."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-r139-broken",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "broken",
+      "statement": {
+        "zh": "### 失效条件\n\n1.正确使用 OTP 时无解：密钥真随机、不重复、不短于消息，VENONA 方法失效。2.复用页稀少：约 35,000 页重复密钥相对巨量流量仍是少数；只有部分电文可读。3.码本更换/编译错误：码组含义变化会产生系统性误读。4.翻译瓶颈：即使码组恢复，人名、缩写和俄语语法仍可能误判；不能把部分解密当成完整原文。",
+        "en": "### Failure conditions\n\n1.Correct OTP use is unbreakable: truly random, non-reused, message-length keys defeat VENONA methods."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-r139-history",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "history",
+      "statement": {
+        "zh": "1943 年 2 月，美国陆军信号情报局启动后来代号 VENONA 的秘密项目；1945 年出现深度线索，1946 年 2 月由 Meredith Gardner 读出首条消息；项目持续到 1980 年 10 月。1995 年 7 月起分六批公开约 3,000 条翻译。公开资料确认约 35,000 页重复密钥，但并非所有重复页都可利用；该条目只写机制、规模与已公开的时间线，不把情报史结论扩大为密码学定理。**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：VENONA 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+        "en": "### Historical location\n\nIn February 1943 the U.S.Army Signal Intelligence Service began the secret program later codenamed VENONA; depth clues appeared in 1945, and Meredith Gardner read the first message in February 1946; the project ran until October 1980."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    },
+    {
+      "id": "venona-cryptanalysis-r139-refs",
+      "entryId": "venona-cryptanalysis-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for VENONA 破译.https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for VENONA 破译.https://zh.wikipedia.org/w/index.php?search=VENONA%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "venona-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

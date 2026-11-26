@@ -1,0 +1,209 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-24",
+  "scope": "r135 formula-level deepening for attack--contact-analysis-details.",
+  "entries": [
+    {
+      "id": "attack--contact-analysis-details",
+      "inventoryIds": [
+        "attack--contact-analysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "把 contact analysis / contact chaining 写成通信元数据图上的可复述模型：一跳与 k 跳、共同邻居、Jaccard、Adamic-Adar、precision/recall 及高 degree 枢纽的误报边界。",
+        "en": "Formalizes contact analysis / contact chaining on a communication-metadata graph: one-hop and k-hop sets, common neighbors, Jaccard, Adamic-Adar, precision/recall and the false-positive boundary created by high-degree hubs."
+      },
+      "title": {
+        "zh": "接触分析",
+        "en": "Contact Analysis"
+      },
+      "claimIds": [
+        "attack--contact-analysis-r139-principle",
+        "attack--contact-analysis-r139-why",
+        "attack--contact-analysis-r139-used",
+        "attack--contact-analysis-r139-broken",
+        "attack--contact-analysis-r139-history",
+        "attack--contact-analysis-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--contact-analysis-wikipedia",
+        "attack--contact-analysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "attack--canary-trap",
+        "pretexting"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [
+          "接触链：从种子节点按一跳、两跳逐步扩展得到的联系人集合。",
+          "共同邻居：同时与 a、b 相连的节点集合大小。",
+          "Jaccard：共同邻居占并集的比例，消除节点度的影响。",
+          "Adamic-Adar：按共同邻居的度加权，降低高 degree 枢纽的权重。"
+        ],
+        "en": [
+          "Contact chain: the set of contacts reached from a seed by one hop, two hops and so on.",
+          "Common neighbors: the number of nodes linked to both a and b.",
+          "Jaccard: common neighbors divided by the union, reducing degree effects.",
+          "Adamic-Adar: weights common neighbors by inverse log degree, downweighting hubs."
+        ]
+      },
+      "figures": [
+        {
+          "id": "attack--contact-analysis-formula",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "接触分析：元数据图、k 跳扩展与相似度排序",
+            "en": "Contact analysis: metadata graph, k-hop expansion and similarity ranking"
+          },
+          "alt": {
+            "zh": "接触分析：元数据图、k 跳扩展与相似度排序",
+            "en": "Contact analysis: metadata graph, k-hop expansion and similarity ranking"
+          },
+          "files": {
+            "zh": "assets/attack--contact-analysis-formula.zh.svg",
+            "en": "assets/attack--contact-analysis-formula.en.svg"
+          },
+          "credit": {
+            "zh": "poyi knowledge · 原创 SVG 示意图 · CC BY 4.0",
+            "en": "poyi knowledge · original SVG schematic · CC BY 4.0"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-24"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "c7cd968e1ec7f0318d9d283be73cb9ce7e8b1f4f8a150fd5f91a2b4b816a8c8c",
+            "en": "791a8728419d8a54d30dfc06a39508af8da1f7094353a5cde4493a9fb667995b"
+          }
+        },
+        {
+          "id": "attack--contact-analysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "接触分析 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Contact Analysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "接触分析 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Contact Analysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--contact-analysis-details-r138-model.zh.svg",
+            "en": "assets/attack--contact-analysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "a06296e7e7bb3a80eddeca2eace20c3e4abbf71fea9c630f20ba3794e2169a36",
+            "en": "bd365c15872c4294be31e64abd1d2e11a755403ba418d596b8cba984311a9a10"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：接触分析（Contact Analysis）。接触分析（contact analysis / contact chaining）把通信元数据建成图：节点是电话号码、账号、设备或身份标识，边是通话、短信、邮件等接触事件，边权可以是次数、时长或时间窗。从已知目标 s 出发，一跳邻居 Γ(s) 是直接接触者，k 跳集合 C_k(s)={v | d_G(s,v)≤k} 是扩展接触链。候选关联可用共同邻居与相似度排序：CN(a,b)=|Γ(a)∩Γ(b)|；Jaccard J(a,b)=|Γ(a)∩Γ(b)|/|Γ(a)∪Γ(b)|；Adamic-Adar AA(a,b)=Σ_{z∈Γ(a)∩Γ(b)}1/log deg(z)。这些分数不是罪证，只是把“谁与谁可能相识”变成可排序的假设。评估用阈值 τ：score≥τ 判为正候选，再以 precision=TP/(TP+FP)、recall=TP/(TP+FN) 权衡。k 增大覆盖更广，但 |C_k| 和误报也会上升；所以调查设计同时受 hop 数、时间窗、节点类型和复核能力约束。",
+          "why": "接触链能把分散的通信记录变成网络结构，帮助找到直接联系人、共同联系人、桥梁节点和孤立子网。它对反恐、反欺诈、执法和事件响应有价值，但也是隐私争议核心：元数据虽不含内容，仍能推断关系、位置、作息和社交圈。关键区别：contact chaining 产生的是“可疑关联”，不是“有罪关联”。必须把发现、复核、清除和审计分开，避免把图上的边当成事实。",
+          "used": "步骤：1）定义节点、边与时间窗；2）从种子号码做 1..k 跳扩展；3）计算共同邻居、Jaccard、Adamic-Adar；4）按 τ 排序候选；5）人工复核共享号码、NAT、客服/总机、二次验证号；6）记录 precision/recall 与删除策略。对抗性场景要限制查询范围、留存期和结果使用；对高 degree 枢纽（客服、VoIP 网关、短信号）要单独处理，否则两跳会因枢纽把大量无关用户连在一起。",
+          "broken": "失效：元数据错误、号码复用、共享手机、NAT/运营商代理、一次性号码；加密只隐藏内容，不隐藏元数据；k 跳扩展会指数级放大误报；ground truth 缺失使 precision/recall 不可信；法律授权与留存边界可能让结果不可用。",
+          "history": "SIGINT 的 contact chaining 在 20 世纪中后期成熟；2013 年斯诺登披露 NSA 国内电话元数据项目后，三跳/两跳、五年/十八个月留存成为公共争论。2015 年美国国家科学院报告把 contact chaining 作为技术选项之一；2016 年开源论文提出可审计的接触链协议；电话元数据研究显示高 degree 枢纽会让“两跳”覆盖远超直觉。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 接触分析 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。",
+          "refs": "- Wikipedia search entry for 接触分析. https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Contact Analysis (接触分析). Contact analysis, or contact chaining, turns communication metadata into a graph. Nodes are phone numbers, accounts, devices or identifiers; edges are calls, texts, emails or other contact events; edge weights can be counts, duration or a time window. Starting from a target s, the one-hop neighbors Γ(s) are direct contacts, and the k-hop set C_k(s)={v | d_G(s,v)≤k} is the extended contact chain. Candidate associations can be ranked with common neighbors and similarity scores: CN(a,b)=|Γ(a)∩Γ(b)|; Jaccard J(a,b)=|Γ(a)∩Γ(b)|/|Γ(a)∪Γ(b)|; Adamic-Adar AA(a,b)=Σ_{z∈Γ(a)∩Γ(b)}1/log deg(z). These scores are not proof of guilt; they turn “who may know whom” into rankable hypotheses. Evaluation uses a threshold τ: score≥τ marks a positive candidate, then precision=TP/(TP+FP) and recall=TP/(TP+FN) trade off. Larger k broadens coverage, but |C_k| and false positives grow. Investigation design is therefore constrained by hop count, time window, node type and review capacity.",
+          "why": "Contact chains turn scattered records into network structure and help find direct contacts, shared contacts, bridge nodes and isolated subnetworks. They matter for counterterrorism, fraud, law enforcement and incident response, but they are also a privacy fault line: metadata has no content, yet it can reveal relationships, location, routines and social circles.\n\nThe key distinction: contact chaining produces “suspicion by association”, not guilt by association. Discovery, review, deletion and audit must remain separate so that graph edges are not treated as facts.",
+          "used": "Steps: 1) define nodes, edges and a time window; 2) expand 1..k hops from the seed; 3) compute common neighbors, Jaccard and Adamic-Adar; 4) rank candidates by τ; 5) review shared numbers, NAT, support lines, switchboards and two-factor numbers; 6) record precision/recall and a deletion policy.\n\nIn adversarial settings, limit query scope, retention and use of results. Treat high-degree hubs such as support lines, VoIP gateways and SMS gateways separately; otherwise two hops will connect many unrelated users through a hub.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Failure modes: metadata errors, number reuse, shared phones, NAT/carrier proxies, disposable numbers; encryption hides content, not metadata; k-hop expansion multiplies false positives; missing ground truth makes precision/recall unreliable; legal authorization and retention limits may make results unusable.",
+          "history": "SIGINT contact chaining matured in the mid-to-late 20th century. After the 2013 Snowden disclosures of the NSA domestic telephone metadata program, three hops versus two hops and five years versus eighteen months became public disputes. A 2015 National Academies report treated contact chaining as one technical option; a 2016 open paper proposed auditable contact-chaining protocols; telephone-metadata research showed that high-degree hubs make “two hops” reach far beyond intuition.",
+          "refs": "- Wikipedia search entry for 接触分析. https://zh.wikipedia.org/w/index.php?search=%E6%8E%A5%E8%A7%A6%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nContact Analysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculationIds": [
+        "attack--contact-analysis-r139-formal"
+      ],
+      "verificationStatus": "independently-reviewed-detailed-article",
+      "calculations": [
+        {
+          "id": "attack--contact-analysis-r139-formal",
+          "entryId": "attack--contact-analysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 接触分析 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "attack--contact-analysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "sources": [
+        "attack--contact-analysis-wikipedia",
+        "attack--contact-analysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--contact-analysis-r139-formal",
+      "entryId": "attack--contact-analysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：接触分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 接触分析 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "attack--contact-analysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

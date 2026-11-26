@@ -1,0 +1,403 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Full BLAKE3 article: the specification's 1024-byte chunk tree, BLAKE2s-based 7-round compression, state layout, G and message permutation, domain flags, chunk/parent/root chaining, 64-byte root output, hash/keyed_hash/derive_key modes, XOF prefix behavior, performance claims, security goals, official test vectors, the 2020 first publication and implementation boundaries. No completion claim for BLAKE2, SHA-2, HMAC as a standalone entity, verified streaming implementations, protocols or any implementation.",
+  "entries": [
+    {
+      "id": "blake3-details",
+      "inventoryIds": [
+        "blake3"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 BLAKE3 规范：1024 字节 chunk 二叉树、BLAKE2s 派生的 7 轮 32 位压缩、状态布局、G 与消息置换、七个域标志、chunk/parent/root 链接、64 字节根输出、hash/keyed_hash/derive_key 三模式、XOF 前缀行为、性能与安全目标、官方 35 组测试向量、2020 年首次发布，以及根 chunk/父节点/XOF 的实现边界。不把 BLAKE2、SHA-2、HMAC、verified streaming 实现或整个哈希家族并入本实体。",
+        "en": "Covers the BLAKE3 specification: the 1024-byte chunk tree, BLAKE2s-derived 7-round 32-bit compression, state layout, G and message permutation, seven domain flags, chunk/parent/root chaining, 64-byte root output, the hash/keyed_hash/derive_key modes, XOF prefix behavior, performance and security goals, the 35 official test vectors, the 2020 first publication, and the root-chunk/parent/XOF implementation boundaries. It does not absorb BLAKE2, SHA-2, HMAC, verified-streaming implementations or the whole hash family."
+      },
+      "title": {
+        "zh": "BLAKE3：树式并行、7 轮的现代哈希",
+        "en": "BLAKE3: tree-parallel, 7-round modern hash"
+      },
+      "claimIds": [
+        "blake3-r139-principle",
+        "blake3-r139-why",
+        "blake3-r139-used",
+        "blake3-r139-broken",
+        "blake3-r139-history",
+        "blake3-r139-refs"
+      ],
+      "calculationIds": [
+        "blake3-calc-official-vectors",
+        "blake3-calc-tree-trace",
+        "blake3-calc-xof",
+        "blake3-calc-structure",
+        "blake3-r139-formal"
+      ],
+      "sourceIds": [
+        "blake3-wikipedia",
+        "blake3-reference-ref"
+      ],
+      "related": [
+        "blake2",
+        "sha2",
+        "algorithm--hmac",
+        "merkle-tree"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article. BLAKE2 is the predecessor with the 10-round BLAKE2s compression; SHA-2 is the Merkle-Damgård family; HMAC is a keyed construction; Merkle trees are the generic tree-hash concept. BLAKE3 is a single algorithm with its own tree/mode specification, not a BLAKE2 variant.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：BLAKE3 散列（BLAKE3）。BLAKE3 是单算法哈希函数：默认输出 256 位，支持任意长度输出（0 ≤ d < 2^64），并提供 hash、keyed_hash 与 derive_key 三种模式。它把输入按 1024 字节切成 chunk；chunk 作为二叉树的叶子，左子树满且大于等于右子树，父节点把两个子节点的链接值合并。输入按 64 字节块压缩。压缩函数的状态 v0…v15 由 8 个链接字、4 个 IV 字、64 位计数器 t0/t1、块字节数 b 和域标志 d 组成；IV0…IV7 与 BLAKE2s 相同。它基于 BLAKE2s 的 32 位混合逻辑，但只做 7 轮而不是 BLAKE2s 的 10 轮。每轮对 4×4 状态先做列 G、再做对角 G；G 内使用 16、12、8、7 位循环右移。除最后一轮外，每轮之后消息字按固定置换 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8 重排。域标志是位掩码：CHUNK_START=1、CHUNK_END=2、PARENT=4、ROOT=8、KEYED_HASH=16、DERIVE_KEY_CONTEXT=32、DERIVE_KEY_MATERIAL=64。chunk 内每个块的计数器等于 chunk 索引；块长是实际输入字节数（只有最后一个 chunk 的最后一块可短）；第一块加 CHUNK_START，最后一块加 CHUNK_END。父节点用一次压缩：消息字是左子链接值（8 字）加右子链接值（8 字），计数器 0、块长 64，并加 PARENT 标志。普通节点截断压缩输出的前 8 个字作为 32 字节链接值；根节点使用完整 16 字（64 字节）输出，按小端编码。XOF 通过重复根压缩实现：第一次根压缩计数器为 0，之后每多需要 64 字节就把计数器加 1；输出按小端拼接。keyed_hash 模式把 256 位密钥按小端解析成 8 个字作为初始链接值，并在每次压缩上加 KEYED_HASH 标志。derive_key 分两步：先用 DERIVE_KEY_CONTEXT 标志哈希上下文串，得到 8 个密钥字；再用 DERIVE_KEY_MATERIAL 标志哈希密钥材料。",
+          "why": "BLAKE3 是 BLAKE2 的演进：它把 BLAKE2s 的 32 位混合逻辑保留下来，但把轮数从 10 降到 7，并用树结构获得并行性，而不是像 BLAKE2 那样提供多个面向不同平台的变体。BLAKE2 于 2012 年公布，RFC 7693 于 2015 年 11 月规定 BLAKE2b 与 BLAKE2s；本批次使用的 BLAKE3 规范版本为 20211102173700。BLAKE3 的目标安全强度是 128 位，默认输出 256 位。7 轮选择基于既有 BLAKE/BLAKE2 密码分析；规范第 4 节给出 128 位安全目标、压缩函数分析与模式论证。树结构提供无界并行度，并支持可验证流式传输与增量更新；这是 BLAKE3 相对 BLAKE2 的主要新能力。规范给出的性能数据：在 Intel Cascade Lake-SP 上单线程峰值约为 BLAKE2b 的 4 倍、SHA-512 的 8 倍、SHA-256 的 12 倍；在 32 位 ARM1176 上约为 SHA-256 的 1.3 倍。",
+          "used": "BLAKE3 的统一 API 覆盖普通哈希、带密钥哈希、密钥派生与任意长度输出；同一算法可以服务 BLAKE2 的多种用途，而不需要选择不同变体。keyed_hash 可作带密钥的 PRF/MAC 使用；密钥必须保密且为 256 位，不能把普通 hash 直接当 MAC。XOF 适合需要可扩展输出的场景；树结构支持可验证流式传输与增量更新：可沿根到 chunk 的父节点路径校验单个 chunk；编辑任意位置只需重算被修改的 chunk 及其祖先父节点，而不必重算其右侧全部数据。BLAKE3 也提供官方 35 组测试向量，覆盖 0 到 102400 字节的输入长度与 131 字节输出。",
+          "broken": "BLAKE3 的安全性建立在规范给出的 128 位安全目标、压缩函数分析与模式论证，以及现有 BLAKE/BLAKE2 分析上。实现错误（如 chunk/tree 边界或 flag 组合）会产生错误结果，而不是`接近正确`的结果。**XOF 输出长度**：BLAKE3 不对不同输出长度做域分离：较短输出是较长输出的前缀；输出长度因此不是独立的域标签。需要不同域时，应使用 keyed_hash 或 derive_key，而不是改变输出长度。**带密钥模式**：keyed_hash 的安全性依赖密钥保密与均匀随机；密钥必须是 256 位，实践中不应把无密钥 hash 直接当 MAC。derive_key 通过 context 与 material 两阶段分离不同用途；context 应硬编码、全局唯一且应用特定，不能包含盐、ID 或当前时间等可变数据。**树结构实现**：根 chunk 的最后一块必须用最后一块之前的链接值重压；父节点块长固定 64；XOF 每次根压缩计数器递增；flag 位必须按规范相加。这些是实现正确性要求，不是可选优化。",
+          "history": "- **2012 年**：BLAKE2 公布；BLAKE3 规范把 BLAKE2 描述为其演进来源。- **2015 年 11 月**：RFC 7693 发布，规定 BLAKE2b 与 BLAKE2s。- **2020 年 1 月 9 日**：BLAKE3 规范的首个发布版本提交发布。- **2021 年 11 月 2 日**：BLAKE3 规范更新为版本 20211102173700（本批次使用版本）。",
+          "refs": "- Wikipedia search entry for BLAKE3 散列. https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: BLAKE3 (BLAKE3 散列). BLAKE3 is a single-algorithm hash function: its default output is 256 bits, it supports any output length 0 ≤ d < 2^64, and it provides hash, keyed_hash and derive_key modes. It splits input into 1024-byte chunks; chunks are leaves of a binary tree, left subtrees are full and at least as large as their siblings, and parent nodes combine the two child chaining values. Input is compressed in 64-byte blocks. The compression state v0…v15 consists of eight chaining words, four IV words, the 64-bit counter t0/t1, the block byte count b and the domain flags d; IV0…IV7 are the same constants as in BLAKE2s. It uses BLAKE2s's 32-bit mixing logic but only 7 rounds instead of BLAKE2s's 10. Each round applies G to the four columns and then to the four diagonals of the 4×4 state; G uses 16-, 12-, 8- and 7-bit right rotations. After each round except the last, the message words are permuted by the fixed permutation 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8. The domain flags are bit masks: CHUNK_START=1, CHUNK_END=2, PARENT=4, ROOT=8, KEYED_HASH=16, DERIVE_KEY_CONTEXT=32 and DERIVE_KEY_MATERIAL=64. Inside a chunk, every block's counter is the chunk index; the block length is the actual input byte count (only the last block of the last chunk may be short); the first block sets CHUNK_START and the last sets CHUNK_END. A parent node uses one compression: the message words are the left child's 8-word chaining value followed by the right child's, with counter 0, block length 64 and the PARENT flag. Ordinary nodes truncate the compression output to its first 8 words as a 32-byte chaining value; the root uses the full 16-word (64-byte) output, encoded little-endian. The XOF repeats the root compression: the first root compression uses counter 0, and each additional 64 bytes increments the counter by 1; outputs are concatenated little-endian. In keyed_hash mode, the 256-bit key is parsed little-endian into eight words as the initial chaining value, and every compression sets the KEYED_HASH flag. derive_key has two stages: first hash the context string with the DERIVE_KEY_CONTEXT flag to get eight key words, then hash the key material with the DERIVE_KEY_MATERIAL flag.",
+          "why": "BLAKE3 is an evolution of BLAKE2: it keeps BLAKE2s's 32-bit mixing logic but reduces the round count from 10 to 7, and it gains parallelism from a tree structure rather than offering multiple platform-specific variants as BLAKE2 does. BLAKE2 was announced in 2012; RFC 7693 of November 2015 specifies BLAKE2b and BLAKE2s, and the BLAKE3 specification version used in this batch is 20211102173700.\n\nBLAKE3 targets 128-bit security with a 256-bit default output. The 7-round choice is based on existing BLAKE/BLAKE2 cryptanalysis; section 4 of the specification sets out the 128-bit security goals, compression-function analysis and mode argument.\n\nThe tree structure provides unbounded parallelism and supports verified streaming and incremental updates; these are BLAKE3's main new capabilities relative to BLAKE2. The specification's performance figures: on Intel Cascade Lake-SP, peak single-threaded throughput is about 4× BLAKE2b, 8× SHA-512 and 12× SHA-256; on a 32-bit ARM1176 it is about 1.3× SHA-256.",
+          "used": "BLAKE3's unified API covers ordinary hashing, keyed hashing, key derivation and arbitrary-length output; one algorithm serves BLAKE2's use cases without choosing different variants. keyed_hash can be used as a keyed PRF/MAC; the key must be secret and 256 bits, and an ordinary hash must not be used directly as a MAC.\n\nXOF suits settings that need extendable output; the tree structure supports verified streaming and incremental updates: a single chunk can be verified along the parent path from the root, and editing anywhere requires re-hashing only the modified chunks and their ancestor parent nodes, not everything to their right. BLAKE3 also provides 35 official test vectors covering input lengths from 0 to 102400 bytes and 131-byte outputs.",
+          "broken": "BLAKE3 security rests on the specification's 128-bit security goals, compression-function analysis and mode argument, together with existing BLAKE/BLAKE2 analysis. Implementation mistakes (such as chunk/tree boundaries or flag combinations) produce wrong results, not `almost correct` results.\n\n**XOF output length**: BLAKE3 does not domain-separate different output lengths: a shorter output is a prefix of a longer one; output length is therefore not an independent domain label. When different domains are needed, use keyed_hash or derive_key rather than changing the output length.\n\n**Keyed mode**: keyed_hash security depends on a secret, uniformly random key; the key must be 256 bits, and in practice an unkeyed hash should not be used directly as a MAC. derive_key separates uses through its context and material stages; the context should be hardcoded, globally unique and application-specific, and must not contain variable data such as salts, IDs or the current time.\n\n**Tree implementation**: the root chunk's last block must be recompressed with the chaining value before the last block; parent nodes always use block length 64; the XOF increments the root counter per 64 bytes; flags must be combined exactly as specified. These are correctness requirements, not optional optimizations.",
+          "history": "- **2012**: BLAKE2 is announced; the BLAKE3 specification describes BLAKE2 as its evolutionary source. - **November 2015**: RFC 7693 is published, specifying BLAKE2b and BLAKE2s. - **9 January 2020**: the first published version of the BLAKE3 specification is committed. - **2 November 2021**: the BLAKE3 specification is updated to version 20211102173700, the version used in this batch.",
+          "refs": "- Wikipedia search entry for BLAKE3 散列. https://zh.wikipedia.org/w/index.php?search=BLAKE3%20%E6%95%A3%E5%88%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "BLAKE3：BLAKE2 的演进版本，单算法、默认 256 位输出，支持 hash/keyed_hash/derive_key 与 XOF。",
+          "chunk：BLAKE3 的 1024 字节输入分片；chunk 是树的叶子。",
+          "块：chunk 内 64 字节的压缩单位；最后一块可以更短，必要时补零。",
+          "二叉树：chunk 之间的合并结构，左子树满且大于等于右子树。",
+          "叶节点：一个 chunk 的链接值节点。",
+          "父节点：把左右子链接值合并成一个新链接值的节点。",
+          "链接值：压缩函数截断到 8 个 32 位字（32 字节）的中间值。",
+          "压缩函数：把 8 字链接值与 16 字消息块混合成 16 字输出的 7 轮函数。",
+          "状态：压缩函数内的 16 个 32 位字 v0…v15。",
+          "G：压缩函数的四分之一轮，含 16/12/8/7 位循环右移。",
+          "消息置换：每轮后按 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8 重排消息字。",
+          "域标志：用位掩码区分 chunk/parent/root/keyed/derive 等域。",
+          "CHUNK_START：chunk 第一块的标志值 1。",
+          "CHUNK_END：chunk 最后一块的标志值 2。",
+          "PARENT：父节点标志值 4。",
+          "ROOT：根节点标志值 8。",
+          "KEYED_HASH：带密钥哈希标志值 16。",
+          "derive_key：两阶段密钥派生模式，分别使用 DERIVE_KEY_CONTEXT（32）与 DERIVE_KEY_MATERIAL（64）。",
+          "XOF：可扩展输出函数；重复根压缩并递增计数器，输出任意长度。",
+          "根节点：树的最终节点；普通输出取其 32 字节链接值，XOF 取完整 64 字节输出。",
+          "计数器：chunk 块使用 chunk 索引，父节点为 0，XOF 每个 64 字节块递增。",
+          "左满/左大：BLAKE3 树的两条结构规则，保证树形态确定。",
+          "BLAKE2s：BLAKE3 压缩核心的来源；RFC 7693 规定其 32 位字与 10 轮。",
+          "并行性：chunk 可独立压缩，树结构支持多核与 SIMD。"
+        ],
+        "en": [
+          "BLAKE3: an evolution of BLAKE2, a single algorithm with a 256-bit default output, supporting hash/keyed_hash/derive_key and XOF.",
+          "Chunk: a 1024-byte input slice in BLAKE3; chunks are the tree leaves.",
+          "Block: the 64-byte compression unit inside a chunk; the last block may be shorter and is zero-padded if needed.",
+          "Binary tree: the merge structure between chunks, with full left subtrees at least as large as their siblings.",
+          "Leaf node: the chaining-value node of one chunk.",
+          "Parent node: a node that combines left and right child chaining values into a new chaining value.",
+          "Chaining value: the compression output truncated to eight 32-bit words (32 bytes).",
+          "Compression function: the 7-round function mixing an eight-word chaining value with a sixteen-word message block.",
+          "State: the sixteen 32-bit words v0…v15 inside the compression function.",
+          "G: the quarter-round of the compression function, with 16/12/8/7-bit right rotations.",
+          "Message permutation: after each round, message words are permuted by 2,6,3,10,7,0,4,13,1,11,12,5,9,14,15,8.",
+          "Domain flags: bit masks separating chunk/parent/root/keyed/derive domains.",
+          "CHUNK_START: flag value 1 for a chunk's first block.",
+          "CHUNK_END: flag value 2 for a chunk's last block.",
+          "PARENT: parent-node flag value 4.",
+          "ROOT: root-node flag value 8.",
+          "KEYED_HASH: keyed-hash flag value 16.",
+          "derive_key: a two-stage key-derivation mode using DERIVE_KEY_CONTEXT (32) and DERIVE_KEY_MATERIAL (64).",
+          "XOF: extendable-output function; repeats the root compression with an incrementing counter for arbitrary output.",
+          "Root node: the tree's final node; a normal output takes its 32-byte chaining value, while the XOF takes the full 64-byte output.",
+          "Counter: chunk blocks use the chunk index, parent nodes use 0, and the XOF increments per 64-byte block.",
+          "Left-full/left-big: BLAKE3's two tree rules that make the tree shape deterministic.",
+          "BLAKE2s: the source of BLAKE3's compression core; RFC 7693 specifies 32-bit words and 10 rounds.",
+          "Parallelism: chunks can be compressed independently, and the tree supports multiple cores and SIMD."
+        ]
+      },
+      "figures": [
+        {
+          "id": "blake3-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLAKE3：树式并行、7 轮的现代哈希：为什么需要 → 核心机制 → 边界。",
+            "en": "BLAKE3: tree-parallel, 7-round modern hash: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "BLAKE3：树式并行、7 轮的现代哈希 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for BLAKE3: tree-parallel, 7-round modern hash, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/blake3-details-flow.zh.svg",
+            "en": "assets/blake3-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d032d0dccc0c1b339c54456b129a2bbf9fd92a8fa4dcdab613fb178cf68f62fe",
+            "en": "7c9a6236a8718d2fd52462e2254c643727cb02264fb122103d7b8cacff30f178"
+          }
+        },
+        {
+          "id": "blake3-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "BLAKE3：树式并行、7 轮的现代哈希 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for BLAKE3: tree-parallel, 7-round modern hash: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "BLAKE3：树式并行、7 轮的现代哈希 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for BLAKE3: tree-parallel, 7-round modern hash, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/blake3-details-r138-model.zh.svg",
+            "en": "assets/blake3-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "817436283a6a7b29cacad5057a395d1dcc6b9d8aaca2a56a4908912c3c2d703a",
+            "en": "f479543e2d6de29e721789439601223cb448f1c18882d32ddf09d7069eab31b3"
+          }
+        }
+      ],
+      "sources": [
+        "blake3-wikipedia",
+        "blake3-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "blake3-calc-official-vectors",
+          "entryId": "blake3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The 35 official BLAKE3 test cases (input lengths 0, 1-8, 63, 64, 65, 127, 128, 129, 1023, 1024, 1025, 2048, 2049, 3072, 3073, 4096, 4097, 5120, 5121, 6144, 6145, 7168, 7169, 8192, 8193, 16384, 31744 and 102400), each with 131-byte hash, keyed_hash and derive_key outputs, plus the official key and context string; the official file used is 31922 bytes with SHA-256 dcb91ea8accc77e6d6e632af7cdc1a99a9f3ae78cf648da595c7d064db32f624",
+          "expected": "The teaching implementation reproduces all 105 outputs exactly and the stored case set matches the exact 35 official input lengths, including the empty-input hash af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262, the 65-byte hash de1e5fa0be70df6d2be8fffd0e99ceaa8eb6e8c93a63f2d8d1c30ecb6b263dee and the 1025-byte hash d00278ae47eb27b34faecf67b4fe263f82d5412916c1ffd97c8cb7fb814b8444",
+          "sourceIds": [
+            "blake3-wikipedia"
+          ],
+          "dependencies": [
+            "blake3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Official conformance vectors only; they check the implementation, not any security property. The 131-byte outputs are checked through the official JSON; an independent reviewer also reimplemented BLAKE3 from the specification and reproduced all 105 outputs."
+        },
+        {
+          "id": "blake3-calc-tree-trace",
+          "entryId": "blake3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Tree traces for the empty input, 65 bytes and 1025 bytes: chunk count, root type, root flags, root block length, chunk chaining values and digest",
+          "expected": "Empty: one chunk, root flags 11, block length 0, digest af1349b9...; 65 bytes: one chunk, root flags 10, block length 1, root pre-last CV ff29379d..., digest de1e5fa0...; 1025 bytes: two chunks, parent root flags 12, block length 64, chunk CVs 5c9e6544... and 2f008e8a..., digest d00278ae...",
+          "sourceIds": [
+            "blake3-wikipedia"
+          ],
+          "dependencies": [
+            "blake3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Three tree traces only; the intermediate trace values come from the teaching implementation, which is itself checked against the official vectors. The independent reviewer reproduced the same traces with a separate implementation; only the final digests are officially anchored."
+        },
+        {
+          "id": "blake3-calc-xof",
+          "entryId": "blake3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The empty-input hash outputs for lengths 1 through 131, the official 131-byte empty-input vector, the official keyed_hash and derive_key empty-input outputs, and a wrong-flag control",
+          "expected": "Every shorter output is a prefix of every longer output and the 131-byte output equals the official empty-input vector; keyed_hash and derive_key differ from the plain hash and from each other; the wrong-flag output differs from the official empty digest",
+          "sourceIds": [
+            "blake3-wikipedia"
+          ],
+          "dependencies": [
+            "blake3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Prefix and domain-separation checks on the empty input only; they do not test every message or every output length. The official 131-byte output anchors the XOF construction, but the prefix relation itself is checked internally."
+        },
+        {
+          "id": "blake3-calc-structure",
+          "entryId": "blake3-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The specification IV and permutation constants; the 64-byte block and 1024-byte chunk sizes; the 7 rounds; the seven domain flags; the exact 35 official input lengths and official file hash; the article code block; the bilingual hex vectors; and negative controls for a wrong round count, wrong permutation and wrong IV against the official 64-byte digest",
+          "expected": "The IV, sizes, rounds, permutation and flag values match the specification constants; the official length set is exactly the 35 cases; the article's js code block is a substring of blake3-teaching.mjs; the Chinese and English articles expose the same hex-token set; the correct 64-byte control digest is 4eed7141ea4a5cd4b788606bd23f46e212af9cacebacdc7d1f4c6dc7f2511b98 and the wrong-round, wrong-permutation and wrong-IV variants all fail to reproduce it",
+          "sourceIds": [
+            "blake3-wikipedia"
+          ],
+          "dependencies": [
+            "blake3-teaching.mjs",
+            "vectors.json",
+            "article.zh.md",
+            "article.en.md",
+            "meta.json",
+            "glossary.json",
+            "calculations.json"
+          ],
+          "limitations": "Structural invariants and negative controls only; they show the constants and shape are load-bearing, but prove nothing about security."
+        },
+        {
+          "id": "blake3-r139-formal",
+          "entryId": "blake3-details",
+          "kind": "formal-model",
+          "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+          "inputs": "BLAKE3 散列 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "blake3-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "blake3-calc-official-vectors",
+      "entryId": "blake3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The 35 official BLAKE3 test cases (input lengths 0, 1-8, 63, 64, 65, 127, 128, 129, 1023, 1024, 1025, 2048, 2049, 3072, 3073, 4096, 4097, 5120, 5121, 6144, 6145, 7168, 7169, 8192, 8193, 16384, 31744 and 102400), each with 131-byte hash, keyed_hash and derive_key outputs, plus the official key and context string; the official file used is 31922 bytes with SHA-256 dcb91ea8accc77e6d6e632af7cdc1a99a9f3ae78cf648da595c7d064db32f624",
+      "expected": "The teaching implementation reproduces all 105 outputs exactly and the stored case set matches the exact 35 official input lengths, including the empty-input hash af1349b9f5f9a1a6a0404dea36dcc9499bcb25c9adc112b7cc9a93cae41f3262, the 65-byte hash de1e5fa0be70df6d2be8fffd0e99ceaa8eb6e8c93a63f2d8d1c30ecb6b263dee and the 1025-byte hash d00278ae47eb27b34faecf67b4fe263f82d5412916c1ffd97c8cb7fb814b8444",
+      "sourceIds": [
+        "blake3-wikipedia"
+      ],
+      "dependencies": [
+        "blake3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Official conformance vectors only; they check the implementation, not any security property. The 131-byte outputs are checked through the official JSON; an independent reviewer also reimplemented BLAKE3 from the specification and reproduced all 105 outputs."
+    },
+    {
+      "id": "blake3-calc-tree-trace",
+      "entryId": "blake3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Tree traces for the empty input, 65 bytes and 1025 bytes: chunk count, root type, root flags, root block length, chunk chaining values and digest",
+      "expected": "Empty: one chunk, root flags 11, block length 0, digest af1349b9...; 65 bytes: one chunk, root flags 10, block length 1, root pre-last CV ff29379d..., digest de1e5fa0...; 1025 bytes: two chunks, parent root flags 12, block length 64, chunk CVs 5c9e6544... and 2f008e8a..., digest d00278ae...",
+      "sourceIds": [
+        "blake3-wikipedia"
+      ],
+      "dependencies": [
+        "blake3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Three tree traces only; the intermediate trace values come from the teaching implementation, which is itself checked against the official vectors. The independent reviewer reproduced the same traces with a separate implementation; only the final digests are officially anchored."
+    },
+    {
+      "id": "blake3-calc-xof",
+      "entryId": "blake3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The empty-input hash outputs for lengths 1 through 131, the official 131-byte empty-input vector, the official keyed_hash and derive_key empty-input outputs, and a wrong-flag control",
+      "expected": "Every shorter output is a prefix of every longer output and the 131-byte output equals the official empty-input vector; keyed_hash and derive_key differ from the plain hash and from each other; the wrong-flag output differs from the official empty digest",
+      "sourceIds": [
+        "blake3-wikipedia"
+      ],
+      "dependencies": [
+        "blake3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Prefix and domain-separation checks on the empty input only; they do not test every message or every output length. The official 131-byte output anchors the XOF construction, but the prefix relation itself is checked internally."
+    },
+    {
+      "id": "blake3-calc-structure",
+      "entryId": "blake3-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The specification IV and permutation constants; the 64-byte block and 1024-byte chunk sizes; the 7 rounds; the seven domain flags; the exact 35 official input lengths and official file hash; the article code block; the bilingual hex vectors; and negative controls for a wrong round count, wrong permutation and wrong IV against the official 64-byte digest",
+      "expected": "The IV, sizes, rounds, permutation and flag values match the specification constants; the official length set is exactly the 35 cases; the article's js code block is a substring of blake3-teaching.mjs; the Chinese and English articles expose the same hex-token set; the correct 64-byte control digest is 4eed7141ea4a5cd4b788606bd23f46e212af9cacebacdc7d1f4c6dc7f2511b98 and the wrong-round, wrong-permutation and wrong-IV variants all fail to reproduce it",
+      "sourceIds": [
+        "blake3-wikipedia"
+      ],
+      "dependencies": [
+        "blake3-teaching.mjs",
+        "vectors.json",
+        "article.zh.md",
+        "article.en.md",
+        "meta.json",
+        "glossary.json",
+        "calculations.json"
+      ],
+      "limitations": "Structural invariants and negative controls only; they show the constants and shape are load-bearing, but prove nothing about security."
+    },
+    {
+      "id": "blake3-r139-formal",
+      "entryId": "blake3-details",
+      "kind": "formal-model",
+      "formula": "h=H(M),\\quad H:\\{0,1\\}^{*}\\to\\{0,1\\}^{n}",
+      "inputs": "BLAKE3 散列 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "blake3-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

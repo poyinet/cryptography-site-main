@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-29",
+  "scope": "Compact definitional article for the Merkle-tree term: leaves/parents/root, audit path, consistency proof, Certificate Transparency use, security boundary and history. It does not duplicate Certificate Transparency or any protocol entity.",
+  "entries": [
+    {
+      "id": "merkletree-details",
+      "inventoryIds": [
+        "merkle-tree"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 Merkle 树：叶子/父节点/根、审计路径、一致性证明、Certificate Transparency 用途、安全边界与历史；不复制证书透明日志或协议实体。",
+        "en": "A compact definition of the Merkle tree: leaves/parents/root, audit paths, consistency proofs, Certificate Transparency use, security boundary and history; it does not duplicate Certificate Transparency or protocol entities."
+      },
+      "title": {
+        "zh": "默克尔树",
+        "en": "Merkle tree"
+      },
+      "claimIds": [
+        "merkle-tree-r139-principle",
+        "merkle-tree-r139-why",
+        "merkle-tree-r139-used",
+        "merkle-tree-r139-broken",
+        "merkle-tree-r139-history",
+        "merkle-tree-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是结构/定义性术语条目，没有需要复算的数值算法；相关哈希函数的计算验证见 SHA/MD5 批次。",
+        "en": "This is a structural/definitional term entry with no numerical algorithm to reproduce; executable checks for the hash functions live in the SHA/MD5 batches."
+      },
+      "sourceIds": [
+        "merkle-tree-wikipedia",
+        "merkle-tree-standard-ref"
+      ],
+      "related": [
+        "cryptographic-hash",
+        "sha2",
+        "blake3"
+      ],
+      "relatedPolicy": "These are distinct entities; the Merkle tree is the generic hash-tree structure, not a hash algorithm or a protocol.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：默克尔树（Merkle Tree）。Merkle 树把数据项哈希成叶子，把相邻叶子的哈希合并成父节点，最后得到一个根哈希；根绑定整组数据。RFC 6962 的 Merkle Tree Hash 把有序数据项列表递归分成左右子树，根是 32 字节哈希；空列表和单叶有特殊定义。审计路径是叶到根的兄弟哈希序列；验证一个叶子只需路径上的 O(log n) 个哈希，不必重算整棵树。一致性证明则证明两棵树的根兼容，即一棵树是另一棵的前缀扩展。",
+          "why": "Merkle 树把整组数据绑定到一个短根，并让单个叶子的验证只需 O(log n) 个兄弟哈希，适合高效审计。它把`我有这份数据`的证明拆成可验证的小路径，而不是要求验证者持有全部数据。",
+          "used": "RFC 6962 使用 Merkle 树做 Certificate Transparency 的高效审计：日志把 MerkleTreeLeaf 条目作为叶子，根和审计路径用于验证包含关系。",
+          "broken": "Merkle 树提供完整性和包含证明，不提供保密性；RFC 6962 使用叶/节点域分离以支持第二原像抗性，安全性依赖底层哈希与正确的树编码。叶哈希与父哈希应使用不同前缀或明确编码，避免把内部节点当成叶子。根只绑定树所覆盖的数据；树外数据、时间戳或日志策略需要额外的协议约束。",
+          "history": "Merkle 在 1987 年把哈希树用于基于常规加密函数的数字签名；这通常被视为 Merkle 树的经典来源。RFC 6962（2013）把 Merkle 树用于 Certificate Transparency 的审计。\n\n**定义、正例与反例**\n\n默克尔树在哈希中是基础术语，定义先给上位概念，再给区别特征与可观察判据。\n\n正例必须落在外延内；反例必须刚好跨过边界，说明它缺哪一个必要条件，而不是只给同义词。\n\n没有标准定义时用权威教材，但仍标出版本与适用范围；术语条目不以“大家都知道”作为定义依据。",
+          "refs": "- Wikipedia search entry for 默克尔树. https://zh.wikipedia.org/w/index.php?search=%E9%BB%98%E5%85%8B%E5%B0%94%E6%A0%91\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: Merkle Tree. It is registered under hashes. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in hashes, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 默克尔树. https://zh.wikipedia.org/w/index.php?search=%E9%BB%98%E5%85%8B%E5%B0%94%E6%A0%91\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Merkle 树：用哈希把数据块组织成二叉树的结构。",
+          "叶子：数据项的哈希。",
+          "父节点：两个子节点哈希的哈希。",
+          "根：整棵树的最终哈希。",
+          "审计路径：从叶到根的兄弟哈希序列。",
+          "包含证明：用审计路径证明某叶在树中。",
+          "一致性证明：证明两棵树根兼容。",
+          "Certificate Transparency：用 Merkle 树公开审计证书日志。",
+          "抗碰撞性：Merkle 树安全性的基础。",
+          "保密性：Merkle 树不提供，需另行加密。",
+          "域分离：叶/父节点哈希应使用不同前缀或编码。",
+          "树拆分：把有序叶子列表按最大 2 的幂递归分成左右子树。"
+        ],
+        "en": [
+          "Merkle tree: a binary tree organizing data blocks with hashes.",
+          "Leaf: the hash of a data item.",
+          "Parent: the hash of two child hashes.",
+          "Root: the final hash of the whole tree.",
+          "Audit path: the sibling hashes from a leaf to the root.",
+          "Inclusion proof: an audit path showing that a leaf is in the tree.",
+          "Consistency proof: a proof that two tree roots are compatible.",
+          "Certificate Transparency: public audit of certificate logs using Merkle trees.",
+          "Collision resistance: the basis of Merkle-tree security.",
+          "Confidentiality: not provided by a Merkle tree; encryption is separate.",
+          "Domain separation: leaf and parent hashes should use distinct prefixes or encoding.",
+          "Tree split: recursively split the ordered leaf list into left/right subtrees using the largest power of two."
+        ]
+      },
+      "subtopicIds": [
+        "merkle-tree"
+      ],
+      "figures": [
+        {
+          "id": "merkletree-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "默克尔树：为什么需要 → 核心机制 → 边界。",
+            "en": "Merkle tree: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "默克尔树 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Merkle tree, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/merkletree-details-flow.zh.svg",
+            "en": "assets/merkletree-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "99b6c760868c66f0687f43af679a77964a11befa82d40fd7d51a336f8a8fd971",
+            "en": "e8116fe2109633e336b95f02e0bd384174524aeade8f9320010b8aa1fd8782bb"
+          }
+        }
+      ],
+      "sources": [
+        "merkle-tree-wikipedia",
+        "merkle-tree-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

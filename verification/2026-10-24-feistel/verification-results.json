@@ -1,0 +1,129 @@
+{
+  "results": [
+    {
+      "id": "feistel-roundtrip",
+      "entryId": "feistel-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "13dfa22e8f40a829a6d85608765d88d00d023f26ce7bafcfdd9806ca365e5c14",
+      "dependencyHashes": {
+        "feistel-teaching.mjs": "b88635a59f557c367d348f8dbc66806f8caf08f0abae9dcb777b52ff145143c7",
+        "article.zh.md": "822bec6d2796e132be980af053c97ab7991b758276361e99d0e9f3f1e6b1bd24",
+        "article.en.md": "fd147b7bb19ce50b6e0e15c54b65999c70ce6e0fdf611cfa7c975c5316a9dafe",
+        "meta.json": "bba392ce08f2f6e0e35fd9e7a0f055a14aed943c091ca4c91810cceac772806d",
+        "glossary.json": "14e9d4037fa3e009729740c03d84e4e3255709e151e9b73f6266ab99a851fb0b",
+        "calculations.json": "ac20133517bd1bb1e9adae97aaf19250db6313895741ad8620d79fb8fa36b710"
+      },
+      "inputs": "All 65,536 blocks of a 16-bit toy Feistel network, 4 rounds, non-injective F(x,k)=(x+k) mod 4",
+      "expected": "Every block decrypts back to its original value with reversed keys",
+      "observed": {
+        "id": "feistel-roundtrip",
+        "passed": true,
+        "blocks": 65536,
+        "sample": "1234",
+        "cipher": "eedd",
+        "wrongKey": "70e1",
+        "limit": "Toy invertibility only; not a security evaluation."
+      },
+      "contentSha256": "f16491c606b80b3575e4036991f3bdc9ea16baec8208d277f8f9be3a660cf5a2",
+      "sourcesSha256": "ff25ab465b057d6ace2611cda4abd51d96c070c9af1e57b386cad2282fafd55d",
+      "executedOn": "2026-11-25T07:04:10.475Z"
+    },
+    {
+      "id": "feistel-noninjective-f",
+      "entryId": "feistel-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "13dfa22e8f40a829a6d85608765d88d00d023f26ce7bafcfdd9806ca365e5c14",
+      "dependencyHashes": {
+        "feistel-teaching.mjs": "b88635a59f557c367d348f8dbc66806f8caf08f0abae9dcb777b52ff145143c7",
+        "article.zh.md": "822bec6d2796e132be980af053c97ab7991b758276361e99d0e9f3f1e6b1bd24",
+        "article.en.md": "fd147b7bb19ce50b6e0e15c54b65999c70ce6e0fdf611cfa7c975c5316a9dafe",
+        "meta.json": "bba392ce08f2f6e0e35fd9e7a0f055a14aed943c091ca4c91810cceac772806d",
+        "glossary.json": "14e9d4037fa3e009729740c03d84e4e3255709e151e9b73f6266ab99a851fb0b",
+        "calculations.json": "ac20133517bd1bb1e9adae97aaf19250db6313895741ad8620d79fb8fa36b710"
+      },
+      "inputs": "The 8-bit function F(x,k)=(x+k) mod 4 over all 256 inputs for a fixed key",
+      "expected": "Each of the four outputs has 64 preimages; the network still round-trips on all 65,536 blocks",
+      "observed": {
+        "id": "feistel-noninjective-f",
+        "passed": true,
+        "inputs": 256,
+        "outputs": 4,
+        "preimagesPerOutput": 64,
+        "roundTripBlocks": 65536,
+        "limit": "Deliberately non-invertible F; not a real cipher round function."
+      },
+      "contentSha256": "f16491c606b80b3575e4036991f3bdc9ea16baec8208d277f8f9be3a660cf5a2",
+      "sourcesSha256": "ff25ab465b057d6ace2611cda4abd51d96c070c9af1e57b386cad2282fafd55d",
+      "executedOn": "2026-11-25T07:04:10.475Z"
+    },
+    {
+      "id": "feistel-three-four-rounds",
+      "entryId": "feistel-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "13dfa22e8f40a829a6d85608765d88d00d023f26ce7bafcfdd9806ca365e5c14",
+      "dependencyHashes": {
+        "feistel-teaching.mjs": "b88635a59f557c367d348f8dbc66806f8caf08f0abae9dcb777b52ff145143c7",
+        "article.zh.md": "822bec6d2796e132be980af053c97ab7991b758276361e99d0e9f3f1e6b1bd24",
+        "article.en.md": "fd147b7bb19ce50b6e0e15c54b65999c70ce6e0fdf611cfa7c975c5316a9dafe",
+        "meta.json": "bba392ce08f2f6e0e35fd9e7a0f055a14aed943c091ca4c91810cceac772806d",
+        "glossary.json": "14e9d4037fa3e009729740c03d84e4e3255709e151e9b73f6266ab99a851fb0b",
+        "calculations.json": "ac20133517bd1bb1e9adae97aaf19250db6313895741ad8620d79fb8fa36b710"
+      },
+      "inputs": "The same 16-bit toy network with 3 and 4 rounds, all 65,536 blocks",
+      "expected": "Both round counts round-trip on every block; invertibility does not distinguish 3 from 4 rounds",
+      "observed": {
+        "id": "feistel-three-four-rounds",
+        "passed": true,
+        "threeRoundBlocks": 65536,
+        "fourRoundBlocks": 65536,
+        "securityDistinction": "Luby–Rackoff theoretical model, not tested here",
+        "limit": "Invertibility only."
+      },
+      "contentSha256": "f16491c606b80b3575e4036991f3bdc9ea16baec8208d277f8f9be3a660cf5a2",
+      "sourcesSha256": "ff25ab465b057d6ace2611cda4abd51d96c070c9af1e57b386cad2282fafd55d",
+      "executedOn": "2026-11-25T07:04:10.475Z"
+    },
+    {
+      "id": "feistel-des-tdea-counts",
+      "entryId": "feistel-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "13dfa22e8f40a829a6d85608765d88d00d023f26ce7bafcfdd9806ca365e5c14",
+      "dependencyHashes": {
+        "feistel-teaching.mjs": "b88635a59f557c367d348f8dbc66806f8caf08f0abae9dcb777b52ff145143c7",
+        "article.zh.md": "822bec6d2796e132be980af053c97ab7991b758276361e99d0e9f3f1e6b1bd24",
+        "article.en.md": "fd147b7bb19ce50b6e0e15c54b65999c70ce6e0fdf611cfa7c975c5316a9dafe",
+        "meta.json": "bba392ce08f2f6e0e35fd9e7a0f055a14aed943c091ca4c91810cceac772806d",
+        "glossary.json": "14e9d4037fa3e009729740c03d84e4e3255709e151e9b73f6266ab99a851fb0b",
+        "calculations.json": "ac20133517bd1bb1e9adae97aaf19250db6313895741ad8620d79fb8fa36b710"
+      },
+      "inputs": "DES round/block parameters and the TDEA composition of three DES calls",
+      "expected": "DES: 64-bit block, 32+32 halves, 16 rounds; TDEA: 3 x 16 = 48 rounds, block still 64 bits",
+      "observed": {
+        "id": "feistel-des-tdea-counts",
+        "passed": true,
+        "des": {
+          "blockBits": 64,
+          "halves": [
+            32,
+            32
+          ],
+          "rounds": 16
+        },
+        "tdea": {
+          "passes": 3,
+          "desRoundsEach": 16,
+          "totalRounds": 48,
+          "blockBits": 64
+        },
+        "limit": "Concrete algorithm counts only; Feistel does not fix these parameters."
+      },
+      "contentSha256": "f16491c606b80b3575e4036991f3bdc9ea16baec8208d277f8f9be3a660cf5a2",
+      "sourcesSha256": "ff25ab465b057d6ace2611cda4abd51d96c070c9af1e57b386cad2282fafd55d",
+      "executedOn": "2026-11-25T07:04:10.475Z"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "ml-kem-hybrid-details",
+  "sources": [
+    {
+      "id": "ml-kem-hybrid-wikipedia",
+      "title": "Wikipedia search entry for ML-KEM 混合密钥协商",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ML-KEM%20%E6%B7%B7%E5%90%88%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ML-KEM 混合密钥协商",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "ml-kem-hybrid-r139-principle",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：ML-KEM 混合密钥协商（Hybrid ML-KEM Key Exchange）。混合密钥协商同时运行一条经典路径（通常是 X25519 或 ECDH）和一条后量子 KEM 路径（ML-KEM）。双方各自得到两段共享秘密，再用 HKDF 等密钥派生函数把两段秘密、协议上下文和身份信息一起派生为会话密钥。安全性要求是：只要其中一条路径仍然安全，最终密钥就不应被完全预测。",
+            "en": "**Algorithm**: Hybrid ML-KEM Key Exchange (ML-KEM 混合密钥协商).A hybrid key exchange runs a classical path (usually X25519 or ECDH) and a post-quantum KEM path (ML-KEM) at the same time."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        },
+        {
+          "id": "ml-kem-hybrid-r139-why",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "why",
+          "statement": {
+            "zh": "攻击者今天可以记录密文，等量子计算机成熟后再解密，这就是“先收集、后解密”。混合方案让今天的流量同时受经典与后量子假设保护。它也是现实迁移中最可行的路径：不需要等所有客户端都支持纯后量子，就能逐步提高门槛。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "An adversary can record ciphertext today and decrypt it after a quantum computer arrives: harvest now, decrypt later.Hybrid schemes protect today's traffic under both classical and post-quantum assumptions."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        },
+        {
+          "id": "ml-kem-hybrid-r139-used",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "used",
+          "statement": {
+            "zh": "TLS 1.3 的混合命名组、QUIC、OpenSSH 的实验性 KEX、VPN 与云服务内部链路。工程上要处理组标识、协商优先级、失败回退和密钥确认，不能只把两段字节拼接。",
+            "en": "TLS 1.3 hybrid named groups, QUIC, experimental OpenSSH KEX, VPNs and cloud internal links.Implementations must handle group identifiers, negotiation priority, failure fallback and key confirmation; concatenating two byte strings is not enough."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        },
+        {
+          "id": "ml-kem-hybrid-r139-broken",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "broken",
+          "statement": {
+            "zh": "混合不等于自动安全。KDF 输入没有绑定协议上下文，可能遭受跨协议攻击；经典路径被破而后量子路径实现有缺陷，仍会失败；协商降级可让攻击者强迫使用弱组。ML-KEM 的解密失败处理和侧信道也必须单独审计。### 形式模型。",
+            "en": "Hybrid is not automatically secure.A KDF that does not bind protocol context can enable cross-protocol attacks."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        },
+        {
+          "id": "ml-kem-hybrid-r139-history",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "history",
+          "statement": {
+            "zh": "NIST 在 2024 年发布 FIPS 203，确定 ML-KEM 为标准化 KEM。浏览器与 CDN 在 2024–2025 年率先部署 X25519MLKEM768 等混合组，积累真实流量经验。混合是过渡机制，不是终点；纯后量子组要在客户端能力、性能和审计成熟后逐步接管。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ML-KEM 混合密钥协商的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "NIST published FIPS 203 in 2024, standardising ML-KEM.Browsers and CDNs deployed hybrid groups such as X25519MLKEM768 in 2024–2025 and accumulated real traffic evidence."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        },
+        {
+          "id": "ml-kem-hybrid-r139-refs",
+          "entryId": "ml-kem-hybrid-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ML-KEM 混合密钥协商.https://zh.wikipedia.org/w/index.php?search=ML-KEM%20%E6%B7%B7%E5%90%88%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for ML-KEM 混合密钥协商.https://zh.wikipedia.org/w/index.php?search=ML-KEM%20%E6%B7%B7%E5%90%88%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "ml-kem-hybrid-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "ml-kem-hybrid-wikipedia"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "ml-kem-hybrid-r139-principle",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：ML-KEM 混合密钥协商（Hybrid ML-KEM Key Exchange）。混合密钥协商同时运行一条经典路径（通常是 X25519 或 ECDH）和一条后量子 KEM 路径（ML-KEM）。双方各自得到两段共享秘密，再用 HKDF 等密钥派生函数把两段秘密、协议上下文和身份信息一起派生为会话密钥。安全性要求是：只要其中一条路径仍然安全，最终密钥就不应被完全预测。",
+        "en": "**Algorithm**: Hybrid ML-KEM Key Exchange (ML-KEM 混合密钥协商).A hybrid key exchange runs a classical path (usually X25519 or ECDH) and a post-quantum KEM path (ML-KEM) at the same time."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-r139-why",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "why",
+      "statement": {
+        "zh": "攻击者今天可以记录密文，等量子计算机成熟后再解密，这就是“先收集、后解密”。混合方案让今天的流量同时受经典与后量子假设保护。它也是现实迁移中最可行的路径：不需要等所有客户端都支持纯后量子，就能逐步提高门槛。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "An adversary can record ciphertext today and decrypt it after a quantum computer arrives: harvest now, decrypt later.Hybrid schemes protect today's traffic under both classical and post-quantum assumptions."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-r139-used",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "used",
+      "statement": {
+        "zh": "TLS 1.3 的混合命名组、QUIC、OpenSSH 的实验性 KEX、VPN 与云服务内部链路。工程上要处理组标识、协商优先级、失败回退和密钥确认，不能只把两段字节拼接。",
+        "en": "TLS 1.3 hybrid named groups, QUIC, experimental OpenSSH KEX, VPNs and cloud internal links.Implementations must handle group identifiers, negotiation priority, failure fallback and key confirmation; concatenating two byte strings is not enough."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-r139-broken",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "broken",
+      "statement": {
+        "zh": "混合不等于自动安全。KDF 输入没有绑定协议上下文，可能遭受跨协议攻击；经典路径被破而后量子路径实现有缺陷，仍会失败；协商降级可让攻击者强迫使用弱组。ML-KEM 的解密失败处理和侧信道也必须单独审计。### 形式模型。",
+        "en": "Hybrid is not automatically secure.A KDF that does not bind protocol context can enable cross-protocol attacks."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-r139-history",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "history",
+      "statement": {
+        "zh": "NIST 在 2024 年发布 FIPS 203，确定 ML-KEM 为标准化 KEM。浏览器与 CDN 在 2024–2025 年率先部署 X25519MLKEM768 等混合组，积累真实流量经验。混合是过渡机制，不是终点；纯后量子组要在客户端能力、性能和审计成熟后逐步接管。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：ML-KEM 混合密钥协商的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "NIST published FIPS 203 in 2024, standardising ML-KEM.Browsers and CDNs deployed hybrid groups such as X25519MLKEM768 in 2024–2025 and accumulated real traffic evidence."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    },
+    {
+      "id": "ml-kem-hybrid-r139-refs",
+      "entryId": "ml-kem-hybrid-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ML-KEM 混合密钥协商.https://zh.wikipedia.org/w/index.php?search=ML-KEM%20%E6%B7%B7%E5%90%88%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for ML-KEM 混合密钥协商.https://zh.wikipedia.org/w/index.php?search=ML-KEM%20%E6%B7%B7%E5%90%88%E5%AF%86%E9%92%A5%E5%8D%8F%E5%95%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "ml-kem-hybrid-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

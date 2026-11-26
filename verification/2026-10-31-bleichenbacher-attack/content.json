@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact foundational entry for bleichenbacher-attack: definition, role, boundaries and source attribution.",
+  "entries": [
+    {
+      "id": "bleichenbacher-attack-details",
+      "inventoryIds": [
+        "bleichenbacher-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释Bleichenbacher 攻击的定义、作用、边界和来源；不复制其他算法或协议实体。",
+        "en": "A compact definition of Bleichenbacher Attack: definition, role, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "Bleichenbacher 攻击",
+        "en": "Bleichenbacher Attack"
+      },
+      "claimIds": [
+        "bleichenbacher-attack-r139-principle",
+        "bleichenbacher-attack-r139-why",
+        "bleichenbacher-attack-r139-used",
+        "bleichenbacher-attack-r139-broken",
+        "bleichenbacher-attack-r139-history",
+        "bleichenbacher-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "bleichenbacher-attack-wikipedia",
+        "bleichenbacher-attack-reference-ref"
+      ],
+      "related": [
+        "rsa-padding",
+        "attack--padding-oracle-attack",
+        "algorithm--rsa"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：Bleichenbacher 攻击（Bleichenbacher Attack）。Bleichenbacher 攻击是一种针对 RSA PKCS#1 v1.5 的自适应选择密文攻击：攻击者利用一个只回答密文解密后是否符合 PKCS#1 格式的预言机，逐步恢复明文或伪造签名。",
+          "why": "协议在解密后返回不同的错误信息，等于泄露一个格式有效性比特；这个比特足以驱动自适应查询。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文以 SSL 3.0 为例，并指出任何接受 RSA PKCS#1 v1.5 密文并泄露格式错误的服务器都可能受影响。",
+          "broken": "对 512/1024 位密钥，实验约需 30 万到 200 万次选择密文查询；防御包括统一错误响应、解密后立即做完整性检查，以及使用 OAEP 等明文感知加密。",
+          "history": "Bleichenbacher 在 1998 年 CRYPTO 论文中提出该攻击，并在结论中建议使用明文感知加密和及时完整性检查。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「Bleichenbacher 攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：Bleichenbacher 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 Bleichenbacher 攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 Bleichenbacher 攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for Bleichenbacher 攻击. https://zh.wikipedia.org/w/index.php?search=Bleichenbacher%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nBleichenbacher 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Bleichenbacher Attack (Bleichenbacher 攻击). The Bleichenbacher attack is an adaptive chosen-ciphertext attack against RSA PKCS#1 v1.5. The attacker uses an oracle that answers only whether a decrypted ciphertext is PKCS#1 conforming, and gradually recovers plaintext or forges signatures.",
+          "why": "Protocols that return different error messages after decryption leak one bit about format validity. That bit is enough to drive adaptive queries.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper uses SSL 3.0 as an example and notes that any server accepting RSA PKCS#1 v1.5 ciphertexts and leaking format errors may be affected.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "For 512-bit and 1024-bit keys, the experiments required between 300 thousand and 2 million chosen ciphertexts. Defenses include uniform error responses, integrity checking immediately after decryption, and plaintext-aware encryption such as OAEP.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Bleichenbacher introduced the attack in his 1998 CRYPTO paper and recommended plaintext-aware encryption and timely integrity checking in the conclusion.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for Bleichenbacher 攻击. https://zh.wikipedia.org/w/index.php?search=Bleichenbacher%20%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nBleichenbacher Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "自适应选择密文：后续查询依赖先前回答的选择密文攻击。",
+          "PKCS#1 v1.5：RSA 的早期填充标准。",
+          "填充预言：泄露填充是否有效的判定接口。",
+          "PKCS 合规：解密结果符合 PKCS#1 块格式。",
+          "OAEP：一种最优非对称加密填充，可用于 RSA。",
+          "预言机：攻击者可查询的判定或解密接口。"
+        ],
+        "en": [
+          "Adaptive chosen-ciphertext: a chosen-ciphertext attack whose later queries depend on earlier answers.",
+          "PKCS#1 v1.5: an early RSA padding standard.",
+          "Padding oracle: an interface that reveals whether padding is valid.",
+          "PKCS conforming: a decrypted block that satisfies the PKCS#1 format.",
+          "OAEP: Optimal Asymmetric Encryption Padding, usable with RSA.",
+          "Oracle: a query interface that returns a decryption or validity decision."
+        ]
+      },
+      "figures": [
+        {
+          "id": "bleichenbacher-attack-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Bleichenbacher 攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Bleichenbacher Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Bleichenbacher 攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Bleichenbacher Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/bleichenbacher-attack-details-flow.zh.svg",
+            "en": "assets/bleichenbacher-attack-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2784f50a9264e7bc3c9e27886ec11b2f8f414786c46adbd35c4ec39bd49df8a3",
+            "en": "3565300a38f12855acbf4122fe09065f149debc650731bd935d378fc2b6940c4"
+          }
+        },
+        {
+          "id": "bleichenbacher-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Bleichenbacher 攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Bleichenbacher Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Bleichenbacher 攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Bleichenbacher Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bleichenbacher-attack-details-r138-model.zh.svg",
+            "en": "assets/bleichenbacher-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "404f7f4e14e3a657e595982b3929093e373474c05eccc6fb60be08f218e9d002",
+            "en": "101eedb0280eaae4782c40374ea7930a2511945fe945d33643d5ed3abe5e132c"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "bleichenbacher-attack-r139-formal",
+          "entryId": "bleichenbacher-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：Bleichenbacher 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 Bleichenbacher 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "bleichenbacher-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bleichenbacher-attack-r139-formal"
+      ],
+      "sources": [
+        "bleichenbacher-attack-wikipedia",
+        "bleichenbacher-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bleichenbacher-attack-r139-formal",
+      "entryId": "bleichenbacher-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：Bleichenbacher 攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 Bleichenbacher 攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "bleichenbacher-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

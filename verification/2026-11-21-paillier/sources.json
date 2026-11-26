@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "paillier-details",
+  "sources": [
+    {
+      "id": "paillier-wikipedia",
+      "title": "Wikipedia search entry for Paillier 陷门公钥密码",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Paillier%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Paillier 陷门公钥密码",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "paillier-r139-principle",
+          "entryId": "paillier-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Paillier 陷门公钥密码（Paillier）。### 在 n² 上做加法同态\n\nPaillier 的公钥是 `(n,g)`，私钥由 `p,q` 导出，通常记作 `(λ,μ)`。加密选择随机 `r`，计算 `c=g^m·r^n mod n²`；解密用 `L(x)=(x-1)/n`，计算 `m=L(c^λ mod n²)/L(g^λ mod n²) mod n`。常用取法 `g=n+1`。### 为什么能同态\n\n两个密文相乘：`E(m1)·E(m2)=g^{m1+m2}(r1r2)^n`，解密后就是 `m1+m2 mod n`。把密文取 `k` 次幂，则得到 `k·m` 的密文。它只支持加法和数乘，不支持任意乘法，因此不是全同态加密。### 安全性假设\n\n方案建立在判定性合数剩余类难题（DCRA）上：区分 `n²` 下的 `n` 次剩余是困难的。原方案是 IND-CPA 安全的，但因为同态性质而可延展，不直接满足 IND-CCA2。",
+            "en": "**Algorithm**: Paillier (Paillier 陷门公钥密码).### Addition modulo n²\n\nPaillier’s public key is `(n,g)`; the private key is derived from `p,q` and usually written `(λ,μ)`."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        },
+        {
+          "id": "paillier-r139-why",
+          "entryId": "paillier-details",
+          "section": "why",
+          "statement": {
+            "zh": "Paillier 填补了“可做隐私加法、但比全同态轻得多”的位置。隐私统计、电子投票、联邦学习安全聚合、门限密码和多方计算，经常只需要密文相加或数乘；Paillier 正好提供这一层。它比 RSA 慢，密文也要 `n²` 位，但在只需要加法同态的场景中，参数和实现比全同态方案简单得多。",
+            "en": "Paillier fills the slot for “private addition without the weight of full FHE”.Private statistics, electronic voting, secure aggregation in federated learning, threshold cryptography and MPC often need only ciphertext addition or scalar multiplication; Paillier provides exactly that layer."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        },
+        {
+          "id": "paillier-r139-used",
+          "entryId": "paillier-details",
+          "section": "used",
+          "statement": {
+            "zh": "电子投票中把各票密文相乘，解密后得到总票数；隐私聚合中把用户梯度或计数加密后相加；门限 Paillier 把解密权分给多方，避免单一服务器看到明文。它也可作为零知识证明和 MPC 的子协议。这些应用都要求同态运算只做一次或有限次；如果需要对密文做深度电路计算，应转向 BFV、CKKS、TFHE 等全同态方案。",
+            "en": "In electronic voting, ciphertexts are multiplied and the decrypted result is the tally; in private aggregation, counts or gradients are encrypted and added; threshold Paillier splits decryption among parties so no single server sees the plaintext.It also serves as a subprotocol in zero-knowledge proofs and MPC."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        },
+        {
+          "id": "paillier-r139-broken",
+          "entryId": "paillier-details",
+          "section": "broken",
+          "statement": {
+            "zh": "Paillier 的密文约为 `n²` 位，明显大于 RSA，模幂也更慢；它只支持加法同态，不能直接做乘法或比较。原方案可延展，不能直接抗选择密文攻击。工程上要用 Paillier–Pointcheval 等带哈希绑定的变体，或把 Paillier 包进 KEM/DEM；密钥长度按当前标准至少 2048 位，并检查 `gcd(L(g^λ mod n²),n)=1`。随机数 `r` 必须新鲜且与 `n` 互素。",
+            "en": "Paillier ciphertexts are about `n²` bits, larger than RSA, and modular exponentiation is slower.It supports addition but not general multiplication or comparison."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        },
+        {
+          "id": "paillier-r139-history",
+          "entryId": "paillier-details",
+          "section": "history",
+          "statement": {
+            "zh": "Pascal Paillier 在 EUROCRYPT 1999 发表 “Public-Key Cryptosystems Based on Composite Degree Residuosity Classes”，载于 LNCS 1592, pp.223–238。论文提出合数剩余类问题，并给出陷门置换与两个同态概率加密方案。Paillier 与 Paillier–Pointcheval 后来成为隐私计算和电子投票的常用积木；它的历史位置不是“又一个 RSA”，而是“第一个实用的加法同态公钥加密”。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Paillier 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Pascal Paillier published “Public-Key Cryptosystems Based on Composite Degree Residuosity Classes” at EUROCRYPT 1999, LNCS 1592, pp.223–238."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        },
+        {
+          "id": "paillier-r139-refs",
+          "entryId": "paillier-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Paillier 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Paillier%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Paillier 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Paillier%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "paillier-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "paillier-wikipedia"
+      ]
+    },
+    {
+      "id": "paillier-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "paillier-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "paillier-r139-principle",
+      "entryId": "paillier-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Paillier 陷门公钥密码（Paillier）。### 在 n² 上做加法同态\n\nPaillier 的公钥是 `(n,g)`，私钥由 `p,q` 导出，通常记作 `(λ,μ)`。加密选择随机 `r`，计算 `c=g^m·r^n mod n²`；解密用 `L(x)=(x-1)/n`，计算 `m=L(c^λ mod n²)/L(g^λ mod n²) mod n`。常用取法 `g=n+1`。### 为什么能同态\n\n两个密文相乘：`E(m1)·E(m2)=g^{m1+m2}(r1r2)^n`，解密后就是 `m1+m2 mod n`。把密文取 `k` 次幂，则得到 `k·m` 的密文。它只支持加法和数乘，不支持任意乘法，因此不是全同态加密。### 安全性假设\n\n方案建立在判定性合数剩余类难题（DCRA）上：区分 `n²` 下的 `n` 次剩余是困难的。原方案是 IND-CPA 安全的，但因为同态性质而可延展，不直接满足 IND-CCA2。",
+        "en": "**Algorithm**: Paillier (Paillier 陷门公钥密码).### Addition modulo n²\n\nPaillier’s public key is `(n,g)`; the private key is derived from `p,q` and usually written `(λ,μ)`."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    },
+    {
+      "id": "paillier-r139-why",
+      "entryId": "paillier-details",
+      "section": "why",
+      "statement": {
+        "zh": "Paillier 填补了“可做隐私加法、但比全同态轻得多”的位置。隐私统计、电子投票、联邦学习安全聚合、门限密码和多方计算，经常只需要密文相加或数乘；Paillier 正好提供这一层。它比 RSA 慢，密文也要 `n²` 位，但在只需要加法同态的场景中，参数和实现比全同态方案简单得多。",
+        "en": "Paillier fills the slot for “private addition without the weight of full FHE”.Private statistics, electronic voting, secure aggregation in federated learning, threshold cryptography and MPC often need only ciphertext addition or scalar multiplication; Paillier provides exactly that layer."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    },
+    {
+      "id": "paillier-r139-used",
+      "entryId": "paillier-details",
+      "section": "used",
+      "statement": {
+        "zh": "电子投票中把各票密文相乘，解密后得到总票数；隐私聚合中把用户梯度或计数加密后相加；门限 Paillier 把解密权分给多方，避免单一服务器看到明文。它也可作为零知识证明和 MPC 的子协议。这些应用都要求同态运算只做一次或有限次；如果需要对密文做深度电路计算，应转向 BFV、CKKS、TFHE 等全同态方案。",
+        "en": "In electronic voting, ciphertexts are multiplied and the decrypted result is the tally; in private aggregation, counts or gradients are encrypted and added; threshold Paillier splits decryption among parties so no single server sees the plaintext.It also serves as a subprotocol in zero-knowledge proofs and MPC."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    },
+    {
+      "id": "paillier-r139-broken",
+      "entryId": "paillier-details",
+      "section": "broken",
+      "statement": {
+        "zh": "Paillier 的密文约为 `n²` 位，明显大于 RSA，模幂也更慢；它只支持加法同态，不能直接做乘法或比较。原方案可延展，不能直接抗选择密文攻击。工程上要用 Paillier–Pointcheval 等带哈希绑定的变体，或把 Paillier 包进 KEM/DEM；密钥长度按当前标准至少 2048 位，并检查 `gcd(L(g^λ mod n²),n)=1`。随机数 `r` 必须新鲜且与 `n` 互素。",
+        "en": "Paillier ciphertexts are about `n²` bits, larger than RSA, and modular exponentiation is slower.It supports addition but not general multiplication or comparison."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    },
+    {
+      "id": "paillier-r139-history",
+      "entryId": "paillier-details",
+      "section": "history",
+      "statement": {
+        "zh": "Pascal Paillier 在 EUROCRYPT 1999 发表 “Public-Key Cryptosystems Based on Composite Degree Residuosity Classes”，载于 LNCS 1592, pp.223–238。论文提出合数剩余类问题，并给出陷门置换与两个同态概率加密方案。Paillier 与 Paillier–Pointcheval 后来成为隐私计算和电子投票的常用积木；它的历史位置不是“又一个 RSA”，而是“第一个实用的加法同态公钥加密”。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Paillier 陷门公钥密码的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Pascal Paillier published “Public-Key Cryptosystems Based on Composite Degree Residuosity Classes” at EUROCRYPT 1999, LNCS 1592, pp.223–238."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    },
+    {
+      "id": "paillier-r139-refs",
+      "entryId": "paillier-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Paillier 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Paillier%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Paillier 陷门公钥密码.https://zh.wikipedia.org/w/index.php?search=Paillier%20%E9%99%B7%E9%97%A8%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "paillier-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

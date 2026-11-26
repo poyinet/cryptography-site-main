@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gmt0115-details",
+  "sources": [
+    {
+      "id": "gmt0115-wikipedia",
+      "title": "Wikipedia search entry for 信息系统密码应用测评要求",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%84%E8%A6%81%E6%B1%82",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 信息系统密码应用测评要求",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gmt0115-r139-principle",
+          "entryId": "gmt0115-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：信息系统密码应用测评要求（Testing and Evaluation Requirements for Information System Cryptography Application）。GM/T 0115-2021 给出信息系统密码应用的测评要求，配套的《商用密码应用安全性评估量化评估规则》把测评结果变成可复算的分数链。对象层先把每个测评对象记为 0、0.25、0.5、1；单元层对对象分取算术平均；层面层对适用单元按权重取平均；整体层把八个层面按权重汇总后乘以 100。",
+            "en": "**Standard**: Testing and Evaluation Requirements for Information System Cryptography Application (信息系统密码应用测评要求).GM/T 0115-2021 sets testing requirements for information-system cryptography application."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0115-r139-why",
+          "entryId": "gmt0115-details",
+          "section": "why",
+          "statement": {
+            "zh": "对象分不是单一“对/错”，而是同时看密码使用有效性、算法/技术合规性与密钥管理安全。三项都满足为 1；仅有效性满足、另两项有欠缺落在 0.5 或 0.25；未使用密码或使用无效为 0。这种设计把“用了密码”与“用对了密码、算法合规、密钥管得住”分开，避免只看功能上线。",
+            "en": "An object score is not a single pass/fail: it combines deployment effectiveness, algorithm/technique compliance and key-management security.All three give 1; effectiveness alone with gaps in the other two gives 0.5 or 0.25; no cryptography or ineffective use gives 0."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0115-r139-used",
+          "entryId": "gmt0115-details",
+          "section": "used",
+          "statement": {
+            "zh": "实施时先按 GB/T 39786 和 GM/T 0115 列出适用测评单元，逐对象取证打分；单元取平均，层面按权重汇总，最后按公式得百分制总分并做风险判定。不适用指标要有论证，不进入分子分母；整个层面都不适用时，剩余层面权重重算，例如物理层面不适用时分母变为 90。",
+            "en": "Practitioners list applicable units under GB/T 39786 and GM/T 0115, collect evidence per object, average the unit, weight the layer, compute the 100-point total and then perform risk judgement.Not-applicable indicators must be justified and leave the numerator and denominator; if an entire layer is NA, the remaining weights are renormalised, e.g."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0115-r139-broken",
+          "entryId": "gmt0115-details",
+          "section": "broken",
+          "statement": {
+            "zh": "常见错误是把百分制直接当“安全度”：100 分只表示规则内指标全部符合，不等于系统无风险；高分也不能抵消高风险。阈值 τ 不在量化规则正文写死，需按密评管理要求或项目规则确定；把 τ 当成标准固定值会误判“基本符合”。### 形式模型。",
+            "en": "A common error is treating the score as “security level”: 100 means all rule indicators conform, not that the system is risk-free; a high score cannot cancel a high risk.The threshold τ is not hard-coded in the rule text and must come from assessment policy or project rules; treating τ as a fixed standard value misclassifies “basically conform”."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0115-r139-history",
+          "entryId": "gmt0115-details",
+          "section": "history",
+          "statement": {
+            "zh": "GM/T 0115-2021 于 2021-10-19 发布、2022-05-01 实施，是密评从早期 GM/T 0054 框架走向“量化评估＋风险判定”的关键配套标准；GM/T 0116-2021 同时规范测评过程。量化规则依据 GB/T 39786-2021 与 GM/T 0115-2021，2021 年 12 月发布，用于统一单元、层面和整体分值的算法。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：信息系统密码应用测评要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GM/T 0115-2021 was published on 2021-10-19 and took effect on 2022-05-01.It is a key companion standard in the shift from the earlier GM/T 0054 framework to “quantitative assessment plus risk judgement”; GM/T 0116-2021 governs the process."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0115-r139-refs",
+          "entryId": "gmt0115-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 信息系统密码应用测评要求.https://zh.wikipedia.org/w/index.php?search=%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%84%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 信息系统密码应用测评要求.https://zh.wikipedia.org/w/index.php?search=%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%84%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gmt0115-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gmt0115-wikipedia"
+      ]
+    },
+    {
+      "id": "gmt0115-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gmt0115-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gmt0115-r139-principle",
+      "entryId": "gmt0115-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：信息系统密码应用测评要求（Testing and Evaluation Requirements for Information System Cryptography Application）。GM/T 0115-2021 给出信息系统密码应用的测评要求，配套的《商用密码应用安全性评估量化评估规则》把测评结果变成可复算的分数链。对象层先把每个测评对象记为 0、0.25、0.5、1；单元层对对象分取算术平均；层面层对适用单元按权重取平均；整体层把八个层面按权重汇总后乘以 100。",
+        "en": "**Standard**: Testing and Evaluation Requirements for Information System Cryptography Application (信息系统密码应用测评要求).GM/T 0115-2021 sets testing requirements for information-system cryptography application."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0115-r139-why",
+      "entryId": "gmt0115-details",
+      "section": "why",
+      "statement": {
+        "zh": "对象分不是单一“对/错”，而是同时看密码使用有效性、算法/技术合规性与密钥管理安全。三项都满足为 1；仅有效性满足、另两项有欠缺落在 0.5 或 0.25；未使用密码或使用无效为 0。这种设计把“用了密码”与“用对了密码、算法合规、密钥管得住”分开，避免只看功能上线。",
+        "en": "An object score is not a single pass/fail: it combines deployment effectiveness, algorithm/technique compliance and key-management security.All three give 1; effectiveness alone with gaps in the other two gives 0.5 or 0.25; no cryptography or ineffective use gives 0."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0115-r139-used",
+      "entryId": "gmt0115-details",
+      "section": "used",
+      "statement": {
+        "zh": "实施时先按 GB/T 39786 和 GM/T 0115 列出适用测评单元，逐对象取证打分；单元取平均，层面按权重汇总，最后按公式得百分制总分并做风险判定。不适用指标要有论证，不进入分子分母；整个层面都不适用时，剩余层面权重重算，例如物理层面不适用时分母变为 90。",
+        "en": "Practitioners list applicable units under GB/T 39786 and GM/T 0115, collect evidence per object, average the unit, weight the layer, compute the 100-point total and then perform risk judgement.Not-applicable indicators must be justified and leave the numerator and denominator; if an entire layer is NA, the remaining weights are renormalised, e.g."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0115-r139-broken",
+      "entryId": "gmt0115-details",
+      "section": "broken",
+      "statement": {
+        "zh": "常见错误是把百分制直接当“安全度”：100 分只表示规则内指标全部符合，不等于系统无风险；高分也不能抵消高风险。阈值 τ 不在量化规则正文写死，需按密评管理要求或项目规则确定；把 τ 当成标准固定值会误判“基本符合”。### 形式模型。",
+        "en": "A common error is treating the score as “security level”: 100 means all rule indicators conform, not that the system is risk-free; a high score cannot cancel a high risk.The threshold τ is not hard-coded in the rule text and must come from assessment policy or project rules; treating τ as a fixed standard value misclassifies “basically conform”."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0115-r139-history",
+      "entryId": "gmt0115-details",
+      "section": "history",
+      "statement": {
+        "zh": "GM/T 0115-2021 于 2021-10-19 发布、2022-05-01 实施，是密评从早期 GM/T 0054 框架走向“量化评估＋风险判定”的关键配套标准；GM/T 0116-2021 同时规范测评过程。量化规则依据 GB/T 39786-2021 与 GM/T 0115-2021，2021 年 12 月发布，用于统一单元、层面和整体分值的算法。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：信息系统密码应用测评要求的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GM/T 0115-2021 was published on 2021-10-19 and took effect on 2022-05-01.It is a key companion standard in the shift from the earlier GM/T 0054 framework to “quantitative assessment plus risk judgement”; GM/T 0116-2021 governs the process."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0115-r139-refs",
+      "entryId": "gmt0115-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 信息系统密码应用测评要求.https://zh.wikipedia.org/w/index.php?search=%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%84%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 信息系统密码应用测评要求.https://zh.wikipedia.org/w/index.php?search=%E4%BF%A1%E6%81%AF%E7%B3%BB%E7%BB%9F%E5%AF%86%E7%A0%81%E5%BA%94%E7%94%A8%E6%B5%8B%E8%AF%84%E8%A6%81%E6%B1%82\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gmt0115-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for ah: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "ah-details",
+      "inventoryIds": [
+        "ah"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释AH 认证头的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Authentication Header: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "AH 认证头",
+        "en": "Authentication Header"
+      },
+      "claimIds": [
+        "ah-r139-principle",
+        "ah-r139-why",
+        "ah-r139-used",
+        "ah-r139-broken",
+        "ah-r139-history",
+        "ah-r139-refs"
+      ],
+      "sourceIds": [
+        "ah-wikipedia",
+        "ah-reference-ref",
+        "ah-specific"
+      ],
+      "related": [
+        "ipsec",
+        "esp",
+        "ikev2",
+        "message-authentication-code"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：AH 认证头（Authentication Header）。AH 的 §1 服务清单里没有加密：§1 写「The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams」并补「and to provide protection against replays.」§2 给出协议号「The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].」§2.4 说明索引字段：「The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.」",
+          "why": "覆盖范围是 AH 存在的理由，也是它的软肋：§1 说「AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.」但途中可变的字段无法保护——「some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.」结论是「Thus, the protection provided to the IP header by AH is piecemeal.」同节把 AH 与 ESP 的差别定位在覆盖面：「ESP does not protect any IP header fields unless those fields are encapsulated by ESP」。",
+          "used": "序号字段是强制的，即便不启用反重放：§2.5 规定「The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.」递增义务的范围写得很清楚——「For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.」§2.6 把校验参数交给算法规范：「The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.」§3.1 同样只有两种用法——「AH may be employed in two ways: transport mode or tunnel mode.」§3.2 给出适用的算法类型：「suitable integrity algorithms include keyed Message Authentication Codes (MACs) based on symmetric encryption algorithms」。",
+          "broken": "多发送方直接使反重放不可用：§2.5 说「Thus, for a multi-sender SA, the anti-reply features of AH are not available」。启用反重放（默认）时序号也不允许回绕：「If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.」§5 从工程角度给出对人工密钥的态度——若 ICV 密钥手工分发，反重放要求发送端持续维护计数器且溢出时没有自动恢复，因此「a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed.」同节还强调符合性要求覆盖语法与体系结构文档，并把算法清单外包给另一份 RFC：「The mandatory-to-implement algorithms for use with AH are described in a separate RFC [Eas04]」。",
+          "history": "RFC 4302 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2402」；摘要称其为「an updated version of the IP Authentication Header (AH)」、目标是「which is designed to provide authentication services in IPv4 and IPv6」。§5 记录强制算法已迁出本文另发 RFC，理由是便于独立更新算法要求。§7 列出与 RFC 2402 的差异，其中新序号选项的描述是「added a new option for a 64-bit sequence number for very high-speed communications.」",
+          "refs": "- Wikipedia search entry for AH 认证头. https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4302: IP Authentication Header. https://www.rfc-editor.org/rfc/rfc4302",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nAH 认证头的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Authentication Header (AH 认证头). Encryption appears nowhere in the §1 service list for AH: §1 states \"The IP Authentication Header (AH) is used to provide connectionless integrity and data origin authentication for IP datagrams\" and adds \"and to provide protection against replays.\" §2 gives the protocol number — \"The protocol header (IPv4, IPv6, or IPv6 Extension) immediately preceding the AH header SHALL contain the value 51 in its Protocol (IPv4) or Next Header (IPv6, Extension) fields [DH98].\" §2.4 explains the index field: \"The SPI is an arbitrary 32-bit value that is used by a receiver to identify the SA to which an incoming packet is bound.\"",
+          "why": "Coverage is both AH's reason for existing and its weakness: §1 says \"AH provides authentication for as much of the IP header as possible, as well as for next level protocol data.\" But fields that change en route cannot be covered — \"some IP header fields may change in transit and the value of these fields, when the packet arrives at the receiver, may not be predictable by the sender.\" The conclusion is \"Thus, the protection provided to the IP header by AH is piecemeal.\" The same section places the AH/ESP difference in coverage: \"ESP does not protect any IP header fields unless those fields are encapsulated by ESP\".",
+          "used": "The sequence field is mandatory even when anti-replay is off: §2.5 requires \"The field is mandatory and MUST always be present even if the receiver does not elect to enable the anti-replay service for a specific SA.\" and the increment duty is scoped — \"For a unicast SA or a single-sender multicast SA, the sender MUST increment this field for every transmitted packet.\" §2.6 delegates the verification parameters to the algorithm specification: \"The integrity algorithm specification MUST specify the length of the ICV and the comparison rules and processing steps for validation.\" §3.1 again offers two usages — \"AH may be employed in two ways: transport mode or tunnel mode.\" — and §3.2 names the algorithm classes: \"suitable integrity algorithms include keyed Message Authentication Codes (MACs) based on symmetric encryption algorithms\".",
+          "broken": "Multiple senders make anti-replay unavailable outright: §2.5 says \"Thus, for a multi-sender SA, the anti-reply features of AH are not available\". With anti-replay enabled — the default — the counter may not wrap: \"If anti-replay is enabled (the default), the transmitted sequence number must never be allowed to cycle.\" §5 takes the engineering view on manually keyed SAs — if the ICV key is distributed by hand, anti-replay needs the sender to maintain counter state with no automatic recovery near overflow, so \"a compliant implementation SHOULD NOT provide this service in conjunction with SAs that are manually keyed.\" The same section outsources the algorithm list: \"The mandatory-to-implement algorithms for use with AH are described in a separate RFC [Eas04]\".",
+          "history": "RFC 4302 is signed by S. Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2402” in the header; the abstract calls it \"an updated version of the IP Authentication Header (AH)\", \"which is designed to provide authentication services in IPv4 and IPv6\". §5 records that the mandatory algorithms moved to a separate RFC so the algorithm requirements can be updated independently. §7 lists the differences from RFC 2402, including the new counter option: \"added a new option for a 64-bit sequence number for very high-speed communications.\"",
+          "refs": "- Wikipedia search entry for AH 认证头. https://zh.wikipedia.org/w/index.php?search=AH%20%E8%AE%A4%E8%AF%81%E5%A4%B4\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4302: IP Authentication Header. https://www.rfc-editor.org/rfc/rfc4302",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nAuthentication Header: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "协议号 51：AH 在 IP 头中的标识。",
+          "ICV：AH 尾部的完整性校验值。",
+          "逐跳字段：途中可变、无法保护的字段。",
+          "覆盖零散：AH 对 IP 头的保护不完整。",
+          "ESN：64 位扩展序号选项。",
+          "手工密钥 SA：不配启用反重放。"
+        ],
+        "en": [
+          "Protocol number 51: AH's marker in the IP header.",
+          "ICV: the integrity check value trailing AH.",
+          "In-transit fields: header fields that change en route and cannot be covered.",
+          "Piecemeal coverage: AH protects only part of the IP header.",
+          "ESN: the 64-bit extended sequence number option.",
+          "Manually keyed SA: the pairing anti-replay should avoid."
+        ]
+      },
+      "figures": [
+        {
+          "id": "ah-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "AH 认证头：为什么需要 → 核心机制 → 边界。",
+            "en": "Authentication Header: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "AH 认证头 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Authentication Header, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ah-details-flow.zh.svg",
+            "en": "assets/ah-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "01136fceec124b673b6c5580a7570b1499386acc20b67d9a15fc8fed49a286a1",
+            "en": "895d053bfe5d683e15a8db3d802cff1e60e0101abebd601f2fd7cacab4cf749b"
+          }
+        },
+        {
+          "id": "ah-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "AH 认证头 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Authentication Header: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "AH 认证头 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Authentication Header, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ah-details-r138-model.zh.svg",
+            "en": "assets/ah-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "1e3350122dbb4ccd346b700487cdaee49a7fa8bdad02cbe1c73fd4fd1a75b4ee",
+            "en": "d4cab040ddebdf44f97b13f051bae6f7900c8339c205bd79959ccd72c2b5f210"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "ah-r139-formal",
+          "entryId": "ah-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：AH 认证头的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 AH 认证头 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "ah-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ah-r139-formal"
+      ],
+      "sources": [
+        "ah-wikipedia",
+        "ah-reference-ref",
+        "ah-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ah-r139-formal",
+      "entryId": "ah-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：AH 认证头的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 AH 认证头 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "ah-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

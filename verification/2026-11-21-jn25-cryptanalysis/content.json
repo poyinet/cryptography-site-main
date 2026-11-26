@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R123 formula-level deepening for jn25-cryptanalysis-details.",
+  "entries": [
+    {
+      "id": "jn25-cryptanalysis-details",
+      "inventoryIds": [
+        "jn25-cryptanalysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条把 JN-25 写成“码本 + 逐位模 10 加法 + 深度”的可复述链条，给出 27,500 组、300×100 加法簿、2,000 组/4% 与换簿重置等参数，不把它误写成 OTP。",
+        "en": "This entry makes JN-25 a reproducible chain of codebook, digitwise mod-10 addition and depth, with the 27,500 groups, 300×100 additive book, 2,000 groups/4% and book-change reset; it does not mislabel the system as an OTP."
+      },
+      "title": {
+        "zh": "JN-25 破译",
+        "en": "JN-25 Cryptanalysis"
+      },
+      "claimIds": [
+        "jn25-cryptanalysis-r139-principle",
+        "jn25-cryptanalysis-r139-why",
+        "jn25-cryptanalysis-r139-used",
+        "jn25-cryptanalysis-r139-broken",
+        "jn25-cryptanalysis-r139-history",
+        "jn25-cryptanalysis-r139-refs"
+      ],
+      "sourceIds": [
+        "jn25-cryptanalysis-wikipedia",
+        "jn25-cryptanalysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "jn25-cryptanalysis-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "JN-25 的四步链：读指示、去加法、构造深度、恢复码本含义。",
+            "en": "Four-step JN-25 chain: read indicator, strip additive, build depth, recover codebook meanings."
+          },
+          "alt": {
+            "zh": "四步公式级机制：读指示组 → 逐位去加法 → 构造深度 → 恢复码本；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: read indicator → strip additive → build depth → recover codebook; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/jn25-cryptanalysis-mechanism.zh.svg",
+            "en": "assets/jn25-cryptanalysis-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引论文/官方历史资料绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited paper/official history)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "a1c77a4a99f02a680cc125581dbd243eb64bfb297dc0fab9102c69e26fbe24f9",
+            "en": "cdcd094d54e59e2fa20770a012679ccd8fab627ee3faedbcd4b3a0befb8b4a4b"
+          }
+        },
+        {
+          "id": "jn25-cryptanalysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "JN-25 破译 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for JN-25 Cryptanalysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "JN-25 破译 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for JN-25 Cryptanalysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/jn25-cryptanalysis-details-r138-model.zh.svg",
+            "en": "assets/jn25-cryptanalysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5776199c414e7aaf9b063d0eac7a79b472e8790137622b85d83b3c00f9118e3d",
+            "en": "f91f0d9c67eb455ed7fdbed956f16a2ce9cee6b9202853d6363d78b02cfcc9d6"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：JN-25 破译（JN-25 Cryptanalysis）。### 码本与叠加\n\nJN-25 先把日文电文查五位数码本，得到码组 x_i；再从加法簿取五位数 k_i，按十进制逐位模 10 相加：\n\nc_i=(x_i+k_i) mod 10。这不是二进制异或，而是逐位不进位加法；接收方用同一加法簿逐位相减还原码组。加法簿按页/行组织，电文开头的指示组指出所用页与行。### 深度与码本恢复\n\n同一加法簿页被多条电文复用时，两条密文逐位相减：\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10。加法被消去，剩下码本码组的差。大量“深度”加上已知码组、猜测的 crib 和频率分析，可以恢复码本含义；再把新码组反查，逐步读出明文。",
+          "why": "JN-25 是“码本 + 加法超加密”的典型。它的弱点不是加法算法本身，而是加法簿的重复使用和码本规模有限；一旦深度足够，统计攻击就能把一次性掩码变成可分析的码本差分。VENONA 同样利用一次性密码本页重复，但 VENONA 的失败点是“OTP 页重复”；JN-25 的加法簿本来就不是 OTP，重复使用是设计常态，深度更容易积累。两者不能当成同一种密钥复用错误。",
+          "used": "1.读指示组，确定加法簿页/行。2.用加法簿逐位相减，得到码组序列。3.对齐使用同一页的电文，构造 depth。4.用已知码组、crib、频率和交通分析恢复码本。5.迭代：新读出的码组加入码本，扩大下一轮解密。### 不能怎么用\n\n不能把 JN-25 的逐位模 10 加法写成 XOR；不能忽略指示组和 garble check；不能把部分码本恢复说成全文可读。",
+          "broken": "1.加法簿更换：换页/换簿会使已有深度失效，必须重新积累。2.码本扩充：新码组没有已知含义，只能靠上下文猜。3.指示组或抄收错误：逐位相减会产生大量乱码，需 garble check。4.不是现代密码：JN-25 的码本+加法结构不等价于现代流密码或分组密码；不能把历史破译直接外推到 OTP 或 AES。",
+          "history": "JN-25 于 1939 年启用，1940 年起英国远东联合局与美军 OP-20-G 先后投入。到 1941 年 8 月加法簿更换前，美方约恢复 2,000 个码组，约占 27,500 组的 4%，且多为数字与套语；1941 年 12 月 4 日再次换簿，迫使分析重新开始。JN-25 的破译是渐进过程，不能把某一次战斗的结果简单归因于单一解密。该条目只写密码机制、规模与进度，不把战术结果当作算法结论。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：JN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。 预期输出：按 JN-25 破译 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 定义挑战与获胜条件 2. 给攻击者 oracle 访问 3. 计算优势并与目标界比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for JN-25 破译. https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nJN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: JN-25 Cryptanalysis (JN-25 破译). ### Codebook and additive\n\nJN-25 first looked up Japanese text in a five-digit codebook, producing code groups x_i; it then took five-digit groups k_i from an additive book and added them digitwise modulo 10:\n\nc_i=(x_i+k_i) mod 10. This is not binary XOR but non-carrying decimal addition; the receiver subtracts digitwise with the same additive book. The book is organized by page and line, and an indicator group at the start of the message names the page and line used. ### Depth and codebook recovery\n\nWhen several messages reuse the same additive page, subtract two ciphertexts digitwise:\n\nc_i⊖c_i′=(x_i⊖x_i′) mod 10. The additive cancels, leaving differences of codebook groups. Enough depth, known code groups, guessed cribs and frequency analysis recover codebook meanings; new groups are then looked up and the plaintext grows.",
+          "why": "JN-25 is a canonical codebook-plus-additive system. Its weakness is not the addition itself but additive-page reuse and a finite codebook; once depth is sufficient, statistical attack turns a one-time-looking mask into analyzable codebook differences.\n\nVENONA also exploits repeated one-time-pad pages, but its failure is reuse of an OTP page; the JN-25 additive book was never an OTP, and reuse was normal, so depth accumulated more easily. The two are not the same key-reuse error.",
+          "used": "1. Read the indicator to identify the additive page and line. 2. Subtract the additive digitwise to obtain code groups. 3. Align messages using the same page to build depth. 4. Recover the codebook with known groups, cribs, frequency and traffic analysis. 5. Iterate: add newly read groups to the codebook and extend the next decryption pass.\n\nDo not write JN-25’s digitwise mod-10 addition as XOR; do not ignore indicators and the garble check; do not call a partial codebook recovery a fully readable message.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. Additive-book change: a new page or book destroys existing depth and forces a new accumulation. 2. Codebook growth: new groups have no known meaning and must be guessed from context. 3. Indicator or copying errors: digitwise subtraction produces garbage and needs a garble check. 4. Not a modern cipher: the codebook-plus-additive structure is not equivalent to a modern stream or block cipher, and the historical break must not be extrapolated to OTP or AES.",
+          "history": "JN-25 entered service in 1939; from 1940 the British Far East Combined Bureau and the U.S. OP-20-G worked on it. By the additive-book change in August 1941, the Americans had recovered about 2,000 code groups, roughly 4% of 27,500, mostly numerals and stereotypes; another book change on 4 December 1941 forced the work to restart.\n\nBreaking JN-25 was incremental; no single battle result should be attributed to one decrypt. This entry covers the cryptographic mechanism, scale and progress, not tactical outcomes as algorithmic conclusions.",
+          "refs": "- Wikipedia search entry for JN-25 破译. https://zh.wikipedia.org/w/index.php?search=JN-25%20%E7%A0%B4%E8%AF%91\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nJN-25 Cryptanalysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "jn25-cryptanalysis-r139-formal",
+          "entryId": "jn25-cryptanalysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：JN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 JN-25 破译 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "jn25-cryptanalysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "jn25-cryptanalysis-r139-formal"
+      ],
+      "sources": [
+        "jn25-cryptanalysis-wikipedia",
+        "jn25-cryptanalysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "jn25-cryptanalysis-r139-formal",
+      "entryId": "jn25-cryptanalysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：JN-25 破译的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 JN-25 破译 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "jn25-cryptanalysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

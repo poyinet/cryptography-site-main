@@ -1,0 +1,220 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "esp-details",
+  "sources": [
+    {
+      "id": "esp-wikipedia",
+      "title": "Wikipedia search entry for ESP 封装安全载荷",
+      "url": "https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: ESP 封装安全载荷",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "esp-r139-principle",
+          "entryId": "esp-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：ESP 封装安全载荷（Encapsulating Security Payload）。ESP 的报文位置与字段在 RFC 4303 里钉死：§1 说「The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).」§2 规定前导协议号「The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field」并描述布局「The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).」§2.8 补上可选尾部：「The Integrity Check Value is a variable-length field computed over the ESP header, Payload, and ESP trailer fields.」且「The ICV field is optional.」。",
+            "en": "**Protocol**: Encapsulating Security Payload (ESP 封装安全载荷).RFC 4303 pins the packet position and fields: §1 says \"The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).\" §2 fixes the protocol number — \"The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field\" — and the layout \"The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).\" §2."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        },
+        {
+          "id": "esp-r139-why",
+          "entryId": "esp-details",
+          "section": "why",
+          "statement": {
+            "zh": "服务是可选组合，但有一条底线：§1 列出「ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.」并强调服务集合取决于建 SA 时的选项与实现位置。§3.2 收口成一句硬性要求：「although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.」对纯加密，§1 先给警告「Using encryption-only for confidentiality is allowed by ESP.」再指出「this will provide defense only against passive attackers.」。",
+            "en": "The services are a menu, but with a floor: §1 lists \"ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.\" and stresses that the set depends on the options chosen when the SA is established and on where the implementation sits.§3.2 closes it as a hard rule: \"although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.\" On encryption-only, §1 first notes \"Using encryption-only for confidentiality is allowed by ESP."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        },
+        {
+          "id": "esp-r139-used",
+          "entryId": "esp-details",
+          "section": "used",
+          "statement": {
+            "zh": "加密-only 并非被禁：§1 解释「ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security」同时保留一句「However, this standard does not require ESP implementations to offer an encryption-only service.」流量掩蔽是显式设计的可选功能：§2.7 规定「An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.」并要求「if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.」模式选择在 §3.1 一句话交代：「ESP may be employed in two ways: transport mode or tunnel mode.」。",
+            "en": "Encryption-only is not forbidden: §1 explains \"ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security\" while adding \"However, this standard does not require ESP implementations to offer an encryption-only service.\" Traffic-flow concealment is an explicitly designed option: §2.7 requires \"An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.\" and \"if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.\" The mode choice is one line in §3."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        },
+        {
+          "id": "esp-r139-broken",
+          "entryId": "esp-details",
+          "section": "broken",
+          "statement": {
+            "zh": "重放保护有明确失效条件：§2.2 说「for a multi-sender SA, the anti-replay features of ESP are not available」。新特性受协商约束，§2.7 要求「the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility」。§3.4 给出处理顺序的安全理由：入站并行时「integrity checking MUST be completed before the decrypted packet is passed on for further processing.」最硬的边界在 §8：「There is no version number in ESP and no mechanism enabling IPsec peers to discover or negotiate which version of ESP each is using or should use.」——版本只能靠协商出来的算法组合间接体现。",
+            "en": "Anti-replay has an explicit failure condition: §2.2 states \"for a multi-sender SA, the anti-replay features of ESP are not available\".New features are gated on negotiation, and §2.7 requires \"the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility\"."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        },
+        {
+          "id": "esp-r139-history",
+          "entryId": "esp-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 4303 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2406」；摘要称其为「an updated version of the Encapsulating Security Payload (ESP) protocol」并说明「ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service」。§8 交代与旧版的兼容关系：「if none of the new features available in ESP v3 are employed, then the format of an ESP packet is identical in ESP v2 and v3.」组合模式加密则只在 v3 语境中定义。",
+            "en": "RFC 4303 is signed by S.Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2406” in the header; the abstract calls it \"an updated version of the Encapsulating Security Payload (ESP) protocol\" and says \"ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service\"."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        },
+        {
+          "id": "esp-r139-refs",
+          "entryId": "esp-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for ESP 封装安全载荷.https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4303: IP Encapsulating Security Payload.https://www.rfc-editor.org/rfc/rfc4303。",
+            "en": "- Wikipedia search entry for ESP 封装安全载荷.https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "esp-reference-ref",
+            "esp-specific"
+          ]
+        }
+      ],
+      "supports": [
+        "esp-wikipedia"
+      ]
+    },
+    {
+      "id": "esp-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "esp-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "esp-specific",
+      "title": "RFC 4303: IP Encapsulating Security Payload",
+      "url": "https://www.rfc-editor.org/rfc/rfc4303",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "esp-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "esp-r139-principle",
+      "entryId": "esp-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：ESP 封装安全载荷（Encapsulating Security Payload）。ESP 的报文位置与字段在 RFC 4303 里钉死：§1 说「The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).」§2 规定前导协议号「The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field」并描述布局「The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).」§2.8 补上可选尾部：「The Integrity Check Value is a variable-length field computed over the ESP header, Payload, and ESP trailer fields.」且「The ICV field is optional.」。",
+        "en": "**Protocol**: Encapsulating Security Payload (ESP 封装安全载荷).RFC 4303 pins the packet position and fields: §1 says \"The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).\" §2 fixes the protocol number — \"The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field\" — and the layout \"The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).\" §2."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    },
+    {
+      "id": "esp-r139-why",
+      "entryId": "esp-details",
+      "section": "why",
+      "statement": {
+        "zh": "服务是可选组合，但有一条底线：§1 列出「ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.」并强调服务集合取决于建 SA 时的选项与实现位置。§3.2 收口成一句硬性要求：「although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.」对纯加密，§1 先给警告「Using encryption-only for confidentiality is allowed by ESP.」再指出「this will provide defense only against passive attackers.」。",
+        "en": "The services are a menu, but with a floor: §1 lists \"ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.\" and stresses that the set depends on the options chosen when the SA is established and on where the implementation sits.§3.2 closes it as a hard rule: \"although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.\" On encryption-only, §1 first notes \"Using encryption-only for confidentiality is allowed by ESP."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    },
+    {
+      "id": "esp-r139-used",
+      "entryId": "esp-details",
+      "section": "used",
+      "statement": {
+        "zh": "加密-only 并非被禁：§1 解释「ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security」同时保留一句「However, this standard does not require ESP implementations to offer an encryption-only service.」流量掩蔽是显式设计的可选功能：§2.7 规定「An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.」并要求「if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.」模式选择在 §3.1 一句话交代：「ESP may be employed in two ways: transport mode or tunnel mode.」。",
+        "en": "Encryption-only is not forbidden: §1 explains \"ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security\" while adding \"However, this standard does not require ESP implementations to offer an encryption-only service.\" Traffic-flow concealment is an explicitly designed option: §2.7 requires \"An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.\" and \"if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.\" The mode choice is one line in §3."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    },
+    {
+      "id": "esp-r139-broken",
+      "entryId": "esp-details",
+      "section": "broken",
+      "statement": {
+        "zh": "重放保护有明确失效条件：§2.2 说「for a multi-sender SA, the anti-replay features of ESP are not available」。新特性受协商约束，§2.7 要求「the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility」。§3.4 给出处理顺序的安全理由：入站并行时「integrity checking MUST be completed before the decrypted packet is passed on for further processing.」最硬的边界在 §8：「There is no version number in ESP and no mechanism enabling IPsec peers to discover or negotiate which version of ESP each is using or should use.」——版本只能靠协商出来的算法组合间接体现。",
+        "en": "Anti-replay has an explicit failure condition: §2.2 states \"for a multi-sender SA, the anti-replay features of ESP are not available\".New features are gated on negotiation, and §2.7 requires \"the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility\"."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    },
+    {
+      "id": "esp-r139-history",
+      "entryId": "esp-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 4303 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2406」；摘要称其为「an updated version of the Encapsulating Security Payload (ESP) protocol」并说明「ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service」。§8 交代与旧版的兼容关系：「if none of the new features available in ESP v3 are employed, then the format of an ESP packet is identical in ESP v2 and v3.」组合模式加密则只在 v3 语境中定义。",
+        "en": "RFC 4303 is signed by S.Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2406” in the header; the abstract calls it \"an updated version of the Encapsulating Security Payload (ESP) protocol\" and says \"ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service\"."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    },
+    {
+      "id": "esp-r139-refs",
+      "entryId": "esp-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for ESP 封装安全载荷.https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4303: IP Encapsulating Security Payload.https://www.rfc-editor.org/rfc/rfc4303。",
+        "en": "- Wikipedia search entry for ESP 封装安全载荷.https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

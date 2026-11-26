@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "iso18033-5-details",
+  "sources": [
+    {
+      "id": "iso18033-5-wikipedia",
+      "title": "Wikipedia search entry for 标识密码标准",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E6%A0%87%E5%87%86",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 标识密码标准",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "iso18033-5-r139-principle",
+          "entryId": "iso18033-5-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：标识密码标准（Encryption algorithms — Part 5: Identity-based ciphers）。ISO/IEC 18033-5:2015 规定标识密码机制。BF 机制的参数写成 \\(e:G_1\\times G_1\\to G_2\\)、\\(P\\in G_1\\)、主私钥 \\(s\\in\\mathbb{Z}_p^*\\)、主公钥 \\(P_{pub}=sP\\)、\\(g=e(P,P)\\)。用户标识 \\(ID\\) 先映射为 \\(Q_{ID}=H_1(ID)\\)，私钥为 \\(d_{ID}=sQ_{ID}\\)。加密选随机 \\(r\\)，输出 \\(U=rP\\)、\\(V=M\\oplus H_2(g^r)\\)、\\(W=rQ_{ID}\\)；解密计算 \\(M=V\\oplus H_2(e(U,d_{ID}))\\)，因为 \\(e(U,d_{ID})=e(P,Q_{ID})^{rs}=g^{rs}\\)。SK 与 BB1 是“KEM 封装会话密钥 + DEM 加密数据”的混合机制；2021 年补篇加入 SM9。",
+            "en": "**Standard**: Encryption algorithms — Part 5: Identity-based ciphers (标识密码标准).ISO/IEC 18033-5:2015 specifies identity-based ciphers."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-5-r139-why",
+          "entryId": "iso18033-5-details",
+          "section": "why",
+          "statement": {
+            "zh": "这条卡同时纠正目录：旧目录把 ISO/IEC 18033-5 放进 `d16-secret-sharing-mpc`，但它是标识基公钥加密，不是秘密共享或 MPC。BF 的公式还说明 IBE 的结构性代价：PKG 用主私钥为所有用户生成私钥，因此天然拥有解密能力；这不是实现缺陷，而是机制假设。把 BF、SK/BB1、SM9 分开写，才能避免把“一个标准”误当成“一个算法”。",
+            "en": "In the 非对称公钥 reading path, Encryption algorithms — Part 5: Identity-based ciphers connects to government contexts; the main risks are protocol."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-5-r139-used",
+          "entryId": "iso18033-5-details",
+          "section": "used",
+          "statement": {
+            "zh": "加密方只需知道接收方 ID 和主公钥：先算 \\(Q_{ID}=H_1(ID)\\)，再选随机 \\(r\\)，输出 \\((U,V,W)\\)。解密方必须从 PKG 取得 \\(d_{ID}\\)，用 \\(e(U,d_{ID})\\) 还原 \\(g^{rs}\\)。混合模式则先 \\(Encaps(MPK,ID)\\) 得到会话密钥 \\(K\\) 和封装 \\(C\\)，再用 \\(DEM.Enc(K,M)\\) 加密数据；解密顺序相反。SM9 补篇应按 SM9 自己的参数和封装结构核对，不能把 BF 的 \\((U,V,W)\\) 直接套上去。",
+            "en": "An encryptor needs only the recipient ID and the public key: compute \\(Q_{ID}=H_1(ID)\\), pick random \\(r\\) and output \\((U,V,W)\\).A decryptor obtains \\(d_{ID}\\) from the PKG and recovers \\(g^{rs}\\) through \\(e(U,d_{ID})\\)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-5-r139-broken",
+          "entryId": "iso18033-5-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界有四条。第一，PKG 掌握主私钥，因而能解密所有用户的数据；私钥托管是 IBE 的结构性代价，不是可选配置。第二，BF 的 \\(V=M\\oplus H_2(g^r)\\) 只是 ElGamal 式掩码，CCA 安全需要额外的密文检查/一致性论证；不能把“标准列出的机制”当成“任何实现都安全”。第三，双线性对的实现、群参数和哈希到点都必须正确，错误参数会破坏 \\(e(U,d_{ID})=g^{rs}\\)。第四，标准不规定证书、私钥持有证明或实现审计；SM9 是补篇，不能与 2015 年正文混成同一套公式。",
+            "en": "There are four boundaries.First, the PKG holds the master secret and can decrypt every user’s data; key escrow is structural, not an optional setting."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-5-r139-history",
+          "entryId": "iso18033-5-details",
+          "section": "history",
+          "statement": {
+            "zh": "ISO/IEC 18033-5:2015 第一版规定 BF 标识基加密、SK 与 BB1 标识基密钥封装；BF 来自 Boneh–Franklin 2001 年的 Weil 对构造。2021 年 2 月，SM9 标识加密作为补篇 1 正式发布，使机制清单增加 SM9。这里按 2015 年预览的目录与 ISO 补篇页叙述，不把 SM9 的公式追写进 2015 年正文。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：标识密码标准的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "ISO/IEC 18033-5:2015 first specified BF identity-based encryption and the SK and BB1 identity-based KEMs; BF comes from the Boneh–Franklin 2001 Weil-pairing construction.In February 2021, SM9 identity-based encryption was published as Amendment 1, adding SM9 to the mechanism list."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        },
+        {
+          "id": "iso18033-5-r139-refs",
+          "entryId": "iso18033-5-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 标识密码标准.https://zh.wikipedia.org/w/index.php?search=%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 标识密码标准.https://zh.wikipedia.org/w/index.php?search=%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "iso18033-5-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "iso18033-5-wikipedia"
+      ]
+    },
+    {
+      "id": "iso18033-5-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "iso18033-5-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "iso18033-5-r139-principle",
+      "entryId": "iso18033-5-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：标识密码标准（Encryption algorithms — Part 5: Identity-based ciphers）。ISO/IEC 18033-5:2015 规定标识密码机制。BF 机制的参数写成 \\(e:G_1\\times G_1\\to G_2\\)、\\(P\\in G_1\\)、主私钥 \\(s\\in\\mathbb{Z}_p^*\\)、主公钥 \\(P_{pub}=sP\\)、\\(g=e(P,P)\\)。用户标识 \\(ID\\) 先映射为 \\(Q_{ID}=H_1(ID)\\)，私钥为 \\(d_{ID}=sQ_{ID}\\)。加密选随机 \\(r\\)，输出 \\(U=rP\\)、\\(V=M\\oplus H_2(g^r)\\)、\\(W=rQ_{ID}\\)；解密计算 \\(M=V\\oplus H_2(e(U,d_{ID}))\\)，因为 \\(e(U,d_{ID})=e(P,Q_{ID})^{rs}=g^{rs}\\)。SK 与 BB1 是“KEM 封装会话密钥 + DEM 加密数据”的混合机制；2021 年补篇加入 SM9。",
+        "en": "**Standard**: Encryption algorithms — Part 5: Identity-based ciphers (标识密码标准).ISO/IEC 18033-5:2015 specifies identity-based ciphers."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-5-r139-why",
+      "entryId": "iso18033-5-details",
+      "section": "why",
+      "statement": {
+        "zh": "这条卡同时纠正目录：旧目录把 ISO/IEC 18033-5 放进 `d16-secret-sharing-mpc`，但它是标识基公钥加密，不是秘密共享或 MPC。BF 的公式还说明 IBE 的结构性代价：PKG 用主私钥为所有用户生成私钥，因此天然拥有解密能力；这不是实现缺陷，而是机制假设。把 BF、SK/BB1、SM9 分开写，才能避免把“一个标准”误当成“一个算法”。",
+        "en": "In the 非对称公钥 reading path, Encryption algorithms — Part 5: Identity-based ciphers connects to government contexts; the main risks are protocol."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-5-r139-used",
+      "entryId": "iso18033-5-details",
+      "section": "used",
+      "statement": {
+        "zh": "加密方只需知道接收方 ID 和主公钥：先算 \\(Q_{ID}=H_1(ID)\\)，再选随机 \\(r\\)，输出 \\((U,V,W)\\)。解密方必须从 PKG 取得 \\(d_{ID}\\)，用 \\(e(U,d_{ID})\\) 还原 \\(g^{rs}\\)。混合模式则先 \\(Encaps(MPK,ID)\\) 得到会话密钥 \\(K\\) 和封装 \\(C\\)，再用 \\(DEM.Enc(K,M)\\) 加密数据；解密顺序相反。SM9 补篇应按 SM9 自己的参数和封装结构核对，不能把 BF 的 \\((U,V,W)\\) 直接套上去。",
+        "en": "An encryptor needs only the recipient ID and the public key: compute \\(Q_{ID}=H_1(ID)\\), pick random \\(r\\) and output \\((U,V,W)\\).A decryptor obtains \\(d_{ID}\\) from the PKG and recovers \\(g^{rs}\\) through \\(e(U,d_{ID})\\)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-5-r139-broken",
+      "entryId": "iso18033-5-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界有四条。第一，PKG 掌握主私钥，因而能解密所有用户的数据；私钥托管是 IBE 的结构性代价，不是可选配置。第二，BF 的 \\(V=M\\oplus H_2(g^r)\\) 只是 ElGamal 式掩码，CCA 安全需要额外的密文检查/一致性论证；不能把“标准列出的机制”当成“任何实现都安全”。第三，双线性对的实现、群参数和哈希到点都必须正确，错误参数会破坏 \\(e(U,d_{ID})=g^{rs}\\)。第四，标准不规定证书、私钥持有证明或实现审计；SM9 是补篇，不能与 2015 年正文混成同一套公式。",
+        "en": "There are four boundaries.First, the PKG holds the master secret and can decrypt every user’s data; key escrow is structural, not an optional setting."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-5-r139-history",
+      "entryId": "iso18033-5-details",
+      "section": "history",
+      "statement": {
+        "zh": "ISO/IEC 18033-5:2015 第一版规定 BF 标识基加密、SK 与 BB1 标识基密钥封装；BF 来自 Boneh–Franklin 2001 年的 Weil 对构造。2021 年 2 月，SM9 标识加密作为补篇 1 正式发布，使机制清单增加 SM9。这里按 2015 年预览的目录与 ISO 补篇页叙述，不把 SM9 的公式追写进 2015 年正文。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：标识密码标准的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "ISO/IEC 18033-5:2015 first specified BF identity-based encryption and the SK and BB1 identity-based KEMs; BF comes from the Boneh–Franklin 2001 Weil-pairing construction.In February 2021, SM9 identity-based encryption was published as Amendment 1, adding SM9 to the mechanism list."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    },
+    {
+      "id": "iso18033-5-r139-refs",
+      "entryId": "iso18033-5-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 标识密码标准.https://zh.wikipedia.org/w/index.php?search=%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 标识密码标准.https://zh.wikipedia.org/w/index.php?search=%E6%A0%87%E8%AF%86%E5%AF%86%E7%A0%81%E6%A0%87%E5%87%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "iso18033-5-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

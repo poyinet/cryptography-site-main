@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for eap-ttls: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "eap-ttls-details",
+      "inventoryIds": [
+        "eap-ttls"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「EAP-TTLS」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of EAP-TTLS: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "EAP-TTLS",
+        "en": "EAP-TTLS"
+      },
+      "claimIds": [
+        "eap-ttls-r139-principle",
+        "eap-ttls-r139-why",
+        "eap-ttls-r139-used",
+        "eap-ttls-r139-broken",
+        "eap-ttls-r139-history",
+        "eap-ttls-r139-refs"
+      ],
+      "sourceIds": [
+        "eap-ttls-wikipedia",
+        "eap-ttls-reference-ref"
+      ],
+      "related": [
+        "eap",
+        "eap-tls",
+        "radius",
+        "forward-secrecy"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：EAP-TTLS（EAP-TTLS）。EAP-TTLS 是在 TLS 隧道之上再跑认证：§1 写「EAP-TTLS is an EAP method that provides functionality beyond what is available in EAP-TLS.」§7 给出两阶段结构——「A EAP-TTLS negotiation comprises two phases: the TLS handshake phase and the TLS tunnel phase.」第一阶段服务器以 Start 包起步：§7.1「The TTLS server initiates the EAP-TTLS method with an EAP-TTLS/Start packet」。",
+          "why": "动因是无线信道暴露挑战-响应可被字典攻击：§2「An issue with such an approach is that an eavesdropper that observes both challenge and response may be able to mount a dictionary attack」并说明「Because passwords typically have low entropy, such attacks can in practice easily discover many passwords.」§2 还点出无线网络改变了威胁前提：「Wireless connections are considerably more susceptible to eavesdropping and man-in-the-middle attacks.」§1 的策略是复用既有口令基础设施：「EAP-TTLS extends this authentication negotiation by using the secure connection established by the TLS handshake to exchange additional information between client and server.」§5.4 总结效果：EAP-TTLS 让用户身份与口令信息得以安全传输。",
+          "used": "§7 把第二阶段的安全性系于第一阶段协商的套件：「Note that the type and degree of security in phase 2 depends on the cipher suite negotiated during phase 1; if the null cipher suite is negotiated, there will be no security!」；§7.2 定义隧道内容：「In phase 2, the TLS record layer is used to securely tunnel information between client and TTLS server.」§7.7 允许任一 TLS 版本并要求支持 TLS 1.0 以保互操作；§11.4 定基线：「an implementation compliant with this specification MUST implement EAP as a tunneled authentication method and MUST implement MD5-Challenge as an EAP type」。§14.",
+          "broken": "四处在文档内部自我设限。§14.2 承认匿名性可被旁路：实现者应知晓「other factors -- both within EAP-TTLS and elsewhere -- may compromise a user's identity.」§14.3 把服务器信任交给配置：「The client should have a means of determining which server identities are authorized to act as a TTLS server and may be trusted, and should refuse to authenticate with servers it does not trust.」§14.4 要求校验证书路径并处理 EKU 缺失即无约束的情形。§14.7 记录版本协商在隧道之外：「EAP-TTLS negotiates its own protocol version prior to, and therefore outside the security established by the TLS tunnel.」并说明版本 0 因此暂无被降级的面。",
+          "history": "RFC 5281 由 P.Funk（Unaffiliated）与 S.Blake-Wilson（SafeNet）署名，2008 年 8 月发布，Category 标注 Informational，头部无 Obsoletes 行。§1 明确这是一份记录现状的文档：「EAP-TTLS has been widely deployed and this specification documents what existing implementations do.」并承认局限：「It has some limitations and vulnerabilities, however.」把改进指向扩展与标准化隧道内方法的后续工作。",
+          "refs": "- Wikipedia search entry for EAP-TTLS. https://zh.wikipedia.org/w/index.php?search=EAP-TTLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-TTLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: EAP-TTLS (EAP-TTLS). EAP-TTLS runs authentication on top of a TLS tunnel: §1 states \"EAP-TTLS is an EAP method that provides functionality beyond what is available in EAP-TLS.\" §7 gives the two-phase shape — \"A EAP-TTLS negotiation comprises two phases: the TLS handshake phase and the TLS tunnel phase.\" — and in phase 1 the server opens, per §7.1, \"The TTLS server initiates the EAP-TTLS method with an EAP-TTLS/Start packet\".",
+          "why": "The motive is that exposed challenge/response enables dictionary attacks: §2 notes \"An issue with such an approach is that an eavesdropper that observes both challenge and response may be able to mount a dictionary attack\" and \"Because passwords typically have low entropy, such attacks can in practice easily discover many passwords.\" §2 also states the changed premise: \"Wireless connections are considerably more susceptible to eavesdropping and man-in-the-middle attacks.\" The strategy in §1 is to reuse existing password infrastructure — \"EAP-TTLS extends this authentication negotiation by using the secure connection established by the TLS handshake to exchange additional information between client and server.\" §5.4 summarises the effect: identity and password information are transmitted securely.",
+          "used": "§7 ties phase 2 security to the phase 1 agreement: \"Note that the type and degree of security in phase 2 depends on the cipher suite negotiated during phase 1; if the null cipher suite is negotiated, there will be no security!\" §7.2 defines the tunnelled content: \"In phase 2, the TLS record layer is used to securely tunnel information between client and TTLS server.\" §7.7 permits TLS 1.0, 1.1 or any later version and only recommends TLS 1.0 support with a SHOULD for maximum interoperability; §11.4 sets the floor: \"To ensure interoperability, in the absence of an application profile standard specifying otherwise, an implementation compliant with this specification MUST implement EAP as a tunneled authentication method and MUST implement MD5-Challenge as an EAP type\" — a MUST that holds only absent a conflicting application profile. §14.1 claims \"Authentication mechanism: TLS plus arbitrary additional protected authentication(s)\" and lists \"Cryptographic binding: No\".",
+          "broken": "Four self-imposed limits are recorded in the document. §14.2 concedes anonymity can leak: implementers should know that \"other factors -- both within EAP-TTLS and elsewhere -- may compromise a user's identity.\" §14.3 hands server trust to configuration: \"The client should have a means of determining which server identities are authorized to act as a TTLS server and may be trusted, and should refuse to authenticate with servers it does not trust.\" §14.4 recommends validating the path to a trusted root and notes that a missing EKU means no constraint. §14.7 records that version negotiation happens outside the tunnel — \"EAP-TTLS negotiates its own protocol version prior to, and therefore outside the security established by the TLS tunnel.\" — while noting version 0 is not exposed to that attack.",
+          "history": "RFC 5281 is signed by P. Funk (Unaffiliated) and S. Blake-Wilson (SafeNet), published August 2008 with Category: Informational and no Obsoletes line. §1 says plainly what kind of document it is: \"EAP-TTLS has been widely deployed and this specification documents what existing implementations do.\" and admits \"It has some limitations and vulnerabilities, however.\" pointing improvements at extensions and the later standardised tunneled methods.",
+          "refs": "- Wikipedia search entry for EAP-TTLS. https://zh.wikipedia.org/w/index.php?search=EAP-TTLS\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-TTLS: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Phase 1：TLS 握手，认证服务器。",
+          "Phase 2：在 TLS 记录层里隧道传 AVP。",
+          "TTLS server：终止隧道并对接 AAA/H 的实体。",
+          "AVP：属性-值对，RADIUS/Diameter 风格。",
+          "内层方法：隧道里再跑的 EAP 或口令协议。",
+          "Cryptographic binding：内外层密码学绑定，本文声明为无。"
+        ],
+        "en": [
+          "Phase 1: the TLS handshake that authenticates the server.",
+          "Phase 2: AVPs tunnelled inside the TLS record layer.",
+          "TTLS server: terminates the tunnel and talks to the AAA/H server.",
+          "AVP: attribute-value pair in RADIUS/Diameter style.",
+          "Inner method: EAP or a legacy password protocol run inside the tunnel.",
+          "Cryptographic binding: stated absent for this version."
+        ]
+      },
+      "figures": [
+        {
+          "id": "eap-ttls-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-TTLS：为什么需要 → 核心机制 → 边界。",
+            "en": "EAP-TTLS: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EAP-TTLS 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for EAP-TTLS, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eap-ttls-details-flow.zh.svg",
+            "en": "assets/eap-ttls-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "88a0933876d2e99146c93dddcf97427a528a3c6c80f7de59274d70778fe0e11f",
+            "en": "61495a3bb69c065bda847a6779daab5beff38db919debd42434921dcbeac4834"
+          }
+        },
+        {
+          "id": "eap-ttls-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-TTLS 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for EAP-TTLS: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EAP-TTLS 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for EAP-TTLS, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eap-ttls-details-r138-model.zh.svg",
+            "en": "assets/eap-ttls-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4b1418b6f752aa161fd2a4077aed7638f9c580e8c501fbc4e7635e760b68166f",
+            "en": "ee14b600c8d322942d44381f118ad45568e0027d3b8b196b1f5e93fea5ac4362"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "eap-ttls-r139-formal",
+          "entryId": "eap-ttls-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：EAP-TTLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 EAP-TTLS 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "eap-ttls-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eap-ttls-r139-formal"
+      ],
+      "sources": [
+        "eap-ttls-wikipedia",
+        "eap-ttls-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eap-ttls-r139-formal",
+      "entryId": "eap-ttls-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：EAP-TTLS的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 EAP-TTLS 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "eap-ttls-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "csprng-details",
+  "sources": [
+    {
+      "id": "csprng-wikipedia",
+      "title": "Wikipedia search entry for 密码学安全伪随机数发生器",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 密码学安全伪随机数发生器",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "csprng-r139-principle",
+          "entryId": "csprng-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：密码学安全伪随机数发生器（Cryptographically Secure PRNG）。§1 开篇给出这类机制的定性：「This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.」即它规定的是比特生成技术，随机数只是其下游转换物。同文档的脚注把命名口径写明：「DRBGs have also been called Pseudorandom Number (or Bit) Generators」，即密码学意义上的 CSPRNG 在这份建议里以 DRBG 之名规范。",
+            "en": "**Algorithm**: Cryptographically Secure PRNG (密码学安全伪随机数发生器).Section 1 opens with the characterisation: \"This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.\" It specifies bit generation; numbers are a downstream conversion."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        },
+        {
+          "id": "csprng-r139-why",
+          "entryId": "csprng-details",
+          "section": "why",
+          "statement": {
+            "zh": "密码学安全伪随机数发生器的why见来源账本与正文其他节；该条目不以空段充数。",
+            "en": "The rationale is legible in the definitions.Live Entropy Source is defined as \"A bitstring output from an entropy source, an NRBG or a DRBG that has access to a Live Entropy Source that is being used to provide prediction resistance\", so prediction resistance is what forces a live entropy input."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        },
+        {
+          "id": "csprng-r139-used",
+          "entryId": "csprng-details",
+          "section": "used",
+          "statement": {
+            "zh": "用法边界写在 §4 的定义里：Approved entropy source要求熵源「validated as conforming to [SP 800-90B]」，因此部署时的义务是把熵源送检而非自行宣称；同节还把随机比特发生器的组成说明为包含实例化、解除实例化、生成伪随机比特、可选地重播种以及健康检测等功能，即密钥生成、nonce 生成等应用都经由这几类接口使用它。",
+            "en": "The usage boundary is printed in §4.Approved entropy source requires an entropy source \"validated as conforming to [SP 800-90B]\", so a deployment's duty is to have the source validated rather than to assert it."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        },
+        {
+          "id": "csprng-r139-broken",
+          "entryId": "csprng-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在 §1 的系统性说明里：「The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.」也即机制本身合格并不等于整个发生器合格，上游随机源必须一并评估。§4 又给出判定口径：「In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly.」可预测性是按优势是否可忽略来判定的，一旦熵输入缺失或未按期重播种，这个条件便不再成立。",
+            "en": "The limit is printed in §1 as a systems statement: \"The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.\" A conforming mechanism is not by itself a conforming generator; the upstream randomness source must be assessed with it.§4 supplies the yardstick: \"In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        },
+        {
+          "id": "csprng-r139-history",
+          "entryId": "csprng-details",
+          "section": "history",
+          "statement": {
+            "zh": "版本事实：本留存件标题行印为「Recommendation for Random Number Generation Using Deterministic RBGs」，即 SP 800-90A Rev.1（2015 年 6 月），关键词行为「Deterministic random bit generator (DRBG); entropy; hash function; random number generator.」。§4 的术语说明指出「NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources」，即 2015 年这份只管确定性发生器，熵源核证另交 90B。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "Version facts: the retained title line reads \"Recommendation for Random Number Generation Using Deterministic RBGs\" — SP 800-90A Rev.1 (June 2015) — with keyword line \"Deterministic random bit generator (DRBG); entropy; hash function; random number generator.\" The text then notes that \"NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources\", so the 2015 document governs deterministic generators while entropy-source validation moved to SP 800-90B."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        },
+        {
+          "id": "csprng-r139-refs",
+          "entryId": "csprng-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 密码学安全伪随机数发生器.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 密码学安全伪随机数发生器.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "csprng-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "csprng-wikipedia"
+      ]
+    },
+    {
+      "id": "csprng-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "csprng-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "csprng-r139-principle",
+      "entryId": "csprng-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：密码学安全伪随机数发生器（Cryptographically Secure PRNG）。§1 开篇给出这类机制的定性：「This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.」即它规定的是比特生成技术，随机数只是其下游转换物。同文档的脚注把命名口径写明：「DRBGs have also been called Pseudorandom Number (or Bit) Generators」，即密码学意义上的 CSPRNG 在这份建议里以 DRBG 之名规范。",
+        "en": "**Algorithm**: Cryptographically Secure PRNG (密码学安全伪随机数发生器).Section 1 opens with the characterisation: \"This Recommendation specifies techniques for the generation of random bits that may then be used directly or converted to random numbers when random values are required by applications using cryptography.\" It specifies bit generation; numbers are a downstream conversion."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    },
+    {
+      "id": "csprng-r139-why",
+      "entryId": "csprng-details",
+      "section": "why",
+      "statement": {
+        "zh": "密码学安全伪随机数发生器的why见来源账本与正文其他节；该条目不以空段充数。",
+        "en": "The rationale is legible in the definitions.Live Entropy Source is defined as \"A bitstring output from an entropy source, an NRBG or a DRBG that has access to a Live Entropy Source that is being used to provide prediction resistance\", so prediction resistance is what forces a live entropy input."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    },
+    {
+      "id": "csprng-r139-used",
+      "entryId": "csprng-details",
+      "section": "used",
+      "statement": {
+        "zh": "用法边界写在 §4 的定义里：Approved entropy source要求熵源「validated as conforming to [SP 800-90B]」，因此部署时的义务是把熵源送检而非自行宣称；同节还把随机比特发生器的组成说明为包含实例化、解除实例化、生成伪随机比特、可选地重播种以及健康检测等功能，即密钥生成、nonce 生成等应用都经由这几类接口使用它。",
+        "en": "The usage boundary is printed in §4.Approved entropy source requires an entropy source \"validated as conforming to [SP 800-90B]\", so a deployment's duty is to have the source validated rather than to assert it."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    },
+    {
+      "id": "csprng-r139-broken",
+      "entryId": "csprng-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在 §1 的系统性说明里：「The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.」也即机制本身合格并不等于整个发生器合格，上游随机源必须一并评估。§4 又给出判定口径：「In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly.」可预测性是按优势是否可忽略来判定的，一旦熵输入缺失或未按期重播种，这个条件便不再成立。",
+        "en": "The limit is printed in §1 as a systems statement: \"The security provided by an RBG that uses a DRBG mechanism is a system implementation issue; both the DRBG mechanism and its randomness source must be considered when determining whether the RBG is appropriate for use by consuming applications.\" A conforming mechanism is not by itself a conforming generator; the upstream randomness source must be assessed with it.§4 supplies the yardstick: \"In the context of random bit generation, an output bit is unpredictable if an adversary has only a negligible advantage (that is, essentially not much better than chance) in predicting it correctly."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    },
+    {
+      "id": "csprng-r139-history",
+      "entryId": "csprng-details",
+      "section": "history",
+      "statement": {
+        "zh": "版本事实：本留存件标题行印为「Recommendation for Random Number Generation Using Deterministic RBGs」，即 SP 800-90A Rev.1（2015 年 6 月），关键词行为「Deterministic random bit generator (DRBG); entropy; hash function; random number generator.」。§4 的术语说明指出「NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources」，即 2015 年这份只管确定性发生器，熵源核证另交 90B。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：密码学安全伪随机数发生器的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "Version facts: the retained title line reads \"Recommendation for Random Number Generation Using Deterministic RBGs\" — SP 800-90A Rev.1 (June 2015) — with keyword line \"Deterministic random bit generator (DRBG); entropy; hash function; random number generator.\" The text then notes that \"NIST Special Publication (SP) 800-90B [SP 800-90B] provides guidance on designing and validating entropy sources\", so the 2015 document governs deterministic generators while entropy-source validation moved to SP 800-90B."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    },
+    {
+      "id": "csprng-r139-refs",
+      "entryId": "csprng-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 密码学安全伪随机数发生器.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 密码学安全伪随机数发生器.https://zh.wikipedia.org/w/index.php?search=%E5%AF%86%E7%A0%81%E5%AD%A6%E5%AE%89%E5%85%A8%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%8F%91%E7%94%9F%E5%99%A8\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "csprng-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

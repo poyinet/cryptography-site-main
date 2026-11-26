@@ -1,0 +1,200 @@
+{
+  "results": [
+    {
+      "id": "rc6-calc-submission-vectors",
+      "entryId": "rc6-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5d52b0af1e683f4ba7ed62d8c3a2d19c495a64304772b3d564f446ba676b1f92",
+      "dependencyHashes": {
+        "rc6-teaching.mjs": "c13de55a3e99664442f18c05b25030da822ebedb0883ce6213334780f4bf7759",
+        "vectors.json": "2e76c6cca5d3eddb8908399af4e93cc651684803d4bde31e4b53942f8ad31c31",
+        "article.zh.md": "8419012a5b182074b637c51a05ac3f3f0bc4bb738d0d6e43bd7c92cbdd040500",
+        "article.en.md": "678198244daa6aad7f1f84352aa2eb4cbf49bd831a757e6e49667dcf5a6ee888",
+        "meta.json": "6905cae94f7ebb8b21ad33b45f49d785682929da129352f5c97da14df2a85aea",
+        "glossary.json": "5b9658ec3809e0e22f622a563d4a702cf76c396fd8e7cb3553dcae3f7c1ba0ec",
+        "calculations.json": "9bb89a7d02fe119153fddd67ea7d427414ab81b053f96271aa00282d2644b679"
+      },
+      "inputs": "The six RC6 AES submission Appendix vectors covering 128-, 192- and 256-bit keys with zero and non-zero plaintexts",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns the plaintext; the zero-key schedule sample S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83 also matches",
+      "observed": {
+        "id": "rc6-calc-submission-vectors",
+        "passed": true,
+        "vectors": 6,
+        "keyBits": [
+          128,
+          128,
+          192,
+          192,
+          256,
+          256
+        ],
+        "ciphertexts": [
+          "8fc3a53656b1f778c129df4e9848a41e",
+          "524e192f4715c6231f51f6367ea43f18",
+          "6cd61bcb190b30384e8a3f168690ae82",
+          "688329d019e505041e52e92af95291d4",
+          "8f5fbd0510d15fa893fa3fda6e857ec2",
+          "c8241816f0d7e48920ad16a1674e5d48"
+        ],
+        "S0to3": [
+          "2a66311c",
+          "9b17852d",
+          "8108b207",
+          "39d14185"
+        ],
+        "S42to43": [
+          "05b4016a",
+          "4b38ac83"
+        ],
+        "limit": "Six fixed vectors with two plaintexts; a match does not establish security against cryptanalysis."
+      },
+      "contentSha256": "01a29117d185c8eb915f331e8a7a2312d4d8981cf1be5a2d423008032c3aedb5",
+      "sourcesSha256": "212c7a8191d59ab34eb45ad997e44f053a9262bb9c635d59162afa26e742f437",
+      "executedOn": "2026-11-25T07:04:17.953Z"
+    },
+    {
+      "id": "rc6-calc-key-schedule",
+      "entryId": "rc6-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5d52b0af1e683f4ba7ed62d8c3a2d19c495a64304772b3d564f446ba676b1f92",
+      "dependencyHashes": {
+        "rc6-teaching.mjs": "c13de55a3e99664442f18c05b25030da822ebedb0883ce6213334780f4bf7759",
+        "vectors.json": "2e76c6cca5d3eddb8908399af4e93cc651684803d4bde31e4b53942f8ad31c31",
+        "article.zh.md": "8419012a5b182074b637c51a05ac3f3f0bc4bb738d0d6e43bd7c92cbdd040500",
+        "article.en.md": "678198244daa6aad7f1f84352aa2eb4cbf49bd831a757e6e49667dcf5a6ee888",
+        "meta.json": "6905cae94f7ebb8b21ad33b45f49d785682929da129352f5c97da14df2a85aea",
+        "glossary.json": "5b9658ec3809e0e22f622a563d4a702cf76c396fd8e7cb3553dcae3f7c1ba0ec",
+        "calculations.json": "9bb89a7d02fe119153fddd67ea7d427414ab81b053f96271aa00282d2644b679"
+      },
+      "inputs": "The 128-bit all-zero key, P=0xb7e15163, Q=0x9e3779b9 and the 44-word S array",
+      "expected": "The schedule has 44 S words; P=0xb7e15163, Q=0x9e3779b9 and the initial S[1]=P+Q=0x5618cb1c; the mixed zero-key S[0..3]=2a66311c 9b17852d 8108b207 39d14185 and S[42..43]=05b4016a 4b38ac83; the 128-bit zero key produces four L words; all six submission vectors reproduce after the schedule",
+      "observed": {
+        "id": "rc6-calc-key-schedule",
+        "passed": true,
+        "SLength": 44,
+        "P": "b7e15163",
+        "Q": "9e3779b9",
+        "S0to3": [
+          "2a66311c",
+          "9b17852d",
+          "8108b207",
+          "39d14185"
+        ],
+        "S42to43": [
+          "05b4016a",
+          "4b38ac83"
+        ],
+        "L": [
+          "25dc9e30",
+          "55bef3c6",
+          "1468f7ad",
+          "601192f6"
+        ],
+        "limit": "The mixed S values for the zero key are computed, not published; the schedule is verified through the six ciphertexts and the P/Q rule."
+      },
+      "contentSha256": "01a29117d185c8eb915f331e8a7a2312d4d8981cf1be5a2d423008032c3aedb5",
+      "sourcesSha256": "212c7a8191d59ab34eb45ad997e44f053a9262bb9c635d59162afa26e742f437",
+      "executedOn": "2026-11-25T07:04:17.953Z"
+    },
+    {
+      "id": "rc6-calc-draft-vector",
+      "entryId": "rc6-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5d52b0af1e683f4ba7ed62d8c3a2d19c495a64304772b3d564f446ba676b1f92",
+      "dependencyHashes": {
+        "rc6-teaching.mjs": "c13de55a3e99664442f18c05b25030da822ebedb0883ce6213334780f4bf7759",
+        "vectors.json": "2e76c6cca5d3eddb8908399af4e93cc651684803d4bde31e4b53942f8ad31c31",
+        "article.zh.md": "8419012a5b182074b637c51a05ac3f3f0bc4bb738d0d6e43bd7c92cbdd040500",
+        "article.en.md": "678198244daa6aad7f1f84352aa2eb4cbf49bd831a757e6e49667dcf5a6ee888",
+        "meta.json": "6905cae94f7ebb8b21ad33b45f49d785682929da129352f5c97da14df2a85aea",
+        "glossary.json": "5b9658ec3809e0e22f622a563d4a702cf76c396fd8e7cb3553dcae3f7c1ba0ec",
+        "calculations.json": "9bb89a7d02fe119153fddd67ea7d427414ab81b053f96271aa00282d2644b679"
+      },
+      "inputs": "The draft-krovetz-rc6-rc5-vectors-00 RC6-32/20/16 vector with key and plaintext 000102030405060708090a0b0c0d0e0f",
+      "expected": "The ciphertext is 3a96f9c7f6755cfe46f00e3dcd5d2a3c and decryption returns the plaintext",
+      "observed": {
+        "id": "rc6-calc-draft-vector",
+        "passed": true,
+        "key": "000102030405060708090a0b0c0d0e0f",
+        "plaintext": "000102030405060708090a0b0c0d0e0f",
+        "ciphertext": "3a96f9c7f6755cfe46f00e3dcd5d2a3c",
+        "limit": "One independent vector from an IETF draft, not a standard; it cross-checks but does not replace the six submission vectors."
+      },
+      "contentSha256": "01a29117d185c8eb915f331e8a7a2312d4d8981cf1be5a2d423008032c3aedb5",
+      "sourcesSha256": "212c7a8191d59ab34eb45ad997e44f053a9262bb9c635d59162afa26e742f437",
+      "executedOn": "2026-11-25T07:04:17.953Z"
+    },
+    {
+      "id": "rc6-calc-roundtrip",
+      "entryId": "rc6-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5d52b0af1e683f4ba7ed62d8c3a2d19c495a64304772b3d564f446ba676b1f92",
+      "dependencyHashes": {
+        "rc6-teaching.mjs": "c13de55a3e99664442f18c05b25030da822ebedb0883ce6213334780f4bf7759",
+        "vectors.json": "2e76c6cca5d3eddb8908399af4e93cc651684803d4bde31e4b53942f8ad31c31",
+        "article.zh.md": "8419012a5b182074b637c51a05ac3f3f0bc4bb738d0d6e43bd7c92cbdd040500",
+        "article.en.md": "678198244daa6aad7f1f84352aa2eb4cbf49bd831a757e6e49667dcf5a6ee888",
+        "meta.json": "6905cae94f7ebb8b21ad33b45f49d785682929da129352f5c97da14df2a85aea",
+        "glossary.json": "5b9658ec3809e0e22f622a563d4a702cf76c396fd8e7cb3553dcae3f7c1ba0ec",
+        "calculations.json": "9bb89a7d02fe119153fddd67ea7d427414ab81b053f96271aa00282d2644b679"
+      },
+      "inputs": "Three zero keys (128, 192 and 256 bits) times eight deterministic plaintext patterns",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the three key sizes produce distinct schedules",
+      "observed": {
+        "id": "rc6-calc-roundtrip",
+        "passed": true,
+        "roundTrips": 24,
+        "keyBits": [
+          128,
+          192,
+          256
+        ],
+        "first": {
+          "keyBits": 128,
+          "plaintext": "00000000000000000000000000000000",
+          "ciphertext": "8fc3a53656b1f778c129df4e9848a41e"
+        },
+        "last": {
+          "keyBits": 256,
+          "plaintext": "f1e0dfcebdac9b8a7968574635241302",
+          "ciphertext": "9e0c6eda488afdfa6aba180e365aa48c"
+        },
+        "limit": "Deterministic round trips only; no modes, protocols, key management, side channels or randomness are tested."
+      },
+      "contentSha256": "01a29117d185c8eb915f331e8a7a2312d4d8981cf1be5a2d423008032c3aedb5",
+      "sourcesSha256": "212c7a8191d59ab34eb45ad997e44f053a9262bb9c635d59162afa26e742f437",
+      "executedOn": "2026-11-25T07:04:17.953Z"
+    },
+    {
+      "id": "algorithm--rc6-r139-formal",
+      "entryId": "rc6-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "5d52b0af1e683f4ba7ed62d8c3a2d19c495a64304772b3d564f446ba676b1f92",
+      "dependencyHashes": {
+        "rc6-teaching.mjs": "c13de55a3e99664442f18c05b25030da822ebedb0883ce6213334780f4bf7759",
+        "vectors.json": "2e76c6cca5d3eddb8908399af4e93cc651684803d4bde31e4b53942f8ad31c31",
+        "article.zh.md": "8419012a5b182074b637c51a05ac3f3f0bc4bb738d0d6e43bd7c92cbdd040500",
+        "article.en.md": "678198244daa6aad7f1f84352aa2eb4cbf49bd831a757e6e49667dcf5a6ee888",
+        "meta.json": "6905cae94f7ebb8b21ad33b45f49d785682929da129352f5c97da14df2a85aea",
+        "glossary.json": "5b9658ec3809e0e22f622a563d4a702cf76c396fd8e7cb3553dcae3f7c1ba0ec",
+        "calculations.json": "9bb89a7d02fe119153fddd67ea7d427414ab81b053f96271aa00282d2644b679"
+      },
+      "inputs": "RC6 分组密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "algorithm--rc6-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=E_K(P;r),\\qquad P=D_K(C)"
+      },
+      "contentSha256": "01a29117d185c8eb915f331e8a7a2312d4d8981cf1be5a2d423008032c3aedb5",
+      "sourcesSha256": "212c7a8191d59ab34eb45ad997e44f053a9262bb9c635d59162afa26e742f437",
+      "executedOn": "2026-11-25T07:29:58.983Z"
+    }
+  ]
+}

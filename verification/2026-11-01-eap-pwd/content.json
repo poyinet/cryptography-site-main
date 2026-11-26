@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for eap-pwd: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "eap-pwd-details",
+      "inventoryIds": [
+        "eap-pwd"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释「EAP-PWD」的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of EAP-PWD: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "EAP-PWD",
+        "en": "EAP-PWD"
+      },
+      "claimIds": [
+        "eap-pwd-r139-principle",
+        "eap-pwd-r139-why",
+        "eap-pwd-r139-used",
+        "eap-pwd-r139-broken",
+        "eap-pwd-r139-history",
+        "eap-pwd-r139-refs"
+      ],
+      "sourceIds": [
+        "eap-pwd-wikipedia",
+        "eap-pwd-reference-ref"
+      ],
+      "related": [
+        "eap",
+        "pake",
+        "radius",
+        "eap-tls"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：EAP-PWD（EAP-PWD）。摘要给出定义：「This memo describes an Extensible Authentication Protocol (EAP) method, EAP-pwd, which uses a shared password for authentication.」并声明强度「The underlying key exchange is resistant to active attack, passive attack, and dictionary attack.」§2.8.2 说明消息构成——「EAP-pwd defines three message exchanges: an Identity exchange, a Commit exchange, and a Confirm exchange.」§2.8.3 交代核心中间量：双方用彼此身份与协商出的 ciphersuite「fix an element in the negotiated group called the Password Element」，且「From the point of view of an attacker who does not know the password, the Password Element will be a random element in the negotiated group.」",
+          "why": "RFC 5931 由 D.Harkins（Aruba Networks）与 G.Zorn（Network Zen）署名，2010 年 8 月发布，头部 Category 标注 Informational。动机是口令的现实形态：§1.1 说「Typically these passwords are not stored on a user's computer for security reasons and must be entered each time the human desires network access.」并承认熵不足——「They will likely not possess high-entropy, and it may be assumed that an adversary with access to a dictionary will have the ability to guess a user's password.」同节把问题谱系追到「This problem was first described by Bellovin and Merritt in [BM92] and [BM93].」§1.3 给出该问题域的门槛：任何声称解决口令认证密钥交换的协议「must be resistant to active, passive, and dictionary attack and have the quality of forward secrecy.」",
+          "used": "§2.8.2 说明 Commit 阶段做什么：「the peer and server exchange information to generate a shared key and also to bind each other to a particular guess of the password.」§2.10 定下互操作基线——「compliant EAP-pwd implementations SHALL support the following parameters」，其中包含「Diffie-Hellman Group: group 19 defined in [RFC5114]」与「PRF: HMAC-SHA256 defined in [RFC4634]」。§7 按 RFC 3748 的要求给出安全声明，机制是「mechanism: password.」，并声明「mutual authentication: the peer and server both authenticate each other by proving possession of a shared password.」同节把字典攻击抗性也列为 RFC 4017 强制项，理由是「The advantage gained by an attacker is through interaction not through computation.」",
+          "broken": "§6.1 描述被动攻击者的可见量：「A passive attacker will see Scalar_P, Element_P, Scalar_S, and Element_S.」§6.3 是关键论证：「She is able to make one guess and one guess only per attack.」并说明收益来源——「is solely through interaction with an honest protocol peer.」§6.4 交代前向保密如何成立：即使口令后来泄露，早期运行的随机值不可知，「This is the definition of Forward Secrecy.」§6.5 坦白强度上限来自群的离散对数难度：「The mandatory-to-implement group defined in this memo is group 19」，理由是「This group was chosen because the current best estimate of a symmetric key derived using this group is 128 bits」。",
+          "history": "RFC 8146 由 D.Harkins（HP Enterprise）署名，2017 年 4 月发布，Category: Informational，头部写明「Updates: 5931」，即在 RFC 5931 的方法之上补功能。摘要交代缺口：EAP-pwd「it does not include support for salted passwords.」并给出动机——「There are many existing databases of salted passwords, and it is desirable to allow their use with EAP-pwd.」同段还说明原方法已支持的范围：包含原始密钥与「double hashing of a password in the style of Microsoft Challenge Handshake Authentication Protocol version 2 (MSCHAPv2)」这条口令处理路径。",
+          "refs": "- Wikipedia search entry for EAP-PWD. https://zh.wikipedia.org/w/index.php?search=EAP-PWD\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-PWD的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: EAP-PWD (EAP-PWD). The abstract defines the method: \"This memo describes an Extensible Authentication Protocol (EAP) method, EAP-pwd, which uses a shared password for authentication.\" and asserts strength — \"The underlying key exchange is resistant to active attack, passive attack, and dictionary attack.\" §2.8.2 gives the shape: \"EAP-pwd defines three message exchanges: an Identity exchange, a Commit exchange, and a Confirm exchange.\" §2.8.3 names the central value: the peers use each other's identities and the agreed ciphersuite to \"fix an element in the negotiated group called the Password Element\", and \"From the point of view of an attacker who does not know the password, the Password Element will be a random element in the negotiated group.\"",
+          "why": "RFC 5931 is signed by D. Harkins (Aruba Networks) and G. Zorn (Network Zen), published August 2010 with Category: Informational in the header. The motivation is what passwords really look like: §1.1 notes \"Typically these passwords are not stored on a user's computer for security reasons and must be entered each time the human desires network access.\" and admits the entropy problem — \"They will likely not possess high-entropy, and it may be assumed that an adversary with access to a dictionary will have the ability to guess a user's password.\" The same section traces the lineage to \"This problem was first described by Bellovin and Merritt in [BM92] and [BM93].\" §1.3 sets the bar for the problem area: any protocol claiming to solve password-authenticated key exchange \"must be resistant to active, passive, and dictionary attack and have the quality of forward secrecy.\"",
+          "used": "§2.8.2 says what the Commit exchange achieves: \"the peer and server exchange information to generate a shared key and also to bind each other to a particular guess of the password.\" §2.10 sets the interoperability floor — \"compliant EAP-pwd implementations SHALL support the following parameters\" — including \"Diffie-Hellman Group: group 19 defined in [RFC5114]\" and \"PRF: HMAC-SHA256 defined in [RFC4634]\". §7 states the security claims RFC 3748 requires of new EAP methods: the mechanism is \"mechanism: password.\" and the claims include \"mutual authentication: the peer and server both authenticate each other by proving possession of a shared password.\" The same section makes dictionary-attack resistance a RFC 4017 mandate, since \"The advantage gained by an attacker is through interaction not through computation.\"",
+          "broken": "§6.1 lists what a passive attacker sees: \"A passive attacker will see Scalar_P, Element_P, Scalar_S, and Element_S.\" §6.3 carries the key argument: \"She is able to make one guess and one guess only per attack.\" and locates the advantage — \"is solely through interaction with an honest protocol peer.\" §6.4 shows why forward secrecy holds: even if the password later leaks, the earlier runs' random values stay unknown, so \"This is the definition of Forward Secrecy.\" §6.5 concedes that strength is bounded by the group: \"The mandatory-to-implement group defined in this memo is group 19\", chosen because \"This group was chosen because the current best estimate of a symmetric key derived using this group is 128 bits\".",
+          "history": "RFC 8146 is signed by D. Harkins (HP Enterprise), published April 2017 with Category: Informational and an “Updates: 5931” header line, i.e. it adds to the method defined in RFC 5931. The abstract states the gap: EAP-pwd had it \"it does not include support for salted passwords.\" and gives the motive — \"There are many existing databases of salted passwords, and it is desirable to allow their use with EAP-pwd.\" The same paragraph records what the original already covered: raw keys and \"double hashing of a password in the style of Microsoft Challenge Handshake Authentication Protocol version 2 (MSCHAPv2)\".",
+          "refs": "- Wikipedia search entry for EAP-PWD. https://zh.wikipedia.org/w/index.php?search=EAP-PWD\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEAP-PWD: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "PWE：由口令确定出的群元素。",
+          "Scalar/Element：Commit 交换的两个分量。",
+          "MK：由群运算得出的主密钥。",
+          "MSK/EMSK：从 MK 派生的会话密钥。",
+          "group 19：强制实现的 ECC 群。",
+          "一攻一猜：每次活跃攻击仅一次猜测。"
+        ],
+        "en": [
+          "PWE: the group element derived deterministically from the password.",
+          "Scalar/Element: the two halves of the Commit exchange.",
+          "MK: the master key from the group operations.",
+          "MSK/EMSK: session keys derived from the MK.",
+          "group 19: the mandatory-to-implement ECC group.",
+          "One guess per attack: each active attempt tests a single password."
+        ]
+      },
+      "figures": [
+        {
+          "id": "eap-pwd-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-PWD：为什么需要 → 核心机制 → 边界。",
+            "en": "EAP-PWD: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EAP-PWD 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for EAP-PWD, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eap-pwd-details-flow.zh.svg",
+            "en": "assets/eap-pwd-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b4a93c64c8e9256ff5c10c3bb3100c19630ab5f55a81bb926bcdf70812fa89ac",
+            "en": "d759dca9a02fdfb03a52e1eb1cb7dc7f0163589c5b75c0d1de02acce9261b7b5"
+          }
+        },
+        {
+          "id": "eap-pwd-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EAP-PWD 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for EAP-PWD: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EAP-PWD 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for EAP-PWD, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eap-pwd-details-r138-model.zh.svg",
+            "en": "assets/eap-pwd-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "ee014f6ce3c9bdd6802ae8e0cf6b1c90c350e980676d349e8be872557828879d",
+            "en": "955374745bd00899a1eccfa800448fbb2200860e76672dfb5f16526be7ef79da"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "eap-pwd-r139-formal",
+          "entryId": "eap-pwd-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：EAP-PWD的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 EAP-PWD 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "eap-pwd-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eap-pwd-r139-formal"
+      ],
+      "sources": [
+        "eap-pwd-wikipedia",
+        "eap-pwd-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eap-pwd-r139-formal",
+      "entryId": "eap-pwd-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：EAP-PWD的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 EAP-PWD 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "eap-pwd-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

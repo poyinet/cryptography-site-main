@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R118 steganalysis, complexity foundations, quantum resources and the Turing bombe reviewed dossier for bitplane-analysis-details.",
+  "entries": [
+    {
+      "id": "bitplane-analysis-details",
+      "inventoryIds": [
+        "bitplane-analysis"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R118 隐写分析、复杂性基础、量子资源与炸弹机批次：把“位平面分析”从目录深度条目改写为含机制陈述、符号公式、参数/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R118 steganalysis, complexity foundations, quantum resources and the Turing bombe batch: rewrote \"Bit-Plane Analysis\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, parameters/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "位平面分析",
+        "en": "Bit-Plane Analysis"
+      },
+      "claimIds": [
+        "bitplane-analysis-r139-principle",
+        "bitplane-analysis-r139-why",
+        "bitplane-analysis-r139-used",
+        "bitplane-analysis-r139-broken",
+        "bitplane-analysis-r139-history",
+        "bitplane-analysis-r139-refs"
+      ],
+      "sourceIds": [
+        "bitplane-analysis-wikipedia",
+        "bitplane-analysis-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "term--steganalysis"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "bitplane-analysis-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "位平面分析与 RS 检测机制图：像素分解、LSB 翻转函数、正则/奇异组与嵌入率读数。",
+            "en": "Bit-plane analysis and RS detection: pixel decomposition, LSB flipping, regular/singular groups and the embedding-rate reading."
+          },
+          "alt": {
+            "zh": "左侧是 8 个位平面堆叠与 LSB 平面纹理，中间是 F 与 F₋₁ 的翻转规则，右侧是 RS 组的正则/奇异计数与嵌入率曲线。",
+            "en": "The left shows eight stacked bit planes and the LSB texture, the middle the F and F₋₁ flip rules, and the right the regular/singular RS counts with an embedding-rate curve."
+          },
+          "files": {
+            "zh": "assets/bitplane-analysis-details-mechanism.zh.svg",
+            "en": "assets/bitplane-analysis-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "95e06b3155bde87ffff3b8c4e39d4b1e839ec361cc2f31dcd1f56e65009e01a1",
+            "en": "bdf2e33e18565ee376026d122476ed520f0c7d3053af32c6782f6a1db08bcd74"
+          }
+        },
+        {
+          "id": "bitplane-analysis-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "位平面分析 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Bit-Plane Analysis: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "位平面分析 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Bit-Plane Analysis, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/bitplane-analysis-details-r138-model.zh.svg",
+            "en": "assets/bitplane-analysis-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0f4675c3fb401637b5a6566d618408692b6d5c93d1e74e54dfd3f746fddc172c",
+            "en": "b2a60ddde48d4dcafed41eab5436cec6e163d51de7411162aea7acaa2cb20d0a"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：位平面分析（Bit-Plane Analysis）。### 位平面分解\n\n把一幅 8 位灰度图写成像素矩阵 I(x,y)，第 k 个位平面为\n\nb_k(x,y) = ⌊I(x,y) / 2^k⌋ mod 2。k=0 是最低比特平面（LSB），k=7 是最高比特平面。高位平面保留轮廓，低位平面看起来更接近噪声。LSB replacement 只改 k=0，因此它不会改变图像的大尺度亮度，却会改变 LSB 平面的局部相关性。### LSB 翻转函数\n\n对像素值 x，定义 F(x) 为把最低比特翻转：偶数 x 变成 x+1，奇数 x 变成 x-1；F₋₁ 则把偶数 x 变成 x-1、奇数 x 变成 x+1。RS 分析把像素按掩膜 M 分成组 G，计算判别函数 f(F(G)) 与 f(G)。若 f(F(G)) > f(G)，组是正则的（R）；若小于，组是奇异的（S）。自然图像中 R 与 S 的计数有稳定偏差。### 嵌入率的读数\n\nLSB replacement 会把组内像素的 LSB 推向独立随机位，使 R 与 S 的计数逐渐接近。分别对掩膜 M 与 -M 统计 R_M、S_M、R_{-M}、S_{-M}，可以用四条计数曲线估计嵌入率 p；p 接近 0 表示几乎没有替换，p 接近 1 表示 LSB 平面被大量重写。具体估计式依赖分组大小、判别函数和图像内容，不能把一个阈值当成所有图像的固定答案。",
+          "why": "自然图像的 LSB 并不完全随机：传感器噪声、量化、去马赛克和压缩会让相邻像素的低位存在相关性。LSB replacement 用消息位覆盖这一层，等于把局部相关结构替换成近似独立位，位平面纹理与 RS 计数都会变化。### 与卡方分析的差别\n\n卡方分析看相邻取值桶的直方图，位平面与 RS 分析看空间分组和翻转后的判别函数。前者对全局直方图敏感，后者对局部纹理和分组结构敏感；两者可以互补，但都主要针对朴素 LSB replacement。### 对隐写设计的含义\n\n要抵抗位平面与 RS 检测，嵌入器不能简单地逐位替换，而要使用矩阵嵌入、湿纸编码、F5、自适应嵌入或扩频，使修改位置与修改方向接近载体分布。仅把消息加密后写入 LSB 并不等于不可检测。",
+          "used": "1.记录图像格式、位深、色彩空间、压缩历史与可能的重采样。2.提取 k=0…7 的位平面，先做视觉检查；LSB 平面出现不自然的均匀噪声或块状结构时列为候选。3.选定分组大小与掩膜 M，计算 R_M、S_M、R_{-M}、S_{-M}。4.用已知载体和已知嵌入率做校准，估计 p 的区间；不要用单一图像的单一阈值下结论。5.报告写“存在 LSB replacement 的统计迹象与估计嵌入率”，不写“已提取消息”。### 工具位置\n\nStegdetect 等工具把 RS、卡方、位平面视觉检查组合成候选筛选；RS 负责给出嵌入率线索，卡方负责直方图异常，最终仍需人工或专用提取器验证。",
+          "broken": "1.非 LSB replacement：LSB matching、矩阵嵌入、F5、湿纸编码不保证 RS 计数按同一方式变化。2.低嵌入率：少量修改被载体噪声和压缩痕迹淹没。3.强压缩、裁剪、缩放、滤波或重采样：位平面相关结构被破坏，校准失效。4.载体本身纹理单一或经过合成：R/S 基线偏移，容易产生假阳性。5.自适应嵌入：修改集中在纹理区域，全局 RS 统计被稀释。6.调色板图像或索引图：LSB 改动可能映射到完全不同的颜色，视觉与统计假设都改变。位平面纹理是视觉线索，RS 是统计检验；两者都不能证明消息内容，也不能证明没有消息。它们给出的是“像不像 LSB replacement”的证据强度，必须与载体类型、嵌入器和校准样本一起报告。",
+          "history": "Fridrich、Goljan 与 Du 在 2001 年把 LSB 隐写的检测从单纯视觉观察推进到可重复的正则/奇异组统计，并报告在随机分散嵌入下可检测到约 0.03 bpp 的消息。论文同时强调，检测的是 LSB 替换的统计痕迹，不是消息语义。### 后续发展\n\nDumitrescu、Wu 与 Wang 在 2003 年提出样本对分析，把相邻样本的取值关系作为统计对象，进一步发展了 LSB 隐写分析。此后的校准、特征融合与机器学习方法继续处理低嵌入率、自适应嵌入和压缩图像，但“位平面 + 分组统计”仍是取证入门的核心读法。",
+          "refs": "- Wikipedia search entry for 位平面分析. https://zh.wikipedia.org/w/index.php?search=%E4%BD%8D%E5%B9%B3%E9%9D%A2%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n位平面分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Bit-Plane Analysis (位平面分析). ### Bit-plane decomposition\n\nWrite an 8-bit grey image as a pixel matrix I(x,y). The k-th bit plane is\n\nb_k(x,y) = ⌊I(x,y) / 2^k⌋ mod 2. k=0 is the least significant bit plane (LSB); k=7 is the most significant. High planes retain contours while low planes look closer to noise. LSB replacement changes only k=0, so it leaves large-scale brightness almost intact but alters the local correlation of the LSB plane. ### The LSB flipping function\n\nFor a pixel value x, let F(x) flip the least significant bit: even x becomes x+1 and odd x becomes x-1; F₋₁ maps even x to x-1 and odd x to x+1. RS analysis partitions pixels into groups G under a mask M and evaluates a discrimination function f on F(G) and G. A group is regular (R) if f(F(G)) > f(G) and singular (S) if it is smaller. Natural images have a stable bias between R and S counts. ### Reading the embedding rate\n\nLSB replacement pushes the group LSBs toward independent random bits, so R and S counts converge. Counting R_M, S_M, R_{-M} and S_{-M} for masks M and -M gives four curves from which an embedding rate p can be estimated; p near 0 means little replacement and p near 1 means the LSB plane has been heavily overwritten. The exact estimator depends on group size, discrimination function and image content, so one threshold is not a universal answer.",
+          "why": "LSB bits in natural images are not perfectly random: sensor noise, quantisation, demosaicing and compression leave correlations among neighbouring low bits. LSB replacement overwrites this layer with message bits, replacing local structure with nearly independent bits; both the bit-plane texture and the RS counts change.\n\nChi-square analysis looks at histograms of adjacent value bins; bit-plane and RS analysis look at spatial groups and a discrimination function after flipping. The former is sensitive to the global histogram, the latter to local texture and group structure. They complement each other but both mainly target naive LSB replacement.\n\nTo resist bit-plane and RS detection, an embedder should not simply replace bits one by one. It should use matrix embedding, wet-paper coding, F5, adaptive embedding or spread spectrum so that the locations and directions of changes resemble the cover distribution. Encrypting the message before writing it into the LSB is not the same as making it undetectable.",
+          "used": "1. Record the image format, bit depth, colour space, compression history and possible resampling. 2. Extract bit planes k=0…7 and inspect them visually; an unnatural uniform noise or block structure in the LSB plane makes the image a candidate. 3. Choose a group size and mask M, then compute R_M, S_M, R_{-M} and S_{-M}. 4. Calibrate against known covers and known embedding rates to estimate an interval for p; do not decide from one threshold on one image. 5. Report “a statistical trace of LSB replacement with an estimated embedding rate”, not “the message was extracted”.",
+          "broken": "1. Not LSB replacement: LSB matching, matrix embedding, F5 and wet-paper coding do not guarantee the same RS-count behaviour. 2. Low embedding rate: a few changes drown in cover noise and compression traces. 3. Strong compression, cropping, scaling, filtering or resampling destroys the bit-plane correlation and the calibration. 4. Covers with uniform texture or synthetic images shift the R/S baseline and produce false positives. 5. Adaptive embedding concentrates changes in textured regions and dilutes the global RS statistic. 6. Palette or indexed images: changing an LSB can map to a very different colour, altering both the visual and statistical assumptions.\n\nBit-plane texture is a visual clue and RS is a statistical test; neither proves the message content or proves its absence. They report the strength of “this looks like LSB replacement”, and must be read together with the carrier type, embedder and calibration samples.",
+          "history": "In 2001 Fridrich, Goljan and Du moved LSB detection from visual observation to a repeatable regular/singular group statistic, reporting detection of messages as short as about 0.03 bpp under randomly scattered embedding. The paper stressed that the target is a statistical trace of LSB replacement, not message semantics.\n\nDumitrescu, Wu and Wang proposed sample-pair analysis in 2003, using relations between adjacent samples as the statistical object. Later calibration, feature fusion and machine-learning methods addressed low rates, adaptive embedding and compressed images, but “bit planes plus group statistics” remains a core forensic reading.",
+          "refs": "- Wikipedia search entry for 位平面分析. https://zh.wikipedia.org/w/index.php?search=%E4%BD%8D%E5%B9%B3%E9%9D%A2%E5%88%86%E6%9E%90\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nBit-Plane Analysis: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "bitplane-analysis-r139-formal",
+          "entryId": "bitplane-analysis-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：位平面分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 位平面分析 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "bitplane-analysis-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "bitplane-analysis-r139-formal"
+      ],
+      "sources": [
+        "bitplane-analysis-wikipedia",
+        "bitplane-analysis-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "bitplane-analysis-r139-formal",
+      "entryId": "bitplane-analysis-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：位平面分析的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 位平面分析 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "bitplane-analysis-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

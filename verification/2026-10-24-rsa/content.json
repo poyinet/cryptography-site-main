@@ -1,0 +1,611 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-24",
+  "scope": "One full algorithm-entry draft: two-prime RSA and encoding boundaries; not full-library completion",
+  "verificationStatus": "source-checked-awaiting-independent-review",
+  "entries": [
+    {
+      "id": "rsa-details",
+      "inventoryIds": [
+        "algorithm--rsa"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "对应algorithm--rsa的算法机制、正确性、表示与使用边界；OAEP/PSS及TLS仅为方案/协议上下文，不将RFC、协议、其他算法或旧入门稿计完成。",
+        "en": "Covers the mechanism, correctness, representations and use boundaries of algorithm--rsa. OAEP/PSS and TLS provide scheme/protocol context; no RFC, protocol, other algorithm or old introduction is counted as completed."
+      },
+      "title": {
+        "zh": "RSA：整数原语、CRT正确性与编码方案",
+        "en": "RSA: integer primitives, CRT correctness and encoding schemes"
+      },
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：RSA 公钥密码（RSA）。RSA 先是一对整数上的模幂运算；保密加密和数字签名还必须各自配上不同的编码、参数与验证规则。该条目解释目录实体 algorithm--rsa，限定为两素数 RSA，再说明 OAEP/PSS 怎样使用这些原语。它不替代 RFC 8017 标准条目的详解，也不是可部署的密码服务。### 消息字节与整数代表\n\n设 n 的位数为 modBits，k=ceil(modBits/8) 是模数字节长度。RSAEP 的输入 m、输出 c 都属于 0…n−1；RSADP 对同样范围的密文代表求逆。0 和与 n 不互素的代表没有被排除。超出范围应报错，不能擅自先取模，让不同输入悄悄变成同一个代表。用户消息 M 则是字节串。OS2IP 按大端把字节串解释成非负整数；I2OSP(x,len) 输出指定长度的大端字节串，不够时补前导零，x≥256^len 时失败。它们只负责表示转换，不负责保密、填充或认证。00 41 与 41 都表示整数 65，因此长度还须由上层约定。RSAES 密文和 RSASSA 签名使用固定 k 字节，内部编码长度另按具体方案计算。### 两素数密钥条件\n\n取互不相同的奇素数 p、q，令 n=pq，φ(n)=(p−1)(q−1)，λ(n)=lcm(p−1,q−1)。RFC 8017 规定的公钥指数条件是 3≤e<n 且 gcd(e,λ(n))=1；原文写法是 integer between 3 and n - 1 satisfying GCD(e,\\lambda(n)) = 1（留存件 rfc8017.txt:457-458）；私钥指数满足 0<d<n 和 ed≡1 modλ(n)。d 是 e 关于 λ(n) 的逆元，不是普通分数 1/e。用 φ(n) 求逆也可得到正确指数，因为 λ(n) 整除 φ(n)，但两个模数不能混写。这些是数学及表示层条件，不是完整的安全密钥生成流程。互异、奇素数、指数互素等条件要验证；现实还涉及随机源、素性验证、参数约束及密钥生命周期。这里不从旧论文或教学数字推导当前部署应选的位数，也不把能往返当作安全密钥证明。### 正确性为什么覆盖非互素代表\n\n写 ed=1+tλ(n)。对 r=p 或 q 分情况：若 r 整除 m，则 m^ed 与 m 都模 r 为0；否则费马小定理给 m^(r−1)≡1，而 r−1 整除 λ(n)，所以 m^ed≡m modr。两种情况都成立。因为 p、q 互素，CRT 保证两者在 0…n−1 中对应唯一整数，因此 (m^e)^d modn=m。这个证明没有把 m 当成必然可逆元；直接在所有 m 上套欧拉定理会漏掉素因子整除 m 的情形。附带穷举检查全部3233个代表，其中113个与n不互素（包括0）。有限穷举只复核本例，不替代一般证明。### 直接计算与 CRT\n\n模幂可用重复平方、按指数位选择相乘，并持续模 n 化简，不必先构造巨大的 m^e。私钥也可保存 dP=d mod(p−1)、dQ=d mod(q−1)、qInv=q^(−1) modp。给定 c，计算 m1=c^dP modp、m2=c^dQ modq，h=((m1−m2)qInv) modp，最后 m=m2+qh。h 取 0…p−1，故 m 落在0…pq−1；它模p等于m1、模q等于m2。qInv 的方向是 q 对 p 的逆，不能把相反的 CRT 约定直接代入。CRT 减小运算模数，确切速度取决于实现，不无条件承诺 `固定快四倍` 这一说法。",
+          "why": "知道(n,e)就能做公共方向模幂，掌握正确私钥材料则能做逆运算。这把公开地址与需要保密的能力分开。知道因子p、q可求λ(n)并恢复相应d，因此因子必须保密；但已有分解即可求逆不等于任何RSA求逆算法都等价于分解。后一个等价关系不能当作已证明的普遍定理。### 一条清楚的工程分界\n\n整数置换、加密方案、签名方案、证书和协议解决不同问题。OAEP把消息编码后送入加密原语；PSS为签名构造可检查的代表。身份归属还要靠密钥认证与协议上下文。把层次分清，才能解释为何裸RSA的正确性不产生现代保密性，也不自动产生不可伪造的签名结论。",
+          "used": "按RFC8017字节约定，给定哈希Hash（输出hLen字节）、MGF及标签L，消息须满足mLen≤k−2hLen−2。先算lHash=Hash(L)，形成DB=lHash || PS || 01 || M，PS为使长度吻合的零字节。生成hLen字节随机seed；用MGF(seed,k−hLen−1)掩码DB，再用MGF(maskedDB,hLen)掩码seed。最终EM=00 || maskedSeed || maskedDB，转成整数后计算c=m^e modn，输出C=I2OSP(c,k)。MGF1把四字节大端计数器0、1、…附在输入后散列，连接输出并截取所需长度；它是确定的，不是随机数发生器。OAEP随机性来自seed。标签是双方另行约定且须检查哈希的参数，不是额外消息正文。密文仍为k字节，消息容量却扣掉编码开销，不能把任意长文件直接当一段RSA消息。### RSASSA-PSS：编码可验证的签名代表\n\nPSS不是把OAEP或明文拿来私钥加密。令emBits=modBits−1、emLen=ceil(emBits/8)。计算mHash=Hash(M)，选择配置长度sLen的salt，H=Hash(8个零字节 || mHash || salt)。构造DB=PS || 01 || salt，用MGF(H,emLen−hLen−1)掩码，按emBits清除最左多余位，最后EM=maskedDB || H || bc。需有emLen≥hLen+sLen+2。签名原语把OS2IP(EM)变为s，输出k字节S。验签者同时需要M和S；公共模幂恢复的是编码代表，不是从签名中取回原始消息。它检查签名长度与范围、尾字节、最左限制位、PS与分隔符、salt长度，并重新计算H。只比较末尾哈希或忽略参数不是完整PSS验签。PSS原论文的安全证明有RSA求逆困难性与理想化哈希等前提；标准编码与原论文版本也有差别，不能把证明名称当作任意实现的无条件保证。### 协议决定具体角色\n\n按2026-10-24核对的TLS1.3规范RFC9846，TLS1.3不使用静态RSA密钥传输，但保留RSA-PSS认证签名。对应PSS方案约束摘要、MGF1摘要和salt长度。所以 `不用 RSA 密钥交换` 不能改写成 `不使用 RSA`。证书链、主机身份、协商参数和握手上下文另需按协议验证；单次RSA验签成功不自动证明某个名字属于某把钥匙。",
+          "broken": "裸RSA在固定密钥下是确定的：同一代表总得到同一密文。消息若只有少数已知候选，任何人都可用公钥加密候选后比较。乘法结构又给E(m1)E(m2) modn=E(m1m2 modn)。例子中不知私钥也可把65的密文变成130的密文。这说明可篡改性，不是普遍的免费解密算法；经过OAEP后，不能把等式直接解释成用户消息也这样相乘。### 不能把全部风险归结为分解n\n\n重复或不合条件的素因子、错误指数条件、私钥泄漏、弱随机源、错误编码检查都可能破坏系统。小指数若直接作用于未预处理的小消息，还可能在未模回绕时暴露普通整数幂。某个e的名字不是单独安全开关，分解困难也不能修复这些方案和实现错误。### 错误反馈可能变成信息\n\nOAEP解码须检查长度、范围、前导字节、标签哈希及DB结构。不同失败原因若经响应或时间被区分，就可能给选择密文攻击提供信息。PKCS #1 v1.5加密与PSS签名不是同一方案，不能因为共享PKCS#1名称就共用解析规则。Shoup的研究区分一般陷门置换的OAEP与具有特殊代数结构的RSA-OAEP；早期一般证明的缺口不是已证明RSA-OAEP不安全。### 数学之外：侧信道与故障\n\nKocher的计时研究表明，某些实现的私钥运算时间会泄漏秘密相关信息。私钥运算不能直接照搬教学用变时BigInt循环；加盲、与秘密无关的执行路径等防护需要专门设计，也不意味着所有物理泄漏自动消失。CRT还有故障边界：若输出在一个素数分支正确、另一个分支出错，错误结果可与公开关系一起暴露因子。Boneh、DeMillo、Lipton研究了某些CRT-RSA实现的这种故障攻击。错误输出检查与故障防护是实现责任；正常正确性证明不保证错误计算也安全。本文程序只处理公开玩具数和公开向量，不承担密钥保管、恒时或故障安全服务。",
+          "history": "Rivest、Shamir、Adleman的原始论文《A Method for Obtaining Digital Signatures and Public-Key Cryptosystems》发表于1978年的Communications of the ACM。它展示模幂方法、公私钥关系与签名设想。原文关于难以伪造、参数或计算能力的安全口吻属于当时语境，不能直接当作今天的保证；OAEP、PSS及后来协议的编码要求须分别阅读规范。Bellare与Rogaway的1996年PSS论文研究精确签名安全性。Shoup的2001年修订研究提醒我们，证明依赖具体假设与构造。RFC8017在2016年重新发布PKCS#1v2.2并取代RFC3447，类别是Informational，不能把RFC三个字自动当作Internet Standard。本轮重新核对TLS文档状态：RFC9846于2026年7月发布并明确取代RFC8446。本稿用它说明RSA在TLS1.3里的角色，同时保留核查日期。协议文档状态、算法有效条件和具体产品可用性是不同问题。",
+          "refs": "- Wikipedia search entry for RSA 公钥密码. https://zh.wikipedia.org/w/index.php?search=RSA%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\n取标准或公开测试向量中的一组参数，按“输入—执行—输出”记录：先写出该条目的形式式 \\(C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N\\)；再按规范顺序执行每一步，最后把输出与独立实现或标准向量逐字节对照。若没有可引用的数值向量，就只记录结构步骤，不伪造输出。"
+        },
+        "en": {
+          "principle": "**Algorithm**: RSA (RSA 公钥密码). RSA begins with paired modular-exponentiation operations on integers. Encryption and signatures need different encodings, parameters and validation rules on top. This article covers algorithm--rsa, restricted to two-prime RSA, then explains its use by OAEP and PSS. It does not complete the RFC 8017 catalog entry or provide a deployable cryptographic service. ### Octet strings and integer representatives\n\nLet modBits be n's bit length and k=ceil(modBits/8) its octet length. RSAEP accepts m and returns c in 0…n−1; RSADP inverts ciphertext representatives in that range. Zero and representatives sharing a factor with n are not excluded. An out-of-range value is an error: silently reducing it would alias distinct supplied inputs. The user message M is an octet string. OS2IP interprets it as a nonnegative big-endian integer. I2OSP(x, len) returns exactly len big-endian octets, including leading zeroes, and fails if x≥256^len. These are representation conversions, not confidentiality, padding or authentication. Both 00 41 and 41 represent 65, so a separate length convention matters. RSAES ciphertexts and RSASSA signatures use k octets; internal encoded-message lengths depend on the scheme. ### Conditions on a two-prime key\n\nTake distinct odd primes p, q, set n=pq, φ(n)=(p−1)(q−1) and λ(n)=lcm(p−1, q−1). RFC 8017 requires 3≤e<n and gcd(e,λ(n))=1; its own wording is integer between 3 and n - 1 satisfying GCD(e,\\lambda(n)) = 1 (retained text rfc8017.txt:457-458), with private exponent 0<d<n satisfying ed≡1 modulo λ(n). This inverse is modular, not the fraction 1/e. Inversion modulo φ(n) also supplies a correct exponent because λ(n) divides φ(n), but the moduli should not be conflated. These arithmetic and representation conditions are not a complete secure key-generation procedure. Distinctness, primality and exponent coprimality need checking; real generation also involves randomness, prime testing, parameter constraints and key lifecycle. Neither historical size suggestions nor successful round trips establish secure deployment parameters. ### Correctness includes non-coprime representatives\n\nWrite ed=1+t λ(n). For r=p or q, split the argument. If r divides m, both m^ed and m are zero modulo r. Otherwise Fermat's theorem gives m^(r−1)≡1; since r−1 divides λ(n), m^ed≡m modulo r. Coprimality of p, q lets CRT give a unique corresponding integer in 0…n−1, hence (m^e)^d modn=m. This never assumes every message is invertible. Applying Euler's theorem indiscriminately would miss multiples of a prime factor. The program exhausts all 3233 representatives, including 113 non-coprime ones counting zero. This checks the finite example, not the general theorem. ### Direct exponentiation and CRT\n\nRepeated squaring evaluates modular powers while reducing intermediate values, without constructing the full unreduced power. A private representation can store dP=d mod(p−1), dQ=d mod(q−1), qInv=q^(−1) modp. Compute m1=c^dP modp, m2=c^dQ modq, then h=((m1−m2)qInv) modp and m=m2+qh. With h in 0…p−1, m is in 0…pq−1 and has the required residues. Here qInv is q's inverse modulo p; another CRT convention must be transformed before these equations are used. Smaller moduli can accelerate operations, but no fixed fourfold speedup is universally guaranteed.",
+          "why": "Anyone knowing(n, e) can compute the public-direction power, while correct private material enables inversion. Knowing p, q yields λ(n) and an appropriate d, so the factors must remain secret. This implication does not prove that every RSA inversion algorithm is equivalent to factoring. The latter must not be presented as a general established theorem.\n\nAn integer permutation, encryption scheme, signature scheme, certificate and protocol solve different problems. OAEP encodes before encryption; PSS builds a checkable signature representative. Binding an identity to a key needs authentication and protocol context. Raw RSA correctness therefore yields neither modern confidentiality nor an unforgeability guarantee.",
+          "used": "In RFC 8017's convention choose Hash with hLen-octet output, an MGF and label L. Require mLen≤k−2hLen−2. Form lHash=Hash(L) and DB=lHash || PS ||01|| M, with zero padding PS. Generate an hLen-octet random seed; mask DB using MGF(seed, k−hLen−1), then seed using MGF(maskedDB, hLen). Set EM=00||maskedSeed||maskedDB, convert it to m, compute c=m^e modn, and output C=I2OSP(c, k).\n\nMGF1 hashes its input followed by four-octet big-endian counters 0,1,…, concatenates outputs and truncates. It is deterministic, not an RNG; the OAEP seed supplies randomness. L is a separately agreed, hash-checked parameter rather than extra message content. The ciphertext has k octets but the message loses capacity to encoding overhead; arbitrary files are not single RSA messages.\n\nPSS is a signature scheme: it is not OAEP, and it is not plaintext being encrypted with the private key. Set emBits=modBits−1 and emLen=ceil(emBits/8). Hash M to mHash, use an sLen-octet salt and compute H=Hash(eight zero octets||mHash||salt). Form DB=PS||01||salt, mask with MGF(H, emLen−hLen−1), clear the excess high bits, and set EM=maskedDB||H||bc. Require emLen≥hLen+sLen+2. The private primitive maps OS2IP(EM) to s, serialized as k-octet S.\n\nVerification needs M as well as S. The public power recovers an encoded representative, not the original message from the signature. Signature length/range, trailer, high bits, padding, delimiter, salt length and recomputed H all matter. Merely checking a trailing digest or ignoring parameters is not PSS verification. Original PSS security arguments assume RSA inversion hardness and idealized hashes; standardized encoding differs from the original. A proof name is no unconditional guarantee for arbitrary implementations.\n\nTLS 1.3's specification checked on 2026-10-24, RFC 9846, excludes static RSA key transport while retaining RSA-PSS authentication. The corresponding PSS schemes constrain the digest, MGF1 digest and salt length. Thus `no RSA key exchange` does not mean `no RSA`. Certificate paths, host identity, negotiated parameters and handshake context need their own protocol checks; a valid RSA signature alone does not bind a name to a key.",
+          "broken": "Raw RSA is deterministic for a fixed key. For a small set of candidate messages, anyone can encrypt each publicly and compare. Also E(m1)E(m2) modn=E(m1m2 modn). The example changes a ciphertext of 65 into one of 130 without the private key. This is malleability, not a general free-decryption algorithm. With OAEP, the equation cannot simply be interpreted as multiplication of user messages.\n\nRepeated or invalid prime factors, invalid exponent conditions, key exposure, poor randomness and incorrect encoding checks can break a system. A small public exponent applied directly to a small unprocessed message can expose an ordinary integer power before modular wraparound. No exponent name alone is a security switch; hard factoring cannot repair scheme or implementation mistakes.\n\nOAEP decoding checks length, range, leading octet, label hash and DB structure. Distinguishable responses or timing for different failures can provide chosen-ciphertext information. PKCS #1 v1.5 encryption and PSS signatures are different schemes despite their common PKCS #1 label. Shoup distinguishes general trapdoor-permutation OAEP from RSA-OAEP's special algebraic case: a gap in an early general proof is not proof of RSA-OAEP insecurity.\n\nKocher's timing research shows secret-related leakage from some private-operation implementations. A variable-time teaching BigInt loop is not private-key implementation code. Blinding and secret-independent execution paths need dedicated design; neither implies that all physical leakage disappears.\n\nCRT also adds a fault boundary. An output correct modulo one prime and wrong modulo the other can reveal a factor through a public algebraic relation. Boneh, DeMillo and Lipton studied this for certain CRT-RSA implementations. Output checking and fault resistance are implementation duties; a normal-operation correctness proof does not secure incorrect calculations. This batch processes only public toy numbers and public fixtures, without key-custody, constant-time or fault-resistant service claims.",
+          "history": "Rivest, Shamir and Adleman's original paper, A Method for Obtaining Digital Signatures and Public-Key Cryptosystems, appeared in Communications of the ACM in 1978. It presents modular exponentiation, key relations and a signature proposal. Its discussion of forgery, parameters and computing resources belongs to its research era and cannot simply become present-day guarantees. OAEP, PSS and later protocol encodings require separate specifications.\n\nBellare and Rogaway's 1996 PSS paper studies exact signature security. Shoup's revised 2001 analysis illustrates the importance of a proof's assumptions and construction. RFC 8017 republished PKCS #1 v2.2 in 2016 and obsoleted RFC 3447. It is Informational; an RFC label does not automatically mean Internet Standard.\n\nThis review rechecked TLS status: RFC 9846 appeared in July 2026 and explicitly obsoletes RFC 8446. It is used here for RSA's TLS 1.3 role, with the checking date retained. Protocol-document status, algorithm validity and availability in a particular product remain separate matters.",
+          "refs": "- Wikipedia search entry for RSA 公钥密码. https://zh.wikipedia.org/w/index.php?search=RSA%20%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nTake one published or standard test vector, record the input, the ordered steps and the byte-exact output, then compare with an independent implementation. Where no citable numeric vector is available, the entry records only structural steps and does not invent an output."
+        }
+      },
+      "claimIds": [
+        "algorithm--rsa-r139-principle",
+        "algorithm--rsa-r139-why",
+        "algorithm--rsa-r139-used",
+        "algorithm--rsa-r139-broken",
+        "algorithm--rsa-r139-history",
+        "algorithm--rsa-r139-refs"
+      ],
+      "calculationIds": [
+        "rsa-details-key-crt-example",
+        "rsa-details-all-representatives",
+        "rsa-details-integer-boundaries",
+        "rsa-details-multiplication",
+        "rsa-details-key-condition-boundary",
+        "rsa-details-oaep-reference",
+        "rsa-details-nist-pss-reference",
+        "algorithm--rsa-r139-formal"
+      ],
+      "related": [],
+      "sourceIds": [
+        "algorithm--rsa-wikipedia",
+        "algorithm--rsa-reference-ref"
+      ],
+      "glossary": {
+        "zh": [
+          [
+            "代表",
+            "供整数原语处理、处于0…n−1的数，不等于用户消息字节串。"
+          ],
+          [
+            "模数n",
+            "本条为互异奇素数p、q的乘积。"
+          ],
+          [
+            "λ(n)",
+            "lcm(p−1,q−1)，用于逆元指数条件。"
+          ],
+          [
+            "CRT",
+            "由模p、模q的余数恢复唯一模pq整数的中国剩余定理。"
+          ],
+          [
+            "I2OSP / OS2IP",
+            "整数与大端字节串的表示转换，不是安全编码。"
+          ],
+          [
+            "OAEP标签L",
+            "双方约定并经哈希检查的编码参数，不是身份认证。"
+          ],
+          [
+            "MGF1",
+            "利用哈希和四字节计数器做确定性掩码展开。"
+          ],
+          [
+            "PSS salt",
+            "签名编码使用的字节串，长度和生成规则属于方案或协议参数。"
+          ],
+          [
+            "预言机",
+            "暴露计算或判断结果的抽象接口，错误区分也可能构成信息源。"
+          ]
+        ],
+        "en": [
+          [
+            "Representative",
+            "An integer in 0…n−1 processed by a primitive, not the user-message octets."
+          ],
+          [
+            "Modulus n",
+            "Here the product of distinct odd primes p and q."
+          ],
+          [
+            "λ(n)",
+            "lcm(p−1, q−1), used in the inverse-exponent condition."
+          ],
+          [
+            "CRT",
+            "Reconstructs a unique residue modulo pq from residues modulo p and q."
+          ],
+          [
+            "I2OSP / OS2IP",
+            "Representation conversion between integers and big-endian octets, not secure encoding."
+          ],
+          [
+            "OAEP label L",
+            "An agreed, hash-checked encoding parameter, not peer identity authentication."
+          ],
+          [
+            "MGF1",
+            "Deterministic expansion using a hash and four-octet counters."
+          ],
+          [
+            "PSS salt",
+            "Octets in signature encoding; length and generation rules depend on the scheme/profile."
+          ],
+          [
+            "Oracle",
+            "An interface exposing a result or predicate; distinguishable errors can make such an oracle useful."
+          ]
+        ]
+      },
+      "figures": [
+        {
+          "id": "rsa-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RSA：整数原语、CRT正确性与编码方案：为什么需要 → 核心机制 → 边界。",
+            "en": "RSA: integer primitives, CRT correctness and encoding schemes: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "RSA：整数原语、CRT正确性与编码方案 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for RSA: integer primitives, CRT correctness and encoding schemes, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/rsa-details-flow.zh.svg",
+            "en": "assets/rsa-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "15595999cf8d6c4fbf62291129b9161f85c0b8e0f4eed1a53909aed557987673",
+            "en": "f794638a81ea855c1e48c422a288e55f4ce7080e73bb6826ad88eda7e0ee443b"
+          }
+        },
+        {
+          "id": "rsa-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "RSA：整数原语、CRT正确性与编码方案 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for RSA: integer primitives, CRT correctness and encoding schemes: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "RSA：整数原语、CRT正确性与编码方案 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for RSA: integer primitives, CRT correctness and encoding schemes, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/rsa-details-r138-model.zh.svg",
+            "en": "assets/rsa-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3a49c3db6e3649f1065907bc8f4dbf4285de275d38816ac15184a4475896dce6",
+            "en": "8f2238e1cd444524b8d662f47a707a162594c96963a5046ba4f7da2dd93ed631"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--rsa-wikipedia",
+        "algorithm--rsa-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "rsa-details-key-crt-example",
+          "entryId": "rsa-details",
+          "inputs": {
+            "p": "61",
+            "q": "53",
+            "e": "17",
+            "d": "2753",
+            "message": "65"
+          },
+          "expected": {
+            "n": "3233",
+            "phi": "3120",
+            "lambda": "780",
+            "dP": "53",
+            "dQ": "49",
+            "qInv": "38",
+            "squares": [
+              "992",
+              "1232",
+              "1547",
+              "789"
+            ],
+            "ciphertext": "2790",
+            "direct": "65",
+            "m1": "4",
+            "m2": "12",
+            "h": "1",
+            "crt": "65",
+            "nonCoprimeMessage": "61",
+            "nonCoprimeCiphertext": "610"
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "original-toy-calculation",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-all-representatives",
+          "entryId": "rsa-details",
+          "inputs": {
+            "p": "61",
+            "q": "53",
+            "e": "17",
+            "d": "2753"
+          },
+          "expected": {
+            "representatives": 3233,
+            "nonCoprimeRepresentatives": 113,
+            "roundtripFailures": 0,
+            "crtDisagreements": 0
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "exhaustive-finite-example",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-integer-boundaries",
+          "entryId": "rsa-details",
+          "inputs": {
+            "integer": "65",
+            "length": 2,
+            "overflow": "65536",
+            "n": "3233"
+          },
+          "expected": {
+            "octets": "0041",
+            "roundtrip": "65",
+            "overflowRejected": true,
+            "outOfRangeRejected": true
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "representation-and-rejection-checks",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-multiplication",
+          "entryId": "rsa-details",
+          "inputs": {
+            "n": "3233",
+            "e": "17",
+            "d": "2753",
+            "message": "65",
+            "factor": "2"
+          },
+          "expected": {
+            "ciphertext": "2790",
+            "factorCiphertext": "1752",
+            "modifiedCiphertext": "3017",
+            "modifiedPlaintext": "130",
+            "repeatedCiphertext": "2790"
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "original-toy-counterexample",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-key-condition-boundary",
+          "entryId": "rsa-details",
+          "inputs": {
+            "repeatedPrime": "61",
+            "badExponent": "12",
+            "lambda": "780",
+            "toyExponent": "17",
+            "toyPrivateExponent": "53"
+          },
+          "expected": {
+            "gcdBadExponent": "12",
+            "repeatedPrimeMessage": "61",
+            "repeatedPrimeCiphertext": "0",
+            "repeatedPrimeRecovered": "0"
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "invalid-key-counterexample",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-oaep-reference",
+          "entryId": "rsa-details",
+          "inputs": {
+            "hash": "sha1",
+            "n": "bbf82f090682ce9c2338ac2b9da871f7368d07eed41043a440d6b6f07454f51fb8dfbaaf035c02ab61ea48ceeb6fcd4876ed520d60e1ec4619719d8a5b8b807fafb8e0a3dfc737723ee6b4b7d93a2584ee6a649d060953748834b2454598394ee0aab12d7b61a51f527a9a41f6c1687fe2537298ca2a8f5946f8e5fd091dbdcb",
+            "e": "11",
+            "message": "d436e99569fd32a7c8a05bbc90d32c49",
+            "label": "",
+            "seed": "aafd12f659cae63489b479e5076ddec2f06cb58f"
+          },
+          "expected": {
+            "dbMask": "06e1deb2369aa5a5c707d82c8e4e93248ac783dee0b2c04626f5aff93edcfb25c9c2b3ff8ae10e839a2ddb4cdcfe4ff47728b4a1b7c1362baad29ab48d2869d5024121435811591be392f982fb3e87d095aeb40448db972f3ac14eaff49c8c3b7cfc951a51ecd1dde61264",
+            "maskedDB": "dcd87d5c68f1eea8f55267c31b2e8bb4251f84d7e0b2c04626f5aff93edcfb25c9c2b3ff8ae10e839a2ddb4cdcfe4ff47728b4a1b7c1362baad29ab48d2869d5024121435811591be392f982fb3e87d095aeb40448db972f3ac14f7bc275195281ce32d2f1b76d4d353e2d",
+            "seedMask": "41870b5ab029e657d95750b54c283c08725dbea9",
+            "maskedSeed": "eb7a19ace9e3006350e329504b45e2ca82310b26",
+            "ciphertext": "1253e04dc0a5397bb44a7ab87e9bf2a039a33d1e996fc82a94ccd30074c95df763722017069e5268da5d1c0b4f872cf653c11df82314a67968dfeae28def04bb6d84b1c31d654a1970e5783bd6eb96a024c2ca2f4a90fe9f2ef5c9c140e5bb48da9536ad8700c84fc9130adea74e558d51a74ddf85d8b50de96838d6063e0955"
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "author-published-independent-known-answer",
+          "dependencies": []
+        },
+        {
+          "id": "rsa-details-nist-pss-reference",
+          "entryId": "rsa-details",
+          "inputs": {
+            "fixture": "nist-pss-fixture.json",
+            "fixtureSha256": "5c94f6d4ceb84e7145c6eb46eb7acac5daa896660f212735db4b65f25f73d5c3",
+            "hash": "sha3-256",
+            "tgId": 25,
+            "modBits": 2048,
+            "saltLen": 32
+          },
+          "expected": {
+            "tests": 6,
+            "passes": 1,
+            "rejections": 5,
+            "encodingEqualsPublicRecovery": true,
+            "nodeOpenSslAgrees": true
+          },
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "classification": "pinned-independent-known-answer-and-negative-cases",
+          "dependencies": []
+        },
+        {
+          "id": "algorithm--rsa-r139-formal",
+          "entryId": "rsa-details",
+          "kind": "formal-model",
+          "formula": "C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N",
+          "inputs": "RSA 公钥密码 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--rsa-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "rsa-details-key-crt-example",
+      "entryId": "rsa-details",
+      "inputs": {
+        "p": "61",
+        "q": "53",
+        "e": "17",
+        "d": "2753",
+        "message": "65"
+      },
+      "expected": {
+        "n": "3233",
+        "phi": "3120",
+        "lambda": "780",
+        "dP": "53",
+        "dQ": "49",
+        "qInv": "38",
+        "squares": [
+          "992",
+          "1232",
+          "1547",
+          "789"
+        ],
+        "ciphertext": "2790",
+        "direct": "65",
+        "m1": "4",
+        "m2": "12",
+        "h": "1",
+        "crt": "65",
+        "nonCoprimeMessage": "61",
+        "nonCoprimeCiphertext": "610"
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "original-toy-calculation",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-all-representatives",
+      "entryId": "rsa-details",
+      "inputs": {
+        "p": "61",
+        "q": "53",
+        "e": "17",
+        "d": "2753"
+      },
+      "expected": {
+        "representatives": 3233,
+        "nonCoprimeRepresentatives": 113,
+        "roundtripFailures": 0,
+        "crtDisagreements": 0
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "exhaustive-finite-example",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-integer-boundaries",
+      "entryId": "rsa-details",
+      "inputs": {
+        "integer": "65",
+        "length": 2,
+        "overflow": "65536",
+        "n": "3233"
+      },
+      "expected": {
+        "octets": "0041",
+        "roundtrip": "65",
+        "overflowRejected": true,
+        "outOfRangeRejected": true
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "representation-and-rejection-checks",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-multiplication",
+      "entryId": "rsa-details",
+      "inputs": {
+        "n": "3233",
+        "e": "17",
+        "d": "2753",
+        "message": "65",
+        "factor": "2"
+      },
+      "expected": {
+        "ciphertext": "2790",
+        "factorCiphertext": "1752",
+        "modifiedCiphertext": "3017",
+        "modifiedPlaintext": "130",
+        "repeatedCiphertext": "2790"
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "original-toy-counterexample",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-key-condition-boundary",
+      "entryId": "rsa-details",
+      "inputs": {
+        "repeatedPrime": "61",
+        "badExponent": "12",
+        "lambda": "780",
+        "toyExponent": "17",
+        "toyPrivateExponent": "53"
+      },
+      "expected": {
+        "gcdBadExponent": "12",
+        "repeatedPrimeMessage": "61",
+        "repeatedPrimeCiphertext": "0",
+        "repeatedPrimeRecovered": "0"
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "invalid-key-counterexample",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-oaep-reference",
+      "entryId": "rsa-details",
+      "inputs": {
+        "hash": "sha1",
+        "n": "bbf82f090682ce9c2338ac2b9da871f7368d07eed41043a440d6b6f07454f51fb8dfbaaf035c02ab61ea48ceeb6fcd4876ed520d60e1ec4619719d8a5b8b807fafb8e0a3dfc737723ee6b4b7d93a2584ee6a649d060953748834b2454598394ee0aab12d7b61a51f527a9a41f6c1687fe2537298ca2a8f5946f8e5fd091dbdcb",
+        "e": "11",
+        "message": "d436e99569fd32a7c8a05bbc90d32c49",
+        "label": "",
+        "seed": "aafd12f659cae63489b479e5076ddec2f06cb58f"
+      },
+      "expected": {
+        "dbMask": "06e1deb2369aa5a5c707d82c8e4e93248ac783dee0b2c04626f5aff93edcfb25c9c2b3ff8ae10e839a2ddb4cdcfe4ff47728b4a1b7c1362baad29ab48d2869d5024121435811591be392f982fb3e87d095aeb40448db972f3ac14eaff49c8c3b7cfc951a51ecd1dde61264",
+        "maskedDB": "dcd87d5c68f1eea8f55267c31b2e8bb4251f84d7e0b2c04626f5aff93edcfb25c9c2b3ff8ae10e839a2ddb4cdcfe4ff47728b4a1b7c1362baad29ab48d2869d5024121435811591be392f982fb3e87d095aeb40448db972f3ac14f7bc275195281ce32d2f1b76d4d353e2d",
+        "seedMask": "41870b5ab029e657d95750b54c283c08725dbea9",
+        "maskedSeed": "eb7a19ace9e3006350e329504b45e2ca82310b26",
+        "ciphertext": "1253e04dc0a5397bb44a7ab87e9bf2a039a33d1e996fc82a94ccd30074c95df763722017069e5268da5d1c0b4f872cf653c11df82314a67968dfeae28def04bb6d84b1c31d654a1970e5783bd6eb96a024c2ca2f4a90fe9f2ef5c9c140e5bb48da9536ad8700c84fc9130adea74e558d51a74ddf85d8b50de96838d6063e0955"
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "author-published-independent-known-answer",
+      "dependencies": []
+    },
+    {
+      "id": "rsa-details-nist-pss-reference",
+      "entryId": "rsa-details",
+      "inputs": {
+        "fixture": "nist-pss-fixture.json",
+        "fixtureSha256": "5c94f6d4ceb84e7145c6eb46eb7acac5daa896660f212735db4b65f25f73d5c3",
+        "hash": "sha3-256",
+        "tgId": 25,
+        "modBits": 2048,
+        "saltLen": 32
+      },
+      "expected": {
+        "tests": 6,
+        "passes": 1,
+        "rejections": 5,
+        "encodingEqualsPublicRecovery": true,
+        "nodeOpenSslAgrees": true
+      },
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "classification": "pinned-independent-known-answer-and-negative-cases",
+      "dependencies": []
+    },
+    {
+      "id": "algorithm--rsa-r139-formal",
+      "entryId": "rsa-details",
+      "kind": "formal-model",
+      "formula": "C\\equiv M^e\\pmod N,\\qquad M\\equiv C^d\\pmod N",
+      "inputs": "RSA 公钥密码 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--rsa-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

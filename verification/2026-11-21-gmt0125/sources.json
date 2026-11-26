@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "gmt0125-details",
+  "sources": [
+    {
+      "id": "gmt0125-wikipedia",
+      "title": "Wikipedia search entry for 国密 JSON Web 语法",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 国密 JSON Web 语法",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "gmt0125-r139-principle",
+          "entryId": "gmt0125-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：国密 JSON Web 语法（Chinese JSON Object Signing and Encryption）。GM/T 0125.2—2022 的 JWS 由 JOSE 头部、有效载荷和签名组成。保护头部先 \\(UTF8\\) 再 \\(base64url\\)：\\(protected\\_b64=base64url(UTF8(header))\\)；有效载荷编码为 \\(payload\\_b64=base64url(payload)\\)。签名输入是 \\(M=ASCII(protected\\_b64\\|\\text{“.”}\\|payload\\_b64)\\)。数字签名算法 \\(SGD\\_SM3\\_SM2\\) 用 SM2 私钥对 \\(M\\) 签名，杂凑为 SM3，输出按 DER 编码；消息鉴别算法 \\(SGD\\_SM3\\_HMAC\\) 用 \\(HMAC\\text{-}SM3(K,M)\\)，输出 256 位。紧凑序列化为 \\(protected\\_b64\\|\\text{“.”}\\|payload\\_b64\\|\\text{“.”}\\|base64url(sig)\\)；JSON 序列化支持多个签名对象，但保护头部与无保护头部的并集必须满足 \\(alg\\) 必选、名称唯一。",
+            "en": "**Standard**: Chinese JSON Object Signing and Encryption (国密 JSON Web 语法).GM/T 0125.2—2022 JWS has a JOSE header, payload and signature."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0125-r139-why",
+          "entryId": "gmt0125-details",
+          "section": "why",
+          "statement": {
+            "zh": "国密 JOSE 不是“把 JWT 换个签名算法”那么简单。它把 \\(alg\\) 作为算法标识，把 \\(kid/jwk/x5c/x5t#sm3\\) 作为密钥标识，把保护头部与无保护头部分开；验证时如果只读 \\(alg\\) 字符串、不校验密钥类型，就会重演 JWS 算法混淆。公式化的关键是把“签名输入”“签名值编码”“密钥绑定”三件事分开：签名输入固定为保护头部编码、点、载荷编码；SM2 输出 DER；HMAC 输出 256 位；验证条件是 \\(alg\\in Allow(key)\\) 且 \\(key=KeyStore[Id]\\)。",
+            "en": "Chinese JOSE is not just “JWT with a different signature algorithm”.It treats \\(alg\\) as the algorithm identifier, \\(kid/jwk/x5c/x5t#sm3\\) as key identifiers, and separates protected from unprotected headers; a verifier that reads only the \\(alg\\) string without checking the key type repeats JWS algorithm confusion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0125-r139-used",
+          "entryId": "gmt0125-details",
+          "section": "used",
+          "statement": {
+            "zh": "生成时先选算法：SM2 签名用 \\(SGD\\_SM3\\_SM2\\)，共享密钥 MAC 用 \\(SGD\\_SM3\\_HMAC\\)；再构造保护头部并编码，拼出 \\(M\\)，计算签名并 base64url。验证时解析紧凑或 JSON 序列化，检查 \\(alg\\) 存在且在密钥允许列表内，按 \\(kid/jwk/x5c/x5t#sm3\\) 找到密钥，重新拼 \\(M\\) 并验证签名。多签名场景逐个验证；无保护头部可以携带展示信息，但不能作为安全决策的唯一依据。",
+            "en": "To generate, choose the algorithm first: \\(SGD\\_SM3\\_SM2\\) for SM2 signatures or \\(SGD\\_SM3\\_HMAC\\) for a shared-key MAC; build and encode the protected header, form \\(M\\), compute the signature and base64url it.To verify, parse compact or JSON serialization, check that \\(alg\\) exists and is allowed for the key, locate the key by \\(kid/jwk/x5c/x5t#sm3\\), rebuild \\(M\\) and verify."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0125-r139-broken",
+          "entryId": "gmt0125-details",
+          "section": "broken",
+          "statement": {
+            "zh": "边界有四条。第一，无保护头部不进入签名，攻击者可以改它；任何影响安全决策的头部都应放进保护头部。第二，\\(alg\\) 与密钥类型必须绑定：把 SM2 公钥当 HMAC 密钥、或接受 \\(none\\)，都会破坏验证。第三，base64url 必须去 padding 且按标准解码，JSON 序列化中重复头部参数应拒绝。第四，SM2 签名值按 DER 编码，长度不是固定 64 字节；实现不能把 DER 当固定长度切片。标准不规定 JWT 声明语义、密钥生命周期或侧信道防护。",
+            "en": "There are four boundaries.First, unprotected headers are outside the signature and can be changed; any header that affects a security decision belongs in the protected header."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0125-r139-history",
+          "entryId": "gmt0125-details",
+          "section": "history",
+          "statement": {
+            "zh": "GM/T 0125《JSON Web 密码应用语法规范》于 2022-11-20 发布、2023-06-01 实施，分为算法标识、数字签名、数据加密、密钥四部分；第 2 部分规定 JWS，给出 \\(SGD\\_SM3\\_SM2\\) 与 \\(SGD\\_SM3\\_HMAC\\) 的生成/验证流程和紧凑/JSON 序列化示例。这里按国家密码管理局公告与第 2 部分全文叙述，不把通用 JWT 生态的算法混进国密标识。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+            "en": "GM/T 0125 “JSON Web cryptographic application syntax specification” was published on 2022-11-20 and took effect on 2023-06-01, in four parts: algorithm identifiers, signatures, data encryption and keys.Part 2 specifies JWS, with \\(SGD\\_SM3\\_SM2\\) and \\(SGD\\_SM3\\_HMAC\\) generation/verification and compact/JSON examples."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        },
+        {
+          "id": "gmt0125-r139-refs",
+          "entryId": "gmt0125-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 国密 JSON Web 语法.https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 国密 JSON Web 语法.https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "gmt0125-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "gmt0125-wikipedia"
+      ]
+    },
+    {
+      "id": "gmt0125-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "gmt0125-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "gmt0125-r139-principle",
+      "entryId": "gmt0125-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：国密 JSON Web 语法（Chinese JSON Object Signing and Encryption）。GM/T 0125.2—2022 的 JWS 由 JOSE 头部、有效载荷和签名组成。保护头部先 \\(UTF8\\) 再 \\(base64url\\)：\\(protected\\_b64=base64url(UTF8(header))\\)；有效载荷编码为 \\(payload\\_b64=base64url(payload)\\)。签名输入是 \\(M=ASCII(protected\\_b64\\|\\text{“.”}\\|payload\\_b64)\\)。数字签名算法 \\(SGD\\_SM3\\_SM2\\) 用 SM2 私钥对 \\(M\\) 签名，杂凑为 SM3，输出按 DER 编码；消息鉴别算法 \\(SGD\\_SM3\\_HMAC\\) 用 \\(HMAC\\text{-}SM3(K,M)\\)，输出 256 位。紧凑序列化为 \\(protected\\_b64\\|\\text{“.”}\\|payload\\_b64\\|\\text{“.”}\\|base64url(sig)\\)；JSON 序列化支持多个签名对象，但保护头部与无保护头部的并集必须满足 \\(alg\\) 必选、名称唯一。",
+        "en": "**Standard**: Chinese JSON Object Signing and Encryption (国密 JSON Web 语法).GM/T 0125.2—2022 JWS has a JOSE header, payload and signature."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0125-r139-why",
+      "entryId": "gmt0125-details",
+      "section": "why",
+      "statement": {
+        "zh": "国密 JOSE 不是“把 JWT 换个签名算法”那么简单。它把 \\(alg\\) 作为算法标识，把 \\(kid/jwk/x5c/x5t#sm3\\) 作为密钥标识，把保护头部与无保护头部分开；验证时如果只读 \\(alg\\) 字符串、不校验密钥类型，就会重演 JWS 算法混淆。公式化的关键是把“签名输入”“签名值编码”“密钥绑定”三件事分开：签名输入固定为保护头部编码、点、载荷编码；SM2 输出 DER；HMAC 输出 256 位；验证条件是 \\(alg\\in Allow(key)\\) 且 \\(key=KeyStore[Id]\\)。",
+        "en": "Chinese JOSE is not just “JWT with a different signature algorithm”.It treats \\(alg\\) as the algorithm identifier, \\(kid/jwk/x5c/x5t#sm3\\) as key identifiers, and separates protected from unprotected headers; a verifier that reads only the \\(alg\\) string without checking the key type repeats JWS algorithm confusion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0125-r139-used",
+      "entryId": "gmt0125-details",
+      "section": "used",
+      "statement": {
+        "zh": "生成时先选算法：SM2 签名用 \\(SGD\\_SM3\\_SM2\\)，共享密钥 MAC 用 \\(SGD\\_SM3\\_HMAC\\)；再构造保护头部并编码，拼出 \\(M\\)，计算签名并 base64url。验证时解析紧凑或 JSON 序列化，检查 \\(alg\\) 存在且在密钥允许列表内，按 \\(kid/jwk/x5c/x5t#sm3\\) 找到密钥，重新拼 \\(M\\) 并验证签名。多签名场景逐个验证；无保护头部可以携带展示信息，但不能作为安全决策的唯一依据。",
+        "en": "To generate, choose the algorithm first: \\(SGD\\_SM3\\_SM2\\) for SM2 signatures or \\(SGD\\_SM3\\_HMAC\\) for a shared-key MAC; build and encode the protected header, form \\(M\\), compute the signature and base64url it.To verify, parse compact or JSON serialization, check that \\(alg\\) exists and is allowed for the key, locate the key by \\(kid/jwk/x5c/x5t#sm3\\), rebuild \\(M\\) and verify."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0125-r139-broken",
+      "entryId": "gmt0125-details",
+      "section": "broken",
+      "statement": {
+        "zh": "边界有四条。第一，无保护头部不进入签名，攻击者可以改它；任何影响安全决策的头部都应放进保护头部。第二，\\(alg\\) 与密钥类型必须绑定：把 SM2 公钥当 HMAC 密钥、或接受 \\(none\\)，都会破坏验证。第三，base64url 必须去 padding 且按标准解码，JSON 序列化中重复头部参数应拒绝。第四，SM2 签名值按 DER 编码，长度不是固定 64 字节；实现不能把 DER 当固定长度切片。标准不规定 JWT 声明语义、密钥生命周期或侧信道防护。",
+        "en": "There are four boundaries.First, unprotected headers are outside the signature and can be changed; any header that affects a security decision belongs in the protected header."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0125-r139-history",
+      "entryId": "gmt0125-details",
+      "section": "history",
+      "statement": {
+        "zh": "GM/T 0125《JSON Web 密码应用语法规范》于 2022-11-20 发布、2023-06-01 实施，分为算法标识、数字签名、数据加密、密钥四部分；第 2 部分规定 JWS，给出 \\(SGD\\_SM3\\_SM2\\) 与 \\(SGD\\_SM3\\_HMAC\\) 的生成/验证流程和紧凑/JSON 序列化示例。这里按国家密码管理局公告与第 2 部分全文叙述，不把通用 JWT 生态的算法混进国密标识。**技术参数与复算边界**\n\n本条的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：国密 JSON Web 语法的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+        "en": "GM/T 0125 “JSON Web cryptographic application syntax specification” was published on 2022-11-20 and took effect on 2023-06-01, in four parts: algorithm identifiers, signatures, data encryption and keys.Part 2 specifies JWS, with \\(SGD\\_SM3\\_SM2\\) and \\(SGD\\_SM3\\_HMAC\\) generation/verification and compact/JSON examples."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    },
+    {
+      "id": "gmt0125-r139-refs",
+      "entryId": "gmt0125-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 国密 JSON Web 语法.https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 国密 JSON Web 语法.https://zh.wikipedia.org/w/index.php?search=%E5%9B%BD%E5%AF%86%20JSON%20Web%20%E8%AF%AD%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "gmt0125-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

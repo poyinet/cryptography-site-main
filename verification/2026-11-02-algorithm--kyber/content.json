@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for algorithm--kyber: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "algorithm--kyber-details",
+      "inventoryIds": [
+        "algorithm--kyber"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释ML-KEM / Kyber 模格密钥封装机制的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "ML-KEM / Kyber 模格密钥封装机制",
+        "en": "ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism"
+      },
+      "claimIds": [
+        "algorithm--kyber-r139-principle",
+        "algorithm--kyber-r139-why",
+        "algorithm--kyber-r139-used",
+        "algorithm--kyber-r139-broken",
+        "algorithm--kyber-r139-history",
+        "algorithm--kyber-r139-refs"
+      ],
+      "sourceIds": [
+        "algorithm--kyber-wikipedia",
+        "algorithm--kyber-reference-ref"
+      ],
+      "related": [
+        "fips203",
+        "algorithm--lwe",
+        "attack--chosen-ciphertext-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Kyber / ML-KEM 封装机制（Kyber;Module-Lattice-Based Key-Encapsulation Mechanism）。留存 FIPS 203 文本在 Abstract 段给出方案类别与机制：「A key-encapsulation mechanism (KEM) is a set of algorithms that, under certain conditions, can be used by two parties to establish a shared secret key over a public channel.」并点名本标准所规定的具体 KEM：「This standard specifies a key-encapsulation mechanism called ML-KEM.」再给出其安全归约：「The security of ML-KEM is related to the computational difficulty of the Module Learning with Errors problem.」原理即此——ML-KEM 是建立在模格/带错误学习（MLWE）困难性上的密钥封装机制，双方经公开信道封装/解封装得到同一共享密钥。（§3.1 另有一义近乎相同的定义句，该条目据 Abstract 立论。）",
+          "why": "§1.1 给出取它而非旧的密钥建立方案的理由：「The key establishment schemes specified in SP 800-56A and SP 800-56B are vulnerable to attacks that use sufficiently-capable quantum computers.」即基于分解与离散对数的既有 KEM/KDF 方案会被足够强的量子计算机所破。Abstract 随即给出 ML-KEM 的定位：「At present, ML-KEM is believed to be secure, even against adversaries who possess a quantum computer.」两句连读是本机制存在的理由——填补离散对数类密钥交换在量子计算下的失效。措辞是 believed（`目前被认为`），文件亦在 §13 声明每五年正式重估，故此`抗量子`是当下评估结论而非已证明之事实，该条目不把它拔高为无条件保证。",
+          "used": "用途由参数集与安全性档位两面界定。Abstract 列三档参数集：「This standard specifies three parameter sets for ML-KEM.In order of increasing security strength and decreasing performance, these are ML-KEM-512, ML-KEM-768, and ML-KEM-1024.」§3.2 说明其经 FO 变换后达到的攻击模型：「As a result, ML-KEM is believed to satisfy so-called IND-CCA2 security」即选择密文安全（IND-CCA2）。两句合起来是使用面貌：ML-KEM 以 512/768/1024 三档在安全强度与性能间取舍，用作对未授权方保密、面向 CCA2 攻击模型的密钥封装。强度序列是`递增/递减`的描述性排序，本文件另在别处（§1.1）声明三档均获批保护联邦非涉密通信；措辞仍是 believed，不作证明性断言。",
+          "broken": "限度落在内部构件与实现约束。§3.2 直陈组件不可单独使用：「The scheme K-PKE is not IND-CCA2-secure and shall not be used as a stand-alone scheme (see Section 3.3).」§3.3 再以 shall not 重申：「The public-key encryption scheme K-PKE described in Section 5 shall not be used as a stand-alone cryptographic scheme.」两句是 must 级禁令，把底层明文 PKE（K-PKE）排除于独立使用之外——它只作 ML-KEM 的子程序。另外的限度属评估而非禁令：量子安全是`目前被认为`（见 why 段），且文件自陈符合标准不等于实现安全，须由实现者负责模块的整体安全设计。该条目据留存文本给出这两类限度，不断言 ML-KEM 已被攻破。",
+          "history": "标准与候选的关系在留存文本里写得很直白。§1.1：「ML-KEM is derived from the round-three version of the CRYSTALS-KYBER KEM [4], a submission in the NIST Post-Quantum Cryptography Standardization project.」§1.2 定名：「Throughout this standard, the KEM specified here will be referred to as ML-KEM, as it is based on the Module Learning With Errors assumption.」门面板块（Title block）所印标题为 Module-Lattice-Based Key-Encapsulation Mechanism Standard，并印 Published August 13, 2024 与 Published: August 13, 2024 Effective: August 13, 2024，其免费获取行为 This publication is available free of charge from:（其后 DOI 置于引号外）。目录行仍以候选名 Kyber 指称该算法，而留存文件是已定稿的标准：它把算法称作 ML-KEM，CRYSTALS-KYBER 仅作为其标准化来源出现；两处措辞（Kyber 对 ML-KEM）与文档日期（候选材料 2022 对定稿 2024）的差别即在此记录，该条目据文件所印的 ML-KEM 与 2024-08-13 立论。",
+          "refs": "- Wikipedia search entry for Kyber / ML-KEM 封装机制. https://zh.wikipedia.org/w/index.php?search=Kyber%20%2F%20ML-KEM%20%E5%B0%81%E8%A3%85%E6%9C%BA%E5%88%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nKyber / ML-KEM 封装机制的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。1.封装方采样随机种子并生成密文。2.解封装方用私钥恢复种子。3.双方得到同一会话密钥并校验。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Kyber;Module-Lattice-Based Key-Encapsulation Mechanism (Kyber / ML-KEM 封装机制). The retained FIPS 203 text gives the scheme class and mechanism in the Abstract: \"A key-encapsulation mechanism (KEM) is a set of algorithms that, under certain conditions, can be used by two parties to establish a shared secret key over a public channel.\" it names the specific KEM the standard sets: \"This standard specifies a key-encapsulation mechanism called ML-KEM.\" and states its security reduction: \"The security of ML-KEM is related to the computational difficulty of the Module Learning with Errors problem.\" The principle is therefore that ML-KEM is a key-encapsulation mechanism built on the hardness of the Module Learning With Errors (MLWE) problem, with the two parties reaching one shared secret by encapsulating and decapsulating over a public channel. Section 3.1 carries a near-identical definition sentence; the abstract is taken as the basis here.",
+          "why": "Section 1.1 gives the reason for choosing it over the older key-establishment schemes: \"The key establishment schemes specified in SP 800-56A and SP 800-56B are vulnerable to attacks that use sufficiently-capable quantum computers.\" the factorization and discrete-log based schemes fall to a strong enough quantum computer. The abstract then places ML-KEM: \"At present, ML-KEM is believed to be secure, even against adversaries who possess a quantum computer.\" Read together these are why the mechanism exists — to fill the gap that discrete-log key exchange leaves under quantum computing. The wording is believed, and the file also states in the announcement clause that it will formally reevaluate every five years, so this quantum resistance is a present-day assessment, not a proven fact, and is not escalated into an unconditional guarantee.",
+          "used": "The use is bounded by the parameter sets and by the achieved security notion. The abstract lists three: \"This standard specifies three parameter sets for ML-KEM. In order of increasing security strength and decreasing performance, these are ML-KEM-512, ML-KEM-768, and ML-KEM-1024.\" Section 3.2 states the attack model reached after the FO transform: \"As a result, ML-KEM is believed to satisfy so-called IND-CCA2 security\" that is, chosen-ciphertext security. Together the two sentences give the picture: ML-KEM trades security against performance across the 512/768/1024 tiers and is used as a key-encapsulation whose shared secret stays hidden from unauthorised parties under a CCA2 model. The strength ordering is a descriptive ranking, and elsewhere (§1.1) the file says all three sets are approved to protect sensitive non-classified federal communications; the wording remains believed, so no proven claim is made.",
+          "broken": "The limits fall on the internal component and on implementation constraints. Section 3.2 states plainly that the component may not be used alone: \"The scheme K-PKE is not IND-CCA2-secure and shall not be used as a stand-alone scheme (see Section 3.3).\" Section 3.3 repeats the prohibition with shall not: \"The public-key encryption scheme K-PKE described in Section 5 shall not be used as a stand-alone cryptographic scheme.\" both must-level bans that keep the underlying plaintext PKE (K-PKE) out of stand-alone use — it is a subroutine of ML-KEM only. A further limit is assessment rather than a ban: the quantum resistance is stated as believed (see the why claim), and the file itself says conformance to the standard does not ensure a secure implementation, leaving overall module security to the implementer. This dossier reports both kinds of limit from the retained text and does not assert that ML-KEM has been broken.",
+          "history": "The relation between the standard and the candidate is stated plainly in the retained text. Section 1.1: \"ML-KEM is derived from the round-three version of the CRYSTALS-KYBER KEM [4], a submission in the NIST Post-Quantum Cryptography Standardization project.\" and §1.2 fixes the name: \"Throughout this standard, the KEM specified here will be referred to as ML-KEM, as it is based on the Module Learning With Errors assumption.\" The title block prints Module-Lattice-Based Key-Encapsulation Mechanism Standard and the dates Published August 13, 2024 and Published: August 13, 2024 Effective: August 13, 2024, with the free-access line This publication is available free of charge from: (its DOI placed outside the quotes). The catalog row still names the algorithm by its candidate name Kyber, whereas the retained file is the finalized standard: it calls the algorithm ML-KEM and shows CRYSTALS-KYBER only as the round-three source it standardizes. That naming difference (Kyber versus ML-KEM) and the dating difference (2022 candidate material versus the 2024 finalization) are recorded here, and this dossier rests on what the file prints — ML-KEM, August 13, 2024.",
+          "refs": "- Wikipedia search entry for Kyber / ML-KEM 封装机制. https://zh.wikipedia.org/w/index.php?search=Kyber%20%2F%20ML-KEM%20%E5%B0%81%E8%A3%85%E6%9C%BA%E5%88%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nKyber;Module-Lattice-Based Key-Encapsulation Mechanism: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "key-encapsulation mechanism (KEM)：双方经公开信道建立同一共享秘密密钥的一套算法。",
+          "ML-KEM：FIPS 203 对由 CRYSTALS-KYBER 派生之 KEM 所定的正式名，基于 Module-LWE 假设。",
+          "Module Learning With Errors (MLWE)：ML-KEM 安全性所归约的格上困难问题。",
+          "K-PKE：ML-KEM 底层的组件明文公钥加密方案，标准禁止其独立使用（shall not）。",
+          "Fujisaki-Okamoto (FO) transform：把 K-PKE 转换为具备 IND-CCA2 安全性的 KEM 的变换。",
+          "parameter set (512/768/1024)：ML-KEM 在强度与性能之间给出的三档实例化选择。"
+        ],
+        "en": [
+          "Key-encapsulation mechanism (KEM): a set of algorithms by which two parties establish one shared secret key over a public channel.",
+          "ML-KEM: the formal name FIPS 203 gives to the KEM derived from CRYSTALS-KYBER, built on the Module-LWE assumption.",
+          "Module Learning With Errors (MLWE): the lattice problem to which ML-KEM's security is related.",
+          "K-PKE: the component public-key encryption scheme under ML-KEM, which the standard bans from stand-alone use (shall not).",
+          "Fujisaki-Okamoto (FO) transform: the conversion that lifts K-PKE into an IND-CCA2-secure KEM.",
+          "Parameter set (512/768/1024): ML-KEM's three instantiations trading security strength against performance."
+        ]
+      },
+      "subtopicIds": [
+        "kyber"
+      ],
+      "figures": [
+        {
+          "id": "algorithm--kyber-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ML-KEM / Kyber 模格密钥封装机制：为什么需要 → 核心机制 → 边界。",
+            "en": "ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ML-KEM / Kyber 模格密钥封装机制 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/algorithm--kyber-details-flow.zh.svg",
+            "en": "assets/algorithm--kyber-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "d1fd12bb12a80fdf876677404f57c6dcf9c09d2bb90944fc71107d3e21f673f1",
+            "en": "14d972adb58d072c9b2ea261ec41b2330ec239ebf18c0b3fe7a563349875ec0c"
+          }
+        },
+        {
+          "id": "algorithm--kyber-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ML-KEM / Kyber 模格密钥封装机制 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ML-KEM / Kyber 模格密钥封装机制 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for ML-KEM (Kyber) Module-Lattice Key-Encapsulation Mechanism, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/algorithm--kyber-details-r138-model.zh.svg",
+            "en": "assets/algorithm--kyber-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "b5149661cca3084b59661c74d94144d0babc66648ac7e4bc15e6ac1d9ef5c2fd",
+            "en": "f33e977686f7434872e22dd22520f55e2ca21891264208342c2fca7af08a4521"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "algorithm--kyber-r139-formal",
+          "entryId": "algorithm--kyber-details",
+          "kind": "formal-model",
+          "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+          "inputs": "输入：Kyber / ML-KEM 封装机制的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+          "expected": "按 Kyber / ML-KEM 封装机制 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "封装方采样随机种子并生成密文",
+            "解封装方用私钥恢复种子",
+            "双方得到同一会话密钥并校验"
+          ],
+          "sourceIds": [
+            "algorithm--kyber-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "algorithm--kyber-r139-formal"
+      ],
+      "sources": [
+        "algorithm--kyber-wikipedia",
+        "algorithm--kyber-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "algorithm--kyber-r139-formal",
+      "entryId": "algorithm--kyber-details",
+      "kind": "formal-model",
+      "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+      "inputs": "输入：Kyber / ML-KEM 封装机制的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+      "expected": "按 Kyber / ML-KEM 封装机制 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "封装方采样随机种子并生成密文",
+        "解封装方用私钥恢复种子",
+        "双方得到同一会话密钥并校验"
+      ],
+      "sourceIds": [
+        "algorithm--kyber-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

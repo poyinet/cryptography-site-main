@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "d12-signatures-details",
+  "sources": [
+    {
+      "id": "d12-signatures-wikipedia",
+      "title": "Wikipedia search entry for 数字签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 数字签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "d12-signatures-r139-principle",
+          "entryId": "d12-signatures-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**领域**：数字签名（Digital Signatures）。FIPS 204 在摘要里就写明了这个对象的功能（fips204.txt:28）：「Digital signatures are used to detect unauthorized modifications to data and to authenticate the identity of the signatory.」（数字签名用于察觉数据的未经授权修改，并认证签署者的身份），同一行还给出证据属性：「This is known as non-repudiation since the signatory cannot easily repudiate the signature at a later time.」（这被称为不可否认性，因为签署者事后难以否认该签名）。机制在公告一节固定（fips204.txt:41）：「Signature generation uses a private key to generate a digital signature.Signature verification uses a public key that corresponds to but is not the same as the private key.",
+            "en": "**Domain**: Digital Signatures.It is registered under digital signatures."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        },
+        {
+          "id": "d12-signatures-r139-why",
+          "entryId": "d12-signatures-details",
+          "section": "why",
+          "statement": {
+            "zh": "RFC 8017 给出了设计形态及其理由。其签名方案一节先定义方案类型（1698-1703）：「the signature generation operation    produces a signature from a message with a signer's RSA private key,    and the signature verification operation verifies the signature on    the message with the signer's corresponding RSA public key.To    verify a signature constructed with this type of scheme, it is    necessary to have the message itself.」（签名生成用签署者私钥对消息产出签名，验证用对应公钥进行；用这类方案构造的签名，验证时必须持有消息本身——引文保留了跨行拼接的空格原样），随即划出边界（1703-1705）：「In this way, signature schemes    with appendix are distinguished from signature schemes with message    recovery, which are not supported in this document.」（这样，带附录的签名方案便与带消息恢复的签名方案相区别，后者不在本标准支持之列）。",
+            "en": "It is listed because it connects concrete records, objects or procedures in digital signatures, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        },
+        {
+          "id": "d12-signatures-r139-used",
+          "entryId": "d12-signatures-details",
+          "section": "used",
+          "statement": {
+            "zh": "签名的落地形态见于 SSL 3.0 文本。它先在附录词汇表里定义工具（2813-2816）：「Digital signatures utilize public key       cryptography and one-way hash functions to produce a signature of       the data that can be authenticated, and is difficult to forge or       repudiate.」（数字签名利用公钥密码与单向哈希函数产生可认证、且难以伪造或否认的数据签名——引文中的多空格间距是词汇表六空格缩进跨行拼接的原样）。然后规定线路行为（rfc6101.txt:2007-2008）：「RSA digital signatures are performed using PKCS #1 [PKCS1] block    type 1.」（RSA 数字签名使用 PKCS #1 的 1 型块运算完成）——正是 RFC 8017 后来标准化的那个 PKCS #1 家族。握手用签名安放信任（3402-3404）：「handshake protocol can also optionally authenticate parties who have    certificates signed by a trusted certificate authority.",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        },
+        {
+          "id": "d12-signatures-r139-broken",
+          "entryId": "d12-signatures-details",
+          "section": "broken",
+          "statement": {
+            "zh": "标准把自身的裂缝写了出来。方案策略（1716-1721）很罕见——在没有已知攻击的情况下选择了更稳的一边：「Two signature schemes with appendix are specified in this document:    RSASSA-PSS and RSASSA-PKCS1-v1_5.Although no attacks are known    against RSASSA-PKCS1-v1_5, in the interest of increased robustness,    RSASSA-PSS is REQUIRED in new applications.」（本文规定两种带附录的签名方案：RSASSA-PSS 与 RSASSA-PKCS1-v1_5；尽管后者的攻击尚未知，为求更强的稳健性，新应用必须使用前者）。偏好新编码的理由印在 1788-1789：「In contrast to the RSASSA-PKCS1-v1_5 signature scheme, a hash    function identifier is not embedded in the EMSA-PSS encoded message」（与 v1_5 方案不同，EMSA-PSS 编码消息里不嵌入哈希函数标识符）——所以同段建议掩码生成函数使用同一哈希（那段建议在留存件里跨页眉排印，故按行引用 1795-1802，不作逐字标记）。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        },
+        {
+          "id": "d12-signatures-r139-history",
+          "entryId": "d12-signatures-details",
+          "section": "history",
+          "statement": {
+            "zh": "留存文件确实印出的年代线索。FIPS 205 写下自己的谱系（fips205.txt:27）：「SLH-DSA is based on SPHINCS+, which was selected for standardization as part of the NIST Post-Quantum Cryptography Standardization process.」（SLH-DSA 基于 SPHINCS+，后者是在 NIST 后量子密码标准化过程中被选中标准化的方案），又在第 280 行记录过程本身：「After three rounds of evaluation and analysis, NIST selected the first four algorithms for standardization.」（经过三轮评估与分析，NIST 选定了首批四个标准化算法）。为何会有这次选择，理由印在 276：「Unlike the algorithms specified in FIPS 186-5 [1], SLH-DSA is designed to provide resistance against attacks from a large-scale quantum computer.」（不同于 FIPS 186-5 所规定的算法，SLH-DSA 的设计目标是抵抗大规模量子计算机的攻击）。该标准在第 12 行印着 Published: August 13, 2024，与 FIPS 204 相同（fips204.",
+            "en": "Registered period: its registered period.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        },
+        {
+          "id": "d12-signatures-r139-refs",
+          "entryId": "d12-signatures-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 数字签名.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013).https://link.springer.com/book/10.1007/978-3-319-01628-3。",
+            "en": "- Wikipedia search entry for 数字签名.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "d12-signatures-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "d12-signatures-wikipedia"
+      ]
+    },
+    {
+      "id": "d12-signatures-reference-ref",
+      "title": "A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)",
+      "url": "https://link.springer.com/book/10.1007/978-3-319-01628-3",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level historical reference; chapter locator follows the person/event family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "d12-signatures-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "d12-signatures-r139-principle",
+      "entryId": "d12-signatures-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**领域**：数字签名（Digital Signatures）。FIPS 204 在摘要里就写明了这个对象的功能（fips204.txt:28）：「Digital signatures are used to detect unauthorized modifications to data and to authenticate the identity of the signatory.」（数字签名用于察觉数据的未经授权修改，并认证签署者的身份），同一行还给出证据属性：「This is known as non-repudiation since the signatory cannot easily repudiate the signature at a later time.」（这被称为不可否认性，因为签署者事后难以否认该签名）。机制在公告一节固定（fips204.txt:41）：「Signature generation uses a private key to generate a digital signature.Signature verification uses a public key that corresponds to but is not the same as the private key.",
+        "en": "**Domain**: Digital Signatures.It is registered under digital signatures."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    },
+    {
+      "id": "d12-signatures-r139-why",
+      "entryId": "d12-signatures-details",
+      "section": "why",
+      "statement": {
+        "zh": "RFC 8017 给出了设计形态及其理由。其签名方案一节先定义方案类型（1698-1703）：「the signature generation operation    produces a signature from a message with a signer's RSA private key,    and the signature verification operation verifies the signature on    the message with the signer's corresponding RSA public key.To    verify a signature constructed with this type of scheme, it is    necessary to have the message itself.」（签名生成用签署者私钥对消息产出签名，验证用对应公钥进行；用这类方案构造的签名，验证时必须持有消息本身——引文保留了跨行拼接的空格原样），随即划出边界（1703-1705）：「In this way, signature schemes    with appendix are distinguished from signature schemes with message    recovery, which are not supported in this document.」（这样，带附录的签名方案便与带消息恢复的签名方案相区别，后者不在本标准支持之列）。",
+        "en": "It is listed because it connects concrete records, objects or procedures in digital signatures, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    },
+    {
+      "id": "d12-signatures-r139-used",
+      "entryId": "d12-signatures-details",
+      "section": "used",
+      "statement": {
+        "zh": "签名的落地形态见于 SSL 3.0 文本。它先在附录词汇表里定义工具（2813-2816）：「Digital signatures utilize public key       cryptography and one-way hash functions to produce a signature of       the data that can be authenticated, and is difficult to forge or       repudiate.」（数字签名利用公钥密码与单向哈希函数产生可认证、且难以伪造或否认的数据签名——引文中的多空格间距是词汇表六空格缩进跨行拼接的原样）。然后规定线路行为（rfc6101.txt:2007-2008）：「RSA digital signatures are performed using PKCS #1 [PKCS1] block    type 1.」（RSA 数字签名使用 PKCS #1 的 1 型块运算完成）——正是 RFC 8017 后来标准化的那个 PKCS #1 家族。握手用签名安放信任（3402-3404）：「handshake protocol can also optionally authenticate parties who have    certificates signed by a trusted certificate authority.",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    },
+    {
+      "id": "d12-signatures-r139-broken",
+      "entryId": "d12-signatures-details",
+      "section": "broken",
+      "statement": {
+        "zh": "标准把自身的裂缝写了出来。方案策略（1716-1721）很罕见——在没有已知攻击的情况下选择了更稳的一边：「Two signature schemes with appendix are specified in this document:    RSASSA-PSS and RSASSA-PKCS1-v1_5.Although no attacks are known    against RSASSA-PKCS1-v1_5, in the interest of increased robustness,    RSASSA-PSS is REQUIRED in new applications.」（本文规定两种带附录的签名方案：RSASSA-PSS 与 RSASSA-PKCS1-v1_5；尽管后者的攻击尚未知，为求更强的稳健性，新应用必须使用前者）。偏好新编码的理由印在 1788-1789：「In contrast to the RSASSA-PKCS1-v1_5 signature scheme, a hash    function identifier is not embedded in the EMSA-PSS encoded message」（与 v1_5 方案不同，EMSA-PSS 编码消息里不嵌入哈希函数标识符）——所以同段建议掩码生成函数使用同一哈希（那段建议在留存件里跨页眉排印，故按行引用 1795-1802，不作逐字标记）。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    },
+    {
+      "id": "d12-signatures-r139-history",
+      "entryId": "d12-signatures-details",
+      "section": "history",
+      "statement": {
+        "zh": "留存文件确实印出的年代线索。FIPS 205 写下自己的谱系（fips205.txt:27）：「SLH-DSA is based on SPHINCS+, which was selected for standardization as part of the NIST Post-Quantum Cryptography Standardization process.」（SLH-DSA 基于 SPHINCS+，后者是在 NIST 后量子密码标准化过程中被选中标准化的方案），又在第 280 行记录过程本身：「After three rounds of evaluation and analysis, NIST selected the first four algorithms for standardization.」（经过三轮评估与分析，NIST 选定了首批四个标准化算法）。为何会有这次选择，理由印在 276：「Unlike the algorithms specified in FIPS 186-5 [1], SLH-DSA is designed to provide resistance against attacks from a large-scale quantum computer.」（不同于 FIPS 186-5 所规定的算法，SLH-DSA 的设计目标是抵抗大规模量子计算机的攻击）。该标准在第 12 行印着 Published: August 13, 2024，与 FIPS 204 相同（fips204.",
+        "en": "Registered period: its registered period.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    },
+    {
+      "id": "d12-signatures-r139-refs",
+      "entryId": "d12-signatures-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 数字签名.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013).https://link.springer.com/book/10.1007/978-3-319-01628-3。",
+        "en": "- Wikipedia search entry for 数字签名.https://zh.wikipedia.org/w/index.php?search=%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D\n- A Brief History of Cryptology and Cryptographic Algorithms (Dooley, Springer 2013)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "d12-signatures-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

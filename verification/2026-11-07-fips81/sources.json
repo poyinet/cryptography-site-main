@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "fips81-details",
+  "sources": [
+    {
+      "id": "fips81-wikipedia",
+      "title": "Wikipedia search entry for DES 工作模式",
+      "url": "https://zh.wikipedia.org/w/index.php?search=DES%20%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: DES 工作模式",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "fips81-r139-principle",
+          "entryId": "fips81-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：DES 工作模式（DES Modes of Operation）。FIPS 81 究竟管什么，是由它的后继文件点明的。NIST SP 800-38A 在说明自己推荐的模式时于 sp800-38a.txt:303-304 写道 「FIPS Pub.81 [4] specifies the ECB, CBC, CFB, and OFB modes of the Data Encryption Standard (DES).」（FIPS Pub.81 规定了 DES 的 ECB、CBC、CFB 与 OFB 四种模式）——也就是说这项标准的对象是运行 DES 这一分组密码的四种方式，而不是一种新密码。模式的一般形状写在第 478 行：「A confidentiality mode of operation of the block cipher algorithm consists of two processes that are inverses of each other: encryption and decryption.」（分组密码算法的一个保密工作模式由两个互为逆过程的运算组成：加密与解密）。模式因此位于密码算法与消息之间：密码本身仍是单分组函数，模式决定如何反复施加它。四个定义里有两个作为成文语句留存下来。",
+            "en": "**Standard**: DES Modes of Operation (DES 工作模式).What FIPS 81 covers is named by its successor rather than by itself."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        },
+        {
+          "id": "fips81-r139-why",
+          "entryId": "fips81-details",
+          "section": "why",
+          "statement": {
+            "zh": "RFC 4949 给出了这个模式族存在的理由。它的条目 $ mode of operation 第 1 义（标注 /cryptographic operation/，rfc4949.txt:10819-10825）把该概念定义为 「A technique for enhancing the       effect of a cryptographic algorithm or adapting the algorithm for       an application, such as applying a block cipher to a sequence of       data blocks or a data stream.」（增强密码算法效果或使算法适应某种应用的一种技术，例如把分组密码施加于一串数据块或数据流）——注意这一条引用跨了三个带缩进的续行，因而引文里保留了抽取件自身的换行空白。这是一个设计层面的陈述而不是史注：模式买到的是两样东西，额外的效果与可适配性，而 FIPS 81 的四种模式正是这二者之间的四种取舍。该词汇表还把来源显露出来：「cipher block chaining (CBC)」（密码分组链接）、「cipher feedback (CFB)」（密码反馈）、「electronic codebook (ECB)」（电子密码本）、「output feedback (OFB)」（输出反馈） 四个条目的定义各以来源标签 [FP081] 收尾（rfc4949.",
+            "en": "RFC 4949 gives the reason the family exists at all.Its entry $ mode of operation, sense 1 for /cryptographic operation/ (rfc4949.txt:10820-10825), defines the concept as “A technique for enhancing the       effect of a cryptographic algorithm or adapting the algorithm for       an application, such as applying a block cipher to a sequence of       data blocks or a data stream.” That is a design statement, not a history note: a mode buys two things, extra effect and adaptability, and the four FIPS 81 modes are four different trades between them."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        },
+        {
+          "id": "fips81-r139-used",
+          "entryId": "fips81-details",
+          "section": "used",
+          "statement": {
+            "zh": "这些模式实际被用在何处，从 PKCS #5 可以看清。RFC 8018 第 6.1 节以强制要求的方式固定了其中一种：PBES1 的底层分组密码必须是 DES 或 RC2 运行于 「cipher block chaining (CBC) mode [NIST81]」（密码分组链接（CBC）模式）（rfc8018.txt:700-702）。这等于把 FIPS 81 的 CBC 变成口令加密方案里的强制部件；同一文件的附录直接命名该构造，「DES-CBC-Pad is single-key DES [NIST46] in CBC mode [NIST81]」（DES-CBC-Pad 是单密钥 DES 在 CBC 模式下运行）并加上填充（rfc8018.txt:1633-1634）。附录 B.2 随后记下转向：从 PKCS #5 v2.0 继承的方案里，「legacy and should only be used for backwards compatibility reasons.」（已被视为遗留，只应出于向后兼容的理由使用）（rfc8018.txt:1617-1618），而作为 PBES2 示例给出的是 AES-CBC-Pad（第 1614 行）——链接模式存活下来，它下面的 DES 密钥没有。理由写在前一节，且关乎密钥长度而非模式本身：「each of which has a key size (56 or 64 bits) that may not be    large enough for some applications.",
+            "en": "Where the modes were actually consumed is visible in PKCS #5.RFC 8018 section 6.1 fixes one of them by requirement: the PBES1 underlying block cipher must be DES or RC2 running in “cipher block chaining (CBC) mode [NIST81]” (rfc8018.txt:700-702)."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        },
+        {
+          "id": "fips81-r139-broken",
+          "entryId": "fips81-details",
+          "section": "broken",
+          "statement": {
+            "zh": "四份登记文件都没有报告 FIPS 81 被攻破，也不需要报告：这些模式比它们当初为之写作的密码活得更久，而延续到后续设计里的失效方式是链接与填充这一组合的属性。RFC 3711（SRTP 规范）在 rfc3711.txt:2363-2366 把它写成一般性警告：「Some cipher modes of operation that require padding, e.g., standard    cipher block chaining (CBC) are very sensitive to attacks on    confidentiality if certain padding types are used in the absence of    integrity.」（某些需要填充的密码工作模式——例如标准密码分组链接（CBC）——在缺少完整性保护而使用某些填充类型时，对针对机密性的攻击极为敏感）（该引文跨四个带缩进的续行，故其中的多空格是抽取件自身的换行空白）。紧接着的句子把范围收窄到一个具体情形，「used together with CBC mode.」（与 CBC 模式一起使用时），随后对将来的工作施加义务，「proper integrity protection.」（恰当的完整性保护）（第 2368-2370 行）。",
+            "en": "None of the four registered files reports FIPS 81 being broken, and none needs to: the modes outlived the cipher they were written for, and the failure mode that survives into later designs is a property of the chaining-and-padding combination.RFC 3711, the SRTP specification, states it as a general warning at rfc3711.txt:2363-2366: “Some cipher modes of operation that require padding, e.g., standard    cipher block chaining (CBC) are very sensitive to attacks on    confidentiality if certain padding types are used in the absence of    integrity.” The following sentences narrow it to a case, “used together with CBC mode."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        },
+        {
+          "id": "fips81-r139-history",
+          "entryId": "fips81-details",
+          "section": "history",
+          "statement": {
+            "zh": "本行能支撑的日期就是其来源所印出的日期。SP 800-38A 的参考文献把该条写作 「DES Modes of Operation.」（DES 工作模式） 「U.S.DoC/NIST, December 1980.」（美国 商务部/国家标准与技术研究所，1980 年 12 月）（sp800-38a.txt:6839），只到月份；而 RFC 8018 第 1096 行与 RFC 4949 第 19454 行对同一出版物印出完整到日的日期。该条目目记录这一差异，而不是把三处合并成一个整理过的日期。两份文件之间的关系写在 sp800-38a.txt:312-315：较新的出版物把 「the extension of the four confidentiality modes in FIPS Pub 81 for use with any FIPS-approved block cipher」（把 FIPS Pub 81 的四种保密模式扩展用于任何经 FIPS 批准的分组密码） 列为第一个新元素，「the revision of the requirements for these modes」（对这些模式的要求作出修订） 为第二个，「the specification of an additional confidentiality mode, the CTR mode, for use with any FIPS-approved block cipher」（增补一种新的保密模式，即 CTR 计数器模式） 为第三（整段落在第 313-315 行）。",
+            "en": "The dates this row can support are the ones its sources print.SP 800-38A's reference list carries the entry as “DES Modes of Operation.” “U.S."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        },
+        {
+          "id": "fips81-r139-refs",
+          "entryId": "fips81-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for DES 工作模式.https://zh.wikipedia.org/w/index.php?search=DES%20%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for DES 工作模式.https://zh.wikipedia.org/w/index.php?search=DES%20%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "fips81-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "fips81-wikipedia"
+      ]
+    },
+    {
+      "id": "fips81-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "fips81-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "fips81-r139-principle",
+      "entryId": "fips81-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：DES 工作模式（DES Modes of Operation）。FIPS 81 究竟管什么，是由它的后继文件点明的。NIST SP 800-38A 在说明自己推荐的模式时于 sp800-38a.txt:303-304 写道 「FIPS Pub.81 [4] specifies the ECB, CBC, CFB, and OFB modes of the Data Encryption Standard (DES).」（FIPS Pub.81 规定了 DES 的 ECB、CBC、CFB 与 OFB 四种模式）——也就是说这项标准的对象是运行 DES 这一分组密码的四种方式，而不是一种新密码。模式的一般形状写在第 478 行：「A confidentiality mode of operation of the block cipher algorithm consists of two processes that are inverses of each other: encryption and decryption.」（分组密码算法的一个保密工作模式由两个互为逆过程的运算组成：加密与解密）。模式因此位于密码算法与消息之间：密码本身仍是单分组函数，模式决定如何反复施加它。四个定义里有两个作为成文语句留存下来。",
+        "en": "**Standard**: DES Modes of Operation (DES 工作模式).What FIPS 81 covers is named by its successor rather than by itself."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    },
+    {
+      "id": "fips81-r139-why",
+      "entryId": "fips81-details",
+      "section": "why",
+      "statement": {
+        "zh": "RFC 4949 给出了这个模式族存在的理由。它的条目 $ mode of operation 第 1 义（标注 /cryptographic operation/，rfc4949.txt:10819-10825）把该概念定义为 「A technique for enhancing the       effect of a cryptographic algorithm or adapting the algorithm for       an application, such as applying a block cipher to a sequence of       data blocks or a data stream.」（增强密码算法效果或使算法适应某种应用的一种技术，例如把分组密码施加于一串数据块或数据流）——注意这一条引用跨了三个带缩进的续行，因而引文里保留了抽取件自身的换行空白。这是一个设计层面的陈述而不是史注：模式买到的是两样东西，额外的效果与可适配性，而 FIPS 81 的四种模式正是这二者之间的四种取舍。该词汇表还把来源显露出来：「cipher block chaining (CBC)」（密码分组链接）、「cipher feedback (CFB)」（密码反馈）、「electronic codebook (ECB)」（电子密码本）、「output feedback (OFB)」（输出反馈） 四个条目的定义各以来源标签 [FP081] 收尾（rfc4949.",
+        "en": "RFC 4949 gives the reason the family exists at all.Its entry $ mode of operation, sense 1 for /cryptographic operation/ (rfc4949.txt:10820-10825), defines the concept as “A technique for enhancing the       effect of a cryptographic algorithm or adapting the algorithm for       an application, such as applying a block cipher to a sequence of       data blocks or a data stream.” That is a design statement, not a history note: a mode buys two things, extra effect and adaptability, and the four FIPS 81 modes are four different trades between them."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    },
+    {
+      "id": "fips81-r139-used",
+      "entryId": "fips81-details",
+      "section": "used",
+      "statement": {
+        "zh": "这些模式实际被用在何处，从 PKCS #5 可以看清。RFC 8018 第 6.1 节以强制要求的方式固定了其中一种：PBES1 的底层分组密码必须是 DES 或 RC2 运行于 「cipher block chaining (CBC) mode [NIST81]」（密码分组链接（CBC）模式）（rfc8018.txt:700-702）。这等于把 FIPS 81 的 CBC 变成口令加密方案里的强制部件；同一文件的附录直接命名该构造，「DES-CBC-Pad is single-key DES [NIST46] in CBC mode [NIST81]」（DES-CBC-Pad 是单密钥 DES 在 CBC 模式下运行）并加上填充（rfc8018.txt:1633-1634）。附录 B.2 随后记下转向：从 PKCS #5 v2.0 继承的方案里，「legacy and should only be used for backwards compatibility reasons.」（已被视为遗留，只应出于向后兼容的理由使用）（rfc8018.txt:1617-1618），而作为 PBES2 示例给出的是 AES-CBC-Pad（第 1614 行）——链接模式存活下来，它下面的 DES 密钥没有。理由写在前一节，且关乎密钥长度而非模式本身：「each of which has a key size (56 or 64 bits) that may not be    large enough for some applications.",
+        "en": "Where the modes were actually consumed is visible in PKCS #5.RFC 8018 section 6.1 fixes one of them by requirement: the PBES1 underlying block cipher must be DES or RC2 running in “cipher block chaining (CBC) mode [NIST81]” (rfc8018.txt:700-702)."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    },
+    {
+      "id": "fips81-r139-broken",
+      "entryId": "fips81-details",
+      "section": "broken",
+      "statement": {
+        "zh": "四份登记文件都没有报告 FIPS 81 被攻破，也不需要报告：这些模式比它们当初为之写作的密码活得更久，而延续到后续设计里的失效方式是链接与填充这一组合的属性。RFC 3711（SRTP 规范）在 rfc3711.txt:2363-2366 把它写成一般性警告：「Some cipher modes of operation that require padding, e.g., standard    cipher block chaining (CBC) are very sensitive to attacks on    confidentiality if certain padding types are used in the absence of    integrity.」（某些需要填充的密码工作模式——例如标准密码分组链接（CBC）——在缺少完整性保护而使用某些填充类型时，对针对机密性的攻击极为敏感）（该引文跨四个带缩进的续行，故其中的多空格是抽取件自身的换行空白）。紧接着的句子把范围收窄到一个具体情形，「used together with CBC mode.」（与 CBC 模式一起使用时），随后对将来的工作施加义务，「proper integrity protection.」（恰当的完整性保护）（第 2368-2370 行）。",
+        "en": "None of the four registered files reports FIPS 81 being broken, and none needs to: the modes outlived the cipher they were written for, and the failure mode that survives into later designs is a property of the chaining-and-padding combination.RFC 3711, the SRTP specification, states it as a general warning at rfc3711.txt:2363-2366: “Some cipher modes of operation that require padding, e.g., standard    cipher block chaining (CBC) are very sensitive to attacks on    confidentiality if certain padding types are used in the absence of    integrity.” The following sentences narrow it to a case, “used together with CBC mode."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    },
+    {
+      "id": "fips81-r139-history",
+      "entryId": "fips81-details",
+      "section": "history",
+      "statement": {
+        "zh": "本行能支撑的日期就是其来源所印出的日期。SP 800-38A 的参考文献把该条写作 「DES Modes of Operation.」（DES 工作模式） 「U.S.DoC/NIST, December 1980.」（美国 商务部/国家标准与技术研究所，1980 年 12 月）（sp800-38a.txt:6839），只到月份；而 RFC 8018 第 1096 行与 RFC 4949 第 19454 行对同一出版物印出完整到日的日期。该条目目记录这一差异，而不是把三处合并成一个整理过的日期。两份文件之间的关系写在 sp800-38a.txt:312-315：较新的出版物把 「the extension of the four confidentiality modes in FIPS Pub 81 for use with any FIPS-approved block cipher」（把 FIPS Pub 81 的四种保密模式扩展用于任何经 FIPS 批准的分组密码） 列为第一个新元素，「the revision of the requirements for these modes」（对这些模式的要求作出修订） 为第二个，「the specification of an additional confidentiality mode, the CTR mode, for use with any FIPS-approved block cipher」（增补一种新的保密模式，即 CTR 计数器模式） 为第三（整段落在第 313-315 行）。",
+        "en": "The dates this row can support are the ones its sources print.SP 800-38A's reference list carries the entry as “DES Modes of Operation.” “U.S."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    },
+    {
+      "id": "fips81-r139-refs",
+      "entryId": "fips81-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for DES 工作模式.https://zh.wikipedia.org/w/index.php?search=DES%20%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for DES 工作模式.https://zh.wikipedia.org/w/index.php?search=DES%20%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "fips81-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--padding-oracle-attack-details",
+  "sources": [
+    {
+      "id": "attack--padding-oracle-attack-wikipedia",
+      "title": "Wikipedia search entry for 填充预言攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%A1%AB%E5%85%85%E9%A2%84%E8%A8%80%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 填充预言攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--padding-oracle-attack-r139-principle",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：填充预言攻击（Padding Oracle Attack）。填充预言攻击针对 CBC 模式：解密后接收方检查填充是否有效。攻击者修改前一个密文块，观察填充有效性，逐步恢复中间值和明文。",
+            "en": "**Attack**: Padding Oracle Attack (填充预言攻击).A padding oracle attack targets CBC mode: after decryption the receiver checks whether the padding is valid."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--padding-oracle-attack-r139-why",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "接收方通常会用确认或错误消息报告填充错误，这等于泄露一个`填充是否有效`的比特。Vaudenay 把这种泄漏称为侧信道，并表明一个比特足以驱动解密。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Receivers typically report padding errors with an acknowledgment or error message, which leaks one bit about padding validity.Vaudenay calls this a side channel and shows that one bit is enough to drive decryption."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--padding-oracle-attack-r139-used",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文把 SSL/TLS、IPsec、WTLS 等使用 CBC 和填充的标准列为应用场景；攻击者需要选择密文并能观察填充有效性。对 8 字节分组、256 字符表，平均约 1024N 次预言机调用可解密 N 个分组。",
+            "en": "The paper lists standards using CBC and padding, including SSL/TLS, IPsec and WTLS, as application scenarios; the attacker needs chosen ciphertexts and an observable padding-validity signal.For 8-byte blocks and a 256-character alphabet, about 1024N oracle calls decrypt N blocks on average."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--padding-oracle-attack-r139-broken",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "论文推荐的修复是先对填充后的明文做认证再加密；解密时先解密，再验证认证标签，最后检查填充。它指出仅让错误消息相同并不足以消除可区分性，也没有把`认证密文`或`解密前认证`作为修复。",
+            "en": "The recommended fix authenticates the padded plaintext before encryption; on decryption, decrypt first, verify the authentication tag, and only then check padding.It notes that merely making error messages identical is not sufficient to remove distinguishability, and does not propose authenticating the ciphertext or authenticating before decryption."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--padding-oracle-attack-r139-history",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Vaudenay 在 2002 年 EUROCRYPT 论文中系统提出填充预言攻击，并分析 SSL、IPsec、WTLS 等协议中的实际风险。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「填充预言攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：填充预言攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 填充预言攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Vaudenay introduced the padding oracle attack systematically in his 2002 EUROCRYPT paper and analyzed its practical risk in SSL, IPsec, WTLS and related protocols.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--padding-oracle-attack-r139-refs",
+          "entryId": "attack--padding-oracle-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 填充预言攻击.https://zh.wikipedia.org/w/index.php?search=%E5%A1%AB%E5%85%85%E9%A2%84%E8%A8%80%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 填充预言攻击.https://zh.wikipedia.org/w/index.php?search=%E5%A1%AB%E5%85%85%E9%A2%84%E8%A8%80%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--padding-oracle-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--padding-oracle-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--padding-oracle-attack-r139-principle",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：填充预言攻击（Padding Oracle Attack）。填充预言攻击针对 CBC 模式：解密后接收方检查填充是否有效。攻击者修改前一个密文块，观察填充有效性，逐步恢复中间值和明文。",
+        "en": "**Attack**: Padding Oracle Attack (填充预言攻击).A padding oracle attack targets CBC mode: after decryption the receiver checks whether the padding is valid."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-r139-why",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "接收方通常会用确认或错误消息报告填充错误，这等于泄露一个`填充是否有效`的比特。Vaudenay 把这种泄漏称为侧信道，并表明一个比特足以驱动解密。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Receivers typically report padding errors with an acknowledgment or error message, which leaks one bit about padding validity.Vaudenay calls this a side channel and shows that one bit is enough to drive decryption."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-r139-used",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文把 SSL/TLS、IPsec、WTLS 等使用 CBC 和填充的标准列为应用场景；攻击者需要选择密文并能观察填充有效性。对 8 字节分组、256 字符表，平均约 1024N 次预言机调用可解密 N 个分组。",
+        "en": "The paper lists standards using CBC and padding, including SSL/TLS, IPsec and WTLS, as application scenarios; the attacker needs chosen ciphertexts and an observable padding-validity signal.For 8-byte blocks and a 256-character alphabet, about 1024N oracle calls decrypt N blocks on average."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-r139-broken",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "论文推荐的修复是先对填充后的明文做认证再加密；解密时先解密，再验证认证标签，最后检查填充。它指出仅让错误消息相同并不足以消除可区分性，也没有把`认证密文`或`解密前认证`作为修复。",
+        "en": "The recommended fix authenticates the padded plaintext before encryption; on decryption, decrypt first, verify the authentication tag, and only then check padding.It notes that merely making error messages identical is not sufficient to remove distinguishability, and does not propose authenticating the ciphertext or authenticating before decryption."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-r139-history",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Vaudenay 在 2002 年 EUROCRYPT 论文中系统提出填充预言攻击，并分析 SSL、IPsec、WTLS 等协议中的实际风险。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「填充预言攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\)。输入：输入：填充预言攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。预期输出：按 填充预言攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Vaudenay introduced the padding oracle attack systematically in his 2002 EUROCRYPT paper and analyzed its practical risk in SSL, IPsec, WTLS and related protocols.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--padding-oracle-attack-r139-refs",
+      "entryId": "attack--padding-oracle-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 填充预言攻击.https://zh.wikipedia.org/w/index.php?search=%E5%A1%AB%E5%85%85%E9%A2%84%E8%A8%80%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 填充预言攻击.https://zh.wikipedia.org/w/index.php?search=%E5%A1%AB%E5%85%85%E9%A2%84%E8%A8%80%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--padding-oracle-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

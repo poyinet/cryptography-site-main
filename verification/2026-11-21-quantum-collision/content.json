@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R115 security-bounds reviewed dossier for quantum-collision-details.",
+  "entries": [
+    {
+      "id": "quantum-collision-details",
+      "inventoryIds": [
+        "quantum-collision"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R115 安全界批次：把“量子碰撞界”从目录深度条目改写为含定理陈述、符号推导、复杂度/熵界、使用条件与失效边界的机制级条目；数值算例仍不由本条承担。",
+        "en": "R115 security-bounds batch: rewrote \"Quantum Collision Bound\" from a catalog-depth card into a mechanism-level entry with theorem statements, symbolic derivations, complexity/entropy bounds, conditions of use and failure boundaries; numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "量子碰撞界",
+        "en": "Quantum Collision Bound"
+      },
+      "claimIds": [
+        "quantum-collision-r139-principle",
+        "quantum-collision-r139-why",
+        "quantum-collision-r139-used",
+        "quantum-collision-r139-broken",
+        "quantum-collision-r139-history",
+        "quantum-collision-r139-refs"
+      ],
+      "sourceIds": [
+        "quantum-collision-wikipedia",
+        "quantum-collision-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "grover-algorithm"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "quantum-collision-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "量子碰撞界机制图：经典生日、BHT 列表与 Grover 搜索、复杂度对比。",
+            "en": "Quantum collision bound diagram: classical birthday, BHT list plus Grover search, and complexity comparison."
+          },
+          "alt": {
+            "zh": "经典生日与 BHT 两个复杂度框，右侧列表 L，下方为 O((N/r)^{1/3}) 公式与原像提醒。",
+            "en": "Classical birthday and BHT complexity boxes, a list L on the right, with the O((N/r)^{1/3}) formula and a preimage caveat below."
+          },
+          "files": {
+            "zh": "assets/quantum-collision-details-mechanism.zh.svg",
+            "en": "assets/quantum-collision-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "29b8acac77f69fb17f32d5796423c0b90a109bdc7bbba99da89adfed8b68702f",
+            "en": "23de71efc8f37cf065a73712f78d319dd38f4a8168ef678af20cd461a92141ea"
+          }
+        },
+        {
+          "id": "quantum-collision-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "量子碰撞界 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Quantum Collision Bound: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "量子碰撞界 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Quantum Collision Bound, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/quantum-collision-details-r138-model.zh.svg",
+            "en": "assets/quantum-collision-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "89bcae1c507549e02b5ee204fa00e3996e1880f3fbfb6322c1046b63610787d2",
+            "en": "1811d9c0749c1722dd906e3d561ddf1374a28314d8bfb1a0e9ab529bbfe3f4bf"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：量子碰撞搜索（Quantum Collision Search）。### 经典碰撞搜索\n\n对 n 位输出的哈希函数，随机取约 2^{n/2} 个输入，由生日悖论即可高概率找到一对碰撞。这是经典黑盒模型下的最优阶：Ω(2^{n/2}) 次求值。原像搜索则需约 2^n 次。### BHT 的量子算法\n\nBrassard–Høyer–Tapp 1998 给出量子碰撞算法：对 r-to-one 函数 f:{0,1}^N→{0,1}^M，期望 O((N/r)^{1/3}) 次求值即可找到碰撞。对 n 位哈希，即 O(2^{n/3})。算法先建立约 2^{n/3} 个输入及其像的列表并排序；再用 Grover 搜索在“列表内碰撞”与“列表外新输入”之间寻找碰撞。量子搜索把剩余搜索成本降到平方根，总成本变为 2^{n/3}。### 为什么不是 2^{n/2}\n\n经典生日攻击需要存储并比较多达 2^{n/2} 个样本；BHT 把样本数降到 2^{n/3}，并用 Grover 在剩余空间搜索。Grover 对无结构搜索只给平方根加速，所以 2^{n/2} 的经典界变成 2^{n/3}，而不是 2^{n/4}。对原像，Grover 只把 2^n 降到 2^{n/2}；碰撞与原像是两条不同的复杂度曲线。",
+          "why": "如果目标是对抗经典碰撞攻击的 128 位安全，n=256 位哈希足够（2^{128}）。若还要对抗量子碰撞攻击，2^{n/3}=2^{128} 需要 n≈384 位。NIST 后量子签名（如 SPHINCS+）因此使用更长的哈希输出或调整参数集。把 256 位哈希当成“量子下仍 128 位碰撞安全”是常见错误。### 它不意味着所有原语减半\n\nGrover 对 AES-256 的原像/密钥搜索是 2^{128}，不是 2^{256/3}；BHT 只针对碰撞。公钥密码的威胁主要来自 Shor，而不是 BHT。参数评估必须按原语和目标分别计算，不能用一个“量子加速倍数”概括。### 现实限制\n\nBHT 需要量子随机访问存储、相干查询和大量逻辑量子比特；当前硬件远未达到 2^{85} 次相干求值。它是安全参数的下界分析，不是可执行的攻击时间表。",
+          "used": "1.明确目标：抗经典碰撞、抗量子碰撞、抗原像还是抗第二原像。2.经典碰撞：n 位输出给 n/2 位安全。3.量子碰撞：按 2^{n/3} 估算，目标 b 位需要 n≥3b。4.原像：经典 2^n；量子 Grover 2^{n/2}。5.检查协议是否还依赖抗碰撞以外的性质（PRF、承诺、Merkle 树）。6.把存储、相干时间和错误校正计入现实可行性，不只看渐近指数。### 典型场景\n\n- SPHINCS+/XMSS 等哈希签名：选择哈希输出与树高时同时考虑经典/量子碰撞。- 后量子安全类别：NIST 类别 1/3/5 的参数解释。- 区块链与代码签名：长期数据需要“先存后解”的量子抵抗评估。",
+          "broken": "1.黑盒模型。BHT 假设函数是黑盒；若算法能利用哈希内部结构，可能有更快攻击。2.量子存储模型。算法需要量子 RAM 或大量相干存储；不同成本模型会改变常数与可行性。3.只给碰撞。它不把原像搜索降到 2^{n/3}；Grover 原像仍是 2^{n/2}。4.渐近记号隐藏常数。2^{n/3} 的常数、并行化和内存访问都可能影响实际成本。5.当前硬件。逻辑量子比特、错误校正与相干时间是现实瓶颈；不能把指数当成近期时间表。6.不是所有哈希用途都只靠碰撞。MAC、PRF、承诺与零知识可能依赖不同性质，需分别分析。",
+          "history": "Grover 1996 给出无结构搜索的平方根加速；Brassard、Høyer 与 Tapp 在 1997/1998 年把 Grover 用于碰撞与 claw 搜索，得到 O((N/r)^{1/3})。这篇论文成为后量子哈希安全评估的标准引用。### 后量子标准化\n\nNIST 2016 年启动后量子密码标准化，2017 年发布 NISTIR 8105 讨论量子对密码的影响。哈希签名与对称原语的参数开始同时报告经典与量子碰撞界；BHT 因此从理论算法进入标准参数语言。",
+          "refs": "- Wikipedia search entry for 量子碰撞搜索. https://zh.wikipedia.org/w/index.php?search=%E9%87%8F%E5%AD%90%E7%A2%B0%E6%92%9E%E6%90%9C%E7%B4%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\n量子碰撞搜索的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。1.计算查询对数。2.代入生日界。3.与目标碰撞概率比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Quantum Collision Search (量子碰撞搜索). ### Classical collision search\n\nFor an n-bit hash, sampling about 2^{n/2} inputs finds a collision with high probability by the birthday paradox. This is optimal up to constants in the classical black-box model: Ω(2^{n/2}) evaluations. Preimage search needs about 2^n evaluations. ### BHT’s quantum algorithm\n\nBrassard–Høyer–Tapp 1998 gave a quantum collision algorithm: for an r-to-one function f:{0,1}^N→{0,1}^M, it finds a collision in expected O((N/r)^{1/3}) evaluations. For an n-bit hash this is O(2^{n/3}). The algorithm first builds and sorts a list of about 2^{n/3} inputs and their images; it then uses Grover search to find a collision between the list and a fresh input. Quantum search square-roots the remaining search, yielding total cost 2^{n/3}. ### Why not 2^{n/2}\n\nThe classical birthday attack stores and compares up to 2^{n/2} samples; BHT reduces the sample count to 2^{n/3} and uses Grover over the remaining space. Grover gives only a square-root speedup for unstructured search, so the classical 2^{n/2} becomes 2^{n/3}, not 2^{n/4}. For preimages, Grover only turns 2^n into 2^{n/2}; collision and preimage are different complexity curves.",
+          "why": "If the target is 128-bit security against classical collision attacks, a 256-bit hash suffices (2^{128}). To resist quantum collision attacks, 2^{n/3}=2^{128} needs n≈384. NIST post-quantum signatures such as SPHINCS+ therefore use longer hash outputs or adjusted parameter sets. Treating a 256-bit hash as “still 128-bit collision security under quantum” is a common error.\n\nGrover on AES-256 preimage/key search costs 2^{128}, not 2^{256/3}; BHT targets collisions. The main public-key threat is Shor, not BHT. Parameter evaluation must be done per primitive and per target, not with one “quantum speedup factor”.\n\nBHT needs quantum random-access memory, coherent queries and many logical qubits; current hardware is nowhere near 2^{85} coherent evaluations. It is a lower-bound analysis for parameter selection, not an executable attack schedule.",
+          "used": "1. State the target: classical collision, quantum collision, preimage or second preimage. 2. Classical collision: an n-bit output gives n/2 bits of security. 3. Quantum collision: estimate by 2^{n/3}; a target of b bits needs n≥3b. 4. Preimage: classical 2^n; quantum Grover 2^{n/2}. 5. Check whether the protocol relies on properties beyond collision resistance (PRF, commitments, Merkle trees). 6. Include memory, coherence time and error correction in practical feasibility; do not look only at the asymptotic exponent.\n\n- Hash-based signatures such as SPHINCS+/XMSS: choose hash output and tree height against both classical and quantum collisions. - Post-quantum security categories: interpret NIST category 1/3/5 parameters. - Blockchains and code signing: long-lived data needs a “store-now, decrypt-later” quantum assessment.",
+          "broken": "1. Black-box model. BHT assumes a black-box function; algorithms that exploit the hash internals may do better. 2. Quantum memory model. The algorithm needs quantum RAM or substantial coherent storage; different cost models change constants and feasibility. 3. Collisions only. It does not lower preimage search to 2^{n/3}; Grover preimage remains 2^{n/2}. 4. Asymptotic notation hides constants. The constant in 2^{n/3}, parallelization and memory access all affect real cost. 5. Current hardware. Logical qubits, error correction and coherence time are practical bottlenecks; an exponent is not a near-term timeline. 6. Not every hash use rests on collisions alone. MACs, PRFs, commitments and zero knowledge may rely on different properties and need separate analysis.",
+          "history": "Grover gave the square-root speedup for unstructured search in 1996; Brassard, Høyer and Tapp applied it to collision and claw search in 1997/1998, obtaining O((N/r)^{1/3}). The paper became the standard citation for post-quantum hash-security assessment.\n\nNIST launched its post-quantum cryptography process in 2016 and published NISTIR 8105 in 2017 on the quantum impact. Hash-based signatures and symmetric primitives began reporting classical and quantum collision bounds together; BHT moved from a theoretical algorithm into the language of standard parameters.",
+          "refs": "- Wikipedia search entry for 量子碰撞搜索. https://zh.wikipedia.org/w/index.php?search=%E9%87%8F%E5%AD%90%E7%A2%B0%E6%92%9E%E6%90%9C%E7%B4%A2\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\nQuantum Collision Search: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "quantum-collision-r139-formal",
+          "entryId": "quantum-collision-details",
+          "kind": "formal-model",
+          "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+          "inputs": "输入：量子碰撞搜索的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+          "expected": "按 量子碰撞搜索 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "计算查询对数",
+            "代入生日界",
+            "与目标碰撞概率比较"
+          ],
+          "sourceIds": [
+            "quantum-collision-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "quantum-collision-r139-formal"
+      ],
+      "sources": [
+        "quantum-collision-wikipedia",
+        "quantum-collision-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "quantum-collision-r139-formal",
+      "entryId": "quantum-collision-details",
+      "kind": "formal-model",
+      "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+      "inputs": "输入：量子碰撞搜索的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+      "expected": "按 量子碰撞搜索 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "计算查询对数",
+        "代入生日界",
+        "与目标碰撞概率比较"
+      ],
+      "sourceIds": [
+        "quantum-collision-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

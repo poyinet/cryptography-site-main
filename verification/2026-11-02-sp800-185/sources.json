@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sp800-185-details",
+  "sources": [
+    {
+      "id": "sp800-185-wikipedia",
+      "title": "Wikipedia search entry for SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）",
+      "url": "https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E6%B4%BE%E7%94%9F%E5%87%BD%E6%95%B0%EF%BC%9AcSHAKE%E3%80%81KMAC%E3%80%81TupleHash%20%E4%B8%8E%20ParallelHash%EF%BC%88SP%20800-185%EF%BC%89",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sp800-185-r139-principle",
+          "entryId": "sp800-185-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）（SHA-3 Derived Functions: cSHAKE, KMAC, TupleHash and ParallelHash (SP 800-185)）。摘要首句给出文件性质与对象：「This Recommendation specifies four types of SHA-3-derived functions: cSHAKE, KMAC, TupleHash, and ParallelHash, each defined for a 128- and 256-bit security strength.」随后逐个自述：「cSHAKE is a customizable variant of the SHAKE function, as defined in Federal Information Processing Standard (FIPS) 202.」、「KMAC (for KECCAK Message Authentication Code) is a variable-length message authentication code algorithm based on KECCAK; it can also be used as a pseudorandom function.",
+            "en": "**Standard**: SHA-3 Derived Functions: cSHAKE, KMAC, TupleHash and ParallelHash (SP 800-185) (SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）).The opening sentence of the abstract gives the character and the object: \"This Recommendation specifies four types of SHA-3-derived functions: cSHAKE, KMAC, TupleHash, and ParallelHash, each defined for a 128- and 256-bit security strength.\" The four are then self-described one by one: \"cSHAKE is a customizable variant of the SHAKE function, as defined in Federal Information Processing Standard (FIPS) 202."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-185-r139-why",
+          "entryId": "sp800-185-details",
+          "section": "why",
+          "statement": {
+            "zh": "§1 交代缺口在域分离：「Domain separation ensures that different named functions (such as SHA3-512 and SHAKE128) will be unrelated.」再把定制化的作用讲清：「Customization is analogous to strong typing in a programming language; such customization makes it extremely unlikely that computing one function with two different customization strings will yield the same answer.」其余三族要补的是基本函数没有的能力：「It then defines three additional SHA-3-derived functions, in Secs.4 through 6, that provide new functionality not directly available from the more basic functions.」风险因此被写成同一件事的两面：没有域分离，不同用途的输出可能彼此相关；有了 N 与 S，两次计算可被当作互不相干的函数。",
+            "en": "Section 1 states the gap as domain separation: \"Domain separation ensures that different named functions (such as SHA3-512 and SHAKE128) will be unrelated.\" It then explains what customization buys: \"Customization is analogous to strong typing in a programming language; such customization makes it extremely unlikely that computing one function with two different customization strings will yield the same answer.\" The other three families answer to a second gap: \"It then defines three additional SHA-3-derived functions, in Secs.4 through 6, that provide new functionality not directly available from the more basic functions."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-185-r139-used",
+          "entryId": "sp800-185-details",
+          "section": "used",
+          "statement": {
+            "zh": "分工写在编号章节：函数名不归用户，§3.4 说 N「This is intended for use by NIST in defining SHA-3-derived functions, and should only be set to values defined by NIST」，并直接约束用户：「Users of cSHAKE should not make up their own names--that kind of customization is the purpose of the customization string S, to be discussed in Sec.3.5.」§3.5 把选择权交给调用方：「The cSHAKE function also includes an input string (S) to allow users to customize their use of the function.」四族一律提供 128 与 256 两档：「cSHAKE, KMAC, TupleHash, and ParallelHash are all defined for two claimed security strengths: 128 bits and 256 bits.」两处的层级都是建议级：N 只应取 NIST 定义的值（原文 should only be set），名称也不建议由用户自创（原文 should not make up their own names）；S 由调用方选取，§3.",
+            "en": "The division of duties is stated in numbered sections.The function name is not the user's to invent: §3.4 says of N that \"This is intended for use by NIST in defining SHA-3-derived functions, and should only be set to values defined by NIST\", and addresses users directly: \"Users of cSHAKE should not make up their own names--that kind of customization is the purpose of the customization string S, to be discussed in Sec."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-185-r139-broken",
+          "entryId": "sp800-185-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度有四处。一是参数无下限：「The customization string may be of any length less than 22040; however, implementations may restrict the length of S that they will accept.」（留存文本把 2 的 2040 次方抽成了 22040：同文件 right_encode 的有效性条件也印成同样丢掉上标的 0 x < 22040，可见上标在提取时丢失；此处照抄抽取件原样并如此说明）取值仍由协议或应用自己决定，本文件不指定用途。二是越界的代价：「Nonstandard values of N could cause interoperability problems with future NIST-defined functions.」三是 cSHAKE 自身的性质缺口：「Note that cSHAKE does not share this property.」「For q1< q2, cSHAKE(X, q1, N, S) is a prefix of cSHAKE(X, q2, N, S).」即短输出只是长输出的前缀，不像另外三族那样换长度即换函数。",
+            "en": "The limits are stated in four places.First, no parameter floor and no assigned use: \"The customization string may be of any length less than 22040; however, implementations may restrict the length of S that they will accept.\" (the retained extraction drops the superscript: the bound prints as 22040 where the document gives 2 to the power 2040, and the same file renders right_encode’s validity condition ) — the values remain the caller's choice, and this Recommendation assigns none to a use."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-185-r139-history",
+          "entryId": "sp800-185-details",
+          "section": "history",
+          "statement": {
+            "zh": "扉页首行为「NIST Special Publication 800-185」，作者与部门两行连读为「John Kelsey Shu-jen Chang Ray Perlner Computer Security Division Information Technology Laboratory」，DOI 行是「This publication is available free of charge from:」，DOI 10.6028/NIST.SP.800-185。Authority 段的引用行给出日期与页数：「Natl.Inst.Stand.Technol.Spec.Publ.800-185, 32 pages (December 2016)」，同段限定适用面：「such standards and guidelines shall not apply to national security systems without the express approval of appropriate federal officials exercising policy authority over such systems」。",
+            "en": "The first title-block line reads \"NIST Special Publication 800-185\", the author and division lines read in sequence as \"John Kelsey Shu-jen Chang Ray Perlner Computer Security Division Information Technology Laboratory\", and the free-access line reads \"This publication is available free of charge from:\" followed by the DOI 10.6028/NIST.SP.800-185.The citation inside the Authority block carries the date and length: \"Natl."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-185-r139-refs",
+          "entryId": "sp800-185-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）.https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E6%B4%BE%E7%94%9F%E5%87%BD%E6%95%B0%EF%BC%9AcSHAKE%E3%80%81KMAC%E3%80%81TupleHash%20%E4%B8%8E%20ParallelHash%EF%BC%88SP%20800-185%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）.https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E6%B4%BE%E7%94%9F%E5%87%BD%E6%95%B0%EF%BC%9AcSHAKE%E3%80%81KMAC%E3%80%81TupleHash%20%E4%B8%8E%20ParallelHash%EF%BC%88SP%20800-185%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sp800-185-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sp800-185-wikipedia"
+      ]
+    },
+    {
+      "id": "sp800-185-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sp800-185-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sp800-185-r139-principle",
+      "entryId": "sp800-185-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）（SHA-3 Derived Functions: cSHAKE, KMAC, TupleHash and ParallelHash (SP 800-185)）。摘要首句给出文件性质与对象：「This Recommendation specifies four types of SHA-3-derived functions: cSHAKE, KMAC, TupleHash, and ParallelHash, each defined for a 128- and 256-bit security strength.」随后逐个自述：「cSHAKE is a customizable variant of the SHAKE function, as defined in Federal Information Processing Standard (FIPS) 202.」、「KMAC (for KECCAK Message Authentication Code) is a variable-length message authentication code algorithm based on KECCAK; it can also be used as a pseudorandom function.",
+        "en": "**Standard**: SHA-3 Derived Functions: cSHAKE, KMAC, TupleHash and ParallelHash (SP 800-185) (SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）).The opening sentence of the abstract gives the character and the object: \"This Recommendation specifies four types of SHA-3-derived functions: cSHAKE, KMAC, TupleHash, and ParallelHash, each defined for a 128- and 256-bit security strength.\" The four are then self-described one by one: \"cSHAKE is a customizable variant of the SHAKE function, as defined in Federal Information Processing Standard (FIPS) 202."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-185-r139-why",
+      "entryId": "sp800-185-details",
+      "section": "why",
+      "statement": {
+        "zh": "§1 交代缺口在域分离：「Domain separation ensures that different named functions (such as SHA3-512 and SHAKE128) will be unrelated.」再把定制化的作用讲清：「Customization is analogous to strong typing in a programming language; such customization makes it extremely unlikely that computing one function with two different customization strings will yield the same answer.」其余三族要补的是基本函数没有的能力：「It then defines three additional SHA-3-derived functions, in Secs.4 through 6, that provide new functionality not directly available from the more basic functions.」风险因此被写成同一件事的两面：没有域分离，不同用途的输出可能彼此相关；有了 N 与 S，两次计算可被当作互不相干的函数。",
+        "en": "Section 1 states the gap as domain separation: \"Domain separation ensures that different named functions (such as SHA3-512 and SHAKE128) will be unrelated.\" It then explains what customization buys: \"Customization is analogous to strong typing in a programming language; such customization makes it extremely unlikely that computing one function with two different customization strings will yield the same answer.\" The other three families answer to a second gap: \"It then defines three additional SHA-3-derived functions, in Secs.4 through 6, that provide new functionality not directly available from the more basic functions."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-185-r139-used",
+      "entryId": "sp800-185-details",
+      "section": "used",
+      "statement": {
+        "zh": "分工写在编号章节：函数名不归用户，§3.4 说 N「This is intended for use by NIST in defining SHA-3-derived functions, and should only be set to values defined by NIST」，并直接约束用户：「Users of cSHAKE should not make up their own names--that kind of customization is the purpose of the customization string S, to be discussed in Sec.3.5.」§3.5 把选择权交给调用方：「The cSHAKE function also includes an input string (S) to allow users to customize their use of the function.」四族一律提供 128 与 256 两档：「cSHAKE, KMAC, TupleHash, and ParallelHash are all defined for two claimed security strengths: 128 bits and 256 bits.」两处的层级都是建议级：N 只应取 NIST 定义的值（原文 should only be set），名称也不建议由用户自创（原文 should not make up their own names）；S 由调用方选取，§3.",
+        "en": "The division of duties is stated in numbered sections.The function name is not the user's to invent: §3.4 says of N that \"This is intended for use by NIST in defining SHA-3-derived functions, and should only be set to values defined by NIST\", and addresses users directly: \"Users of cSHAKE should not make up their own names--that kind of customization is the purpose of the customization string S, to be discussed in Sec."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-185-r139-broken",
+      "entryId": "sp800-185-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度有四处。一是参数无下限：「The customization string may be of any length less than 22040; however, implementations may restrict the length of S that they will accept.」（留存文本把 2 的 2040 次方抽成了 22040：同文件 right_encode 的有效性条件也印成同样丢掉上标的 0 x < 22040，可见上标在提取时丢失；此处照抄抽取件原样并如此说明）取值仍由协议或应用自己决定，本文件不指定用途。二是越界的代价：「Nonstandard values of N could cause interoperability problems with future NIST-defined functions.」三是 cSHAKE 自身的性质缺口：「Note that cSHAKE does not share this property.」「For q1< q2, cSHAKE(X, q1, N, S) is a prefix of cSHAKE(X, q2, N, S).」即短输出只是长输出的前缀，不像另外三族那样换长度即换函数。",
+        "en": "The limits are stated in four places.First, no parameter floor and no assigned use: \"The customization string may be of any length less than 22040; however, implementations may restrict the length of S that they will accept.\" (the retained extraction drops the superscript: the bound prints as 22040 where the document gives 2 to the power 2040, and the same file renders right_encode’s validity condition ) — the values remain the caller's choice, and this Recommendation assigns none to a use."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-185-r139-history",
+      "entryId": "sp800-185-details",
+      "section": "history",
+      "statement": {
+        "zh": "扉页首行为「NIST Special Publication 800-185」，作者与部门两行连读为「John Kelsey Shu-jen Chang Ray Perlner Computer Security Division Information Technology Laboratory」，DOI 行是「This publication is available free of charge from:」，DOI 10.6028/NIST.SP.800-185。Authority 段的引用行给出日期与页数：「Natl.Inst.Stand.Technol.Spec.Publ.800-185, 32 pages (December 2016)」，同段限定适用面：「such standards and guidelines shall not apply to national security systems without the express approval of appropriate federal officials exercising policy authority over such systems」。",
+        "en": "The first title-block line reads \"NIST Special Publication 800-185\", the author and division lines read in sequence as \"John Kelsey Shu-jen Chang Ray Perlner Computer Security Division Information Technology Laboratory\", and the free-access line reads \"This publication is available free of charge from:\" followed by the DOI 10.6028/NIST.SP.800-185.The citation inside the Authority block carries the date and length: \"Natl."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-185-r139-refs",
+      "entryId": "sp800-185-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）.https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E6%B4%BE%E7%94%9F%E5%87%BD%E6%95%B0%EF%BC%9AcSHAKE%E3%80%81KMAC%E3%80%81TupleHash%20%E4%B8%8E%20ParallelHash%EF%BC%88SP%20800-185%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for SHA-3 派生函数：cSHAKE、KMAC、TupleHash 与 ParallelHash（SP 800-185）.https://zh.wikipedia.org/w/index.php?search=SHA-3%20%E6%B4%BE%E7%94%9F%E5%87%BD%E6%95%B0%EF%BC%9AcSHAKE%E3%80%81KMAC%E3%80%81TupleHash%20%E4%B8%8E%20ParallelHash%EF%BC%88SP%20800-185%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sp800-185-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

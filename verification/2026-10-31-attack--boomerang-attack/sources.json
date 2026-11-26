@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--boomerang-attack-details",
+  "sources": [
+    {
+      "id": "attack--boomerang-attack-wikipedia",
+      "title": "Wikipedia search entry for 回旋镖攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E5%9B%9E%E6%97%8B%E9%95%96%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 回旋镖攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--boomerang-attack-r139-principle",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：回旋镖攻击（Boomerang Attack）。回旋镖攻击把密码分成 E0 和 E1 两半，使用 E0 的高概率差分和 E1^{-1} 的高概率差分构造四元组 P、P′、Q、Q′；前三个差分成立时，Q、Q′ 会以较高概率满足 E0^{-1} 的差分。",
+            "en": "**Attack**: Boomerang Attack (回旋镖攻击).The boomerang attack splits the cipher into E0 and E1 and uses a high-probability differential for E0 and one for E1^{-1} to build a quartet P, P′, Q, Q′; when the first three differentials hold, Q and Q′ satisfy the E0^{-1} differential with high probability."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--boomerang-attack-r139-why",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "整个密码可能没有高概率差分，但两个短差分可以分别有较高概率，因此回旋镖能击败`整体差分概率低就安全`的经验法则。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "The whole cipher may have no high-probability differential, while two short differentials can each have high probability, so the boomerang attack defeats the folk theorem that a low whole-cipher differential probability implies security.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--boomerang-attack-r139-used",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文用 2^16 个自适应选择文本和 2^38 工作量攻破 COCONUT98，还给出 Khufu-16 的 2^18 个自适应选择文本、FEAL-6 的 4 个自适应选择明文/密文，以及 inside-out 对偶攻击对 CAST-256 16 轮的 2^49.3 个已知文本攻击。",
+            "en": "The paper breaks COCONUT98 with 2^16 adaptively chosen texts and 2^38 work, and also gives Khufu-16 with 2^18 adaptively chosen texts, FEAL-6 with 4 adaptively chosen plaintext/ciphertext queries, and an inside-out dual attack on 16-round CAST-256 with 2^49.3 known texts.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--boomerang-attack-r139-broken",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "攻击需要构造四元组，并具备自适应选择明文和密文的能力；数据和时间复杂度取决于两个短差分的概率，不能对所有分组密码通用。",
+            "en": "The attack requires constructing quartets and the ability to obtain adaptively chosen plaintexts and ciphertexts; data and time complexity depend on the probabilities of the two short differentials and are not universal for all block ciphers.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--boomerang-attack-r139-history",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Wagner 在 1999 年 FSE 论文中提出回旋镖攻击，并用它说明仅消除整体高概率差分不足以保证差分安全性。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「回旋镖攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：回旋镖攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 回旋镖攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Wagner introduced the boomerang attack in his 1999 FSE paper and used it to show that eliminating high-probability whole-cipher differentials is not enough to guarantee differential security.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--boomerang-attack-r139-refs",
+          "entryId": "attack--boomerang-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 回旋镖攻击.https://zh.wikipedia.org/w/index.php?search=%E5%9B%9E%E6%97%8B%E9%95%96%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 回旋镖攻击.https://zh.wikipedia.org/w/index.php?search=%E5%9B%9E%E6%97%8B%E9%95%96%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--boomerang-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--boomerang-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--boomerang-attack-r139-principle",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：回旋镖攻击（Boomerang Attack）。回旋镖攻击把密码分成 E0 和 E1 两半，使用 E0 的高概率差分和 E1^{-1} 的高概率差分构造四元组 P、P′、Q、Q′；前三个差分成立时，Q、Q′ 会以较高概率满足 E0^{-1} 的差分。",
+        "en": "**Attack**: Boomerang Attack (回旋镖攻击).The boomerang attack splits the cipher into E0 and E1 and uses a high-probability differential for E0 and one for E1^{-1} to build a quartet P, P′, Q, Q′; when the first three differentials hold, Q and Q′ satisfy the E0^{-1} differential with high probability."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-r139-why",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "整个密码可能没有高概率差分，但两个短差分可以分别有较高概率，因此回旋镖能击败`整体差分概率低就安全`的经验法则。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "The whole cipher may have no high-probability differential, while two short differentials can each have high probability, so the boomerang attack defeats the folk theorem that a low whole-cipher differential probability implies security.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-r139-used",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文用 2^16 个自适应选择文本和 2^38 工作量攻破 COCONUT98，还给出 Khufu-16 的 2^18 个自适应选择文本、FEAL-6 的 4 个自适应选择明文/密文，以及 inside-out 对偶攻击对 CAST-256 16 轮的 2^49.3 个已知文本攻击。",
+        "en": "The paper breaks COCONUT98 with 2^16 adaptively chosen texts and 2^38 work, and also gives Khufu-16 with 2^18 adaptively chosen texts, FEAL-6 with 4 adaptively chosen plaintext/ciphertext queries, and an inside-out dual attack on 16-round CAST-256 with 2^49.3 known texts.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-r139-broken",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "攻击需要构造四元组，并具备自适应选择明文和密文的能力；数据和时间复杂度取决于两个短差分的概率，不能对所有分组密码通用。",
+        "en": "The attack requires constructing quartets and the ability to obtain adaptively chosen plaintexts and ciphertexts; data and time complexity depend on the probabilities of the two short differentials and are not universal for all block ciphers.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-r139-history",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Wagner 在 1999 年 FSE 论文中提出回旋镖攻击，并用它说明仅消除整体高概率差分不足以保证差分安全性。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「回旋镖攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：回旋镖攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 回旋镖攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Wagner introduced the boomerang attack in his 1999 FSE paper and used it to show that eliminating high-probability whole-cipher differentials is not enough to guarantee differential security.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--boomerang-attack-r139-refs",
+      "entryId": "attack--boomerang-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 回旋镖攻击.https://zh.wikipedia.org/w/index.php?search=%E5%9B%9E%E6%97%8B%E9%95%96%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 回旋镖攻击.https://zh.wikipedia.org/w/index.php?search=%E5%9B%9E%E6%97%8B%E9%95%96%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--boomerang-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

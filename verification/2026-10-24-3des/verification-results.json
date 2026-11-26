@@ -1,0 +1,383 @@
+{
+  "results": [
+    {
+      "id": "tdea-official-vectors",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "NIST TDES_ECB three-key and two-key examples; four 64-bit plaintext blocks, encryption and decryption in the teaching implementation and OpenSSL des-ede3-ecb",
+      "expected": "Both official ciphertexts match; decryption restores the plaintext; the two implementations agree",
+      "observed": {
+        "id": "tdea-official-vectors",
+        "passed": true,
+        "vectors": [
+          {
+            "name": "threeKey",
+            "blocks": 4,
+            "firstBlock": "714772F339841D34"
+          },
+          {
+            "name": "twoKey",
+            "blocks": 4,
+            "firstBlock": "06EDE3D82884090A"
+          }
+        ],
+        "implementations": [
+          "original teaching TDEA over the teaching DES engine",
+          "Node/OpenSSL des-ede3-ecb"
+        ],
+        "negativeControl": "two-key and three-key ciphertexts differ",
+        "limit": "Fixed ECB examples; not CAVP validation and not a security evaluation."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-keying-options",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "1-key, 2-key and 3-key bundles applied to fixed blocks; 1-key compared with single DES",
+      "expected": "1-key TDEA equals single DES; 2-key uses K1=K3; 3-key differs; nominal/effective bit counts are 64/128/192 and 56/112/168",
+      "observed": {
+        "id": "tdea-keying-options",
+        "passed": true,
+        "oneKeyEqualsSingleDes": true,
+        "twoKeyCipher": "06EDE3D82884090A",
+        "threeKeyCipher": "714772F339841D34",
+        "options": {
+          "1-key": {
+            "keys": [
+              "K1",
+              "K1",
+              "K1"
+            ],
+            "nominalBits": 64,
+            "effectiveBits": 56,
+            "note": "collapses to single DES"
+          },
+          "2-key": {
+            "keys": [
+              "K1",
+              "K2",
+              "K1"
+            ],
+            "nominalBits": 128,
+            "effectiveBits": 112,
+            "note": "K1 = K3"
+          },
+          "3-key": {
+            "keys": [
+              "K1",
+              "K2",
+              "K3"
+            ],
+            "nominalBits": 192,
+            "effectiveBits": 168,
+            "note": "three independent keys"
+          }
+        },
+        "limit": "Structural equivalence only; no security estimate."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-security-strength",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "2-key and 3-key effective key spaces and NIST-assigned strengths of 80 and 112 bits",
+      "expected": "Effective key spaces are 2^112 and 2^168; nominal bits are 128 and 192; NIST security strengths are 80 and 112 bits; nominal bits do not equal assessed strength",
+      "observed": {
+        "id": "tdea-security-strength",
+        "passed": true,
+        "effectiveKeySpace": {
+          "2-key": "5192296858534827628530496329220096",
+          "3-key": "374144419156711147060143317175368453031918731001856"
+        },
+        "nominalBits": {
+          "1-key": {
+            "keys": [
+              "K1",
+              "K1",
+              "K1"
+            ],
+            "nominalBits": 64,
+            "effectiveBits": 56,
+            "note": "collapses to single DES"
+          },
+          "2-key": {
+            "keys": [
+              "K1",
+              "K2",
+              "K1"
+            ],
+            "nominalBits": 128,
+            "effectiveBits": 112,
+            "note": "K1 = K3"
+          },
+          "3-key": {
+            "keys": [
+              "K1",
+              "K2",
+              "K3"
+            ],
+            "nominalBits": 192,
+            "effectiveBits": 168,
+            "note": "three independent keys"
+          }
+        },
+        "nistStrengthBits": {
+          "2-key": 80,
+          "3-key": 112
+        },
+        "nominalVsStrength": {
+          "2-key": "128 nominal / 112 effective / about 80 strength",
+          "3-key": "192 nominal / 168 effective / about 112 strength"
+        },
+        "limit": "Records NIST-assessed strength; it does not reproduce the underlying attacks."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-data-limit",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "SP 800-67 Revision 2 limit of 2^20 64-bit blocks per 3-key bundle; 8 bytes per block",
+      "expected": "2^20 blocks = 1,048,576 blocks = 8 MiB; 2-key TDEA must not be used for cryptographic protection",
+      "observed": {
+        "id": "tdea-data-limit",
+        "passed": true,
+        "blockLimit": "1048576",
+        "bytes": "8388608",
+        "mebibytes": "8",
+        "twoKeyForEncryption": "not permitted by SP 800-67 Revision 2",
+        "limit": "Policy limit only; no protocol framing assumed."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-sweet32-bound",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "64-bit block space, n = 2^32 blocks, 8 bytes per block",
+      "expected": "n blocks are about 32 GiB; birthday collision probability at n = 2^32 is about 0.39, and grows to about 0.63 at 2^32.5",
+      "observed": {
+        "id": "tdea-sweet32-bound",
+        "passed": true,
+        "blockBits": 64,
+        "blocks": "4294967296",
+        "bytes": "34359738368",
+        "gibibytes": "32",
+        "collisionProbabilityAt2Pow32": 0.39346934021675706,
+        "collisionProbabilityAt2Pow32_5": 0.6321205587679913,
+        "limit": "Birthday arithmetic only; not a protocol attack model."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-weak-keys",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "The four DES weak keys used as K1=K2=K3, and 4,096 fixed blocks per key (16,384 cases)",
+      "expected": "TDEA with three identical weak keys equals single DES and satisfies E(E(P))=P for every tested block",
+      "observed": {
+        "id": "tdea-weak-keys",
+        "passed": true,
+        "weakKeys": [
+          "0101010101010101",
+          "FEFEFEFEFEFEFEFE",
+          "E0E0E0E0F1F1F1F1",
+          "1F1F1F1F0E0E0E0E"
+        ],
+        "blocksPerKey": 4096,
+        "cases": 16384,
+        "samples": [
+          {
+            "weakKey": "0101010101010101",
+            "block": "0000000000000000",
+            "once": "8CA64DE9C1B123A7",
+            "twice": "0000000000000000"
+          },
+          {
+            "weakKey": "0101010101010101",
+            "block": "0001000100010001",
+            "once": "B5E1395461EFE02D",
+            "twice": "0001000100010001"
+          },
+          {
+            "weakKey": "FEFEFEFEFEFEFEFE",
+            "block": "0000000000000000",
+            "once": "CAAAAF4DEAF1DBAE",
+            "twice": "0000000000000000"
+          },
+          {
+            "weakKey": "FEFEFEFEFEFEFEFE",
+            "block": "0001000100010001",
+            "once": "113786BD722F88C1",
+            "twice": "0001000100010001"
+          },
+          {
+            "weakKey": "E0E0E0E0F1F1F1F1",
+            "block": "0000000000000000",
+            "once": "2F5D20EA397B4786",
+            "twice": "0000000000000000"
+          },
+          {
+            "weakKey": "E0E0E0E0F1F1F1F1",
+            "block": "0001000100010001",
+            "once": "80C7F2C7D1C7867A",
+            "twice": "0001000100010001"
+          },
+          {
+            "weakKey": "1F1F1F1F0E0E0E0E",
+            "block": "0000000000000000",
+            "once": "94AEA8BD97D84ED9",
+            "twice": "0000000000000000"
+          },
+          {
+            "weakKey": "1F1F1F1F0E0E0E0E",
+            "block": "0001000100010001",
+            "once": "8D70866245C1A816",
+            "twice": "0001000100010001"
+          }
+        ],
+        "limit": "Finite structured sample; degeneration follows from identical keys."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "tdea-block-rounds",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "TDEA composition of three DES calls; 64-bit block; 16 rounds per DES call",
+      "expected": "Block remains 64 bits; 3 x 16 = 48 DES rounds; key bundle has three 64-bit keys",
+      "observed": {
+        "id": "tdea-block-rounds",
+        "passed": true,
+        "blockBits": 64,
+        "desRounds": 16,
+        "passes": 3,
+        "totalRounds": 48,
+        "keysPerBundle": 3,
+        "keyBitsEach": 64,
+        "limit": "Counting only; round count is not a security proof."
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:03:15.171Z"
+    },
+    {
+      "id": "algorithm--3des-r139-formal",
+      "entryId": "3des-details",
+      "passed": true,
+      "script": "verify.mjs",
+      "scriptHash": "2880470867ca5420533df8fa980ae4b7abcf67575281cda23d0512eb83e36c35",
+      "dependencyHashes": {
+        "tdea-teaching.mjs": "bf9dbb3019bbef0feaa691bb59d854844d08bbe0cdb7ac8ca64ab49caaa9fabe",
+        "des-core.mjs": "edf0886ab1fd40452d0f111ae9f4bfecf47c317e99cd4d553f05d496df7c5127",
+        "article.zh.md": "00e69e069618f7f02b08990df32fb41e03cdc92c151cef3ebcbce9923da077df",
+        "article.en.md": "01a14a77fddebfdc734535b36d5b99539f273de47355d6710587f0a741772d55",
+        "meta.json": "ec15d1c5eac1f21a1efa2e608673c932b2a023e701685cd9b7c08e0a5943a7be",
+        "glossary.json": "4b0ab85bc02c51ecb1f6213ff8f5a459f27cfc3112076698663840c0cbd44bd5",
+        "calculations.json": "015cb631c37099fa3b9a72b02e9dc6acf86e0652948c0f9c05a4e40b495687a9"
+      },
+      "inputs": "3DES 三重数据加密 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "observed": {
+        "id": "algorithm--3des-r139-formal",
+        "passed": true,
+        "kind": "formal-structure-check",
+        "formula": "C=\\mathrm{DES}_K(P),\\quad |P|=|C|=64"
+      },
+      "contentSha256": "c1e54603865255b7a2ba7b8e64be5d32658541b5758228ec4309236ed0f1ffc1",
+      "sourcesSha256": "6d86a9e93acc4ee0fc4b19c1f8c154d80a96f7fff272a2ac09f5272f0ff599ef",
+      "executedOn": "2026-11-25T07:27:57.053Z"
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "algorithm--poly1305-details",
+  "sources": [
+    {
+      "id": "algorithm--poly1305-wikipedia",
+      "title": "Wikipedia search entry for Poly1305 通用 MAC",
+      "url": "https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: Poly1305 通用 MAC",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "algorithm--poly1305-r139-principle",
+          "entryId": "algorithm--poly1305-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：Poly1305 通用 MAC（Poly1305）。§2.5 一语道破输入输出：「Poly1305 is a one-time authenticator designed by D.J.Bernstein.Poly1305 takes a 32-byte one-time key and a message and produces a 16-byte tag.This tag is used to authenticate the message.」关键限定词是 one-time：它不是可反复使用的 MAC 密钥，而是每条消息一个新的 32 字节输入。",
+            "en": "**Algorithm**: Poly1305 (Poly1305 通用 MAC).Section 2.5 states the interface outright: \"Poly1305 is a one-time authenticator designed by D."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--poly1305-r139-why",
+          "entryId": "algorithm--poly1305-details",
+          "section": "why",
+          "statement": {
+            "zh": "为什么要改写原作者的构造，§2.5 交代了原型的成本：那版 MAC 需要一把 AES 密钥、一把附加密钥与一个非秘密的 128 位 nonce（`附加密钥`一词在留存件里带 ASCII 引号，故此处不逐字引用），并解释 AES 的角色：「AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string」。RFC 8439 的目标正是去掉对 AES 的依赖，把一次性密钥的生成交给 ChaCha20，让没有硬件 AES 的平台也能安全使用。",
+            "en": "Why the IETF rewrote the original: §2.5 records what the prototype cost - it lists an AES key, an additional key and a non-secret 128-bit nonce (the phrase for the additional key carries ASCII quotes in the retained file, so it is not quoted verbatim here) - and explains the AES role: \"AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string\".RFC 8439 removes that AES dependence by deriving the one-time key from ChaCha20, so platforms without hardware AES can still use it safely."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--poly1305-r139-used",
+          "entryId": "algorithm--poly1305-details",
+          "section": "used",
+          "statement": {
+            "zh": "用法与 ChaCha20 绑定（§2.6 与其小节 §2.6.2）：AEAD 构造里先跑一遍块函数，「And that output is also the 32-byte one-time key used for Poly1305.」同一节给出会话密钥的取法：「The 256-bit session integrity key is used as the ChaCha20 key.」也即部署时的正确姿势是密钥分层——协议提供 256 位完整性密钥，ChaCha20 用它派生每条消息的一次性 Poly1305 密钥。",
+            "en": "Usage is bound to ChaCha20: in the AEAD construction of §2.6 and its subsection §2.6.2 the first block-function output is reused, \"And that output is also the 32-byte one-time key used for Poly1305.\", and the same section fixes the keying: \"The 256-bit session integrity key is used as the ChaCha20 key.\" So a deployment layers its keys - the protocol supplies a 256-bit integrity key and ChaCha20 derives a per-message Poly1305 key from it.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--poly1305-r139-broken",
+          "entryId": "algorithm--poly1305-details",
+          "section": "broken",
+          "statement": {
+            "zh": "限度写在 §2.6.2 里，直白得很：「Poly1305 is not a suitable choice for a PRF.Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key.Additionally, unlike HMAC, Poly1305 is biased, so using it for key derivation would reduce the security of the symmetric encryption.」两条后果清楚：密钥重用即失守；它不能当伪随机函数或密钥派生用。",
+            "en": "The limit is stated plainly in §2.6.2: \"Poly1305 is not a suitable choice for a PRF.Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--poly1305-r139-history",
+          "entryId": "algorithm--poly1305-details",
+          "section": "history",
+          "statement": {
+            "zh": "沿革在 §2.5 以对照方式印出：原文标题指向 Poly1305-AES 论文（标题在留存件里带 ASCII 引号，故不逐字引用），并说明那版需要 AES 与两份 128 位密钥材料；RFC 8439 把它改写成不依赖 AES 的一次性认证器，并纳入 ChaCha20 的 AEAD 构造。头部印作 Request for Comments: 8439、Category: Informational、August 2018，作者 Nir 与 Woodbury（头部信息复述于引号外）。**技术参数与复算边界**\n\n本条的形式模型是 \\(T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\)。输入：输入：Poly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+            "en": "The lineage is printed alongside the definition in §2.5: the original article title (which carries ASCII quotes in the source and is therefore not quoted here) names Poly1305-AES and needs AES plus two 128-bit key materials; RFC 8439 recast it as an AES-free one-time authenticator inside the ChaCha20 AEAD construction.The header prints Request for Comments: 8439, Category: Informational, August 2018, by Nir and Woodbury (header furniture stays outside the quotes)."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        },
+        {
+          "id": "algorithm--poly1305-r139-refs",
+          "entryId": "algorithm--poly1305-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for Poly1305 通用 MAC.https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for Poly1305 通用 MAC.https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "algorithm--poly1305-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "algorithm--poly1305-wikipedia"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "algorithm--poly1305-r139-principle",
+      "entryId": "algorithm--poly1305-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：Poly1305 通用 MAC（Poly1305）。§2.5 一语道破输入输出：「Poly1305 is a one-time authenticator designed by D.J.Bernstein.Poly1305 takes a 32-byte one-time key and a message and produces a 16-byte tag.This tag is used to authenticate the message.」关键限定词是 one-time：它不是可反复使用的 MAC 密钥，而是每条消息一个新的 32 字节输入。",
+        "en": "**Algorithm**: Poly1305 (Poly1305 通用 MAC).Section 2.5 states the interface outright: \"Poly1305 is a one-time authenticator designed by D."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-r139-why",
+      "entryId": "algorithm--poly1305-details",
+      "section": "why",
+      "statement": {
+        "zh": "为什么要改写原作者的构造，§2.5 交代了原型的成本：那版 MAC 需要一把 AES 密钥、一把附加密钥与一个非秘密的 128 位 nonce（`附加密钥`一词在留存件里带 ASCII 引号，故此处不逐字引用），并解释 AES 的角色：「AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string」。RFC 8439 的目标正是去掉对 AES 的依赖，把一次性密钥的生成交给 ChaCha20，让没有硬件 AES 的平台也能安全使用。",
+        "en": "Why the IETF rewrote the original: §2.5 records what the prototype cost - it lists an AES key, an additional key and a non-secret 128-bit nonce (the phrase for the additional key carries ASCII quotes in the retained file, so it is not quoted verbatim here) - and explains the AES role: \"AES is used there for encrypting the nonce, so as to get a unique (and secret) 128-bit string\".RFC 8439 removes that AES dependence by deriving the one-time key from ChaCha20, so platforms without hardware AES can still use it safely."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-r139-used",
+      "entryId": "algorithm--poly1305-details",
+      "section": "used",
+      "statement": {
+        "zh": "用法与 ChaCha20 绑定（§2.6 与其小节 §2.6.2）：AEAD 构造里先跑一遍块函数，「And that output is also the 32-byte one-time key used for Poly1305.」同一节给出会话密钥的取法：「The 256-bit session integrity key is used as the ChaCha20 key.」也即部署时的正确姿势是密钥分层——协议提供 256 位完整性密钥，ChaCha20 用它派生每条消息的一次性 Poly1305 密钥。",
+        "en": "Usage is bound to ChaCha20: in the AEAD construction of §2.6 and its subsection §2.6.2 the first block-function output is reused, \"And that output is also the 32-byte one-time key used for Poly1305.\", and the same section fixes the keying: \"The 256-bit session integrity key is used as the ChaCha20 key.\" So a deployment layers its keys - the protocol supplies a 256-bit integrity key and ChaCha20 derives a per-message Poly1305 key from it.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-r139-broken",
+      "entryId": "algorithm--poly1305-details",
+      "section": "broken",
+      "statement": {
+        "zh": "限度写在 §2.6.2 里，直白得很：「Poly1305 is not a suitable choice for a PRF.Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key.Additionally, unlike HMAC, Poly1305 is biased, so using it for key derivation would reduce the security of the symmetric encryption.」两条后果清楚：密钥重用即失守；它不能当伪随机函数或密钥派生用。",
+        "en": "The limit is stated plainly in §2.6.2: \"Poly1305 is not a suitable choice for a PRF.Poly1305 prohibits using the same key twice, whereas the PRF in IKEv2 is used multiple times with the same key."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-r139-history",
+      "entryId": "algorithm--poly1305-details",
+      "section": "history",
+      "statement": {
+        "zh": "沿革在 §2.5 以对照方式印出：原文标题指向 Poly1305-AES 论文（标题在留存件里带 ASCII 引号，故不逐字引用），并说明那版需要 AES 与两份 128 位密钥材料；RFC 8439 把它改写成不依赖 AES 的一次性认证器，并纳入 ChaCha20 的 AEAD 构造。头部印作 Request for Comments: 8439、Category: Informational、August 2018，作者 Nir 与 Woodbury（头部信息复述于引号外）。**技术参数与复算边界**\n\n本条的形式模型是 \\(T=\\mathrm{MAC}_K(M),\\quad \\Pr[\\mathrm{Forge}]\\le\\varepsilon(\\lambda)\\)。输入：输入：Poly1305 通用 MAC的公开参数、密钥/随机数与消息；变量说明：K 共享密钥，M 消息，T 认证标签。",
+        "en": "The lineage is printed alongside the definition in §2.5: the original article title (which carries ASCII quotes in the source and is therefore not quoted here) names Poly1305-AES and needs AES plus two 128-bit key materials; RFC 8439 recast it as an AES-free one-time authenticator inside the ChaCha20 AEAD construction.The header prints Request for Comments: 8439, Category: Informational, August 2018, by Nir and Woodbury (header furniture stays outside the quotes)."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    },
+    {
+      "id": "algorithm--poly1305-r139-refs",
+      "entryId": "algorithm--poly1305-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for Poly1305 通用 MAC.https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for Poly1305 通用 MAC.https://zh.wikipedia.org/w/index.php?search=Poly1305%20%E9%80%9A%E7%94%A8%20MAC\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "algorithm--poly1305-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

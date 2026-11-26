@@ -1,0 +1,350 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-25",
+  "scope": "Full Camellia algorithm article only; no completion claim for AES, SEED, MISTY1, CAST-128, CMS, OpenPGP, TLS, ISO/IEC 18033-3 as a whole, modes of operation, key management, implementations or the whole library.",
+  "entries": [
+    {
+      "id": "camellia-details",
+      "inventoryIds": [
+        "algorithm--camellia"
+      ],
+      "coverage": "catalog-entry",
+      "coverageRationale": {
+        "zh": "专门解释 Camellia 这一种 128 位 Feistel 分组密码：128/192/256 位密钥、18/24 轮、FL/FL^-1 层、F/S/P 组件、四个 S-box、KL/KR/KA/KB 与 Sigma 密钥调度、官方附录 B 的三组向量、CMS/OpenPGP/TLS 使用及其现行限制；不把 AES、SEED、MISTY1、CAST-128、CMS/OpenPGP/TLS 协议或工作模式并入本实体。",
+        "en": "Covers the Camellia 128-bit Feistel block cipher: 128/192/256-bit keys, 18/24 rounds, FL/FL^-1 layers, F/S/P components, four S-boxes, the KL/KR/KA/KB and Sigma key schedule, the three Appendix B vectors, CMS/OpenPGP/TLS use and current limitations. It does not absorb AES, SEED, MISTY1, CAST-128, the CMS/OpenPGP/TLS protocols, modes of operation or the whole library."
+      },
+      "title": {
+        "zh": "Camellia：18/24 轮 Feistel 分组密码",
+        "en": "Camellia: an 18/24-round Feistel block cipher"
+      },
+      "claimIds": [
+        "algorithm--camellia-r139-principle",
+        "algorithm--camellia-r139-why",
+        "algorithm--camellia-r139-used",
+        "algorithm--camellia-r139-broken",
+        "algorithm--camellia-r139-history",
+        "algorithm--camellia-r139-refs"
+      ],
+      "calculationIds": [
+        "camellia-calc-spec-vectors",
+        "camellia-calc-key-schedule",
+        "camellia-calc-sboxes-fl",
+        "camellia-calc-roundtrip",
+        "algorithm--camellia-r139-formal"
+      ],
+      "sourceIds": [
+        "algorithm--camellia-wikipedia",
+        "algorithm--camellia-reference-ref"
+      ],
+      "related": [
+        "algorithm--aes",
+        "seed",
+        "kasumi"
+      ],
+      "relatedPolicy": "These are distinct catalog entities. They are linked for context only and are not aliases, merged identities or completed by this article.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Camellia 加密算法（Camellia）。Camellia 是 NTT 与三菱电机在 2000 年联合设计的 128 位分组密码，密钥长度为 128、192 或 256 位，接口与 AES 相同：固定 128 位块，三种密钥长度。它采用 Feistel 结构：128 位密钥运行 18 轮，192 位和 256 位密钥运行 24 轮；每 6 轮之后插入一层 FL/FL^-1，并在「before the first round and after the last round」（第一轮之前与最后一轮之后）各做一次 128 位白化。以 128 位密钥为例，数据通路是：\n\n```text\nM = L0 || R0\nL0 || R0 = M XOR (kw1 || kw2)\nfor r = 1..18, except r = 6, 12:\n  Lr = R(r-1) XOR F(L(r-1), kr)\n  Rr = L(r-1)\nfor r = 6, 12:\n  Lr' = R(r-1) XOR F(L(r-1), kr)\n  Rr' = L(r-1)\n  Lr = FL(Lr', ke(2r/6 - 1))\n  Rr = FL^-1(Rr', ke(2r/6))\nC = (R18 || L18) XOR (kw3 || kw4)\n```\n\n192/256 位密钥把 18 轮换成 24 轮，并在第 6、12、18 轮后各插入一层 FL/FL^-1（ke1..ke6），最后得到 `C = (R24 || L24) XOR (kw3 || kw4)`。解密使用同一数据通路，只需把子密钥顺序倒过来：kw1 与 kw3、kw2 与 kw4、k1 与 kn、k2 与 k(n-1)，其余轮子密钥和 FL 层子密钥也按相反顺序使用。F 函数是 `F(X, k) = P(S(X XOR k))`。S 把 64 位输入按字节依次送入 s1、s2、s3、s4、s2、s3、s4、s1；P 对八个字节做固定线性组合：\n\n```text\nz'1 = z1 XOR z3 XOR z4 XOR z6 XOR z7 XOR z8\nz'2 = z1 XOR z2 XOR z4 XOR z5 XOR z7 XOR z8\nz'3 = z1 XOR z2 XOR z3 XOR z5 XOR z6 XOR z8\nz'4 = z2 XOR z3 XOR z4 XOR z5 XOR z6 XOR z7\nz'5 = z1 XOR z2 XOR z6 XOR z7 XOR z8\nz'6 = z2 XOR z3 XOR z5 XOR z7 XOR z8\nz'7 = z3 XOR z4 XOR z5 XOR z6 XOR z8\nz'8 = z1 XOR z4 XOR z5 XOR z6 XOR z7\n```\n\nFL 与 FL^-1 在 32 位半字上工作。设输入为 `XL || XR`，子密钥为 `klL || klR`：\n\n```text\nFL:   YR = ((XL & klL) <<< 1) XOR XR\n      YL = (YR | klR) XOR XL\nFL^-1: XL = (YR | klR) XOR YL\n       XR = ((XL & klL) <<< 1) XOR YR\n```\n\n其中 `<<<` 是 32 位循环左移，`&`、`|`、`XOR` 分别是按位与、或、异或。FL 与 FL^-1 互为逆运算，它们把密钥相关的一位旋转和 OR 混入数据，是 Camellia 每 6 轮插入的密钥相关层。S-box 有四个：s1 是 256 字节表，s2(x)=s1(x) 循环左移 1 位，s3(x)=s1(x) 循环左移 7 位（等价于右移 1 位），s4(x)=s1(x 循环左移 1 位)，所有旋转都在 8 位内完成。官方规范还给出 s1 的代数形式 `s1(x)=h(g(f(0xC5 XOR x))) XOR 0x6E`，其中 f、h 是仿射映射，g 是 GF(2^8) 上的求逆（规定 1/0=0），域由 `beta^8+beta^6+beta^5+beta^3+1=0` 定义。规范表 4 到表 7 给出四个 S-box 的全部 256 项。密钥调度把密钥写成 KL、KR，再导出 KA、KB 和子密钥。三种密钥长度的定义不同：\n\n- 128 位：KL=K，KR=0。- 192 位：KL 是最左 128 位；KR 是最右 64 位与它的按位补码拼接，即 `KR = (K[128..191] || ~K[128..191])`。- 256 位：KL 是最左 128 位，KR 是最右 128 位。KA 与 KB 用 F 函数和六个 64 位常数 Sigma1..Sigma6 导出：\n\n```text\nD1 || D2 = KL XOR KR\nD2 = D2 XOR F(D1, Sigma1)\nD1 = D1 XOR F(D2, Sigma2)\nD1 = D1 XOR high64(KL)\nD2 = D2 XOR low64(KL)\nD2 = D2 XOR F(D1, Sigma3)\nD1 = D1 XOR F(D2, Sigma4)\nKA = D1 || D2\nD1 || D2 = KA XOR KR\nD2 = D2 XOR F(D1, Sigma5)\nD1 = D1 XOR F(D2, Sigma6)\nKB = D1 || D2\n```\n\n```text\nSigma1 = A09E667F3BCC908B\nSigma2 = B67AE8584CAA73B2\nSigma3 = C6EF372FE94F82BE\nSigma4 = 54FF53A5F1D36F1C\nSigma5 = 10E527FADE682D1D\nSigma6 = B05688C2B3E6C1FD\n```\n\n规范把它们定义为第 1 到第 6 个素数的「the hexadecimal representation of the square root of the」（平方根的十六进制表示）中，从小数点后第二位开始的连续 16 个十六进制位。子密钥是 KL、KR、KA、KB 的 128 位循环左移结果的左半或右半。128 位密钥生成 4 个白化子密钥 kw1..kw4、18 个轮子密钥 k1..k18、4 个 FL 层子密钥 ke1..ke4；192/256 位密钥生成 4 个 kw、24 个 k、6 个 ke。规范表 2 和表 3 列出每个子密钥的旋转量与取半规则；例如 128 位密钥的 `kw1 = high64(KL<<<0)`、`kw2 = low64(KL<<<0)`、`k1 = high64(KA<<<0)`、`k2 = low64(KA<<<0)`，`k10` 只取 `KL<<<60` 的右半，`kw3/kw4` 取 `KA<<<111` 的左右两半。192/256 位密钥的 `kw3/kw4` 改取 `KB<<<111`（128 位取 `KA<<<111`），而 `k23/k24` 与 128 位的 `k17/k18` 一样取 `KL<<<111`。192 位密钥的 KR 右半是最右 64 位的按位补码，这是规范规定的密钥构造，不是实现可以省略的步骤；若把 KR 当成普通右 128 位，24 轮子密钥会全部出错。",
+          "why": "RFC 3713 把 Camellia 的设计目标写成：「for both software and hardware implementations」（同时适合软件与硬件实现），可用于 32 位处理器、8 位处理器、智能卡、密码硬件和嵌入式系统；它的密钥建立时间很短，密钥敏捷性（key agility）优于 AES。RFC 还说明 Camellia 与 AES 具有相同的 128 位「block and 128/192/256-bit」（块与 128/192/256 位）密钥接口，但它是另一种算法。Camellia 在标准化评估中获得过明确认可：NESSIE 项目把它选为推荐的密码原语，日本 CRYPTREC 把它「in the list of cryptographic techniques for」（列入密码技术清单）用于电子政务系统。ISO/IEC 18033-3:2010 又把它与 AES、SEED 一起列为 128 位分组密码，该版本在 2025 年仍被确认有效。RFC 3713 第 4 节说，设计者用「state-of-the-art cryptanalytic techniques」（当时最先进的密码分析技术）评估 Camellia，确认不存在概率超过 2^-128 的差分或线性特征，因此差分和线性攻击对完整 18 轮 Camellia 极不可能成功；它还声称设计考虑了高阶差分、插值、相关密钥和截断差分等攻击。本文把这些表述当作设计者和 RFC 的评估，而不是对全部攻击的证明。与 AES 相比，Camellia 适合 8 位和 32 位平台实现，且密钥建立时间很短；本文把 Camellia 视为与 AES 并列的另一种算法，而不是替代标准。二者不能互换使用：协议中的算法标识和测试向量不同，虽然都支持 128/192/256 位密钥。",
+          "used": "CMS：RFC 3657（2004 年 1 月，Standards Track）规定 Camellia 在 CMS 中的内容加密和密钥包装用法。内容加密 OID 为 `id-camellia128-cbc`、`id-camellia192-cbc`、`id-camellia256-cbc`，使用 CBC 模式和 16 字节 IV，AlgorithmIdentifier 的 parameters 必须包含 IV。密钥包装 OID 为 `id-camellia128-wrap`、`id-camellia192-wrap`、`id-camellia256-wrap`，其 parameters 必须省略；包装算法与 RFC 3394 的 AES 密钥包装相同，只把 AES 换成 Camellia。OID 给出 KEK 的密钥长度，但不限制被包装 CEK 的长度；实现必须支持 KEK 与 CEK 等长，若支持不同长度，KEK 必须不短于 CEK。OpenPGP：RFC 5581（2009 年 6 月，Informational，Updates RFC 4880）把 Camellia 引入 OpenPGP，分配对称算法编号 11（128 位）、12（192 位）、13（256 位），并规定实现可以（MAY）实现 Camellia。RFC 9580（2024 年 7 月，Standards Track）废止了 RFC 4880、RFC 5581 和 RFC 6637，但在第 9.3 节的对称算法表中保留 11、12、13 三个 Camellia 编号；它要求实现必须实现 AES-128、应当实现 AES-256，并规定不得用 IDEA、TripleDES 或 CAST5 加密数据，同时允许实现任何其他算法。因此 Camellia 在现行 OpenPGP 中是可选算法，不是被禁止的遗留算法。TLS：RFC 5932（2010 年 6 月，Standards Track，废止 RFC 4132）定义 24 个 Camellia CBC 套件：128 位和 256 位密钥各 12 个，使用 128 位 IV。12 个 `_SHA` 套件使用 HMAC-SHA1，可用于 TLS 1.1 及更早版本；12 个 `_SHA256` 套件使用 HMAC-SHA-256，不得在 TLS 1.1 及更早版本协商，即要求 TLS 1.2 或更高。RFC 6367（2011 年 9 月，Informational）再增加 42 个 Camellia 套件，包括 CBC 和 GCM 两类，覆盖 RSA、DHE、ECDHE、PSK 等密钥交换。RFC 8996（2021 年 3 月，BCP 195）弃用 TLS 1.0 和 TLS 1.1，并在其 Updates 列表中包含 RFC 6367。RFC 6367 的 GCM 套件基于 TLS 1.2；因此这些 Camellia 套件的现行建议版本是 TLS 1.2，`_SHA` CBC 套件在 TLS 1.1 及更早的用法已被 BCP 195 弃用。RFC 8446（TLS 1.3）附录 B.4 只定义 5 个基于 AEAD 的套件（AES-128-GCM、AES-256-GCM、ChaCha20-Poly1305、AES-128-CCM、AES-128-CCM-8），没有 Camellia 套件；本文不声称 Camellia 可用于 TLS 1.3。测试向量：官方规范附录 B 给出三组单块向量，三组明文都是 `0123456789abcdeffedcba9876543210`：\n\n```text\n128 位密钥 = 0123456789abcdeffedcba9876543210\n密文       = 67673138549669730857065648eabe43\n\n192 位密钥 = 0123456789abcdeffedcba98765432100011223344556677\n密文       = b4993401b3e996f84ee5cee7d79b09b9\n\n256 位密钥 = 0123456789abcdeffedcba987654321000112233445566778899aabbccddeeff\n密文       = 9acc237dff16d76c20ef7c919e3a7509\n```\n\n本文的教学实现完整复现这三组向量，并验证解密返回原明文；128 位密钥走 18 轮、两层 FL，192/256 位密钥走 24 轮、三层 FL。",
+          "broken": "RFC 3713 的安全性表述是设计者的评估：它说 Camellia 不存在概率超过 2^-128 的差分或线性特征，并说设计考虑了高阶差分、插值、相关密钥和截断差分等攻击。这是 2004 年 RFC 的评估，不是对全部攻击模型的形式化证明，也不保证未来不会出现更好的分析方法。本文不把 RFC 3713 的差分/线性评估扩大成对全部攻击模型的绝对安全结论，也不引用未经本文核实的攻击论文来宣称 Camellia 已被攻破。192 位密钥的 KR 右半是右 64 位的按位补码，这是规范规定的密钥构造，不是实现可以省略的步骤；它意味着 192 位密钥的密钥材料不能按普通 256 位密钥的右 128 位来处理，实现若忽略补码步骤会得到错误子密钥。本文用 192 位官方向量验证这一细节。Camellia 在协议中的现行位置需要区分：OpenPGP 仍保留 Camellia 编号，但它是可选算法；CMS 的 Camellia OID 仍是 Standards Track 规范的一部分；TLS 的 Camellia CBC 套件分为 `_SHA` 与 `_SHA256` 两组，前者可用于 TLS 1.1 及更早，后者要求 TLS 1.2 或更高；TLS 1.0/1.1 已被 BCP 195 弃用，TLS 1.3 没有 Camellia 套件。把`曾被标准化`当成`在最新协议中默认可用`是不准确的。实现层面，本文的教学实现按字节查 S-box 表，不是常量时间实现，缓存和时序可能泄露与密钥相关的访问模式；它不生成密钥，不实现工作模式、IV 管理、填充、完整性保护或侧信道防护，不能用于保护真实数据。Camellia 只定义分组密码，协议层必须自己处理这些事项。",
+          "history": "Camellia 由 NTT 与三菱电机联合开发；官方规范《Specification of Camellia -- a 128-bit Block Cipher》由 K.Aoki、T.Ichikawa、M.Kanda、M.Matsui、S.Moriai、J.Nakajima 和 T.Tokita 署名，日期为 2000 年 7 月 12 日。规范描述 128 位块、128/192/256 位密钥、18/24 轮 Feistel 结构、FL/FL^-1 层、四个 S-box、密钥调度和附录 B 测试数据。RFC 3713 由 M.Matsui、J.Nakajima 和 S.Moriai 在 2004 年 4 月发表，类别是 Informational；它把 Camellia 描述为 128 位块、128/192/256 位密钥的分组密码，并分别给出密钥调度和数据随机化两部分。RFC 3657 在 2004 年 1 月以 Standards Track 规定 CMS 用法；RFC 4132 曾为 TLS 定义 Camellia 套件，2010 年被 RFC 5932 废止并扩展；RFC 5581 在 2009 年把 Camellia 引入 OpenPGP，2024 年被 RFC 9580 废止但在新规范中保留算法编号；RFC 6367 在 2011 年增加 42 个 Camellia 套件（CBC 与 GCM）。ISO/IEC 18033-3:2010 第二版把 Camellia 列为 128 位分组密码，与 AES、SEED 并列；同一标准的 64 位分组密码部分列出 TDEA、MISTY1、CAST-128 和 HIGHT。ISO 页面显示该标准在 2025 年 9 月仍被确认有效。本文的 Camellia 实体只指这一种分组密码；AES、SEED、MISTY1、CAST-128 是其他实体，CMS、OpenPGP、TLS 是使用 Camellia 的协议，ISO/IEC 18033-3 是把它标准化的文件，不是算法本身。",
+          "refs": "- Wikipedia search entry for Camellia 加密算法. https://zh.wikipedia.org/w/index.php?search=Camellia%20%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**复算示例**\n\nCamellia-128 示例：密钥 `0123456789abcdeffedcba9876543210`，明文同值，密文 `67673138549669730857065648eabe43`。18 轮 Feistel，含 FL/FL^-1 变换。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Camellia (Camellia 加密算法). Camellia is a 128-bit block cipher developed jointly by NTT and Mitsubishi Electric in 2000. It takes 128-, 192- or 256-bit keys and has the same interface as AES: a fixed 128-bit block and three key lengths. It uses a Feistel structure: 128-bit keys run 18 rounds and 192/256-bit keys run 24 rounds, with an FL/FL^-1 layer after every six rounds and 128-bit whitening \"before the first round and after the last round\". For a 128-bit key the data path is:\n\n```text\nM = L0 || R0\nL0 || R0 = M XOR (kw1 || kw2)\nfor r = 1..18, except r = 6, 12:\n  Lr = R(r-1) XOR F(L(r-1), kr)\n  Rr = L(r-1)\nfor r = 6, 12:\n  Lr' = R(r-1) XOR F(L(r-1), kr)\n  Rr' = L(r-1)\n  Lr = FL(Lr', ke(2r/6 - 1))\n  Rr = FL^-1(Rr', ke(2r/6))\nC = (R18 || L18) XOR (kw3 || kw4)\n```\n\nA 192/256-bit key replaces the 18 rounds with 24 and inserts an FL/FL^-1 layer after rounds 6, 12 and 18 (ke1..ke6), ending with `C = (R24 || L24) XOR (kw3 || kw4)`. Decryption uses the same data path with the subkeys reversed: kw1 with kw3, kw2 with kw4, k1 with kn, k2 with k(n-1), and the remaining round and FL-layer subkeys in reverse order. The F function is `F(X, k) = P(S(X XOR k))`. S maps the eight input bytes through s1, s2, s3, s4, s2, s3, s4 and s1 in that order; P applies fixed linear combinations to the eight bytes:\n\n```text\nz'1 = z1 XOR z3 XOR z4 XOR z6 XOR z7 XOR z8\nz'2 = z1 XOR z2 XOR z4 XOR z5 XOR z7 XOR z8\nz'3 = z1 XOR z2 XOR z3 XOR z5 XOR z6 XOR z8\nz'4 = z2 XOR z3 XOR z4 XOR z5 XOR z6 XOR z7\nz'5 = z1 XOR z2 XOR z6 XOR z7 XOR z8\nz'6 = z2 XOR z3 XOR z5 XOR z7 XOR z8\nz'7 = z3 XOR z4 XOR z5 XOR z6 XOR z8\nz'8 = z1 XOR z4 XOR z5 XOR z6 XOR z7\n```\n\nFL and FL^-1 operate on 32-bit halves. Let the input be `XL || XR` and the subkey be `klL || klR`:\n\n```text\nFL:   YR = ((XL & klL) <<< 1) XOR XR\n      YL = (YR | klR) XOR XL\nFL^-1: XL = (YR | klR) XOR YL\n       XR = ((XL & klL) <<< 1) XOR YR\n```\n\nHere `<<<` is a 32-bit left rotation and `&`, `|` and `XOR` are bitwise AND, OR and exclusive-or. FL and FL^-1 are inverses; they mix a key-dependent one-bit rotation and OR into the data and form the key-dependent layer inserted every six rounds. There are four S-boxes: s1 is a 256-byte table, s2(x)=s1(x) rotated left by 1, s3(x)=s1(x) rotated left by 7 (equivalent to a right rotation by 1), and s4(x)=s1(x rotated left by 1); all rotations are within 8 bits. The specification also gives the algebraic form `s1(x)=h(g(f(0xC5 XOR x))) XOR 0x6E`, where f and h are affine maps and g is inversion in GF(2^8) with 1/0 defined as 0, over the field defined by `beta^8+beta^6+beta^5+beta^3+1=0`. Tables 4 to 7 of the specification list all 256 entries of the four S-boxes. The key schedule writes the key as KL and KR and derives KA, KB and the subkeys. The three key lengths differ:\n\n- 128-bit: KL=K, KR=0. - 192-bit: KL is the leftmost 128 bits; KR is the rightmost 64 bits concatenated with their bitwise complement, `KR = (K[128..191] || ~K[128..191])`. - 256-bit: KL is the leftmost 128 bits and KR is the rightmost 128 bits. KA and KB are derived with F and six 64-bit constants Sigma1..Sigma6:\n\n```text\nD1 || D2 = KL XOR KR\nD2 = D2 XOR F(D1, Sigma1)\nD1 = D1 XOR F(D2, Sigma2)\nD1 = D1 XOR high64(KL)\nD2 = D2 XOR low64(KL)\nD2 = D2 XOR F(D1, Sigma3)\nD1 = D1 XOR F(D2, Sigma4)\nKA = D1 || D2\nD1 || D2 = KA XOR KR\nD2 = D2 XOR F(D1, Sigma5)\nD1 = D1 XOR F(D2, Sigma6)\nKB = D1 || D2\n```\n\nThe six constants are:\n\n```text\nSigma1 = A09E667F3BCC908B\nSigma2 = B67AE8584CAA73B2\nSigma3 = C6EF372FE94F82BE\nSigma4 = 54FF53A5F1D36F1C\nSigma5 = 10E527FADE682D1D\nSigma6 = B05688C2B3E6C1FD\n```\n\nThe specification defines them as the 16 consecutive hexadecimal digits starting at the second hexadecimal place after the point in \"the hexadecimal representation of the square root of the\" first through sixth primes. The subkeys are the left or right halves of 128-bit rotations of KL, KR, KA and KB. A 128-bit key produces four whitening subkeys kw1..kw4, eighteen round subkeys k1..k18 and four FL-layer subkeys ke1..ke4; 192/256-bit keys produce four kw, twenty-four k and six ke. Tables 2 and 3 of the specification list the rotation amount and half selection for every subkey; for example, with a 128-bit key `kw1 = high64(KL<<<0)`, `kw2 = low64(KL<<<0)`, `k1 = high64(KA<<<0)` and `k2 = low64(KA<<<0)`, `k10` is only the right half of `KL<<<60`, and `kw3/kw4` are the two halves of `KA<<<111`. For 192/256-bit keys `kw3/kw4` come from `KB<<<111` instead of the 128-bit `KA<<<111`, while `k23/k24` come from `KL<<<111` just like the 128-bit `k17/k18`. The right half of KR for a 192-bit key is the bitwise complement of the rightmost 64 bits. This is a specified key construction, not an optional implementation step; treating KR as an ordinary right 128-bit half produces incorrect subkeys for all 24 rounds.",
+          "why": "RFC 3713 states the design goals as follows: Camellia is suitable \"for both software and hardware implementations\", including 32-bit processors, 8-bit processors, smart cards, cryptographic hardware and embedded systems; its key setup time is excellent and its key agility is superior to AES. The RFC also notes that Camellia has the same 128-bit \"block and 128/192/256-bit\" key interface as AES, but is a different algorithm.\n\nCamellia received explicit recognition in standardization evaluations: the NESSIE project selected it as a recommended cryptographic primitive, and Japan's CRYPTREC included it \"in the list of cryptographic techniques for\" e-Government systems. ISO/IEC 18033-3:2010 lists it with AES and SEED among 128-bit block ciphers, and that edition was still confirmed as current in 2025.\n\nRFC 3713 Section 4 says the designers evaluated Camellia with \"state-of-the-art cryptanalytic techniques\" and confirmed that no differential or linear characteristic holds with probability greater than 2^-128, so differential and linear attacks are extremely unlikely to succeed against the full 18-round Camellia; it also says the design addresses higher-order differential, interpolation, related-key and truncated differential attacks. This article treats those statements as the designers' and RFC's assessment, not as a proof against every attack.\n\nCompared with AES, Camellia is suitable for 8-bit and 32-bit implementations and has excellent key setup time. This article treats Camellia as a separate algorithm alongside AES, not a replacement standard; the two are not interchangeable because their algorithm identifiers and test vectors differ, although both support 128/192/256-bit keys.",
+          "used": "CMS: RFC 3657 (January 2004, Standards Track) specifies Camellia for CMS content encryption and key wrapping. The content-encryption OIDs are `id-camellia128-cbc`, `id-camellia192-cbc` and `id-camellia256-cbc`, using CBC with a 16-byte IV; the AlgorithmIdentifier parameters MUST contain the IV. The key-wrap OIDs are `id-camellia128-wrap`, `id-camellia192-wrap` and `id-camellia256-wrap`, whose parameters MUST be absent; wrapping is identical to RFC 3394 AES key wrap with AES replaced by Camellia. The OID gives the KEK length but does not constrain the wrapped CEK length; implementations MUST support equal KEK and CEK lengths, and if different lengths are supported the KEK MUST be at least as long as the CEK.\n\nOpenPGP: RFC 5581 (June 2009, Informational, Updates RFC 4880) introduced Camellia into OpenPGP, assigned symmetric-algorithm numbers 11 (128-bit), 12 (192-bit) and 13 (256-bit), and specified that implementations MAY implement Camellia. RFC 9580 (July 2024, Standards Track) obsoletes RFC 4880, RFC 5581 and RFC 6637 but keeps Camellia numbers 11, 12 and 13 in the Section 9.3 symmetric-algorithm table; it requires AES-128, recommends AES-256, prohibits encryption with IDEA, TripleDES or CAST5, and permits any other algorithm. Camellia is therefore an optional current OpenPGP algorithm, not a prohibited legacy one.\n\nTLS: RFC 5932 (June 2010, Standards Track, obsoletes RFC 4132) defines 24 Camellia CBC cipher suites, 12 each for 128-bit and 256-bit keys, using a 128-bit IV. The 12 `_SHA` suites use HMAC-SHA1 and may be used with TLS 1.1 and earlier; the 12 `_SHA256` suites use HMAC-SHA-256 and MUST NOT be negotiated by TLS 1.1 or earlier, i.e., they require TLS 1.2 or later. RFC 6367 (September 2011, Informational) adds 42 Camellia suites, covering CBC and GCM and key exchanges including RSA, DHE, ECDHE and PSK. RFC 8996 (March 2021, BCP 195) deprecates TLS 1.0 and TLS 1.1 and lists RFC 6367 among the documents it updates. RFC 6367's GCM suites target TLS 1.2, so the current recommended version for these Camellia suites is TLS 1.2, while the `_SHA` CBC suites' use with TLS 1.1 and earlier is deprecated by BCP 195. RFC 8446 (TLS 1.3) Appendix B.4 defines only five AEAD-based suites (AES-128-GCM, AES-256-GCM, ChaCha20-Poly1305, AES-128-CCM and AES-128-CCM-8), with no Camellia suite; this article does not claim Camellia support in TLS 1.3.\n\nTest vectors: Appendix B of the official specification gives three single-block vectors, all with plaintext `0123456789abcdeffedcba9876543210`:\n\n```text\n128-bit key = 0123456789abcdeffedcba9876543210\nciphertext  = 67673138549669730857065648eabe43\n\n192-bit key = 0123456789abcdeffedcba98765432100011223344556677\nciphertext  = b4993401b3e996f84ee5cee7d79b09b9\n\n256-bit key = 0123456789abcdeffedcba987654321000112233445566778899aabbccddeeff\nciphertext  = 9acc237dff16d76c20ef7c919e3a7509\n```\n\nThe teaching implementation reproduces all three vectors and verifies that decryption returns the original plaintext; the 128-bit key exercises 18 rounds and two FL layers, while the 192/256-bit keys exercise 24 rounds and three FL layers.",
+          "broken": "The security statement in RFC 3713 is the designers' assessment: it says Camellia has no differential or linear characteristic with probability above 2^-128 and that the design addresses higher-order differential, interpolation, related-key and truncated differential attacks. This is a 2004 RFC assessment, not a formal proof against every attack model, and it does not guarantee that no better analysis will appear. This article does not expand RFC 3713's differential/linear assessment into an absolute security claim for every attack model, and it does not cite unverified attack papers to claim that Camellia has been broken.\n\nThe right half of KR for a 192-bit key is the bitwise complement of the rightmost 64 bits. This is a specified key construction, not an optional step; it means that 192-bit key material cannot be treated as the right 128 bits of an ordinary 256-bit key, and an implementation that omits the complement produces incorrect subkeys. The 192-bit official vector verifies this detail.\n\nCamellia's current protocol position needs to be stated carefully: OpenPGP keeps Camellia numbers but treats it as optional; the CMS Camellia OIDs remain part of a Standards Track specification; the TLS Camellia CBC suites split into `_SHA` (usable with TLS 1.1 and earlier) and `_SHA256` (requiring TLS 1.2 or later) groups, TLS 1.0/1.1 are deprecated by BCP 195, and TLS 1.3 has no Camellia suite. That Camellia was once standardized does not make it available by default in the latest protocol.\n\nAt the implementation level, this article's teaching code performs byte-indexed S-box lookups and is not constant-time; caches and timing may leak key-dependent access patterns. It does not generate keys and implements no mode of operation, IV management, padding, integrity protection or side-channel defence, so it must not be used to protect real data. Camellia defines only a block cipher; the protocol layer must handle those matters.",
+          "history": "Camellia was developed jointly by NTT and Mitsubishi Electric. The official \"Specification of Camellia -- a 128-bit Block Cipher\" is attributed to K. Aoki, T. Ichikawa, M. Kanda, M. Matsui, S. Moriai, J. Nakajima and T. Tokita and dated 12 July 2000. It describes the 128-bit block, 128/192/256-bit keys, the 18/24-round Feistel structure, FL/FL^-1 layers, four S-boxes, the key schedule and the Appendix B test data.\n\nRFC 3713 was published by M. Matsui, J. Nakajima and S. Moriai in April 2004 with Informational category; it describes Camellia as a 128-bit block cipher with 128/192/256-bit keys and presents key scheduling and data randomizing separately. RFC 3657 specified CMS usage as Standards Track in January 2004; RFC 4132 once defined Camellia suites for TLS and was obsoleted and extended by RFC 5932 in 2010; RFC 5581 introduced Camellia into OpenPGP in 2009 and was obsoleted by RFC 9580 in 2024, which nevertheless keeps the algorithm numbers; RFC 6367 added 42 Camellia suites (CBC and GCM) in 2011.\n\nISO/IEC 18033-3:2010 Edition 2 lists Camellia as a 128-bit block cipher alongside AES and SEED, and its 64-bit block-cipher part lists TDEA, MISTY1, CAST-128 and HIGHT; the ISO page shows that the edition was confirmed as current in September 2025. This article's Camellia entity is the block cipher only; AES, SEED, MISTY1 and CAST-128 are separate entities, CMS, OpenPGP and TLS are protocols that use Camellia, and ISO/IEC 18033-3 is a standardization document rather than the algorithm.",
+          "refs": "- Wikipedia search entry for Camellia 加密算法. https://zh.wikipedia.org/w/index.php?search=Camellia%20%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Worked example**\n\nCamellia-128 示例：密钥 `0123456789abcdeffedcba9876543210`，明文同值，密文 `67673138549669730857065648eabe43`。18 轮 Feistel，含 FL/FL^-1 变换。"
+        }
+      },
+      "glossary": {
+        "zh": [
+          "Camellia：NTT 与三菱电机 2000 年设计的 128 位 Feistel 分组密码。",
+          "128 位块：Camellia 的明文和密文单位，分成左右各 64 位。",
+          "128/192/256 位密钥：Camellia 的三种密钥长度；128 位用 18 轮，192/256 位用 24 轮。",
+          "18/24 轮：128 位密钥的轮数，以及 192/256 位密钥的轮数。",
+          "Feistel 结构：每轮交换左右半区、由 F 函数混合的迭代结构。",
+          "FL/FL^-1：每 6 轮插入的 32 位半字层，用与、或和一位旋转混合密钥。",
+          "F 函数：Camellia 的轮函数，等于 P(S(X XOR k))。",
+          "S 函数：按字节用 s1、s2、s3、s4、s2、s3、s4、s1 替换的 64 位函数。",
+          "P 函数：对八个字节做固定异或线性组合的 64 位函数。",
+          "S-box：四个 8 位替换表；s2、s3、s4 由 s1 的 8 位旋转导出。",
+          "KL/KR：由密钥长度决定的两个 128 位密钥变量。",
+          "KA/KB：用 F 函数和 Sigma 常数从 KL、KR 导出的两个 128 位变量；KB 只用于 192/256 位密钥。",
+          "Sigma 常数：六个 64 位密钥调度常数，取自素数平方根的十六进制位。",
+          "预白化/后白化：首轮前和后轮后分别 XOR kw1||kw2 与 kw3||kw4。",
+          "子密钥 kw/k/ke：白化子密钥、轮子密钥和 FL 层子密钥。",
+          "CMS：RFC 3657 规定的 Camellia 内容加密和密钥包装用法。",
+          "OpenPGP：RFC 5581 引入、RFC 9580 保留编号 11/12/13 的可选 Camellia 用法。",
+          "TLS：RFC 5932 和 RFC 6367 为 TLS 1.2 定义的 Camellia CBC/GCM 套件；TLS 1.3 没有 Camellia 套件。"
+        ],
+        "en": [
+          "Camellia: the 128-bit Feistel block cipher designed by NTT and Mitsubishi Electric in 2000.",
+          "128-bit block: Camellia's plaintext and ciphertext unit, split into two 64-bit halves.",
+          "128/192/256-bit keys: Camellia's three key lengths; 128-bit keys use 18 rounds and 192/256-bit keys use 24.",
+          "18/24 rounds: the round count for 128-bit keys and for 192/256-bit keys.",
+          "Feistel structure: an iterated structure that swaps halves and mixes them through F.",
+          "FL/FL^-1: a 32-bit-half layer inserted after every six rounds, mixing key material with AND, OR and a one-bit rotation.",
+          "F function: Camellia's round function, equal to P(S(X XOR k)).",
+          "S function: a 64-bit bytewise substitution through s1, s2, s3, s4, s2, s3, s4 and s1.",
+          "P function: a 64-bit function applying fixed XOR combinations to the eight bytes.",
+          "S-box: one of four 8-bit substitution tables; s2, s3 and s4 are derived from s1 by 8-bit rotations.",
+          "KL/KR: the two 128-bit key variables determined by the key length.",
+          "KA/KB: two 128-bit variables derived from KL and KR with F and the Sigma constants; KB is used only for 192/256-bit keys.",
+          "Sigma constants: six 64-bit key-schedule constants taken from hexadecimal digits of prime square roots.",
+          "Prewhitening/postwhitening: XOR with kw1||kw2 before the first round and with kw3||kw4 after the last.",
+          "Subkeys kw/k/ke: whitening subkeys, round subkeys and FL-layer subkeys.",
+          "CMS: the Camellia content-encryption and key-wrap usage specified by RFC 3657.",
+          "OpenPGP: the optional Camellia usage introduced by RFC 5581 and kept as numbers 11/12/13 by RFC 9580.",
+          "TLS: the Camellia CBC/GCM suites defined for TLS 1.2 by RFC 5932 and RFC 6367; TLS 1.3 has no Camellia suite."
+        ]
+      },
+      "figures": [
+        {
+          "id": "camellia-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Camellia：18/24 轮 Feistel 分组密码：为什么需要 → 核心机制 → 边界。",
+            "en": "Camellia: an 18/24-round Feistel block cipher: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Camellia：18/24 轮 Feistel 分组密码 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Camellia: an 18/24-round Feistel block cipher, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/camellia-details-flow.zh.svg",
+            "en": "assets/camellia-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "4531ce1039af8b2a906c25dcdeca2f93a5e6aaaf9dc9269b0f494bdcedf5aaa7",
+            "en": "1aaa8a74d64b258e71d964f9b7f71bb71204f4648b77137cacb8f339749bd709"
+          }
+        },
+        {
+          "id": "camellia-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Camellia：18/24 轮 Feistel 分组密码 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Camellia: an 18/24-round Feistel block cipher: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Camellia：18/24 轮 Feistel 分组密码 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Camellia: an 18/24-round Feistel block cipher, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/camellia-details-r138-model.zh.svg",
+            "en": "assets/camellia-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "0ead33df89bac302606ef3bacf3c50346bd1ed183326192f36e3db75686ef803",
+            "en": "1650319f956add9f25bb483db8fab3e08a91816b0b7039ac686a34db5ae864da"
+          }
+        }
+      ],
+      "sources": [
+        "algorithm--camellia-wikipedia",
+        "algorithm--camellia-reference-ref"
+      ],
+      "calculations": [
+        {
+          "id": "camellia-calc-spec-vectors",
+          "entryId": "camellia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The three Appendix B vectors of the 2000 Camellia specification with 128-, 192- and 256-bit keys and the common plaintext 0123456789abcdeffedcba9876543210",
+          "expected": "Every encryption matches the listed ciphertext and every decryption returns 0123456789abcdeffedcba9876543210; the 128-bit key uses 18 rounds with 4 kw, 18 k and 4 ke subkeys, and the 192/256-bit keys use 24 rounds with 4 kw, 24 k and 6 ke subkeys",
+          "sourceIds": [
+            "algorithm--camellia-wikipedia"
+          ],
+          "dependencies": [
+            "camellia-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "Three fixed vectors; they cover all three key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+        },
+        {
+          "id": "camellia-calc-key-schedule",
+          "entryId": "camellia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "The KL/KR definitions for the three key lengths, the 192-bit complement construction, and the KA/KB, kw, k and ke values computed for the 128-bit test key",
+          "expected": "128-bit KL=0123456789abcdeffedcba9876543210 and KR=0; 192-bit KR=0011223344556677ffeeddccbbaa9988; 256-bit KR=00112233445566778899aabbccddeeff; 128-bit KA=ae71c3d55ba6bf1d169240a795f89256 and KB=6408e232ac24708fcc3a213a704bd393; sample kw1..kw4, k1..k4, k17, k18 and ke1..ke4 as recorded in vectors.json; the decryption schedule reverses kw, k and ke",
+          "sourceIds": [
+            "algorithm--camellia-wikipedia"
+          ],
+          "dependencies": [
+            "camellia-teaching.mjs",
+            "vectors.json"
+          ],
+          "limitations": "One published key length (128 bits) is checked against recorded computed samples; the 192/256-bit values are checked by their vectors and structural properties, not by published intermediate subkeys."
+        },
+        {
+          "id": "camellia-calc-sboxes-fl",
+          "entryId": "camellia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Tables 4-7 of the 2000 specification, the derived s2/s3/s4 definitions, and deterministic samples for S, P, F, FL and FL^-1",
+          "expected": "All four tables have 256 entries; s2(x)=s1(x)<<<1, s3(x)=s1(x)<<<7 and s4(x)=s1(x<<<1) reproduce all 256 entries of Tables 5-7; s1[0x3d]=86; S(0123456789abcdef)=821f66b4b6f9daa4, P(0123456789abcdef)=aaeeaaeeabcdef89 and F(0123456789abcdef,0)=d7e110581ab139a3; FL(0123456789abcdef,fedcba9876543210)=fedcba9889abcdef and FL^-1 returns the input for all 256 deterministic samples",
+          "sourceIds": [
+            "algorithm--camellia-wikipedia"
+          ],
+          "dependencies": [
+            "camellia-teaching.mjs",
+            "sboxes.json",
+            "vectors.json"
+          ],
+          "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+        },
+        {
+          "id": "camellia-calc-roundtrip",
+          "entryId": "camellia-details",
+          "kind": "executable-algorithm-check",
+          "inputs": "Three key lengths times eight deterministic plaintext patterns, including the official plaintext, with fixed test keys",
+          "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the 128-, 192- and 256-bit keys produce distinct schedules; and the 192- and 256-bit test keys, which share the left 128 bits, produce different KA and KB values",
+          "sourceIds": [
+            "algorithm--camellia-wikipedia"
+          ],
+          "dependencies": [
+            "camellia-teaching.mjs"
+          ],
+          "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+        },
+        {
+          "id": "algorithm--camellia-r139-formal",
+          "entryId": "camellia-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "Camellia 加密算法 的公开参数与消息。",
+          "expected": "按规范执行后得到可验证输出。",
+          "steps": [
+            "按规范编码输入",
+            "执行算法/协议步骤",
+            "检查输出与边界"
+          ],
+          "sourceIds": [
+            "algorithm--camellia-wikipedia"
+          ],
+          "limitations": "形式模型，不替代生产实现或第三方评估。",
+          "dependencies": []
+        }
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "camellia-calc-spec-vectors",
+      "entryId": "camellia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The three Appendix B vectors of the 2000 Camellia specification with 128-, 192- and 256-bit keys and the common plaintext 0123456789abcdeffedcba9876543210",
+      "expected": "Every encryption matches the listed ciphertext and every decryption returns 0123456789abcdeffedcba9876543210; the 128-bit key uses 18 rounds with 4 kw, 18 k and 4 ke subkeys, and the 192/256-bit keys use 24 rounds with 4 kw, 24 k and 6 ke subkeys",
+      "sourceIds": [
+        "algorithm--camellia-wikipedia"
+      ],
+      "dependencies": [
+        "camellia-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "Three fixed vectors; they cover all three key lengths but only one plaintext, and a match does not prove resistance to cryptanalysis."
+    },
+    {
+      "id": "camellia-calc-key-schedule",
+      "entryId": "camellia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "The KL/KR definitions for the three key lengths, the 192-bit complement construction, and the KA/KB, kw, k and ke values computed for the 128-bit test key",
+      "expected": "128-bit KL=0123456789abcdeffedcba9876543210 and KR=0; 192-bit KR=0011223344556677ffeeddccbbaa9988; 256-bit KR=00112233445566778899aabbccddeeff; 128-bit KA=ae71c3d55ba6bf1d169240a795f89256 and KB=6408e232ac24708fcc3a213a704bd393; sample kw1..kw4, k1..k4, k17, k18 and ke1..ke4 as recorded in vectors.json; the decryption schedule reverses kw, k and ke",
+      "sourceIds": [
+        "algorithm--camellia-wikipedia"
+      ],
+      "dependencies": [
+        "camellia-teaching.mjs",
+        "vectors.json"
+      ],
+      "limitations": "One published key length (128 bits) is checked against recorded computed samples; the 192/256-bit values are checked by their vectors and structural properties, not by published intermediate subkeys."
+    },
+    {
+      "id": "camellia-calc-sboxes-fl",
+      "entryId": "camellia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Tables 4-7 of the 2000 specification, the derived s2/s3/s4 definitions, and deterministic samples for S, P, F, FL and FL^-1",
+      "expected": "All four tables have 256 entries; s2(x)=s1(x)<<<1, s3(x)=s1(x)<<<7 and s4(x)=s1(x<<<1) reproduce all 256 entries of Tables 5-7; s1[0x3d]=86; S(0123456789abcdef)=821f66b4b6f9daa4, P(0123456789abcdef)=aaeeaaeeabcdef89 and F(0123456789abcdef,0)=d7e110581ab139a3; FL(0123456789abcdef,fedcba9876543210)=fedcba9889abcdef and FL^-1 returns the input for all 256 deterministic samples",
+      "sourceIds": [
+        "algorithm--camellia-wikipedia"
+      ],
+      "dependencies": [
+        "camellia-teaching.mjs",
+        "sboxes.json",
+        "vectors.json"
+      ],
+      "limitations": "Structural and reproducibility checks, not an assessment of S-box nonlinearity or cryptographic strength."
+    },
+    {
+      "id": "camellia-calc-roundtrip",
+      "entryId": "camellia-details",
+      "kind": "executable-algorithm-check",
+      "inputs": "Three key lengths times eight deterministic plaintext patterns, including the official plaintext, with fixed test keys",
+      "expected": "All 24 encrypt/decrypt round trips return the plaintext; the same plaintext under different keys gives different ciphertexts; the 128-, 192- and 256-bit keys produce distinct schedules; and the 192- and 256-bit test keys, which share the left 128 bits, produce different KA and KB values",
+      "sourceIds": [
+        "algorithm--camellia-wikipedia"
+      ],
+      "dependencies": [
+        "camellia-teaching.mjs"
+      ],
+      "limitations": "Deterministic round-trip tests only; they do not test modes, protocols, key management, side channels or randomness."
+    },
+    {
+      "id": "algorithm--camellia-r139-formal",
+      "entryId": "camellia-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "Camellia 加密算法 的公开参数与消息。",
+      "expected": "按规范执行后得到可验证输出。",
+      "steps": [
+        "按规范编码输入",
+        "执行算法/协议步骤",
+        "检查输出与边界"
+      ],
+      "sourceIds": [
+        "algorithm--camellia-wikipedia"
+      ],
+      "limitations": "形式模型，不替代生产实现或第三方评估。",
+      "dependencies": []
+    }
+  ]
+}

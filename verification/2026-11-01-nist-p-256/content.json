@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for nist-p-256: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "nist-p-256-details",
+      "inventoryIds": [
+        "nist-p-256"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释NIST P-256 曲线的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of NIST P-256: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "NIST P-256 曲线",
+        "en": "NIST P-256"
+      },
+      "claimIds": [
+        "nist-p-256-r139-principle",
+        "nist-p-256-r139-why",
+        "nist-p-256-r139-used",
+        "nist-p-256-r139-broken",
+        "nist-p-256-r139-history",
+        "nist-p-256-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "这是定义性/组织性条目；本批次没有需要复算的逐步数值算法，相关算法的计算验证见对应实体。",
+        "en": "This is a definitional or organisational entry; this batch contains no step-by-step numerical algorithm to reproduce. Executable checks live in the corresponding entity batches."
+      },
+      "sourceIds": [
+        "nist-p-256-wikipedia",
+        "nist-p-256-standard-ref"
+      ],
+      "related": [
+        "elliptic-curve-cryptography",
+        "ecdsa",
+        "nist"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**术语**：NIST P-256 曲线（NIST P-256）。SP 800-186 用域参数定义每条推荐曲线：「Each recommended curve is uniquely defined by its domain parameters D, which indicate the field GF(q) over which the elliptic curve is defined, the parameters of its defining equation, and principal parameters, such as the cofactor h of the curve, the order n of its prime-order subgroup, and a designated point G on the curve of order n」，原文随后注明该点即「base point」。P-256 即其中一条被具名规定的 Weierstrass 曲线（自 §3.2.1.1 起按曲线逐小节给出，P-256 本身在 §3.2.1.3）。",
+          "why": "强度来自基阶：§3.1.2 说明「The security strength of an elliptic curve is directly related to the order of the basepoint.In general, if an elliptic curve has a basepoint of order n, then the security strength will be approximately one half of the bit length of n」；表 1 因此把 128 位强度档对应到 P-256，并同时列出 W-25519、Curve25519、Edwards25519 等同档曲线。",
+          "used": "表 2 规定 P-224 至 P-521 的允许用途为「ECDSA, EC key establishment」，并注明具体建立方案见 SP 800-56A；§1 说明本文件与 SP 800-56A 及 FIPS 186-5 配套使用（原文：「intended for use in conjunction with」），而 FIPS 186-5 §6 把 ECDSA 描述为「the elliptic curve analog of DSA」并把域参数生成指向 SP 800-186。",
+          "broken": "两类风险被明确写出。其一是曲线有效性：附录 C.1 要求每条曲线余子 h ≤ 2^10 且 |E| ≠ q 以避免异常曲线攻击，前部的符合性测试说明也称这些检查「essential for the prevention of subtle attacks」；§3.2.1.2 的脚注就相邻曲线 P-224 强调必须验证域参数，以防运算发生在其二次扭曲上，该警告在文中只就 P-224 写出，而同一文件在附录 D.1 给出了适用于各种曲线表示形式的公钥验证流程（D.1.1.1 第 3 步要求确认 (x, y) 满足定义方程），前部符合性条款也要求实现包含规范中全部密码学检查——所以只就 P-224 写出仅限这句脚注本身，不是文件对曲线有效性的整体要求。其二是强度上限：FIPS 186-5 §1 声明本标准算法「not expected to provide resistance to attacks from a large-scale quantum computer」，128 位档的 P-256 亦在此列。",
+          "history": "SP 800-186 由 Chen、Moody、Randall、Regenscheid 与 Robinson 撰写，2023 年 2 月发布，编辑评审委员会于 2022 年 9 月 7 日批准；执行摘要说明本文件承接 FIPS 186-4 已指定的曲线，把二进制曲线标为弃用，并新增 Montgomery 与 Edwards 曲线；§3.2.1.1 则对 P-192 写明「This curve is for legacy-use only」，而 P-256 的 §3.2.1.3 没有这句；表 1 把 P-256 放在 128 位强度档。",
+          "refs": "- Wikipedia search entry for NIST P-256 曲线. https://zh.wikipedia.org/w/index.php?search=NIST%20P-256%20%E6%9B%B2%E7%BA%BF\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "**定义检查模型**\n\n上位概念 → 区别特征 → 正例 → 反例 → 易混边界。正例必须落在外延内；反例必须刚好跨过边界；同义词不能代替定义。"
+        },
+        "en": {
+          "principle": "**Term**: NIST P-256. It is registered under asymmetric public-key cryptography. The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition.",
+          "why": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Age of Standardization. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for NIST P-256 曲线. https://zh.wikipedia.org/w/index.php?search=NIST%20P-256%20%E6%9B%B2%E7%BA%BF\n- RFC 4949: Internet Security Glossary, Version 2. https://www.rfc-editor.org/rfc/rfc4949",
+          "example": "The definition gives a superordinate concept, a differentia, a positive example and a counterexample. A synonym or abbreviation is not a definition."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "P-256：SP 800-186 具名规定的 128 位强度 Weierstrass 曲线。",
+          "域参数 D：定义曲线与子群的参数组。",
+          "基阶 n：基点 G 生成子群的阶。",
+          "余因子 h：曲线阶与 n 的比值。",
+          "二次扭曲：与原曲线配对的关联曲线。",
+          "EC key establishment：表 2 允许的密钥建立用途。"
+        ],
+        "en": [
+          "P-256: the 128-bit-strength Weierstrass curve named in SP 800-186.",
+          "Domain parameters D: the tuple defining a curve and its subgroup.",
+          "Basepoint order n: the order of the subgroup generated by G.",
+          "Cofactor h: the curve order divided by n.",
+          "Quadratic twist: the curve paired with the original.",
+          "EC key establishment: the permitted use listed in Table 2."
+        ]
+      },
+      "subtopicIds": [
+        "nist-p-256"
+      ],
+      "figures": [
+        {
+          "id": "nist-p-256-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "NIST P-256 曲线：为什么需要 → 核心机制 → 边界。",
+            "en": "NIST P-256: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "NIST P-256 曲线 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for NIST P-256, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/nist-p-256-details-flow.zh.svg",
+            "en": "assets/nist-p-256-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "616ae1c51b89a209239ef5bf48282a847ab60c45d640dbcdfa3ad730cf33fd3a",
+            "en": "50d7103bc56ae0ef0dca4604db434e9ac29bc41685a6a3f43823ca6a85ece09d"
+          }
+        }
+      ],
+      "sources": [
+        "nist-p-256-wikipedia",
+        "nist-p-256-standard-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

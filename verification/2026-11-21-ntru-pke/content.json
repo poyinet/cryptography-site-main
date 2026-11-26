@@ -1,0 +1,194 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening batch for ntru-pke-details.",
+  "entries": [
+    {
+      "id": "ntru-pke-details",
+      "inventoryIds": [
+        "ntru-pke"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R107 陷门签名、格加密、认证密钥协商、群签名与可搜索加密深化：把目录身份卡改写为来源可核的机制、参数、用途、边界与历史正文；保留目录坐标与子主题关系。",
+        "en": "R107 trapdoor signatures, lattice encryption, authenticated key agreement, group signatures and searchable encryption deepening: replaced the catalog identity card with source-backed mechanism, parameters, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "NTRU 公钥加密",
+        "en": "NTRU Lattice Public-Key Encryption"
+      },
+      "claimIds": [
+        "ntru-pke-r139-principle",
+        "ntru-pke-r139-why",
+        "ntru-pke-r139-used",
+        "ntru-pke-r139-broken",
+        "ntru-pke-r139-history",
+        "ntru-pke-r139-refs"
+      ],
+      "sourceIds": [
+        "ntru-pke-wikipedia",
+        "ntru-pke-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "ntru-pke-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "NTRU 公钥加密：为什么需要 → 核心机制 → 边界。",
+            "en": "NTRU Lattice Public-Key Encryption: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "NTRU 公钥加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for NTRU Lattice Public-Key Encryption, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/ntru-pke-details-flow.zh.svg",
+            "en": "assets/ntru-pke-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "86c0434a21ee7bfb9c6978165eebf8c1edf7482156404546d87d867aa266a8e5",
+            "en": "860ecc2c22c46ca591c4b078f17bb2342d1f84e53ade2e491b4d690a4b19160c"
+          }
+        },
+        {
+          "id": "ntru-pke-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "NTRU 公钥加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for NTRU Lattice Public-Key Encryption: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "NTRU 公钥加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for NTRU Lattice Public-Key Encryption, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/ntru-pke-details-r138-model.zh.svg",
+            "en": "assets/ntru-pke-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c7b85c98d7d78b32c6aca1bb720e22f817660e8f99995b547de7184ac25d38ac",
+            "en": "0aeae349b42fc58ad0f7b44ee9941c05666c9512e839207d9500862c43800732"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：NTRU 公钥加密（NTRU）。### 环与密钥\n\nNTRU 在模 x^N−1 的多项式环上取短私钥 f,g，公钥 h=p·g/f mod q；加密 c=r·h+m，解密先算 f·c 再中心提升、模 p 求 m。q 为 2 的幂、p=3。### 加密与解密\n\n明文编码为短多项式 m，随机短 r；密文 c=r·h+m mod q。解密先算 a=f·c mod q，中心提升到 [−q/2,q/2)，再算 m=f_p^{-1}·a mod p。正确性要求噪声 f·r·g 不越界。### KEM 与参数\n\nNIST 提交把 NTRU 做成 IND-CCA2 KEM：封装随机种子，派生 m 和 r，密文附带哈希；解封失败输出隐式拒绝。ntruhps2048509 的 N=509、q=2048，公钥/密文 699 B、私钥 935 B、共享密钥 32 B。",
+          "why": "NTRU 的加密只做多项式乘法和一次求逆，密钥比 McEliece 小数百倍；在 CPU 上比同安全级别的 RSA/ECC 快，且抗量子。它有二十多年公开分析、结构简单、参数可调，是“保守但可用”的格 KEM：公钥约 0.7 KB，适合 TLS 握手和嵌入式长期密钥。它没有 worst-case 归约，安全性建立在 NTRU 格假设上。",
+          "used": "NTRU 是 NIST PQC 决赛入围者（2020-07），但 2022 年 NIST 选择 ML-KEM，NTRU 未进入 FIPS 标准；ISO/IEC 29192-4 Amd 2 正在把 NTRU KEM 标准化，2026-10 进入 FDIS 阶段。工程上用于 Open Quantum Safe/liboqs、混合 TLS、嵌入式固件和长期身份密钥；ANSI X9.98 与 IEEE P1363 曾有 NTRUEncrypt 剖面，NTRU Prime 是另一个独立分支。",
+          "broken": "已发布参数下格攻击（BKZ）未破，但解密失败率必须可证明可忽略；失败密文可被利用做区分或密钥恢复，实现必须常量时间并做密文校验。中心提升、模逆和密钥生成有侧信道/故障风险；弱 f 或不可逆 f 会导致解密失败；NTRU 不是 worst-case 归约，量子电路虽不直接跑 Shor，格算法仍需持续评估。",
+          "history": "1998 年 Hoffstein、Pipher 与 Silverman 在 ANTS III 提出 NTRU；NTRU Cryptosystems 将其商业化；2018 年提交 NIST PQC，2020 年入选决赛，2022 年未获 NIST 标准；2025–2026 转向 ISO/IEC 29192-4 Amd 2。它是最早的实用格公钥之一，影响了 NTRU Prime、NTRU+ 等后续方案。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\)。输入：输入：NTRU 公钥加密的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。 预期输出：按 NTRU 公钥加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\((c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 封装方采样随机种子并生成密文 2. 解封装方用私钥恢复种子 3. 双方得到同一会话密钥并校验。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。",
+          "refs": "- Wikipedia search entry for NTRU 公钥加密. https://zh.wikipedia.org/w/index.php?search=NTRU%20%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nNTRU 公钥加密的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。1.封装方采样随机种子并生成密文。2.解封装方用私钥恢复种子。3.双方得到同一会话密钥并校验。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: NTRU (NTRU 公钥加密). ### Ring and keys\n\nNTRU uses short private polynomials f,g in the polynomial ring modulo x^N−1 and public key h=p·g/f mod q; encryption is c=r·h+m, and decryption computes f·c, center-lifts and reduces modulo p to recover m. Here q is a power of two and p=3. ### Encryption and decryption\n\nEncode the message as a short polynomial m and pick a short random r; the ciphertext is c=r·h+m mod q. Decryption computes a=f·c mod q, center-lifts to [−q/2,q/2), then computes m=f_p^{-1}·a mod p. Correctness requires the noise f·r·g to stay in range. ### KEM and parameters\n\nThe NIST submission turns NTRU into an IND-CCA2 KEM: encapsulation derives m and r from a random seed and hashes the ciphertext; decapsulation failure outputs an implicit rejection. ntruhps2048509 uses N=509 and q=2048, with a 699-byte public key/ciphertext, a 935-byte private key and a 32-byte shared secret.",
+          "why": "NTRU encryption is polynomial multiplication plus one inversion, and its keys are hundreds of times smaller than McEliece’s; on a CPU it is faster than RSA/ECC at comparable security and resists quantum attacks.\n\nIt has more than two decades of public analysis, a simple structure and adjustable parameters, making it a conservative but usable lattice KEM: a roughly 0.7 KB public key suits TLS handshakes and embedded long-term keys. It has no worst-case reduction; security rests on the NTRU lattice assumption.",
+          "used": "NTRU was a NIST PQC finalist (July 2020), but NIST selected ML-KEM in 2022 and NTRU did not enter a FIPS standard; ISO/IEC 29192-4 Amd 2 is standardizing the NTRU KEM and reached FDIS in October 2026.\n\nIt is used in Open Quantum Safe/liboqs, hybrid TLS, embedded firmware and long-term identity keys; ANSI X9.98 and IEEE P1363 had NTRUEncrypt profiles, and NTRU Prime is a separate branch.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Published parameters are not broken by lattice reduction (BKZ), but the decryption-failure rate must be provably negligible; failing ciphertexts can enable distinguishing or key recovery, so implementations must be constant-time and validate ciphertexts.\n\nCenter lifting, modular inversion and key generation carry side-channel/fault risk; weak or non-invertible f causes decryption failure; NTRU lacks a worst-case reduction, and while Shor does not apply directly, lattice algorithms need continued evaluation.\n\nBoundaries: public keys/ciphertexts are larger than ML-KEM’s; encapsulation failure must be implicitly rejected; parameter sets cannot be mixed; NTRU and NTRU Prime use different rings and parameters.",
+          "history": "Hoffstein, Pipher and Silverman introduced NTRU at ANTS III in 1998; NTRU Cryptosystems commercialized it; it was submitted to NIST PQC in 2018, became a finalist in 2020 and was not selected for a NIST standard in 2022; in 2025–2026 it moved to ISO/IEC 29192-4 Amd 2.\n\nIt is one of the earliest practical lattice public-key schemes and influenced NTRU Prime, NTRU+ and later designs.",
+          "refs": "- Wikipedia search entry for NTRU 公钥加密. https://zh.wikipedia.org/w/index.php?search=NTRU%20%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)\\]\n\nNTRU: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "ntru-pke-r139-formal",
+          "entryId": "ntru-pke-details",
+          "kind": "formal-model",
+          "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+          "inputs": "输入：NTRU 公钥加密的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+          "expected": "按 NTRU 公钥加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "封装方采样随机种子并生成密文",
+            "解封装方用私钥恢复种子",
+            "双方得到同一会话密钥并校验"
+          ],
+          "sourceIds": [
+            "ntru-pke-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "ntru-pke-r139-formal"
+      ],
+      "sources": [
+        "ntru-pke-wikipedia",
+        "ntru-pke-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "ntru-pke-r139-formal",
+      "entryId": "ntru-pke-details",
+      "kind": "formal-model",
+      "formula": "(c,k)=\\mathrm{Encaps}(pk);\\qquad k'=\\mathrm{Decaps}(sk,c)",
+      "inputs": "输入：NTRU 公钥加密的公开参数、密钥/随机数与消息；变量说明：pk 公钥，sk 私钥，c 密文，k 会话密钥。",
+      "expected": "按 NTRU 公钥加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "封装方采样随机种子并生成密文",
+        "解封装方用私钥恢复种子",
+        "双方得到同一会话密钥并校验"
+      ],
+      "sourceIds": [
+        "ntru-pke-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

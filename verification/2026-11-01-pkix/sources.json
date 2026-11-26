@@ -1,0 +1,246 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "pkix-details",
+  "sources": [
+    {
+      "id": "pkix-wikipedia",
+      "title": "Wikipedia search entry for PKIX 证书框架",
+      "url": "https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: PKIX 证书框架",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "pkix-r139-principle",
+          "entryId": "pkix-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**协议**：PKIX 证书框架（Internet X.509 Public Key Infrastructure）。RFC 5280 自述定位：§1「This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.」并说明「This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.」§4 把证书侧的目标写成「This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.」——它规定证书字段与扩展怎么填，并对签发方施加合规义务，但不描述 CA 的运营流程与信任策略。",
+            "en": "**Protocol**: Internet X.509 Public Key Infrastructure (PKIX 证书框架).RFC 5280 states its own place: §1 \"This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.\" and \"This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.\" §4 puts the certificate side plainly — \"This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.\" — it fixes how fields and extensions are filled in and binds issuers to conformance duties, without describing CA operations or trust policy."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        },
+        {
+          "id": "pkix-r139-why",
+          "entryId": "pkix-details",
+          "section": "why",
+          "statement": {
+            "zh": "之所以要 profile，是因为自由解释会破坏互操作与信任判定。有效期字段被硬性规定编码：§4.1.2.5「CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.」基本约束则被强制标注：§4.2.1.9「Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.」。",
+            "en": "A profile exists because free interpretation breaks both interoperability and trust decisions.Validity encoding is fixed: §4.1.2.5 \"CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.\" Basic constraints are mandatory and critical: §4.2.1.9 \"Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.\"。."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        },
+        {
+          "id": "pkix-r139-used",
+          "entryId": "pkix-details",
+          "section": "used",
+          "statement": {
+            "zh": "§4.1.2.5 还给出无限期证书的写法：「To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.」§4.2.1.9 用 pathLenConstraint 限制链深：「A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.」§6.1 规定实现义务：「A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.」。",
+            "en": "§4.1.2.5 also gives the no-expiry convention: \"To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.\" §4.2.1.9 uses pathLenConstraint to bound chain depth: \"A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.\" §6.1 sets the implementation duty: \"A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.\"。."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        },
+        {
+          "id": "pkix-r139-broken",
+          "entryId": "pkix-details",
+          "section": "broken",
+          "statement": {
+            "zh": "校验算法的边界写在 §6.1：它「only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.」并且明确不建议补上这类检查（「this profile RECOMMENDS against including such checks.」）；同时未知关键扩展是硬失败：「Note that clients MUST reject the certificate if it contains an unsupported critical extension.」——也就是说合规性与有效性是两件事，而 §6.1 的算法只管后者。",
+            "en": "§6.1 draws the boundary: the algorithm \"only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.\" and it \"RECOMMENDS against including such checks.\" Unknown critical extensions are a hard failure — \"Note that clients MUST reject the certificate if it contains an unsupported critical extension.\" Conformance and validity are therefore separate matters, and the §6.1 algorithm governs only the latter."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        },
+        {
+          "id": "pkix-r139-history",
+          "entryId": "pkix-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 5280 由 D.Cooper、S.Santesson、S.Farrell、S.Boeyen、R.Housley 与 W.Polk 署名，2008 年 5 月发布，Standards Track，头部标「Obsoletes: 3280, 4325, 4630」。§1 的差异清单记录了与 RFC 3280 的偏离，其中一条涉及路径校验：「The path validation algorithm specified in Section 6 no longer tracks the criticality of the certificate policies extensions in a chain of certificates.」另一条是扩展关键性要求的调整：「Section 4.2.1.11 requires marking the policy constraints extension as critical.」。",
+            "en": "RFC 5280 is signed by D.Cooper, S."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        },
+        {
+          "id": "pkix-r139-refs",
+          "entryId": "pkix-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for PKIX 证书框架.https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5280: Internet X.509 Public Key Infrastructure.https://www.rfc-editor.org/rfc/rfc5280\n- Published standard/RFC for PKIX 证书框架.https://www.rfc-editor.org/rfc/rfc5280。",
+            "en": "- Wikipedia search entry for PKIX 证书框架.https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "pkix-reference-ref",
+            "pkix-specific",
+            "pkix-standard"
+          ]
+        }
+      ],
+      "supports": [
+        "pkix-wikipedia"
+      ]
+    },
+    {
+      "id": "pkix-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "pkix-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    },
+    {
+      "id": "pkix-specific",
+      "title": "RFC 5280: Internet X.509 Public Key Infrastructure",
+      "url": "https://www.rfc-editor.org/rfc/rfc5280",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Entry-specific official/primary record.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "pkix-specific"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    },
+    {
+      "id": "pkix-standard",
+      "title": "Published standard/RFC for PKIX 证书框架",
+      "url": "https://www.rfc-editor.org/rfc/rfc5280",
+      "kind": "standard",
+      "tier": 1,
+      "method": "Published standard text; section-level claims refer to the named standard/RFC.",
+      "locator": "Standard/RFC landing page for PKIX 证书框架",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "pkix-standard"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "pkix-r139-principle",
+      "entryId": "pkix-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**协议**：PKIX 证书框架（Internet X.509 Public Key Infrastructure）。RFC 5280 自述定位：§1「This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.」并说明「This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.」§4 把证书侧的目标写成「This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.」——它规定证书字段与扩展怎么填，并对签发方施加合规义务，但不描述 CA 的运营流程与信任策略。",
+        "en": "**Protocol**: Internet X.509 Public Key Infrastructure (PKIX 证书框架).RFC 5280 states its own place: §1 \"This specification is one part of a family of standards for the X.509 Public Key Infrastructure (PKI) for the Internet.\" and \"This specification profiles the format and semantics of certificates and certificate revocation lists (CRLs) for the Internet PKI.\" §4 puts the certificate side plainly — \"This section presents a profile for public key certificates that will foster interoperability and a reusable PKI.\" — it fixes how fields and extensions are filled in and binds issuers to conformance duties, without describing CA operations or trust policy."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    },
+    {
+      "id": "pkix-r139-why",
+      "entryId": "pkix-details",
+      "section": "why",
+      "statement": {
+        "zh": "之所以要 profile，是因为自由解释会破坏互操作与信任判定。有效期字段被硬性规定编码：§4.1.2.5「CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.」基本约束则被强制标注：§4.2.1.9「Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.」。",
+        "en": "A profile exists because free interpretation breaks both interoperability and trust decisions.Validity encoding is fixed: §4.1.2.5 \"CAs conforming to this profile MUST always encode certificate validity dates through the year 2049 as UTCTime; certificate validity dates in 2050 or later MUST be encoded as GeneralizedTime.\" Basic constraints are mandatory and critical: §4.2.1.9 \"Conforming CAs MUST include this extension in all CA certificates that contain public keys used to validate digital signatures on certificates and MUST mark the extension as critical in such certificates.\"。."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    },
+    {
+      "id": "pkix-r139-used",
+      "entryId": "pkix-details",
+      "section": "used",
+      "statement": {
+        "zh": "§4.1.2.5 还给出无限期证书的写法：「To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.」§4.2.1.9 用 pathLenConstraint 限制链深：「A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.」§6.1 规定实现义务：「A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.」。",
+        "en": "§4.1.2.5 also gives the no-expiry convention: \"To indicate that a certificate has no well-defined expiration date, the notAfter SHOULD be assigned the GeneralizedTime value of 99991231235959Z.\" §4.2.1.9 uses pathLenConstraint to bound chain depth: \"A pathLenConstraint of zero indicates that no non-self-issued intermediate CA certificates may follow in a valid certification path.\" §6.1 sets the implementation duty: \"A conforming implementation MUST include an X.509 path processing procedure that is functionally equivalent to the external behavior of this algorithm.\"。."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    },
+    {
+      "id": "pkix-r139-broken",
+      "entryId": "pkix-details",
+      "section": "broken",
+      "statement": {
+        "zh": "校验算法的边界写在 §6.1：它「only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.」并且明确不建议补上这类检查（「this profile RECOMMENDS against including such checks.」）；同时未知关键扩展是硬失败：「Note that clients MUST reject the certificate if it contains an unsupported critical extension.」——也就是说合规性与有效性是两件事，而 §6.1 的算法只管后者。",
+        "en": "§6.1 draws the boundary: the algorithm \"only includes checks to verify that the certification path is valid according to X.509 and does not include checks to verify that the certificates and CRLs conform to this profile.\" and it \"RECOMMENDS against including such checks.\" Unknown critical extensions are a hard failure — \"Note that clients MUST reject the certificate if it contains an unsupported critical extension.\" Conformance and validity are therefore separate matters, and the §6.1 algorithm governs only the latter."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    },
+    {
+      "id": "pkix-r139-history",
+      "entryId": "pkix-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 5280 由 D.Cooper、S.Santesson、S.Farrell、S.Boeyen、R.Housley 与 W.Polk 署名，2008 年 5 月发布，Standards Track，头部标「Obsoletes: 3280, 4325, 4630」。§1 的差异清单记录了与 RFC 3280 的偏离，其中一条涉及路径校验：「The path validation algorithm specified in Section 6 no longer tracks the criticality of the certificate policies extensions in a chain of certificates.」另一条是扩展关键性要求的调整：「Section 4.2.1.11 requires marking the policy constraints extension as critical.」。",
+        "en": "RFC 5280 is signed by D.Cooper, S."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    },
+    {
+      "id": "pkix-r139-refs",
+      "entryId": "pkix-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for PKIX 证书框架.https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 5280: Internet X.509 Public Key Infrastructure.https://www.rfc-editor.org/rfc/rfc5280\n- Published standard/RFC for PKIX 证书框架.https://www.rfc-editor.org/rfc/rfc5280。",
+        "en": "- Wikipedia search entry for PKIX 证书框架.https://zh.wikipedia.org/w/index.php?search=PKIX%20%E8%AF%81%E4%B9%A6%E6%A1%86%E6%9E%B6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "pkix-reference-ref",
+        "pkix-specific",
+        "pkix-standard"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R116 public-key and hash-attack reviewed dossier for multicollision-details.",
+  "entries": [
+    {
+      "id": "multicollision-details",
+      "inventoryIds": [
+        "multicollision"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R116 公钥与哈希攻击批次：把“多重碰撞”从目录深度条目改写为含机制陈述、符号公式、复杂度/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R116 public-key and hash-attack batch: rewrote \"Multicollision\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, complexity/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "多重碰撞",
+        "en": "Multicollision"
+      },
+      "claimIds": [
+        "multicollision-r139-principle",
+        "multicollision-r139-why",
+        "multicollision-r139-used",
+        "multicollision-r139-broken",
+        "multicollision-r139-history",
+        "multicollision-r139-refs"
+      ],
+      "sourceIds": [
+        "multicollision-wikipedia",
+        "multicollision-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "hash-collision-attack"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "multicollision-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "多重碰撞机制图：Merkle-Damgård 链上每段二选一，形成 2^t 条同哈希消息，底部是成本与级联结论。",
+            "en": "Multicollision mechanism: two choices at each Merkle-Damgard stage produce 2^t messages with one hash, with cost and cascade conclusions below."
+          },
+          "alt": {
+            "zh": "顶部是迭代哈希链 h0 到 ht，每段有两个可替换块；下方是 2^t 消息集合、t·2^{n/2} 成本与级联哈希失效说明。",
+            "en": "An iterated hash chain h0 to ht with two interchangeable blocks per stage; below are the 2^t message set, the t·2^{n/2} cost and the cascade failure note."
+          },
+          "files": {
+            "zh": "assets/multicollision-details-mechanism.zh.svg",
+            "en": "assets/multicollision-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "d9f32f0a2a20c6db55a0510dc4a86f015a67db1b2685b49a202dd77b0f82ab36",
+            "en": "1756acfa08f3e17c9b27b312b4085055bd9a3145f10e16ee2b34d9d5286092e3"
+          }
+        },
+        {
+          "id": "multicollision-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "多重碰撞 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Multicollision: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "多重碰撞 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Multicollision, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/multicollision-details-r138-model.zh.svg",
+            "en": "assets/multicollision-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f2bc0ee4c3bcadc71e9a27a4e7363ccf1111ca4d89949bdef1b725f90d35645c",
+            "en": "ad557175aa0e1d45ab53781cb074d9412b7ad0695c6ad8941aaac80bc2d1996e"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：多重碰撞（Multicollision）。### 迭代哈希的链式结构\n\nMerkle-Damgård 型哈希把消息分成块 B_1,…,B_t，迭代计算\n\nh_i = f(h_{i-1}, B_i)，h_0 = IV，\n\n输出 h_t。若在某个链值 h_{i-1} 下找到一对块 (B_i, B_i′)，使\n\nf(h_{i-1}, B_i) = f(h_{i-1}, B_i′)，\n\n就可以在不让后续链值改变的情况下替换这一块。### Joux 的多重碰撞构造\n\n从 h_0 = IV 开始，对 i=1,…,t：\n\n1.调用碰撞寻找器，找到 B_i 与 B_i′，使 f(h_{i-1}, B_i) = f(h_{i-1}, B_i′)；\n2.令 h_i 等于这个共同链值；\n3.继续下一段。最后，任意选择每个位置的 B_i 或 B_i′，得到 2^t 条不同消息，它们经过完全相同的中间链值，因而哈希到同一输出。成本约为 t 次碰撞搜索；对 n 位输出，每次约 2^{n/2}，总成本约 t·2^{n/2}。### 为什么级联哈希不倍增安全性\n\n把两个迭代哈希串联成 F(M) = H_1(M) || H_2(M)，直觉上像 2n 位输出。Joux 指出：先为 H_1 构造 2^t 多重碰撞，再在这 2^t 条消息中寻找 H_2 的碰撞；当 t 足够大时，两条链同时碰撞的概率显著上升。对两条 n 位链，找到级联碰撞的成本约为 O(n·2^{n/2})，而不是生日攻击在 2n 位输出上的 2^n。级联的安全性接近“较容易的那条链”，不是两条链之和。",
+          "why": "许多协议设计者以为 H_1 || H_2 提供 2n 位碰撞安全，因而可以用两条较短的哈希抵抗生日攻击。Joux 的结果说明，对迭代哈希，这个直觉是错的：多重碰撞把“找一条消息对”变成“在指数大的消息集合里找第二条链的碰撞”，第二条链的碰撞概率被集合规模放大。### 对哈希签名与承诺的影响\n\n哈希签名、Merkle 树、承诺方案常把“碰撞困难”当作安全基石。若底层是迭代哈希，多重碰撞会让攻击者以远低于 2^n 的成本制造大量同哈希消息；在承诺中可能意味着同一承诺可打开到多个值，在签名中可能意味着消息替换。具体影响取决于协议是否只依赖抗碰撞，还是还依赖第二原像、原像等性质。### 不是所有哈希结构都一样\n\n海绵结构（SHA-3）、宽管道、随机化哈希、HAIFA 等不直接套用 Joux 的“固定链值 + 可替换块”论证。判断时要看压缩函数、链值宽度、消息块处理和最终输出，而不是只看“输出多少位”。",
+          "used": "1.确认是否为 Merkle-Damgård 迭代结构；链值是否等于输出长度。2.检查压缩函数是否容易找到同链值碰撞；若是，评估 t 段多重碰撞的成本。3.对级联哈希，检查两条链是否独立、输出是否等长；估算在 2^t 消息集合中找第二条链碰撞的 t 值。4.检查协议是否只需要抗碰撞，还是还需要抗第二原像/原像；多重碰撞主要打击抗碰撞。5.对 SHA-3/海绵结构，不要直接套公式；按具体结构重新分析。6.记录输出长度 n、链长 t、碰撞搜索成本；不要把“2n 位输出”当作“n 位安全”的自动保证。### 工程场景\n\n- 旧式 MD5/SHA-1 级联：不要用“双哈希”补救碰撞攻击。- Merkle 树与哈希签名：评估多重碰撞对叶子/内部节点的影响。- 承诺与随机数生成：检查是否把 H(x) 当作唯一绑定。",
+          "broken": "1.非迭代结构。Joux 的构造依赖固定链值和可替换消息块；海绵/宽管道结构不直接适用。2.压缩函数碰撞难找。若压缩函数本身抗碰撞，t 次搜索的成本仍然是真实的。3.只依赖原像/第二原像。多重碰撞主要破坏抗碰撞；它不自动给出原像攻击。4.输出长度与链值长度不同。宽管道结构可能让内部碰撞不直接变成输出碰撞。5.随机化/加盐哈希。若哈希输入被随机化，攻击者不能自由选择可替换块。6.级联两条链不等长或强独立。成本估算会变；不能机械套 O(n·2^{n/2})。“2^t 条消息同哈希”不等于“找到原像”；“级联哈希一定安全”也不成立。要按具体构造与安全目标判断。",
+          "history": "Joux 在 CRYPTO 2004 的论文中证明：对迭代哈希，构造 2^t 多重碰撞的成本约是普通碰撞的 t 倍，而不是 2^t 倍；并据此解决“级联多个迭代哈希能否增强安全性”的长期问题。论文的结论直接适用于 MD5、SHA-1 等 Merkle-Damgård 结构。### 之后的影响\n\nSHA-1 碰撞攻击公开后，级联哈希的“双保险”直觉被彻底放弃；SHA-3 标准化选择海绵结构，迭代哈希的结构性弱点成为设计讨论的一部分。Joux 的多重碰撞成为哈希设计、哈希签名和承诺协议评审中的基础检查项。",
+          "refs": "- Wikipedia search entry for 多重碰撞. https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%A2%B0%E6%92%9E\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\n多重碰撞的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。1.计算查询对数。2.代入生日界。3.与目标碰撞概率比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Multicollision (多重碰撞). ### The chaining structure of an iterated hash\n\nA Merkle-Damgard hash splits the message into blocks B_1,…,B_t and iterates\n\nh_i = f(h_{i-1}, B_i), with h_0 = IV,\n\noutputting h_t. If, at some chaining value h_{i-1}, one finds a pair of blocks (B_i, B_i′) such that\n\nf(h_{i-1}, B_i) = f(h_{i-1}, B_i′),\n\nthen one block can be replaced without changing any later chaining value. ### Joux’s multicollision construction\n\nStarting from h_0 = IV, for i=1,…,t:\n\n1. Call the collision finder to obtain B_i and B_i′ with f(h_{i-1}, B_i) = f(h_{i-1}, B_i′). Set h_i to this common chaining value. Continue to the next stage. At the end, choosing either B_i or B_i′ at every position yields 2^t distinct messages that pass through exactly the same intermediate chaining values and therefore hash to the same output. The cost is about t collision searches; for an n-bit output, each search costs about 2^{n/2}, so the total is about t·2^{n/2}. ### Why cascading hashes do not double security\n\nConcatenate two iterated hashes as F(M) = H_1(M) || H_2(M), which looks like a 2n-bit output. Joux’s point is: first build a 2^t multicollision for H_1, then look for a collision in H_2 among those 2^t messages. For large enough t, the probability that both chains collide rises sharply. For two n-bit chains, finding a collision in the concatenation costs about O(n·2^{n/2}), not the 2^n expected from a birthday attack on a 2n-bit output. The cascade is about as secure as the easier chain, not the sum of the two.",
+          "why": "Many designers assumed that H_1 || H_2 provides 2n-bit collision security, so two shorter hashes could resist a birthday attack. Joux showed that for iterated hashes this intuition is false: a multicollision turns “find one pair” into “find a collision on the second chain inside an exponentially large message set”, and the set size amplifies the second-chain collision probability.\n\nHash-based signatures, Merkle trees and commitment schemes often rely on collision hardness. With an iterated hash, multicollisions let an attacker produce many messages with the same hash far below 2^n cost; in a commitment this may mean one commitment opens to several values, and in a signature it may mean message substitution. The exact impact depends on whether the protocol relies only on collision resistance or also on second-preimage and preimage resistance.\n\nSponge constructions such as SHA-3, wide-pipe designs, randomised hashing and HAIFA do not automatically fit Joux’s “fixed chaining value + interchangeable blocks” argument. Judge the compression function, chaining-value width, message-block processing and final output, not just the number of output bits.",
+          "used": "1. Confirm whether it is a Merkle-Damgard iteration and whether the chaining value equals the output length. 2. Check whether the compression function yields same-chaining-value collisions easily; if so, estimate the cost of a t-stage multicollision. 3. For a cascade, check whether the two chains are independent and equally sized; estimate the t needed to find a second-chain collision in a 2^t message set. 4. Check whether the protocol needs only collision resistance, or also second-preimage/preimage resistance; multicollisions mainly attack collision resistance. 5. For SHA-3/sponge designs, do not apply the formula mechanically; re-analyse the concrete structure. 6. Record the output length n, chain length t and collision-search cost; never treat “2n-bit output” as an automatic “n-bit security”.\n\n- Legacy MD5/SHA-1 cascades: do not use “double hashing” as a collision repair. - Merkle trees and hash signatures: assess multicollision effects on leaves and internal nodes. - Commitments and randomness generation: check whether H(x) is treated as a unique binding.",
+          "broken": "1. Non-iterated structure. Joux’s construction depends on fixed chaining values and replaceable message blocks; sponge/wide-pipe designs do not fit directly. 2. Hard-to-find compression collisions. If the compression function itself resists collisions, the t searches still carry their real cost. 3. Preimage/second-preimage only. Multicollisions mainly break collision resistance; they do not automatically give a preimage attack. 4. Output length differs from chaining-value length. A wide-pipe design may prevent an internal collision from becoming an output collision. 5. Randomised or salted hashing. If the input is randomised, the attacker cannot freely choose interchangeable blocks. 6. Cascades with unequal or strongly independent chains. The cost estimate changes; O(n·2^{n/2}) cannot be applied mechanically.\n\n“2^t messages with one hash” does not mean “a preimage was found”; “a cascade is always secure” is also false. Judge by the concrete construction and the security goal.",
+          "history": "In his CRYPTO 2004 paper, Joux proved that for an iterated hash, building a 2^t multicollision costs about t times an ordinary collision search, not 2^t times; he used this to settle the long-standing question of whether cascading several iterated hashes strengthens security. The result applies directly to Merkle-Damgard designs such as MD5 and SHA-1.\n\nAfter the SHA-1 collision attacks became public, the “double insurance” intuition for cascaded hashes was abandoned; the SHA-3 standardisation chose a sponge construction, and the structural weakness of iterated hashes became part of the design discussion. Joux’s multicollision is now a basic review item for hash design, hash signatures and commitment protocols.",
+          "refs": "- Wikipedia search entry for 多重碰撞. https://zh.wikipedia.org/w/index.php?search=%E5%A4%9A%E9%87%8D%E7%A2%B0%E6%92%9E\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)\\]\n\nMulticollision: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "multicollision-r139-formal",
+          "entryId": "multicollision-details",
+          "kind": "formal-model",
+          "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+          "inputs": "输入：多重碰撞的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+          "expected": "按 多重碰撞 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "计算查询对数",
+            "代入生日界",
+            "与目标碰撞概率比较"
+          ],
+          "sourceIds": [
+            "multicollision-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "multicollision-r139-formal"
+      ],
+      "sources": [
+        "multicollision-wikipedia",
+        "multicollision-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "multicollision-r139-formal",
+      "entryId": "multicollision-details",
+      "kind": "formal-model",
+      "formula": "P\\approx 1-\\exp\\!\\left(-\\frac{q(q-1)}{2\\,2^n}\\right)",
+      "inputs": "输入：多重碰撞的公开参数、密钥/随机数与消息；变量说明：q 查询次数，n 输出位数。",
+      "expected": "按 多重碰撞 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "计算查询对数",
+        "代入生日界",
+        "与目标碰撞概率比较"
+      ],
+      "sourceIds": [
+        "multicollision-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

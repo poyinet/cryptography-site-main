@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-30",
+  "scope": "Compact attack-model article for attack--brute-force: definition, role, boundaries and source attribution. It does not duplicate a cipher algorithm or protocol entity.",
+  "entries": [
+    {
+      "id": "attack--brute-force-details",
+      "inventoryIds": [
+        "attack--brute-force"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释 穷举攻击 这一攻击模型：定义、作用、边界和来源；不复制具体密码算法或协议实体。",
+        "en": "A compact definition of the attack model Brute Force Attack: definition, role, boundaries and source attribution; it does not duplicate a cipher algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "穷举攻击",
+        "en": "Brute Force Attack"
+      },
+      "claimIds": [
+        "attack--brute-force-r139-principle",
+        "attack--brute-force-r139-why",
+        "attack--brute-force-r139-used",
+        "attack--brute-force-r139-broken",
+        "attack--brute-force-r139-history",
+        "attack--brute-force-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--brute-force-wikipedia",
+        "attack--brute-force-reference-ref"
+      ],
+      "related": [
+        "attack--dictionary-attack",
+        "key-space",
+        "key-length"
+      ],
+      "relatedPolicy": "Related entries are separate concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：穷举攻击（Brute Force Attack）。穷举攻击尝试所有可能密钥，直到找到正确密钥。",
+          "why": "按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "穷举攻击用于评估密钥空间和穷举搜索的可行性。",
+          "broken": "大密钥空间使穷举攻击不可行，但大密钥空间是必要而通常不充分的安全条件。",
+          "history": "HAC 在 §1.5.5 讨论穷举密钥搜索。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「穷举攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\)。输入：输入：穷举攻击的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。 预期输出：按 穷举攻击 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 估计密钥空间 2. 除以攻击者吞吐 3. 得到期望穷举时间。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 穷举攻击 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。\n\n**实现与复核清单**\n\n检查 穷举攻击 时逐项回答：输入编码是否与规范一致；密钥、IV/随机数和参数是否在允许范围；轮数、字长和填充是否按版本执行；输出是否与独立实现逐字节一致；失败路径是否泄露时序或错误细节。五项中任何一项没有记录，就只能标为“结构复算”，不能标为“实现验证”。\n\n**来源、版本与复现**\n\n穷举攻击的结论必须绑定具体版本：标准号、草案/正式版、实现版本、测试向量来源。复现记录要写运行环境与字节级输出；只写“通过”不写参数，无法复核。\n\n**复杂度与安全目标**\n\n评估 穷举攻击 时不只看单次运算，还要看密钥/状态规模、轮数、随机数质量、敌手模型与侧信道暴露。算法层的安全目标不能自动变成协议层或实现层的安全结论。\n\n**失败条件**\n\n参数越界、版本混用、错误填充、缺少认证和实现时序差异，都会让 穷举攻击 的“标准结论”失效。正文只在有来源支持时写具体常量；没有来源的测试值不补写。",
+          "refs": "- Wikipedia search entry for 穷举攻击. https://zh.wikipedia.org/w/index.php?search=%E7%A9%B7%E4%B8%BE%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\]\n\n穷举攻击的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。1.估计密钥空间。2.除以攻击者吞吐。3.得到期望穷举时间。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Brute Force Attack (穷举攻击). A brute-force attack tries all possible keys until the correct key is found.",
+          "why": "The size of the key space determines the feasibility of exhaustive search.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "Brute-force attacks are used to assess key-space and exhaustive-search feasibility.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "A large key space makes exhaustive search infeasible, but a large key space is necessary and usually not sufficient for security.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "HAC discusses exhaustive key search in §1.5.5.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 穷举攻击. https://zh.wikipedia.org/w/index.php?search=%E7%A9%B7%E4%B8%BE%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}\\]\n\nBrute Force Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "穷举攻击",
+          "密钥空间",
+          "穷举搜索",
+          "口令",
+          "密钥",
+          "安全条件"
+        ],
+        "en": [
+          "Brute-force attack",
+          "Key space",
+          "Exhaustive search",
+          "Password",
+          "Key",
+          "Security condition"
+        ]
+      },
+      "subtopicIds": [
+        "brute-force"
+      ],
+      "figures": [
+        {
+          "id": "attack--brute-force-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "穷举攻击：为什么需要 → 核心机制 → 边界。",
+            "en": "Brute Force Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "穷举攻击 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Brute Force Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--brute-force-details-flow.zh.svg",
+            "en": "assets/attack--brute-force-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "bb0d099cc5fb692140a45900d01e982235879540baf1382d57944d727a45886c",
+            "en": "5c24216d28d2a67b3edd2651414dd2b9a5c4da5881b5f6ac34459c47dc1f1d8c"
+          }
+        },
+        {
+          "id": "attack--brute-force-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "穷举攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Brute Force Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "穷举攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Brute Force Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--brute-force-details-r138-model.zh.svg",
+            "en": "assets/attack--brute-force-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5e8a22c9e52820fddf9615da6919c68f67d8ebcb3f5b0411aa0a30f633d418c7",
+            "en": "66e83d35c5a0640190ffef2ab0363598be0239ec9eb5bbd868d3777d0879af01"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--brute-force-r139-formal",
+          "entryId": "attack--brute-force-details",
+          "kind": "formal-model",
+          "formula": "T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}",
+          "inputs": "输入：穷举攻击的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。",
+          "expected": "按 穷举攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "估计密钥空间",
+            "除以攻击者吞吐",
+            "得到期望穷举时间"
+          ],
+          "sourceIds": [
+            "attack--brute-force-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--brute-force-r139-formal"
+      ],
+      "sources": [
+        "attack--brute-force-wikipedia",
+        "attack--brute-force-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--brute-force-r139-formal",
+      "entryId": "attack--brute-force-details",
+      "kind": "formal-model",
+      "formula": "T=\\frac{|\\mathcal{K}|}{v},\\qquad |\\mathcal{K}|=2^{\\kappa}",
+      "inputs": "输入：穷举攻击的公开参数、密钥/随机数与消息；变量说明：κ 密钥/口令熵（位），v 每秒尝试次数。",
+      "expected": "按 穷举攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "估计密钥空间",
+        "除以攻击者吞吐",
+        "得到期望穷举时间"
+      ],
+      "sourceIds": [
+        "attack--brute-force-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

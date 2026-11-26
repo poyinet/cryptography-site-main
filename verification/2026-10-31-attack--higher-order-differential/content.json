@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-10-31",
+  "scope": "Compact attack-model entry for attack--higher-order-differential: definition, mechanism, applications, limits and source attribution.",
+  "entries": [
+    {
+      "id": "attack--higher-order-differential-details",
+      "inventoryIds": [
+        "attack--higher-order-differential"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释高阶差分的攻击原理、适用场景、边界和来源；不复制其他密码算法或协议实体。",
+        "en": "A compact explanation of Higher-Order Differential Attack: mechanism, applications, boundaries and source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "高阶差分",
+        "en": "Higher-Order Differential Attack"
+      },
+      "claimIds": [
+        "attack--higher-order-differential-r139-principle",
+        "attack--higher-order-differential-r139-why",
+        "attack--higher-order-differential-r139-used",
+        "attack--higher-order-differential-r139-broken",
+        "attack--higher-order-differential-r139-history",
+        "attack--higher-order-differential-r139-refs"
+      ],
+      "sourceIds": [
+        "attack--higher-order-differential-wikipedia",
+        "attack--higher-order-differential-reference-ref"
+      ],
+      "related": [
+        "attack--differential-cryptanalysis",
+        "attack--integral-attack",
+        "block-cipher"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：高阶差分（Higher-Order Differential Attack）。高阶差分对函数在一个 k 维子空间上取 k 次导数；若函数的代数次数小于 k，则该导数为零。攻击者用 2^k 个选择明文覆盖子空间来利用这一性质。",
+          "why": "高非线性并不自动保证抵抗高阶差分：几乎 bent 函数的 Walsh 谱有整除性质，会降低复合函数的次数上界，使 5 轮 Feistel 结构可能被高阶差分攻破。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+          "used": "论文给出对使用几乎 bent S 盒的 5 轮 Feistel 密码的高阶差分攻击（次数达到上限的几乎 bent 函数除外），并说明 MISTY1 缩减版本的已知弱点是使用几乎 bent S 盒的直接后果。",
+          "broken": "攻击需要知道缩减密码的次数上界并准备 2^k 个选择明文；设计者可以通过控制 Walsh 谱和复合次数来提高抵抗，但这不能仅靠提高非线性度完成。",
+          "history": "Knudsen 把高阶导数用于分组密码并系统化高阶差分分析；Canteaut 和 Videau 在 2002 年 EUROCRYPT 论文中给出新的次数上界和 5 轮 Feistel 攻击。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「高阶差分」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。 预期输出：按 高阶差分 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 构造输入差分 2. 统计输出差分概率 3. 与随机置换概率 2^{-n} 比较。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 高阶差分 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for 高阶差分. https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\n高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。1.构造输入差分。2.统计输出差分概率。3.与随机置换概率 2^{-n} 比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Higher-Order Differential Attack (高阶差分). A higher-order differential takes the k-th derivative of a function over a k-dimensional subspace; if the algebraic degree is less than k, the derivative is zero. The attacker covers the subspace with 2^k chosen plaintexts to exploit this property.",
+          "why": "High nonlinearity does not automatically guarantee resistance to higher-order differentials: the Walsh spectrum of almost bent functions has divisibility properties that lower the degree bound of compositions, making 5-round Feistel structures potentially vulnerable.\n\nRestate the chain as input → state → transform → output → criterion. Every step should identify who acts, what changes and what evidence remains. A step without evidence is marked unverified, not reproduced.",
+          "used": "The paper gives a higher-order differential attack on 5-round Feistel ciphers using almost bent substitution boxes, excluding almost bent functions of maximum degree, and shows that the known weakness of a reduced MISTY1 version follows directly from almost bent S-boxes.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "The attack requires a degree bound for the reduced cipher and 2^k chosen plaintexts; designers can improve resistance by controlling the Walsh spectrum and composition degree, but not by increasing nonlinearity alone.\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Knudsen applied higher-order derivatives to block ciphers and systematized higher-order differential cryptanalysis; Canteaut and Videau gave a new degree bound and a 5-round Feistel attack in their 2002 EUROCRYPT paper.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for 高阶差分. https://zh.wikipedia.org/w/index.php?search=%E9%AB%98%E9%98%B6%E5%B7%AE%E5%88%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\]\n\nHigher-Order Differential Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "高阶导数：在子空间上反复取差分。",
+          "代数次数：向量函数各布尔分量代数正规形次数的最大值。",
+          "几乎 bent：非线性度达到最优上界、Walsh 谱具有特定整除性质的函数。",
+          "Walsh 谱：描述布尔函数线性相关性的谱。",
+          "子空间：向量空间中的线性子集。",
+          "选择明文：攻击者选择明文并获得密文。"
+        ],
+        "en": [
+          "Higher-order derivative: repeated differencing over a subspace.",
+          "Algebraic degree: the maximum degree among the algebraic normal forms of a vectorial function’s Boolean components.",
+          "Almost bent: a function with optimal nonlinearity whose Walsh spectrum has a specific divisibility property.",
+          "Walsh spectrum: the spectrum describing linear correlations of a Boolean function.",
+          "Subspace: a linear subset of a vector space.",
+          "Chosen plaintext: the attacker selects plaintexts and obtains ciphertexts."
+        ]
+      },
+      "figures": [
+        {
+          "id": "attack--higher-order-differential-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "高阶差分：为什么需要 → 核心机制 → 边界。",
+            "en": "Higher-Order Differential Attack: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "高阶差分 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Higher-Order Differential Attack, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/attack--higher-order-differential-details-flow.zh.svg",
+            "en": "assets/attack--higher-order-differential-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "934fcd3342d083bad1390de88811ed81f443decd69da55c92fde3955332ffbf6",
+            "en": "bfeee5627b11770053b8bd5e8e828cb8bbcf1cb74fad4a381e45fcc366e0c916"
+          }
+        },
+        {
+          "id": "attack--higher-order-differential-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "高阶差分 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Higher-Order Differential Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "高阶差分 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Higher-Order Differential Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/attack--higher-order-differential-details-r138-model.zh.svg",
+            "en": "assets/attack--higher-order-differential-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "61a2b566b697088b0bd5271e1cb69caab9a4338ee8df011bf9a08d7dbb748c5b",
+            "en": "f717e66d42d0354d518d9522388be380716efb6219dcffe37af3b3d29ed148a7"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "attack--higher-order-differential-r139-formal",
+          "entryId": "attack--higher-order-differential-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+          "inputs": "输入：高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+          "expected": "按 高阶差分 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "构造输入差分",
+            "统计输出差分概率",
+            "与随机置换概率 2^{-n} 比较"
+          ],
+          "sourceIds": [
+            "attack--higher-order-differential-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "attack--higher-order-differential-r139-formal"
+      ],
+      "sources": [
+        "attack--higher-order-differential-wikipedia",
+        "attack--higher-order-differential-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "attack--higher-order-differential-r139-formal",
+      "entryId": "attack--higher-order-differential-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]",
+      "inputs": "输入：高阶差分的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。",
+      "expected": "按 高阶差分 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "构造输入差分",
+        "统计输出差分概率",
+        "与随机置换概率 2^{-n} 比较"
+      ],
+      "sourceIds": [
+        "attack--higher-order-differential-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

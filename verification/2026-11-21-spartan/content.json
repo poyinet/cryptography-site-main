@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for spartan.",
+  "entries": [
+    {
+      "id": "spartan-details",
+      "inventoryIds": [
+        "spartan"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R103 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R103 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "Spartan 证明系统",
+        "en": "Spartan"
+      },
+      "claimIds": [
+        "spartan-r139-principle",
+        "spartan-r139-why",
+        "spartan-r139-used",
+        "spartan-r139-broken",
+        "spartan-r139-history",
+        "spartan-r139-refs"
+      ],
+      "sourceIds": [
+        "spartan-wikipedia",
+        "spartan-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "sigma-protocol"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "spartan-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Spartan 证明系统：为什么需要 → 核心机制 → 边界。",
+            "en": "Spartan: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "Spartan 证明系统 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Spartan, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/spartan-details-flow.zh.svg",
+            "en": "assets/spartan-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "34218323a35d0cdf566d6abbab00703ed3223717eda8c4c54c6f4e183246927d",
+            "en": "2029899dede1f4322946dcf75b86d983cd9a49e7fe63e9d2f44bcb625dc5b9c5"
+          }
+        },
+        {
+          "id": "spartan-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "Spartan 证明系统 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Spartan: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "Spartan 证明系统 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Spartan, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/spartan-details-r138-model.zh.svg",
+            "en": "assets/spartan-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "f6b5a8b1166e680ffa4f8b5374e1b4b32548d60976bef39465e5f6ef82d3cbd6",
+            "en": "dca967d9167acbd9972240f6cd7fd70795b1b3022dd2140afdb8722e79fd4891"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：Spartan 证明系统（Spartan）。### 透明设置的 R1CS 证明\n\nSpartan 面向 R1CS，把电路编码成低次多项式，再用 sum-check 协议做交互式证明。证明者先对电路描述做一次“计算承诺”，把 R1CS 矩阵变成可高效打开的多线性多项式；验证者只需亚线性时间检查。它不需要可信设置：所有公共参数都是公开可验证的，没有有毒废料。证明大小约在 `O(log² n)` 到 `O(√n)` 之间，验证时间 `O(n^{1-1/c})`，prover 为 `O(n)`。",
+          "why": "Spartan 是第一个对任意 R1CS 实现亚线性验证的透明 zk-SNARK，且 prover 时间最优。它把“无需 ceremony”与“验证者不必重算整个电路”结合起来，填补了 Bulletproofs（验证线性）与 Groth16（需可信设置）之间的空档。对不能做可信设置、又需要较大电路的场景，Spartan 是一个有吸引力的折中。",
+          "used": "Spartan 的 Rust 库用于 R1CS 证明、可验证状态转换和递归证明研究；它的 sum-check + 多项式承诺框架也被后续透明证明系统借鉴。它适合需要透明参数、可接受比 Groth16 更大证明的场合，而不是追求最小链上 footprint 的场景。",
+          "broken": "Spartan 的证明和验证不是常数级：验证者仍需亚线性工作，证明比 Groth16 大。它依赖离散对数、多项式承诺和随机预言机模型，不是后量子安全。计算承诺需要一次性 `O(n)` 预处理；电路频繁变化时这笔成本会重复。开源实现也需经过独立安全审计，不能把“论文证明”当成“实现安全”。### 形式模型",
+          "history": "Srinath Setty 在 CRYPTO 2020 发表 “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup”，提出计算承诺、SPARK 编译器和 R1CS 的低次多项式编码。论文的贡献是把 sum-check、短 PCP/MIP 与多项式承诺组合成透明的通用 zkSNARK，并给出 Rust 实现与实验比较。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：Spartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 Spartan 证明系统 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 Spartan 证明系统 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for Spartan 证明系统. https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nSpartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Spartan (Spartan 证明系统). ### Transparent R1CS proofs\n\nSpartan targets R1CS: it encodes the circuit as a low-degree polynomial and runs a sum-check protocol. The prover first makes a one-time “computation commitment” to the circuit description, turning the R1CS matrices into multilinear polynomials that can be opened efficiently; the verifier then checks in sublinear time. It needs no trusted setup: all public parameters are publicly verifiable and there is no toxic waste. Proof size ranges from about `O(log² n)` to `O(√n)`, verification is `O(n^{1-1/c})`, and the prover runs in `O(n)`.",
+          "why": "Spartan was the first transparent zk-SNARK with sublinear verification for arbitrary R1CS and a time-optimal prover. It combines “no ceremony” with “the verifier need not recompute the whole circuit”, filling the gap between Bulletproofs (linear verification) and Groth16 (trusted setup).\n\nFor settings that cannot run a trusted setup but need moderately large circuits, Spartan is an attractive compromise.",
+          "used": "Spartan’s Rust library is used for R1CS proofs, verifiable state transitions and recursive-proof research; its sum-check plus polynomial-commitment framework influenced later transparent proof systems.\n\nIt suits transparent-parameter settings that can tolerate larger proofs than Groth16, not applications that minimize on-chain footprint.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "Spartan’s proof and verification are not constant: the verifier still does sublinear work and proofs are larger than Groth16. It relies on discrete logarithms, polynomial commitments and the random-oracle model, and is not post-quantum.\n\nThe computation commitment needs a one-time `O(n)` preprocessing; frequent circuit changes repeat that cost. Open-source implementations still need independent security review; a paper proof is not an implementation audit.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "Srinath Setty published “Spartan: Efficient and General-Purpose zkSNARKs Without Trusted Setup” at CRYPTO 2020, introducing computation commitments, the SPARK compiler and a low-degree encoding of R1CS.\n\nThe contribution combines sum-check, short PCP/MIP techniques and polynomial commitments into a transparent general-purpose zkSNARK, with a Rust implementation and experimental comparison.",
+          "refs": "- Wikipedia search entry for Spartan 证明系统. https://zh.wikipedia.org/w/index.php?search=Spartan%20%E8%AF%81%E6%98%8E%E7%B3%BB%E7%BB%9F\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nSpartan: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "spartan-r139-formal",
+          "entryId": "spartan-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：Spartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 Spartan 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "spartan-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "spartan-r139-formal"
+      ],
+      "sources": [
+        "spartan-wikipedia",
+        "spartan-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "spartan-r139-formal",
+      "entryId": "spartan-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：Spartan 证明系统的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 Spartan 证明系统 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "spartan-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

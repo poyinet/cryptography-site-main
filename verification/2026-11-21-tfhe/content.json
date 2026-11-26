@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-21",
+  "scope": "W8 generic catalog-card batch reference entry for tfhe.",
+  "entries": [
+    {
+      "id": "tfhe-details",
+      "inventoryIds": [
+        "tfhe"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R103 核心条目深化：把目录身份卡改写为来源可核的机制、用途、边界与历史正文；保留原有目录坐标与子主题关系，不复制相邻条目。",
+        "en": "R103 core-entry deepening: replaced the catalog identity card with source-backed mechanism, use, boundary and history text while retaining the catalog position and subtopic links."
+      },
+      "title": {
+        "zh": "TFHE 全同态加密",
+        "en": "TFHE"
+      },
+      "claimIds": [
+        "tfhe-r139-principle",
+        "tfhe-r139-why",
+        "tfhe-r139-used",
+        "tfhe-r139-broken",
+        "tfhe-r139-history",
+        "tfhe-r139-refs"
+      ],
+      "sourceIds": [
+        "tfhe-wikipedia",
+        "tfhe-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [
+        "bfvhe"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "tfhe-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TFHE 全同态加密：为什么需要 → 核心机制 → 边界。",
+            "en": "TFHE: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TFHE 全同态加密 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for TFHE, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/tfhe-details-flow.zh.svg",
+            "en": "assets/tfhe-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "df2238093250233b0b61e8ad061327ae4dcf0f05417c02f5ae0a8e1620e7ceba",
+            "en": "4214a44003beb505bae95f6cdf9e84a3c937617abd6b971296b84e262032abae"
+          }
+        },
+        {
+          "id": "tfhe-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TFHE 全同态加密 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for TFHE: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "TFHE 全同态加密 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for TFHE, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/tfhe-details-r138-model.zh.svg",
+            "en": "assets/tfhe-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "2bb560e39048dc2e36c451a76ef63590e0b85360a145d61a5c52042d4bc11638",
+            "en": "3320e555c8e2c01a47261f4ee35f26a26fc745410910e03f78a37bd8e7b35a20"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**算法**：TFHE 全同态加密（Fully Homomorphic Encryption over the Torus）。### 环面上的全同态加密\n\nTFHE 是在环面（torus）上定义的全同态加密，基于 LWE/RLWE 与 GSW 的外部乘积。它最基本的模式是“门引导”（gate bootstrapping）：对每个二进制门执行一次 bootstrapping，把噪声刷新掉，从而支持任意深度的布尔电路。TFHE 还提供 leveled 模式，用打包数据和查找表高效计算算术函数；电路 bootstrapping 能把 LWE 密文转成低噪声 RingGSW 密文，使 leveled 模式可组合。",
+          "why": "TFHE 把 bootstrapping 从“每层一次、几十秒”降到“每个门约 13ms、16MB 引导密钥”，让全同态加密第一次在通用 CPU 上处理任意布尔电路成为可能。它的优势是低延迟、门级可编程、支持查找表和自动机；对隐私集合求交、加密数据库查询、隐私机器学习推理等小电路场景很有吸引力。",
+          "used": "TFHE 用于加密数据库查询、隐私保护机器学习推理、区块链上的保密智能合约，以及需要任意布尔电路的 MPC/外包计算。它适合布尔/小算术电路；对超大矩阵乘法或深层神经网络，参数、密钥大小和噪声管理仍然是瓶颈。",
+          "broken": "TFHE 的密文膨胀和引导密钥仍然很大；每个门都要 bootstrapping，吞吐量远低于明文计算。参数选择必须在安全、噪声和性能之间折中，参数错了会泄露密钥。它依赖 LWE 假设，不是信息论安全；实现需要常数时间采样、正确分布和侧信道防护。开源库的“可用”不等于“经过审计”。### 形式模型",
+          "history": "TFHE 源自 Asiacrypt 2016/2017 的两篇工作，完整期刊版发表于 `Journal of Cryptology` 33:34–91 (2020)。论文把 FHEW 的 bootstrapping 从 690ms 降到 13ms，引导密钥从 1GB 降到 16MB。它后来成为全同态加密的主流方案之一，与 BFV/BGV（精确算术）和 CKKS（近似浮点）形成互补。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：TFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。 预期输出：按 TFHE 全同态加密 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n**参数与状态规模**\n\n公式 \\(C=E_K(P;r),\\qquad P=D_K(C)\\) 的输入、输出和单位必须逐项登记；复算顺序为：1. 按算法规范编码输入 2. 在密钥控制下执行轮函数 3. 输出密文并检查长度与格式。\n\n状态规模、密钥长度、分组长度和轮数决定复杂度；这些量不能从标题推断，必须以标准或实现文档为准。\n\n**测试向量与实现边界**\n\n标准测试向量只证明某组输入在某个实现中产生了预期输出，不证明所有参数都安全。记录测试向量时至少要写：算法/模式、密钥、明文或消息、随机数/IV、输出长度、实现版本。该条目已登记的限制是：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。\n\n如果实现使用查表、分支或可变时间操作，算法层的证明不能替代侧信道评估；如果协议层没有认证，算法层的机密性也不能阻止替换或重放。\n\n**阅读路线与误用**\n\n把 TFHE 全同态加密 当成“能加密”是不够的：要说明它接受什么输入、在什么假设下成立、输出交给谁。\n\n常见误用包括把示例参数当唯一合法参数、把算法标准当实现认证、把一次测试向量当全参数证明。正文与计算记录要分别标明“来源事实”“形式模型”“未核空白”。",
+          "refs": "- Wikipedia search entry for TFHE 全同态加密. https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nTFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。1.按算法规范编码输入。2.在密钥控制下执行轮函数。3.输出密文并检查长度与格式。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Fully Homomorphic Encryption over the Torus (TFHE 全同态加密). ### Fully homomorphic encryption over the torus\n\nTFHE is a fully homomorphic encryption scheme defined over the torus, built on LWE/RLWE and the external product with GSW. Its most basic mode is gate bootstrapping: every binary gate performs a bootstrap that refreshes noise, enabling arbitrary-depth Boolean circuits. TFHE also offers a leveled mode that packs data and evaluates lookup tables and arithmetic functions efficiently; circuit bootstrapping converts LWE ciphertexts into low-noise RingGSW ciphertexts, making the leveled mode composable.",
+          "why": "TFHE reduced bootstrapping from tens of seconds per level to about 13 ms per gate with a 16 MB bootstrapping key, making FHE over arbitrary Boolean circuits practical on general CPUs for the first time.\n\nIts strengths are low latency, gate-level programmability, lookup tables and automata; it is attractive for private set intersection, encrypted database queries and private ML inference on small circuits.",
+          "used": "TFHE is used for encrypted database queries, privacy-preserving machine-learning inference, confidential smart contracts on blockchains, and MPC/outsourced computation that needs arbitrary Boolean circuits.\n\nIt suits Boolean and small arithmetic circuits; for huge matrix multiplications or deep neural networks, parameters, key size and noise management remain bottlenecks.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "TFHE ciphertexts and bootstrapping keys are still large; every gate needs a bootstrap, so throughput is far below plaintext computation. Parameter selection must trade security, noise and performance, and wrong parameters can leak the key.\n\nSecurity relies on LWE, not information-theoretic guarantees; implementations need constant-time sampling, correct distributions and side-channel protection. An open-source library being usable is not the same as being audited.\n\nT_K: M → C；T_K^{-1}: C → M；Correctness: D_K(E_K(M)) = M；|K| = k. Symbols are catalogue-level variables, not standard constants; parameters, test vectors and clauses remain with the registered source. The model states structural relations, not an implementation audit.",
+          "history": "TFHE grew out of Asiacrypt 2016/2017 work; the full journal version appeared in `Journal of Cryptology` 33:34–91 (2020). The paper reduced FHEW bootstrapping from 690 ms to 13 ms and the bootstrapping key from 1 GB to 16 MB.\n\nIt became one of the main FHE families, complementing BFV/BGV for exact arithmetic and CKKS for approximate floating-point computation.\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector. If the input leaves the domain, keys/parameters are reused, implementation diverges or versions mismatch, the model no longer holds.",
+          "refs": "- Wikipedia search entry for TFHE 全同态加密. https://zh.wikipedia.org/w/index.php?search=TFHE%20%E5%85%A8%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[C=E_K(P;r),\\qquad P=D_K(C)\\]\n\nFully Homomorphic Encryption over the Torus: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "tfhe-r139-formal",
+          "entryId": "tfhe-details",
+          "kind": "formal-model",
+          "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+          "inputs": "输入：TFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+          "expected": "按 TFHE 全同态加密 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "按算法规范编码输入",
+            "在密钥控制下执行轮函数",
+            "输出密文并检查长度与格式"
+          ],
+          "sourceIds": [
+            "tfhe-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "tfhe-r139-formal"
+      ],
+      "sources": [
+        "tfhe-wikipedia",
+        "tfhe-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "tfhe-r139-formal",
+      "entryId": "tfhe-details",
+      "kind": "formal-model",
+      "formula": "C=E_K(P;r),\\qquad P=D_K(C)",
+      "inputs": "输入：TFHE 全同态加密的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+      "expected": "按 TFHE 全同态加密 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "按算法规范编码输入",
+        "在密钥控制下执行轮函数",
+        "输出密文并检查长度与格式"
+      ],
+      "sourceIds": [
+        "tfhe-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

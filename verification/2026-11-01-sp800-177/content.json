@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for sp800-177: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "sp800-177-details",
+      "inventoryIds": [
+        "sp800-177"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释TLS 选型与配置指南的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Guidelines for the Selection, Configuration, and Use of TLS Implementations: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "TLS 选型与配置指南",
+        "en": "Guidelines for the Selection, Configuration, and Use of TLS Implementations"
+      },
+      "claimIds": [
+        "sp800-177-r139-principle",
+        "sp800-177-r139-why",
+        "sp800-177-r139-used",
+        "sp800-177-r139-broken",
+        "sp800-177-r139-history",
+        "sp800-177-r139-refs"
+      ],
+      "sourceIds": [
+        "sp800-177-wikipedia",
+        "sp800-177-reference-ref"
+      ],
+      "related": [
+        "tls12",
+        "tls13",
+        "transport-layer-security"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**标准**：TLS 选型与配置指南（Guidelines for the Selection, Configuration, and Use of TLS Implementations）。这份指南的身份写在标题里：「Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations」，由 NIST 以 SP 800-52 Rev.2 发布。§1.2 划清作用域：「These guidelines focus only on network security, and they focus directly on the small portion of the network communications stack that is referred to as the transport layer.」并说明它管的是互操作用场景与公钥证书认证：「These guidelines focus on the common use cases where clients and servers must interoperate with a wide variety of implementations, and authentication is performed using public-key certificates.」",
+          "why": "之所以按风险分层给要求，是因为安全性不是一枚开关：§1.2 写「Security is not a single property that is (or is not) possessed by a protocol.」并且「Adherence to these guidelines only protects the data in transit.」§3.1 因此把政务专用与面向公众的服务器分别规定：前者「should not be configured to use TLS 1.1 and shall not use TLS 1.0, SSL 3.0, or SSL 2.0.」后者允许在必要时保留 TLS 1.1/1.0 以维持互通——「The use of TLS versions 1.1 and 1.0 is generally discouraged, but these versions may be configured when necessary to enable interaction with citizens and businesses.」",
+          "used": "面向美国联邦系统的部署时限写得具体：§3.1「Agencies shall support TLS 1.3 by January 1, 2024.」并要求此后两类服务器都支持 1.3；同时给出兼容策略——「In general, servers that support TLS 1.3 should be configured to use TLS 1.2 as well.」允许在确认不需要互通时关掉 1.2。政务专用侧的基线是「shall be configured to use TLS 1.2 and should be configured to use TLS 1.3 as well」。",
+          "broken": "指南自陈两个限度。范围上它只管传输层：§1.2 说「Adherence to these guidelines only protects the data in transit.」并建议其余层面引用其他 NIST 标准与指南。实现质量上它不接受有缺陷的版本协商：§3.1 记录某些实现会在新版本被提出时直接断开，结论是「Servers that incorrectly implement TLS version negotiation shall not be used.」——即合规配置无法替代对实现行为的验证。",
+          "history": "**技术参数与复算边界**\n\n该条目的形式模型是 \\(S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\)。输入：输入：TLS 选型与配置指南的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。 预期输出：按 TLS 选型与配置指南 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for TLS 选型与配置指南. https://zh.wikipedia.org/w/index.php?search=TLS%20%E9%80%89%E5%9E%8B%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nTLS 选型与配置指南的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。1.读取标准规定的密钥/分组/模式参数。2.按标准表换算等效强度。3.取最弱分量作为系统强度。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Standard**: Guidelines for the Selection, Configuration, and Use of TLS Implementations (TLS 选型与配置指南). The document identifies itself in its title: \"Guidelines for the Selection, Configuration, and Use of Transport Layer Security (TLS) Implementations\", published as NIST SP 800-52 Rev. §1.2 bounds it: \"These guidelines focus only on network security, and they focus directly on the small portion of the network communications stack that is referred to as the transport layer.\" and it targets broad-interop, certificate-authenticated cases — \"These guidelines focus on the common use cases where clients and servers must interoperate with a wide variety of implementations, and authentication is performed using public-key certificates.\"",
+          "why": "Requirements are layered by risk because security is not a single switch: §1.2 says \"Security is not a single property that is (or is not) possessed by a protocol.\" and \"Adherence to these guidelines only protects the data in transit.\" §3.1 therefore treats government-only and public-facing servers differently: the former \"should not be configured to use TLS 1.1 and shall not use TLS 1.0, SSL 3.0, or SSL 2.0.\" while the latter may keep older versions when interoperation demands it — \"The use of TLS versions 1.1 and 1.0 is generally discouraged, but these versions may be configured when necessary to enable interaction with citizens and businesses.\"",
+          "used": "Federal deployment timing is concrete: §3.1 states \"Agencies shall support TLS 1.3 by January 1, 2024.\" and requires both server classes to support TLS 1.3 thereafter. The compatibility rule is \"In general, servers that support TLS 1.3 should be configured to use TLS 1.2 as well.\" with 1.2 allowed off once interoperability does not need it. For government-only servers the baseline is that they \"shall be configured to use TLS 1.2 and should be configured to use TLS 1.3 as well\".",
+          "broken": "Two limits are stated. In scope, it covers only the transport layer: §1.2 — \"Adherence to these guidelines only protects the data in transit.\" — recommending other NIST publications for the rest. In implementation quality, it refuses broken negotiation: §3.1 records servers that terminate connections when a newer version is offered and concludes \"Servers that incorrectly implement TLS version negotiation shall not be used.\" configuration compliance cannot substitute for verifying implementation behaviour.",
+          "history": "The registered source is corrected after verification: the inventory record read `NIST SP 800-177 Rev.1(2020)`, but SP 800-177 Rev. 1 is Trustworthy Email (February 2019). The TLS selection and configuration guidance is SP 800-52 Rev. 2, by Kerry A. McKay and David A. Cooper (Computer Security Division, Information Technology Laboratory), dated August 2019 with DOI 10.6028/NIST.SP.800-52r2.",
+          "refs": "- Wikipedia search entry for TLS 选型与配置指南. https://zh.wikipedia.org/w/index.php?search=TLS%20%E9%80%89%E5%9E%8B%E4%B8%8E%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}\\]\n\nGuidelines for the Selection, Configuration, and Use of TLS Implementations: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "SP 800-52r2：NIST 的 TLS 选型与配置建议。",
+          "政府专用应用：仅供公务使用的系统。",
+          "面向公众应用：需与市民或企业互通的系统。",
+          "版本协商：客户端与服务器选定 TLS 版本。",
+          "互通性例外：为兼容旧客户端保留旧版本。",
+          "in transit：数据在网络上方的保护范围。"
+        ],
+        "en": [
+          "SP 800-52r2: NIST guidance on selecting, configuring and using TLS.",
+          "Government-only application: systems used exclusively by government staff.",
+          "Public-facing application: systems that must interoperate with citizens or business.",
+          "Version negotiation: choosing the TLS version in use.",
+          "Interoperability exception: keeping old versions for legacy clients.",
+          "In transit: the protection scope this document addresses."
+        ]
+      },
+      "figures": [
+        {
+          "id": "sp800-177-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 选型与配置指南：为什么需要 → 核心机制 → 边界。",
+            "en": "Guidelines for the Selection, Configuration, and Use of TLS Implementations: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "TLS 选型与配置指南 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Guidelines for the Selection, Configuration, and Use of TLS Implementations, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/sp800-177-details-flow.zh.svg",
+            "en": "assets/sp800-177-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3a21793d976b44fdf97cb82af2b5e530a839f9b8e791f292734554a413b1cc4f",
+            "en": "eb3aea6551400fbbd2d2a5f8e18018d9c12fec5198811b8bfbfe73ccb7d00a8e"
+          }
+        },
+        {
+          "id": "sp800-177-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "TLS 选型与配置指南 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Guidelines for the Selection, Configuration, and Use of TLS Implementations: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "TLS 选型与配置指南 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Guidelines for the Selection, Configuration, and Use of TLS Implementations, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/sp800-177-details-r138-model.zh.svg",
+            "en": "assets/sp800-177-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "c27723bbffb7adf0e8674478c290b1df5d7e46ade87838017b80af3369063813",
+            "en": "b25812aecc9ef096a6852d0498570b46735d97a8549e2a835961a228a7dd9edc"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "sp800-177-r139-formal",
+          "entryId": "sp800-177-details",
+          "kind": "formal-model",
+          "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+          "inputs": "输入：TLS 选型与配置指南的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+          "expected": "按 TLS 选型与配置指南 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "读取标准规定的密钥/分组/模式参数",
+            "按标准表换算等效强度",
+            "取最弱分量作为系统强度"
+          ],
+          "sourceIds": [
+            "sp800-177-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "sp800-177-r139-formal"
+      ],
+      "sources": [
+        "sp800-177-wikipedia",
+        "sp800-177-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "sp800-177-r139-formal",
+      "entryId": "sp800-177-details",
+      "kind": "formal-model",
+      "formula": "S=\\min_i S_i,\\quad S_i\\in\\{\\text{密钥强度},\\text{分组安全},\\text{实现安全}\\}",
+      "inputs": "输入：TLS 选型与配置指南的公开参数、密钥/随机数与消息；变量说明：S 为综合安全强度；各分量取最小值，不能只看密钥位数。",
+      "expected": "按 TLS 选型与配置指南 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "读取标准规定的密钥/分组/模式参数",
+        "按标准表换算等效强度",
+        "取最弱分量作为系统强度"
+      ],
+      "sourceIds": [
+        "sp800-177-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

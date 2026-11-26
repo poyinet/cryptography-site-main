@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "bls-details",
+  "sources": [
+    {
+      "id": "bls-wikipedia",
+      "title": "Wikipedia search entry for BLS 短签名",
+      "url": "https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: BLS 短签名",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "bls-r139-principle",
+          "entryId": "bls-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**算法**：BLS 短签名（Boneh-Lynn-Shacham Short Signatures）。### 配对与短签名\n\nBLS 在配对友好曲线上工作：私钥 sk，公钥 PK=sk·P2，签名 σ=sk·H(m)，H 把消息哈希到 G1。验证检查 e(σ,P2)=e(H(m),PK)。在 BLS12-381 上，签名 48 B、公钥 96 B。### 聚合\n\nn 个签名可以逐点相加成一个 48 B 聚合签名；验证用多配对 e(σ,P2)=∏e(H(m_i),PK_i)。聚合公钥也可相加。### 三种防 rogue-key\n\nBasic 要求聚合消息互不相同；Message augmentation 把 PK 拼进消息；Proof of possession 要求每个公钥附带 PoP。协议必须选一种，不能混。",
+            "en": "**Algorithm**: Boneh-Lynn-Shacham Short Signatures (BLS 短签名).### Pairing and short signatures\n\nBLS works on a pairing-friendly curve: private key sk, public key PK=sk·P2, signature σ=sk·H(m), where H hashes the message to G1."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        },
+        {
+          "id": "bls-r139-why",
+          "entryId": "bls-details",
+          "section": "why",
+          "statement": {
+            "zh": "BLS 的价值是签名聚合：n 个验证者、交易或投票只占一个签名，带宽和存储随 n 亚线性增长。它确定、非可延展、验证可用多配对批量算，适合共识投票、证书透明度和跨链轻客户端。在以太坊共识里，成百上千个 attestation 聚合成一个 BLS 签名，是以太坊可扩展性的关键。",
+            "en": "BLS’s value is signature aggregation: n validators, transactions or votes occupy one signature, so bandwidth and storage grow sublinearly in n.It is deterministic, non-malleable and batch-verifiable with multi-pairings, fitting consensus votes, certificate transparency and light clients."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        },
+        {
+          "id": "bls-r139-used",
+          "entryId": "bls-details",
+          "section": "used",
+          "statement": {
+            "zh": "用于以太坊共识的 attestation 聚合、Dfinity 的阈值签名、Cloudflare 的证书透明度和部分跨链桥；标准化文本是 CFRG BLS draft（07）。工程要点：用 BLS12-381 和 hash-to-curve；聚合验证必须检查 PK 非单位元、签名在正确子群；按方案选择 distinct messages、augmentation 或 PoP；不要自己拼接域分离。",
+            "en": "It is used for Ethereum consensus attestation aggregation, Dfinity threshold signatures, Cloudflare certificate transparency and some bridges; the standards text is the CFRG BLS draft (07).Requirements: BLS12-381 and hash-to-curve; aggregate verification must reject the identity public key and check signatures lie in the correct subgroup; choose distinct messages, augmentation or PoP per scheme; do not invent domain separation."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        },
+        {
+          "id": "bls-r139-broken",
+          "entryId": "bls-details",
+          "section": "broken",
+          "statement": {
+            "zh": "BLS 的聚合是“签名可加”，但协议层最容易错：rogue-key 攻击可让攻击者用伪造公钥抵消诚实签名；只检查聚合方程不检查消息集合会接受伪造。",
+            "en": "BLS aggregation is “signatures add”, but protocol mistakes dominate: a rogue-key attack can cancel honest signatures with a crafted public key; checking only the aggregate equation without the message set can accept forgeries.Boundaries: BLS is not post-quantum; pairing parameters and subgroup checks must be correct; identity/zero-signature attacks require rejecting identity PK and σ; aggregate security depends on the scheme, and Basic is safe only with distinct messages."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        },
+        {
+          "id": "bls-r139-history",
+          "entryId": "bls-details",
+          "section": "history",
+          "statement": {
+            "zh": "BLS 由 Boneh、Lynn、Shacham 在 2001 年 ASIACRYPT 论文 “Short Signatures from the Weil Pairing” 提出；它利用 Weil/Tate 配对把签名压到群元素大小。IETF CFRG 从 2018 年起推动 BLS 标准化，当前草案定义 Basic、Message augmentation、PoP 三种方案和 BLS12-381 套件。BLS 在 2020 年后因以太坊 2.0 共识而大规模部署。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：BLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+            "en": "BLS was introduced by Boneh, Lynn and Shacham in the 2001 ASIACRYPT paper “Short Signatures from the Weil Pairing”; pairings compress a signature to one group element.IETF CFRG has standardized BLS since 2018; the current draft defines Basic, message augmentation, PoP and the BLS12-381 suite."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        },
+        {
+          "id": "bls-r139-refs",
+          "entryId": "bls-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for BLS 短签名.https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for BLS 短签名.https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "bls-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "bls-wikipedia"
+      ]
+    },
+    {
+      "id": "bls-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "bls-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "bls-r139-principle",
+      "entryId": "bls-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**算法**：BLS 短签名（Boneh-Lynn-Shacham Short Signatures）。### 配对与短签名\n\nBLS 在配对友好曲线上工作：私钥 sk，公钥 PK=sk·P2，签名 σ=sk·H(m)，H 把消息哈希到 G1。验证检查 e(σ,P2)=e(H(m),PK)。在 BLS12-381 上，签名 48 B、公钥 96 B。### 聚合\n\nn 个签名可以逐点相加成一个 48 B 聚合签名；验证用多配对 e(σ,P2)=∏e(H(m_i),PK_i)。聚合公钥也可相加。### 三种防 rogue-key\n\nBasic 要求聚合消息互不相同；Message augmentation 把 PK 拼进消息；Proof of possession 要求每个公钥附带 PoP。协议必须选一种，不能混。",
+        "en": "**Algorithm**: Boneh-Lynn-Shacham Short Signatures (BLS 短签名).### Pairing and short signatures\n\nBLS works on a pairing-friendly curve: private key sk, public key PK=sk·P2, signature σ=sk·H(m), where H hashes the message to G1."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    },
+    {
+      "id": "bls-r139-why",
+      "entryId": "bls-details",
+      "section": "why",
+      "statement": {
+        "zh": "BLS 的价值是签名聚合：n 个验证者、交易或投票只占一个签名，带宽和存储随 n 亚线性增长。它确定、非可延展、验证可用多配对批量算，适合共识投票、证书透明度和跨链轻客户端。在以太坊共识里，成百上千个 attestation 聚合成一个 BLS 签名，是以太坊可扩展性的关键。",
+        "en": "BLS’s value is signature aggregation: n validators, transactions or votes occupy one signature, so bandwidth and storage grow sublinearly in n.It is deterministic, non-malleable and batch-verifiable with multi-pairings, fitting consensus votes, certificate transparency and light clients."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    },
+    {
+      "id": "bls-r139-used",
+      "entryId": "bls-details",
+      "section": "used",
+      "statement": {
+        "zh": "用于以太坊共识的 attestation 聚合、Dfinity 的阈值签名、Cloudflare 的证书透明度和部分跨链桥；标准化文本是 CFRG BLS draft（07）。工程要点：用 BLS12-381 和 hash-to-curve；聚合验证必须检查 PK 非单位元、签名在正确子群；按方案选择 distinct messages、augmentation 或 PoP；不要自己拼接域分离。",
+        "en": "It is used for Ethereum consensus attestation aggregation, Dfinity threshold signatures, Cloudflare certificate transparency and some bridges; the standards text is the CFRG BLS draft (07).Requirements: BLS12-381 and hash-to-curve; aggregate verification must reject the identity public key and check signatures lie in the correct subgroup; choose distinct messages, augmentation or PoP per scheme; do not invent domain separation."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    },
+    {
+      "id": "bls-r139-broken",
+      "entryId": "bls-details",
+      "section": "broken",
+      "statement": {
+        "zh": "BLS 的聚合是“签名可加”，但协议层最容易错：rogue-key 攻击可让攻击者用伪造公钥抵消诚实签名；只检查聚合方程不检查消息集合会接受伪造。",
+        "en": "BLS aggregation is “signatures add”, but protocol mistakes dominate: a rogue-key attack can cancel honest signatures with a crafted public key; checking only the aggregate equation without the message set can accept forgeries.Boundaries: BLS is not post-quantum; pairing parameters and subgroup checks must be correct; identity/zero-signature attacks require rejecting identity PK and σ; aggregate security depends on the scheme, and Basic is safe only with distinct messages."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    },
+    {
+      "id": "bls-r139-history",
+      "entryId": "bls-details",
+      "section": "history",
+      "statement": {
+        "zh": "BLS 由 Boneh、Lynn、Shacham 在 2001 年 ASIACRYPT 论文 “Short Signatures from the Weil Pairing” 提出；它利用 Weil/Tate 配对把签名压到群元素大小。IETF CFRG 从 2018 年起推动 BLS 标准化，当前草案定义 Basic、Message augmentation、PoP 三种方案和 BLS12-381 套件。BLS 在 2020 年后因以太坊 2.0 共识而大规模部署。**技术参数与复算边界**\n\n本条的形式模型是 \\(C=E_K(P;r),\\qquad P=D_K(C)\\)。输入：输入：BLS 短签名的公开参数、密钥/随机数与消息；变量说明：P 明文，C 密文，K 密钥，r 随机化参数。",
+        "en": "BLS was introduced by Boneh, Lynn and Shacham in the 2001 ASIACRYPT paper “Short Signatures from the Weil Pairing”; pairings compress a signature to one group element.IETF CFRG has standardized BLS since 2018; the current draft defines Basic, message augmentation, PoP and the BLS12-381 suite."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    },
+    {
+      "id": "bls-r139-refs",
+      "entryId": "bls-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for BLS 短签名.https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for BLS 短签名.https://zh.wikipedia.org/w/index.php?search=BLS%20%E7%9F%AD%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "bls-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

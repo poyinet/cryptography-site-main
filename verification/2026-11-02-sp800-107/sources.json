@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "sp800-107-details",
+  "sources": [
+    {
+      "id": "sp800-107-wikipedia",
+      "title": "Wikipedia search entry for 批准哈希算法的使用建议（SP 800-107）",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%89%B9%E5%87%86%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-107%EF%BC%89",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 批准哈希算法的使用建议（SP 800-107）",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "sp800-107-r139-principle",
+          "entryId": "sp800-107-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**标准**：批准哈希算法的使用建议（SP 800-107）（Recommendation for Applications Using Approved Hash Algorithms (SP 800-107 Rev.摘要交代它管什么：「This document provides security guidelines for achieving the required or desired security strengths when using cryptographic applications that employ the approved hash functions specified in Federal Information Processing Standard (FIPS) 180-4.」受影响的用法随即列出：「These include functions such as digital signatures, Keyed-hash Message Authentication Codes (HMACs) and Hash-based Key Derivation Functions (Hash-based KDFs).」它规定的是强度匹配，不规定哈希算法本身。引文的对象是强度而非算法本身：函数由 FIPS 180-4 指定，这份文件处理的是这些用法在达到所需强度时应当怎样取值与取舍。",
+            "en": "**Standard**: Recommendation for Applications Using Approved Hash Algorithms (SP 800-107 Rev.1) (批准哈希算法的使用建议（SP 800-107）)."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-107-r139-why",
+          "entryId": "sp800-107-details",
+          "section": "why",
+          "statement": {
+            "zh": "出发点是最基本的那一步：「A hash algorithm is used to map a message of arbitrary length to a fixed-length message digest.」风险在于强度的错觉，§4.2 给出一般规律：「the expected collision resistance strength of any approved hash function is, in general, half the length of its hash value.」并记下已被攻破的例外：「The latest cryptanalytic results for SHA-1 [SHA1 Attack] indicate that it may have a collision resistance strength that is considerably less than its expected strength of 80 bits.」三段连读即是理由：把任意长消息压成固定摘要本身不是问题，把摘要长度当作强度才是；一般规律是碰撞抗性为摘要长之一半，而文件对冲着说 SHA-1 的实测结果可能远低于其 80 位期望强度（原文 indicate that it may have），并未把它写成已经确认的事实。",
+            "en": "The starting point is the basic step: \"A hash algorithm is used to map a message of arbitrary length to a fixed-length message digest.\" The risk is an illusion of strength, and §4.2 gives the rule of thumb: \"the expected collision resistance strength of any approved hash function is, in general, half the length of its hash value.\" It then records the exception that has already fallen: \"The latest cryptanalytic results for SHA-1 [SHA1 Attack] indicate that it may have a collision resistance strength that is considerably less than its expected strength of 80 bits."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-107-r139-used",
+          "entryId": "sp800-107-details",
+          "section": "used",
+          "statement": {
+            "zh": "§5.3.2 是给实现者的硬性要求，三条连读即可：「An HMAC key shall have a security strength that meets or exceeds the security strength required to protect the data over which the HMAC is computed.」「The HMAC key shall be kept secret.」以及「HMAC keys shall be generated as specified in SP 800-133 [SP 800-133].」三条都是 shall 级：强度须不低于所保护数据的要求，密钥须保密，生成方法则交由另一份文件规定，密钥生成本身不在本文件内给出。",
+            "en": "Section 5.3.2 states the implementer obligations in three sentences: \"An HMAC key shall have a security strength that meets or exceeds the security strength required to protect the data over which the HMAC is computed.\" \"The HMAC key shall be kept secret.\" and \"HMAC keys shall be generated as specified in SP 800-133 [SP 800-133].\" All three are shall-level: the strength must match the protected data, the key must stay secret, and key generation is handed to another document rather than specified here."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-107-r139-broken",
+          "entryId": "sp800-107-details",
+          "section": "broken",
+          "statement": {
+            "zh": "§2 的符合性段承认有些要求验证程序覆盖不到：「Some of these requirements may be out-of-scope for CAVP and CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.」§1 又划出两份 KDF 文件不在讨论之列：「these documents sufficiently address the security aspects of their use, so discussions of SP 800-56C and SP 800-108 are not included herein.」§5.2 对 SHA-1 设了有时效的限制：「SHA-1 shall not be used in any new digital signature applications that require at least 80 bits of security strength.」三处限制的层次不同：验证程序覆盖不到的要求由使用与配置方负责，两类 KDF 文件被明确排除在讨论之外，对 SHA-1 的禁止按用途与强度门槛起算。",
+            "en": "The conformance paragraph in §2 admits that validation cannot cover everything: \"Some of these requirements may be out-of-scope for CAVP and CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.\" Section 1 also excludes two key-derivation documents: \"these documents sufficiently address the security aspects of their use, so discussions of SP 800-56C and SP 800-108 are not included herein.\" And §5.2 places a dated restriction on SHA-1: \"SHA-1 shall not be used in any new digital signature applications that require at least 80 bits of security strength."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-107-r139-history",
+          "entryId": "sp800-107-details",
+          "section": "history",
+          "statement": {
+            "zh": "扉页按本份文本自陈为「NIST Special Publication 800-107」的 Revision 1，标题行是「Recommendation for Applications Using Approved Hash Algorithms」，作者与部门两行连读为「Quynh Dang Computer Security Division Information Technology Laboratory」；题页标签按行序再连读即得日期「Information Technology Laboratory COMPUTER SECURITY August 2012」，也就是这份副本标注 2012 年 8 月，且不含 DOI 行。致谢页给出单作者与咨询者名单：「The author, Quynh Dang of the National Institute of Standards and Technology (NIST) gratefully appreciates the contributions and comments from Elaine Barker, William E.Burr, Shu-jen Chang, Lily Chen, Donna F.Dodson, Morris Dworkin, John Kelsey, Ray Perlner, W.Timothy Polk and Andrew Regenscheid.",
+            "en": "Its own masthead makes this copy \"NIST Special Publication 800-107\" Revision 1, titled \"Recommendation for Applications Using Approved Hash Algorithms\", with the author and division lines reading in sequence as \"Quynh Dang Computer Security Division Information Technology Laboratory\"; continuing line by line through the title block gives \"Information Technology Laboratory COMPUTER SECURITY August 2012\", so this copy is dated August 2012 and contains no DOI line.The acknowledgements name the single author and the reviewers: \"The author, Quynh Dang of the National Institute of Standards and Technology (NIST) gratefully appreciates the contributions and comments from Elaine Barker, William E."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        },
+        {
+          "id": "sp800-107-r139-refs",
+          "entryId": "sp800-107-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 批准哈希算法的使用建议（SP 800-107）.https://zh.wikipedia.org/w/index.php?search=%E6%89%B9%E5%87%86%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-107%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 批准哈希算法的使用建议（SP 800-107）.https://zh.wikipedia.org/w/index.php?search=%E6%89%B9%E5%87%86%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-107%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "sp800-107-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "sp800-107-wikipedia"
+      ]
+    },
+    {
+      "id": "sp800-107-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "sp800-107-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "sp800-107-r139-principle",
+      "entryId": "sp800-107-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**标准**：批准哈希算法的使用建议（SP 800-107）（Recommendation for Applications Using Approved Hash Algorithms (SP 800-107 Rev.摘要交代它管什么：「This document provides security guidelines for achieving the required or desired security strengths when using cryptographic applications that employ the approved hash functions specified in Federal Information Processing Standard (FIPS) 180-4.」受影响的用法随即列出：「These include functions such as digital signatures, Keyed-hash Message Authentication Codes (HMACs) and Hash-based Key Derivation Functions (Hash-based KDFs).」它规定的是强度匹配，不规定哈希算法本身。引文的对象是强度而非算法本身：函数由 FIPS 180-4 指定，这份文件处理的是这些用法在达到所需强度时应当怎样取值与取舍。",
+        "en": "**Standard**: Recommendation for Applications Using Approved Hash Algorithms (SP 800-107 Rev.1) (批准哈希算法的使用建议（SP 800-107）)."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-107-r139-why",
+      "entryId": "sp800-107-details",
+      "section": "why",
+      "statement": {
+        "zh": "出发点是最基本的那一步：「A hash algorithm is used to map a message of arbitrary length to a fixed-length message digest.」风险在于强度的错觉，§4.2 给出一般规律：「the expected collision resistance strength of any approved hash function is, in general, half the length of its hash value.」并记下已被攻破的例外：「The latest cryptanalytic results for SHA-1 [SHA1 Attack] indicate that it may have a collision resistance strength that is considerably less than its expected strength of 80 bits.」三段连读即是理由：把任意长消息压成固定摘要本身不是问题，把摘要长度当作强度才是；一般规律是碰撞抗性为摘要长之一半，而文件对冲着说 SHA-1 的实测结果可能远低于其 80 位期望强度（原文 indicate that it may have），并未把它写成已经确认的事实。",
+        "en": "The starting point is the basic step: \"A hash algorithm is used to map a message of arbitrary length to a fixed-length message digest.\" The risk is an illusion of strength, and §4.2 gives the rule of thumb: \"the expected collision resistance strength of any approved hash function is, in general, half the length of its hash value.\" It then records the exception that has already fallen: \"The latest cryptanalytic results for SHA-1 [SHA1 Attack] indicate that it may have a collision resistance strength that is considerably less than its expected strength of 80 bits."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-107-r139-used",
+      "entryId": "sp800-107-details",
+      "section": "used",
+      "statement": {
+        "zh": "§5.3.2 是给实现者的硬性要求，三条连读即可：「An HMAC key shall have a security strength that meets or exceeds the security strength required to protect the data over which the HMAC is computed.」「The HMAC key shall be kept secret.」以及「HMAC keys shall be generated as specified in SP 800-133 [SP 800-133].」三条都是 shall 级：强度须不低于所保护数据的要求，密钥须保密，生成方法则交由另一份文件规定，密钥生成本身不在本文件内给出。",
+        "en": "Section 5.3.2 states the implementer obligations in three sentences: \"An HMAC key shall have a security strength that meets or exceeds the security strength required to protect the data over which the HMAC is computed.\" \"The HMAC key shall be kept secret.\" and \"HMAC keys shall be generated as specified in SP 800-133 [SP 800-133].\" All three are shall-level: the strength must match the protected data, the key must stay secret, and key generation is handed to another document rather than specified here."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-107-r139-broken",
+      "entryId": "sp800-107-details",
+      "section": "broken",
+      "statement": {
+        "zh": "§2 的符合性段承认有些要求验证程序覆盖不到：「Some of these requirements may be out-of-scope for CAVP and CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.」§1 又划出两份 KDF 文件不在讨论之列：「these documents sufficiently address the security aspects of their use, so discussions of SP 800-56C and SP 800-108 are not included herein.」§5.2 对 SHA-1 设了有时效的限制：「SHA-1 shall not be used in any new digital signature applications that require at least 80 bits of security strength.」三处限制的层次不同：验证程序覆盖不到的要求由使用与配置方负责，两类 KDF 文件被明确排除在讨论之外，对 SHA-1 的禁止按用途与强度门槛起算。",
+        "en": "The conformance paragraph in §2 admits that validation cannot cover everything: \"Some of these requirements may be out-of-scope for CAVP and CMVP validation testing, and thus are the responsibility of entities using, implementing, installing, or configuring applications that incorporate this Recommendation.\" Section 1 also excludes two key-derivation documents: \"these documents sufficiently address the security aspects of their use, so discussions of SP 800-56C and SP 800-108 are not included herein.\" And §5.2 places a dated restriction on SHA-1: \"SHA-1 shall not be used in any new digital signature applications that require at least 80 bits of security strength."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-107-r139-history",
+      "entryId": "sp800-107-details",
+      "section": "history",
+      "statement": {
+        "zh": "扉页按本份文本自陈为「NIST Special Publication 800-107」的 Revision 1，标题行是「Recommendation for Applications Using Approved Hash Algorithms」，作者与部门两行连读为「Quynh Dang Computer Security Division Information Technology Laboratory」；题页标签按行序再连读即得日期「Information Technology Laboratory COMPUTER SECURITY August 2012」，也就是这份副本标注 2012 年 8 月，且不含 DOI 行。致谢页给出单作者与咨询者名单：「The author, Quynh Dang of the National Institute of Standards and Technology (NIST) gratefully appreciates the contributions and comments from Elaine Barker, William E.Burr, Shu-jen Chang, Lily Chen, Donna F.Dodson, Morris Dworkin, John Kelsey, Ray Perlner, W.Timothy Polk and Andrew Regenscheid.",
+        "en": "Its own masthead makes this copy \"NIST Special Publication 800-107\" Revision 1, titled \"Recommendation for Applications Using Approved Hash Algorithms\", with the author and division lines reading in sequence as \"Quynh Dang Computer Security Division Information Technology Laboratory\"; continuing line by line through the title block gives \"Information Technology Laboratory COMPUTER SECURITY August 2012\", so this copy is dated August 2012 and contains no DOI line.The acknowledgements name the single author and the reviewers: \"The author, Quynh Dang of the National Institute of Standards and Technology (NIST) gratefully appreciates the contributions and comments from Elaine Barker, William E."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    },
+    {
+      "id": "sp800-107-r139-refs",
+      "entryId": "sp800-107-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 批准哈希算法的使用建议（SP 800-107）.https://zh.wikipedia.org/w/index.php?search=%E6%89%B9%E5%87%86%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-107%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 批准哈希算法的使用建议（SP 800-107）.https://zh.wikipedia.org/w/index.php?search=%E6%89%B9%E5%87%86%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE%EF%BC%88SP%20800-107%EF%BC%89\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "sp800-107-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

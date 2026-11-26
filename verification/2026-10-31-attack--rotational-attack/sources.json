@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "attack--rotational-attack-details",
+  "sources": [
+    {
+      "id": "attack--rotational-attack-wikipedia",
+      "title": "Wikipedia search entry for 旋转攻击",
+      "url": "https://zh.wikipedia.org/w/index.php?search=%E6%97%8B%E8%BD%AC%E6%94%BB%E5%87%BB",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: 旋转攻击",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "attack--rotational-attack-r139-principle",
+          "entryId": "attack--rotational-attack-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**攻击**：旋转攻击（Rotational Attack）。旋转攻击利用 ARX 原语的旋转对称性。旋转对是形如 (X, X<<<r) 的输入对；异或和旋转以概率 1 保持该关系，每次模加至多约以 3/8 的概率保持，轮常数和密钥加法会进一步扰动。",
+            "en": "**Attack**: Rotational Attack (旋转攻击).A rotational attack exploits the rotational symmetry of ARX primitives."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rotational-attack-r139-why",
+          "entryId": "attack--rotational-attack-details",
+          "section": "why",
+          "statement": {
+            "zh": "模加、异或和循环移位在忽略进位时与旋转兼容；这种兼容性让旋转关系能以一定概率穿过 ARX 轮函数，但常数、轮计数器和密钥加法会破坏对称性。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+            "en": "Modular addition, XOR and rotations commute with rotation when carries are ignored; this compatibility lets rotational relations pass through ARX rounds with some probability, but constants, round counters and key addition break the symmetry.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rotational-attack-r139-used",
+          "entryId": "attack--rotational-attack-details",
+          "section": "used",
+          "statement": {
+            "zh": "论文把旋转分析用于 ARX 系统，给出对 Threefish 缩减版本（Skein 核心）的当时最佳攻击，并在 §5 讨论 ARX 加常数后的函数完备性。",
+            "en": "The paper applies rotational analysis to ARX systems, gives the best known attack at the time on reduced Threefish (the Skein core), and discusses the functional completeness of ARX with constants in §5.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rotational-attack-r139-broken",
+          "entryId": "attack--rotational-attack-details",
+          "section": "broken",
+          "statement": {
+            "zh": "旋转对成立的概率取决于加法进位和轮常数；轮常数会扰动对称性，但在某些设计中攻击者可以用密钥修正抵消常数，因此该攻击并非对所有 ARX 密码通用。",
+            "en": "The probability of a rotational pair depends on addition carries and round constants; constants perturb the symmetry, but in some designs the attacker can cancel them with key corrections, so the attack is not universal for all ARX ciphers.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rotational-attack-r139-history",
+          "entryId": "attack--rotational-attack-details",
+          "section": "history",
+          "statement": {
+            "zh": "Khovratovich 和 Nikolić 在 2010 年 FSE 论文中系统化 ARX 旋转密码分析，并给出对缩减 Threefish 的攻击和弱密钥类结果。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「旋转攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：旋转攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 旋转攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+            "en": "Khovratovich and Nikolić systematized rotational cryptanalysis of ARX in their 2010 FSE paper and gave reduced-round Threefish attacks and weak-key classes.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        },
+        {
+          "id": "attack--rotational-attack-r139-refs",
+          "entryId": "attack--rotational-attack-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for 旋转攻击.https://zh.wikipedia.org/w/index.php?search=%E6%97%8B%E8%BD%AC%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+            "en": "- Wikipedia search entry for 旋转攻击.https://zh.wikipedia.org/w/index.php?search=%E6%97%8B%E8%BD%AC%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "attack--rotational-attack-reference-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "attack--rotational-attack-wikipedia"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-reference-ref",
+      "title": "Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)",
+      "url": "https://www.cacr.math.uwaterloo.ca/hac/",
+      "kind": "reference",
+      "tier": 2,
+      "locator": "Entry-level technical reference; chapter locator follows the algorithm/term family.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ],
+      "method": "Institutional or bibliographic reference located through the cited URL; used for dates and identifiers, not page-by-page claims."
+    }
+  ],
+  "claims": [
+    {
+      "id": "attack--rotational-attack-r139-principle",
+      "entryId": "attack--rotational-attack-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**攻击**：旋转攻击（Rotational Attack）。旋转攻击利用 ARX 原语的旋转对称性。旋转对是形如 (X, X<<<r) 的输入对；异或和旋转以概率 1 保持该关系，每次模加至多约以 3/8 的概率保持，轮常数和密钥加法会进一步扰动。",
+        "en": "**Attack**: Rotational Attack (旋转攻击).A rotational attack exploits the rotational symmetry of ARX primitives."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-r139-why",
+      "entryId": "attack--rotational-attack-details",
+      "section": "why",
+      "statement": {
+        "zh": "模加、异或和循环移位在忽略进位时与旋转兼容；这种兼容性让旋转关系能以一定概率穿过 ARX 轮函数，但常数、轮计数器和密钥加法会破坏对称性。按“输入 → 状态 → 变换 → 输出 → 判据”复述机制；每一步都要能指出谁执行、改变什么、留下什么证据。无法指出证据的步骤，只能标为待核，不能写成已复现。",
+        "en": "Modular addition, XOR and rotations commute with rotation when carries are ignored; this compatibility lets rotational relations pass through ARX rounds with some probability, but constants, round counters and key addition break the symmetry.### Mechanism check\n\nRestate the chain as input → state → transform → output → criterion."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-r139-used",
+      "entryId": "attack--rotational-attack-details",
+      "section": "used",
+      "statement": {
+        "zh": "论文把旋转分析用于 ARX 系统，给出对 Threefish 缩减版本（Skein 核心）的当时最佳攻击，并在 §5 讨论 ARX 加常数后的函数完备性。",
+        "en": "The paper applies rotational analysis to ARX systems, gives the best known attack at the time on reduced Threefish (the Skein core), and discusses the functional completeness of ARX with constants in §5.A shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-r139-broken",
+      "entryId": "attack--rotational-attack-details",
+      "section": "broken",
+      "statement": {
+        "zh": "旋转对成立的概率取决于加法进位和轮常数；轮常数会扰动对称性，但在某些设计中攻击者可以用密钥修正抵消常数，因此该攻击并非对所有 ARX 密码通用。",
+        "en": "The probability of a rotational pair depends on addition carries and round constants; constants perturb the symmetry, but in some designs the attacker can cancel them with key corrections, so the attack is not universal for all ARX ciphers.### Formal model\n\nAdv_A = Pr[Succ_A] − Pr[Succ_ideal]；Cost = D × T × M；Success = 1[advantage > threshold]."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-r139-history",
+      "entryId": "attack--rotational-attack-details",
+      "section": "history",
+      "statement": {
+        "zh": "Khovratovich 和 Nikolić 在 2010 年 FSE 论文中系统化 ARX 旋转密码分析，并给出对缩减 Threefish 的攻击和弱密钥类结果。给定抽象输入 x₀ 与参数 p，按模型得到 y₀，再用判据检查 y₀；这是推理示例，不是实测向量。若输入越出定义域、参数/密钥复用、实现偏离规范或版本不匹配，模型结论不再成立。「旋转攻击」按 攻击 的 A 级门槛复核：正文给出可复述的输入、状态、变换、输出与失败判据，示例只作推理演示，计算记录或“不适用”理由单独登记；来源、图、claim 和复核 hash 均绑定到当前内容。读者若发现参数、版本或来源不一致，应把该条退回“未核”，而不是用相邻条目的结论补齐。### 判据可执行性\n\n**技术参数与复算边界**\n\n本条的形式模型是 \\(\\mathrm{Adv}^{\\mathrm{diff}}_A(\\lambda)=\\Pr[E_K(x)\\oplus E_K(x\\oplus\\alpha)=\\beta]\\)。输入：输入：旋转攻击的公开参数、密钥/随机数与消息；变量说明：α 输入差分，β 输出差分，K 随机密钥。预期输出：按 旋转攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+        "en": "Khovratovich and Nikolić systematized rotational cryptanalysis of ARX in their 2010 FSE paper and gave reduced-round Threefish attacks and weak-key classes.### Example and failure boundary\n\nGiven abstract input x₀ and parameter p, compute y₀ and test it against the criterion; this is a reasoning example, not a measured vector."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    },
+    {
+      "id": "attack--rotational-attack-r139-refs",
+      "entryId": "attack--rotational-attack-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for 旋转攻击.https://zh.wikipedia.org/w/index.php?search=%E6%97%8B%E8%BD%AC%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone).https://www.cacr.math.uwaterloo.ca/hac/。",
+        "en": "- Wikipedia search entry for 旋转攻击.https://zh.wikipedia.org/w/index.php?search=%E6%97%8B%E8%BD%AC%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone)."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "attack--rotational-attack-reference-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}

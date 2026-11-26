@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-01",
+  "scope": "Compact reference entry for esp: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "esp-details",
+      "inventoryIds": [
+        "esp"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释ESP 封装安全载荷的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Encapsulating Security Payload: definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "ESP 封装安全载荷",
+        "en": "Encapsulating Security Payload"
+      },
+      "claimIds": [
+        "esp-r139-principle",
+        "esp-r139-why",
+        "esp-r139-used",
+        "esp-r139-broken",
+        "esp-r139-history",
+        "esp-r139-refs"
+      ],
+      "sourceIds": [
+        "esp-wikipedia",
+        "esp-reference-ref",
+        "esp-specific"
+      ],
+      "related": [
+        "ipsec",
+        "ah",
+        "ikev2",
+        "forward-secrecy"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**协议**：ESP 封装安全载荷（Encapsulating Security Payload）。ESP 的报文位置与字段在 RFC 4303 里钉死：§1 说「The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).」§2 规定前导协议号「The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field」并描述布局「The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).」§2.8 补上可选尾部：「The Integrity Check Value is a variable-length field computed over the ESP header, Payload, and ESP trailer fields.」且「The ICV field is optional.」",
+          "why": "服务是可选组合，但有一条底线：§1 列出「ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.」并强调服务集合取决于建 SA 时的选项与实现位置。§3.2 收口成一句硬性要求：「although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.」对纯加密，§1 先给警告「Using encryption-only for confidentiality is allowed by ESP.」再指出「this will provide defense only against passive attackers.」",
+          "used": "加密-only 并非被禁：§1 解释「ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security」同时保留一句「However, this standard does not require ESP implementations to offer an encryption-only service.」流量掩蔽是显式设计的可选功能：§2.7 规定「An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.」并要求「if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.」模式选择在 §3.1 一句话交代：「ESP may be employed in two ways: transport mode or tunnel mode.」",
+          "broken": "重放保护有明确失效条件：§2.2 说「for a multi-sender SA, the anti-replay features of ESP are not available」。新特性受协商约束，§2.7 要求「the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility」。§3.4 给出处理顺序的安全理由：入站并行时「integrity checking MUST be completed before the decrypted packet is passed on for further processing.」最硬的边界在 §8：「There is no version number in ESP and no mechanism enabling IPsec peers to discover or negotiate which version of ESP each is using or should use.」——版本只能靠协商出来的算法组合间接体现。",
+          "history": "RFC 4303 由 S.Kent（BBN Technologies）署名，2005 年 12 月发布，Standards Track，头部「Obsoletes: 2406」；摘要称其为「an updated version of the Encapsulating Security Payload (ESP) protocol」并说明「ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service」。§8 交代与旧版的兼容关系：「if none of the new features available in ESP v3 are employed, then the format of an ESP packet is identical in ESP v2 and v3.」组合模式加密则只在 v3 语境中定义。",
+          "refs": "- Wikipedia search entry for ESP 封装安全载荷. https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4303: IP Encapsulating Security Payload. https://www.rfc-editor.org/rfc/rfc4303",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nESP 封装安全载荷的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Protocol**: Encapsulating Security Payload (ESP 封装安全载荷). RFC 4303 pins the packet position and fields: §1 says \"The ESP header is inserted after the IP header and before the next layer protocol header (transport mode) or before an encapsulated IP header (tunnel mode).\" §2 fixes the protocol number — \"The (outer) protocol header (IPv4, IPv6, or Extension) that immediately precedes the ESP header SHALL contain the value 50 in its Protocol (IPv4) or Next Header (IPv6, Extension) field\" — and the layout \"The packet begins with two 4-byte fields (Security Parameters Index (SPI) and Sequence Number).\" §2.8 adds the optional trailer: \"The Integrity Check Value is a variable-length field computed over the ESP header, Payload, and ESP trailer fields.\" and \"The ICV field is optional.\"",
+          "why": "The services are a menu, but with a floor: §1 lists \"ESP can be used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service (a form of partial sequence integrity), and (limited) traffic flow confidentiality.\" and stresses that the set depends on the options chosen when the SA is established and on where the implementation sits. §3.2 closes it as a hard rule: \"although both confidentiality and integrity are optional, at least one of these services MUST be selected, hence both algorithms MUST NOT be simultaneously NULL.\" On encryption-only, §1 first notes \"Using encryption-only for confidentiality is allowed by ESP.\" then warns \"this will provide defense only against passive attackers.\"",
+          "used": "Encryption-only is not forbidden: §1 explains \"ESP allows encryption-only SAs because this may offer considerably better performance and still provide adequate security\" while adding \"However, this standard does not require ESP implementations to offer an encryption-only service.\" Traffic-flow concealment is an explicitly designed option: §2.7 requires \"An IPsec implementation SHOULD be capable of padding traffic by adding bytes after the end of the Payload Data, prior to the beginning of the Padding field.\" and \"if TFC padding is added, the field containing the specification of the length of the IP datagram MUST NOT be modified to reflect this padding.\" The mode choice is one line in §3.1: \"ESP may be employed in two ways: transport mode or tunnel mode.\"",
+          "broken": "Anti-replay has an explicit failure condition: §2.2 states \"for a multi-sender SA, the anti-replay features of ESP are not available\". New features are gated on negotiation, and §2.7 requires \"the SA management protocol MUST negotiate this service prior to a transmitter employing it, to ensure backward compatibility\". §3.4 gives the security reason for the inbound order: when the two checks run in parallel, \"integrity checking MUST be completed before the decrypted packet is passed on for further processing.\" The hardest boundary is in §8: \"There is no version number in ESP and no mechanism enabling IPsec peers to discover or negotiate which version of ESP each is using or should use.\" — version shows up only indirectly through the negotiated algorithms.",
+          "history": "RFC 4303 is signed by S. Kent (BBN Technologies), published December 2005 as a Standards Track document with “Obsoletes: 2406” in the header; the abstract calls it \"an updated version of the Encapsulating Security Payload (ESP) protocol\" and says \"ESP is used to provide confidentiality, data origin authentication, connectionless integrity, an anti-replay service\". §8 sets out compatibility with the older line: \"if none of the new features available in ESP v3 are employed, then the format of an ESP packet is identical in ESP v2 and v3.\" Combined-mode ciphers are defined only in the ESP v3 context.",
+          "refs": "- Wikipedia search entry for ESP 封装安全载荷. https://zh.wikipedia.org/w/index.php?search=ESP%20%E5%B0%81%E8%A3%85%E5%AE%89%E5%85%A8%E8%BD%BD%E8%8D%B7\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/\n- RFC 4303: IP Encapsulating Security Payload. https://www.rfc-editor.org/rfc/rfc4303",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)\\]\n\nEncapsulating Security Payload: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "协议号 50：ESP 在 IP 头中的标识。",
+          "TFC 填充：掩蔽流量特征的填充。",
+          "ICV：完整性校验值，可选字段。",
+          "传输模式：不封装原 IP 头。",
+          "隧道模式：封装整个内层 IP 包。",
+          "多发送方 SA：反重放失效的场景。"
+        ],
+        "en": [
+          "Protocol number 50: ESP's marker in the IP header.",
+          "TFC padding: filler that masks traffic characteristics.",
+          "ICV: the optional Integrity Check Value.",
+          "Transport mode: the outer IP header is not encapsulated.",
+          "Tunnel mode: the whole inner IP packet is encapsulated.",
+          "Multi-sender SA: the case where anti-replay is unavailable."
+        ]
+      },
+      "figures": [
+        {
+          "id": "esp-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ESP 封装安全载荷：为什么需要 → 核心机制 → 边界。",
+            "en": "Encapsulating Security Payload: why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "ESP 封装安全载荷 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Encapsulating Security Payload, with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/esp-details-flow.zh.svg",
+            "en": "assets/esp-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "620d1486aa3352283015a7afdbe0b7db5df6bcc3912b20435444d23161b4cb25",
+            "en": "df35b707632fe6bcc28cd6a6bb4e966c0061c12daa39aa6985285a477c8310fa"
+          }
+        },
+        {
+          "id": "esp-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "ESP 封装安全载荷 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Encapsulating Security Payload: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "ESP 封装安全载荷 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Encapsulating Security Payload, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/esp-details-r138-model.zh.svg",
+            "en": "assets/esp-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "26460042f63c54c3afb4a85ea9d8d7ee61f8daa98d1f556341a809de9d29dcab",
+            "en": "4dc79053176143e69cd5a0e38346ac2ca604378533a9333b0451f13ffed3fcd0"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "esp-r139-formal",
+          "entryId": "esp-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+          "inputs": "输入：ESP 封装安全载荷的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+          "expected": "按 ESP 封装安全载荷 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "把协议消息序列写成状态机",
+            "用混合论证逐个替换原语",
+            "把剩余优势归约到 PRF/AEAD 安全"
+          ],
+          "sourceIds": [
+            "esp-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "esp-r139-formal"
+      ],
+      "sources": [
+        "esp-wikipedia",
+        "esp-reference-ref",
+        "esp-specific"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "esp-r139-formal",
+      "entryId": "esp-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\Pi}_A(\\lambda)\\le n\\cdot\\mathrm{Adv}^{\\mathrm{prf}}_F(\\lambda)+\\varepsilon_{\\mathrm{aead}}(\\lambda)",
+      "inputs": "输入：ESP 封装安全载荷的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。",
+      "expected": "按 ESP 封装安全载荷 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "把协议消息序列写成状态机",
+        "用混合论证逐个替换原语",
+        "把剩余优势归约到 PRF/AEAD 安全"
+      ],
+      "sourceIds": [
+        "esp-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

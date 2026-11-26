@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R114 reduction-toolkit reviewed dossier for random-self-reduction-details.",
+  "entries": [
+    {
+      "id": "random-self-reduction-details",
+      "inventoryIds": [
+        "random-self-reduction"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R114 归约工具箱批次：把“随机自归约”从目录深度条目改写为含定理陈述、符号推导、复杂度界、使用条件与证明边界的机制级条目；数值算例仍不由本条承担。",
+        "en": "R114 reduction-toolkit batch: rewrote \"Random self-reduction\" from a catalog-depth card into a mechanism-level entry with theorem statements, symbolic derivations, complexity bounds, conditions of use and proof boundaries; numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "随机自归约",
+        "en": "Random self-reduction"
+      },
+      "claimIds": [
+        "random-self-reduction-r139-principle",
+        "random-self-reduction-r139-why",
+        "random-self-reduction-r139-used",
+        "random-self-reduction-r139-broken",
+        "random-self-reduction-r139-history",
+        "random-self-reduction-r139-refs"
+      ],
+      "sourceIds": [
+        "random-self-reduction-wikipedia",
+        "random-self-reduction-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "random-self-reduction-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机自归约机制图：离散对数与 RSA 盲化的随机化、查询与还原。",
+            "en": "Random self-reduction diagram: randomization, query and unblinding for discrete log and RSA."
+          },
+          "alt": {
+            "zh": "两条平行流程：DL 的 y→y′→x′→x，RSA 的 c→c′→m′→m。",
+            "en": "Two parallel flows: DL y→y′→x′→x and RSA c→c′→m′→m."
+          },
+          "files": {
+            "zh": "assets/random-self-reduction-details-mechanism.zh.svg",
+            "en": "assets/random-self-reduction-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "3319d7a14bd55142fbeb3e3ff167d59703b4851317e7169ae6eb19d2b1c9c21f",
+            "en": "ea61876191ac65a53c69b2a8f72e5d5991014635e2cd786b4b2e9c0f20cef1b0"
+          }
+        },
+        {
+          "id": "random-self-reduction-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "随机自归约 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Random self-reduction: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "随机自归约 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Random self-reduction, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/random-self-reduction-details-r138-model.zh.svg",
+            "en": "assets/random-self-reduction-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "5826dd82b5b5744a400492b04c86865d53863eb492222b11a4056afc69f6a3ca",
+            "en": "a3b0ca7844b683dd00679e0d701313fac6b6ec1c73978fe3b6b7c9f0d8cd8ccc"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**定理**：随机自归约（Random Self-Reducibility）。### 把最坏实例随机化\n\n设 f 是单向函数。若存在多项式时间算法 R，对任意 x 采样 r，输出 y=R(x;r)，使 y 的分布与 x 无关（通常接近均匀），并且给定 f(y) 与 r 可在多项式时间恢复 f(x)，则称 f 随机自归约。于是：只要 f 在平均随机实例上难，f 在每个实例上都难。### 离散对数\n\n在阶为 q 的循环群 G 中，g 是生成元，y=g^x。取 r←Z_q，计算\ny' = y·g^r = g^{x+r}。若 oracle A 能求 y' 的离散对数 x'，则 x = x'−r mod q。y' 在 G 中均匀分布，与 y 无关；一次随机实例的答案就还原了原实例。### RSA 盲化\n\n对 RSA 公钥 (N,e)，密文 c=m^e mod N。取 r←Z_N^*，计算\nc' = c·r^e = (m·r)^e mod N。若 oracle 能解密 c' 得到 m'，则 m = m'·r^{-1} mod N。r 可逆，盲化因子在模 N 上消去；这正是 RSA blinding 的代数基础。",
+          "why": "密码学假设通常说“没有多项式算法能在最坏实例上求逆”；实际攻击者只需要在随机实例上成功。随机自归约把这两个世界连起来：平均实例上的成功可以搬到任意实例，反之最坏实例的困难会扩散到随机实例。### 为什么 RSA 实现需要盲化\n\n盲化不仅隐藏消息，也让解密时间与密文无关：每次解密先乘随机 r^e，再在最后除掉 r。侧信道攻击者看到的中间值与真实 m 无关；这是随机自归约在工程中的直接用法。",
+          "used": "- 从平均到最坏：DL、RSA、CDH 等代数问题常用随机自归约，把 worst-case 假设转成 average-case 假设。- 盲化：RSA 解密、签名前盲化，防止计时与选择密文侧信道。- 硬度放大：重复独立随机实例，把成功率 δ 放大到 1−(1−δ)^k；再配合纠错选择参数。",
+          "broken": "1.需要代数结构。随机化必须保持问题实例的同态关系；任意单向函数、散列函数没有这种结构。2.需要可逆盲化因子。RSA 的 r 必须在 Z_N^* 中；若 r 与 N 不互素，逆不存在，盲化失败。3.oracle 的成功率是平均的。若 oracle 只在某些随机实例上成功，重复采样可以把成功概率放大，但需要独立性或足够好的分布。4.不自动给出具体安全界。盲化隐藏了中间值，但不证明 RSA 本身安全；它把攻击面从“任意实例”移到“随机实例”。5.群阶与表示要对。离散对数在复合阶群、椭圆曲线群中的随机化形式不同；公式要按群运算重写。### 不是“随机化就能安全”\n\n随机自归约是归约工具，不是防御本身。若底层问题在随机实例上也可解，盲化只增加常数开销，不改变可破性。",
+          "history": "Blum 与 Micali 在 1984 年用离散对数的随机自归约构造伪随机位生成器：若能从随机实例预测下一位，就能解任意实例的离散对数。Goldwasser 与 Micali 把随机自归约视为 worst-case 到 average-case 归约的“王道”。### 从理论到实现\n\nRSA 盲化在 1980 年代进入实现，用于防止计时攻击；后来选择密文安全与侧信道防护把它作为标准组件。随机自归约仍是 DL/RSA 类假设证明的标准第一步。\n\n**技术参数与复算边界**\n\n该条目的形式模型是 \\(\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\)。输入：输入：随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。 预期输出：按 随机自归约 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。\n\n复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "refs": "- Wikipedia search entry for 随机自归约. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\n随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。1.定义失败事件。2.构造归约把攻击者转成困难问题求解器。3.证明失败概率上界。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Theorem**: Random Self-Reducibility (随机自归约). ### Randomize a worst-case instance\n\nLet f be a one-way function. If a polynomial-time algorithm R exists such that for every x it samples r and outputs y=R(x;r), where y’s distribution is independent of x (usually close to uniform), and given f(y) and r one can recover f(x) in polynomial time, then f is random self-reducible. Hence: if f is hard on average random instances, it is hard on every instance. ### Discrete logarithm\n\nIn a cyclic group G of order q with generator g, let y=g^x. Choose r←Z_q and compute\ny' = y·g^r = g^{x+r}. If an oracle A returns the discrete log x' of y', then x = x'−r mod q. y' is uniform in G and independent of y; one random-instance answer recovers the original. ### RSA blinding\n\nFor an RSA public key (N,e) and ciphertext c=m^e mod N, choose r←Z_N^* and compute\nc' = c·r^e = (m·r)^e mod N. If an oracle decrypts c' to m', then m = m'·r^{-1} mod N. r is invertible, so the blinding factor cancels modulo N; this is the algebra behind RSA blinding.",
+          "why": "A cryptographic assumption usually says “no polynomial algorithm inverts on worst-case instances”; a real attacker only needs success on random instances. Random self-reduction connects the two worlds: success on average instances moves to any instance, and worst-case hardness spreads to random instances.\n\nBlinding hides the message and makes decryption time independent of the ciphertext: multiply by random r^e, decrypt, then remove r at the end. A side-channel attacker sees intermediate values unrelated to the real m; this is the engineering use of random self-reduction.",
+          "used": "- Average-to-worst case: DL, RSA and CDH often use random self-reduction to turn worst-case assumptions into average-case ones. - Blinding: RSA decryption and signing blind before use to resist timing and chosen-ciphertext side channels. - Hardness amplification: repeat independent random instances to raise success δ to 1−(1−δ)^k, then choose parameters with error correction.\n\nReading: check that the randomization is a group homomorphism, the inverse map is computable, and the random-instance distribution is close to uniform.\n\nA shared name may belong to an algorithm, standard, event, person or term; this entry is responsible only for its catalogue binding and does not absorb adjacent records. If versions, regions or institutions define the name differently, the differences stay side by side.",
+          "broken": "1. It needs algebraic structure. Randomization must preserve the instance’s homomorphic relation; an arbitrary OWF or hash has no such structure. 2. It needs an invertible blinding factor. RSA’s r must lie in Z_N^*; if r shares a factor with N, the inverse does not exist and blinding fails. 3. The oracle’s success is on average. If it succeeds only on some random instances, repetition can amplify success, but independence or a good distribution is needed. 4. It does not automatically give a concrete security bound. Blinding hides intermediate values but does not prove RSA secure; it moves the attack surface from “any instance” to “random instances”. 5. Group order and representation matter. Randomization for discrete log in composite-order or elliptic-curve groups takes a different form; rewrite the formula in the group operation.\n\nRandom self-reduction is a reduction tool, not a defence by itself. If the underlying problem is easy on random instances, blinding adds only constant overhead and does not change breakability.",
+          "history": "Blum and Micali used the random self-reduction of discrete log in 1984 to build a pseudorandom bit generator: predicting the next bit on random instances would solve discrete log on any instance. Goldwasser and Micali described random self-reduction as the royal road from worst-case to average-case reductions.\n\nRSA blinding entered implementations in the 1980s against timing attacks; chosen-ciphertext security and side-channel defences later made it a standard component. Random self-reduction remains the first step in proofs for DL/RSA-type assumptions.",
+          "refs": "- Wikipedia search entry for 随机自归约. https://zh.wikipedia.org/w/index.php?search=%E9%9A%8F%E6%9C%BA%E8%87%AA%E5%BD%92%E7%BA%A6\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)\\]\n\nRandom Self-Reducibility: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "random-self-reduction-r139-formal",
+          "entryId": "random-self-reduction-details",
+          "kind": "formal-model",
+          "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+          "inputs": "输入：随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+          "expected": "按 随机自归约 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义失败事件",
+            "构造归约把攻击者转成困难问题求解器",
+            "证明失败概率上界"
+          ],
+          "sourceIds": [
+            "random-self-reduction-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "random-self-reduction-r139-formal"
+      ],
+      "sources": [
+        "random-self-reduction-wikipedia",
+        "random-self-reduction-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "random-self-reduction-r139-formal",
+      "entryId": "random-self-reduction-details",
+      "kind": "formal-model",
+      "formula": "\\Pr[\\mathrm{Bad}_A(\\lambda)]\\le \\varepsilon(\\lambda)",
+      "inputs": "输入：随机自归约的公开参数、密钥/随机数与消息；变量说明：Bad 为归约中定义的失败事件，ε 为可忽略函数。",
+      "expected": "按 随机自归约 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义失败事件",
+        "构造归约把攻击者转成困难问题求解器",
+        "证明失败概率上界"
+      ],
+      "sourceIds": [
+        "random-self-reduction-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

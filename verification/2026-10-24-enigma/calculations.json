@@ -1,0 +1,76 @@
+[
+  {
+    "id": "enigma-wiring-structure",
+    "entryId": "enigma-details",
+    "kind": "executable-structure-check",
+    "inputs": "Published Enigma I rotor I–V wiring and reflector B wiring",
+    "expected": "All five rotors and the reflector are permutations; reflector B is a fixed-point-free involution",
+    "sourceIds": ["cryptomuseum-wiring"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "Checks published wiring properties only; it does not verify historical provenance beyond the cited table."
+  },
+  {
+    "id": "enigma-known-answer",
+    "entryId": "enigma-details",
+    "kind": "executable-known-answer-check",
+    "inputs": "Enigma I, rotors I-II-III, reflector B, rings AAA, start AAA, no plugboard; AAAAA and BDZGO",
+    "expected": "AAAAA encrypts to BDZGO and BDZGO encrypts back to AAAAA",
+    "sourceIds": ["cryptomuseum-wiring", "textmachine-vector"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "One public simulator check vector; it is not an official historical key-sheet or message."
+  },
+  {
+    "id": "enigma-involution-no-fixed",
+    "entryId": "enigma-details",
+    "kind": "executable-structure-check",
+    "inputs": "All 26³ start positions of Enigma I with rotors I-II-III, rings AAA, reflector B, no plugboard; all 26 letters",
+    "expected": "456,976 letter-level mappings (17,576 start positions × 26 letters): zero fixed points and zero involution failures",
+    "sourceIds": ["cryptomuseum-wiring"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "A finite structural check for one rotor order and one reflector; it is not a search over all keys."
+  },
+  {
+    "id": "enigma-stepping-period",
+    "entryId": "enigma-details",
+    "kind": "executable-stepping-check",
+    "inputs": "Rotors III-II-I, start A-D-O; then the cycle from AAA",
+    "expected": "Sequence ADO, ADP, ADQ, AER, BFS, BFT, BFU; 16,900-state cycle from AAA and a 16,926-state image of the step map over all 26³ positions",
+    "expectedCycle": 16900,
+    "expectedReachableImage": 16926,
+    "expectedUnreachable": 650,
+    "sourceIds": ["cryptomuseum-enigma-b", "cryptomuseum-working"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "Reproduces the pawl model; 16,900 is the cycle length and 16,926 is the reachable-setting image, not the same quantity. Source wording differs and is recorded in the article."
+  },
+  {
+    "id": "enigma-keyspace",
+    "entryId": "enigma-details",
+    "kind": "executable-arithmetic-check",
+    "inputs": "60 rotor orders, 16,926 reachable settings, 26×26 ring factors, 10 plugboard cables; early six rotor orders",
+    "expected": "Plugboard 10 cables=150,738,274,937,250; nominal product=103,484,623,446,804,960,360,000; strong part 105,456",
+    "sourceIds": ["cryptomuseum-flaws", "cryptomuseum-enigma-b"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "Arithmetic under declared assumptions; nominal key-space products are not a security measure."
+  },
+  {
+    "id": "enigma-crib-elimination",
+    "entryId": "enigma-details",
+    "kind": "executable-structural-check",
+    "inputs": "Ciphertext BDZGO and crib HELLO; compare same-position letters",
+    "expected": "Exactly one of five alignments is impossible by no-self-encryption (the final O/O position)",
+    "sourceIds": ["cryptomuseum-working"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "A hand-checkable no-self-encryption example, not a full crib attack or Bombe search."
+  },
+  {
+    "id": "enigma-ring-invariance",
+    "entryId": "enigma-details",
+    "kind": "executable-structure-check",
+    "inputs": "Enigma I I-II-III, ring and start shifted together by 0, 1, 5 and 13; 5-letter and 40-letter messages",
+    "expected": "All four configurations encrypt AAAAA to BDZGO; for 40 A’s, AAA and BBB agree for 20 letters and diverge at position 21",
+    "expectedFirstDivergence": 21,
+    "sourceIds": ["cryptomuseum-working"],
+    "dependencies": ["enigma-teaching.mjs"],
+    "limitations": "Demonstrates the p−r offset relation for one rotor order; it does not claim all ring settings are security-equivalent."
+  }
+]

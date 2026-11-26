@@ -1,0 +1,210 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-02",
+  "scope": "Compact reference entry for eddsa: definition, role, boundaries and official-source attribution.",
+  "entries": [
+    {
+      "id": "eddsa-details",
+      "inventoryIds": [
+        "eddsa"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "紧凑解释EdDSA 爱德华兹曲线数字签名算法的定义、作用、边界和官方来源；不复制其他算法或协议实体。",
+        "en": "A compact explanation of Edwards-Curve Digital Signature Algorithm (EdDSA): definition, role, boundaries and official-source attribution; it does not duplicate another algorithm or protocol entity."
+      },
+      "title": {
+        "zh": "EdDSA 爱德华兹曲线数字签名算法",
+        "en": "Edwards-Curve Digital Signature Algorithm (EdDSA)"
+      },
+      "claimIds": [
+        "eddsa-r139-principle",
+        "eddsa-r139-why",
+        "eddsa-r139-used",
+        "eddsa-r139-broken",
+        "eddsa-r139-history",
+        "eddsa-r139-refs"
+      ],
+      "sourceIds": [
+        "eddsa-wikipedia",
+        "eddsa-reference-ref"
+      ],
+      "related": [
+        "algorithm--ed25519",
+        "attack--side-channel",
+        "term--deterministic-nonce"
+      ],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "verificationStatus": "source-checked-awaiting-independent-review",
+      "sections": {
+        "zh": {
+          "principle": "**算法**：EdDSA  Edwards 曲线签名（Edwards-Curve Digital Signature Algorithm）。留存文本在 §1 开篇给出定义：「The Edwards-curve Digital Signature Algorithm (EdDSA) is a variant of Schnorr's signature system with (possibly twisted) Edwards curves.」即 EdDSA 是 Schnorr 签名在（可能经过扭曲的）爱德华兹曲线上的变体。§3 紧接着量化其构成：「EdDSA is a digital signature system with 11 parameters.」——它是一个带 11 个参数的数字签名系统。两句合起来是该条目的原理骨架：签名方案 = Schnorr 结构 + 爱德华兹曲线 + 一组待实例化的参数，参数选择本身由 §3 强调为「not intended to be implemented directly」，落地时取的是具体参数集（如 Ed25519、Ed448）。",
+          "why": "§1 以编号列出的优点把动机说清。关于随机性：「The use of a unique random number for each signature is not required;」即每条签名不要求一个独一无二的随机数。关于侧信道：「It is more resilient to side-channel attacks;」。§8.2 解释其成因：「EdDSA signatures are deterministic.」——签名是确定性的， nonce 由密钥与消息导出而非随机取样。三条连读就是选择 EdDSA 的理由：去掉每次签名一个好随机数这一高危依赖，并借统一（complete）公式降低对随机数与分支的敏感性。",
+          "used": "§4 用 prehash 参数把变体二分（该词在原文里带 ASCII 引号，此处不引）：「This may be the identity function, resulting in an algorithm called PureEdDSA, or a collision-resistant hash function such as SHA-512, resulting in an algorithm called HashEdDSA.」其下一句落到本文件所指定的实例：「This document specifies parameters resulting in the HashEdDSA variants Ed25519ph and Ed448ph and the PureEdDSA variants Ed25519 and Ed448.」用途因此是这五个参数化变体：PureEdDSA 的 Ed25519/Ed448 与 HashEdDSA 的 Ed25519ph/Ed448ph（另含带上下文的 Ed25519ctx）。措辞为 may，说明 prehash 取恒等还是取抗碰撞哈希是实现方在两类属性（碰撞韧性 与 单遍签名接口）之间的取舍，而非本文件封死的清单。",
+          "broken": "限度分三层。§8.2 点明确定性所防的风险：「This protects against attacks arising from signing with bad randomness; the effects of which can, depending on the algorithm, range up to full private key compromise.」即随机数不佳可致私钥完全泄露——这是被规避的失效模式，而非 EdDSA 自身的攻击面。§8.4 处理可延展性：「Ed25519 and Ed448 signatures are not malleable due to the verification check that decoded S is smaller than l.」——靠`解码后的 S 小于 l`这一验证检查排除签名延展。§1 给出根本边界：「A sufficiently large quantum computer would be able to break both.」即足够大的量子计算机可破解 Ed25519 与 Ed448（二者对量子计算的脆弱性在 §8.5 被描述为基本相同）。三条合说：确定性防随机数误用、验证检查防延展、而量子计算是其明文承认的失效前提。",
+          "history": "门面板块把文件身份与力度一并印明。标题行印作 Edwards-Curve Digital Signature Algorithm (EdDSA)，作者行为 Josefsson 与 Liusvaara，日期行为 January 2017，头部一行印 Request for Comments: 8032 与 Category: Informational（这些头部行本身可在引号外复述）。其状态声明按原句为：「This document is not an Internet Standards Track specification; it is published for informational purposes.」并附 IRTF 定性：「Documents approved for publication by the IRSG are not a candidate for any level of Internet Standard; see Section 2 of RFC 7841.」两句都在 Abstract/Status 块内报为同一节。力度据此是 informational，而非标准轨；该条目因此把上面各句当作对方案的描述性记载，不据 RFC 8032 断言 Internet Standard 级别的强制。",
+          "refs": "- Wikipedia search entry for EdDSA  Edwards 曲线签名. https://zh.wikipedia.org/w/index.php?search=EdDSA%20%20Edwards%20%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nEdDSA  Edwards 曲线签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。1.选择随机 k，计算 R=kG 与 r。2.计算 s=k^{-1}(H(m)+rd) mod n。3.输出 (r,s)，验证者检查签名方程。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Algorithm**: Edwards-Curve Digital Signature Algorithm (EdDSA  Edwards 曲线签名). The retained text opens §1 with the definition: \"The Edwards-curve Digital Signature Algorithm (EdDSA) is a variant of Schnorr's signature system with (possibly twisted) Edwards curves.\" EdDSA is therefore a Schnorr signature over (possibly twisted) Edwards curves. §3 quantifies it immediately: \"EdDSA is a digital signature system with 11 parameters.\" Together the two sentences give the skeleton of the entry: signature scheme = Schnorr structure + Edwards curve + a set of parameters to be instantiated, with the generic parameter choice itself flagged as \"not intended to be implemented directly\", so deployment uses concrete parameter sets such as Ed25519 and Ed448.",
+          "why": "The numbered advantages in §1 make the motive explicit. On randomness: \"The use of a unique random number for each signature is not required;\" no fresh unique random value is demanded per signature. On side channels: \"It is more resilient to side-channel attacks;\" §8.2 gives the cause, \"EdDSA signatures are deterministic.\" the nonce being derived from key and message rather than drawn at random. Read together these three sentences are the reason for choosing EdDSA: they remove the high-risk dependency on a good random number for every signature, and, via the unified formulas, reduce sensitivity to randomness and to branching.",
+          "used": "§4 splits the variants by the prehash parameter (that word carries ASCII quotes in the source and is not quoted here): \"This may be the identity function, resulting in an algorithm called PureEdDSA, or a collision-resistant hash function such as SHA-512, resulting in an algorithm called HashEdDSA.\" The next sentence pins the instances this file specifies: \"This document specifies parameters resulting in the HashEdDSA variants Ed25519ph and Ed448ph and the PureEdDSA variants Ed25519 and Ed448.\" The use is thus these five parameterizations — PureEdDSA Ed25519 and Ed448, HashEdDSA Ed25519ph and Ed448ph, plus the contextualized Ed25519ctx. The wording is may, so choosing identity versus a collision-resistant hash is the implementer's trade-off between collision resilience and a single-pass signing interface, not a list this document closes.",
+          "broken": "The limits sit at three levels. §8.2 names the risk determinism avoids: \"This protects against attacks arising from signing with bad randomness; the effects of which can, depending on the algorithm, range up to full private key compromise.\" bad randomness could compromise the private key outright — a failure mode that is designed out rather than an attack on EdDSA itself. §8.4 handles malleability: \"Ed25519 and Ed448 signatures are not malleable due to the verification check that decoded S is smaller than l.\" the anti-malleability coming from that range check. §1 states the root boundary: \"A sufficiently large quantum computer would be able to break both.\" a large quantum computer breaks both Ed25519 and Ed448, a vulnerability §8.5 treats as essentially the same for both. So: determinism guards against randomness misuse, the range check blocks malleability, and quantum computing is the acknowledged pre-condition of failure.",
+          "history": "The front matter prints both identity and strength. The title line reads Edwards-Curve Digital Signature Algorithm (EdDSA), the author line Josefsson and Liusvaara, the date line January 2017, and the header carries Request for Comments: 8032 and Category: Informational (these header lines are stated outside the quotes). Its status statements are, as printed: \"This document is not an Internet Standards Track specification; it is published for informational purposes.\" followed by the IRTF characterization \"Documents approved for publication by the IRSG are not a candidate for any level of Internet Standard; see Section 2 of RFC 7841.\" both sitting in the Abstract/Status block. The strength is therefore informational, not standards-track, so the sentences above are read as descriptions of the scheme and no must-level Internet Standard obligation is drawn from RFC 8032.",
+          "refs": "- Wikipedia search entry for EdDSA  Edwards 曲线签名. https://zh.wikipedia.org/w/index.php?search=EdDSA%20%20Edwards%20%E6%9B%B2%E7%BA%BF%E7%AD%BE%E5%90%8D\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[s=k^{-1}\\big(H(m)+r d\\big)\\bmod n\\]\n\nEdwards-Curve Digital Signature Algorithm: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "glossary": {
+        "zh": [
+          "PureEdDSA：prehash 取恒等函数的 EdDSA 变体，签名时需两遍读取输入。",
+          "HashEdDSA：prehash 取抗碰撞哈希（如 SHA-512）的 EdDSA 变体，支持单遍签名接口。",
+          "Ed25519 / Ed448：分别基于 edwards25519 与 edwards448 曲线的 PureEdDSA 实例。",
+          "deterministic signature：nonce 由私钥与消息导出、不逐签名取样随机数的签名方式。",
+          "collision resilience：即使能构造哈希碰撞也不破坏签名的性质，仅对 PureEdDSA 成立。",
+          "signature malleability：对同一消息与密钥再产出一个有效签名的可能性，由 S 范围检查排除。"
+        ],
+        "en": [
+          "PureEdDSA: the EdDSA variant whose prehash is the identity function, requiring two passes over the input.",
+          "HashEdDSA: the EdDSA variant whose prehash is a collision-resistant hash such as SHA-512, giving a single-pass signing interface.",
+          "Ed25519 / Ed448: the PureEdDSA instances over the edwards25519 and edwards448 curves.",
+          "Deterministic signature: a signing method whose nonce is derived from key and message rather than drawn fresh per signature.",
+          "Collision resilience: the property that feasible hash collisions do not break the system, holding only for PureEdDSA.",
+          "Signature malleability: producing another valid signature for the same message and key, blocked by the S range check."
+        ]
+      },
+      "figures": [
+        {
+          "id": "eddsa-details-flow",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EdDSA 爱德华兹曲线数字签名算法：为什么需要 → 核心机制 → 边界。",
+            "en": "Edwards-Curve Digital Signature Algorithm (EdDSA): why it is needed → core mechanism → limits."
+          },
+          "alt": {
+            "zh": "EdDSA 爱德华兹曲线数字签名算法 的三段解释图，文字摘自本篇正文。",
+            "en": "Three-panel explanatory diagram for Edwards-Curve Digital Signature Algorithm (EdDSA), with text excerpted from the article."
+          },
+          "files": {
+            "zh": "assets/eddsa-details-flow.zh.svg",
+            "en": "assets/eddsa-details-flow.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（正文摘句）",
+            "en": "Original diagram (article excerpts)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-21"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3fe72a6065394d47df3c81c409dc9cdfe2615e0446abc946b5d4fbf040b59659",
+            "en": "62ad80f0349cbedba0e058b17de4eec42ddf3e8e8caf4a428bfb51c7a21ca48a"
+          }
+        },
+        {
+          "id": "eddsa-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "EdDSA 爱德华兹曲线数字签名算法 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Edwards-Curve Digital Signature Algorithm (EdDSA): object, reading and boundary."
+          },
+          "alt": {
+            "zh": "EdDSA 爱德华兹曲线数字签名算法 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Edwards-Curve Digital Signature Algorithm (EdDSA), listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/eddsa-details-r138-model.zh.svg",
+            "en": "assets/eddsa-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "3ca15bafc6a67e6290798fdbd1aaa41cba15c0a455db2dd3b41c7d632db4dab3",
+            "en": "70bb1f243753378c918d66a65c5ad9f94f427760b48b8e46471372a593e39080"
+          }
+        }
+      ],
+      "calculations": [
+        {
+          "id": "eddsa-r139-formal",
+          "entryId": "eddsa-details",
+          "kind": "formal-model",
+          "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+          "inputs": "输入：EdDSA  Edwards 曲线签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+          "expected": "按 EdDSA  Edwards 曲线签名 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "选择随机 k，计算 R=kG 与 r",
+            "计算 s=k^{-1}(H(m)+rd) mod n",
+            "输出 (r,s)，验证者检查签名方程"
+          ],
+          "sourceIds": [
+            "eddsa-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "eddsa-r139-formal"
+      ],
+      "sources": [
+        "eddsa-wikipedia",
+        "eddsa-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "eddsa-r139-formal",
+      "entryId": "eddsa-details",
+      "kind": "formal-model",
+      "formula": "s=k^{-1}\\big(H(m)+r d\\big)\\bmod n",
+      "inputs": "输入：EdDSA  Edwards 曲线签名的公开参数、密钥/随机数与消息；变量说明：k 一次性随机数，r 为承诺点横坐标，d 私钥，n 子群阶。",
+      "expected": "按 EdDSA  Edwards 曲线签名 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "选择随机 k，计算 R=kG 与 r",
+        "计算 s=k^{-1}(H(m)+rd) mod n",
+        "输出 (r,s)，验证者检查签名方程"
+      ],
+      "sourceIds": [
+        "eddsa-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

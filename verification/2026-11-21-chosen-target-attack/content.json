@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-22",
+  "scope": "R116 public-key and hash-attack reviewed dossier for chosen-target-attack-details.",
+  "entries": [
+    {
+      "id": "chosen-target-attack-details",
+      "inventoryIds": [
+        "chosen-target-attack"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "R116 公钥与哈希攻击批次：把“选择目标攻击”从目录深度条目改写为含机制陈述、符号公式、复杂度/阈值、适用条件与失效边界的机制级条目；具体数值算例仍不由本条承担。",
+        "en": "R116 public-key and hash-attack batch: rewrote \"Chosen-Target Attack\" from a catalog-depth card into a mechanism-level entry with a mechanism statement, symbolic formulas, complexity/thresholds, conditions of use and failure boundaries; step-by-step numeric examples are still not claimed here."
+      },
+      "title": {
+        "zh": "选择目标攻击",
+        "en": "Chosen-Target Attack"
+      },
+      "claimIds": [
+        "chosen-target-attack-r139-principle",
+        "chosen-target-attack-r139-why",
+        "chosen-target-attack-r139-used",
+        "chosen-target-attack-r139-broken",
+        "chosen-target-attack-r139-history",
+        "chosen-target-attack-r139-refs"
+      ],
+      "sourceIds": [
+        "chosen-target-attack-wikipedia",
+        "chosen-target-attack-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "chosen-target-attack-details-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "选择目标攻击机制图：盲化、签名、去盲的流程，以及 one-more 求逆的查询计数与胜利条件。",
+            "en": "Chosen-target mechanism: the blind-sign, sign, unblind flow, plus one-more inversion query counting and the winning condition."
+          },
+          "alt": {
+            "zh": "五步盲签名流程框由箭头连接，下方是验证公式与 one-more 查询计数，底部说明这不是通用 RSA 分解攻击。",
+            "en": "Five blind-signature step boxes connected by arrows, with the verification formula and one-more counting below, and a note that this is not a generic RSA factoring attack."
+          },
+          "files": {
+            "zh": "assets/chosen-target-attack-details-mechanism.zh.svg",
+            "en": "assets/chosen-target-attack-details-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创机制示意图（据所引论文绘制）",
+            "en": "Original mechanism diagram (drawn from the cited papers)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-22"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "6dae47c60a77fc2074e6ed5fc1060ac5e9fed85c6dd29d7e6e6510565d02f59c",
+            "en": "7841612a7855574c3a4e952ecdc8019e2875921790b3473dcb31280f68aab6f5"
+          }
+        },
+        {
+          "id": "chosen-target-attack-details-r138-model",
+          "section": "used",
+          "kind": "diagram",
+          "caption": {
+            "zh": "选择目标攻击 的目录级结构：对象、读法与边界。",
+            "en": "Catalogue-level structure for Chosen-Target Attack: object, reading and boundary."
+          },
+          "alt": {
+            "zh": "选择目标攻击 的三段结构图，列出对象、读法和边界。",
+            "en": "Three-part structure diagram for Chosen-Target Attack, listing object, reading and boundary."
+          },
+          "files": {
+            "zh": "assets/chosen-target-attack-details-r138-model.zh.svg",
+            "en": "assets/chosen-target-attack-details-r138-model.en.svg"
+          },
+          "credit": {
+            "zh": "原创示意图（目录级模型）",
+            "en": "Original diagram (catalogue-level model)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-25"
+          },
+          "evidence": [
+            "content.json sections"
+          ],
+          "sha256": {
+            "zh": "30b461af8abaccd588a5078973b02dacffc86619105293090c61e6392f396983",
+            "en": "3eaf0a8ff0c379bfa6ec097723553b3cb1c199e1d0bc0c0351ebd3dfcf328b7d"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**攻击**：选择目标攻击（Chosen-Target Attack）。### 先把“选择目标攻击”限定清楚\n\n以 Chaum 的 RSA 盲签名为例。签名者公钥为 (N,e)，私钥指数 d。用户想把消息 m 取得签名，但不愿让签名者看到 m：\n\n1.选随机盲化因子 r，计算 m′ = r^e · H(m) mod N；\n2.把 m′ 发给签名者，得到 s′ = (m′)^d mod N；\n3.去掉盲化，s = r^{-1} · s′ mod N。s^e = (s′)^e · r^{-e} = m′ · r^{-e} = H(m) mod N。签名者只看到 m′，不知道 m；用户得到对 m 的有效签名。### one-more 归约\n\n若攻击者能对 q 次签名查询得到 q+1 个有效消息-签名对，就能把这些对嵌入 chosen-target inversion 游戏，解出比查询数更多的 RSA 逆。反之，若 chosen-target inversion 难，Chaum 方案在随机预言机模型下满足 one-more unforgeability。这里的“攻击”是归约中的能力，不是一条可直接运行的分解算法。",
+          "why": "盲签名的隐私目标与普通签名不同：签名者不知道消息内容，因此不能按消息做访问控制。若安全性只要求“不能伪造一个新消息的签名”，攻击者可能通过一次签名查询得到多个可用签名，破坏电子现金的“一次提取、一次花费”记账。one-more unforgeability 把“查询数”和“有效签名数”直接比较，正好覆盖这种超额伪造。### chosen-target 与 known-target 的区别\n\nknown-target 要求攻击者求逆所有给定目标；chosen-target 允许它只挑一部分目标求逆，只要数量超过查询数。Bellare 等人的主要结果之一是这两个问题多项式等价；因此证明其中一个难，就足以支撑 Chaum 方案的安全性。这个等价性是归约结果，不意味着两个游戏在实现上完全一样。盲签名还依赖盲化函数的正确性、签名者的状态管理、随机数质量和防止重复消费的机制。one-more 不可伪造性不会自动解决这些工程问题；它只覆盖“签名数量”这一维度。",
+          "used": "1.明确模型：RSA 盲签名、盲 Schnorr、盲 BLS 还是 OPRF 变体；不同模型的困难问题不同。2.写清查询计数：q 次签名查询后允许输出多少有效签名；one-more 要求 q+1 即失败。3.检查盲化/去盲公式：m′ 与 s 的关系是否保持；验证方程是否成立。4.检查归约：方案安全性是否归到 chosen-target/known-target inversion，还是只归到普通 RSA 单向性。5.检查随机预言机假设与哈希定义域；Chaum 方案的证明在 ROM 中。6.检查工程层：盲化因子是否可预测、签名者是否记录已用盲化值、是否防重复消费。### 应用场景\n\n电子现金、隐私令牌、匿名凭证、Privacy Pass 类协议都使用盲签名或 OPRF。评估时不要把“盲”当成“安全”的同义词；要分别证明隐私（blindness）与不可伪造（one-more unforgeability）。",
+          "broken": "1.不是通用 RSA 攻击。chosen-target inversion 假设 RSA 求逆难；它不提供分解 N 的方法。2.不是对所有盲签名成立。不同盲签名方案的盲化关系与困难问题不同；不能把 Chaum 的归约直接套到盲 Schnorr 或盲 BLS。3.盲化不自动带来不可伪造。一个方案可以完全隐藏消息，但仍然允许一次查询生成多个签名；隐私与不可伪造是两个独立目标。4.随机预言机模型。Chaum 方案的证明在 ROM 中；标准模型中的实例化需要额外论证。5.签名者状态与重复消费。若签名者不记录已签的盲化值，或用户能重复使用同一签名，one-more 模型之外的工程攻击仍可能发生。6.盲化因子质量。r 可预测或重复会使消息关联、隐私泄漏，甚至破坏代数关系。",
+          "history": "Chaum 在 1983 年的 CRYPTO 论文中提出盲签名，并把它用于不可追踪的电子支付：银行在看不到消息内容的情况下签名，用户之后可证明支付合法，但银行无法把签名与用户对应。这是“盲化”作为隐私原语的起点。### 2003：one-more RSA 反转的形式化\n\nBellare、Namprempre、Pointcheval 与 Semanko 在 Journal of Cryptology 2003 的论文中形式化 one-more-RSA-inversion 问题，定义 chosen-target 与 known-target 两个变体，证明它们多项式等价，并在随机预言机模型下证明 Chaum 盲签名方案的安全性。此后 one-more 不可伪造性成为盲签名安全定义的标准语言。",
+          "refs": "- Wikipedia search entry for 选择目标攻击. https://zh.wikipedia.org/w/index.php?search=%E9%80%89%E6%8B%A9%E7%9B%AE%E6%A0%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**形式模型与复算步骤**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\n选择目标攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。1.定义挑战与获胜条件。2.给攻击者 oracle 访问。3.计算优势并与目标界比较。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。"
+        },
+        "en": {
+          "principle": "**Attack**: Chosen-Target Attack (选择目标攻击). ### Define “chosen-target attack” precisely\n\nIn Chaum’s RSA blind signature, the signer’s public key is (N,e) and the private exponent is d. A user wants a signature on a message m without revealing m to the signer:\n\n1. Pick a random blinding factor r and compute m′ = r^e · H(m) mod N. Send m′ to the signer and receive s′ = (m′)^d mod N. Remove the blinding: s = r^{-1} · s′ mod N. s^e = (s′)^e · r^{-e} = m′ · r^{-e} = H(m) mod N. The signer sees only m′ and not m; the user obtains a valid signature on m. ### The one-more reduction\n\nIf an adversary can turn q signing queries into q+1 valid message-signature pairs, those pairs can be embedded into the chosen-target inversion game, producing more RSA inversions than the number of oracle queries. Conversely, if chosen-target inversion is hard, Chaum’s scheme has one-more unforgeability in the random-oracle model. The “attack” here is a capability in a reduction, not a directly runnable factoring algorithm.",
+          "why": "A blind signature has a different privacy goal from an ordinary signature: the signer does not know the message, so it cannot impose message-based access control. If security only required “cannot forge a signature on a new message”, an adversary might obtain several usable signatures from one signing query and break the “withdraw once, spend once” accounting of electronic cash. One-more unforgeability compares the number of queries with the number of valid signatures, which is exactly the excess forgery this setting must exclude.\n\nKnown-target inversion requires the adversary to invert all given targets; chosen-target lets it choose a subset, as long as the number of inverted targets exceeds the number of queries. One of Bellare et al.’s main results is that the two problems are polynomially equivalent, so proving either hard suffices to support Chaum’s scheme. The equivalence is a reduction result; it does not mean the two games are identical in implementation.\n\nBlind signatures also depend on the blinding function, signer state management, randomness quality and double-spend prevention. One-more unforgeability does not solve those engineering problems; it covers only the “number of signatures” dimension.",
+          "used": "1. State the model: RSA blind signature, blind Schnorr, blind BLS or an OPRF variant; the hardness assumption differs. 2. Write down the query count: how many valid signatures may be output after q signing queries; q+1 is a failure under one-more unforgeability. 3. Check the blind/unblind algebra: whether m′ and s preserve the relation, and whether the verification equation holds. 4. Check the reduction: is the scheme reduced to chosen-target/known-target inversion, or only to ordinary RSA one-wayness? 5. Check the random-oracle assumption and the hash domain; Chaum’s proof is in the ROM. 6. Check the engineering layer: predictability of blinding factors, signer records of used blinded values, and double-spend prevention.\n\nElectronic cash, privacy tokens, anonymous credentials and Privacy Pass-style protocols use blind signatures or OPRFs. Do not treat “blind” as a synonym for “secure”; prove privacy (blindness) and unforgeability (one-more) separately.",
+          "broken": "1. Not a generic RSA attack. Chosen-target inversion assumes RSA inversion is hard; it does not provide a way to factor N. 2. Not true for every blind signature. Different blind-signature schemes have different blinding relations and hardness problems; Chaum’s reduction cannot be copied directly onto blind Schnorr or blind BLS. 3. Blindness does not imply unforgeability. A scheme can hide the message perfectly and still allow one query to produce several signatures; privacy and unforgeability are independent goals. 4. Random-oracle model. Chaum’s proof is in the ROM; instantiation in the standard model needs additional argument. 5. Signer state and double spending. If the signer does not record used blinded values, or a user can reuse one signature, engineering attacks outside the one-more model remain possible. 6. Blinding-factor quality. Predictable or repeated r links messages, leaks privacy, and may even break the algebraic relation.",
+          "history": "Chaum introduced blind signatures in his 1983 CRYPTO paper and used them for untraceable electronic payments: a bank signs without seeing the message, and the user can later prove that a payment is valid while the bank cannot link the signature to the user. This is the starting point of blinding as a privacy primitive.\n\nBellare, Namprempre, Pointcheval and Semanko formalised the one-more-RSA-inversion problem in their 2003 Journal of Cryptology paper, defined the chosen-target and known-target variants, proved them polynomially equivalent, and proved the security of Chaum’s blind signature scheme in the random-oracle model. One-more unforgeability then became standard language for blind-signature security.",
+          "refs": "- Wikipedia search entry for 选择目标攻击. https://zh.wikipedia.org/w/index.php?search=%E9%80%89%E6%8B%A9%E7%9B%AE%E6%A0%87%E6%94%BB%E5%87%BB\n- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/",
+          "example": "**Formal model and reproduction steps**\n\n\\[\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12\\]\n\nChosen-Target Attack: the registered public parameters, key material or randomness, and message are mapped through the stated transformation to an output checked against the registered criterion. The worked example is a structural reproduction, not a new test vector; parameter ranges, standard versions and implementation details remain source-bound."
+        }
+      },
+      "calculations": [
+        {
+          "id": "chosen-target-attack-r139-formal",
+          "entryId": "chosen-target-attack-details",
+          "kind": "formal-model",
+          "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+          "inputs": "输入：选择目标攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+          "expected": "按 选择目标攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+          "steps": [
+            "定义挑战与获胜条件",
+            "给攻击者 oracle 访问",
+            "计算优势并与目标界比较"
+          ],
+          "sourceIds": [
+            "chosen-target-attack-wikipedia"
+          ],
+          "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+          "dependencies": []
+        }
+      ],
+      "calculationIds": [
+        "chosen-target-attack-r139-formal"
+      ],
+      "sources": [
+        "chosen-target-attack-wikipedia",
+        "chosen-target-attack-reference-ref"
+      ]
+    }
+  ],
+  "calculations": [
+    {
+      "id": "chosen-target-attack-r139-formal",
+      "entryId": "chosen-target-attack-details",
+      "kind": "formal-model",
+      "formula": "\\mathrm{Adv}^{\\mathrm{attack}}_A(\\lambda)=\\Pr[\\mathrm{Game}_A(\\lambda)=1]-\\frac12",
+      "inputs": "输入：选择目标攻击的公开参数、密钥/随机数与消息；变量说明：λ 安全参数；Game 把攻击目标写成挑战-响应游戏。",
+      "expected": "按 选择目标攻击 的规范执行后得到可验证的输出或可比较的优势界。",
+      "steps": [
+        "定义挑战与获胜条件",
+        "给攻击者 oracle 访问",
+        "计算优势并与目标界比较"
+      ],
+      "sourceIds": [
+        "chosen-target-attack-wikipedia"
+      ],
+      "limitations": "本条只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。",
+      "dependencies": []
+    }
+  ]
+}

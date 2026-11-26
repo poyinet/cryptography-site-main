@@ -1,0 +1,40 @@
+# NSEC3 哈希化否定证明
+
+## principle
+
+**协议**：NSEC3 哈希化否定证明（NSEC3）。RFC 5155 §3 定义该资源记录：「The NSEC3 Resource Record (RR) provides authenticated denial of existence for DNS Resource Record Sets.」它回答`某名称/类型不存在`这一命题，并带上签名。
+
+## why
+
+动机是旧记录的副作用：§1.1 说明「Though the NSEC RR meets the requirements for authenticated denial of existence, it introduces a side-effect in that the contents of a zone can be enumerated.」§3 的对策是改用哈希名：「To provide protection against zone enumeration, the owner names used in the NSEC3 RR are cryptographic hashes of the original owner name prepended as a single label to the name of the zone.」
+
+## used
+
+三个参数决定行为：迭代次数「defines the number of additional times the hash function has been performed」并换取对字典攻击的韧性；盐值「is appended to the original owner name before hashing in order to defend against pre-calculated dictionary attacks」；Opt-Out 标志则「If the Opt-Out flag is set, the NSEC3 record covers zero or more unsigned delegations.」
+
+## broken
+
+它提高成本而非消除风险：§12.1.1 承认「The NSEC3 RRs are still susceptible to dictionary attacks」，并建议「The salt SHOULD be at least 64 bits long and unpredictable」且定期更换；§12.1.2 指出哈希碰撞时「it will be impossible to prove the non-existence of the colliding QNAME」。哈希算法只有 SHA-1 一种被定义。
+
+## history
+
+RFC 5155 于 2008 年 3 月发布为 Standards Track（作者 Laurie、Sisson、Arends、Blacka），头部既无 Obsoletes 也无 Updates 行；摘要说明它是「an alternative resource record, NSEC3」，在保持认证否定的同时「provides measures against zone enumeration and permits gradual expansion of delegation-centric zones」，NSEC3 的类型号为 50。
+
+**技术参数与复算边界**
+
+该条目的形式模型是 \(\mathrm{Adv}^{\Pi}_A(\lambda)\le n\cdot\mathrm{Adv}^{\mathrm{prf}}_F(\lambda)+\varepsilon_{\mathrm{aead}}(\lambda)\)。输入：输入：NSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。 预期输出：按 NSEC3 哈希化否定证明 的规范执行后得到可验证的输出或可比较的优势界。 复算必须给出输入、步骤、输出和单位；示例只演示流程，不替代标准测试向量。
+
+复杂度由密钥长度、分组/状态规模、轮数、随机数质量和敌手模型共同决定；参数越界、版本差异与实现侧信道都可能使公式结论失效。已登记限制：该条目只给出形式模型与可复算步骤，不声称已完成生产实现、侧信道认证或第三方安全评估。
+
+## refs
+
+- Wikipedia search entry for NSEC3 哈希化否定证明. https://zh.wikipedia.org/w/index.php?search=NSEC3%20%E5%93%88%E5%B8%8C%E5%8C%96%E5%90%A6%E5%AE%9A%E8%AF%81%E6%98%8E
+- Handbook of Applied Cryptography (Menezes, van Oorschot, Vanstone). https://www.cacr.math.uwaterloo.ca/hac/
+
+## example
+
+**形式模型与复算步骤**
+
+\[\mathrm{Adv}^{\Pi}_A(\lambda)\le n\cdot\mathrm{Adv}^{\mathrm{prf}}_F(\lambda)+\varepsilon_{\mathrm{aead}}(\lambda)\]
+
+NSEC3 哈希化否定证明的公开参数、密钥/随机数与消息；变量说明：Π 协议，A 敌手，n 会话数，PRF/AEAD 为底层原语。1.把协议消息序列写成状态机。2.用混合论证逐个替换原语。3.把剩余优势归约到 PRF/AEAD 安全。边界：公式只覆盖已登记的参数与假设；参数取值、标准版本和实现细节仍以来源为准。

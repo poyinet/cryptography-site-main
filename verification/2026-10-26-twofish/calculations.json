@@ -1,0 +1,62 @@
+[
+  {
+    "id": "twofish-calc-intermediate",
+    "entryId": "twofish-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "Appendix A.1's three key lengths (128/192/256), their keys, all-zero plaintexts, 120 printed expanded key words and 19 intermediate R states per key with each round's t0/t1",
+    "expected": "All 120 expanded key words and all 57 intermediate states match the printed values; every t0/t1 matches; the three ciphertexts are 9F589F5CF6122C32B6BFEC2F2AE8C35A, CFD1D2E5A9BE9CDF501F13B892BD2248 and 37527BE0052334B89F0CFCCAE87CFA20; decryption returns the zero plaintext",
+    "sourceIds": [
+      "twofish-paper"
+    ],
+    "dependencies": [
+      "twofish-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Three fixed keys and three fixed intermediate traces; they test conformance to the submission, not security against cryptanalysis."
+  },
+  {
+    "id": "twofish-calc-chain",
+    "entryId": "twofish-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "36 printed Appendix A.2 chained vectors: entries 1-10 and 48-49 for each of the 128/192/256-bit key lengths",
+    "expected": "Every encryption matches the printed ciphertext and every decryption returns the printed plaintext; within entries 1-10 each plaintext equals the previous ciphertext and each key is assembled from the ciphertexts two and three entries back, with zero padding where a predecessor is absent",
+    "sourceIds": [
+      "twofish-paper"
+    ],
+    "dependencies": [
+      "twofish-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The paper prints only 12 of its 49 chained entries per key length; the omitted entries cannot be reproduced from the printed data."
+  },
+  {
+    "id": "twofish-calc-key-schedule",
+    "entryId": "twofish-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The three Appendix A.1 keys, k=N/64=2/3/4, Me/Mo split, RS-encoded S list and rho=0x01010101",
+    "expected": "The schedule has k S words and 40 K words for every key length; the printed 40-word K lists match; S is the reverse of the independently recomputed RS products; A_i/B_i and the PHT reproduce every printed key word",
+    "sourceIds": [
+      "twofish-paper"
+    ],
+    "dependencies": [
+      "twofish-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "The submission prints K words but not S words for these keys; S is verified through the RS construction and through the ciphertexts that depend on it."
+  },
+  {
+    "id": "twofish-calc-structure",
+    "entryId": "twofish-details",
+    "kind": "executable-algorithm-check",
+    "inputs": "The q0/q1 four-bit tables, the MDS and RS matrices, three zero keys and eight deterministic plaintexts, plus a 10-byte key for the padding rule",
+    "expected": "q0/q1 are 256-byte bijections with 1/2 fixed points; every square submatrix of MDS is nonsingular over 0x169 and every 4-column submatrix of RS is nonsingular over 0x14D; all 24 encrypt/decrypt round trips succeed; a 10-byte key pads to the 16-byte zero-padded key and gives the same ciphertext; one-bit rotations invert",
+    "sourceIds": [
+      "twofish-paper"
+    ],
+    "dependencies": [
+      "twofish-teaching.mjs",
+      "vectors.json"
+    ],
+    "limitations": "Matrix and round-trip checks are algebraic/structural; they do not test modes, protocols, key management, side channels or randomness."
+  }
+]

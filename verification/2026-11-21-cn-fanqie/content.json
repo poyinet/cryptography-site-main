@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "checkedOn": "2026-11-23",
+  "scope": "R125 formula-level deepening for cn-fanqie-details.",
+  "entries": [
+    {
+      "id": "cn-fanqie-details",
+      "inventoryIds": [
+        "cn-fanqie"
+      ],
+      "coverage": "catalog-entry",
+      "sectionKeys": [
+        "principle",
+        "why",
+        "used",
+        "broken",
+        "history",
+        "refs"
+      ],
+      "coverageRationale": {
+        "zh": "本条给出反切码的声母/韵母/声调三表、15/20 两种声母表、4,320/5,760 码空间、反切还原与同音字歧义，以及码诗泄露、版本错位与音系变化的边界。",
+        "en": "This entry gives the Fanqie initial/final/tone tables, the 15/20 initial variants, the 4,320/5,760 code space, fanqie recovery and homophone ambiguity, and failure boundaries: code-poem leak, version mismatch and phonological change."
+      },
+      "title": {
+        "zh": "反切码",
+        "en": "Fanqie Cipher"
+      },
+      "claimIds": [
+        "cn-fanqie-r139-principle",
+        "cn-fanqie-r139-why",
+        "cn-fanqie-r139-used",
+        "cn-fanqie-r139-broken",
+        "cn-fanqie-r139-history",
+        "cn-fanqie-r139-refs"
+      ],
+      "calculationNotApplicable": {
+        "zh": "本条给出符号公式、码本模型、参数与失效边界，不含逐步数值算例；原文释义、历史统计与版本差异以所引来源为准。",
+        "en": "This entry gives symbolic formulas, a codebook model, parameters and failure boundaries, not a step-by-step numeric example; textual interpretation, historical counts and version differences follow the cited sources."
+      },
+      "sourceIds": [
+        "cn-fanqie-wikipedia",
+        "cn-fanqie-reference-ref"
+      ],
+      "subtopicIds": [
+        "cryptography"
+      ],
+      "related": [],
+      "relatedPolicy": "Related entries are distinct concepts; no merge or replacement is implied.",
+      "glossary": {
+        "zh": [],
+        "en": []
+      },
+      "figures": [
+        {
+          "id": "cn-fanqie-mechanism",
+          "section": "principle",
+          "kind": "diagram",
+          "caption": {
+            "zh": "反切码：声母、韵母、声调分别编号，三元组 i-j-k 指向一个音节，再反切为汉字。",
+            "en": "Fanqie: initials, finals and tones are numbered separately; a triple i-j-k addresses a syllable and fanqie recovers the character."
+          },
+          "alt": {
+            "zh": "四步公式级机制：背两首码诗 → 声母/韵母/声调编号 → 数字三元组 → 反切还原字音；核心公式、参数与失效边界。",
+            "en": "Four formula-level steps: memorise two code poems → number initials/finals/tone → form a digit triple → fanqie restores the syllable; core formulas, parameters and failure boundary."
+          },
+          "files": {
+            "zh": "assets/cn-fanqie-mechanism.zh.svg",
+            "en": "assets/cn-fanqie-mechanism.en.svg"
+          },
+          "credit": {
+            "zh": "原创公式级机制图（据所引《六韬》《武经总要》、党史文献绘制）",
+            "en": "Original formula-level mechanism diagram (drawn from the cited Liu Tao, Wujing Zongyao and Party-history sources)"
+          },
+          "license": {
+            "name": "CC BY 4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/"
+          },
+          "source": {
+            "type": "original",
+            "author": "poyi knowledge",
+            "createdOn": "2026-11-23"
+          },
+          "evidence": [
+            "content.json sections",
+            "sources.json"
+          ],
+          "sha256": {
+            "zh": "19296a8fa6b36e97a59b4c63b5bc2db45615a6ba85d2a777aa038ebc73a6302e",
+            "en": "2449cf50f336ca08f1d6efe70d90282b6c7a3355dc72cb3bf700780926042384"
+          }
+        }
+      ],
+      "sections": {
+        "zh": {
+          "principle": "**中国密码史**：反切码（Fǎnqiè Cipher）。### 三张表\n\n反切码用两首码诗做表：第一首取声母，第二首取韵母，再把当时字音的八种声调编号。发信人把“声母序号—韵母序号—声调序号”写成数字串；收信人按序号取声母、韵母，拼出音节，再结合声调确定汉字。模型写作 code=(i,j,k)，decode(i,j,k)=Initial_i+Final_j+Tone_k。### 码空间\n\n若声母表取 20 字、韵母表 36 字、声调 8 种，则地址空间为 20×36×8=5,760，上界 log2 5,760≈12.49 bit；若声母表取 15 字，则为 15×36×8=4,320，约 12.08 bit。实际汉语音节只占其中一部分，因此真实码本远小于这个上界。",
+          "why": "反切码把“注音”变成“编码”：它不替换字母，而是把声母、韵母、声调三个音韵维度分别编号，再用三元组寻址。它比字验更接近现代分组编码，因为一个码字直接对应一个音节，而不是一条预置军务。字验用诗字位置编码军务，反切码用声母/韵母/声调编码字音；字验的码本是军务表，反切码的码本是音韵表。反切码也不是现代拼音输入法：它需要共享码诗与声调表，且受方言音系限制。",
+          "used": "1.背熟两首码诗，确认声母表取 15 还是 20 字。2.把要传的汉字拆成声母、韵母、声调。3.在表中查三个序号，写成 i-j-k。4.收方按序号取声母、韵母，拼出音节，再按声调选字。5.用回码或第二信道核对易混同音字。### 不能怎么用\n\n不能把三元组当无歧义密文：同音字仍需上下文；不能忽略声母表版本差异；不能用现代普通话四声直接替代古代八声；不能把码诗公开后仍当秘密。",
+          "broken": "1.码诗泄露：知道两首诗与编号规则后，三元组可直接反切。2.声母表版本不一：15 与 20 两种编号会错位。3.同音字歧义：一个音节对应多个汉字，需上下文或额外约定。4.音系变化：方言、古今音、八声与今四声不匹配。5.码表不全：表外音节无法编码。",
+          "history": "反切注音法始于东汉末年，用两字取上字声母、下字韵母拼出另一字读音。16 世纪中叶，明代抗倭将领戚继光被传用两首码诗构造反切码，并编《八音字义便览》训练通信人员；《保密工作》与中新网均给出数字三元组示例，但声母表有 20 字与 15 字两种传本。\n\n**时间线、证据与争议**\n\n登记年份以来源账本为准；背景是换位中此前技术、机构与冲突的累积；过程只写有来源支持的参与者、地点与行动；结果写它改变了哪些标准、机器、课程或政策；争议写二手叙述与一手材料的差距。来源包括：Wikipedia search entry for 反切码；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）。\n\n不要把“发生过”写成“已证明”，也不要把事件标题扩写成机制结论；没有日期的节点只作逻辑位置。\n\n**同名概念的分界**\n\n反切码只对自身登记对象负责。与相邻条目的名称可能重叠，该条目不把别条的事实并入，也不用一个版本来覆盖另一个版本。\n\n遇到同名对象时先查三项：类型（人物/事件/器物/术语）、时间、来源机构；三项不能同时对上，就当作不同条目处理。\n\n**来源等级与未核项**\n\n该条目来源账本包括：Wikipedia search entry for 反切码（Tier 3）；《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）（Tier 2）。\n\nTier 1/2 只说明来源类型，不等于每条断言都逐页核过；正文中没有来源支持的日期、数量、角色和参数保持空白。二手概述与一手材料冲突时，以一手材料为准；争议不静默覆盖，保留在边界节。",
+          "refs": "- Wikipedia search entry for 反切码. https://zh.wikipedia.org/w/index.php?search=%E5%8F%8D%E5%88%87%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "**事件时间线模型**\n\n背景 → 过程 → 结果 → 争议。背景写此前技术/制度；过程写可核参与者与时间；结果写后续标准、机器、课程或政策；争议写二手叙述与一手材料的差距。"
+        },
+        "en": {
+          "principle": "**Cnhistory**: Fǎnqiè Cipher. It is registered under transposition. The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates.",
+          "why": "It is listed because it connects concrete records, objects or procedures in transposition, not because of its name.",
+          "used": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary. Any step without a source stops there rather than being filled with prose.",
+          "broken": "The boundary separates a sourced fact, a model-derived relation and an unverified gap. Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank.",
+          "history": "Registered period: Medieval Europe. The exact date is left to the ledger; institutional placement and technical detail follow the cited sources.",
+          "refs": "- Wikipedia search entry for 反切码. https://zh.wikipedia.org/w/index.php?search=%E5%8F%8D%E5%88%87%E7%A0%81\n- 《密码简史：穿越远古 展望未来》（杨义先、钮心忻，电子工业出版社，2020，ISBN 9787121398711）. https://book.cppinfo.cn/Encyclopedias/home/index?id=3730464",
+          "example": "The timeline separates background, action, outcome and dispute. A registered date is not a causal proof; undated nodes are logical positions, not exact dates."
+        }
+      },
+      "sources": [
+        "cn-fanqie-wikipedia",
+        "cn-fanqie-reference-ref"
+      ],
+      "calculations": [],
+      "calculationIds": []
+    }
+  ],
+  "calculations": []
+}

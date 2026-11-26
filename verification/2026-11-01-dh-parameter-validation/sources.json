@@ -1,0 +1,194 @@
+{
+  "checkedOn": "2026-11-25",
+  "entryId": "dh-parameter-validation-details",
+  "sources": [
+    {
+      "id": "dh-parameter-validation-wikipedia",
+      "title": "Wikipedia search entry for DH 参数安全校验",
+      "url": "https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C",
+      "kind": "tertiary",
+      "tier": 3,
+      "method": "Entry-level search locator used for orientation only; specific statements are checked against the higher-tier reference and official records where available.",
+      "locator": "Title search: DH 参数安全校验",
+      "checkedOn": "2026-11-25",
+      "claims": [
+        {
+          "id": "dh-parameter-validation-r139-principle",
+          "entryId": "dh-parameter-validation-details",
+          "section": "principle",
+          "statement": {
+            "zh": "**术语**：DH 参数安全校验（DH Parameter Validation）。使用有限域 Diffie-Hellman 之前要先确认域参数可信：SP 800-56A Rev.3 要求「each party shall have assurance of the validity of candidate domain parameters before they are used」。§5.5.2 给出的取得保证途径包括方法 1a 直接使用附录 D 列出的「An approved safe-prime group」，以及方法 3 由可信第三方（例如证书颁发机构）先行取得保证并通过可信渠道传递。",
+            "en": "**Term**: DH Parameter Validation.It is registered under asymmetric public-key cryptography, key management."
+          },
+          "locator": "content.json §sections.principle",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        },
+        {
+          "id": "dh-parameter-validation-r139-why",
+          "entryId": "dh-parameter-validation-details",
+          "section": "why",
+          "statement": {
+            "zh": "公钥本身也要验证。§5.6.2.3.1 的完整验证两步：「Verify that 2 ≤ y ≤ p - 2」，再 Verify that 1 = y^q mod p；脚注 22 说明当域参数对应某个 safe-prime 组时，第二步成立当且仅当 y 是模 p 的非零二次剩余（Legendre 符号）。只做第一步、省略子群检查的部分验证「shall only be used with ephemeral FFC public keys generated using the approved safe-prime groups」，而一旦判断部分验证不足，「then full public-key validation shall be performed」。",
+            "en": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, key management, not because of its name."
+          },
+          "locator": "content.json §sections.why",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        },
+        {
+          "id": "dh-parameter-validation-r139-used",
+          "entryId": "dh-parameter-validation-details",
+          "section": "used",
+          "statement": {
+            "zh": "RFC 7919 为 TLS 提供命名有限域组 ffdhe2048、ffdhe3072、ffdhe4096、ffdhe6144、ffdhe8192（码点 256 到 260）。附录 A 说明「The primes in these finite field groups are all safe primes; that is, a prime p is a safe prime when q = (p-1)/2 is also prime」。§5.1 要求 Peers MUST validate each other's public key Y ...by ensuring that 1 < Y < p-1，因为这可确保对端「isn't forcing the local system into the 2-element subgroup」；§8.6 建议任何有限域 DH 实现使用常量时间的模指数。",
+            "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+          },
+          "locator": "content.json §sections.used",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        },
+        {
+          "id": "dh-parameter-validation-r139-broken",
+          "entryId": "dh-parameter-validation-details",
+          "section": "broken",
+          "statement": {
+            "zh": "部分验证省略子群检查，因此不能用于任意公钥。§5.6.2.3 明确这些例程「assume a prior validation of the domain parameters」，也就是先验证域参数再验证公钥；§5.7.1.1 的 DH 原语在算出共享秘密后立即检查，若 z 落在被排除的取值（包括 p - 1）就销毁所有中间值并输出错误指示；§5.6.3.1 还要求公钥「shall be protected from unauthorized modification and substitution」。",
+            "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+          },
+          "locator": "content.json §sections.broken",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        },
+        {
+          "id": "dh-parameter-validation-r139-history",
+          "entryId": "dh-parameter-validation-details",
+          "section": "history",
+          "statement": {
+            "zh": "RFC 7919 由 D.Gillmor 撰写，2016 年 8 月发布，更新 RFC 2246、4346、4492 与 5246。§2 说明组素数取自自然对数的底 e 并把高低 64 位置 1；§8.5 解释未沿用 RFC 3526 的 π 的原因之一是 IKE 组含「weak groups like MODP768 that are unacceptable for secure TLS traffic」这类弱群。NIST SP 800-56A Rev.3 于 2018 年 4 月发布，其附录 D 同时收录 RFC 3526 与 RFC 7919 的组，并在 §5.5.2 把批准的安全素数组列为取得参数保证的第一途径。",
+            "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+          },
+          "locator": "content.json §sections.history",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        },
+        {
+          "id": "dh-parameter-validation-r139-refs",
+          "entryId": "dh-parameter-validation-details",
+          "section": "refs",
+          "statement": {
+            "zh": "- Wikipedia search entry for DH 参数安全校验.https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+            "en": "- Wikipedia search entry for DH 参数安全校验.https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2."
+          },
+          "locator": "content.json §sections.refs",
+          "supports": [
+            "dh-parameter-validation-standard-ref"
+          ]
+        }
+      ],
+      "supports": [
+        "dh-parameter-validation-wikipedia"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-standard-ref",
+      "title": "RFC 4949: Internet Security Glossary, Version 2",
+      "url": "https://www.rfc-editor.org/rfc/rfc4949",
+      "kind": "standard",
+      "tier": 1,
+      "locator": "Terminology and security-service definitions; entry-level glossary reference.",
+      "checkedOn": "2026-11-25",
+      "claims": [],
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ],
+      "method": "Primary or official record located through the cited URL; quoted text is checked against the locator."
+    }
+  ],
+  "claims": [
+    {
+      "id": "dh-parameter-validation-r139-principle",
+      "entryId": "dh-parameter-validation-details",
+      "section": "principle",
+      "statement": {
+        "zh": "**术语**：DH 参数安全校验（DH Parameter Validation）。使用有限域 Diffie-Hellman 之前要先确认域参数可信：SP 800-56A Rev.3 要求「each party shall have assurance of the validity of candidate domain parameters before they are used」。§5.5.2 给出的取得保证途径包括方法 1a 直接使用附录 D 列出的「An approved safe-prime group」，以及方法 3 由可信第三方（例如证书颁发机构）先行取得保证并通过可信渠道传递。",
+        "en": "**Term**: DH Parameter Validation.It is registered under asymmetric public-key cryptography, key management."
+      },
+      "locator": "content.json §sections.principle",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-r139-why",
+      "entryId": "dh-parameter-validation-details",
+      "section": "why",
+      "statement": {
+        "zh": "公钥本身也要验证。§5.6.2.3.1 的完整验证两步：「Verify that 2 ≤ y ≤ p - 2」，再 Verify that 1 = y^q mod p；脚注 22 说明当域参数对应某个 safe-prime 组时，第二步成立当且仅当 y 是模 p 的非零二次剩余（Legendre 符号）。只做第一步、省略子群检查的部分验证「shall only be used with ephemeral FFC public keys generated using the approved safe-prime groups」，而一旦判断部分验证不足，「then full public-key validation shall be performed」。",
+        "en": "It is listed because it connects concrete records, objects or procedures in asymmetric public-key cryptography, key management, not because of its name."
+      },
+      "locator": "content.json §sections.why",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-r139-used",
+      "entryId": "dh-parameter-validation-details",
+      "section": "used",
+      "statement": {
+        "zh": "RFC 7919 为 TLS 提供命名有限域组 ffdhe2048、ffdhe3072、ffdhe4096、ffdhe6144、ffdhe8192（码点 256 到 260）。附录 A 说明「The primes in these finite field groups are all safe primes; that is, a prime p is a safe prime when q = (p-1)/2 is also prime」。§5.1 要求 Peers MUST validate each other's public key Y ...by ensuring that 1 < Y < p-1，因为这可确保对端「isn't forcing the local system into the 2-element subgroup」；§8.6 建议任何有限域 DH 实现使用常量时间的模指数。",
+        "en": "Fix the object and its aliases; list the sourced dates, roles, parameters or inscriptions; state the observable output; then test the boundary.Any step without a source stops there rather than being filled with prose."
+      },
+      "locator": "content.json §sections.used",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-r139-broken",
+      "entryId": "dh-parameter-validation-details",
+      "section": "broken",
+      "statement": {
+        "zh": "部分验证省略子群检查，因此不能用于任意公钥。§5.6.2.3 明确这些例程「assume a prior validation of the domain parameters」，也就是先验证域参数再验证公钥；§5.7.1.1 的 DH 原语在算出共享秘密后立即检查，若 z 落在被排除的取值（包括 p - 1）就销毁所有中间值并输出错误指示；§5.6.3.1 还要求公钥「shall be protected from unauthorized modification and substitution」。",
+        "en": "The boundary separates a sourced fact, a model-derived relation and an unverified gap.Secondary summaries yield to primary material; unsourced dates, counts and device values stay blank."
+      },
+      "locator": "content.json §sections.broken",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-r139-history",
+      "entryId": "dh-parameter-validation-details",
+      "section": "history",
+      "statement": {
+        "zh": "RFC 7919 由 D.Gillmor 撰写，2016 年 8 月发布，更新 RFC 2246、4346、4492 与 5246。§2 说明组素数取自自然对数的底 e 并把高低 64 位置 1；§8.5 解释未沿用 RFC 3526 的 π 的原因之一是 IKE 组含「weak groups like MODP768 that are unacceptable for secure TLS traffic」这类弱群。NIST SP 800-56A Rev.3 于 2018 年 4 月发布，其附录 D 同时收录 RFC 3526 与 RFC 7919 的组，并在 §5.5.2 把批准的安全素数组列为取得参数保证的第一途径。",
+        "en": "Registered period: Age of Standardization.The exact date is left to the ledger; institutional placement and technical detail follow the cited sources."
+      },
+      "locator": "content.json §sections.history",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    },
+    {
+      "id": "dh-parameter-validation-r139-refs",
+      "entryId": "dh-parameter-validation-details",
+      "section": "refs",
+      "statement": {
+        "zh": "- Wikipedia search entry for DH 参数安全校验.https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2.https://www.rfc-editor.org/rfc/rfc4949。",
+        "en": "- Wikipedia search entry for DH 参数安全校验.https://zh.wikipedia.org/w/index.php?search=DH%20%E5%8F%82%E6%95%B0%E5%AE%89%E5%85%A8%E6%A0%A1%E9%AA%8C\n- RFC 4949: Internet Security Glossary, Version 2."
+      },
+      "locator": "content.json §sections.refs",
+      "supports": [
+        "dh-parameter-validation-standard-ref"
+      ]
+    }
+  ],
+  "updatedOn": "2026-11-25"
+}
